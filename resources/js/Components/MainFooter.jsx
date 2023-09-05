@@ -4,27 +4,27 @@ export default function MainFooter () {
     return (
         <footer className='bg-grey mt-16 w-full'>
             <div className='container mx-auto flex justify-between py-16'>
-                <div className='w-3/12'>
-                    <img className='md:h-12 xl:h-24 3xl:h-32' src={logo} alt="Goals Academy" />
-                    <p className='my-4 xl:my-6'>
+                <div className='sm:w-5/12 md:w-3/12'>
+                    <img className='h-24 sm:h-16 md:h-12 xl:h-24 3xl:h-32' src={logo} alt="Goals Academy" />
+                    <p className='my-6 sm:my-4 xl:my-6'>
                         Perum Graha Joyo Family B/14 Merjosari, Kec. Lowokwaru, Kota Malang, Jawa Timur 65144
                     </p>
-                    <div className='flex md:gap-3 xl:gap-6'>
+                    <div className='flex gap-4 sm:gap-3 xl:gap-6'>
                         <a href='https://www.instagram.com/goalsacademy_id' target='_blank'>
-                            <i className="fa-brands fa-instagram md:text-16 lg:text-20 xl:text-24 2xl:text-28 3xl:text-32"></i>
+                            <i className="fa-brands fa-instagram text-24 sm:text-20 md:text-16 lg:text-20 xl:text-24 2xl:text-28 3xl:text-32"></i>
                         </a>
                         <a href='https://www.tiktok.com/@goalsacademy_id' target='_blank'>
-                            <i className="fa-brands fa-tiktok md:text-16 lg:text-20 xl:text-24 2xl:text-28 3xl:text-32"></i>
+                            <i className="fa-brands fa-tiktok text-24 sm:text-20 md:text-16 lg:text-20 xl:text-24 2xl:text-28 3xl:text-32"></i>
                         </a>
                         <a href='https://www.twitter.com/goalsacademy_id' target='_blank'>
-                            <i className="fa-brands fa-twitter md:text-16 lg:text-20 xl:text-24 2xl:text-28 3xl:text-32"></i>
+                            <i className="fa-brands fa-twitter text-24 sm:text-20 md:text-16 lg:text-20 xl:text-24 2xl:text-28 3xl:text-32"></i>
                         </a>
                         <a href='https://www.linkedin.com/company/goals-academy-id' target='_blank'>
-                            <i className="fa-brands fa-linkedin md:text-16 lg:text-20 xl:text-24 2xl:text-28 3xl:text-32"></i>
+                            <i className="fa-brands fa-linkedin text-24 sm:text-20 md:text-16 lg:text-20 xl:text-24 2xl:text-28 3xl:text-32"></i>
                         </a>
                     </div>
                 </div>
-                <div className='w-8/12 grid grid-cols-3'>
+                <div className='sm:w-6/12 md:w-8/12 flex flex-wrap gap-8 md:gap-0 md:grid md:grid-cols-3'>
                     <div>
                         <h5 className='font-semibold mb-4'>Produk</h5>
                         <div className='grid'>

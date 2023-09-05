@@ -66,7 +66,7 @@ export default {
         function ({addComponents}) {
             addComponents({
                 '.container': {
-                    maxWidth: '90%',
+                    maxWidth: '80%',
                     '@screen md': {
                         maxWidth: '80%'
                     },

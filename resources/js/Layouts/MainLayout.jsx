@@ -6,7 +6,7 @@ export default function MainLayout ({ children }) {
     return (
         <>
             <MainHeader />
-            <main className="md:pt-20 xl:pt-32 3xl:pt-48">
+            <main className="pt-16 md:pt-20 xl:pt-32 3xl:pt-48">
                 {children}
             </main>
             <MainFooter />

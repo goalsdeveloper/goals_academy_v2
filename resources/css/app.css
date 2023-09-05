@@ -56,7 +56,8 @@
         @apply scroll-smooth;
         @apply font-sans;
         @apply text-dark;
-        @apply text-16;
+        @apply text-14;
+        @apply sm:text-12;
         @apply md:text-8;
         @apply lg:text-12;
         @apply xl:text-14;
