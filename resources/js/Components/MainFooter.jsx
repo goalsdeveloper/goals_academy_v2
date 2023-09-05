@@ -1,8 +1,4 @@
 import logo from '/resources/img/logo-white.svg';
-import instagram from '/resources/img/instagram-white.svg';
-import tiktok from '/resources/img/tiktok-white.svg';
-import twitter from '/resources/img/twitter-white.svg';
-import linkedin from '/resources/img/linkedin-white.svg';
 
 export default function MainFooter () {
     return (
@@ -14,10 +10,18 @@ export default function MainFooter () {
                         Perum Graha Joyo Family B/14 Merjosari, Kec. Lowokwaru, Kota Malang, Jawa Timur 65144
                     </p>
                     <div className='flex md:gap-3 xl:gap-6'>
-                        <a href='https://www.instagram.com/goalsacademy_id' target='_blank'><img className='md:h-4 xl:h-6' src={instagram} alt="Instagram" /></a>
-                        <a href='https://www.tiktok.com/@goalsacademy_id' target='_blank'><img className='md:h-4 xl:h-6' src={tiktok} alt="TikTok" /></a>
-                        <a href='https://www.twitter.com/goalsacademy_id' target='_blank'><img className='md:h-4 xl:h-6' src={twitter} alt="Twitter" /></a>
-                        <a href='https://www.linkedin.com/company/goals-academy-id' target='_blank'><img className='md:h-4 xl:h-6' src={linkedin} alt="LinkedIn" /></a>
+                        <a href='https://www.instagram.com/goalsacademy_id' target='_blank'>
+                            <i className="fa-brands fa-instagram md:text-16 lg:text-20 xl:text-24 2xl:text-28 3xl:text-32"></i>
+                        </a>
+                        <a href='https://www.tiktok.com/@goalsacademy_id' target='_blank'>
+                            <i className="fa-brands fa-tiktok md:text-16 lg:text-20 xl:text-24 2xl:text-28 3xl:text-32"></i>
+                        </a>
+                        <a href='https://www.twitter.com/goalsacademy_id' target='_blank'>
+                            <i className="fa-brands fa-twitter md:text-16 lg:text-20 xl:text-24 2xl:text-28 3xl:text-32"></i>
+                        </a>
+                        <a href='https://www.linkedin.com/company/goals-academy-id' target='_blank'>
+                            <i className="fa-brands fa-linkedin md:text-16 lg:text-20 xl:text-24 2xl:text-28 3xl:text-32"></i>
+                        </a>
                     </div>
                 </div>
                 <div className='w-8/12 grid grid-cols-3'>
@@ -51,7 +55,7 @@ export default function MainFooter () {
 
             </div>
             <div className='text-center py-6'>
-                Copyright 2023 &copy; <span className='font-bold'>PT Sarana Edukasi Nusantara</span>
+                Copyright 2023 <i className="fa-regular fa-copyright"></i> <span className='font-bold'>PT Sarana Edukasi Nusantara</span>
             </div>
         </footer>
     )

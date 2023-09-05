@@ -40,6 +40,7 @@ export default {
                 '16': '1rem',
                 '20': '1.25rem',
                 '24': '1.5rem',
+                '28': '1.75rem',
                 '32': '2rem',
                 '36': '2.25rem',
                 '48': '3rem',
@@ -48,13 +49,14 @@ export default {
             },
             backgroundImage: {
                 'sweep-primary': 'linear-gradient(120deg, #FF6420 80%, transparent 20%)',
+                'icon-primary': 'url(/resources/img/icon-primary.svg)',
             },
             content: {
                 'discount': '"Dapatkan Diskon"',
                 'mail-16': 'url(/resources/img/mail-16.svg)',
-                'mail-24': 'url(/resources/img/mail-24.svg)',
+                'mail-20': 'url(/resources/img/mail-20.svg)',
                 'mail-32': 'url(/resources/img/mail-32.svg)',
-            }
+            },
         },
     },
     corePlugins: {

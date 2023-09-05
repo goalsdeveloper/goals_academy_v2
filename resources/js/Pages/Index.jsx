@@ -17,7 +17,7 @@ export default function Index() {
                         </p>
                         <form action="" className="w-11/12 flex justify-between border-2 border-primary rounded-full p-1 3xl:p-2 -z-20">
                             <input type="text" className="w-7/12 bg-transparent border-none active:border-none focus:outline-none xl:leading-6 py-1 px-2 xl:py-2 xl:px-3" placeholder="Masukkan emailmu disini ..." />
-                            <button type="submit" className="w-5/12 hover:sweep-right md:before:content-mail-16 lg:before:content-mail-24 xl:before:content-mail-32 after:content-discount after:text-primary after:font-medium border-2 border-primary rounded-full"></button>
+                            <button type="submit" className="w-5/12 hover:sweep-right md:before:content-mail-16 lg:before:content-mail-20 xl:before:content-mail-32 after:content-discount after:text-primary after:font-medium border-2 border-primary rounded-full"></button>
                         </form>
                     </div>
                     <div className="w-1/2">
