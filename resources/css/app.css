@@ -1,3 +1,79 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.before\:icon-primary::before {
+    background-image: url('../img/icon-primary.svg');
+    background-size: 100% 100%;
+    z-index: -1;
+    @apply bg-no-repeat;
+    @apply before:content-[''];
+}
+
+.hover\:sweep-right {
+    @apply relative;
+    @apply overflow-hidden;
+}
+
+.hover\:sweep-right::before, .hover\:sweep-right::after {
+    @apply leading-['100%'];
+    @apply duration-300;
+    @apply flex;
+    @apply items-center;
+    @apply justify-center;
+    @apply absolute;
+    @apply top-0;
+    @apply bottom-0;
+    @apply left-0;
+    @apply right-0;
+}
+
+.hover\:sweep-right::before {
+    margin-left: -160%;
+    width: 160%;
+    @apply bg-sweep-primary;
+}
+
+.hover\:sweep-right::after {
+    @apply w-full;
+}
+
+.hover\:sweep-right:hover::before {
+    margin-left: -30%;
+}
+
+.hover\:sweep-right:hover::after {
+    margin-left: 100%;
+}
+
+@layer base {
+    html {
+        font-size: 16px;
+    }
+    * {
+        @apply scroll-smooth;
+        @apply font-sans;
+        @apply text-dark;
+        @apply text-16;
+        @apply md:text-8;
+        @apply lg:text-12;
+        @apply xl:text-14;
+        @apply 3xl:text-20;
+    }
+    *::before, *::after {
+        @apply absolute;
+        @apply inline-block;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-poppins;
+    }
+    h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
+        font-family: inherit;
+        font-size: inherit;
+        @apply text-inherit;
+    }
+    footer * {
+        @apply text-white;
+    }
+}
+
