@@ -22,11 +22,14 @@ export default {
             colors: {
                 'primary': '#FF6420',
                 'secondary': '#FF8854',
-                'grey': '#848484',
+                'grey': 'color-mix(in lch, black 40%, #848484)',
                 'dark': '#404040',
             },
             height: {
                 '0.5': '0.125rem',
+            },
+            borderWidth: {
+                '1': '1px',
             },
             fontFamily: {
                 poppins: ['Poppins', ...defaultTheme.fontFamily.sans],
@@ -48,7 +51,7 @@ export default {
                 '80': '5rem',
             },
             backgroundImage: {
-                'sweep-primary': 'linear-gradient(120deg, #FF6420 80%, transparent 20%)',
+                'sweep-primary': 'linear-gradient(120deg, #FF6420 85%, transparent 20%)',
                 'icon-primary': 'url(/resources/img/icon-primary.svg)',
             },
             content: {
@@ -57,6 +60,9 @@ export default {
                 'mail-20': 'url(/resources/img/mail-20.svg)',
                 'mail-32': 'url(/resources/img/mail-32.svg)',
             },
+            boxShadow: {
+                'bottom-right': '2px 3px 4px 0 rgba(0,0,0,.14)',
+            }
         },
     },
     corePlugins: {
@@ -66,10 +72,13 @@ export default {
         function ({addComponents}) {
             addComponents({
                 '.container': {
-                    maxWidth: '80%',
+                    width: '80%',
                     '@screen md': {
-                        maxWidth: '80%'
+                        width: '75%'
                     },
+                    '@screen 3xl': {
+                        maxWidth: '1536px'
+                    }
                 }
             })
         }

@@ -1,12 +1,12 @@
-import MainFooter from "@/Components/MainFooter";
-import MainHeader from "@/Components/MainHeader";
+import MainHeader from "./Partials/MainHeader";
+import MainFooter from "./Partials/MainFooter";
 import "@/script/mainHeader";
 
 export default function MainLayout ({ children }) {
     return (
         <>
             <MainHeader />
-            <main className="pt-16 md:pt-20 xl:pt-32 3xl:pt-48">
+            <main className="pt-8 md:pt-4 xl:pt-8 3xl:pt-28">
                 {children}
             </main>
             <MainFooter />

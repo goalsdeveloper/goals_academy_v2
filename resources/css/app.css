@@ -5,28 +5,15 @@
 .before\:icon-primary::before {
     background-size: 100% 100%;
     z-index: -1;
-    @apply bg-icon-primary;
-    @apply bg-no-repeat;
-    @apply before:content-[''];
-    @apply absolute;
+    @apply bg-icon-primary bg-no-repeat before:content-[''] absolute;
 }
 
 .hover\:sweep-right {
-    @apply relative;
-    @apply overflow-hidden;
+    @apply relative overflow-hidden;
 }
 
 .hover\:sweep-right::before, .hover\:sweep-right::after {
-    @apply leading-['100%'];
-    @apply duration-300;
-    @apply xl:p-0.5;
-    @apply flex;
-    @apply items-center;
-    @apply justify-center;
-    @apply absolute;
-    @apply top-0;
-    @apply left-0;
-    @apply h-full;
+    @apply leading-['100%'] duration-300 xl:p-0.5 flex items-center justify-center absolute top-0 left-0 h-full;
 }
 
 .hover\:sweep-right::before {
@@ -53,29 +40,15 @@
         font-size: 16px;
     }
     * {
-        @apply scroll-smooth;
-        @apply font-sans;
-        @apply text-dark;
-        @apply text-14;
-        @apply sm:text-12;
-        @apply md:text-8;
-        @apply lg:text-12;
-        @apply xl:text-14;
-        @apply 3xl:text-20;
-    }
-    *::before, *::after {
-        @apply inline-block;
+        @apply scroll-smooth font-sans text-dark text-14 md:text-8 lg:text-12 xl:text-14 3xl:text-20 leading-tight;
     }
     h1, h2, h3, h4, h5, h6 {
-        @apply font-poppins;
+        @apply font-poppins font-bold;
     }
     h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
         font-family: inherit;
         font-size: inherit;
         @apply text-inherit;
-    }
-    footer * {
-        @apply text-white;
     }
 }
 
