@@ -10,7 +10,7 @@ function SquareIcon ({iconClass}) {
 
 export default function Intro () {
     return (
-        <section id="intro" className="my-16 xl:my-24 3xl:my-20">
+        <section id="intro" className="my-16 xl:my-24 3xl:my-32">
             <div className="container mx-auto flex flex-wrap items-center justify-center md:justify-between gap-8 md:gap-0">
                 <div className="w-full sm:w-10/12 md:w-6/12">
                     <img src={figure2} alt="Figure 2" />
@@ -18,7 +18,7 @@ export default function Intro () {
                 <div className="md:w-5/12">
                     <h2>Jarak bukan Masalah untuk <span className="text-primary">Lulus Lebih Cepat.</span></h2>
                     <p className="mt-2 mb-4 sm:mb-6 xl:mt-4 xl:mb-10 3xl:mt-6 3xl:mb-14">Buat jadwal bimbingan dengan tutor secara online atau tatap muka dan berinteraksi secara langsung.</p>
-                    <div className="grid w-full xl:w-11/12 3xl:w-10/12 gap-4">
+                    <div className="grid w-full xl:w-11/12 3xl:w-11/12 gap-4">
                         <div className="flex items-center gap-4">
                             <SquareIcon iconClass="fa-solid fa-chalkboard-user text-20 md:text-12 lg:text-24 xl:text-28" />
                             <div>

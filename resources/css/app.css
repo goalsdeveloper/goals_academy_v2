@@ -8,31 +8,8 @@
     @apply bg-icon-primary bg-no-repeat before:content-[''] absolute;
 }
 
-.hover\:sweep-right {
-    @apply relative overflow-hidden;
-}
-
-.hover\:sweep-right::before, .hover\:sweep-right::after {
-    @apply leading-['100%'] duration-300 xl:p-0.5 flex items-center justify-center absolute top-0 left-0 h-full;
-}
-
-.hover\:sweep-right::before {
-    display: inline-block;
-    margin-left: -160%;
-    width: 160%;
-    @apply bg-sweep-primary;
-}
-
-.hover\:sweep-right::after {
-    @apply w-full;
-}
-
-.hover\:sweep-right:hover::before {
-    margin-left: -30%;
-}
-
-.hover\:sweep-right:hover::after {
-    margin-left: 100%;
+.swiper-custom {
+    @apply overflow-visible md:overflow-hidden !important;
 }
 
 @layer base {
@@ -51,4 +28,3 @@
         @apply text-inherit;
     }
 }
-

@@ -25,6 +25,9 @@ export default {
                 'grey': 'color-mix(in lch, black 40%, #848484)',
                 'dark': '#404040',
             },
+            width: {
+                'xl': '160%',
+            },
             height: {
                 '0.5': '0.125rem',
             },
@@ -36,6 +39,8 @@ export default {
                 sans: ['Work Sans', ...defaultTheme.fontFamily.sans]
             },
             fontSize: {
+                '4': '0.25rem',
+                '6': '0.375rem',
                 '8': '0.5rem',
                 '10': '0.625rem',
                 '12': '0.75rem',
@@ -51,7 +56,7 @@ export default {
                 '80': '5rem',
             },
             backgroundImage: {
-                'sweep-primary': 'linear-gradient(120deg, #FF6420 85%, transparent 20%)',
+                'sweep-primary': 'linear-gradient(120deg, #FF6420 90%, transparent 10%)',
                 'icon-primary': 'url(/resources/img/icon-primary.svg)',
             },
             content: {
@@ -62,7 +67,7 @@ export default {
             },
             boxShadow: {
                 'bottom-right': '2px 3px 4px 0 rgba(0,0,0,.14)',
-            }
+            },
         },
     },
     corePlugins: {
@@ -77,6 +82,7 @@ export default {
                         width: '75%'
                     },
                     '@screen 3xl': {
+                        width: '70%',
                         maxWidth: '1536px'
                     }
                 }
