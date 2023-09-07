@@ -49,6 +49,7 @@ export default {
                 '20': '1.25rem',
                 '24': '1.5rem',
                 '28': '1.75rem',
+                '30': '1.875rem',
                 '32': '2rem',
                 '36': '2.25rem',
                 '48': '3rem',
@@ -56,6 +57,8 @@ export default {
                 '80': '5rem',
             },
             backgroundImage: {
+                'unset': 'linear-gradient(0, #FFFFFF00 0%, #FFFFFF00 0%);',
+                'gradient-1': 'linear-gradient(165deg, #FFE6DB -0.04%, #FF8854 180.59%);',
                 'sweep-primary': 'linear-gradient(120deg, #FF6420 90%, transparent 10%)',
                 'icon-primary': 'url(/resources/img/icon-primary.svg)',
             },

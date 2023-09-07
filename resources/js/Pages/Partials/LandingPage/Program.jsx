@@ -2,7 +2,7 @@ import 'swiper/css';
 import { Link } from '@inertiajs/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y } from 'swiper/modules';
-import ButtonHoverSlide from '@/Components/ButtonHoverSlide';
+import ButtonSwiper from '@/Components/ButtonSwiper';
 import program1 from '/resources/img/program-dibimbing-sekali.png';
 import program2 from '/resources/img/program-dibimbing-tuntas.png';
 import program3 from '/resources/img/program-dibimbing-olah-data.png';
@@ -97,16 +97,8 @@ export default function Program () {
                         <h2 className='md:hidden'>Pilih Program <span className="text-primary">Tersedia.</span></h2>
                     </div>
                     <div className="grid grid-cols-2 gap-2">
-                        <button className="program-prev">
-                            <ButtonHoverSlide className="flex justify-center text-secondary before:-z-10 hover:text-white border-2 border-secondary hover:border-primary my-auto py-2 px-4 md:px-3 xl:px-3 rounded-lg before:w-[500%] before:-ms-[500%] before:duration-300 hover:before:-ms-[200%] before:bg-sweep-primary">
-                                <i className="fa fa-chevron-left text-inherit text-20 md:text-14 xl:text-20"></i>
-                            </ButtonHoverSlide>
-                        </button>
-                        <button className="program-next">
-                            <ButtonHoverSlide className="flex justify-center text-secondary before:-z-10 hover:text-white border-2 border-secondary hover:border-primary my-auto py-2 px-4 md:px-3 xl:px-3 rounded-lg before:w-[500%] before:-ms-[500%] before:duration-300 hover:before:-ms-[200%] before:bg-sweep-primary">
-                                <i className="fa fa-chevron-right text-inherit text-20 md:text-14 xl:text-20"></i>
-                            </ButtonHoverSlide>
-                        </button>
+                        <ButtonSwiper name="program-prev" direction="left" />
+                        <ButtonSwiper name="program-next" direction="right" />
                     </div>
                 </div>
                 <Swiper
@@ -118,7 +110,7 @@ export default function Program () {
                 navigation={{ nextEl: ".program-next", prevEl: ".program-prev" }}
                 >
                     {Object.values(programs).map(program => {return (
-                        <SwiperSlide style={{ width: "fit-content" }} className="p-4 md:p-2 lg:p-3 xl:p-4">
+                        <SwiperSlide key={program.id} style={{ width: "fit-content" }} className="p-4 md:p-2 lg:p-3 xl:p-4">
                             <ProgramCard item={program} />
                         </SwiperSlide>
                     )})}
@@ -134,43 +126,43 @@ function ProgramCard ({item}) {
     function generateFeature (features, feature) {
         if (feature != null & feature == features.times) {
             return (
-                <div className="flex items-center gap-2">
-                    <i class="fa-regular fa-calendar text-primary"></i>
+                <div key={feature} className="flex items-center gap-2">
+                    <i className="fa-regular fa-calendar text-primary"></i>
                     <p>{features.times}x Pertemuan</p>
                 </div>
             )
         } else if (feature != null & feature == features.minDuration) {
             return (
-                <div className="flex items-center gap-2">
-                    <i class="fa-solid fa-clock text-12 md:text-6 lg:text-10 xl:text-12 text-primary"></i>
+                <div key={feature} className="flex items-center gap-2">
+                    <i className="fa-solid fa-clock text-12 md:text-6 lg:text-10 xl:text-12 text-primary"></i>
                     <p>{features.minDuration}-{features.maxDuration} Menit</p>
                 </div>
             )
         } else if (feature != null & feature == features.category) {
             return (
-                <div className="flex items-center gap-2">
-                    <i class="fa-solid fa-location-dot text-primary"></i>
+                <div key={feature} className="flex items-center gap-2">
+                    <i className="fa-solid fa-location-dot text-primary"></i>
                     <p>{features.category}</p>
                 </div>
             )
         } else if (feature != null & feature == features.total) {
             return (
-                <div className="flex items-center gap-2">
-                    <i class="fa-solid fa-location-dot text-primary"></i>
+                <div key={feature} className="flex items-center gap-2">
+                    <i className="fa-solid fa-location-dot text-primary"></i>
                     <p>{features.total}</p>
                 </div>
             )
         } else if (feature != null & feature == features.media) {
             return (
-                <div className="flex items-center gap-2">
-                    <i class="fa-solid fa-location-dot text-primary"></i>
+                <div key={feature} className="flex items-center gap-2">
+                    <i className="fa-solid fa-location-dot text-primary"></i>
                     <p>{features.media}</p>
                 </div>
             )
         } else if (feature != null & feature == features.information) {
             return (
-                <div className="flex items-center gap-2">
-                    <i class="fa-solid fa-location-dot text-primary"></i>
+                <div key={feature} className="flex items-center gap-2">
+                    <i className="fa-solid fa-location-dot text-primary"></i>
                     <p>{features.information}</p>
                 </div>
             )
@@ -193,7 +185,7 @@ function ProgramCard ({item}) {
                         ) : ''}
                     </div>
                 </div>
-                <p className="my-4 md:my-2 lg:my-4 h-16 md:h-12 lg:h-16 3xl:h-28">{item.excerpt}</p>
+                <p className="my-8 md:my-2 lg:my-4 h-20 md:h-12 lg:h-16 3xl:h-28">{item.excerpt}</p>
                 <div className="flex flex-col gap-2 md:gap-1 lg:gap-2 3xl:gap-3 mb-8 md:mb-4 xl:mb-8 3xl:mb-12">
                     <p>Layanan</p>
                     {Object.values(features).map(feature => generateFeature(features, feature))}
