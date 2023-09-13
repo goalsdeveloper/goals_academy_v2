@@ -5,10 +5,11 @@ import ButtonHoverSlide from '@/Components/ButtonHoverSlide';
 export default function MainHeader () {
     return (
         <header className="fixed w-screen top-0 right-0 bg-white lg:text-base z-50">
+            <div className='hidden xl:h-24 3xl:h-36'></div>
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-16 md:h-20 xl:h-32 3xl:h-48 duration-500">
                 <div className="w-auto">
                     <Link href="/">
-                        <img className="h-6 md:h-5 xl:h-8 3xl:h-10 md:mb-3" src={logo} alt="Goals Academy" />
+                        <img className="h-6 md:h-5 xl:h-8 3xl:h-10" src={logo} alt="Goals Academy" />
                     </Link>
                 </div>
                 <div className="hidden md:grid grid-cols-5 md:gap-6 xl:gap-9 3xl:gap-12 font-medium text-center">

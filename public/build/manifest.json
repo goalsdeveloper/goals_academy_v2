@@ -1,35 +1,233 @@
 {
-  "resources/img/icon-orange.svg": {
-    "file": "assets/icon-orange-8527f3c6.svg",
-    "src": "resources/img/icon-orange.svg"
+  "_ButtonHoverSlide-3e521152.js": {
+    "file": "assets/ButtonHoverSlide-3e521152.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "_ButtonSwiper-63e501f6.js": {
+    "file": "assets/ButtonSwiper-63e501f6.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_ButtonHoverSlide-3e521152.js"
+    ]
+  },
+  "_a11y-710312c9.js": {
+    "css": [
+      "assets/a11y-d6fc63cb.css"
+    ],
+    "file": "assets/a11y-710312c9.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "a11y.css": {
+    "file": "assets/a11y-d6fc63cb.css",
+    "src": "a11y.css"
+  },
+  "resources/img/arrow-right-20.svg": {
+    "file": "assets/arrow-right-20-9857cce3.svg",
+    "src": "resources/img/arrow-right-20.svg"
+  },
+  "resources/img/arrow-right-32.svg": {
+    "file": "assets/arrow-right-32-676455bf.svg",
+    "src": "resources/img/arrow-right-32.svg"
+  },
+  "resources/img/figure-1.svg": {
+    "file": "assets/figure-1-6e6418ce.svg",
+    "src": "resources/img/figure-1.svg"
+  },
+  "resources/img/figure-2.svg": {
+    "file": "assets/figure-2-f2ae9ff3.svg",
+    "src": "resources/img/figure-2.svg"
+  },
+  "resources/img/figure-3.svg": {
+    "file": "assets/figure-3-c14682c8.svg",
+    "src": "resources/img/figure-3.svg"
+  },
+  "resources/img/icon-primary.svg": {
+    "file": "assets/icon-primary-54710dce.svg",
+    "src": "resources/img/icon-primary.svg"
+  },
+  "resources/img/logo-white.svg": {
+    "file": "assets/logo-white-1442ea32.svg",
+    "src": "resources/img/logo-white.svg"
   },
   "resources/img/logo.svg": {
     "file": "assets/logo-d96b30d3.svg",
     "src": "resources/img/logo.svg"
   },
+  "resources/img/mail-20.svg": {
+    "file": "assets/mail-20-c61c2fb0.svg",
+    "src": "resources/img/mail-20.svg"
+  },
+  "resources/img/mail-32.svg": {
+    "file": "assets/mail-32-ca8d2f30.svg",
+    "src": "resources/img/mail-32.svg"
+  },
+  "resources/img/program-dibimbing-olah-data.png": {
+    "file": "assets/program-dibimbing-olah-data-b6057a73.png",
+    "src": "resources/img/program-dibimbing-olah-data.png"
+  },
+  "resources/img/program-dibimbing-sekali.png": {
+    "file": "assets/program-dibimbing-sekali-a15bf5ac.png",
+    "src": "resources/img/program-dibimbing-sekali.png"
+  },
+  "resources/img/program-dibimbing-tuntas.png": {
+    "file": "assets/program-dibimbing-tuntas-4a8d41ab.png",
+    "src": "resources/img/program-dibimbing-tuntas.png"
+  },
+  "resources/img/program-e-book-skripsi.png": {
+    "file": "assets/program-e-book-skripsi-59e467ad.png",
+    "src": "resources/img/program-e-book-skripsi.png"
+  },
+  "resources/img/quote-primary.svg": {
+    "file": "assets/quote-primary-07ad5110.svg",
+    "src": "resources/img/quote-primary.svg"
+  },
+  "resources/img/user.png": {
+    "file": "assets/user-784106eb.png",
+    "src": "resources/img/user.png"
+  },
+  "resources/js/Pages/Index.css": {
+    "file": "assets/Index-48c1fb01.css",
+    "src": "resources/js/Pages/Index.css"
+  },
   "resources/js/Pages/Index.jsx": {
     "assets": [
-      "assets/logo-d96b30d3.svg"
+      "assets/logo-d96b30d3.svg",
+      "assets/logo-white-1442ea32.svg"
     ],
-    "file": "assets/Index-229cddb1.js",
+    "css": [
+      "assets/Index-48c1fb01.css"
+    ],
+    "file": "assets/Index-975894eb.js",
     "imports": [
-      "resources/js/app.jsx"
+      "resources/js/app.jsx",
+      "_ButtonHoverSlide-3e521152.js",
+      "resources/js/Pages/Partials/LandingPage/Hero.jsx",
+      "resources/js/Pages/Partials/LandingPage/Introduction.jsx",
+      "resources/js/Pages/Partials/LandingPage/Program.jsx",
+      "resources/js/Pages/Partials/LandingPage/Video.jsx",
+      "resources/js/Pages/Partials/LandingPage/Testimony.jsx",
+      "resources/js/Pages/Partials/LandingPage/FAQ.jsx",
+      "resources/js/Pages/Partials/LandingPage/Consultation.jsx",
+      "_a11y-710312c9.js",
+      "_ButtonSwiper-63e501f6.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Index.jsx"
   },
+  "resources/js/Pages/Partials/LandingPage/Consultation.jsx": {
+    "file": "assets/Consultation-c20c2cc9.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_ButtonHoverSlide-3e521152.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Partials/LandingPage/Consultation.jsx"
+  },
+  "resources/js/Pages/Partials/LandingPage/FAQ.jsx": {
+    "assets": [
+      "assets/figure-3-c14682c8.svg"
+    ],
+    "file": "assets/FAQ-92b7f718.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Partials/LandingPage/FAQ.jsx"
+  },
+  "resources/js/Pages/Partials/LandingPage/Hero.jsx": {
+    "assets": [
+      "assets/figure-1-6e6418ce.svg"
+    ],
+    "file": "assets/Hero-cc7d91ad.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_ButtonHoverSlide-3e521152.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Partials/LandingPage/Hero.jsx"
+  },
+  "resources/js/Pages/Partials/LandingPage/Introduction.jsx": {
+    "assets": [
+      "assets/figure-2-f2ae9ff3.svg"
+    ],
+    "file": "assets/Introduction-2206c89b.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Partials/LandingPage/Introduction.jsx"
+  },
+  "resources/js/Pages/Partials/LandingPage/Program.jsx": {
+    "assets": [
+      "assets/program-dibimbing-sekali-a15bf5ac.png",
+      "assets/program-dibimbing-tuntas-4a8d41ab.png",
+      "assets/program-dibimbing-olah-data-b6057a73.png",
+      "assets/program-e-book-skripsi-59e467ad.png"
+    ],
+    "file": "assets/Program-7804364c.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_a11y-710312c9.js",
+      "_ButtonSwiper-63e501f6.js",
+      "_ButtonHoverSlide-3e521152.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Partials/LandingPage/Program.jsx"
+  },
+  "resources/js/Pages/Partials/LandingPage/Testimony.jsx": {
+    "assets": [
+      "assets/user-784106eb.png",
+      "assets/quote-primary-07ad5110.svg"
+    ],
+    "file": "assets/Testimony-77a1ba6d.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_a11y-710312c9.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Partials/LandingPage/Testimony.jsx"
+  },
+  "resources/js/Pages/Partials/LandingPage/Video.jsx": {
+    "file": "assets/Video-5a0797c5.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_a11y-710312c9.js",
+      "_ButtonSwiper-63e501f6.js",
+      "_ButtonHoverSlide-3e521152.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Partials/LandingPage/Video.jsx"
+  },
   "resources/js/app.css": {
-    "file": "assets/app-eef646d8.css",
+    "file": "assets/app-7df9b481.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.jsx": {
+    "assets": [
+      "assets/icon-primary-54710dce.svg",
+      "assets/arrow-right-20-9857cce3.svg",
+      "assets/mail-20-c61c2fb0.svg",
+      "assets/arrow-right-32-676455bf.svg",
+      "assets/mail-32-ca8d2f30.svg"
+    ],
     "css": [
-      "assets/app-eef646d8.css"
+      "assets/app-7df9b481.css"
     ],
     "dynamicImports": [
-      "resources/js/Pages/Index.jsx"
+      "resources/js/Pages/Index.jsx",
+      "resources/js/Pages/Partials/LandingPage/Consultation.jsx",
+      "resources/js/Pages/Partials/LandingPage/FAQ.jsx",
+      "resources/js/Pages/Partials/LandingPage/Hero.jsx",
+      "resources/js/Pages/Partials/LandingPage/Introduction.jsx",
+      "resources/js/Pages/Partials/LandingPage/Program.jsx",
+      "resources/js/Pages/Partials/LandingPage/Testimony.jsx",
+      "resources/js/Pages/Partials/LandingPage/Video.jsx"
     ],
-    "file": "assets/app-f5e39180.js",
+    "file": "assets/app-efbfa873.js",
     "isEntry": true,
     "src": "resources/js/app.jsx"
   }
