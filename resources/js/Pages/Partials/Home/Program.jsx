@@ -3,91 +3,8 @@ import { Link } from '@inertiajs/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y } from 'swiper/modules';
 import ButtonSwiper from '@/Components/ButtonSwiper';
-import program1 from '/resources/img/program-dibimbing-sekali.png';
-import program2 from '/resources/img/program-dibimbing-tuntas.png';
-import program3 from '/resources/img/program-dibimbing-olah-data.png';
-import program4 from '/resources/img/program-e-book-skripsi.png';
 
-export default function Program () {
-    const programs = {
-        1: {
-            id: 1,
-            name: 'Dibimbing Sekali',
-            slug: 'dibimbing-sekali',
-            img: program1,
-            excerpt: 'Capai kesuksesan skripsimu melalui bimbingan personal secara 1-on-1, sesuai dengan permasalahan pada skripsimu.',
-            description: 'Capai kesuksesan skripsimu melalui bimbingan personal secara 1-on-1, sesuai dengan permasalahan pada skripsimu.',
-            features: {
-                times: 1,
-                minDuration: 30,
-                maxDuration: 60,
-                category: 'Online/Offline',
-                total: null,
-                media: null,
-                information: null
-            },
-            price: '47.000',
-            hasDiscount: true,
-        },
-        2: {
-            id: 2,
-            name: 'Dibimbing Tuntas',
-            slug: 'dibimbing-tuntas',
-            img: program2,
-            excerpt: 'Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 9 kali pertemuan.',
-            description: 'Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 9 kali pertemuan.',
-            features: {
-                times: 9,
-                minDuration: 40,
-                maxDuration: 60,
-                category: 'Online/Offline',
-                total: null,
-                media: null,
-                information: null
-            },
-            price: '649.000',
-            hasDiscount: true,
-        },
-        3: {
-            id: 3,
-            name: 'Dibimbing Olah Data',
-            slug: 'dibimbing-olah-data',
-            img: program3,
-            excerpt: 'Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.',
-            description: 'Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.',
-            features: {
-                times: 1,
-                minDuration: 40,
-                maxDuration: 60,
-                category: 'Online/Offline',
-                total: null,
-                media: null,
-                information: null
-            },
-            price: '115.000',
-            hasDiscount: false,
-        },
-        4: {
-            id: 4,
-            name: 'E-Book Skripsi',
-            slug: 'e-book-skripsi',
-            img: program4,
-            excerpt: 'Panduan berharga dengan kiat-kiat jitu untuk sukses dalam penyusunan skripsi.',
-            description: 'Panduan berharga dengan kiat-kiat jitu untuk sukses dalam penyusunan skripsi.',
-            features: {
-                times: null,
-                minDuration: null,
-                maxDuration: null,
-                category: null,
-                total: '1-4 E-Book',
-                media: 'Semua Device',
-                information: 'Bebas Unduh'
-            },
-            price: '9.000',
-            hasDiscount: false,
-        },
-    }
-
+export default function Program ({data}) {
     return (
         <section id="program" className="my-16 xl:my-24 3xl:my-32">
             <div className="container mx-auto">
@@ -109,7 +26,7 @@ export default function Program () {
                 grabCursor={true}
                 navigation={{ nextEl: ".program-next", prevEl: ".program-prev" }}
                 >
-                    {Object.values(programs).map(program => {return (
+                    {data.map(program => {return (
                         <SwiperSlide key={program.id} style={{ width: "fit-content" }} className="p-4 md:p-2 lg:p-3 xl:p-4">
                             <ProgramCard item={program} />
                         </SwiperSlide>
@@ -172,7 +89,7 @@ function ProgramCard ({item}) {
     return (
         <div className="w-72 md:w-40 lg:w-52 xl:w-72 3xl:w-[22rem] shadow-lg md:shadow-bottom-right lg:shadow-lg rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden">
             <div className='w-full h-56 md:h-32 lg:h-40 xl:h-52 overflow-hidden'>
-                <img src={item.img} alt={item.name} />
+                <img className='w-full' src={item.img} alt={item.name} />
             </div>
             <div className="flex flex-col justify-between p-6 md:p-2 lg:p-3 xl:p-6">
                 <div className="flex justify-between h-12 md:h-8 xl:h-16 3xl:h-20">

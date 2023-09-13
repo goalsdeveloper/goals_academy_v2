@@ -2,29 +2,6 @@ import { useState } from "react";
 import { TECollapse } from "tw-elements-react";
 import figure3 from "/resources/img/figure-3.svg";
 
-const data = [
-    {
-        question: "Kak ini programnya online atau offline ya kak?",
-        answer: "Kami menyediakan 2 program yaitu offline dan online. Untuk saat ini bimbingan secara offline ini diadakan bagi mahasiswa yang bertempatan di Malang dan ingin melakukan bimbingan skripsi secara tatap muka dengan Tutor Goals Academy. Kami juga menyediakan program online bagi mahasiswa yang ingin melakukan bimbingan skripsi secara jarak jauh dengan Tutor Goals Academy."
-    },
-    {
-        question: "Sebulan ada berapa kali bimbingan ya kak?",
-        answer: "Bimbingan di Goals Academy selalu terbuka setiap harinya. Namun untuk program Dibimbing Tuntas terdapat jadwal yang mengharuskan kalian untuk mengikuti kurikulum sesuai dengan progres skripsi kalian."
-    },
-    {
-        question: "Bimbingannya via apa ya kak?",
-        answer: "Bimbingan di Goals Academy bisa secara offline ataupun online. Bimbingan online dilakukan secara jarak jauh melalui aplikasi Virtual Meeting sedangkan bimbingan offline bisa dilakukan dengan tatap muka secara langsung di kota tertentu."
-    },
-    {
-        question: "Pembayarannya bisa dengan via apa ya kak?",
-        answer: "Kami menyediakan pembayaran melalui BCA, BNI, BRI, GoPay, OVO, ShopeePay, Dana, dll."
-    },
-    {
-        question: "Jurusan yang tersedia ada apa aja ya kak?",
-        answer: "Sekarang, Goals Academy sudah tersedia bimbingan skripsi untuk Semua Jurusan."
-    },
-]
-
 function FAQItem ({id, show, toggleShow, question, answer}) {
     const condition = show[id]
 
@@ -87,7 +64,7 @@ function FAQContent ({data}) {
     )
 }
 
-export default function FAQ () {
+export default function FAQ ({data}) {
     return (
         <section id="faq" className="my-16 xl:my-24 3xl:my-32">
             <div className="container mx-auto flex flex-wrap justify-between">

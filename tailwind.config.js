@@ -23,6 +23,7 @@ export default {
             colors: {
                 'primary': '#FF6420',
                 'secondary': '#FF8854',
+                'soft': '#FFF6F3',
                 'grey': 'color-mix(in lch, black 40%, #848484)',
                 'dark': '#404040',
             },
@@ -64,6 +65,7 @@ export default {
             content: {
                 'discount': '"Dapatkan Diskon"',
                 'consultation': '"Tanya Sekarang"',
+                'career': '"Lihat Disini"',
                 'mail-16': 'url(/resources/img/mail-16.svg)',
                 'mail-20': 'url(/resources/img/mail-20.svg)',
                 'mail-32': 'url(/resources/img/mail-32.svg)',
@@ -73,7 +75,7 @@ export default {
             },
             boxShadow: {
                 'centered': '0px 0px 4px 0 rgba(0,0,0,.25)',
-                'centered-spread': '0px 0px 4px 2px rgba(0,0,0,.25)',
+                'centered-spread': '0px 0px 12px 0px rgba(0,0,0,.25)',
                 'bottom-right': '2px 3px 4px 0 rgba(0,0,0,.14)',
             },
             keyframes: {

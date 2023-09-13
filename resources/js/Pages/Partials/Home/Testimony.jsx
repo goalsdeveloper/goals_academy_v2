@@ -1,67 +1,60 @@
 import 'swiper/css';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, A11y } from 'swiper/modules';
-import userIcon from '/resources/img/user.png';
 import quoteIcon from '/resources/img/quote-primary.svg';
 
-function TestimonyCard ({
-    name="John Doe",
-    instagram="john_doe",
-    faculty="Hukum",
-    image=userIcon,
-    children="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum quia consequuntur saepe nostrum facere odit fugiat dicta exercitationem rerum esse!"
-}) {
+function TestimonyCard ({data}) {
     return (
         <div className="md:m-1 xl:m-2 p-6 md:p-3 lg:p-4 3xl:p-6 bg-white rounded-lg border-4 md:border-2 lg:border-3 xl:border-4 3xl:border-6 border-gray-100">
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                    <img className="h-14 md:h-5 lg:h-7 xl:h-10 3xl:h-12 rounded-full" src={image} alt="User Icon" />
+                    {/* <img className="h-14 md:h-5 lg:h-7 xl:h-10 3xl:h-12 rounded-full" src={data.image} alt="User Icon" /> */}
                     <div>
-                        <p className="text-18 md:text-8 lg:text-10 xl:text-14 3xl:text-16 font-medium">{name}</p>
-                        <p className="md:text-6 lg:text-8 xl:text-12 3xl:text-14 text-primary">@{instagram}</p>
+                        <p className="text-18 md:text-8 lg:text-10 xl:text-14 3xl:text-16 font-medium">{data.name}</p>
+                        <p className="md:text-6 lg:text-8 xl:text-12 3xl:text-14 text-primary">@{data.instagram}</p>
                     </div>
                 </div>
                 <img className="h-6 md:h-3 lg:h-4 xl:h-6" src={quoteIcon} alt="Quote Icon" />
             </div>
             <p className="h-24 md:h-8 lg:h-10 xl:h-16 my-4 md:my-2 lg:my-4 md:text-6 lg:text-8 xl:text-12 3xl:text-14">
-                {children}
+                {data.text}
             </p>
-            <p className="mt-4 lg:mt-6 xl:mt-8 md:text-6 lg:text-8 xl:text-12 3xl:text-14 text-primary font-bold">Fakultas {faculty}</p>
+            <p className="mt-4 lg:mt-6 xl:mt-8 md:text-6 lg:text-8 xl:text-12 3xl:text-14 text-primary font-bold">Fakultas {data.faculty}</p>
         </div>
     )
 }
 
-function TestimonyMainPartial ({className}) {
+function TestimonyMainPartial ({data, className}) {
     return (
         <div className={"flex flex-col " + className}>
             <div className="flex flex-col animate-autoplayY">
-                <TestimonyCard />
-                <TestimonyCard />
-                <TestimonyCard />
+                {data.map((item, index) => {
+                    return <TestimonyCard key={index} data={item} />
+                })}
             </div>
             <div className="flex flex-col animate-autoplayY">
-                <TestimonyCard />
-                <TestimonyCard />
-                <TestimonyCard />
+                {data.map((item, index) => {
+                    return <TestimonyCard key={index} data={item} />
+                })}
             </div>
         </div>
     )
 }
 
-function TestimonyMain () {
+function TestimonyMain ({data}) {
     return (
         <>
             <div className="hidden md:block"></div>
             <div className="hidden md:grid grid-cols-3 h-80 lg:h-[28rem] xl:h-[40rem] md:w-11/12 translate-x-[15%] overflow-hidden">
-                <TestimonyMainPartial />
-                <TestimonyMainPartial className={"-mt-12"} />
-                <TestimonyMainPartial className={"-mt-8"} />
+                <TestimonyMainPartial data={data.slice(0,3)} />
+                <TestimonyMainPartial data={data.slice(3,6)} className={"-mt-12"} />
+                <TestimonyMainPartial data={data.slice(6,9)} className={"-mt-8"} />
             </div>
         </>
     )
 }
 
-function TestimonyMobile () {
+function TestimonyMobile ({data}) {
     return (
         <>
             <Swiper
@@ -81,40 +74,20 @@ function TestimonyMobile () {
                 }
             }}
             >
-                <SwiperSlide>
-                    <TestimonyCard />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <TestimonyCard />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <TestimonyCard />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <TestimonyCard />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <TestimonyCard />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <TestimonyCard />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <TestimonyCard />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <TestimonyCard />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <TestimonyCard />
-                </SwiperSlide>
+                {data.map((item, index) => {
+                    return (
+                        <SwiperSlide key={index}>
+                            <TestimonyCard data={item} />
+                        </SwiperSlide>
+                    )
+                })}
             </Swiper>
             <div className='testimony-pagination flex flex-wrap justify-center md:hidden my-4'></div>
         </>
     )
 }
 
-export default function Testimony () {
+export default function Testimony ({data}) {
     return (
         <section id="testimony" className="md:relative my-16 xl:my-24 3xl:my-32 md:bg-primary">
             <div className="container mx-auto md:relative md:flex justify-between items-center">
@@ -125,8 +98,8 @@ export default function Testimony () {
                     </div>
                     <h2 className="md:hidden w-8/12 text-center mb-8">Kata Mereka <span className="text-primary">Tentang Kami</span></h2>
                 </div>
-                <TestimonyMain />
-                <TestimonyMobile />
+                <TestimonyMain data={data} />
+                <TestimonyMobile data={data} />
             </div>
         </section>
     )
