@@ -11,7 +11,7 @@ h1 {
 }
 
 h2 {
-    @apply text-30 md:text-16 lg:text-20 xl:text-32 3xl:text-36;
+    @apply text-30 md:text-16 lg:text-24 xl:text-32 3xl:text-36;
 }
 
 h3 {
@@ -23,7 +23,7 @@ h4 {
 }
 
 h5 {
-    @apply text-16 md:text-8 lg:text-12 xl:text-16 3xl:text-20;
+    @apply text-16 md:text-8 lg:text-12 xl:text-16 2xl:text-20 3xl:text-24;
 }
 
 h6 {

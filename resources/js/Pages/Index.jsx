@@ -1,8 +1,6 @@
-import '/resources/css/main.css';
-import { Head } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import Hero from "./Partials/Home/Hero";
-import Introduction from './Partials/Home/Introduction';
+import Preliminary from './Partials/Home/Preliminary';
 import Program from './Partials/Home/Program';
 import Video from './Partials/Home/Video';
 import Testimony from './Partials/Home/Testimony';
@@ -185,10 +183,9 @@ export default function Index () {
     ]
 
     return (
-        <MainLayout>
-            <Head title="Home" />
+        <MainLayout title="Home">
             <Hero />
-            <Introduction />
+            <Preliminary />
             <Program data={data_program} />
             <div className='bg-gradient-1 md:bg-unset overflow-hidden md:overflow-visible'>
                 <Video />

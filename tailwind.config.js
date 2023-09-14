@@ -23,6 +23,7 @@ export default {
             colors: {
                 'primary': '#FF6420',
                 'secondary': '#FF8854',
+                'skin': '#FFDFD1',
                 'soft': '#FFF6F3',
                 'grey': 'color-mix(in lch, black 40%, #848484)',
                 'dark': '#404040',
@@ -54,6 +55,7 @@ export default {
                 '36': '2.25rem',
                 '48': '3rem',
                 '56': '3.5rem',
+                '64': '4rem',
                 '80': '5rem',
             },
             backgroundImage: {
@@ -61,6 +63,7 @@ export default {
                 'gradient-1': 'linear-gradient(165deg, #FFE6DB -0.04%, #FF8854 180.59%);',
                 'sweep-primary': 'linear-gradient(120deg, #FF6420 90%, transparent 10%)',
                 'icon-primary': 'url(/resources/img/icon-primary.svg)',
+                'tree': 'url(/resources/img/tree.svg)',
             },
             content: {
                 'discount': '"Dapatkan Diskon"',
@@ -77,6 +80,9 @@ export default {
                 'centered': '0px 0px 4px 0 rgba(0,0,0,.25)',
                 'centered-spread': '0px 0px 12px 0px rgba(0,0,0,.25)',
                 'bottom-right': '2px 3px 4px 0 rgba(0,0,0,.14)',
+            },
+            scale: {
+                '1': '1',
             },
             keyframes: {
                 'autoplayY': {
