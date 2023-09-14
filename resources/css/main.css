@@ -11,7 +11,11 @@ h1 {
 }
 
 h2 {
-    @apply text-28 md:text-16 lg:text-20 xl:text-32 3xl:text-36;
+    @apply text-30 md:text-16 lg:text-20 xl:text-32 3xl:text-36;
+}
+
+h3 {
+    @apply md:text-14 lg:text-18 xl:text-24 3xl:text-32;
 }
 
 h4 {

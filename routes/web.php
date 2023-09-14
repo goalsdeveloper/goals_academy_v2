@@ -22,4 +22,8 @@ Route::get('/', function () {
     return Inertia::render('Index');
 });
 
+Route::get('/karir', function () {
+    return Inertia::render('Main/Karir');
+});
+
 require __DIR__.'/auth.php';

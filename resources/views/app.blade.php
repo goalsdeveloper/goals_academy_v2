@@ -7,7 +7,10 @@
         <title inertia>{{ config('app.name', 'Goals Academy') }}</title>
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="{{ asset('img/icon-primary.svg') }}">
+        <link rel="icon" type="image/png" href="{{ asset('img/icon-goals-academy.svg') }}">
+
+        <!-- Bootstrap Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
         <!-- FontAwesome -->
         <script src="https://kit.fontawesome.com/1c256bdeea.js" crossorigin="anonymous"></script>
