@@ -22,16 +22,8 @@ Route::get('/', function () {
     return Inertia::render('Index');
 });
 
-Route::get('/bimbingan', function () {
-    return Inertia::render('Main/Bimbingan');
-});
-
-Route::get('/ebook', function () {
-    return Inertia::render('Main/Ebook');
-});
-
-Route::get('/webinar', function () {
-    return Inertia::render('Main/Webinar');
+Route::get('/produk', function () {
+    return Inertia::render('Main/Produk');
 });
 
 Route::get('/artikel', function () {
@@ -52,6 +44,14 @@ Route::get('/profil_perusahaan', function () {
 
 Route::get('/profil_tutor', function () {
     return Inertia::render('Main/ProfilTutor');
+});
+
+Route::get('/login', function () {
+    return Inertia::render('Auth/Form', ['title' => 'login']);
+});
+
+Route::get('/register', function () {
+    return Inertia::render('Auth/Form', ['title' => 'register']);
 });
 
 require __DIR__.'/auth.php';

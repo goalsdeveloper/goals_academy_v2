@@ -25,6 +25,7 @@ export default {
                 'secondary': '#FF8854',
                 'skin': '#FFDFD1',
                 'soft': '#FFF6F3',
+                'light-grey': '#848484',
                 'grey': 'color-mix(in lch, black 40%, #848484)',
                 'dark': '#404040',
             },
@@ -64,6 +65,8 @@ export default {
                 'sweep-primary': 'linear-gradient(120deg, #FF6420 90%, transparent 10%)',
                 'icon-primary': 'url(/resources/img/icon-primary.svg)',
                 'tree': 'url(/resources/img/tree.svg)',
+                'google': 'url(/resources/img/google.svg)',
+                'facebook': 'url(/resources/img/facebook.svg)',
             },
             content: {
                 'discount': '"Dapatkan Diskon"',
