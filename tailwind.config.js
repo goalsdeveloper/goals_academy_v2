@@ -88,13 +88,18 @@ export default {
                 '1': '1',
             },
             keyframes: {
+                'fadeIn': {
+                    'from': { 'opacity': '0' },
+                    'to': { 'opacity': '1' }
+                },
                 'autoplayY': {
                     'from': { 'transform': 'translateY(0)' },
                     'to': { 'transform': 'translateY(-100%)' }
                 }
             },
             animation: {
-                autoplayY: 'autoplayY 20s infinite linear'
+                fadeIn: 'fadeIn 3s',
+                autoplayY: 'autoplayY 20s infinite linear',
             }
         },
     },
