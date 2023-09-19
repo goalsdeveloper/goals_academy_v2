@@ -1,4 +1,4 @@
-import '/resources/css/main.css';
+import "/resources/css/main.css";
 import { Head } from "@inertiajs/react";
 import MainHeader from "./Partials/MainHeader";
 import MainFooter from "./Partials/MainFooter";
@@ -9,7 +9,7 @@ export default function MainLayout ({ title, children }) {
         <>
             <Head title={title} />
             <MainHeader title={title} />
-            <main className="pt-8 md:pt-4 xl:pt-8 3xl:pt-28 overflow-hidden">
+            <main className="text-dark pt-8 md:pt-4 xl:pt-8 3xl:pt-28 overflow-hidden">
                 {children}
             </main>
             <MainFooter />

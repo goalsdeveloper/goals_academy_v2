@@ -15,7 +15,7 @@ export default function Preliminary () {
                 <div className="w-full sm:w-10/12 md:w-6/12">
                     <img src={figure2} alt="Figure 2" />
                 </div>
-                <div className="md:w-5/12">
+                <div className="md:w-5/12 3xl:w-6/12 3xl:ps-16">
                     <h2>Jarak bukan Masalah untuk <span className="text-primary">Lulus Lebih Cepat.</span></h2>
                     <p className="mt-2 mb-4 sm:mb-6 xl:mt-4 xl:mb-10 3xl:mt-6 3xl:mb-14">Buat jadwal bimbingan dengan tutor secara online atau tatap muka dan berinteraksi secara langsung.</p>
                     <div className="grid w-full xl:w-11/12 3xl:w-11/12 gap-4">

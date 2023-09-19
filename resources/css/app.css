@@ -28,12 +28,24 @@
     @apply px-4;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 @layer base {
     html {
         font-size: 16px;
     }
     * {
-        @apply scroll-smooth font-sans text-dark text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20 leading-tight;
+        @apply scroll-smooth font-sans text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20 leading-tight;
     }
     h1, h2, h3, h4, h5, h6 {
         @apply font-poppins font-bold;

@@ -2,7 +2,7 @@ import logo from '/resources/img/logo-white.svg';
 
 export default function MainFooter () {
     return (
-        <footer className='bg-grey w-full'>
+        <footer className='bg-grey w-full text-white'>
             <div className='container mx-auto flex flex-wrap justify-between py-16 md:py-8 lg:py-16'>
                 <div className='w-6/12 md:w-3/12'>
                     <img className='h-16 md:h-12 xl:h-20' src={logo} alt="Goals Academy" />
@@ -26,7 +26,7 @@ export default function MainFooter () {
                 </div>
                 <div className='w-5/12 md:w-8/12 grid md:grid-cols-3 gap-8'>
                     <div>
-                        <h5 className='font-semibold mb-4'>Produk</h5>
+                        <h5 className='font-semibold text-white mb-4'>Produk</h5>
                         <div className='grid gap-2'>
                             <a>Dibimbing Sekali</a>
                             <a>Dibimbing Tuntas</a>
@@ -35,7 +35,7 @@ export default function MainFooter () {
                         </div>
                     </div>
                     <div>
-                        <h5 className='font-semibold mb-4'>Perusahaan</h5>
+                        <h5 className='font-semibold text-white mb-4'>Perusahaan</h5>
                         <div className='grid gap-2'>
                             <a>Profil Perusahaan</a>
                             <a>Profil Tutor</a>
@@ -43,7 +43,7 @@ export default function MainFooter () {
                         </div>
                     </div>
                     <div>
-                        <h5 className='font-semibold mb-4'>Hubungi</h5>
+                        <h5 className='font-semibold text-white mb-4'>Hubungi</h5>
                         <div className='grid gap-2'>
                             <a href='https://wa.me/6285637564245' target='_blank'>(+62) 856-3756-4245</a>
                             <a href='mailto:cs@goalsacademy.id' target='_blank'>cs@goalsacademy.id</a>
