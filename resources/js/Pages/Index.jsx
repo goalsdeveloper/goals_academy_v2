@@ -17,7 +17,7 @@ export default function Index () {
     const data_program = [
         {
             id: 1,
-            name: 'Dibimbing Sekali',
+            title: 'Dibimbing Sekali',
             slug: 'dibimbing-sekali',
             img: program1,
             excerpt: 'Capai kesuksesan skripsimu melalui bimbingan personal secara 1-on-1, sesuai dengan permasalahan pada skripsimu.',
@@ -31,12 +31,13 @@ export default function Index () {
                 media: null,
                 information: null
             },
-            price: '47.000',
+            price: 47000,
             hasDiscount: true,
+            link: '',
         },
         {
             id: 2,
-            name: 'Dibimbing Tuntas',
+            title: 'Dibimbing Tuntas',
             slug: 'dibimbing-tuntas',
             img: program2,
             excerpt: 'Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 9 kali pertemuan.',
@@ -50,12 +51,13 @@ export default function Index () {
                 media: null,
                 information: null
             },
-            price: '649.000',
+            price: 649000,
             hasDiscount: true,
+            link: '',
         },
         {
             id: 3,
-            name: 'Dibimbing Olah Data',
+            title: 'Dibimbing Olah Data',
             slug: 'dibimbing-olah-data',
             img: program3,
             excerpt: 'Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.',
@@ -69,12 +71,13 @@ export default function Index () {
                 media: null,
                 information: null
             },
-            price: '115.000',
+            price: 115000,
             hasDiscount: false,
+            link: '',
         },
         {
             id: 4,
-            name: 'E-Book Skripsi',
+            title: 'E-Book Skripsi',
             slug: 'e-book-skripsi',
             img: program4,
             excerpt: 'Panduan berharga dengan kiat-kiat jitu untuk sukses dalam penyusunan skripsi.',
@@ -88,8 +91,9 @@ export default function Index () {
                 media: 'Semua Device',
                 information: 'Bebas Unduh'
             },
-            price: '9.000',
+            price: 9000,
             hasDiscount: false,
+            link: '',
         },
     ]
 

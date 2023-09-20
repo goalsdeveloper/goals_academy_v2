@@ -67,6 +67,9 @@ export default {
                 'tree': 'url(/resources/img/tree.svg)',
                 'google': 'url(/resources/img/google.svg)',
                 'facebook': 'url(/resources/img/facebook.svg)',
+                'bimbingan': 'url(/resources/img/produk-bg-bimbingan.png)',
+                'ebook': 'url(/resources/img/produk-bg-ebook.png)',
+                'webinar': 'url(/resources/img/produk-bg-webinar.png)',
             },
             content: {
                 'discount': '"Dapatkan Diskon"',
