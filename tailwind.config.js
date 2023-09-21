@@ -65,6 +65,7 @@ export default {
                 'sweep-primary': 'linear-gradient(120deg, #FF6420 90%, transparent 10%)',
                 'icon-primary': 'url(/resources/img/icon-primary.svg)',
                 'tree': 'url(/resources/img/tree.svg)',
+                'tree-2': 'url(/resources/img/tree-2.svg)',
                 'google': 'url(/resources/img/google.svg)',
                 'facebook': 'url(/resources/img/facebook.svg)',
                 'bimbingan': 'url(/resources/img/produk-bg-bimbingan.png)',

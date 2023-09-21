@@ -19,8 +19,8 @@ export default function Hero () {
                         </button>
                     </form>
                 </div>
-                <div className="sm:w-10/12 md:w-6/12">
-                    <img className="w-full h-80 sm:h-auto md:h-80 lg:h-96 xl:h-[32rem] 3xl:h-[44rem]" src={figure1} alt="Figure 1" />
+                <div className="w-full sm:w-10/12 md:w-6/12">
+                    <img className="w-full h-96 sm:h-auto md:h-80 lg:h-96 xl:h-[32rem] 3xl:h-[44rem]" src={figure1} alt="Figure 1" />
                 </div>
             </div>
         </section>

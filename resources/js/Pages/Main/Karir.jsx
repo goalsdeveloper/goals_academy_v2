@@ -9,7 +9,7 @@ import karir3 from '/resources/img/karir-tutor-olah-data.png';
 import karir4 from '/resources/img/karir-academic-internship.png';
 
 export default function Karir () {
-    const data = [
+    const data_karir = [
         {
             title: 'Tutor Skripsi',
             image: karir1,
@@ -62,7 +62,7 @@ export default function Karir () {
         <MainLayout title="Karir">
             <Hero />
             <RegistrationSteps />
-            <CareerList data={data} />
+            <CareerList data={data_karir} />
         </MainLayout>
     )
 }
