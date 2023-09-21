@@ -18,6 +18,7 @@ import ebook3 from "/resources/img/ebook-3.png";
 import webinar1 from "/resources/img/webinar-1.png";
 import webinar2 from "/resources/img/webinar-2.png";
 import webinar3 from "/resources/img/webinar-3.png";
+import SearchBar from "../Partials/Produk/SearchBar";
 
 export default function Produk () {
     const dataBimbingan = [
@@ -169,7 +170,8 @@ export default function Produk () {
 
     return (
         <MainLayout title="Produk">
-            <Filter show={show} showHandler={showHandler} searchHandler={searchHandler} />
+            <Filter show={show} showHandler={showHandler} />
+            <SearchBar searchHandler={searchHandler} />
             <Bimbingan data={data1} active={show[0]} status={status} />
             <Ebook data={data2} active={show[1]} status={status} />
             <Webinar data={data3} active={show[2]} status={status} />
