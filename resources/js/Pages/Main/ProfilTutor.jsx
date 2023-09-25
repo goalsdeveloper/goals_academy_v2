@@ -1,35 +1,62 @@
 import MainLayout from "@/Layouts/MainLayout";
 import Hero from '../Partials/ProfilTutor/Hero';
-import Team from "../Partials/ProfilTutor/Team";
+import TutorList from "../Partials/ProfilTutor/TutorList";
 import Consultation from "../Partials/ProfilTutor/Consultation";
 
-import tim1 from '/resources/img/tim_yordhan.svg';
-import tim2 from '/resources/img/tim_rian.svg';
-import tim3 from '/resources/img/tim_timo.svg';
+import tutor1 from '/resources/img/tutor/1.png';
+import tutor2 from '/resources/img/tutor/2.png';
+import tutor3 from '/resources/img/tutor/3.png';
+import tutor4 from '/resources/img/tutor/4.png';
+import tutor5 from '/resources/img/tutor/5.png';
+import tutor6 from '/resources/img/tutor/6.png';
 
 export default function ProfilTutor () {
-    const data_team = [
+    const data_tutor = [
         {
-            name: 'Yordhan Ghalis Dewangga',
-            title: 'Chief Executive Officer',
-            image: tim1,
-            description: 'Mas Yordhan adalah seorang pria yang tujuan hidupnya untuk menjadi kaya raya. Dengan membangun Goals Academy, dia mengawali langkahnya dan bergelut dengan dunia pendidikan yang penduh dengan tantangan langsung dari masyarakat.',
+            name: 'Widyana Rahma Cahyani',
+            headline: 'Akuntansi & Ekonomi',
+            image: tutor1,
+            description: 'Setiap rintangan dalam menyusun skripsi akan mengasah keberanian dan ketahanan mentalmu. Jadi, semangat bertumbuh ya!',
             linkedin: '',
             instagram: '',
         },
         {
-            name: 'Zaini Febrian Akbar',
-            title: 'Chief Operating Officer',
-            image: tim2,
-            description: 'Mas Yordhan adalah seorang pria yang tujuan hidupnya untuk menjadi kaya raya. Dengan membangun Goals Academy, dia mengawali langkahnya dan bergelut dengan dunia pendidikan yang penduh dengan tantangan langsung dari masyarakat.',
+            name: 'Alyza Lailyah Putri',
+            headline: 'Normatif, Empiris, Kuantitatif, Kualitatif',
+            image: tutor2,
+            description: 'Semangat aja kurang, bimbingan dong. Uhuyyy',
             linkedin: '',
             instagram: '',
         },
         {
-            name: 'Gilbert Timothy Geraldo',
-            title: 'Commissioner',
-            image: tim3,
-            description: 'Mas Yordhan adalah seorang pria yang tujuan hidupnya untuk menjadi kaya raya. Dengan membangun Goals Academy, dia mengawali langkahnya dan bergelut dengan dunia pendidikan yang penduh dengan tantangan langsung dari masyarakat.',
+            name: 'Elizabeth',
+            headline: 'Teknologi Pangan, Kimia, Kesehatan',
+            image: tutor3,
+            description: "Nothing but the best is good enough, so don't forget to always give your best ya! Because pain of regret hurts more than the pain of your hardwork.",
+            linkedin: '',
+            instagram: '',
+        },
+        {
+            name: 'Irene Mega',
+            headline: 'Ilmu Sosial Humaniora',
+            image: tutor4,
+            description: "Tenang, nanti pasti sampai. (analogi orang dalam perjalanan)",
+            linkedin: '',
+            instagram: '',
+        },
+        {
+            name: 'Adella Novianti',
+            headline: 'Kesehatan Lingkungan/Masyarakat',
+            image: tutor5,
+            description: "The best view comes after the hardest climb.",
+            linkedin: '',
+            instagram: '',
+        },
+        {
+            name: 'Muhammad Hifni Sahila Rizqy',
+            headline: 'Linguistik, Sastra, Bahasa, Kualitatif',
+            image: tutor6,
+            description: "Wherever you are be a good one.",
             linkedin: '',
             instagram: '',
         },
@@ -38,7 +65,7 @@ export default function ProfilTutor () {
     return (
         <MainLayout title="Profil Tutor">
             <Hero />
-            <Team data={data_team} />
+            <TutorList data={data_tutor} />
             <Consultation />
         </MainLayout>
     )

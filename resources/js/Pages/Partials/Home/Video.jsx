@@ -10,7 +10,7 @@ export default function Video () {
             <div className="container mx-auto">
                 <div className="flex justify-center md:justify-between mb-8 xl:mb-12">
                     <div className="w-9/12 md:w-6/12">
-                        <h2 className='md:hidden text-center md:text-start'>Tontonan Seru <span className="text-primary">dan Solutif.</span></h2>
+                        <h2 className='md:hidden text-center md:text-start text-white'>Tontonan Seru dan Solutif.</h2>
                         <h2 className='hidden md:inline-block'>Tontonan <span className="text-primary">Seru dan Solutif.</span></h2>
                         <p className="hidden md:inline-block mt-2 xl:mt-4 3xl:mt-6">Tonton video dibawah dan dapatkan informasi tentang skripsi secara gratis.</p>
                     </div>

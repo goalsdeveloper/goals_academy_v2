@@ -1,22 +1,23 @@
 import { useState } from 'react';
 import { Link } from '@inertiajs/react';
 import { TECollapse } from 'tw-elements-react';
-import logo from '/resources/img/logo.svg';
+import logo from '/resources/img/icon/goals-1.svg';
 import ButtonHoverSlide from '@/Components/ButtonHoverSlide';
-import user from '/resources/img/user.png';
+import user from '/resources/img/icon/user.png';
 
 export default function MainHeader ({ title }) {
     const [authDropdown, setAuthDropdown] = useState(false);
     const [profileDropdown, setProfileDropdown] = useState(false);
+    const [mobileNavbar, setMobileNavbar] = useState(false)
     const auth = 0;
 
     return (
         <header className="fixed w-screen top-0 right-0 bg-white text-dark lg:text-base z-50">
-            <div className='hidden xl:h-24 3xl:h-36'></div>
-            <nav className="container flex flex-wrap justify-between items-center mx-auto h-16 md:h-20 xl:h-32 3xl:h-48 duration-500">
+            <div className='hidden xl:h-24 3xl:h-36'></div> {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
+            <nav className="container flex flex-wrap justify-between items-center mx-auto h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">
                 <div className="w-auto px-4">
                     <Link href="/">
-                        <img className="h-6 md:h-5 xl:h-8 3xl:h-10 md:mb-2" src={logo} alt="Goals Academy" />
+                        <img className="h-8 md:h-5 xl:h-8 3xl:h-10 md:mb-2" src={logo} alt="Goals Academy" />
                     </Link>
                 </div>
                 <div className="hidden md:grid grid-cols-5 md:gap-6 xl:gap-9 3xl:gap-12 font-medium text-center">
@@ -80,7 +81,34 @@ export default function MainHeader ({ title }) {
                     </div>
                 )}
                 <div className="md:hidden">
-                    <button><i className="fa-solid fa-bars text-24"></i></button>
+                    <button onClick={() => setMobileNavbar(true)}><i className="fa-solid fa-bars text-28"></i></button>
+                    <div className={`md-hidden absolute top-0 right-0 bg-white w-9/12 h-screen py-8 animation-all duration-300 ${mobileNavbar ? '' : 'translate-x-full'}`}>
+                        <div className="container mx-auto">
+                            <div className="flex justify-end mb-8">
+                                <button onClick={() => setMobileNavbar(false)}><i className="bi bi-x-lg text-28"></i></button>
+                            </div>
+                            <div className="grid gap-8">
+                                <Link href="/produk" className={`font-poppins hover:text-primary flex justify-center ${title == 'Produk' ? 'font' : ''}`}>Produk</Link>
+                                <Link href="/artikel" className={`font-poppins hover:text-primary flex justify-center ${title == 'Artikel' ? 'font' : ''}`}>Artikel</Link>
+                                <Link href="/diskusi" className={`font-poppins hover:text-primary flex justify-center ${title == 'Diskusi' ? 'font' : ''}`}>Diskusi</Link>
+                                <Link href="/karir" className={`font-poppins hover:text-primary flex justify-center ${title == 'Karir' ? 'font' : ''}`}>Karir</Link>
+                                <button
+                                className={`font-poppins flex justify-center ${title == 'Profil Perusahaan' || title == 'Profil Tutor' ? 'font' : ''}`}
+                                onMouseEnter={() => setProfileDropdown(true)}
+                                onMouseLeave={() => setProfileDropdown(false)}
+                                onClick={() => setProfileDropdown(!profileDropdown)}
+                                >
+                                    <span className="hover:text-primary">Profil</span>
+                                    <TECollapse show={profileDropdown} className="absolute z-10 mt-4 shadow-none p-1">
+                                        <TECollapseItem>
+                                            <Link className="font-poppins hover:text-primary" href="/profil_perusahaan">Profil Perusahaan</Link>
+                                            <Link className="font-poppins hover:text-primary" href="/profil_tutor">Profil Tutor</Link>
+                                        </TECollapseItem>
+                                    </TECollapse>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </header>

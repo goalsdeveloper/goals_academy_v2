@@ -1,6 +1,23 @@
 import { useState } from "react";
 import { TECollapse } from "tw-elements-react";
-import figure3 from "/resources/img/figure-3.svg";
+import figure3 from "/resources/img/figure/3.svg";
+
+export default function FAQ ({data}) {
+    return (
+        <section id="faq" className="my-16 xl:my-24 3xl:my-32">
+            <div className="container mx-auto flex flex-wrap justify-between">
+                <div className="w-5/12 hidden md:block">
+                    <img src={figure3} alt="Figure 3" />
+                </div>
+                <div className="w-full relative md:w-6/12 md:mt-[2%] lg:mt-[3%]">
+                    <p className="font-medium md:tracking-[0.2rem] lg:tracking-[0.3rem] xl:tracking-[0.4rem] mb-4 md:mb-2 lg:mb-3 xl:mb-4 text-center md:text-start">PALING SERING DITANYAKAN</p>
+                    <h2 className="mb-8 md:mb-4 xl:mb-8 3xl:mb-12 text-center md:text-start">Ada <span className="text-primary">Pertanyaan?</span></h2>
+                    <FAQContent data={data} />
+                </div>
+            </div>
+        </section>
+    )
+}
 
 function FAQItem ({id, show, toggleShow, question, answer}) {
     const condition = show[id]
@@ -45,7 +62,7 @@ function FAQContent ({data}) {
     }
 
     return (
-        <div className="w-full absolute">
+        <div className="w-full md:absolute">
             {data.map(({question, answer}, index) => {
                 if (index != data.length - 1) {
                     return (
@@ -61,22 +78,5 @@ function FAQContent ({data}) {
                 }
             })}
         </div>
-    )
-}
-
-export default function FAQ ({data}) {
-    return (
-        <section id="faq" className="my-16 xl:my-24 3xl:my-32">
-            <div className="container mx-auto flex flex-wrap justify-between">
-                <div className="w-5/12 hidden md:block">
-                    <img src={figure3} alt="Figure 3" />
-                </div>
-                <div className="w-full relative md:w-6/12 md:mt-[2%] lg:mt-[3%]">
-                    <p className="font-medium md:tracking-[0.2rem] lg:tracking-[0.3rem] xl:tracking-[0.4rem] mb-4 md:mb-2 lg:mb-3 xl:mb-4 text-center md:text-start">PALING SERING DITANYAKAN</p>
-                    <h2 className="mb-8 md:mb-4 xl:mb-8 3xl:mb-12 text-center md:text-start">Ada <span className="text-primary">Pertanyaan?</span></h2>
-                    <FAQContent data={data} />
-                </div>
-            </div>
-        </section>
     )
 }
