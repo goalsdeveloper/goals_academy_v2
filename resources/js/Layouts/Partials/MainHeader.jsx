@@ -8,6 +8,7 @@ import user from '/resources/img/icon/user.png';
 export default function MainHeader ({ title }) {
     const [authDropdown, setAuthDropdown] = useState(false);
     const [profileDropdown, setProfileDropdown] = useState(false);
+    const [mobileNavbar, setMobileNavbar] = useState(false)
     const auth = 0;
 
     return (
@@ -80,7 +81,34 @@ export default function MainHeader ({ title }) {
                     </div>
                 )}
                 <div className="md:hidden">
-                    <button><i className="fa-solid fa-bars text-28"></i></button>
+                    <button onClick={() => setMobileNavbar(true)}><i className="fa-solid fa-bars text-28"></i></button>
+                    <div className={`md-hidden absolute top-0 right-0 bg-white w-9/12 h-screen py-8 animation-all duration-300 ${mobileNavbar ? '' : 'translate-x-full'}`}>
+                        <div className="container mx-auto">
+                            <div className="flex justify-end mb-8">
+                                <button onClick={() => setMobileNavbar(false)}><i className="bi bi-x-lg text-28"></i></button>
+                            </div>
+                            <div className="grid gap-8">
+                                <Link href="/produk" className={`font-poppins hover:text-primary flex justify-center ${title == 'Produk' ? 'font' : ''}`}>Produk</Link>
+                                <Link href="/artikel" className={`font-poppins hover:text-primary flex justify-center ${title == 'Artikel' ? 'font' : ''}`}>Artikel</Link>
+                                <Link href="/diskusi" className={`font-poppins hover:text-primary flex justify-center ${title == 'Diskusi' ? 'font' : ''}`}>Diskusi</Link>
+                                <Link href="/karir" className={`font-poppins hover:text-primary flex justify-center ${title == 'Karir' ? 'font' : ''}`}>Karir</Link>
+                                <button
+                                className={`font-poppins flex justify-center ${title == 'Profil Perusahaan' || title == 'Profil Tutor' ? 'font' : ''}`}
+                                onMouseEnter={() => setProfileDropdown(true)}
+                                onMouseLeave={() => setProfileDropdown(false)}
+                                onClick={() => setProfileDropdown(!profileDropdown)}
+                                >
+                                    <span className="hover:text-primary">Profil</span>
+                                    <TECollapse show={profileDropdown} className="absolute z-10 mt-4 shadow-none p-1">
+                                        <TECollapseItem>
+                                            <Link className="font-poppins hover:text-primary" href="/profil_perusahaan">Profil Perusahaan</Link>
+                                            <Link className="font-poppins hover:text-primary" href="/profil_tutor">Profil Tutor</Link>
+                                        </TECollapseItem>
+                                    </TECollapse>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </header>

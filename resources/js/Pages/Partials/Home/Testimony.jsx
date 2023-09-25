@@ -154,6 +154,7 @@ function TestimonyMobile ({data}) {
             spaceBetween={20}
             grabCursor={true}
             draggable={true}
+            loop={true}
             pagination={{
                 el: '.testimony-pagination',
                 clickable: true,

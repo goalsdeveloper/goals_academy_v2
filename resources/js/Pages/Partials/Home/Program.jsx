@@ -6,7 +6,7 @@ import BimbinganCard from '@/Components/BimbinganCard';
 
 export default function Program ({data}) {
     return (
-        <section id="program" className="my-16 xl:my-24 3xl:my-32">
+        <section id="program" className="my-16 xl:my-24 3xl:my-32 overflow-hidden">
             <div className="container mx-auto">
                 <div className="flex justify-between mb-8">
                     <div className="md:w-6/12">
@@ -21,7 +21,7 @@ export default function Program ({data}) {
                 <Swiper
                 modules={[Navigation, Pagination, A11y, FreeMode]}
                 className='swiper-custom'
-                wrapperClass="swiper-wrapper -ms-2"
+                wrapperClass="-ms-2"
                 slidesPerView={"auto"}
                 grabCursor={true}
                 freeMode={true}
