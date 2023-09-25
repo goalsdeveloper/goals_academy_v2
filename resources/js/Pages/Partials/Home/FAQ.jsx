@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { TECollapse } from "tw-elements-react";
-import figure3 from "/resources/img/figure-3.svg";
+import figure3 from "/resources/img/figure/3.svg";
 
 export default function FAQ ({data}) {
     return (

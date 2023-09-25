@@ -1,6 +1,6 @@
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, A11y } from 'swiper/modules';
+import { Navigation, Pagination, A11y, FreeMode } from 'swiper/modules';
 import ButtonSwiper from '@/Components/ButtonSwiper';
 import BimbinganCard from '@/Components/BimbinganCard';
 
@@ -19,11 +19,12 @@ export default function Program ({data}) {
                     </div>
                 </div>
                 <Swiper
-                modules={[Navigation, Pagination, A11y]}
+                modules={[Navigation, Pagination, A11y, FreeMode]}
                 className='swiper-custom'
                 wrapperClass="swiper-wrapper -ms-2"
                 slidesPerView={"auto"}
                 grabCursor={true}
+                freeMode={true}
                 navigation={{ nextEl: ".program-next", prevEl: ".program-prev" }}
                 >
                     {data.map(program => {return (

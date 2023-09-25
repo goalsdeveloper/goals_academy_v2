@@ -14,7 +14,7 @@ export default function Testimony ({data}) {
                         <p className="font-medium md:tracking-[0.2rem] lg:tracking-[0.3rem] xl:tracking-[0.4rem] md:mb-6 lg:mb-8">TESTIMONIAL</p>
                         <h2>Kata Mereka Tentang <span className="text-primary">Goals Academy</span></h2>
                     </div>
-                    <h2 className="md:hidden w-8/12 text-center mb-8">Kata Mereka <span className="text-primary">Tentang Kami</span></h2>
+                    <h2 className="md:hidden w-8/12 text-center text-white mb-8">Kata Tentang Kami</h2>
                 </div>
                 <TestimonyMain data={data} show={show} />
                 <TestimonyMobile data={data} />

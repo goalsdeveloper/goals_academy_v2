@@ -2,10 +2,10 @@ import "/resources/css/main.css";
 import { useState } from "react";
 import { Head, Link } from "@inertiajs/react";
 import logo from "/resources/img/logo-white.svg";
-import figure7 from "/resources/img/figure-7.svg";
-import wave1 from "/resources/img/wave-1.svg";
-import wave2 from "/resources/img/wave-2.svg";
-import rectangle from "/resources/img/vector-rectangle.svg";
+import figure7 from "/resources/img/figure/7.svg";
+import wave1 from "/resources/img/vector/wave-1.svg";
+import wave2 from "/resources/img/vector/wave-2.svg";
+import rectangle from "/resources/img/vector/rectangle-1.svg";
 
 export default function Form ({ title }) {
     const [active, setActive] = useState(title)
@@ -21,9 +21,15 @@ export default function Form ({ title }) {
     }
 
     return (
-        <div className="flex flex-wrap h-screen bg-secondary">
+        <div className="relative flex flex-wrap md:h-screen bg-secondary py-16 md:p-0">
             <Head title={active == 'register' ? 'Register' : 'Login'} />
-            <div className="w-8/12 relative flex items-end justify-center select-none">
+            <div className="md:hidden">
+                <img className="absolute bottom-0 left-0 w-10/12" src={wave1} alt="Wave 1" />
+                <img className="absolute bottom-0 left-0 w-10/12" src={wave2} alt="Wave 1" />
+                <img className="absolute top-0 right-0 -scale-x-1 -scale-y-1 w-10/12" src={wave1} alt="Wave 1" />
+                <img className="absolute top-0 right-0 -scale-x-1 -scale-y-1 w-10/12" src={wave2} alt="Wave 1" />
+            </div>
+            <div className="w-8/12 relative hidden md:flex items-end justify-center select-none">
                 <div>
                     <img className="absolute bottom-0 left-0 xl:w-10/12" src={wave1} alt="Wave 1" />
                     <img className="absolute bottom-0 left-0 xl:w-10/12" src={wave2} alt="Wave 1" />
@@ -39,7 +45,7 @@ export default function Form ({ title }) {
                     <img className="w-5/12" src={figure7} alt="Figure 7" />
                 </div>
             </div>
-            <div className="w-4/12 bg-white flex flex-col items-center p-16 pt-[12vh] relative">
+            <div className="container mx-auto md:w-4/12 rounded-lg md:rounded-none bg-white flex flex-col items-center p-16 pt-[12vh] relative">
                 <div className="grid gap-8 w-full">
                     <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-2 border-primary font-poppins xl:rounded-lg 3xl:rounded-xl">
                         <SwitchButton switchForm={switchForm} target={'login'} active={active} />

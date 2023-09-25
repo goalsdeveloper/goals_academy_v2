@@ -3,10 +3,10 @@ import Hero from '../Partials/Karir/Hero';
 import RegistrationSteps from '../Partials/Karir/RegistrationSteps';
 import CareerList from '../Partials/Karir/CareerList';
 
-import karir1 from '/resources/img/karir-tutor-skripsi.png';
-import karir2 from '/resources/img/karir-brand-ambassador.png';
-import karir3 from '/resources/img/karir-tutor-olah-data.png';
-import karir4 from '/resources/img/karir-academic-internship.png';
+import karir1 from '/resources/img/karir/tutor-skripsi.png';
+import karir2 from '/resources/img/karir/brand-ambassador.png';
+import karir3 from '/resources/img/karir/tutor-olah-data.png';
+import karir4 from '/resources/img/karir/academic-internship.png';
 
 export default function Karir () {
     const data_karir = [

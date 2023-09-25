@@ -6,18 +6,18 @@ import Ebook from "../Partials/Produk/Ebook";
 import Webinar from "../Partials/Produk/Webinar";
 import Consultation from "../Partials/Produk/Consultation";
 
-import program1 from '/resources/img/program-dibimbing-sekali.png';
-import program2 from '/resources/img/program-dibimbing-tuntas.png';
-import program3 from '/resources/img/program-dibimbing-olah-data.png';
-import program4 from '/resources/img/program-e-book-skripsi.png';
+import program1 from '/resources/img/program/dibimbing-sekali.png';
+import program2 from '/resources/img/program/dibimbing-tuntas.png';
+import program3 from '/resources/img/program/dibimbing-olah-data.png';
+import program4 from '/resources/img/program/e-book-skripsi.png';
 
-import ebook1 from "/resources/img/ebook-1.png";
-import ebook2 from "/resources/img/ebook-2.png";
-import ebook3 from "/resources/img/ebook-3.png";
+import ebook1 from "/resources/img/ebook/1.png";
+import ebook2 from "/resources/img/ebook/2.png";
+import ebook3 from "/resources/img/ebook/3.png";
 
-import webinar1 from "/resources/img/webinar-1.png";
-import webinar2 from "/resources/img/webinar-2.png";
-import webinar3 from "/resources/img/webinar-3.png";
+import webinar1 from "/resources/img/webinar/1.png";
+import webinar2 from "/resources/img/webinar/2.png";
+import webinar3 from "/resources/img/webinar/3.png";
 import SearchBar from "../Partials/Produk/SearchBar";
 
 export default function Produk () {

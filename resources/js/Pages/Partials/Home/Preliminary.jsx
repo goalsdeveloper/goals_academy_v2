@@ -1,4 +1,4 @@
-import figure2 from "/resources/img/figure-2.svg";
+import figure2 from "/resources/img/figure/2.svg";
 
 function SquareIcon ({iconClass}) {
     return (

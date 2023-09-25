@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from '@inertiajs/react';
 import { TECollapse } from 'tw-elements-react';
-import logo from '/resources/img/logo.svg';
+import logo from '/resources/img/icon/goals-1.svg';
 import ButtonHoverSlide from '@/Components/ButtonHoverSlide';
-import user from '/resources/img/user.png';
+import user from '/resources/img/icon/user.png';
 
 export default function MainHeader ({ title }) {
     const [authDropdown, setAuthDropdown] = useState(false);
@@ -12,11 +12,11 @@ export default function MainHeader ({ title }) {
 
     return (
         <header className="fixed w-screen top-0 right-0 bg-white text-dark lg:text-base z-50">
-            <div className='hidden xl:h-24 3xl:h-36'></div>
-            <nav className="container flex flex-wrap justify-between items-center mx-auto h-16 md:h-20 xl:h-32 3xl:h-48 duration-500">
+            <div className='hidden xl:h-24 3xl:h-36'></div> {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
+            <nav className="container flex flex-wrap justify-between items-center mx-auto h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">
                 <div className="w-auto px-4">
                     <Link href="/">
-                        <img className="h-6 md:h-5 xl:h-8 3xl:h-10 md:mb-2" src={logo} alt="Goals Academy" />
+                        <img className="h-8 md:h-5 xl:h-8 3xl:h-10 md:mb-2" src={logo} alt="Goals Academy" />
                     </Link>
                 </div>
                 <div className="hidden md:grid grid-cols-5 md:gap-6 xl:gap-9 3xl:gap-12 font-medium text-center">
@@ -80,7 +80,7 @@ export default function MainHeader ({ title }) {
                     </div>
                 )}
                 <div className="md:hidden">
-                    <button><i className="fa-solid fa-bars text-24"></i></button>
+                    <button><i className="fa-solid fa-bars text-28"></i></button>
                 </div>
             </nav>
         </header>

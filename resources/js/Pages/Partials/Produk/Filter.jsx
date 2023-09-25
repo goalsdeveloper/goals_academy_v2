@@ -1,6 +1,6 @@
-import image1 from "/resources/img/produk-bimbingan.svg";
-import image2 from "/resources/img/produk-ebook.svg";
-import image3 from "/resources/img/produk-webinar.svg";
+import image1 from "/resources/img/produk/bimbingan.svg";
+import image2 from "/resources/img/produk/ebook.svg";
+import image3 from "/resources/img/produk/webinar.svg";
 
 export default function Filter ({ show, showHandler }) {
     return (

@@ -1,4 +1,4 @@
-import figure1 from "/resources/img/figure-1.svg";
+import figure1 from "/resources/img/figure/1.svg";
 import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
 
 export default function Hero () {

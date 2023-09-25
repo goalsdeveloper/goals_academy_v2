@@ -1,4 +1,4 @@
-import figure4 from "/resources/img/figure-4.svg";
+import figure4 from "/resources/img/figure/4.svg";
 import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
 
 export default function Hero () {
@@ -12,7 +12,9 @@ export default function Hero () {
                 <div className="w-10/12 md:w-5/12 3xl:w-6/12 mt-16 md:mt-0">
                     <img src={figure4} alt="Figure 4" />
                 </div>
-                <div className="w-full flex flex-wrap items-center bg-white md:shadow-centered rounded-xl xl:rounded-2xl p-0 py-8 md:p-14 lg:p-18 xl:p-24 3xl:p-32 -translate-y-6 3xl:-translate-y-12">
+            </div>
+            <div className="w-full bg-white shadow-centered-spread md:shadow-centered xl:rounded-2xl -translate-y-6 3xl:-translate-y-12">
+                <div className="container mx-auto flex flex-wrap items-center p-0 py-12 md:p-14 lg:p-18 xl:p-24 3xl:p-32">
                     <div className="w-8/12 md:w-7/12 text-start">
                         <p className="font-medium md:tracking-[0.2rem] lg:tracking-[0.3rem] xl:tracking-[0.4rem] text-start">TIM KAMI</p>
                         <h3 className="mt-2 md:mt-2 lg:mt-3 xl:mt-4 text-14 sm:text-16 md:text-14 lg:text-18 xl:text-24 3xl:text-32 leading-normal">Mari Berkenalan Lebih Lanjut <br /><span className="text-primary">Dengan Tim Goals Academy</span></h3>
