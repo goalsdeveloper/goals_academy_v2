@@ -5,7 +5,7 @@ import ButtonSwiper from '@/Components/ButtonSwiper';
 
 export default function CareerList ({ data }) {
     return (
-        <section id="career_list" className="my-8 xl:my-12 3xl:my-16">
+        <section id="career_list" className="my-8 xl:my-12 3xl:my-16 overflow-hidden">
             <div className="container mx-auto">
                 <div className="flex justify-between mb-8">
                     <div className="w-6/12">

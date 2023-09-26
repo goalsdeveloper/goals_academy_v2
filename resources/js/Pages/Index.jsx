@@ -7,8 +7,7 @@ import Testimony from './Partials/Home/Testimony';
 import FAQ from './Partials/Home/FAQ';
 import Consultation from './Partials/Home/Consultation';
 
-import wave1 from "/resources/img/vector/wave-1.svg";
-import wave2 from "/resources/img/vector/wave-2.svg";
+import CornerWaveVector from "@/Components/CornerWaveVector";
 
 import program1 from '/resources/img/program/dibimbing-sekali.png';
 import program2 from '/resources/img/program/dibimbing-tuntas.png';
@@ -195,12 +194,10 @@ export default function Index () {
             <Preliminary />
             <Program data={data_program} />
             <div className="relative bg-secondary md:bg-transparent overflow-hidden md:overflow-visible py-12 md:py-0">
-                <div className="md:hidden">
-                    <img className="absolute bottom-0 left-0 w-10/12" src={wave1} alt="Wave 1" />
-                    <img className="absolute bottom-0 left-0 w-10/12" src={wave2} alt="Wave 1" />
-                    <img className="absolute top-0 right-0 -scale-x-1 -scale-y-1 w-10/12" src={wave1} alt="Wave 1" />
-                    <img className="absolute top-0 right-0 -scale-x-1 -scale-y-1 w-10/12" src={wave2} alt="Wave 1" />
-                </div>
+                <CornerWaveVector
+                    className="md:hidden"
+                    cornerClassName="w-10/12"
+                />
                 <Video />
                 <Testimony data={data_testimony} />
             </div>
