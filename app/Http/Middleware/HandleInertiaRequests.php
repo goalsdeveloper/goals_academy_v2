@@ -40,5 +40,10 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
         ];
+        // return array_merge(parent::share($request), [
+        //     'auth' => [
+        //         'user' => $request->user()
+        //     ]
+        // ]);
     }
 }

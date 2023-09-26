@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Tutor;
 use App\Models\User;
@@ -54,4 +55,6 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Form', ['title' => 'register']);
 });
 
-require __DIR__.'/auth.php';
+Route::post('/email-diskon', [EmailDiskonController::class, 'handler'])->name('email-diskon');
+
+require __DIR__ . '/auth.php';
