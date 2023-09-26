@@ -1,16 +1,13 @@
-import wave1 from "/resources/img/vector/wave-1.svg";
-import wave2 from "/resources/img/vector/wave-2.svg";
+import CornerWaveVector from "@/Components/CornerWaveVector";
 
 export default function Preliminary () {
     return (
         <section id="preliminary" className="my-16 xl:my-24 3xl:my-32">
             <div className="relative md:bg-secondary shadow-centered-spread md:shadow-none mb-16 md:mb-0">
-                <div>
-                    <img className="absolute bottom-0 left-0 w-4/12" src={wave1} alt="Wave 1" />
-                    <img className="absolute bottom-0 left-0 w-4/12" src={wave2} alt="Wave 1" />
-                    <img className="absolute top-0 right-0 -scale-x-1 -scale-y-1 w-4/12" src={wave1} alt="Wave 1" />
-                    <img className="absolute top-0 right-0 -scale-x-1 -scale-y-1 w-4/12" src={wave2} alt="Wave 1" />
-                </div>
+                <CornerWaveVector
+                    className="md:hidden"
+                    cornerClassName="w-4/12"
+                />
                 <div className="container mx-auto flex flex-col items-center md:gap-2 xl:gap-4 py-12 md:py-6 xl:py-12">
                     <i className="bi bi-quote text-primary md:text-white text-28 md:text-32 lg:text-48 xl:text-64 3xl:text-80"></i>
                     <p className="md:w-8/12 my-2 md:my-0 text-center text-dark md:text-white text-14 md:text-10 lg:text-12 xl:text-16 3xl:text-24">Berkomitmen dalam mentransformasi tenaga pendidik profesional dan pelajar sebagai pemimpin di masa depan dengan mengedepankan kemajuan dan efektifitas di bidang riset, pendidikan dan keilmuan berbasis inovasi dan teknologi.</p>
@@ -18,12 +15,10 @@ export default function Preliminary () {
                 </div>
             </div>
             <div className="relative bg-secondary md:bg-soft">
-                <div className="md:hidden">
-                    <img className="absolute bottom-0 left-0 w-10/12" src={wave1} alt="Wave 1" />
-                    <img className="absolute bottom-0 left-0 w-10/12" src={wave2} alt="Wave 1" />
-                    <img className="absolute top-0 right-0 -scale-x-1 -scale-y-1 w-10/12" src={wave1} alt="Wave 1" />
-                    <img className="absolute top-0 right-0 -scale-x-1 -scale-y-1 w-10/12" src={wave2} alt="Wave 1" />
-                </div>
+                <CornerWaveVector
+                    className="md:hidden"
+                    cornerClassName="w-10/12"
+                />
                 <div className="container mx-auto flex flex-col md:flex-row justify-center items-center gap-12 md:gap-4 xl:gap-8 py-24 md:py-6 xl:py-12 text-secondary md:text-dark">
                     <div className="w-full md:w-3/12 rounded-lg shadow-centered-spread md:shadow-none bg-white md:bg-transparent flex justify-center items-center gap-8 md:gap-4 xl:gap-8 py-8 md:py-0">
                         <i className="bi bi-people text-56 md:text-36 xl:text-64 3xl:text-80"></i>

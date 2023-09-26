@@ -1,10 +1,9 @@
 import "/resources/css/main.css";
 import { useState } from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
+import CornerWaveVector from "@/Components/CornerWaveVector";
 import logo from "/resources/img/icon/goals-3.svg";
 import figure7 from "/resources/img/figure/7.svg";
-import wave1 from "/resources/img/vector/wave-1.svg";
-import wave2 from "/resources/img/vector/wave-2.svg";
 import rectangle from "/resources/img/vector/rectangle-1.svg";
 
 export default function Form({ title }) {
@@ -52,52 +51,16 @@ export default function Form({ title }) {
 
     return (
         <div className="relative flex flex-wrap md:h-screen bg-secondary py-16 md:p-0">
-            <Head title={active == "register" ? "Register" : "Login"} />
-            <div className="md:hidden">
-                <img
-                    className="absolute bottom-0 left-0 w-10/12"
-                    src={wave1}
-                    alt="Wave 1"
-                />
-                <img
-                    className="absolute bottom-0 left-0 w-10/12"
-                    src={wave2}
-                    alt="Wave 1"
-                />
-                <img
-                    className="absolute top-0 right-0 -scale-x-1 -scale-y-1 w-10/12"
-                    src={wave1}
-                    alt="Wave 1"
-                />
-                <img
-                    className="absolute top-0 right-0 -scale-x-1 -scale-y-1 w-10/12"
-                    src={wave2}
-                    alt="Wave 1"
-                />
-            </div>
+            <Head title={active == 'register' ? 'Register' : 'Login'} />
+            <CornerWaveVector
+                className="md:hidden"
+                cornerClassName="w-10/12"
+            />
             <div className="w-8/12 relative hidden md:flex items-end justify-center select-none">
-                <div>
-                    <img
-                        className="absolute bottom-0 left-0 xl:w-10/12"
-                        src={wave1}
-                        alt="Wave 1"
-                    />
-                    <img
-                        className="absolute bottom-0 left-0 xl:w-10/12"
-                        src={wave2}
-                        alt="Wave 1"
-                    />
-                    <img
-                        className="absolute top-0 right-0 -scale-x-1 -scale-y-1 xl:w-6/12"
-                        src={wave1}
-                        alt="Wave 1"
-                    />
-                    <img
-                        className="absolute top-0 right-0 -scale-x-1 -scale-y-1 xl:w-6/12"
-                        src={wave2}
-                        alt="Wave 1"
-                    />
-                </div>
+                <CornerWaveVector
+                    rightCornerClassName="w-10/12"
+                    leftCornerClassName="w-6/12"
+                />
                 <div className="w-full flex flex-col justify-center items-center gap-4 3xl:gap-6 z-10 text-white">
                     <img className="w-2/12" src={logo} alt="Goals Academy" />
                     <div className="text-center mb-[8vh]">

@@ -1,14 +1,16 @@
-import { useState } from "react";
-import { Link } from "@inertiajs/react";
-import { TECollapse } from "tw-elements-react";
-import logo from "/resources/img/icon/goals-1.svg";
-import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
-import user from "/resources/img/icon/user.png";
+import { useState } from 'react';
+import { Link } from '@inertiajs/react';
+import { TECollapse } from 'tw-elements-react';
+import logo from '/resources/img/icon/goals-1.svg';
+import ButtonHoverSlide from '@/Components/ButtonHoverSlide';
+import CornerWaveVector from '@/Components/CornerWaveVector';
+import user from '/resources/img/icon/user.png';
 
-export default function MainHeader({ auth, title }) {
+export default function MainHeader ({ auth, title }) {
     const [authDropdown, setAuthDropdown] = useState(false);
     const [profileDropdown, setProfileDropdown] = useState(false);
-    const [mobileNavbar, setMobileNavbar] = useState(false);
+    const [profileDropdownMobile, setProfileDropdownMobile] = useState(false);
+    const [mobileNavbar, setMobileNavbar] = useState(false)
 
     return (
         <header className="fixed w-screen top-0 right-0 bg-white text-dark lg:text-base z-50">
@@ -157,98 +159,56 @@ export default function MainHeader({ auth, title }) {
                     </div>
                 )}
                 <div className="md:hidden">
-                    <button onClick={() => setMobileNavbar(true)}>
-                        <i className="fa-solid fa-bars text-28"></i>
-                    </button>
-                    <div
-                        className={`md-hidden absolute top-0 right-0 bg-white w-9/12 h-screen py-8 animation-all duration-300 ${
-                            mobileNavbar ? "" : "translate-x-full"
-                        }`}
-                    >
-                        <div className="container mx-auto">
-                            <div className="flex justify-end mb-8">
-                                <button onClick={() => setMobileNavbar(false)}>
-                                    <i className="bi bi-x-lg text-28"></i>
-                                </button>
-                            </div>
-                            <div className="grid gap-8">
-                                <Link
-                                    href="/produk"
-                                    className={`font-poppins hover:text-primary flex justify-center ${
-                                        title == "Produk" ? "font" : ""
-                                    }`}
-                                >
-                                    Produk
-                                </Link>
-                                <Link
-                                    href="/artikel"
-                                    className={`font-poppins hover:text-primary flex justify-center ${
-                                        title == "Artikel" ? "font" : ""
-                                    }`}
-                                >
-                                    Artikel
-                                </Link>
-                                <Link
-                                    href="/diskusi"
-                                    className={`font-poppins hover:text-primary flex justify-center ${
-                                        title == "Diskusi" ? "font" : ""
-                                    }`}
-                                >
-                                    Diskusi
-                                </Link>
-                                <Link
-                                    href="/karir"
-                                    className={`font-poppins hover:text-primary flex justify-center ${
-                                        title == "Karir" ? "font" : ""
-                                    }`}
-                                >
-                                    Karir
-                                </Link>
-                                <button
-                                    className={`font-poppins flex justify-center ${
-                                        title == "Profil Perusahaan" ||
-                                        title == "Profil Tutor"
-                                            ? "font"
-                                            : ""
-                                    }`}
-                                    onMouseEnter={() =>
-                                        setProfileDropdown(true)
-                                    }
-                                    onMouseLeave={() =>
-                                        setProfileDropdown(false)
-                                    }
-                                    onClick={() =>
-                                        setProfileDropdown(!profileDropdown)
-                                    }
-                                >
-                                    <span className="hover:text-primary">
-                                        Profil
-                                    </span>
-                                    <TECollapse
-                                        show={profileDropdown}
-                                        className="absolute z-10 mt-4 shadow-none p-1"
-                                    >
-                                        <TECollapseItem>
-                                            <Link
-                                                className="font-poppins hover:text-primary"
-                                                href="/profil_perusahaan"
-                                            >
-                                                Profil Perusahaan
-                                            </Link>
-                                            <Link
-                                                className="font-poppins hover:text-primary"
-                                                href="/profil_tutor"
-                                            >
-                                                Profil Tutor
-                                            </Link>
-                                        </TECollapseItem>
-                                    </TECollapse>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    <button onClick={() => setMobileNavbar(true)}><i className={`fa-solid fa-bars text-28 duration-300 ${mobileNavbar ? 'opacity-0 rotate-180' : ''}`}></i></button>
                 </div>
             </nav>
+            <div className={`md:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold text-white h-screen py-8 duration-500 ${mobileNavbar ? '' : 'opacity-0 translate-x-[110%]'}`}>
+                <div className="container mx-auto">
+                    <div className="flex justify-end mb-8">
+                        <button onClick={() => setMobileNavbar(false)}><i className={`fa-solid fa-xmark text-dark text-36`}></i></button>
+                    </div>
+                    <div className="grid gap-8">
+                        <Link href="/produk" className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${title == 'Produk' ? 'font' : ''}`}>
+                            Produk
+                            <CornerWaveVector cornerClassName="w-4/12" />
+                            <i className="fa-solid fa-arrow-up rotate-45 text-24"></i>
+                        </Link>
+                        <Link href="/artikel" className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${title == 'Artikel' ? 'font' : ''}`}>
+                            Artikel
+                            <CornerWaveVector cornerClassName="w-4/12" />
+                            <i className="fa-solid fa-arrow-up rotate-45 text-24"></i>
+                        </Link>
+                        <Link href="/diskusi" className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${title == 'Diskusi' ? 'font' : ''}`}>
+                            Diskusi
+                            <CornerWaveVector cornerClassName="w-4/12" />
+                            <i className="fa-solid fa-arrow-up rotate-45 text-24"></i>
+                        </Link>
+                        <Link href="/karir" className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${title == 'Karir' ? 'font' : ''}`}>
+                            Karir
+                            <CornerWaveVector cornerClassName="w-4/12" />
+                            <i className="fa-solid fa-arrow-up rotate-45 text-24"></i>
+                        </Link>
+                        <button
+                        className={`w-full relative font-poppins flex justify-center`}
+                        onMouseLeave={() => setProfileDropdownMobile(false)}
+                        onClick={() => setProfileDropdownMobile(!profileDropdownMobile)}
+                        >
+                            <span className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 w-full ${title == 'Profil Perusahaan' || title == 'Profil Tutor' ? 'font' : ''}`}>
+                                Profil
+                                <CornerWaveVector cornerClassName="w-4/12" />
+                                <i className={`fa-solid fa-chevron-down text-24 duration-300 ${profileDropdownMobile ? 'rotate-180' : ''}`}></i>
+                            </span>
+                            <TECollapse show={profileDropdownMobile} className="absolute mt-12 text-dark shadow-none p-1 w-full">
+                                <TECollapseItem>
+                                    <Link className="font-poppins" href="/profil_perusahaan">Profil Perusahaan</Link>
+                                    <Link className="font-poppins" href="/profil_tutor">Profil Tutor</Link>
+                                </TECollapseItem>
+                            </TECollapse>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div className={`absolute z-30 top-0 left-0 h-screen w-screen bg-dark bg-opacity-50 md:hidden ${mobileNavbar ? '' : 'hidden'}`} onClick={() => setMobileNavbar(false)}></div>
         </header>
     );
 }
@@ -257,7 +217,7 @@ function TECollapseItem({ children }) {
     return (
         <>
             <br />
-            <div className="grid md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 bg-white shadow-centered rounded-xl">
+            <div className="grid gap-4 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 bg-white shadow-centered rounded-xl">
                 {children}
             </div>
         </>
