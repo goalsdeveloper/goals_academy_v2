@@ -17,7 +17,7 @@ export default function Hero() {
     };
 
     return (
-        <section id="hero" className="my-16 xl:my-24 3xl:my-32">
+        <section id="hero" className="my-14 xs:my-16 xl:my-24 3xl:my-32">
             <div className="container mx-auto flex flex-wrap flex-col-reverse md:flex-row items-center justify-center md:justify-between gap-8 md:gap-0">
                 <div className="md:w-5/12 3xl:w-6/12 my-auto">
                     <h1 className="text-end md:text-start before:icon-primary sm:before:w-0 md:before:w-10 md:before:h-10 md:before:-ms-8 md:before:-mt-5 xl:before:w-20 xl:before:h-20 xl:before:-ms-16 xl:before:-mt-10">
@@ -49,7 +49,7 @@ export default function Hero() {
                 </div>
                 <div className="w-full sm:w-10/12 md:w-6/12">
                     <img
-                        className="w-full h-96 sm:h-auto md:h-80 lg:h-96 xl:h-[32rem] 3xl:h-[44rem]"
+                        className="w-full mt-8 md:mt-0 sm:h-auto md:h-80 lg:h-96 xl:h-[32rem] 3xl:h-[44rem]"
                         src={figure1}
                         alt="Figure 1"
                     />

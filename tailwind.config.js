@@ -11,7 +11,8 @@ export default {
     ],
     theme: {
         screens: {
-            'xs': '360px',
+            '2xs': '320px',
+            'xs': '480px',
             'sm': '564px',
             'md': '768px',
             'lg': '1024px',
@@ -84,6 +85,7 @@ export default {
                 'arrow-right-32': 'url(/resources/img/icon/arrow-right-32.svg)',
             },
             boxShadow: {
+                'top': '0px -4px 4px 0 rgba(0,0,0,.25)',
                 'centered': '0px 0px 4px 0 rgba(0,0,0,.25)',
                 'centered-spread': '0px 0px 12px 0px rgba(0,0,0,.25)',
                 'centered-left': '0px -3px 4px 0 rgba(0,0,0,.14)',
@@ -116,7 +118,10 @@ export default {
         function ({addComponents}) {
             addComponents({
                 '.container': {
-                    width: '80%',
+                    width: '85%',
+                    '@screen xs': {
+                        width: '80%',
+                    },
                     '@screen md': {
                         width: '75%'
                     },
