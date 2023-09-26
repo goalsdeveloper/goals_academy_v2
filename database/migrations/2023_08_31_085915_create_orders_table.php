@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('order_code')->unique();
             $table->unsignedInteger('quantity');
             $table->unsignedBigInteger('gross_amount');
-            $table->string('status');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
