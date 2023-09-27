@@ -69,7 +69,8 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Log::info("User {name} has been Log out.", ['name' => auth()->user()->name]);
+        // dd(auth()->user());
+        Log::info("User {username} has been Log out.", ['username' => auth()->user()->username]);
         Auth::logout();
 
         $request->session()->invalidate();
