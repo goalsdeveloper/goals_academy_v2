@@ -40,13 +40,13 @@ export default function CareerList ({ data }) {
 
 function CareerCard ({title, image, requirements, link}) {
     return (
-        <div className="w-72 sm:w-80 md:w-40 lg:w-60 xl:w-72 3xl:w-96 shadow-lg md:shadow-bottom-right lg:shadow-lg rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden">
+        <div className="w-72 md:w-40 lg:w-60 xl:w-72 3xl:w-96 shadow-lg md:shadow-bottom-right lg:shadow-lg rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden">
             <div className='w-full h-56 md:h-32 lg:h-40 xl:h-52 3xl:h-72 overflow-hidden'>
                 <img className='w-full' src={image} alt={title} />
             </div>
             <div className="p-6 md:p-2 lg:p-4 xl:p-6 3xl:p-8">
                 <h4 className="text-center">{title}</h4>
-                <div className="my-8 md:my-2 lg:my-4 xl:my-8 h-[40vw] xs:h-[50vw] sm:h-[40vw] md:h-28 lg:h-52 xl:h-56 3xl:h-72">
+                <div className="my-8 md:my-2 lg:my-4 xl:my-8 h-56 md:h-28 lg:h-52 xl:h-56 3xl:h-72">
                     <p className="md:mb-2 lg:mb-4">Kualifikasi :</p>
                     <ul className="list-disc grid md:gap-0 lg:gap-1 ms-4">
                         {requirements.map((item, index) => {return <li key={index}>{item}</li>})}

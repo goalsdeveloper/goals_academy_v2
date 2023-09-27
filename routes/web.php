@@ -58,3 +58,4 @@ Route::get('/register', function () {
 Route::post('/email-diskon', [EmailDiskonController::class, 'handler'])->name('email-diskon');
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/socialite.php';

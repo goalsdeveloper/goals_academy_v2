@@ -9,7 +9,7 @@ export default function MainLayout({ auth, title, children }) {
         <>
             <Head title={title} />
             <MainHeader auth={auth} title={title} />
-            <main className="text-dark pt-4 xs:pt-8 md:pt-4 xl:pt-8 3xl:pt-28 overflow-visible">
+            <main className="text-dark pt-8 md:pt-4 xl:pt-8 3xl:pt-28 overflow-visible">
                 {children}
             </main>
             <MainFooter />
