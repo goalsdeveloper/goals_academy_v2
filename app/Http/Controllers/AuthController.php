@@ -31,7 +31,7 @@ class AuthController extends Controller
         if (Auth::attempt($credential)) {
             $request->session()->regenerate();
             $user = auth()->user();
-            Log::info("User {name} has been Log in.", ['name' => $user->username]);
+            Log::info("User {username} has been Log in.", ['usuername' => $user->username]);
             return redirect(RouteServiceProvider::HOME);
         } else {
             return response()->json([
@@ -63,6 +63,8 @@ class AuthController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+        Log::info("New Account Registered as {$user->username}.", ['username' => $user->username]);
+        Log::info("New Account Registered as {$user->username}.", ['username' => $user->username]);
 
         return redirect(RouteServiceProvider::HOME);
     }
