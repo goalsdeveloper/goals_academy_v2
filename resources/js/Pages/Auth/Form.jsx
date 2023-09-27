@@ -50,7 +50,7 @@ export default function Form({ title }) {
     };
 
     return (
-        <div className="relative flex flex-wrap md:h-screen bg-secondary py-16 md:p-0">
+        <div className="relative flex flex-wrap md:h-screen bg-secondary py-16 md:p-0 overflow-hidden">
             <Head title={active == 'register' ? 'Register' : 'Login'} />
             <CornerWaveVector
                 className="md:hidden"
