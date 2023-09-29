@@ -8,7 +8,7 @@ export default function Program ({data}) {
     return (
         <section id="program" className="my-14 xs:my-16 xl:my-24 3xl:my-32 overflow-hidden">
             <div className="container mx-auto">
-                <div className="flex justify-between mb-8">
+                <div className="flex justify-between mb-6 xs:mb-8">
                     <div className="md:w-6/12">
                         <h2 className='hidden md:inline-block'>Pilih Program Goals untuk <span className="text-primary">Solusi Skripsimu.</span></h2>
                         <h2 className='md:hidden'>Pilih Program <span className="text-primary">Tersedia.</span></h2>
@@ -29,7 +29,7 @@ export default function Program ({data}) {
                 >
                     {data.map(program => {return (
                         <SwiperSlide key={program.id} style={{ width: "fit-content" }} className="p-4 md:p-2 lg:p-3 xl:p-4">
-                            <BimbinganCard item={program} className="w-72 md:w-40 lg:w-52 xl:w-72 3xl:w-[22rem]" />
+                            <BimbinganCard item={program} className="w-[70vw] md:w-40 lg:w-52 xl:w-72 3xl:w-[22rem]" />
                         </SwiperSlide>
                     )})}
                 </Swiper>

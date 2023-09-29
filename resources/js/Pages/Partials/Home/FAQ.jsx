@@ -43,7 +43,7 @@ function FAQItem ({id, show, toggleShow, question, answer}) {
                 <div className="text-start">
                     <p className="font-medium">{question}</p>
                     <TECollapse show={condition} className="shadow-none">
-                        <br />
+                        {/* <br /> */}
                         <div>{answer}</div>
                     </TECollapse>
                 </div>

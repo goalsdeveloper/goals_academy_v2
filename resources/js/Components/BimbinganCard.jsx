@@ -52,7 +52,7 @@ export default function BimbinganCard ({ item, className }) {
 
     return (
         <div className={`shadow-lg md:shadow-bottom-right lg:shadow-lg rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden ${className}`}>
-            <div className="w-full h-56 md:h-32 lg:h-40 xl:h-52 overflow-hidden">
+            <div className="w-full h-[52vw] md:h-32 lg:h-40 xl:h-52 3xl:h-72 overflow-hidden">
                 <img className="w-full" src={item.img} alt={item.title} />
             </div>
             <div className="flex flex-col justify-between p-4 xs:p-6 md:p-2 lg:p-3 xl:p-6">

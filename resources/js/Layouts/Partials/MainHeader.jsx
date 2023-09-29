@@ -10,7 +10,7 @@ export default function MainHeader ({ auth, title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false)
 
     return (
-        <header className="fixed w-screen top-0 right-0 bg-white text-dark lg:text-base z-50">
+        <header className="fixed w-screen top-0 right-0 bg-white text-dark lg:text-base z-50 md:z-20">
             <div className="hidden xl:h-24 3xl:h-36"></div>{" "}
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">
@@ -188,7 +188,7 @@ function NavbarExpand ({ auth, title }) {
 function NavbarMobile ({ auth, title, mobileNavbar, setMobileNavbar }) {
     const [profileDropdownMobile, setProfileDropdownMobile] = useState(false);
     return (
-        <>
+        <div>
             <div className={`md:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold text-white h-screen py-6 xs:py-8 duration-500 ${mobileNavbar ? '' : 'opacity-0 translate-x-[110%]'}`}>
                 <div className="container mx-auto">
                     <div className="flex justify-end mb-6 xs:mb-8">
@@ -217,10 +217,10 @@ function NavbarMobile ({ auth, title, mobileNavbar, setMobileNavbar }) {
                         </Link>
                         <button
                         className={`w-full relative font-poppins flex justify-center`}
-                        onMouseLeave={() => setProfileDropdownMobile(false)}
-                        onClick={() => setProfileDropdownMobile(!profileDropdownMobile)}
                         >
-                            <span className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 w-full ${title == 'Profil Perusahaan' || title == 'Profil Tutor' ? 'font' : ''}`}>
+                            <span className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 w-full ${title == 'Profil Perusahaan' || title == 'Profil Tutor' ? 'font' : ''}`}
+                            onClick={() => setProfileDropdownMobile(!profileDropdownMobile)}
+                            >
                                 Profil
                                 <CornerWaveVector cornerClassName="w-4/12" />
                                 <i className={`fa-solid fa-chevron-down text-20 xs:text-24 duration-300 ${profileDropdownMobile ? 'rotate-180' : ''}`}></i>
@@ -236,6 +236,6 @@ function NavbarMobile ({ auth, title, mobileNavbar, setMobileNavbar }) {
                 </div>
             </div>
             <div className={`absolute z-30 top-0 left-0 h-screen w-screen bg-dark bg-opacity-50 md:hidden ${mobileNavbar ? '' : 'hidden'}`} onClick={() => setMobileNavbar(false)}></div>
-        </>
+        </div>
     )
 }

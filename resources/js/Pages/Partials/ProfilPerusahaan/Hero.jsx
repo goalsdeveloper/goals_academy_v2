@@ -2,7 +2,7 @@ import figure5 from '/resources/img/figure/5.svg';
 
 export default function Hero () {
     return (
-        <section id="hero" className="my-16 xl:my-24 3xl:my-32">
+        <section id="hero" className="my-16 xl:my-24 3xl:my-32 overflow-hidden">
             <div className="container mx-auto relative flex flex-col md:flex-row justify-between items-center md:pt-4 lg:pt-8 xl:pt-12 3xl:py-20 gap-4 xs:gap-8 md:gap-0 before:absolute before:-z-10 before:bg-tree-2 md:before:bg-none before:bg-cover before:bg-no-repeat before:w-screen before:h-[53vw] sm:before:-mt-[4vw]">
                 <div className="md:w-7/12 md:absolute h-full flex flex-col justify-center text-center md:text-start">
                     <h2 className="text-16 xs:text-20 sm:text-24 md:text-16 lg:text-24 xl:text-32 3xl:text-48">Transformasi Pendidikan Untuk <br /><span className="text-primary">Pendidikan Masa Depan</span></h2>

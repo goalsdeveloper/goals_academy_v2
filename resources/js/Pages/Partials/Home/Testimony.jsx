@@ -37,7 +37,7 @@ function TestimonyCard ({data}) {
                 </div>
                 <i className="bi bi-quote text-36 xs:text-48 md:text-20 lg:text-24 xl:text-36 3xl:text-48 text-primary -scale-x-1"></i>
             </div>
-            <p className="h-[20vw] xs:h-24 md:h-8 lg:h-10 xl:h-16 3xl:h-20 my-4 md:my-2 lg:my-4 md:text-6 lg:text-8 xl:text-12 3xl:text-16">
+            <p className="h-[20vw] xs:h-24 md:h-8 lg:h-10 xl:h-16 3xl:h-20 my-4 md:my-2 lg:my-4 md:text-6 lg:text-8 xl:text-12 3xl:text-14">
                 {data.text}
             </p>
             <p className="mt-4 lg:mt-6 xl:mt-8 md:text-6 lg:text-8 xl:text-12 3xl:text-16 text-primary font-bold">Fakultas {data.faculty}</p>

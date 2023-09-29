@@ -11,7 +11,7 @@ h2 {
 }
 
 h3 {
-    @apply text-10 md:text-14 lg:text-18 xl:text-24 3xl:text-32;
+    @apply text-10 xs:text-14 sm:text-16 md:text-14 lg:text-18 xl:text-24 3xl:text-32;
 }
 
 h4 {
@@ -24,4 +24,16 @@ h5 {
 
 h6 {
     @apply text-10 xs:text-12 md:text-6 lg:text-8 xl:text-12 3xl:text-16;
+}
+
+#form-right *, #form header * {
+    @apply md:text-16 xl:text-14 3xl:text-20;
+}
+
+#form header .icon {
+    @apply text-28;
+}
+
+#form header .nav-icon {
+    @apply text-20 xs:text-24;
 }

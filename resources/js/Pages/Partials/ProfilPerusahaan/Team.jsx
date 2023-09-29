@@ -8,7 +8,7 @@ import CEO from "/resources/img/tim/yordhan.png";
 export default function Team ({ data }) {
     return (
         <section id="team" className="my-16 xl:my-24 3xl:my-32 overflow-hidden">
-            <h2 className="text-center">Tim Goals Academy</h2>
+            <h2 className="text-center">Tim <span className="text-primary">Goals Academy</span></h2>
             <div className="bg-skin my-8 md:my-8 lg:my-12 xl:my-16 2xl:my-20 3xl:my-24">
                 <div className="container mx-auto flex flex-wrap items-center py-16">
                     <div className="w-7/12">
