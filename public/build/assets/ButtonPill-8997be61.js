@@ -1,0 +1,1 @@
+import{j as n,d as o}from"./app-e79b2eff.js";function s({href:e,children:t,className:r}){return n.jsx(o,{href:e,className:`inline-block font-medium text-center py-2 md:py-1 xl:py-2 text-white bg-secondary hover:bg-primary rounded-full ${r}`,children:t})}export{s as B};
