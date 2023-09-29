@@ -3,11 +3,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    @apply text-36 xs:text-48 md:text-32 lg:text-36 xl:text-56 3xl:text-80;
+    @apply text-48 md:text-32 lg:text-36 xl:text-56 3xl:text-80;
 }
 
 h2 {
-    @apply text-20 xs:text-30 md:text-16 lg:text-24 xl:text-32 3xl:text-48;
+    @apply text-30 md:text-16 lg:text-24 xl:text-32 3xl:text-48;
 }
 
 h3 {
@@ -15,15 +15,15 @@ h3 {
 }
 
 h4 {
-    @apply text-16 xs:text-20 md:text-10 lg:text-14 xl:text-20 3xl:text-24;
+    @apply text-20 md:text-10 lg:text-14 xl:text-20 3xl:text-24;
 }
 
 h5 {
-    @apply text-14 xs:text-16 md:text-8 lg:text-12 xl:text-16 2xl:text-20 3xl:text-24;
+    @apply text-16 md:text-8 lg:text-12 xl:text-16 2xl:text-20 3xl:text-24;
 }
 
 h6 {
-    @apply text-10 xs:text-12 md:text-6 lg:text-8 xl:text-12 3xl:text-16;
+    @apply text-12 md:text-6 lg:text-8 xl:text-12 3xl:text-16;
 }
 
 #form-right *, #form header * {

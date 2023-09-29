@@ -215,7 +215,7 @@ export default function Index({ auth }) {
             {/* {auth.user} */}
             <Preliminary />
             <Program data={data_program} />
-            <div className="relative bg-secondary md:bg-transparent overflow-hidden md:overflow-visible py-6 xs:py-12 md:py-0">
+            <div className="relative bg-secondary md:bg-transparent overflow-hidden md:overflow-visible py-12 md:py-0">
                 <CornerWaveVector
                     className="md:hidden"
                     cornerClassName="w-10/12"

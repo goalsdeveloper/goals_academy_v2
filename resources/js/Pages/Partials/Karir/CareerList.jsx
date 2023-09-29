@@ -46,7 +46,7 @@ function CareerCard ({title, image, requirements, link}) {
             </div>
             <div className="p-4 xs:p-6 md:p-2 lg:p-4 xl:p-6 3xl:p-8">
                 <h4 className="text-center">{title}</h4>
-                <div className="my-8 md:my-2 lg:my-4 xl:my-8 h-[40vw] xs:h-[50vw] sm:h-[40vw] md:h-28 lg:h-52 xl:h-56 3xl:h-72">
+                <div className="my-8 md:my-2 lg:my-4 xl:my-8 h-56 md:h-28 lg:h-52 xl:h-56 3xl:h-72">
                     <p className="md:mb-2 lg:mb-4">Kualifikasi :</p>
                     <ul className="list-disc grid md:gap-0 lg:gap-1 ms-4">
                         {requirements.map((item, index) => {return <li key={index}>{item}</li>})}
