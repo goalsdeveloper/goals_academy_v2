@@ -88,28 +88,6 @@ export default function Produk({ auth }) {
             hasDiscount: false,
             link: "",
         },
-        {
-            id: 4,
-            title: "E-Book Skripsi",
-            slug: "e-book-skripsi",
-            img: program4,
-            excerpt:
-                "Panduan berharga dengan kiat-kiat jitu untuk sukses dalam penyusunan skripsi.",
-            description:
-                "Panduan berharga dengan kiat-kiat jitu untuk sukses dalam penyusunan skripsi.",
-            features: {
-                times: null,
-                minDuration: null,
-                maxDuration: null,
-                category: null,
-                total: "1-4 E-Book",
-                media: "Semua Device",
-                information: "Bebas Unduh",
-            },
-            price: 9000,
-            hasDiscount: false,
-            link: "",
-        },
     ];
 
     const dataEbook = [
@@ -184,8 +162,9 @@ export default function Produk({ auth }) {
 
     return (
         <MainLayout auth={auth} title="Produk">
+            <SearchBar searchHandler={searchHandler} className="md:hidden" />
             <Filter show={show} showHandler={showHandler} />
-            <SearchBar searchHandler={searchHandler} />
+            <SearchBar searchHandler={searchHandler} className="hidden md:block" />
             <Bimbingan data={data1} active={show[0]} status={status} />
             <Ebook data={data2} active={show[1]} status={status} />
             <Webinar data={data3} active={show[2]} status={status} />

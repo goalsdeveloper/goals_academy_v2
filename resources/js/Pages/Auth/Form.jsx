@@ -6,6 +6,10 @@ import logo from "/resources/img/icon/goals-3.svg";
 import figure7 from "/resources/img/figure/7.svg";
 import rectangle from "/resources/img/vector/rectangle-1.svg";
 
+import { TECollapse } from 'tw-elements-react';
+import icon from '/resources/img/icon/goals-4.svg';
+import user from '/resources/img/icon/user.png';
+
 export default function Form({ title }) {
     const [active, setActive] = useState(title);
     const {
@@ -50,13 +54,14 @@ export default function Form({ title }) {
     };
 
     return (
-        <div className="relative flex flex-wrap md:h-screen bg-secondary py-16 md:p-0">
+        <div id="form" className="relative flex flex-wrap min-h-screen xl:h-screen bg-secondary py-20 xs:py-24 xl:p-0 overflow-hidden">
             <Head title={active == 'register' ? 'Register' : 'Login'} />
+            <Header title={title} />
             <CornerWaveVector
-                className="md:hidden"
-                cornerClassName="w-10/12"
+                className="xl:hidden"
+                cornerClassName="w-8/12"
             />
-            <div className="w-8/12 relative hidden md:flex items-end justify-center select-none">
+            <div id="form-left" className="w-8/12 relative hidden xl:flex items-end justify-center select-none">
                 <CornerWaveVector
                     rightCornerClassName="w-10/12"
                     leftCornerClassName="w-6/12"
@@ -76,9 +81,9 @@ export default function Form({ title }) {
                     <img className="w-5/12" src={figure7} alt="Figure 7" />
                 </div>
             </div>
-            <div className="container mx-auto md:w-4/12 rounded-lg md:rounded-none bg-white flex flex-col items-center p-16 pt-[12vh] relative">
-                <div className="grid gap-8 w-full">
-                    <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-2 border-primary font-poppins xl:rounded-lg 3xl:rounded-xl">
+            <div id="form-right" className="container mx-auto xl:w-4/12 h-fit xl:h-screen rounded-lg xl:rounded-none bg-white flex flex-col items-center p-6 xl:p-16 py-20 xl:py-[15vh] relative">
+                <div className="grid gap-6 xl:gap-8 w-full">
+                    <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-1 xl:border-2 border-primary font-poppins rounded-md xl:rounded-lg 3xl:rounded-xl">
                         <SwitchButton
                             switchForm={switchForm}
                             target={"login"}
@@ -93,11 +98,11 @@ export default function Form({ title }) {
                     <div
                         className={`${
                             active == "register" ? "grid" : "hidden"
-                        } gap-4 z-10`}
+                        } gap-3 xl:gap-4 z-10`}
                     >
                         <form
                             onSubmit={register}
-                            className="w-full grid gap-6 3xl:gap-8"
+                            className="w-full grid gap-4 md:gap-6 3xl:gap-8"
                         >
                             <Input
                                 value={registerData.username}
@@ -142,10 +147,10 @@ export default function Form({ title }) {
                         </form>
                         <p className="text-center">atau</p>
                         <div className="w-full grid gap-4 3xl:gap-6 text-dark">
-                            <Link className="w-full relative overflow-hidden border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full xl:rounded-lg 3xl:rounded-xl p-2 3xl:p-4">
+                            <Link className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3">
                                 Daftar dengan Google
                             </Link>
-                            <Link className="w-full relative overflow-hidden border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full xl:rounded-lg 3xl:rounded-xl p-2 3xl:p-4">
+                            <Link className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3">
                                 Daftar dengan Facebook
                             </Link>
                         </div>
@@ -153,11 +158,11 @@ export default function Form({ title }) {
                     <div
                         className={`${
                             active == "login" ? "grid" : "hidden"
-                        } gap-4 z-10`}
+                        } gap-3 xl:gap-4 z-10`}
                     >
                         <form
                             onSubmit={login}
-                            className="w-full grid gap-6 3xl:gap-8"
+                            className="w-full grid gap-4 md:gap-6 3xl:gap-8"
                         >
                             <Input
                                 value={loginData.email}
@@ -186,31 +191,31 @@ export default function Form({ title }) {
                         </form>
                         <p className="text-center">atau</p>
                         <div className="w-full grid gap-4 3xl:gap-6 text-dark">
-                            <Link className="w-full relative overflow-hidden border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full xl:rounded-lg 3xl:rounded-xl p-2 3xl:p-4">
+                            <Link className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3">
                                 Masuk dengan Google
                             </Link>
-                            <Link className="w-full relative overflow-hidden border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full xl:rounded-lg 3xl:rounded-xl p-2 3xl:p-4">
+                            <Link className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3">
                                 Masuk dengan Facebook
                             </Link>
                         </div>
                     </div>
                     <div className="absolute w-full h-full top-0 left-0 z-0 select-none">
-                        <div className="absolute w-16 h-5 3xl:w-24 3xl:h-8 bg-secondary rounded-sm 3xl:rounded-lg top-6 left-6"></div>
-                        <div className="absolute w-16 h-5 3xl:w-24 3xl:h-8 bg-secondary rounded-sm 3xl:rounded-lg top-6 right-3"></div>
-                        <div className="absolute w-16 h-5 3xl:w-24 3xl:h-8 bg-secondary rounded-sm 3xl:rounded-lg bottom-6 left-6"></div>
-                        <div className="absolute w-16 h-5 3xl:w-24 3xl:h-8 bg-secondary rounded-sm 3xl:rounded-lg bottom-4 right-5"></div>
+                        <div className="absolute w-12 xl:w-16 h-4 xl:h-5 3xl:w-24 3xl:h-8 bg-secondary rounded-sm 3xl:rounded-lg top-6 left-6"></div>
+                        <div className="absolute w-12 xl:w-16 h-4 xl:h-5 3xl:w-24 3xl:h-8 bg-secondary rounded-sm 3xl:rounded-lg top-6 right-3"></div>
+                        <div className="absolute w-12 xl:w-16 h-4 xl:h-5 3xl:w-24 3xl:h-8 bg-secondary rounded-sm 3xl:rounded-lg bottom-6 left-6"></div>
+                        <div className="absolute w-12 xl:w-16 h-4 xl:h-5 3xl:w-24 3xl:h-8 bg-secondary rounded-sm 3xl:rounded-lg bottom-4 right-5"></div>
                         <img
-                            className="absolute 3xl:w-24 top-11 right-12 3xl:top-14"
+                            className="absolute w-12 xl:w-16 3xl:w-24 top-11 right-12 3xl:top-14"
                             src={rectangle}
                             alt="vector"
                         />
                         <img
-                            className="absolute 3xl:w-24 bottom-11 left-12 3xl:bottom-14"
+                            className="absolute w-12 xl:w-16 3xl:w-24 bottom-11 left-12 3xl:bottom-14"
                             src={rectangle}
                             alt="vector"
                         />
                         <img
-                            className="absolute 3xl:w-24 bottom-12 right-8 3xl:bottom-20"
+                            className="absolute w-12 xl:w-16 3xl:w-24 bottom-12 right-8 3xl:bottom-20"
                             src={rectangle}
                             alt="vector"
                         />
@@ -225,7 +230,7 @@ function SwitchButton({ switchForm, target, active }) {
     return (
         <button
             onClick={() => switchForm(target)}
-            className={`p-2 3xl:p-4 font-medium ${
+            className={`p-1.5 md:p-2 xl:p-2 3xl:p-3 font-medium ${
                 active == target
                     ? "bg-primary text-white"
                     : "bg-white text-primary"
@@ -244,7 +249,7 @@ function Input({ type, id, label, value, onChange }) {
                 onChange={onChange}
                 id={id}
                 type={type}
-                className="w-full border-2 border-primary placeholder-shown:border-light-grey font-poppins xl:rounded-lg 3xl:rounded-xl p-3 px-6 3xl:p-6 3xl:px-8 focus:outline-none focus:border-primary peer"
+                className="w-full border-1 xl:border-2 border-primary placeholder-shown:border-light-grey font-poppins rounded-md xl:rounded-lg 3xl:rounded-xl pt-2 pb-1 md:pt-3 md:pb-2 3xl:pt-5 3xl:pb-3 px-3 md:px-4 xl:px-5 3xl:px-6 focus:outline-none focus:border-primary peer"
                 placeholder=" "
             />
             <label
@@ -261,9 +266,101 @@ function SubmitButton({ children }) {
     return (
         <button
             type="submit"
-            className="w-4/12 mx-auto border-2 border-primary text-primary hover:text-white hover:bg-primary font-poppins font-medium xl:rounded-lg 3xl:rounded-xl p-3"
+            className="w-4/12 mx-auto border-1 xl:border-2 border-primary text-primary hover:text-white hover:bg-primary font-poppins font-medium rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2"
         >
             {children}
         </button>
     );
+}
+
+function TECollapseItem ({ children }) {
+    return (
+        <>
+            <br />
+            <div className="grid gap-4 lg:gap-3 xl:gap-4 3xl:gap-6 text-start py-4 px-6 xl:py-3 xl:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 bg-white shadow-centered rounded-md">
+                {children}
+            </div>
+        </>
+    );
+}
+
+function Header ({title}) {
+    const [mobileNavbar, setMobileNavbar] = useState(false)
+
+    return (
+        <header className="xl:hidden fixed w-screen top-0 right-0 text-dark lg:text-base z-50">
+            <div className="hidden xl:h-24 3xl:h-36"></div>{" "}
+            {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
+            <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 duration-500">
+                <div className="w-6/12 md:w-5/12 lg:w-4/12 xl:w-auto">
+                    <Link href="/">
+                        <img
+                            className="w-full 3xl:h-10 mb-1 xl:mb-2"
+                            src={icon}
+                            alt="Goals Academy"
+                        />
+                    </Link>
+                </div>
+                <div>
+                    <button onClick={() => setMobileNavbar(true)}><i className={`fa-solid fa-bars icon text-28 duration-300 text-white ${mobileNavbar ? 'opacity-0 rotate-180' : ''}`}></i></button>
+                </div>
+                <NavbarMobile title={title} mobileNavbar={mobileNavbar} setMobileNavbar={setMobileNavbar} />
+            </nav>
+        </header>
+    )
+}
+
+function NavbarMobile ({ title, mobileNavbar, setMobileNavbar }) {
+    const [profileDropdownMobile, setProfileDropdownMobile] = useState(false);
+    return (
+        <>
+            <div className={`xl:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold text-white h-screen py-6 xs:py-8 duration-500 ${mobileNavbar ? '' : 'opacity-0 translate-x-[110%]'}`}>
+                <div className="container mx-auto">
+                    <div className="flex justify-end mb-6 xs:mb-8">
+                        <button onClick={() => setMobileNavbar(false)}><i className={`fa-solid fa-xmark icon text-dark text-36`}></i></button>
+                    </div>
+                    <div className="grid gap-8">
+                        <Link href="/produk" className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${title == 'Produk' ? 'font' : ''}`}>
+                            Produk
+                            <CornerWaveVector cornerClassName="w-4/12" />
+                            <i className="fa-solid fa-arrow-up rotate-45 nav-icon"></i>
+                        </Link>
+                        <Link href="/artikel" className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${title == 'Artikel' ? 'font' : ''}`}>
+                            Artikel
+                            <CornerWaveVector cornerClassName="w-4/12" />
+                            <i className="fa-solid fa-arrow-up rotate-45 nav-icon"></i>
+                        </Link>
+                        <Link href="/diskusi" className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${title == 'Diskusi' ? 'font' : ''}`}>
+                            Diskusi
+                            <CornerWaveVector cornerClassName="w-4/12" />
+                            <i className="fa-solid fa-arrow-up rotate-45 nav-icon"></i>
+                        </Link>
+                        <Link href="/karir" className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${title == 'Karir' ? 'font' : ''}`}>
+                            Karir
+                            <CornerWaveVector cornerClassName="w-4/12" />
+                            <i className="fa-solid fa-arrow-up rotate-45 nav-icon"></i>
+                        </Link>
+                        <button
+                        className={`w-full relative font-poppins flex justify-center`}
+                        >
+                            <span className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 w-full ${title == 'Profil Perusahaan' || title == 'Profil Tutor' ? 'font' : ''}`}
+                            onClick={() => setProfileDropdownMobile(!profileDropdownMobile)}
+                            >
+                                Profil
+                                <CornerWaveVector cornerClassName="w-4/12" />
+                                <i className={`fa-solid fa-chevron-down nav-icon duration-300 ${profileDropdownMobile ? 'rotate-180' : ''}`}></i>
+                            </span>
+                            <TECollapse show={profileDropdownMobile} className="absolute -z-10 top-10 text-dark shadow-none p-1 w-full">
+                                <TECollapseItem>
+                                    <Link className="font-poppins" href="/profil_perusahaan">Profil Perusahaan</Link>
+                                    <Link className="font-poppins" href="/profil_tutor">Profil Tutor</Link>
+                                </TECollapseItem>
+                            </TECollapse>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div className={`absolute z-30 top-0 left-0 h-screen w-screen bg-dark bg-opacity-50 xl:hidden ${mobileNavbar ? '' : 'hidden'}`} onClick={() => setMobileNavbar(false)}></div>
+        </>
+    )
 }
