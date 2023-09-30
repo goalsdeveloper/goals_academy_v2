@@ -1,88 +1,22 @@
 {
-  "_BimbinganCard-34516023.js": {
-    "file": "assets/BimbinganCard-34516023.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_ButtonPill-8997be61.js"
-    ]
-  },
-  "_ButtonHoverSlide-04e86315.js": {
-    "file": "assets/ButtonHoverSlide-04e86315.js",
+  "_ButtonHoverSlide-3e521152.js": {
+    "file": "assets/ButtonHoverSlide-3e521152.js",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_ButtonPill-8997be61.js": {
-    "file": "assets/ButtonPill-8997be61.js",
-    "imports": [
-      "resources/js/app.jsx"
-    ]
-  },
-  "_ButtonSwiper-5f5cde1f.js": {
-    "file": "assets/ButtonSwiper-5f5cde1f.js",
+  "_ButtonSwiper-63e501f6.js": {
+    "file": "assets/ButtonSwiper-63e501f6.js",
     "imports": [
       "resources/js/app.jsx",
-      "_ButtonHoverSlide-04e86315.js"
+      "_ButtonHoverSlide-3e521152.js"
     ]
   },
-  "_CornerWaveVector-61320bc1.js": {
-    "assets": [
-      "assets/wave-1-1a4afa5c.svg",
-      "assets/wave-2-18700b28.svg"
-    ],
-    "file": "assets/CornerWaveVector-61320bc1.js",
-    "imports": [
-      "resources/js/app.jsx"
-    ]
-  },
-  "_MainLayout-9a76eec2.js": {
-    "assets": [
-      "assets/user-784106eb.png",
-      "assets/goals-1-d96b30d3.svg"
-    ],
-    "file": "assets/MainLayout-9a76eec2.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_goals-3-4574e2e0.js",
-      "_tw-elements-react.es.min-dfc5e4a2.js",
-      "_ButtonHoverSlide-04e86315.js",
-      "_CornerWaveVector-61320bc1.js"
-    ]
-  },
-  "_a11y-5548736b.js": {
+  "_a11y-710312c9.js": {
     "css": [
       "assets/a11y-d6fc63cb.css"
     ],
-    "file": "assets/a11y-5548736b.js",
-    "imports": [
-      "resources/js/app.jsx"
-    ]
-  },
-  "_dibimbing-olah-data-7ebb6913.js": {
-    "assets": [
-      "assets/dibimbing-sekali-a15bf5ac.png",
-      "assets/dibimbing-tuntas-4a8d41ab.png",
-      "assets/dibimbing-olah-data-b6057a73.png"
-    ],
-    "file": "assets/dibimbing-olah-data-7ebb6913.js"
-  },
-  "_free-mode-2ffcbd93.js": {
-    "file": "assets/free-mode-2ffcbd93.js",
-    "imports": [
-      "_a11y-5548736b.js"
-    ]
-  },
-  "_goals-3-4574e2e0.js": {
-    "assets": [
-      "assets/goals-3-1442ea32.svg"
-    ],
-    "css": [
-      "assets/goals-3-2a132e55.css"
-    ],
-    "file": "assets/goals-3-4574e2e0.js"
-  },
-  "_tw-elements-react.es.min-dfc5e4a2.js": {
-    "file": "assets/tw-elements-react.es.min-dfc5e4a2.js",
+    "file": "assets/a11y-710312c9.js",
     "imports": [
       "resources/js/app.jsx"
     ]
@@ -91,726 +25,209 @@
     "file": "assets/a11y-d6fc63cb.css",
     "src": "a11y.css"
   },
-  "goals-3.css": {
-    "file": "assets/goals-3-2a132e55.css",
-    "src": "goals-3.css"
-  },
-  "resources/img/ebook/1.png": {
-    "file": "assets/1-1704d2c5.png",
-    "src": "resources/img/ebook/1.png"
-  },
-  "resources/img/ebook/2.png": {
-    "file": "assets/2-5a8973e5.png",
-    "src": "resources/img/ebook/2.png"
-  },
-  "resources/img/ebook/3.png": {
-    "file": "assets/3-e81d6416.png",
-    "src": "resources/img/ebook/3.png"
-  },
-  "resources/img/figure/1.svg": {
-    "file": "assets/1-6e6418ce.svg",
-    "src": "resources/img/figure/1.svg"
-  },
-  "resources/img/figure/2.svg": {
-    "file": "assets/2-f2ae9ff3.svg",
-    "src": "resources/img/figure/2.svg"
-  },
-  "resources/img/figure/3.svg": {
-    "file": "assets/3-c14682c8.svg",
-    "src": "resources/img/figure/3.svg"
-  },
-  "resources/img/figure/4.svg": {
-    "file": "assets/4-ca780f27.svg",
-    "src": "resources/img/figure/4.svg"
-  },
-  "resources/img/figure/5.svg": {
-    "file": "assets/5-c835cd0f.svg",
-    "src": "resources/img/figure/5.svg"
-  },
-  "resources/img/figure/6.svg": {
-    "file": "assets/6-46b81fb1.svg",
-    "src": "resources/img/figure/6.svg"
-  },
-  "resources/img/figure/7.svg": {
-    "file": "assets/7-27b65934.svg",
-    "src": "resources/img/figure/7.svg"
-  },
-  "resources/img/icon/arrow-right-16.svg": {
-    "file": "assets/arrow-right-16-f5f1a07c.svg",
-    "src": "resources/img/icon/arrow-right-16.svg"
-  },
-  "resources/img/icon/arrow-right-20.svg": {
+  "resources/img/arrow-right-20.svg": {
     "file": "assets/arrow-right-20-9857cce3.svg",
-    "src": "resources/img/icon/arrow-right-20.svg"
+    "src": "resources/img/arrow-right-20.svg"
   },
-  "resources/img/icon/arrow-right-32.svg": {
+  "resources/img/arrow-right-32.svg": {
     "file": "assets/arrow-right-32-676455bf.svg",
-    "src": "resources/img/icon/arrow-right-32.svg"
+    "src": "resources/img/arrow-right-32.svg"
   },
-  "resources/img/icon/facebook.svg": {
-    "file": "assets/facebook-e62407f8.svg",
-    "src": "resources/img/icon/facebook.svg"
+  "resources/img/figure-1.svg": {
+    "file": "assets/figure-1-6e6418ce.svg",
+    "src": "resources/img/figure-1.svg"
   },
-  "resources/img/icon/goals-1.svg": {
-    "file": "assets/goals-1-d96b30d3.svg",
-    "src": "resources/img/icon/goals-1.svg"
+  "resources/img/figure-2.svg": {
+    "file": "assets/figure-2-f2ae9ff3.svg",
+    "src": "resources/img/figure-2.svg"
   },
-  "resources/img/icon/goals-2.svg": {
-    "file": "assets/goals-2-54710dce.svg",
-    "src": "resources/img/icon/goals-2.svg"
+  "resources/img/figure-3.svg": {
+    "file": "assets/figure-3-c14682c8.svg",
+    "src": "resources/img/figure-3.svg"
   },
-  "resources/img/icon/goals-3.svg": {
-    "file": "assets/goals-3-1442ea32.svg",
-    "src": "resources/img/icon/goals-3.svg"
+  "resources/img/icon-primary.svg": {
+    "file": "assets/icon-primary-54710dce.svg",
+    "src": "resources/img/icon-primary.svg"
   },
-  "resources/img/icon/goals-4.svg": {
-    "file": "assets/goals-4-2f9e347c.svg",
-    "src": "resources/img/icon/goals-4.svg"
+  "resources/img/logo-white.svg": {
+    "file": "assets/logo-white-1442ea32.svg",
+    "src": "resources/img/logo-white.svg"
   },
-  "resources/img/icon/google.svg": {
-    "file": "assets/google-d0b4442e.svg",
-    "src": "resources/img/icon/google.svg"
+  "resources/img/logo.svg": {
+    "file": "assets/logo-d96b30d3.svg",
+    "src": "resources/img/logo.svg"
   },
-  "resources/img/icon/mail-20.svg": {
+  "resources/img/mail-20.svg": {
     "file": "assets/mail-20-c61c2fb0.svg",
-    "src": "resources/img/icon/mail-20.svg"
+    "src": "resources/img/mail-20.svg"
   },
-  "resources/img/icon/mail-32.svg": {
+  "resources/img/mail-32.svg": {
     "file": "assets/mail-32-ca8d2f30.svg",
-    "src": "resources/img/icon/mail-32.svg"
+    "src": "resources/img/mail-32.svg"
   },
-  "resources/img/icon/user.png": {
+  "resources/img/program-dibimbing-olah-data.png": {
+    "file": "assets/program-dibimbing-olah-data-b6057a73.png",
+    "src": "resources/img/program-dibimbing-olah-data.png"
+  },
+  "resources/img/program-dibimbing-sekali.png": {
+    "file": "assets/program-dibimbing-sekali-a15bf5ac.png",
+    "src": "resources/img/program-dibimbing-sekali.png"
+  },
+  "resources/img/program-dibimbing-tuntas.png": {
+    "file": "assets/program-dibimbing-tuntas-4a8d41ab.png",
+    "src": "resources/img/program-dibimbing-tuntas.png"
+  },
+  "resources/img/program-e-book-skripsi.png": {
+    "file": "assets/program-e-book-skripsi-59e467ad.png",
+    "src": "resources/img/program-e-book-skripsi.png"
+  },
+  "resources/img/quote-primary.svg": {
+    "file": "assets/quote-primary-07ad5110.svg",
+    "src": "resources/img/quote-primary.svg"
+  },
+  "resources/img/user.png": {
     "file": "assets/user-784106eb.png",
-    "src": "resources/img/icon/user.png"
+    "src": "resources/img/user.png"
   },
-  "resources/img/karir/academic-internship.png": {
-    "file": "assets/academic-internship-a9acb8d3.png",
-    "src": "resources/img/karir/academic-internship.png"
-  },
-  "resources/img/karir/brand-ambassador.png": {
-    "file": "assets/brand-ambassador-b89bbdf2.png",
-    "src": "resources/img/karir/brand-ambassador.png"
-  },
-  "resources/img/karir/tutor-olah-data.png": {
-    "file": "assets/tutor-olah-data-de206a1c.png",
-    "src": "resources/img/karir/tutor-olah-data.png"
-  },
-  "resources/img/karir/tutor-skripsi.png": {
-    "file": "assets/tutor-skripsi-1676298e.png",
-    "src": "resources/img/karir/tutor-skripsi.png"
-  },
-  "resources/img/produk/bg-bimbingan.png": {
-    "file": "assets/bg-bimbingan-9eaab00e.png",
-    "src": "resources/img/produk/bg-bimbingan.png"
-  },
-  "resources/img/produk/bg-ebook.png": {
-    "file": "assets/bg-ebook-90b71f0a.png",
-    "src": "resources/img/produk/bg-ebook.png"
-  },
-  "resources/img/produk/bg-webinar.png": {
-    "file": "assets/bg-webinar-a673bbd8.png",
-    "src": "resources/img/produk/bg-webinar.png"
-  },
-  "resources/img/produk/bimbingan.svg": {
-    "file": "assets/bimbingan-8b1abfee.svg",
-    "src": "resources/img/produk/bimbingan.svg"
-  },
-  "resources/img/produk/ebook.svg": {
-    "file": "assets/ebook-db13577a.svg",
-    "src": "resources/img/produk/ebook.svg"
-  },
-  "resources/img/produk/webinar.svg": {
-    "file": "assets/webinar-8ffc9685.svg",
-    "src": "resources/img/produk/webinar.svg"
-  },
-  "resources/img/program/dibimbing-olah-data.png": {
-    "file": "assets/dibimbing-olah-data-b6057a73.png",
-    "src": "resources/img/program/dibimbing-olah-data.png"
-  },
-  "resources/img/program/dibimbing-sekali.png": {
-    "file": "assets/dibimbing-sekali-a15bf5ac.png",
-    "src": "resources/img/program/dibimbing-sekali.png"
-  },
-  "resources/img/program/dibimbing-tuntas.png": {
-    "file": "assets/dibimbing-tuntas-4a8d41ab.png",
-    "src": "resources/img/program/dibimbing-tuntas.png"
-  },
-  "resources/img/program/e-book-skripsi.png": {
-    "file": "assets/e-book-skripsi-59e467ad.png",
-    "src": "resources/img/program/e-book-skripsi.png"
-  },
-  "resources/img/testimony/ferry.jpg": {
-    "file": "assets/ferry-f7366948.jpg",
-    "src": "resources/img/testimony/ferry.jpg"
-  },
-  "resources/img/testimony/haris.jpg": {
-    "file": "assets/haris-d29ef7d7.jpg",
-    "src": "resources/img/testimony/haris.jpg"
-  },
-  "resources/img/testimony/herinda.jpg": {
-    "file": "assets/herinda-1cc07085.jpg",
-    "src": "resources/img/testimony/herinda.jpg"
-  },
-  "resources/img/testimony/khafidh.jpg": {
-    "file": "assets/khafidh-51bb2f53.jpg",
-    "src": "resources/img/testimony/khafidh.jpg"
-  },
-  "resources/img/testimony/ludi.jpg": {
-    "file": "assets/ludi-5334daa3.jpg",
-    "src": "resources/img/testimony/ludi.jpg"
-  },
-  "resources/img/testimony/ravly.jpg": {
-    "file": "assets/ravly-b56b33fc.jpg",
-    "src": "resources/img/testimony/ravly.jpg"
-  },
-  "resources/img/testimony/roziqin.jpg": {
-    "file": "assets/roziqin-af2871d8.jpg",
-    "src": "resources/img/testimony/roziqin.jpg"
-  },
-  "resources/img/testimony/wendi.jpg": {
-    "file": "assets/wendi-c59b7083.jpg",
-    "src": "resources/img/testimony/wendi.jpg"
-  },
-  "resources/img/testimony/zaqya.jpg": {
-    "file": "assets/zaqya-d0d04011.jpg",
-    "src": "resources/img/testimony/zaqya.jpg"
-  },
-  "resources/img/tim/oka.png": {
-    "file": "assets/oka-56c46377.png",
-    "src": "resources/img/tim/oka.png"
-  },
-  "resources/img/tim/rian.png": {
-    "file": "assets/rian-aa4da5ec.png",
-    "src": "resources/img/tim/rian.png"
-  },
-  "resources/img/tim/timo.png": {
-    "file": "assets/timo-e20840b9.png",
-    "src": "resources/img/tim/timo.png"
-  },
-  "resources/img/tim/yordhan.png": {
-    "file": "assets/yordhan-6802a582.png",
-    "src": "resources/img/tim/yordhan.png"
-  },
-  "resources/img/tutor/1.png": {
-    "file": "assets/1-9649edec.png",
-    "src": "resources/img/tutor/1.png"
-  },
-  "resources/img/tutor/2.png": {
-    "file": "assets/2-47d943ad.png",
-    "src": "resources/img/tutor/2.png"
-  },
-  "resources/img/tutor/3.png": {
-    "file": "assets/3-f9c90a09.png",
-    "src": "resources/img/tutor/3.png"
-  },
-  "resources/img/tutor/4.png": {
-    "file": "assets/4-d03e1843.png",
-    "src": "resources/img/tutor/4.png"
-  },
-  "resources/img/tutor/5.png": {
-    "file": "assets/5-b4e91ecd.png",
-    "src": "resources/img/tutor/5.png"
-  },
-  "resources/img/tutor/6.png": {
-    "file": "assets/6-a86fc661.png",
-    "src": "resources/img/tutor/6.png"
-  },
-  "resources/img/vector/rectangle-1.svg": {
-    "file": "assets/rectangle-1-39a24194.svg",
-    "src": "resources/img/vector/rectangle-1.svg"
-  },
-  "resources/img/vector/tree-1.svg": {
-    "file": "assets/tree-1-f7ca02dc.svg",
-    "src": "resources/img/vector/tree-1.svg"
-  },
-  "resources/img/vector/tree-2.svg": {
-    "file": "assets/tree-2-478c1329.svg",
-    "src": "resources/img/vector/tree-2.svg"
-  },
-  "resources/img/vector/wave-1.svg": {
-    "file": "assets/wave-1-1a4afa5c.svg",
-    "src": "resources/img/vector/wave-1.svg"
-  },
-  "resources/img/vector/wave-2.svg": {
-    "file": "assets/wave-2-18700b28.svg",
-    "src": "resources/img/vector/wave-2.svg"
-  },
-  "resources/img/webinar/1.png": {
-    "file": "assets/1-f17f19cf.png",
-    "src": "resources/img/webinar/1.png"
-  },
-  "resources/img/webinar/2.png": {
-    "file": "assets/2-f75b9e3f.png",
-    "src": "resources/img/webinar/2.png"
-  },
-  "resources/img/webinar/3.png": {
-    "file": "assets/3-e66048ad.png",
-    "src": "resources/img/webinar/3.png"
-  },
-  "resources/js/Pages/Auth/Form.jsx": {
-    "assets": [
-      "assets/7-27b65934.svg",
-      "assets/rectangle-1-39a24194.svg",
-      "assets/goals-4-2f9e347c.svg"
-    ],
-    "file": "assets/Form-b7a16e10.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_goals-3-4574e2e0.js",
-      "_CornerWaveVector-61320bc1.js",
-      "_tw-elements-react.es.min-dfc5e4a2.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Auth/Form.jsx"
+  "resources/js/Pages/Index.css": {
+    "file": "assets/Index-48c1fb01.css",
+    "src": "resources/js/Pages/Index.css"
   },
   "resources/js/Pages/Index.jsx": {
     "assets": [
-      "assets/wendi-c59b7083.jpg",
-      "assets/roziqin-af2871d8.jpg",
-      "assets/ravly-b56b33fc.jpg",
-      "assets/zaqya-d0d04011.jpg",
-      "assets/haris-d29ef7d7.jpg",
-      "assets/ferry-f7366948.jpg",
-      "assets/herinda-1cc07085.jpg",
-      "assets/khafidh-51bb2f53.jpg",
-      "assets/ludi-5334daa3.jpg"
+      "assets/logo-d96b30d3.svg",
+      "assets/logo-white-1442ea32.svg"
     ],
-    "file": "assets/Index-d0a45623.js",
+    "css": [
+      "assets/Index-48c1fb01.css"
+    ],
+    "file": "assets/Index-975894eb.js",
     "imports": [
       "resources/js/app.jsx",
-      "_MainLayout-9a76eec2.js",
-      "resources/js/Pages/Partials/Home/Hero.jsx",
-      "resources/js/Pages/Partials/Home/Preliminary.jsx",
-      "resources/js/Pages/Partials/Home/Program.jsx",
-      "resources/js/Pages/Partials/Home/Video.jsx",
-      "resources/js/Pages/Partials/Home/Testimony.jsx",
-      "resources/js/Pages/Partials/Home/FAQ.jsx",
-      "resources/js/Pages/Partials/Home/Consultation.jsx",
-      "_CornerWaveVector-61320bc1.js",
-      "_dibimbing-olah-data-7ebb6913.js",
-      "_goals-3-4574e2e0.js",
-      "_tw-elements-react.es.min-dfc5e4a2.js",
-      "_ButtonHoverSlide-04e86315.js",
-      "_a11y-5548736b.js",
-      "_free-mode-2ffcbd93.js",
-      "_ButtonSwiper-5f5cde1f.js",
-      "_BimbinganCard-34516023.js",
-      "_ButtonPill-8997be61.js"
+      "_ButtonHoverSlide-3e521152.js",
+      "resources/js/Pages/Partials/LandingPage/Hero.jsx",
+      "resources/js/Pages/Partials/LandingPage/Introduction.jsx",
+      "resources/js/Pages/Partials/LandingPage/Program.jsx",
+      "resources/js/Pages/Partials/LandingPage/Video.jsx",
+      "resources/js/Pages/Partials/LandingPage/Testimony.jsx",
+      "resources/js/Pages/Partials/LandingPage/FAQ.jsx",
+      "resources/js/Pages/Partials/LandingPage/Consultation.jsx",
+      "_a11y-710312c9.js",
+      "_ButtonSwiper-63e501f6.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Index.jsx"
   },
-  "resources/js/Pages/Main/Karir.jsx": {
-    "assets": [
-      "assets/tutor-skripsi-1676298e.png",
-      "assets/brand-ambassador-b89bbdf2.png",
-      "assets/tutor-olah-data-de206a1c.png",
-      "assets/academic-internship-a9acb8d3.png"
-    ],
-    "file": "assets/Karir-921427ba.js",
+  "resources/js/Pages/Partials/LandingPage/Consultation.jsx": {
+    "file": "assets/Consultation-c20c2cc9.js",
     "imports": [
       "resources/js/app.jsx",
-      "_MainLayout-9a76eec2.js",
-      "resources/js/Pages/Partials/Karir/Hero.jsx",
-      "resources/js/Pages/Partials/Karir/RegistrationSteps.jsx",
-      "resources/js/Pages/Partials/Karir/CareerList.jsx",
-      "_goals-3-4574e2e0.js",
-      "_tw-elements-react.es.min-dfc5e4a2.js",
-      "_ButtonHoverSlide-04e86315.js",
-      "_CornerWaveVector-61320bc1.js",
-      "_a11y-5548736b.js",
-      "_free-mode-2ffcbd93.js",
-      "_ButtonSwiper-5f5cde1f.js"
+      "_ButtonHoverSlide-3e521152.js"
     ],
     "isDynamicEntry": true,
-    "src": "resources/js/Pages/Main/Karir.jsx"
+    "src": "resources/js/Pages/Partials/LandingPage/Consultation.jsx"
   },
-  "resources/js/Pages/Main/Produk.jsx": {
+  "resources/js/Pages/Partials/LandingPage/FAQ.jsx": {
     "assets": [
-      "assets/1-1704d2c5.png",
-      "assets/2-5a8973e5.png",
-      "assets/3-e81d6416.png",
-      "assets/1-f17f19cf.png",
-      "assets/2-f75b9e3f.png",
-      "assets/3-e66048ad.png"
+      "assets/figure-3-c14682c8.svg"
     ],
-    "file": "assets/Produk-c8ac29da.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_MainLayout-9a76eec2.js",
-      "resources/js/Pages/Partials/Produk/Filter.jsx",
-      "resources/js/Pages/Partials/Produk/Bimbingan.jsx",
-      "resources/js/Pages/Partials/Produk/Ebook.jsx",
-      "resources/js/Pages/Partials/Produk/Webinar.jsx",
-      "resources/js/Pages/Partials/Produk/Consultation.jsx",
-      "_dibimbing-olah-data-7ebb6913.js",
-      "resources/js/Pages/Partials/Produk/SearchBar.jsx",
-      "_goals-3-4574e2e0.js",
-      "_tw-elements-react.es.min-dfc5e4a2.js",
-      "_ButtonHoverSlide-04e86315.js",
-      "_CornerWaveVector-61320bc1.js",
-      "_a11y-5548736b.js",
-      "_free-mode-2ffcbd93.js",
-      "_ButtonSwiper-5f5cde1f.js",
-      "_BimbinganCard-34516023.js",
-      "_ButtonPill-8997be61.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Main/Produk.jsx"
-  },
-  "resources/js/Pages/Main/ProfilPerusahaan.jsx": {
-    "assets": [
-      "assets/rian-aa4da5ec.png",
-      "assets/timo-e20840b9.png",
-      "assets/oka-56c46377.png"
-    ],
-    "file": "assets/ProfilPerusahaan-8d83c0b5.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_MainLayout-9a76eec2.js",
-      "resources/js/Pages/Partials/ProfilPerusahaan/Hero.jsx",
-      "resources/js/Pages/Partials/ProfilPerusahaan/Preliminary.jsx",
-      "resources/js/Pages/Partials/ProfilPerusahaan/Team.jsx",
-      "_goals-3-4574e2e0.js",
-      "_tw-elements-react.es.min-dfc5e4a2.js",
-      "_ButtonHoverSlide-04e86315.js",
-      "_CornerWaveVector-61320bc1.js",
-      "_a11y-5548736b.js",
-      "_free-mode-2ffcbd93.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Main/ProfilPerusahaan.jsx"
-  },
-  "resources/js/Pages/Main/ProfilTutor.jsx": {
-    "assets": [
-      "assets/1-9649edec.png",
-      "assets/2-47d943ad.png",
-      "assets/3-f9c90a09.png",
-      "assets/4-d03e1843.png",
-      "assets/5-b4e91ecd.png",
-      "assets/6-a86fc661.png"
-    ],
-    "file": "assets/ProfilTutor-6976d974.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_MainLayout-9a76eec2.js",
-      "resources/js/Pages/Partials/ProfilTutor/Hero.jsx",
-      "resources/js/Pages/Partials/ProfilTutor/TutorList.jsx",
-      "resources/js/Pages/Partials/ProfilTutor/Consultation.jsx",
-      "_goals-3-4574e2e0.js",
-      "_tw-elements-react.es.min-dfc5e4a2.js",
-      "_ButtonHoverSlide-04e86315.js",
-      "_CornerWaveVector-61320bc1.js",
-      "_a11y-5548736b.js",
-      "_free-mode-2ffcbd93.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Main/ProfilTutor.jsx"
-  },
-  "resources/js/Pages/Partials/Home/Consultation.jsx": {
-    "file": "assets/Consultation-d25fb016.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_ButtonHoverSlide-04e86315.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Home/Consultation.jsx"
-  },
-  "resources/js/Pages/Partials/Home/FAQ.jsx": {
-    "assets": [
-      "assets/3-c14682c8.svg"
-    ],
-    "file": "assets/FAQ-c9dab9c0.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_tw-elements-react.es.min-dfc5e4a2.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Home/FAQ.jsx"
-  },
-  "resources/js/Pages/Partials/Home/Hero.jsx": {
-    "assets": [
-      "assets/1-6e6418ce.svg"
-    ],
-    "file": "assets/Hero-ecc7b2df.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_ButtonHoverSlide-04e86315.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Home/Hero.jsx"
-  },
-  "resources/js/Pages/Partials/Home/Preliminary.jsx": {
-    "assets": [
-      "assets/2-f2ae9ff3.svg"
-    ],
-    "file": "assets/Preliminary-138bbac7.js",
+    "file": "assets/FAQ-92b7f718.js",
     "imports": [
       "resources/js/app.jsx"
     ],
     "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Home/Preliminary.jsx"
+    "src": "resources/js/Pages/Partials/LandingPage/FAQ.jsx"
   },
-  "resources/js/Pages/Partials/Home/Program.jsx": {
-    "file": "assets/Program-fab6e789.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_a11y-5548736b.js",
-      "_free-mode-2ffcbd93.js",
-      "_ButtonSwiper-5f5cde1f.js",
-      "_BimbinganCard-34516023.js",
-      "_ButtonHoverSlide-04e86315.js",
-      "_ButtonPill-8997be61.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Home/Program.jsx"
-  },
-  "resources/js/Pages/Partials/Home/Testimony.jsx": {
-    "file": "assets/Testimony-7bdc3a34.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_a11y-5548736b.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Home/Testimony.jsx"
-  },
-  "resources/js/Pages/Partials/Home/Video.jsx": {
-    "file": "assets/Video-765c9d91.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_a11y-5548736b.js",
-      "_ButtonSwiper-5f5cde1f.js",
-      "_ButtonHoverSlide-04e86315.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Home/Video.jsx"
-  },
-  "resources/js/Pages/Partials/Karir/CareerList.jsx": {
-    "file": "assets/CareerList-182b2d9a.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_a11y-5548736b.js",
-      "_free-mode-2ffcbd93.js",
-      "_ButtonSwiper-5f5cde1f.js",
-      "_ButtonHoverSlide-04e86315.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Karir/CareerList.jsx"
-  },
-  "resources/js/Pages/Partials/Karir/Hero.jsx": {
+  "resources/js/Pages/Partials/LandingPage/Hero.jsx": {
     "assets": [
-      "assets/4-ca780f27.svg"
+      "assets/figure-1-6e6418ce.svg"
     ],
-    "file": "assets/Hero-4b3f1a5d.js",
+    "file": "assets/Hero-cc7d91ad.js",
     "imports": [
       "resources/js/app.jsx",
-      "_ButtonHoverSlide-04e86315.js"
+      "_ButtonHoverSlide-3e521152.js"
     ],
     "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Karir/Hero.jsx"
+    "src": "resources/js/Pages/Partials/LandingPage/Hero.jsx"
   },
-  "resources/js/Pages/Partials/Karir/RegistrationSteps.jsx": {
-    "file": "assets/RegistrationSteps-32d14ca7.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_CornerWaveVector-61320bc1.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Karir/RegistrationSteps.jsx"
-  },
-  "resources/js/Pages/Partials/Produk/Bimbingan.jsx": {
-    "file": "assets/Bimbingan-92c21bf5.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_a11y-5548736b.js",
-      "_free-mode-2ffcbd93.js",
-      "_ButtonSwiper-5f5cde1f.js",
-      "_BimbinganCard-34516023.js",
-      "_ButtonHoverSlide-04e86315.js",
-      "_ButtonPill-8997be61.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Produk/Bimbingan.jsx"
-  },
-  "resources/js/Pages/Partials/Produk/Consultation.jsx": {
-    "file": "assets/Consultation-19100c8b.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_ButtonHoverSlide-04e86315.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Produk/Consultation.jsx"
-  },
-  "resources/js/Pages/Partials/Produk/Ebook.jsx": {
-    "file": "assets/Ebook-70c58146.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_a11y-5548736b.js",
-      "_free-mode-2ffcbd93.js",
-      "_ButtonSwiper-5f5cde1f.js",
-      "_ButtonPill-8997be61.js",
-      "_ButtonHoverSlide-04e86315.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Produk/Ebook.jsx"
-  },
-  "resources/js/Pages/Partials/Produk/Filter.jsx": {
+  "resources/js/Pages/Partials/LandingPage/Introduction.jsx": {
     "assets": [
-      "assets/bimbingan-8b1abfee.svg",
-      "assets/ebook-db13577a.svg",
-      "assets/webinar-8ffc9685.svg"
+      "assets/figure-2-f2ae9ff3.svg"
     ],
-    "file": "assets/Filter-6759f054.js",
+    "file": "assets/Introduction-2206c89b.js",
     "imports": [
       "resources/js/app.jsx"
     ],
     "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Produk/Filter.jsx"
+    "src": "resources/js/Pages/Partials/LandingPage/Introduction.jsx"
   },
-  "resources/js/Pages/Partials/Produk/SearchBar.jsx": {
-    "file": "assets/SearchBar-c0dedca8.js",
-    "imports": [
-      "resources/js/app.jsx"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Produk/SearchBar.jsx"
-  },
-  "resources/js/Pages/Partials/Produk/Webinar.jsx": {
-    "file": "assets/Webinar-ad8545fc.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_a11y-5548736b.js",
-      "_free-mode-2ffcbd93.js",
-      "_ButtonSwiper-5f5cde1f.js",
-      "_ButtonPill-8997be61.js",
-      "_ButtonHoverSlide-04e86315.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/Produk/Webinar.jsx"
-  },
-  "resources/js/Pages/Partials/ProfilPerusahaan/Hero.jsx": {
+  "resources/js/Pages/Partials/LandingPage/Program.jsx": {
     "assets": [
-      "assets/5-c835cd0f.svg"
+      "assets/program-dibimbing-sekali-a15bf5ac.png",
+      "assets/program-dibimbing-tuntas-4a8d41ab.png",
+      "assets/program-dibimbing-olah-data-b6057a73.png",
+      "assets/program-e-book-skripsi-59e467ad.png"
     ],
-    "file": "assets/Hero-1660fdd0.js",
-    "imports": [
-      "resources/js/app.jsx"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/ProfilPerusahaan/Hero.jsx"
-  },
-  "resources/js/Pages/Partials/ProfilPerusahaan/Preliminary.jsx": {
-    "file": "assets/Preliminary-153a46af.js",
+    "file": "assets/Program-7804364c.js",
     "imports": [
       "resources/js/app.jsx",
-      "_CornerWaveVector-61320bc1.js"
+      "_a11y-710312c9.js",
+      "_ButtonSwiper-63e501f6.js",
+      "_ButtonHoverSlide-3e521152.js"
     ],
     "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/ProfilPerusahaan/Preliminary.jsx"
+    "src": "resources/js/Pages/Partials/LandingPage/Program.jsx"
   },
-  "resources/js/Pages/Partials/ProfilPerusahaan/Team.jsx": {
+  "resources/js/Pages/Partials/LandingPage/Testimony.jsx": {
     "assets": [
-      "assets/yordhan-6802a582.png"
+      "assets/user-784106eb.png",
+      "assets/quote-primary-07ad5110.svg"
     ],
-    "file": "assets/Team-7b695dd8.js",
+    "file": "assets/Testimony-77a1ba6d.js",
     "imports": [
       "resources/js/app.jsx",
-      "_a11y-5548736b.js",
-      "_free-mode-2ffcbd93.js"
+      "_a11y-710312c9.js"
     ],
     "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/ProfilPerusahaan/Team.jsx"
+    "src": "resources/js/Pages/Partials/LandingPage/Testimony.jsx"
   },
-  "resources/js/Pages/Partials/ProfilTutor/Consultation.jsx": {
-    "file": "assets/Consultation-2e5f0db9.js",
+  "resources/js/Pages/Partials/LandingPage/Video.jsx": {
+    "file": "assets/Video-5a0797c5.js",
     "imports": [
       "resources/js/app.jsx",
-      "_ButtonHoverSlide-04e86315.js"
+      "_a11y-710312c9.js",
+      "_ButtonSwiper-63e501f6.js",
+      "_ButtonHoverSlide-3e521152.js"
     ],
     "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/ProfilTutor/Consultation.jsx"
-  },
-  "resources/js/Pages/Partials/ProfilTutor/Hero.jsx": {
-    "assets": [
-      "assets/6-46b81fb1.svg"
-    ],
-    "file": "assets/Hero-047e580c.js",
-    "imports": [
-      "resources/js/app.jsx"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/ProfilTutor/Hero.jsx"
-  },
-  "resources/js/Pages/Partials/ProfilTutor/TutorList.jsx": {
-    "file": "assets/TutorList-aac85a87.js",
-    "imports": [
-      "resources/js/app.jsx",
-      "_a11y-5548736b.js",
-      "_free-mode-2ffcbd93.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/ProfilTutor/TutorList.jsx"
-  },
-  "resources/js/Pages/Partials/ProfilTutor/newFile.jsx": {
-    "file": "assets/newFile-4ed993c7.js",
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/Partials/ProfilTutor/newFile.jsx"
+    "src": "resources/js/Pages/Partials/LandingPage/Video.jsx"
   },
   "resources/js/app.css": {
-    "file": "assets/app-b53c324f.css",
+    "file": "assets/app-7df9b481.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.jsx": {
     "assets": [
-      "assets/bg-bimbingan-9eaab00e.png",
-      "assets/bg-ebook-90b71f0a.png",
-      "assets/bg-webinar-a673bbd8.png",
-      "assets/goals-2-54710dce.svg",
-      "assets/facebook-e62407f8.svg",
-      "assets/google-d0b4442e.svg",
-      "assets/tree-2-478c1329.svg",
-      "assets/arrow-right-16-f5f1a07c.svg",
+      "assets/icon-primary-54710dce.svg",
       "assets/arrow-right-20-9857cce3.svg",
       "assets/mail-20-c61c2fb0.svg",
       "assets/arrow-right-32-676455bf.svg",
-      "assets/mail-32-ca8d2f30.svg",
-      "assets/tree-1-f7ca02dc.svg"
+      "assets/mail-32-ca8d2f30.svg"
     ],
     "css": [
-      "assets/app-b53c324f.css"
+      "assets/app-7df9b481.css"
     ],
     "dynamicImports": [
-      "resources/js/Pages/Auth/Form.jsx",
       "resources/js/Pages/Index.jsx",
-      "resources/js/Pages/Main/Karir.jsx",
-      "resources/js/Pages/Main/Produk.jsx",
-      "resources/js/Pages/Main/ProfilPerusahaan.jsx",
-      "resources/js/Pages/Main/ProfilTutor.jsx",
-      "resources/js/Pages/Partials/Home/Consultation.jsx",
-      "resources/js/Pages/Partials/Home/FAQ.jsx",
-      "resources/js/Pages/Partials/Home/Hero.jsx",
-      "resources/js/Pages/Partials/Home/Preliminary.jsx",
-      "resources/js/Pages/Partials/Home/Program.jsx",
-      "resources/js/Pages/Partials/Home/Testimony.jsx",
-      "resources/js/Pages/Partials/Home/Video.jsx",
-      "resources/js/Pages/Partials/Karir/CareerList.jsx",
-      "resources/js/Pages/Partials/Karir/Hero.jsx",
-      "resources/js/Pages/Partials/Karir/RegistrationSteps.jsx",
-      "resources/js/Pages/Partials/Produk/Bimbingan.jsx",
-      "resources/js/Pages/Partials/Produk/Consultation.jsx",
-      "resources/js/Pages/Partials/Produk/Ebook.jsx",
-      "resources/js/Pages/Partials/Produk/Filter.jsx",
-      "resources/js/Pages/Partials/Produk/SearchBar.jsx",
-      "resources/js/Pages/Partials/Produk/Webinar.jsx",
-      "resources/js/Pages/Partials/ProfilPerusahaan/Hero.jsx",
-      "resources/js/Pages/Partials/ProfilPerusahaan/Preliminary.jsx",
-      "resources/js/Pages/Partials/ProfilPerusahaan/Team.jsx",
-      "resources/js/Pages/Partials/ProfilTutor/Consultation.jsx",
-      "resources/js/Pages/Partials/ProfilTutor/Hero.jsx",
-      "resources/js/Pages/Partials/ProfilTutor/TutorList.jsx",
-      "resources/js/Pages/Partials/ProfilTutor/newFile.jsx"
+      "resources/js/Pages/Partials/LandingPage/Consultation.jsx",
+      "resources/js/Pages/Partials/LandingPage/FAQ.jsx",
+      "resources/js/Pages/Partials/LandingPage/Hero.jsx",
+      "resources/js/Pages/Partials/LandingPage/Introduction.jsx",
+      "resources/js/Pages/Partials/LandingPage/Program.jsx",
+      "resources/js/Pages/Partials/LandingPage/Testimony.jsx",
+      "resources/js/Pages/Partials/LandingPage/Video.jsx"
     ],
-    "file": "assets/app-e79b2eff.js",
+    "file": "assets/app-efbfa873.js",
     "isEntry": true,
     "src": "resources/js/app.jsx"
   }
