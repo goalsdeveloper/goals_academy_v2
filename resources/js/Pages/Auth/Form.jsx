@@ -6,9 +6,9 @@ import logo from "/resources/img/icon/goals-3.svg";
 import figure7 from "/resources/img/figure/7.svg";
 import rectangle from "/resources/img/vector/rectangle-1.svg";
 
-import { TECollapse } from 'tw-elements-react';
-import icon from '/resources/img/icon/goals-4.svg';
-import user from '/resources/img/icon/user.png';
+import { TECollapse } from "tw-elements-react";
+import icon from "/resources/img/icon/goals-4.svg";
+import user from "/resources/img/icon/user.png";
 
 export default function Form({ title }) {
     const [active, setActive] = useState(title);
@@ -54,14 +54,17 @@ export default function Form({ title }) {
     };
 
     return (
-        <div id="form" className="relative flex flex-wrap min-h-screen xl:h-screen bg-secondary py-20 xs:py-24 xl:p-0 overflow-hidden">
-            <Head title={active == 'register' ? 'Register' : 'Login'} />
+        <div
+            id="form"
+            className="relative flex flex-wrap min-h-screen xl:h-screen bg-secondary py-20 xs:py-24 xl:p-0 overflow-hidden"
+        >
+            <Head title={active == "register" ? "Register" : "Login"} />
             <Header title={title} />
-            <CornerWaveVector
-                className="xl:hidden"
-                cornerClassName="w-8/12"
-            />
-            <div id="form-left" className="w-8/12 relative hidden xl:flex items-end justify-center select-none">
+            <CornerWaveVector className="xl:hidden" cornerClassName="w-8/12" />
+            <div
+                id="form-left"
+                className="w-8/12 relative hidden xl:flex items-end justify-center select-none"
+            >
                 <CornerWaveVector
                     rightCornerClassName="w-10/12"
                     leftCornerClassName="w-6/12"
@@ -81,7 +84,10 @@ export default function Form({ title }) {
                     <img className="w-5/12" src={figure7} alt="Figure 7" />
                 </div>
             </div>
-            <div id="form-right" className="container mx-auto xl:w-4/12 h-fit xl:h-screen rounded-lg xl:rounded-none bg-white flex flex-col items-center p-6 xl:p-16 py-20 xl:py-[15vh] relative">
+            <div
+                id="form-right"
+                className="container mx-auto xl:w-4/12 h-fit xl:h-screen rounded-lg xl:rounded-none bg-white flex flex-col items-center p-6 xl:p-16 py-20 xl:py-[15vh] relative"
+            >
                 <div className="grid gap-6 xl:gap-8 w-full">
                     <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-1 xl:border-2 border-primary font-poppins rounded-md xl:rounded-lg 3xl:rounded-xl">
                         <SwitchButton
@@ -147,10 +153,16 @@ export default function Form({ title }) {
                         </form>
                         <p className="text-center">atau</p>
                         <div className="w-full grid gap-4 3xl:gap-6 text-dark">
-                            <Link className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3">
+                            <Link
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
+                                href="/auth/google"
+                            >
                                 Daftar dengan Google
                             </Link>
-                            <Link className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3">
+                            <Link
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
+                                href="/auth/facebook"
+                            >
                                 Daftar dengan Facebook
                             </Link>
                         </div>
@@ -191,10 +203,16 @@ export default function Form({ title }) {
                         </form>
                         <p className="text-center">atau</p>
                         <div className="w-full grid gap-4 3xl:gap-6 text-dark">
-                            <Link className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3">
+                            <Link
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
+                                href="/auth/google"
+                            >
                                 Masuk dengan Google
                             </Link>
-                            <Link className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3">
+                            <Link
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
+                                href="/auth/facebook"
+                            >
                                 Masuk dengan Facebook
                             </Link>
                         </div>
@@ -273,7 +291,7 @@ function SubmitButton({ children }) {
     );
 }
 
-function TECollapseItem ({ children }) {
+function TECollapseItem({ children }) {
     return (
         <>
             <br />
@@ -284,8 +302,8 @@ function TECollapseItem ({ children }) {
     );
 }
 
-function Header ({title}) {
-    const [mobileNavbar, setMobileNavbar] = useState(false)
+function Header({ title }) {
+    const [mobileNavbar, setMobileNavbar] = useState(false);
 
     return (
         <header className="xl:hidden fixed w-screen top-0 right-0 text-dark lg:text-base z-50">
@@ -302,65 +320,137 @@ function Header ({title}) {
                     </Link>
                 </div>
                 <div>
-                    <button onClick={() => setMobileNavbar(true)}><i className={`fa-solid fa-bars icon text-28 duration-300 text-white ${mobileNavbar ? 'opacity-0 rotate-180' : ''}`}></i></button>
+                    <button onClick={() => setMobileNavbar(true)}>
+                        <i
+                            className={`fa-solid fa-bars icon text-28 duration-300 text-white ${
+                                mobileNavbar ? "opacity-0 rotate-180" : ""
+                            }`}
+                        ></i>
+                    </button>
                 </div>
-                <NavbarMobile title={title} mobileNavbar={mobileNavbar} setMobileNavbar={setMobileNavbar} />
+                <NavbarMobile
+                    title={title}
+                    mobileNavbar={mobileNavbar}
+                    setMobileNavbar={setMobileNavbar}
+                />
             </nav>
         </header>
-    )
+    );
 }
 
-function NavbarMobile ({ title, mobileNavbar, setMobileNavbar }) {
+function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
     const [profileDropdownMobile, setProfileDropdownMobile] = useState(false);
     return (
         <>
-            <div className={`xl:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold text-white h-screen py-6 xs:py-8 duration-500 ${mobileNavbar ? '' : 'opacity-0 translate-x-[110%]'}`}>
+            <div
+                className={`xl:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold text-white h-screen py-6 xs:py-8 duration-500 ${
+                    mobileNavbar ? "" : "opacity-0 translate-x-[110%]"
+                }`}
+            >
                 <div className="container mx-auto">
                     <div className="flex justify-end mb-6 xs:mb-8">
-                        <button onClick={() => setMobileNavbar(false)}><i className={`fa-solid fa-xmark icon text-dark text-36`}></i></button>
+                        <button onClick={() => setMobileNavbar(false)}>
+                            <i
+                                className={`fa-solid fa-xmark icon text-dark text-36`}
+                            ></i>
+                        </button>
                     </div>
                     <div className="grid gap-8">
-                        <Link href="/produk" className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${title == 'Produk' ? 'font' : ''}`}>
+                        <Link
+                            href="/produk"
+                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${
+                                title == "Produk" ? "font" : ""
+                            }`}
+                        >
                             Produk
                             <CornerWaveVector cornerClassName="w-4/12" />
                             <i className="fa-solid fa-arrow-up rotate-45 nav-icon"></i>
                         </Link>
-                        <Link href="/artikel" className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${title == 'Artikel' ? 'font' : ''}`}>
+                        <Link
+                            href="/artikel"
+                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${
+                                title == "Artikel" ? "font" : ""
+                            }`}
+                        >
                             Artikel
                             <CornerWaveVector cornerClassName="w-4/12" />
                             <i className="fa-solid fa-arrow-up rotate-45 nav-icon"></i>
                         </Link>
-                        <Link href="/diskusi" className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${title == 'Diskusi' ? 'font' : ''}`}>
+                        <Link
+                            href="/diskusi"
+                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${
+                                title == "Diskusi" ? "font" : ""
+                            }`}
+                        >
                             Diskusi
                             <CornerWaveVector cornerClassName="w-4/12" />
                             <i className="fa-solid fa-arrow-up rotate-45 nav-icon"></i>
                         </Link>
-                        <Link href="/karir" className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${title == 'Karir' ? 'font' : ''}`}>
+                        <Link
+                            href="/karir"
+                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${
+                                title == "Karir" ? "font" : ""
+                            }`}
+                        >
                             Karir
                             <CornerWaveVector cornerClassName="w-4/12" />
                             <i className="fa-solid fa-arrow-up rotate-45 nav-icon"></i>
                         </Link>
                         <button
-                        className={`w-full relative font-poppins flex justify-center`}
+                            className={`w-full relative font-poppins flex justify-center`}
                         >
-                            <span className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 w-full ${title == 'Profil Perusahaan' || title == 'Profil Tutor' ? 'font' : ''}`}
-                            onClick={() => setProfileDropdownMobile(!profileDropdownMobile)}
+                            <span
+                                className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 w-full ${
+                                    title == "Profil Perusahaan" ||
+                                    title == "Profil Tutor"
+                                        ? "font"
+                                        : ""
+                                }`}
+                                onClick={() =>
+                                    setProfileDropdownMobile(
+                                        !profileDropdownMobile
+                                    )
+                                }
                             >
                                 Profil
                                 <CornerWaveVector cornerClassName="w-4/12" />
-                                <i className={`fa-solid fa-chevron-down nav-icon duration-300 ${profileDropdownMobile ? 'rotate-180' : ''}`}></i>
+                                <i
+                                    className={`fa-solid fa-chevron-down nav-icon duration-300 ${
+                                        profileDropdownMobile
+                                            ? "rotate-180"
+                                            : ""
+                                    }`}
+                                ></i>
                             </span>
-                            <TECollapse show={profileDropdownMobile} className="absolute -z-10 top-10 text-dark shadow-none p-1 w-full">
+                            <TECollapse
+                                show={profileDropdownMobile}
+                                className="absolute -z-10 top-10 text-dark shadow-none p-1 w-full"
+                            >
                                 <TECollapseItem>
-                                    <Link className="font-poppins" href="/profil_perusahaan">Profil Perusahaan</Link>
-                                    <Link className="font-poppins" href="/profil_tutor">Profil Tutor</Link>
+                                    <Link
+                                        className="font-poppins"
+                                        href="/profil_perusahaan"
+                                    >
+                                        Profil Perusahaan
+                                    </Link>
+                                    <Link
+                                        className="font-poppins"
+                                        href="/profil_tutor"
+                                    >
+                                        Profil Tutor
+                                    </Link>
                                 </TECollapseItem>
                             </TECollapse>
                         </button>
                     </div>
                 </div>
             </div>
-            <div className={`absolute z-30 top-0 left-0 h-screen w-screen bg-dark bg-opacity-50 xl:hidden ${mobileNavbar ? '' : 'hidden'}`} onClick={() => setMobileNavbar(false)}></div>
+            <div
+                className={`absolute z-30 top-0 left-0 h-screen w-screen bg-dark bg-opacity-50 xl:hidden ${
+                    mobileNavbar ? "" : "hidden"
+                }`}
+                onClick={() => setMobileNavbar(false)}
+            ></div>
         </>
-    )
+    );
 }
