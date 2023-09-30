@@ -2,7 +2,7 @@ import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
 
 export default function Consultation () {
     return (
-        <section id="consultation" className="my-16 xl:my-24 3xl:my-32">
+        <section id="consultation" className="my-14 xs:my-16 xl:my-24 3xl:my-32">
             <div className="md:container mx-auto">
                 <div className="flex flex-wrap items-center shadow-centered xl:rounded-2xl p-8 md:p-14 lg:p-18 xl:p-24 3xl:p-32">
                     <div className="w-8/12 md:w-7/12 text-start">
