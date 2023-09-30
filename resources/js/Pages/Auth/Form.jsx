@@ -56,7 +56,7 @@ export default function Form({ title }) {
     return (
         <div
             id="form"
-            className="relative flex flex-wrap min-h-screen xl:h-screen bg-secondary py-20 xs:py-24 xl:p-0 overflow-hidden"
+            className="relative flex flex-wrap min-h-screen xl:h-screen bg-secondary pb-20 xs:pb-24 xl:p-0 overflow-hidden"
         >
             <Head title={active == "register" ? "Register" : "Login"} />
             <Header title={title} />
@@ -153,18 +153,20 @@ export default function Form({ title }) {
                         </form>
                         <p className="text-center">atau</p>
                         <div className="w-full grid gap-4 3xl:gap-6 text-dark">
-                            <Link
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
+                            <a
+                                as="button"
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
                                 href="/auth/google"
                             >
                                 Daftar dengan Google
-                            </Link>
-                            <Link
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
+                            </a>
+                            <a
+                                as="button"
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
                                 href="/auth/facebook"
                             >
                                 Daftar dengan Facebook
-                            </Link>
+                            </a>
                         </div>
                     </div>
                     <div
@@ -203,18 +205,20 @@ export default function Form({ title }) {
                         </form>
                         <p className="text-center">atau</p>
                         <div className="w-full grid gap-4 3xl:gap-6 text-dark">
-                            <Link
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
+                            <a
+                                as="button"
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
                                 href="/auth/google"
                             >
                                 Masuk dengan Google
-                            </Link>
-                            <Link
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
+                            </a>
+                            <a
+                                as="button"
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
                                 href="/auth/facebook"
                             >
                                 Masuk dengan Facebook
-                            </Link>
+                            </a>
                         </div>
                     </div>
                     <div className="absolute w-full h-full top-0 left-0 z-0 select-none">
@@ -306,7 +310,7 @@ function Header({ title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false);
 
     return (
-        <header className="xl:hidden fixed w-screen top-0 right-0 text-dark lg:text-base z-50">
+        <header className="xl:hidden w-screen text-dark lg:text-base z-50">
             <div className="hidden xl:h-24 3xl:h-36"></div>{" "}
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 duration-500">

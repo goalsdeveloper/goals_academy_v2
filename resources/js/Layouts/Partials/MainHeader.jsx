@@ -187,6 +187,7 @@ function NavbarExpand({ auth, title }) {
                                     Pengaturan
                                 </Link>
                                 <Link
+                                    as="button"
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
                                     href="/logout"
                                     method="post"
