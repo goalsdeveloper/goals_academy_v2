@@ -1,7 +1,7 @@
 export default function TeamCard ({ name, title, image, description, linkedin, instagram }) {
     return (
         <div className="flex flex-col gap-4 md:gap-2 lg:gap-3 xl:gap-4 2xl:gap-5 3xl:gap-6">
-            <div className="flex items-center justify-center md:rounded-md xl:rounded-xl overflow-hidden md:h-[15vw]">
+            <div className="flex items-center justify-center md:rounded-t-md xl:rounded-t-xl overflow-hidden md:h-[15vw]">
                 <img className="w-full" src={image} alt={name} />
             </div>
             <div>
