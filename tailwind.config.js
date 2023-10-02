@@ -55,10 +55,21 @@ export default {
                 '30': '1.875rem',
                 '32': '2rem',
                 '36': '2.25rem',
+                '40': '2.5rem',
+                '44': '2.25rem',
                 '48': '3rem',
+                '52': '3.25rem',
                 '56': '3.5rem',
+                '60': '3.75rem',
                 '64': '4rem',
+                '68': '4.25rem',
+                '72': '4.5rem',
+                '76': '4.75rem',
                 '80': '5rem',
+                '84': '5.25rem',
+                '88': '5.5rem',
+                '92': '5.75rem',
+                '96': '6rem',
             },
             backgroundImage: {
                 'unset': 'linear-gradient(0, #FFFFFF00 0%, #FFFFFF00 0%);',
@@ -128,6 +139,19 @@ export default {
                     '@screen 3xl': {
                         width: '70%',
                         maxWidth: '1536px'
+                    }
+                },
+                '.container-lg': {
+                    width: '90%',
+                    '@screen xs': {
+                        width: '85%',
+                    },
+                    '@screen md': {
+                        width: '80%'
+                    },
+                    '@screen 3xl': {
+                        width: '75%',
+                        maxWidth: '1728px'
                     }
                 }
             })
