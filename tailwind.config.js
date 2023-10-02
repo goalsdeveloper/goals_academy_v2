@@ -142,9 +142,9 @@ export default {
                     }
                 },
                 '.container-lg': {
-                    width: '90%',
+                    width: '85%',
                     '@screen xs': {
-                        width: '85%',
+                        width: '80%',
                     },
                     '@screen md': {
                         width: '80%'

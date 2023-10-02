@@ -17,7 +17,7 @@ export default function Hero() {
     };
 
     return (
-        <section id="hero" className="my-14 xs:my-16 xl:my-24 3xl:my-32">
+        <section id="hero" className="mb-16 xs:mb-20 md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32">
             <div className="container mx-auto flex flex-wrap flex-col-reverse md:flex-row items-center justify-center md:justify-between gap-8 md:gap-0">
                 <div className="md:w-5/12 3xl:w-6/12 my-auto">
                     <h1 className="text-end md:text-start before:icon-primary sm:before:w-0 md:before:w-10 md:before:h-10 md:before:-ms-8 md:before:-mt-5 xl:before:w-20 xl:before:h-20 xl:before:-ms-16 xl:before:-mt-10">

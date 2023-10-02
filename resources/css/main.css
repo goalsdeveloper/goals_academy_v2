@@ -19,7 +19,7 @@ h4 {
 }
 
 h5 {
-    @apply text-14 xs:text-16 md:text-8 lg:text-12 xl:text-16 2xl:text-20 3xl:text-24;
+    @apply text-14 xs:text-16 md:text-8 lg:text-12 xl:text-16 3xl:text-20;
 }
 
 h6 {

@@ -2,7 +2,7 @@ import CornerWaveVector from "@/Components/CornerWaveVector";
 
 export default function Preliminary () {
     return (
-        <section id="preliminary" className="my-16 xl:my-24 3xl:my-32">
+        <section id="preliminary" className="my-16 xs:my-20 md:my-16 lg:my-20 xl:my-24 3xl:my-32">
             <div className="flex flex-col md:flex-col-reverse">
                 <div className="relative shadow-centered-spread">
                     <div className="container mx-auto flex flex-col items-center md:gap-2 xl:gap-4 py-8 xs:py-12 md:py-6 xl:py-12">

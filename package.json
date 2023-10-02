@@ -20,6 +20,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "moment": "^2.29.4",
         "swiper": "^10.2.0",
         "tw-elements": "^1.0.0-rc.1",
         "tw-elements-react": "^1.0.0-alpha1"

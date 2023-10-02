@@ -10,7 +10,7 @@ function SquareIcon ({iconClass}) {
 
 export default function Preliminary () {
     return (
-        <section id="introduction" className="my-14 xs:my-16 xl:my-24 3xl:my-32">
+        <section id="introduction" className="my-16 xs:my-20 md:my-16 lg:my-20 xl:my-24 3xl:my-32">
             <div className="container mx-auto flex flex-wrap items-center justify-center md:justify-between gap-8 md:gap-0">
                 <div className="w-full sm:w-10/12 md:w-6/12">
                     <img src={figure2} alt="Figure 2" />

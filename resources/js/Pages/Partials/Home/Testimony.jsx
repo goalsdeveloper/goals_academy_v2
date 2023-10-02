@@ -7,7 +7,7 @@ export default function Testimony ({data}) {
     const [show, setShow] = useState(false)
 
     return (
-        <section id="testimony" className="my-14 xs:my-16 xl:my-24 3xl:my-32 md:bg-primary relative">
+        <section id="testimony" className="my-16 xs:my-20 md:my-16 lg:my-20 xl:my-24 3xl:my-32 md:bg-primary relative">
             <div className="container mx-auto md:relative md:flex justify-between items-center">
                 <div className="md:absolute z-10 md:w-4/12 xl:w-5/12 md:before:absolute md:before:-z-10 md:before:w-screen md:before:h-full md:before:-translate-x-1/4 md:before:bg-gradient-to-r md:before:from-white md:before:to-transparent h-full flex justify-center md:justify-start items-center">
                     <div className="hidden md:block">
