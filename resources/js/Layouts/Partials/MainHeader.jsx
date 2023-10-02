@@ -141,10 +141,10 @@ function NavbarExpand({ auth, title }) {
                 </div>
             ) : (
                 <div className="w-auto hidden md:flex flex-wrap justify-end items-center md:gap-3 xl:gap-4 3xl:gap-6 font-medium">
-                    <Link href="/login">
+                    <Link href="#">
                         <i className="fa-solid fa-cart-shopping text-primary md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
                     </Link>
-                    <Link href="/login" className="relative">
+                    <Link href="#" className="relative">
                         <i className="fa-regular fa-bell text-primary md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
                         <div className="absolute border-1 border-white rounded-full top-0 right-0 w-2 h-2 3xl:w-3 3xl:h-3 bg-red-500"></div>
                     </Link>
@@ -174,14 +174,14 @@ function NavbarExpand({ auth, title }) {
                             <TECollapseItem>
                                 <Link
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
-                                    href="/profil_perusahaan"
+                                    href="#"
                                 >
                                     <i className="fa-regular fa-circle-user md:text-12 lg:text-20 3xl:text-24"></i>
                                     Profil
                                 </Link>
                                 <Link
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
-                                    href="/profil_tutor"
+                                    href="#"
                                 >
                                     <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
                                     Pengaturan
