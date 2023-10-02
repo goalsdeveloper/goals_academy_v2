@@ -179,22 +179,22 @@ export default function Produk({ auth }) {
 
     const dataWebinar = [
         {
-            title: "Langkah Jitu Tentukan Judul Skripsi",
-            price: 40000,
+            title: "Webinar Mencari Ide Awal Skripsi",
+            price: 48000,
             image: webinar1,
-            link: "",
+            link: "https://lynk.id/goalsacademy/oZyPAav",
         },
         {
-            title: "Ragam Kepribadian Dosen Pembimbing",
-            price: 40000,
+            title: "Webinar Teknik Cepat Mencari Referensi & Parafrase",
+            price: 48000,
             image: webinar2,
-            link: "",
+            link: "https://lynk.id/goalsacademy/MdNzrXd",
         },
         {
-            title: "Teknik Menyusun Skripsi Paling Cepat dan Efektif",
-            price: 40000,
+            title: "Webinar Strategi Sukses Presentasi",
+            price: 48000,
             image: webinar3,
-            link: "",
+            link: "https://lynk.id/goalsacademy/NZn6pq4",
         },
     ];
 

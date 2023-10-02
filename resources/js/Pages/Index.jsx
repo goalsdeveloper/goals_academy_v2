@@ -48,7 +48,7 @@ export default function Index({ auth }) {
             },
             price: 47000,
             hasDiscount: true,
-            link: "",
+            link: "https://lynk.id/goalsacademy/aW2pNBO",
         },
         {
             id: 2,
@@ -70,7 +70,7 @@ export default function Index({ auth }) {
             },
             price: 649000,
             hasDiscount: true,
-            link: "",
+            link: "https://lynk.id/goalsacademy/7q7r96V",
         },
         {
             id: 3,
@@ -92,7 +92,7 @@ export default function Index({ auth }) {
             },
             price: 115000,
             hasDiscount: false,
-            link: "",
+            link: "https://lynk.id/goalsacademy/DqqGx5x",
         },
         // {
         //     id: 4,
