@@ -9,12 +9,9 @@ import Consultation from "./Partials/Home/Consultation";
 
 import CornerWaveVector from "@/Components/CornerWaveVector";
 
-import program1 from "/resources/img/program/dibimbing-sekali.png";
+import program1 from "/resources/img/program/dibimbing-online-30.png";
 import program2 from "/resources/img/program/dibimbing-tuntas.png";
 import program3 from "/resources/img/program/dibimbing-olah-data.png";
-import program4 from "/resources/img/program/e-book-skripsi.png";
-
-import userIcon from "/resources/img/icon/user.png";
 
 import testimony1 from "/resources/img/testimony/wendi.jpg";
 import testimony2 from "/resources/img/testimony/roziqin.jpg";
@@ -30,25 +27,21 @@ export default function Index({ auth }) {
     const data_program = [
         {
             id: 1,
-            title: "Dibimbing Sekali",
-            slug: "dibimbing-sekali",
+            title: "Dibimbing Online 30 menit",
+            slug: "dibimbing-online-30-menit",
             img: program1,
             excerpt:
-                "Capai kesuksesan skripsimu melalui bimbingan personal secara 1-on-1, sesuai dengan permasalahan pada skripsimu.",
+                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.",
             description:
-                "Capai kesuksesan skripsimu melalui bimbingan personal secara 1-on-1, sesuai dengan permasalahan pada skripsimu.",
+                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.",
             features: {
                 times: 1,
-                minDuration: 30,
-                maxDuration: 60,
-                category: "Online/Offline",
-                total: null,
-                media: null,
-                information: null,
+                duration: 30,
+                category: "Online",
             },
             price: 47000,
-            hasDiscount: true,
-            link: "https://lynk.id/goalsacademy/aW2pNBO",
+            hasDiscount: false,
+            link: "https://lynk.id/goalsacademy/baE8kEv",
         },
         {
             id: 2,
@@ -56,20 +49,16 @@ export default function Index({ auth }) {
             slug: "dibimbing-tuntas",
             img: program2,
             excerpt:
-                "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 9 kali pertemuan.",
+                "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
             description:
-                "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 9 kali pertemuan.",
+                "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
             features: {
-                times: 9,
-                minDuration: 40,
-                maxDuration: 60,
-                category: "Online/Offline",
-                total: null,
-                media: null,
-                information: null,
+                times: 7,
+                duration: 60,
+                category: "Online",
             },
             price: 649000,
-            hasDiscount: true,
+            hasDiscount: false,
             link: "https://lynk.id/goalsacademy/7q7r96V",
         },
         {
@@ -83,39 +72,13 @@ export default function Index({ auth }) {
                 "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
             features: {
                 times: 1,
-                minDuration: 40,
-                maxDuration: 60,
-                category: "Online/Offline",
-                total: null,
-                media: null,
-                information: null,
+                duration: 60,
+                category: "Online",
             },
             price: 115000,
             hasDiscount: false,
             link: "https://lynk.id/goalsacademy/DqqGx5x",
         },
-        // {
-        //     id: 4,
-        //     title: "E-Book Skripsi",
-        //     slug: "e-book-skripsi",
-        //     img: program4,
-        //     excerpt:
-        //         "Panduan berharga dengan kiat-kiat jitu untuk sukses dalam penyusunan skripsi.",
-        //     description:
-        //         "Panduan berharga dengan kiat-kiat jitu untuk sukses dalam penyusunan skripsi.",
-        //     features: {
-        //         times: null,
-        //         minDuration: null,
-        //         maxDuration: null,
-        //         category: null,
-        //         total: "1-4 E-Book",
-        //         media: "Semua Device",
-        //         information: "Bebas Unduh",
-        //     },
-        //     price: 9000,
-        //     hasDiscount: false,
-        //     link: "",
-        // },
     ];
 
     const data_testimony = [
@@ -215,7 +178,7 @@ export default function Index({ auth }) {
             {/* {auth.user} */}
             <Preliminary />
             <Program data={data_program} />
-            <div className="relative bg-secondary md:bg-transparent overflow-hidden md:overflow-visible py-6 xs:py-12 md:py-0">
+            <div className="relative bg-secondary md:bg-transparent overflow-hidden md:overflow-visible py-3 xs:py-6 md:py-0">
                 <CornerWaveVector
                     className="md:hidden"
                     cornerClassName="w-10/12"

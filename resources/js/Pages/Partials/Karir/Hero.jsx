@@ -3,9 +3,9 @@ import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
 
 export default function Hero () {
     return (
-        <section id="hero" className="my-8 xl:my-12 3xl:my-16">
+        <section id="hero" className="md:mb-16 lg:mb-20 xl:mb-24 3xl:mt-0 3xl:mb-32">
             <div className="container mx-auto flex flex-col flex-wrap items-center justify-center">
-                <div className="text-center md:my-14 xl:my-20 3xl:my-28">
+                <div className="text-center md:my-8 xl:my-12 3xl:my-24">
                     <h2 className="mt-8 md:mt-0 mb-2 3xl:mb-4 text-16 xs:text-20 sm:text-24 md:text-16 lg:text-24 xl:text-32 3xl:text-48">Bergabung dalam <span className="text-primary">Perjalanan Kami</span></h2>
                     <p className="text-14 sm:text-16 md:text-10 xl:text-16 3xl:text-20">Terbang lebih tinggi dan tumbuh bersama Goals Academy</p>
                 </div>
@@ -13,8 +13,8 @@ export default function Hero () {
                     <img src={figure4} alt="Figure 4" />
                 </div>
             </div>
-            <div className="w-full bg-white shadow-top md:shadow-centered xl:rounded-2xl -translate-y-0 md:-translate-y-6 3xl:-translate-y-12">
-                <div className="container mx-auto flex flex-wrap justify-center items-center pt-8 pb-2 md:p-14 lg:p-18 xl:p-24 3xl:p-32 gap-4 md:gap-0">
+            <div className="w-full md:container md:mx-auto bg-white shadow-top md:shadow-centered xl:rounded-2xl -translate-y-0 md:-translate-y-6 3xl:-translate-y-12">
+                <div className="container mx-auto md:w-full flex flex-wrap justify-center items-center p-8 md:p-14 lg:p-18 xl:p-24 3xl:p-32 gap-4 md:gap-0">
                     <div className="w-full md:w-7/12 text-center md:text-start">
                         <p className="font-medium md:tracking-[0.2rem] lg:tracking-[0.3rem] xl:tracking-[0.4rem]">TIM KAMI</p>
                         <h3 className="mt-2 md:mt-2 lg:mt-3 xl:mt-4 text-12 xs:text-14 sm:text-16 md:text-14 lg:text-18 xl:text-24 3xl:text-32 leading-normal">Mari Berkenalan Lebih Lanjut <br /><span className="text-primary">Dengan Tim Goals Academy</span></h3>

@@ -6,8 +6,8 @@ import CornerWaveVector from '@/Components/CornerWaveVector';
 
 export default function TutorList ({ data }) {
     return (
-        <section id="tutor_list" className="my-14 xs:my-16 xl:my-24 3xl:my-32 overflow-hidden relative bg-secondary md:rounded-t-[15%] py-16 md:py-12 xl:py-24">
-            <CornerWaveVector className="hidden md:block" cornerClassName="w-5/12" corner2ClassName="w-5/12" />
+        <section id="tutor_list" className="my-16 xs:my-20 md:my-16 lg:my-20 xl:my-24 3xl:my-32 overflow-hidden relative bg-secondary md:rounded-t-[15%] py-16 md:py-12 xl:py-24">
+            <CornerWaveVector cornerClassName="w-8/12 md:w-5/12" corner2ClassName="hidden md:block w-5/12" />
             <div className="container mx-auto text-white">
                 <div className="text-center mb-8 md:mb-8 lg:mb-12 xl:mb-16 2xl:mb-20 3xl:mb-24">
                     <h2 className="text-white">Tutor Goals Academy</h2>

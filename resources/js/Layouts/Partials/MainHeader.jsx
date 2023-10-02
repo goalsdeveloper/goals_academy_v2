@@ -4,17 +4,18 @@ import { TECollapse } from "tw-elements-react";
 import logo from "/resources/img/icon/goals-1.svg";
 import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
 import CornerWaveVector from "@/Components/CornerWaveVector";
+import CornerWaveVector2 from "@/Components/CornerWaveVector2";
 import user from "/resources/img/icon/user.png";
 
 export default function MainHeader({ auth, title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false);
 
     return (
-        <header className="fixed w-screen top-0 right-0 bg-white text-dark lg:text-base z-50 md:z-20">
+        <header className="fixed w-screen top-0 right-0 bg-white text-dark lg:text-base z-50">
             <div className="hidden xl:h-24 3xl:h-36"></div>{" "}
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">
-                <div className="w-7/12 md:w-auto md:px-4">
+                <div className="w-7/12 md:w-2/12">
                     <Link href="/">
                         <img
                             className="w-full md:h-5 xl:h-8 3xl:h-10 mb-1 md:mb-2"
@@ -44,11 +45,11 @@ export default function MainHeader({ auth, title }) {
     );
 }
 
-function TECollapseItem({ children }) {
+function TECollapseItem({ children, className }) {
     return (
         <>
             <br />
-            <div className="grid gap-4 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 bg-white shadow-centered rounded-xl">
+            <div className={`grid gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 ${className}`}>
                 {children}
             </div>
         </>
@@ -108,7 +109,7 @@ function NavbarExpand({ auth, title }) {
                         show={profileDropdown}
                         className="absolute z-10 shadow-none p-1 translate-y-2"
                     >
-                        <TECollapseItem>
+                        <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 text-start bg-white shadow-centered rounded-xl">
                             <Link
                                 className="font-poppins hover:text-primary"
                                 href="/profil_perusahaan"
@@ -171,7 +172,7 @@ function NavbarExpand({ auth, title }) {
                             className="absolute z-10 shadow-none p-1 translate-y-4"
                         >
                             {/* profile navbar */}
-                            <TECollapseItem>
+                            <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 text-start bg-white shadow-centered rounded-xl">
                                 <Link
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
                                     href="#"
@@ -206,6 +207,7 @@ function NavbarExpand({ auth, title }) {
 
 function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
     const [profileDropdownMobile, setProfileDropdownMobile] = useState(false);
+    const [authDropdown, setAuthDropdown] = useState(false);
     return (
         <div>
             <div
@@ -214,7 +216,82 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                 }`}
             >
                 <div className="container mx-auto">
-                    <div className="flex justify-end mb-6 xs:mb-8">
+                    <div className="w-full flex justify-between mb-6 xs:mb-8 text-dark">
+                        {!auth.user ? (
+                            <div className="w-auto flex flex-wrap justify-end items-center gap-2 3xl:gap-4 font-medium">
+                                <Link href="/login">
+                                    <ButtonHoverSlide className="text-secondary before:-z-10 hover:text-white border-1 xl:border-2 border-secondary hover:border-primary shadow-md md:shadow-none rounded-md md:rounded-lg xl:rounded-xl 3xl:rounded-2xl px-4 py-1.5 md:px-4 md:py-1 xl:px-6 xl:py-2 3xl:px-8 3xl:py-3 before:w-[200%] before:-ms-[200%] before:duration-300 hover:before:-ms-[50%] before:bg-sweep-primary">
+                                        Login
+                                    </ButtonHoverSlide>
+                                </Link>
+                                <Link
+                                    href="/register"
+                                    className="text-white border-1 xl:border-2 border-secondary bg-secondary hover:bg-primary hover:border-primary shadow-md md:shadow-none rounded-md md:rounded-lg xl:rounded-xl 3xl:rounded-2xl px-4 py-1.5 md:px-4 md:py-1 xl:px-6 xl:py-2 3xl:px-8 3xl:py-3"
+                                >
+                                    Daftar
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="w-auto flex flex-wrap justify-end items-center gap-4 md:gap-3 xl:gap-4 3xl:gap-6 font-medium">
+                                <Link href="/login">
+                                    <i className="fa-solid fa-cart-shopping text-primary text-28 md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
+                                </Link>
+                                <Link href="/login" className="relative">
+                                    <i className="fa-regular fa-bell text-primary text-28 md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
+                                    <div className="absolute border-1 border-white rounded-full top-0 right-0 w-2 h-2 3xl:w-3 3xl:h-3 bg-red-500"></div>
+                                </Link>
+                                <button
+                                    className={`font-poppins flex justify-center ${
+                                        title == "Profil Perusahaan" ||
+                                        title == "Profil Tutor"
+                                            ? "font"
+                                            : ""
+                                    }`}
+                                    onMouseEnter={() => setAuthDropdown(true)}
+                                    onMouseLeave={() => setAuthDropdown(false)}
+                                    onClick={() => setAuthDropdown(!authDropdown)}
+                                >
+                                    <div className="overflow-hidden rounded-full h-8 md:h-4 lg:h-5 xl:h-7 3xl:h-9">
+                                        <img
+                                            className="w-full h-full"
+                                            src={user}
+                                            alt="User Profile"
+                                        />
+                                    </div>
+                                    <TECollapse
+                                        show={authDropdown}
+                                        className="absolute z-10 shadow-none p-1 translate-y-4"
+                                    >
+                                        {/* profile navbar */}
+                                        <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 text-start bg-white shadow-centered rounded-xl">
+                                            <Link
+                                                className="flex gap-2 items-center font-poppins hover:text-primary"
+                                                href="/profil_perusahaan"
+                                            >
+                                                <i className="fa-regular fa-circle-user md:text-12 lg:text-20 3xl:text-24"></i>
+                                                Profil
+                                            </Link>
+                                            <Link
+                                                className="flex gap-2 items-center font-poppins hover:text-primary"
+                                                href="/profil_tutor"
+                                            >
+                                                <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
+                                                Pengaturan
+                                            </Link>
+                                            <Link
+                                                as="button"
+                                                className="flex gap-2 items-center font-poppins hover:text-primary"
+                                                href="/logout"
+                                                method="post"
+                                            >
+                                                <i className="bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24"></i>
+                                                Log Out
+                                            </Link>
+                                        </TECollapseItem>
+                                    </TECollapse>
+                                </button>
+                            </div>
+                        )}
                         <button onClick={() => setMobileNavbar(false)}>
                             <i
                                 className={`fa-solid fa-xmark text-dark text-36`}
@@ -224,7 +301,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                     <div className="grid gap-8">
                         <Link
                             href="/produk"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${
+                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 ${
                                 title == "Produk" ? "font" : ""
                             }`}
                         >
@@ -234,7 +311,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                         </Link>
                         <Link
                             href="/artikel"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${
+                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 ${
                                 title == "Artikel" ? "font" : ""
                             }`}
                         >
@@ -244,7 +321,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                         </Link>
                         <Link
                             href="/diskusi"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${
+                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 ${
                                 title == "Diskusi" ? "font" : ""
                             }`}
                         >
@@ -254,7 +331,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                         </Link>
                         <Link
                             href="/karir"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${
+                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 ${
                                 title == "Karir" ? "font" : ""
                             }`}
                         >
@@ -266,7 +343,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                             className={`w-full relative font-poppins flex justify-center`}
                         >
                             <span
-                                className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 w-full ${
+                                className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 w-full ${
                                     title == "Profil Perusahaan" ||
                                     title == "Profil Tutor"
                                         ? "font"
@@ -290,20 +367,28 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                             </span>
                             <TECollapse
                                 show={profileDropdownMobile}
-                                className="absolute -z-10 top-10 text-dark shadow-none p-1 w-full"
+                                className="absolute -z-10 top-10 shadow-none text-secondary w-[110%] px-[5%]"
                             >
-                                <TECollapseItem>
+                                <TECollapseItem className="py-4">
                                     <Link
-                                        className="font-poppins"
                                         href="/profil_perusahaan"
+                                        className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 ${
+                                            title == "Produk" ? "font" : ""
+                                        }`}
                                     >
                                         Profil Perusahaan
+                                        <CornerWaveVector2 cornerClassName="w-4/12" />
+                                        <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
                                     </Link>
                                     <Link
-                                        className="font-poppins"
                                         href="/profil_tutor"
+                                        className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 ${
+                                            title == "Produk" ? "font" : ""
+                                        }`}
                                     >
                                         Profil Tutor
+                                        <CornerWaveVector2 cornerClassName="w-4/12" />
+                                        <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
                                     </Link>
                                 </TECollapseItem>
                             </TECollapse>

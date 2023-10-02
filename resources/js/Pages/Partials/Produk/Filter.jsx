@@ -4,8 +4,8 @@ import image3 from "/resources/img/produk/webinar.svg";
 
 export default function Filter ({ show, showHandler }) {
     return (
-        <section id="filter" className="my-8 xl:my-12 3xl:my-16">
-            <div className="container mx-auto pt-12 xs:pt-16 pb-8 md:pb-0 md:pt-12 lg:pt-16 xl:pt-24 3xl:pt-12">
+        <section id="filter" className="mb-16 xs:mb-20 md:mb-0">
+            <div className="container mx-auto pt-4 xs:pt-8 md:pb-0 md:pt-2 lg:pt-4 xl:pt-8 3xl:pt-4">
                 <div className="grid md:grid-cols-3 gap-16 xs:gap-20 md:gap-5 3xl:gap-8">
                     <ProdukCard name="Bimbingan Skripsi" img={image1} active={show[0]} className="bg-bimbingan" onClick={() => showHandler(0)} />
                     <ProdukCard name="E-Book" img={image2} active={show[1]} className="bg-ebook" onClick={() => showHandler(1)} />

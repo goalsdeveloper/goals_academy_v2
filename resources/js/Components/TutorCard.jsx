@@ -1,6 +1,6 @@
 export default function TutorCard ({ name, headline, image, description, linkedin, instagram }) {
     return (
-        <div className="flex flex-col gap-4 md:gap-2 lg:gap-3 xl:gap-4 2xl:gap-5 3xl:gap-6 md:pb-8 rounded-xl md:rounded-none bg-white bg-opacity-20 md:bg-transparent">
+        <div className="flex flex-col gap-4 md:gap-2 lg:gap-3 xl:gap-4 2xl:gap-5 3xl:gap-6 md:pb-8 rounded-xl md:rounded-none bg-white bg-opacity-20 md:bg-transparent shadow-centered-spread md:shadow-none">
             <div className="flex items-center justify-center md:rounded-t-md xl:rounded-t-xl overflow-hidden md:h-[15vw]">
                 <img className="w-full" src={image} alt={name} />
             </div>

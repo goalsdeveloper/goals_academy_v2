@@ -1,18 +1,23 @@
 import 'swiper/css';
+import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y, FreeMode } from 'swiper/modules';
 import ButtonSwiper from '@/Components/ButtonSwiper';
 import ButtonPill from "@/Components/ButtonPill";
+import moment from 'moment/moment';
 
 export default function Webinar ({ data, active, status }) {
     return (
         <section id="webinar" className={`${active || status ? '' : 'hidden'} my-8 xl:my-12 3xl:my-16 overflow-hidden`}>
             <div className="container mx-auto hidden md:block">
                 <h2 className="mb-4 sm:mb-6 xl:mb-10 3xl:mb-14">Webinar Skripsi</h2>
-                <div className="grid grid-cols-3 md:gap-8 xl:gap-16 pb-2">
+                <div className="grid grid-cols-3 justify-center md:gap-8 xl:gap-16 pb-2">
                     {data.map((item, index) => {
+                        const model = ((index+1) % 3 == 2 ? 'justify-center' : (index+1) % 3 == 0 ? 'justify-end' : '')
                         return (
-                            <WebinarCard key={index} item={item} className="w-[70vw] md:w-[21vw] 3xl:w-[20vw]" />
+                            <div key={index} className={`flex ${model}`}>
+                                <WebinarCard key={index} item={item} className="w-[70vw] md:w-[21vw] 3xl:w-[20vw]" />
+                            </div>
                         )
                     })}
                 </div>
@@ -45,7 +50,7 @@ function WebinarMobile ({ data }) {
             >
                 {data.map((item, index) => {return (
                     <SwiperSlide key={index} style={{ width: "fit-content" }} className="p-4 md:p-2 lg:p-3 xl:p-4">
-                        <WebinarCard item={item} className="w-[70vw]" />
+                        <WebinarCard item={item}  className="w-[70vw]" />
                     </SwiperSlide>
                 )})}
             </Swiper>
@@ -55,11 +60,30 @@ function WebinarMobile ({ data }) {
 
 function WebinarCard ({ item, className }) {
     const currency = Intl.NumberFormat('id-ID')
+    const target = moment(item.date);
+    const [countdown, setCountdown] = useState('00:00:00:00');
+
+    setInterval(() => {
+        const difference = target.diff(moment());
+        if (difference <= 1) {
+            clearInterval(countdown);
+            setCountdown("00:00:00:00");
+        } else {
+            const days = (target.diff(moment(), 'days')).toString().padStart(2, '0');
+            const remaining = moment();
+
+            remaining.hours(Math.floor(difference  / (1000*60*60)));
+            remaining.minutes(Math.floor(difference % (1000*60*60) / (1000*60)));
+            remaining.seconds(Math.floor(difference % (1000*60*60) % (1000*60) / (1000)));
+
+            setCountdown(days+remaining.format(':HH:mm:ss'));
+        }
+    }, 1000);
 
     return (
         <div className={`relative shadow-centered rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden ${className}`}>
-            <div className="absolute right-0 bg-secondary text-white text-center font-poppins font-medium w-5/12 p-1 xl:text-20">
-                14 : 27 : 32
+            <div className="absolute right-0 bg-secondary text-white text-center font-poppins font-medium w-6/12 p-1 xl:text-20">
+                {countdown}
             </div>
             <div className="w-full h-[40vw] md:h-[12vw] overflow-hidden">
                 <img className="w-full" src={item.image} alt={item.title} />

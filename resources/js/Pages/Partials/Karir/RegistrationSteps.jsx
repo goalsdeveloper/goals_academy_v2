@@ -2,7 +2,7 @@ import CornerWaveVector from "@/Components/CornerWaveVector";
 
 export default function RegistrationSteps () {
     return (
-        <section id="registration_steps" className="relative my-8 xl:my-12 3xl:my-16 bg-secondary">
+        <section id="registration_steps" className="relative mt-0 mb-16 md:my-16 lg:my-20 xl:my-24 3xl:my-32 bg-secondary">
             <CornerWaveVector
                 cornerClassName="w-10/12 md:w-4/12"
             />

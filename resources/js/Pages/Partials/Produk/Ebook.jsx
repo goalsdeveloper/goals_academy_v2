@@ -9,10 +9,13 @@ export default function Ebook ({ data, active, status }) {
         <section id="ebook" className={`${active || status ? '' : 'hidden'} my-8 xl:my-12 3xl:my-16 overflow-hidden`}>
             <div className="container mx-auto hidden md:block">
                 <h2 className="mb-4 sm:mb-6 xl:mb-10 3xl:mb-14">E-Book</h2>
-                <div className="grid grid-cols-3 md:gap-8 xl:gap-16 pb-2">
+                <div className="grid grid-cols-3 justify-center md:gap-8 xl:gap-16 pb-2">
                     {data.map((item, index) => {
+                        const model = ((index+1) % 3 == 2 ? 'justify-center' : (index+1) % 3 == 0 ? 'justify-end' : '')
                         return (
-                            <EbookCard key={index} item={item} className="md:w-[21vw] 3xl:w-[20vw]" />
+                            <div key={index} className={`flex ${model}`}>
+                                <EbookCard key={index} item={item} className="md:w-[21vw] 3xl:w-[20vw]" />
+                            </div>
                         )
                     })}
                 </div>
