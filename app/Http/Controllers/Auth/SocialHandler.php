@@ -35,7 +35,7 @@ class SocialHandler extends Controller
             Log::info('something wrong!');
         }
 
-        Auth::login($authUser, true);
+        Auth::login($authUser);
         Log::info("User {username} has been Log in using {provider}", ['username' => $user->username, 'provider' => $provider]);
 
         return redirect(RouteServiceProvider::HOME);
@@ -47,25 +47,26 @@ class SocialHandler extends Controller
             ->where('provider_name', $provider)
             ->first();
 
-        if (!$checkSocialExist) {
-            $checkUser = User::where('email', $socialUser->getEmail())->first();
+        if ($checkSocialExist) {
+            return $checkSocialExist->user;
+        } else {
+            $user = User::where('email', $socialUser->getEmail())->first();
 
-            if (!$checkUser) {
-                $createNewUser = User::create([
+            if (!$user) {
+                $user = User::create([
                     'username' => $socialUser->getName() . rand('00', '99'),
                     'email' => $socialUser->getEmail(),
                     'email_verified_at' => now(),
                     'password' => Hash::make('password'),
                 ]);
-                $createNewUser->social()->create([
-                    'provider_id' => $socialUser->getId(),
-                    'provider_name' => $provider,
-                ]);
-                return $createNewUser;
             }
-            return $checkUser;
-        }
 
-        return $checkSocialExist->user;
+            $user->social()->create([
+                'provider_id' => $socialUser->getId(),
+                'provider_name' => $provider,
+            ]);
+
+            return $user;
+        }
     }
 }

@@ -42,7 +42,7 @@ export default function Produk({ auth }) {
             },
             price: 47000,
             hasDiscount: true,
-            link: "",
+            link: "https://lynk.id/goalsacademy/aW2pNBO",
         },
         {
             id: 2,
@@ -64,7 +64,7 @@ export default function Produk({ auth }) {
             },
             price: 649000,
             hasDiscount: true,
-            link: "",
+            link: "https://lynk.id/goalsacademy/7q7r96V",
         },
         {
             id: 3,
@@ -86,7 +86,7 @@ export default function Produk({ auth }) {
             },
             price: 115000,
             hasDiscount: false,
-            link: "",
+            link: "https://lynk.id/goalsacademy/DqqGx5x",
         },
     ];
 
@@ -95,19 +95,19 @@ export default function Produk({ auth }) {
             title: "How To Survive Your Thesis? Start with Theme",
             price: 40000,
             image: ebook1,
-            link: "",
+            link: "https://lynk.id/goalsacademy/XBmqq6J",
         },
         {
             title: "Proposal Biar Diterima",
             price: 40000,
             image: ebook2,
-            link: "",
+            link: "https://lynk.id/goalsacademy/XBmqq6J",
         },
         {
             title: "Kajian Pustaka",
             price: 40000,
             image: ebook3,
-            link: "",
+            link: "https://lynk.id/goalsacademy/XBmqq6J",
         },
     ];
 
@@ -164,7 +164,10 @@ export default function Produk({ auth }) {
         <MainLayout auth={auth} title="Produk">
             <SearchBar searchHandler={searchHandler} className="md:hidden" />
             <Filter show={show} showHandler={showHandler} />
-            <SearchBar searchHandler={searchHandler} className="hidden md:block" />
+            <SearchBar
+                searchHandler={searchHandler}
+                className="hidden md:block"
+            />
             <Bimbingan data={data1} active={show[0]} status={status} />
             <Ebook data={data2} active={show[1]} status={status} />
             <Webinar data={data3} active={show[2]} status={status} />
