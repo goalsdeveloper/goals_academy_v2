@@ -19,7 +19,7 @@ h4 {
 }
 
 h5 {
-    @apply text-14 xs:text-16 md:text-8 lg:text-12 xl:text-16 3xl:text-20;
+    @apply text-14 xs:text-18 sm:text-20 md:text-8 lg:text-12 xl:text-16 3xl:text-20;
 }
 
 h6 {
@@ -27,7 +27,7 @@ h6 {
 }
 
 #form-right *, #form header * {
-    @apply md:text-16 xl:text-14 3xl:text-20;
+    @apply text-12 xs:text-12 sm:text-12 md:text-16 xl:text-14 3xl:text-20;
 }
 
 #form header .icon {

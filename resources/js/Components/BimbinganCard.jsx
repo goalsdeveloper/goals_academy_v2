@@ -4,31 +4,6 @@ export default function BimbinganCard ({ item, className }) {
     const features = item.features
     const currency = Intl.NumberFormat('id-ID')
 
-    function generateFeature (features, feature) {
-        if (feature != null & feature == features.times) {
-            return (
-                <div key={feature} className="flex items-center gap-2">
-                    <i className="fa-regular fa-calendar text-primary"></i>
-                    <p>{features.times}x Pertemuan</p>
-                </div>
-            )
-        } else if (feature != null & feature == features.duration) {
-            return (
-                <div key={feature} className="flex items-center gap-2">
-                    <i className="fa-solid fa-clock text-12 md:text-6 lg:text-10 xl:text-12 text-primary"></i>
-                    <p>{features.duration} Menit</p>
-                </div>
-            )
-        } else if (feature != null & feature == features.category) {
-            return (
-                <div key={feature} className="flex items-center gap-2">
-                    <i className="fa-solid fa-location-dot text-primary"></i>
-                    <p>{features.category}</p>
-                </div>
-            )
-        }
-    }
-
     return (
         <div className={`shadow-lg md:shadow-bottom-right lg:shadow-lg rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden ${className}`}>
             <div className="w-full h-[52vw] md:h-[16vw] 3xl:h-[15vw] overflow-hidden">
@@ -47,7 +22,18 @@ export default function BimbinganCard ({ item, className }) {
                 <p className="my-6 xs:my-8 md:my-0 h-[14vw] xs:h-20 md:h-12 lg:h-20 xl:h-24 3xl:h-36">{item.excerpt}</p>
                 <div className="flex flex-col gap-2 md:gap-1 lg:gap-2 3xl:gap-3 mb-8 md:mb-4 xl:mb-8 3xl:mb-12">
                     <p>Layanan</p>
-                    {Object.values(features).map(feature => generateFeature(features, feature))}
+                    <div className="flex items-center gap-2">
+                        <i className="fa-regular fa-calendar text-primary"></i>
+                        <p>{features.times}x Pertemuan</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <i className="fa-solid fa-clock text-12 md:text-6 lg:text-10 xl:text-12 3xl:text-18 text-primary"></i>
+                        <p>{features.duration} Menit</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <i className="fa-solid fa-location-dot text-primary"></i>
+                        <p>{features.category}</p>
+                    </div>
                 </div>
                 <ButtonPill href={item.link} className={'w-full'}>
                     Daftar Sekarang
