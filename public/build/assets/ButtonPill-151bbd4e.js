@@ -1,1 +1,0 @@
-import{j as n}from"./app-bdfefb32.js";function a({href:t,children:e,className:r}){return n.jsx("a",{href:t,target:"_blank",className:`inline-block font-medium text-center py-2 md:py-1 xl:py-2 text-white bg-secondary hover:bg-primary rounded-full ${r}`,children:e})}export{a as B};
