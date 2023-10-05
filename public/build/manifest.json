@@ -1,61 +1,61 @@
 {
-  "_BimbinganCard-50b24045.js": {
-    "file": "assets/BimbinganCard-50b24045.js",
+  "_BimbinganCard-069123fa.js": {
+    "file": "assets/BimbinganCard-069123fa.js",
     "imports": [
       "resources/js/app.jsx",
-      "_ButtonPill-920c1c18.js"
+      "_ButtonPill-a0afe6b2.js"
     ]
   },
-  "_ButtonHoverSlide-e360392f.js": {
-    "file": "assets/ButtonHoverSlide-e360392f.js",
+  "_ButtonHoverSlide-d9057674.js": {
+    "file": "assets/ButtonHoverSlide-d9057674.js",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_ButtonPill-920c1c18.js": {
-    "file": "assets/ButtonPill-920c1c18.js",
+  "_ButtonPill-a0afe6b2.js": {
+    "file": "assets/ButtonPill-a0afe6b2.js",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_ButtonSwiper-f47f5c94.js": {
-    "file": "assets/ButtonSwiper-f47f5c94.js",
+  "_ButtonSwiper-4fd0e12f.js": {
+    "file": "assets/ButtonSwiper-4fd0e12f.js",
     "imports": [
       "resources/js/app.jsx",
-      "_ButtonHoverSlide-e360392f.js"
+      "_ButtonHoverSlide-d9057674.js"
     ]
   },
-  "_CornerWaveVector-e06330f1.js": {
+  "_CornerWaveVector-ba884587.js": {
     "assets": [
       "assets/wave-1-1a4afa5c.svg",
       "assets/wave-2-18700b28.svg"
     ],
-    "file": "assets/CornerWaveVector-e06330f1.js",
+    "file": "assets/CornerWaveVector-ba884587.js",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_MainLayout-68e06cb3.js": {
+  "_MainLayout-5294ac46.js": {
     "assets": [
       "assets/user-784106eb.png",
       "assets/goals-1-d96b30d3.svg",
       "assets/wave-3-25b8b045.svg",
       "assets/wave-4-874ae708.svg"
     ],
-    "file": "assets/MainLayout-68e06cb3.js",
+    "file": "assets/MainLayout-5294ac46.js",
     "imports": [
       "resources/js/app.jsx",
       "_goals-3-f201de0f.js",
-      "_tw-elements-react.es.min-b20b862c.js",
-      "_ButtonHoverSlide-e360392f.js",
-      "_CornerWaveVector-e06330f1.js"
+      "_tw-elements-react.es.min-aa8ebe4f.js",
+      "_ButtonHoverSlide-d9057674.js",
+      "_CornerWaveVector-ba884587.js"
     ]
   },
-  "_a11y-4eb122d6.js": {
+  "_a11y-3b86f9e7.js": {
     "css": [
       "assets/a11y-d6fc63cb.css"
     ],
-    "file": "assets/a11y-4eb122d6.js",
+    "file": "assets/a11y-3b86f9e7.js",
     "imports": [
       "resources/js/app.jsx"
     ]
@@ -68,10 +68,10 @@
     ],
     "file": "assets/dibimbing-olah-data-2bd1d162.js"
   },
-  "_free-mode-a7222c59.js": {
-    "file": "assets/free-mode-a7222c59.js",
+  "_free-mode-00076ff0.js": {
+    "file": "assets/free-mode-00076ff0.js",
     "imports": [
-      "_a11y-4eb122d6.js"
+      "_a11y-3b86f9e7.js"
     ]
   },
   "_goals-3-f201de0f.js": {
@@ -83,8 +83,8 @@
     ],
     "file": "assets/goals-3-f201de0f.js"
   },
-  "_tw-elements-react.es.min-b20b862c.js": {
-    "file": "assets/tw-elements-react.es.min-b20b862c.js",
+  "_tw-elements-react.es.min-aa8ebe4f.js": {
+    "file": "assets/tw-elements-react.es.min-aa8ebe4f.js",
     "imports": [
       "resources/js/app.jsx"
     ]
@@ -375,12 +375,12 @@
       "assets/rectangle-1-39a24194.svg",
       "assets/goals-4-2f9e347c.svg"
     ],
-    "file": "assets/Form-bbc9e104.js",
+    "file": "assets/Form-f1f5882e.js",
     "imports": [
       "resources/js/app.jsx",
       "_goals-3-f201de0f.js",
-      "_CornerWaveVector-e06330f1.js",
-      "_tw-elements-react.es.min-b20b862c.js"
+      "_CornerWaveVector-ba884587.js",
+      "_tw-elements-react.es.min-aa8ebe4f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/Form.jsx"
@@ -397,10 +397,10 @@
       "assets/khafidh-51bb2f53.jpg",
       "assets/ludi-5334daa3.jpg"
     ],
-    "file": "assets/Index-c8db2371.js",
+    "file": "assets/Index-efa58205.js",
     "imports": [
       "resources/js/app.jsx",
-      "_MainLayout-68e06cb3.js",
+      "_MainLayout-5294ac46.js",
       "resources/js/Pages/Partials/Home/Hero.jsx",
       "resources/js/Pages/Partials/Home/Preliminary.jsx",
       "resources/js/Pages/Partials/Home/Program.jsx",
@@ -408,16 +408,16 @@
       "resources/js/Pages/Partials/Home/Testimony.jsx",
       "resources/js/Pages/Partials/Home/FAQ.jsx",
       "resources/js/Pages/Partials/Home/Consultation.jsx",
-      "_CornerWaveVector-e06330f1.js",
+      "_CornerWaveVector-ba884587.js",
       "_dibimbing-olah-data-2bd1d162.js",
       "_goals-3-f201de0f.js",
-      "_tw-elements-react.es.min-b20b862c.js",
-      "_ButtonHoverSlide-e360392f.js",
-      "_a11y-4eb122d6.js",
-      "_free-mode-a7222c59.js",
-      "_ButtonSwiper-f47f5c94.js",
-      "_BimbinganCard-50b24045.js",
-      "_ButtonPill-920c1c18.js"
+      "_tw-elements-react.es.min-aa8ebe4f.js",
+      "_ButtonHoverSlide-d9057674.js",
+      "_a11y-3b86f9e7.js",
+      "_free-mode-00076ff0.js",
+      "_ButtonSwiper-4fd0e12f.js",
+      "_BimbinganCard-069123fa.js",
+      "_ButtonPill-a0afe6b2.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Index.jsx"
@@ -429,20 +429,20 @@
       "assets/tutor-olah-data-de206a1c.png",
       "assets/academic-internship-a9acb8d3.png"
     ],
-    "file": "assets/Karir-ea7afaec.js",
+    "file": "assets/Karir-c07df340.js",
     "imports": [
       "resources/js/app.jsx",
-      "_MainLayout-68e06cb3.js",
+      "_MainLayout-5294ac46.js",
       "resources/js/Pages/Partials/Karir/Hero.jsx",
       "resources/js/Pages/Partials/Karir/RegistrationSteps.jsx",
       "resources/js/Pages/Partials/Karir/CareerList.jsx",
       "_goals-3-f201de0f.js",
-      "_tw-elements-react.es.min-b20b862c.js",
-      "_ButtonHoverSlide-e360392f.js",
-      "_CornerWaveVector-e06330f1.js",
-      "_a11y-4eb122d6.js",
-      "_free-mode-a7222c59.js",
-      "_ButtonSwiper-f47f5c94.js"
+      "_tw-elements-react.es.min-aa8ebe4f.js",
+      "_ButtonHoverSlide-d9057674.js",
+      "_CornerWaveVector-ba884587.js",
+      "_a11y-3b86f9e7.js",
+      "_free-mode-00076ff0.js",
+      "_ButtonSwiper-4fd0e12f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Main/Karir.jsx"
@@ -459,10 +459,10 @@
       "assets/2-3c09fc12.png",
       "assets/3-5c37b5bf.png"
     ],
-    "file": "assets/Produk-4d95e835.js",
+    "file": "assets/Produk-84e1a719.js",
     "imports": [
       "resources/js/app.jsx",
-      "_MainLayout-68e06cb3.js",
+      "_MainLayout-5294ac46.js",
       "resources/js/Pages/Partials/Produk/Filter.jsx",
       "resources/js/Pages/Partials/Produk/Bimbingan.jsx",
       "resources/js/Pages/Partials/Produk/Ebook.jsx",
@@ -471,14 +471,14 @@
       "_dibimbing-olah-data-2bd1d162.js",
       "resources/js/Pages/Partials/Produk/SearchBar.jsx",
       "_goals-3-f201de0f.js",
-      "_tw-elements-react.es.min-b20b862c.js",
-      "_ButtonHoverSlide-e360392f.js",
-      "_CornerWaveVector-e06330f1.js",
-      "_a11y-4eb122d6.js",
-      "_free-mode-a7222c59.js",
-      "_ButtonSwiper-f47f5c94.js",
-      "_BimbinganCard-50b24045.js",
-      "_ButtonPill-920c1c18.js"
+      "_tw-elements-react.es.min-aa8ebe4f.js",
+      "_ButtonHoverSlide-d9057674.js",
+      "_CornerWaveVector-ba884587.js",
+      "_a11y-3b86f9e7.js",
+      "_free-mode-00076ff0.js",
+      "_ButtonSwiper-4fd0e12f.js",
+      "_BimbinganCard-069123fa.js",
+      "_ButtonPill-a0afe6b2.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Main/Produk.jsx"
@@ -489,19 +489,19 @@
       "assets/timo-a388c7c5.png",
       "assets/oka-f11a7cb9.png"
     ],
-    "file": "assets/ProfilPerusahaan-cce6d88e.js",
+    "file": "assets/ProfilPerusahaan-c826596c.js",
     "imports": [
       "resources/js/app.jsx",
-      "_MainLayout-68e06cb3.js",
+      "_MainLayout-5294ac46.js",
       "resources/js/Pages/Partials/ProfilPerusahaan/Hero.jsx",
       "resources/js/Pages/Partials/ProfilPerusahaan/Preliminary.jsx",
       "resources/js/Pages/Partials/ProfilPerusahaan/Team.jsx",
       "_goals-3-f201de0f.js",
-      "_tw-elements-react.es.min-b20b862c.js",
-      "_ButtonHoverSlide-e360392f.js",
-      "_CornerWaveVector-e06330f1.js",
-      "_a11y-4eb122d6.js",
-      "_free-mode-a7222c59.js"
+      "_tw-elements-react.es.min-aa8ebe4f.js",
+      "_ButtonHoverSlide-d9057674.js",
+      "_CornerWaveVector-ba884587.js",
+      "_a11y-3b86f9e7.js",
+      "_free-mode-00076ff0.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Main/ProfilPerusahaan.jsx"
@@ -515,28 +515,28 @@
       "assets/5-f0caaaa7.png",
       "assets/6-a16cdc5c.png"
     ],
-    "file": "assets/ProfilTutor-ba9f5cbc.js",
+    "file": "assets/ProfilTutor-f397b445.js",
     "imports": [
       "resources/js/app.jsx",
-      "_MainLayout-68e06cb3.js",
+      "_MainLayout-5294ac46.js",
       "resources/js/Pages/Partials/ProfilTutor/Hero.jsx",
       "resources/js/Pages/Partials/ProfilTutor/TutorList.jsx",
       "resources/js/Pages/Partials/ProfilTutor/Consultation.jsx",
       "_goals-3-f201de0f.js",
-      "_tw-elements-react.es.min-b20b862c.js",
-      "_ButtonHoverSlide-e360392f.js",
-      "_CornerWaveVector-e06330f1.js",
-      "_a11y-4eb122d6.js",
-      "_free-mode-a7222c59.js"
+      "_tw-elements-react.es.min-aa8ebe4f.js",
+      "_ButtonHoverSlide-d9057674.js",
+      "_CornerWaveVector-ba884587.js",
+      "_a11y-3b86f9e7.js",
+      "_free-mode-00076ff0.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Main/ProfilTutor.jsx"
   },
   "resources/js/Pages/Partials/Home/Consultation.jsx": {
-    "file": "assets/Consultation-051af3f2.js",
+    "file": "assets/Consultation-dd46838e.js",
     "imports": [
       "resources/js/app.jsx",
-      "_ButtonHoverSlide-e360392f.js"
+      "_ButtonHoverSlide-d9057674.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Home/Consultation.jsx"
@@ -545,10 +545,10 @@
     "assets": [
       "assets/3-c14682c8.svg"
     ],
-    "file": "assets/FAQ-4e545bac.js",
+    "file": "assets/FAQ-a3690f50.js",
     "imports": [
       "resources/js/app.jsx",
-      "_tw-elements-react.es.min-b20b862c.js"
+      "_tw-elements-react.es.min-aa8ebe4f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Home/FAQ.jsx"
@@ -557,10 +557,10 @@
     "assets": [
       "assets/1-6e6418ce.svg"
     ],
-    "file": "assets/Hero-a39b8b9d.js",
+    "file": "assets/Hero-1ced6023.js",
     "imports": [
       "resources/js/app.jsx",
-      "_ButtonHoverSlide-e360392f.js"
+      "_ButtonHoverSlide-d9057674.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Home/Hero.jsx"
@@ -569,7 +569,7 @@
     "assets": [
       "assets/2-f2ae9ff3.svg"
     ],
-    "file": "assets/Preliminary-e47c4f72.js",
+    "file": "assets/Preliminary-dd74b98d.js",
     "imports": [
       "resources/js/app.jsx"
     ],
@@ -577,47 +577,47 @@
     "src": "resources/js/Pages/Partials/Home/Preliminary.jsx"
   },
   "resources/js/Pages/Partials/Home/Program.jsx": {
-    "file": "assets/Program-c4adb010.js",
+    "file": "assets/Program-ea683519.js",
     "imports": [
       "resources/js/app.jsx",
-      "_a11y-4eb122d6.js",
-      "_free-mode-a7222c59.js",
-      "_ButtonSwiper-f47f5c94.js",
-      "_BimbinganCard-50b24045.js",
-      "_ButtonPill-920c1c18.js",
-      "_ButtonHoverSlide-e360392f.js"
+      "_a11y-3b86f9e7.js",
+      "_free-mode-00076ff0.js",
+      "_ButtonSwiper-4fd0e12f.js",
+      "_BimbinganCard-069123fa.js",
+      "_ButtonPill-a0afe6b2.js",
+      "_ButtonHoverSlide-d9057674.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Home/Program.jsx"
   },
   "resources/js/Pages/Partials/Home/Testimony.jsx": {
-    "file": "assets/Testimony-f5a47f37.js",
+    "file": "assets/Testimony-df52b074.js",
     "imports": [
       "resources/js/app.jsx",
-      "_a11y-4eb122d6.js"
+      "_a11y-3b86f9e7.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Home/Testimony.jsx"
   },
   "resources/js/Pages/Partials/Home/Video.jsx": {
-    "file": "assets/Video-6992cc4f.js",
+    "file": "assets/Video-bf874074.js",
     "imports": [
       "resources/js/app.jsx",
-      "_a11y-4eb122d6.js",
-      "_ButtonSwiper-f47f5c94.js",
-      "_ButtonHoverSlide-e360392f.js"
+      "_a11y-3b86f9e7.js",
+      "_ButtonSwiper-4fd0e12f.js",
+      "_ButtonHoverSlide-d9057674.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Home/Video.jsx"
   },
   "resources/js/Pages/Partials/Karir/CareerList.jsx": {
-    "file": "assets/CareerList-ec04e173.js",
+    "file": "assets/CareerList-e6e60e3b.js",
     "imports": [
       "resources/js/app.jsx",
-      "_a11y-4eb122d6.js",
-      "_free-mode-a7222c59.js",
-      "_ButtonSwiper-f47f5c94.js",
-      "_ButtonHoverSlide-e360392f.js"
+      "_a11y-3b86f9e7.js",
+      "_free-mode-00076ff0.js",
+      "_ButtonSwiper-4fd0e12f.js",
+      "_ButtonHoverSlide-d9057674.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Karir/CareerList.jsx"
@@ -626,55 +626,55 @@
     "assets": [
       "assets/4-ca780f27.svg"
     ],
-    "file": "assets/Hero-1335afa1.js",
+    "file": "assets/Hero-985d8fbd.js",
     "imports": [
       "resources/js/app.jsx",
-      "_ButtonHoverSlide-e360392f.js"
+      "_ButtonHoverSlide-d9057674.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Karir/Hero.jsx"
   },
   "resources/js/Pages/Partials/Karir/RegistrationSteps.jsx": {
-    "file": "assets/RegistrationSteps-a58bdefa.js",
+    "file": "assets/RegistrationSteps-1915b923.js",
     "imports": [
       "resources/js/app.jsx",
-      "_CornerWaveVector-e06330f1.js"
+      "_CornerWaveVector-ba884587.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Karir/RegistrationSteps.jsx"
   },
   "resources/js/Pages/Partials/Produk/Bimbingan.jsx": {
-    "file": "assets/Bimbingan-12562e14.js",
+    "file": "assets/Bimbingan-6c5e77d6.js",
     "imports": [
       "resources/js/app.jsx",
-      "_a11y-4eb122d6.js",
-      "_free-mode-a7222c59.js",
-      "_ButtonSwiper-f47f5c94.js",
-      "_BimbinganCard-50b24045.js",
-      "_ButtonHoverSlide-e360392f.js",
-      "_ButtonPill-920c1c18.js"
+      "_a11y-3b86f9e7.js",
+      "_free-mode-00076ff0.js",
+      "_ButtonSwiper-4fd0e12f.js",
+      "_BimbinganCard-069123fa.js",
+      "_ButtonHoverSlide-d9057674.js",
+      "_ButtonPill-a0afe6b2.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Produk/Bimbingan.jsx"
   },
   "resources/js/Pages/Partials/Produk/Consultation.jsx": {
-    "file": "assets/Consultation-49da6acf.js",
+    "file": "assets/Consultation-99c94478.js",
     "imports": [
       "resources/js/app.jsx",
-      "_ButtonHoverSlide-e360392f.js"
+      "_ButtonHoverSlide-d9057674.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Produk/Consultation.jsx"
   },
   "resources/js/Pages/Partials/Produk/Ebook.jsx": {
-    "file": "assets/Ebook-35c1d31e.js",
+    "file": "assets/Ebook-3b9378fd.js",
     "imports": [
       "resources/js/app.jsx",
-      "_a11y-4eb122d6.js",
-      "_free-mode-a7222c59.js",
-      "_ButtonSwiper-f47f5c94.js",
-      "_ButtonPill-920c1c18.js",
-      "_ButtonHoverSlide-e360392f.js"
+      "_a11y-3b86f9e7.js",
+      "_free-mode-00076ff0.js",
+      "_ButtonSwiper-4fd0e12f.js",
+      "_ButtonPill-a0afe6b2.js",
+      "_ButtonHoverSlide-d9057674.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Produk/Ebook.jsx"
@@ -685,7 +685,7 @@
       "assets/ebook-db13577a.svg",
       "assets/webinar-8ffc9685.svg"
     ],
-    "file": "assets/Filter-780666df.js",
+    "file": "assets/Filter-6fb4028c.js",
     "imports": [
       "resources/js/app.jsx"
     ],
@@ -693,7 +693,7 @@
     "src": "resources/js/Pages/Partials/Produk/Filter.jsx"
   },
   "resources/js/Pages/Partials/Produk/SearchBar.jsx": {
-    "file": "assets/SearchBar-bf4a9ace.js",
+    "file": "assets/SearchBar-874cc4fa.js",
     "imports": [
       "resources/js/app.jsx"
     ],
@@ -701,14 +701,14 @@
     "src": "resources/js/Pages/Partials/Produk/SearchBar.jsx"
   },
   "resources/js/Pages/Partials/Produk/Webinar.jsx": {
-    "file": "assets/Webinar-5a293f6c.js",
+    "file": "assets/Webinar-6ee9205f.js",
     "imports": [
       "resources/js/app.jsx",
-      "_a11y-4eb122d6.js",
-      "_free-mode-a7222c59.js",
-      "_ButtonSwiper-f47f5c94.js",
-      "_ButtonPill-920c1c18.js",
-      "_ButtonHoverSlide-e360392f.js"
+      "_a11y-3b86f9e7.js",
+      "_free-mode-00076ff0.js",
+      "_ButtonSwiper-4fd0e12f.js",
+      "_ButtonPill-a0afe6b2.js",
+      "_ButtonHoverSlide-d9057674.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/Produk/Webinar.jsx"
@@ -717,7 +717,7 @@
     "assets": [
       "assets/5-c835cd0f.svg"
     ],
-    "file": "assets/Hero-ae08119e.js",
+    "file": "assets/Hero-38d8cb9d.js",
     "imports": [
       "resources/js/app.jsx"
     ],
@@ -725,10 +725,10 @@
     "src": "resources/js/Pages/Partials/ProfilPerusahaan/Hero.jsx"
   },
   "resources/js/Pages/Partials/ProfilPerusahaan/Preliminary.jsx": {
-    "file": "assets/Preliminary-7f63c011.js",
+    "file": "assets/Preliminary-74720eec.js",
     "imports": [
       "resources/js/app.jsx",
-      "_CornerWaveVector-e06330f1.js"
+      "_CornerWaveVector-ba884587.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/ProfilPerusahaan/Preliminary.jsx"
@@ -739,21 +739,21 @@
       "assets/ceo-21147e86.png",
       "assets/ttd-ceo-c7165d97.png"
     ],
-    "file": "assets/Team-8991f7eb.js",
+    "file": "assets/Team-85dde1ad.js",
     "imports": [
       "resources/js/app.jsx",
-      "_a11y-4eb122d6.js",
-      "_free-mode-a7222c59.js",
-      "_CornerWaveVector-e06330f1.js"
+      "_a11y-3b86f9e7.js",
+      "_free-mode-00076ff0.js",
+      "_CornerWaveVector-ba884587.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/ProfilPerusahaan/Team.jsx"
   },
   "resources/js/Pages/Partials/ProfilTutor/Consultation.jsx": {
-    "file": "assets/Consultation-1075f795.js",
+    "file": "assets/Consultation-3e8098db.js",
     "imports": [
       "resources/js/app.jsx",
-      "_ButtonHoverSlide-e360392f.js"
+      "_ButtonHoverSlide-d9057674.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/ProfilTutor/Consultation.jsx"
@@ -762,7 +762,7 @@
     "assets": [
       "assets/6-46b81fb1.svg"
     ],
-    "file": "assets/Hero-d68a9f23.js",
+    "file": "assets/Hero-b7fd9e60.js",
     "imports": [
       "resources/js/app.jsx"
     ],
@@ -770,12 +770,12 @@
     "src": "resources/js/Pages/Partials/ProfilTutor/Hero.jsx"
   },
   "resources/js/Pages/Partials/ProfilTutor/TutorList.jsx": {
-    "file": "assets/TutorList-023c53ae.js",
+    "file": "assets/TutorList-f321b62c.js",
     "imports": [
       "resources/js/app.jsx",
-      "_a11y-4eb122d6.js",
-      "_free-mode-a7222c59.js",
-      "_CornerWaveVector-e06330f1.js"
+      "_a11y-3b86f9e7.js",
+      "_free-mode-00076ff0.js",
+      "_CornerWaveVector-ba884587.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Partials/ProfilTutor/TutorList.jsx"
@@ -786,7 +786,7 @@
     "src": "resources/js/Pages/Partials/ProfilTutor/newFile.jsx"
   },
   "resources/js/app.css": {
-    "file": "assets/app-04d0f5e2.css",
+    "file": "assets/app-b61668b3.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.jsx": {
@@ -805,7 +805,7 @@
       "assets/arrow-right-32-676455bf.svg"
     ],
     "css": [
-      "assets/app-04d0f5e2.css"
+      "assets/app-b61668b3.css"
     ],
     "dynamicImports": [
       "resources/js/Pages/Auth/Form.jsx",
@@ -838,7 +838,7 @@
       "resources/js/Pages/Partials/ProfilTutor/TutorList.jsx",
       "resources/js/Pages/Partials/ProfilTutor/newFile.jsx"
     ],
-    "file": "assets/app-733a6c89.js",
+    "file": "assets/app-d0fd278b.js",
     "isEntry": true,
     "src": "resources/js/app.jsx"
   }
