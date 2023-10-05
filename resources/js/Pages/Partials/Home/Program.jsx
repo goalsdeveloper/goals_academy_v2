@@ -20,7 +20,7 @@ export default function Program ({ data }) {
 function ProgramExpand ({ data }) {
     return (
         <div className="container mx-auto hidden md:block">
-            <h2 className="text-center mb-6 xs:mb-8 3xl:mb-12">Pilih Program Goals untuk <br /><span className="text-primary">Solusi Skripsimu.</span></h2>
+            <h2 className="text-center mb-6 xs:mb-8 xl:mb-12 3xl:mb-16">Pilih Program Goals untuk <br /><span className="text-primary">Solusi Skripsimu.</span></h2>
             <div className="hidden md:flex justify-between items-center">
                 <ProgramCard item={data[0]} className="w-[23.5vw] 3xl:w-[22vw] h-[34vw] 3xl:h-[32vw]" />
                 <ProgramCard item={data[1]} className="w-[23.5vw] 3xl:w-[22vw] h-[34vw] 3xl:h-[32vw] scale-105" priority={true} />
