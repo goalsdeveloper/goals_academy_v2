@@ -64,7 +64,7 @@ class CryptKey
                 throw new LogicException('Unable to read key from file ' . $keyPath);
             }
         } else {
-            throw new LogicException('Invalid key supplied');
+            throw new LogicException('Unable to read key from file ' . $keyPath);
         }
 
         if ($keyPermissionsCheck === true) {
