@@ -26,6 +26,14 @@ h6 {
     @apply text-10 xs:text-12 md:text-6 lg:text-8 xl:text-12 3xl:text-16;
 }
 
+.swiper-program {
+    @apply overflow-visible !important;
+}
+
+.swiper-program .swiper-slide-active {
+    @apply scale-110 !important;
+}
+
 #form-right *, #form header * {
     @apply text-12 xs:text-12 sm:text-12 md:text-16 xl:text-14 3xl:text-20;
 }
