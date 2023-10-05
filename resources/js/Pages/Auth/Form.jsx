@@ -44,7 +44,7 @@ export default function Form({ title }) {
     const login = (e) => {
         e.preventDefault();
         // alert(loginData.email);
-        loginSubmit(route("auth.login"));
+        loginSubmit(route("login"));
     };
 
     const register = (e) => {

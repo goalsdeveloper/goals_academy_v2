@@ -26,7 +26,7 @@ class SocialHandler extends Controller
             $user = Socialite::driver($provider)->user();
         } catch (Exception $e) {
             Log::info($e);
-            return redirect()->route('auth.login')->with('social_failed', 'Gagal login menggunakan social!');
+            return redirect()->route('login')->with('social_failed', 'Gagal login menggunakan social!');
         }
 
         $authUser = $this->findOrCreateUser($user, $provider);
