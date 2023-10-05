@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Category;
 use App\Models\CourseSession;
 use App\Models\Products;
 use App\Models\User;
@@ -32,6 +33,33 @@ class DatabaseSeeder extends Seeder
             'phone_number' => '087763420873',
             'university' => 'Politeknik Negeri Malang',
             'major' => 'Elektronika',
+        ]);
+
+        Category::create([
+            'name' => 'Dibimbing Sekali',
+            'slug' => 'dibimbing-sekali',
+            'is_visible' => true,
+            'description' => 'Dibimbing sekali online/offline',
+        ]);
+        Category::create([
+            'name' => 'Dibimbing Sekali Online',
+            'slug' => 'dibimbing-sekali-online',
+            'parent_id' => '1',
+            'is_visible' => true,
+            'description' => 'Dibimbing secara online',
+        ]);
+        Category::create([
+            'name' => 'Dibimbing Sekali Offline',
+            'slug' => 'dibimbing-sekali-offline',
+            'parent_id' => '1',
+            'is_visible' => true,
+            'description' => 'Dibimbing secara offline',
+        ]);
+        Category::create([
+            'name' => 'E-book',
+            'slug' => 'e-book',
+            'is_visible' => true,
+            'description' => 'E-book yang dapat di download',
         ]);
         // User::create([
         //     'username' => 'tutor',
