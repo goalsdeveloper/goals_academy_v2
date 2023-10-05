@@ -66,8 +66,8 @@ export default function Form({ title }) {
                 className="w-8/12 relative hidden xl:flex items-end justify-center select-none"
             >
                 <CornerWaveVector
-                    rightCornerClassName="w-10/12"
-                    leftCornerClassName="w-6/12"
+                    rightCornerClassName="w-6/12"
+                    leftCornerClassName="w-10/12"
                 />
                 <div className="w-full flex flex-col justify-center items-center gap-4 3xl:gap-6 z-10 text-white">
                     <img className="w-2/12" src={logo} alt="Goals Academy" />

@@ -45,7 +45,7 @@ select:-webkit-autofill:focus {
         font-size: 16px;
     }
     * {
-        @apply scroll-smooth font-sans text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20 leading-tight;
+        @apply scroll-smooth leading-tight;
     }
     h1, h2, h3, h4, h5, h6 {
         @apply font-poppins font-bold;

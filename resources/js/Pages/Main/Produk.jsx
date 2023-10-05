@@ -44,8 +44,8 @@ export default function Produk({ auth }) {
         },
         {
             id: 2,
-            title: "Dibimbing Online 60 Menit",
-            slug: "dibimbing-online-60-menit",
+            title: "Dibimbing Online 45 Menit",
+            slug: "dibimbing-online-45-menit",
             img: program2,
             excerpt:
                 "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.",
@@ -53,7 +53,7 @@ export default function Produk({ auth }) {
                 "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.",
             features: {
                 times: 1,
-                duration: 60,
+                duration: 45,
                 category: "Online",
             },
             price: 69000,

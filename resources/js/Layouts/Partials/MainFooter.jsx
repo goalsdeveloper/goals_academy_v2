@@ -77,10 +77,10 @@ export default function MainFooter() {
                         </h5>
                         <div className="grid gap-2">
                             <a
-                                href="https://wa.me/6285637564245"
+                                href="https://wa.me/6282147638286"
                                 target="_blank"
                             >
-                                (+62) 856-3756-4245
+                                (+62) 821-4763-8286
                             </a>
                             <a href="mailto:cs@goalsacademy.id" target="_blank">
                                 cs@goalsacademy.id
