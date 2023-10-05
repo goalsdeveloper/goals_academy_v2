@@ -26,9 +26,7 @@ export default class Route {
      * @return {String} Route template.
      */
     get template() {
-        const template = `${this.origin}/${this.definition.uri}`.replace(/\/+$/, '');
-
-        return template === '' ? '/' : template;
+        return `${this.origin}/${this.definition.uri}`.replace(/\/+$/, '');
     }
 
     /**
@@ -115,9 +113,13 @@ export default class Route {
                 if (!new RegExp(`^${optional ? `(${this.wheres[segment]})?` : this.wheres[segment]}$`).test(params[segment] ?? '')) {
                     throw new Error(`Ziggy error: '${segment}' parameter does not match required format '${this.wheres[segment]}' for route '${this.name}'.`)
                 }
+
+                if (segments[segments.length - 1].name === segment) {
+                    return encodeURIComponent(params[segment] ?? '').replace(/%2F/g, '/');
+                }
             }
 
-            return encodeURI(params[segment] ?? '').replace(/%7C/g, '|').replace(/%25/g, '%').replace(/\$/g, '%24');
+            return encodeURIComponent(params[segment] ?? '');
         }).replace(`${this.origin}//`, `${this.origin}/`).replace(/\/+$/, '');
     }
 }
