@@ -11,18 +11,21 @@ use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Repeater;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\MarkdownEditor;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\AdminDashboard\Resources\ProductsResource\Pages;
 use App\Filament\AdminDashboard\Resources\ProductsResource\RelationManagers;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
-use Filament\Tables\Columns\TextColumn;
 
 class ProductsResource extends Resource
 {
@@ -111,13 +114,32 @@ class ProductsResource extends Resource
     {
         return $table
             ->columns([
-                //
+                ImageColumn::make('product_image')
+                    ->label('Image'),
+                TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
+                IconColumn::make('is_visible')
+                    ->label('Visibility')
+                    ->sortable()
+                    ->boolean(),
+                IconColumn::make('is_featured')
+                    ->label('Featured')
+                    ->sortable()
+                    ->boolean(),
+                TextColumn::make('categories.name'),
+                TextColumn::make('price')
+                    ->sortable()
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
