@@ -175,7 +175,6 @@ export default function Index({ auth }) {
     return (
         <MainLayout auth={auth} title="Home">
             <Hero />
-            {auth.user}
             <Preliminary />
             <Program data={data_program} />
             <div className="relative bg-secondary md:bg-transparent overflow-hidden md:overflow-visible py-3 xs:py-6 md:py-0">
