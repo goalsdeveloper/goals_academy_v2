@@ -27,7 +27,7 @@ function ProgramExpand ({ data }) {
                 <ProgramCard item={data[2]} className="w-[23.5vw] 3xl:w-[22vw] h-[34vw] 3xl:h-[32vw]" />
             </div>
             <div className="text-end mt-8 md:mt-4 lg:mt-8 3xl:mt-12">
-                <ButtonPill href="/produk" className="px-4" target="_self">
+                <ButtonPill isLink={true} href="/produk" className="px-4" target="_self">
                     Lihat Produk Lainnya &nbsp;
                     <i className="bi bi-arrow-right-circle xl:text-16"></i>
                 </ButtonPill>
@@ -73,7 +73,7 @@ function ProgramMobile ({ data }) {
                 )})}
             </Swiper>
             <div className="text-center mt-12 xs:mt-16 3xl:mt-24">
-                <ButtonPill href="/produk" className="px-4" target="_self">
+                <ButtonPill isLink={true} href="/produk" className="px-4" target="_self">
                     Lihat Produk Lainnya &nbsp;
                     <i className="bi bi-arrow-right-circle xl:text-16"></i>
                 </ButtonPill>
