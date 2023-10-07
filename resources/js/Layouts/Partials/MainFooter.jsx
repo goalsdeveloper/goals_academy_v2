@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react";
 import logo from "/resources/img/icon/goals-3.svg";
 
 export default function MainFooter() {
@@ -49,16 +50,16 @@ export default function MainFooter() {
                             Produk
                         </h5>
                         <div className="grid gap-2">
-                            <a href="https://lynk.id/goalsacademy/aW2pNBO">
+                            <a href="https://lynk.id/goalsacademy/aW2pNBO" target="_blank">
                                 Dibimbing Sekali
                             </a>
-                            <a href="https://lynk.id/goalsacademy/7q7r96V">
+                            <a href="https://lynk.id/goalsacademy/7q7r96V" target="_blank">
                                 Dibimbing Tuntas
                             </a>
-                            <a href="https://lynk.id/goalsacademy/DqqGx5x">
+                            <a href="https://lynk.id/goalsacademy/DqqGx5x" target="_blank">
                                 Dibimbing Olah Data
                             </a>
-                            <a href="">E-book</a>
+                            <a href="" target="_blank">E-book</a>
                         </div>
                     </div>
                     <div>
@@ -66,9 +67,9 @@ export default function MainFooter() {
                             Perusahaan
                         </h5>
                         <div className="grid gap-2">
-                            <a>Profil Perusahaan</a>
-                            <a>Profil Tutor</a>
-                            <a>Karir</a>
+                            <Link href="/profil_perusahaan">Profil Perusahaan</Link>
+                            <Link href="/profil_tutor">Profil Tutor</Link>
+                            <Link href="/karir">Karir</Link>
                         </div>
                     </div>
                     <div>

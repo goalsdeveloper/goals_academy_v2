@@ -34,14 +34,6 @@ h6 {
     @apply scale-110 !important;
 }
 
-#form-right *, #form header * {
+#form-right * {
     @apply text-12 xs:text-12 sm:text-12 md:text-16 xl:text-14 3xl:text-20;
-}
-
-#form header .icon {
-    @apply text-28;
-}
-
-#form header .nav-icon {
-    @apply text-20 xs:text-24;
 }
