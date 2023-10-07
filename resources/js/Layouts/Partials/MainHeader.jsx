@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@inertiajs/react";
 import { TECollapse } from "tw-elements-react";
+import TECollapseItem from "@/Components/TECollapseItem";
 import logo from "/resources/img/icon/goals-1.svg";
 import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
 import CornerWaveVector from "@/Components/CornerWaveVector";
@@ -11,7 +12,7 @@ export default function MainHeader({ auth, title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false);
 
     return (
-        <header className="fixed w-screen top-0 right-0 bg-white text-dark lg:text-base z-50">
+        <header className="fixed w-full top-0 right-0 bg-white text-dark lg:text-base z-50">
             <div className="hidden xl:h-24 3xl:h-36"></div>{" "}
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">
@@ -45,23 +46,12 @@ export default function MainHeader({ auth, title }) {
     );
 }
 
-function TECollapseItem({ children, className }) {
-    return (
-        <>
-            <br />
-            <div className={`grid gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 ${className}`}>
-                {children}
-            </div>
-        </>
-    );
-}
-
 function NavbarExpand({ auth, title }) {
     const [authDropdown, setAuthDropdown] = useState(false);
     const [profileDropdown, setProfileDropdown] = useState(false);
     return (
         <>
-            <div className="hidden md:grid grid-cols-5 md:gap-6 xl:gap-9 3xl:gap-12 font-medium text-center">
+            <div className="hidden md:grid grid-cols-5 md:gap-6 xl:gap-9 3xl:gap-12 font-medium text-center text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20">
                 <Link
                     href="/produk"
                     className={`font-poppins hover:text-primary flex justify-center ${
@@ -109,7 +99,7 @@ function NavbarExpand({ auth, title }) {
                         show={profileDropdown}
                         className="absolute z-10 shadow-none p-1 translate-y-2"
                     >
-                        <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 text-start bg-white shadow-centered rounded-xl">
+                        <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
                             <Link
                                 className="font-poppins hover:text-primary"
                                 href="/profil_perusahaan"
@@ -127,7 +117,7 @@ function NavbarExpand({ auth, title }) {
                 </button>
             </div>
             {!auth.user ? (
-                <div className="w-auto hidden md:flex flex-wrap justify-end gap-2 3xl:gap-4 font-medium">
+                <div className="w-auto hidden md:flex flex-wrap justify-end gap-2 3xl:gap-4 font-medium text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20">
                     <Link href="/login">
                         <ButtonHoverSlide className="text-secondary before:-z-10 hover:text-white border-1 xl:border-2 border-secondary hover:border-primary md:rounded-lg xl:rounded-xl 3xl:rounded-2xl md:px-4 md:py-1 xl:px-6 xl:py-2 3xl:px-8 3xl:py-3 before:w-[200%] before:-ms-[200%] before:duration-300 hover:before:-ms-[50%] before:bg-sweep-primary">
                             Login
@@ -141,7 +131,7 @@ function NavbarExpand({ auth, title }) {
                     </Link>
                 </div>
             ) : (
-                <div className="w-auto hidden md:flex flex-wrap justify-end items-center md:gap-3 xl:gap-4 3xl:gap-6 font-medium">
+                <div className="w-auto hidden md:flex flex-wrap justify-end items-center md:gap-3 xl:gap-4 3xl:gap-6 font-medium text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20">
                     <Link href="#">
                         <i className="fa-solid fa-cart-shopping text-primary md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
                     </Link>
@@ -172,7 +162,7 @@ function NavbarExpand({ auth, title }) {
                             className="absolute z-10 shadow-none p-1 translate-y-4"
                         >
                             {/* profile navbar */}
-                            <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 text-start bg-white shadow-centered rounded-xl">
+                            <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
                                 <Link
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
                                     href="#"
@@ -209,9 +199,9 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
     const [profileDropdownMobile, setProfileDropdownMobile] = useState(false);
     const [authDropdown, setAuthDropdown] = useState(false);
     return (
-        <div>
+        <div className="text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20">
             <div
-                className={`md:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold text-white h-screen py-6 xs:py-8 duration-500 ${
+                className={`md:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold text-white min-h-screen py-6 xs:py-8 duration-500 ${
                     mobileNavbar ? "" : "opacity-0 translate-x-[110%]"
                 }`}
             >
@@ -263,7 +253,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                                         className="absolute z-10 shadow-none p-1 translate-y-4"
                                     >
                                         {/* profile navbar */}
-                                        <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 text-start bg-white shadow-centered rounded-xl">
+                                        <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
                                             <Link
                                                 className="flex gap-2 items-center font-poppins hover:text-primary"
                                                 href="/profil_perusahaan"
@@ -340,7 +330,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                             <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
                         </Link>
                         <button
-                            className={`w-full relative font-poppins flex justify-center`}
+                            className={`w-full relative font-poppins flex flex-col justify-center`}
                         >
                             <span
                                 className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 w-full ${
@@ -367,12 +357,12 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                             </span>
                             <TECollapse
                                 show={profileDropdownMobile}
-                                className="absolute -z-10 top-10 shadow-none text-secondary w-[110%] px-[5%]"
+                                className="shadow-none text-secondary w-full"
                             >
-                                <TECollapseItem className="py-4">
+                                <TECollapseItem className="gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6">
                                     <Link
                                         href="/profil_perusahaan"
-                                        className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 ${
+                                        className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 overflow-hidden ${
                                             title == "Produk" ? "font" : ""
                                         }`}
                                     >
@@ -382,7 +372,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                                     </Link>
                                     <Link
                                         href="/profil_tutor"
-                                        className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 ${
+                                        className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 overflow-hidden ${
                                             title == "Produk" ? "font" : ""
                                         }`}
                                     >

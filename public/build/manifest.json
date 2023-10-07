@@ -37,8 +37,6 @@
   },
   "_MainLayout-5294ac46.js": {
     "assets": [
-      "assets/user-784106eb.png",
-      "assets/goals-1-d96b30d3.svg",
       "assets/wave-3-25b8b045.svg",
       "assets/wave-4-874ae708.svg"
     ],
@@ -74,14 +72,17 @@
       "_a11y-3b86f9e7.js"
     ]
   },
-  "_goals-3-f201de0f.js": {
+  "_goals-3-4e592461.js": {
     "assets": [
       "assets/goals-3-1442ea32.svg"
     ],
     "css": [
-      "assets/goals-3-10014a5a.css"
+      "assets/goals-3-7767b64e.css"
     ],
-    "file": "assets/goals-3-f201de0f.js"
+    "file": "assets/goals-3-4e592461.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
   },
   "_tw-elements-react.es.min-aa8ebe4f.js": {
     "file": "assets/tw-elements-react.es.min-aa8ebe4f.js",
@@ -94,7 +95,7 @@
     "src": "a11y.css"
   },
   "goals-3.css": {
-    "file": "assets/goals-3-10014a5a.css",
+    "file": "assets/goals-3-7767b64e.css",
     "src": "goals-3.css"
   },
   "resources/img/ebook/1.png": {
@@ -340,6 +341,14 @@
   "resources/img/vector/tree-2.svg": {
     "file": "assets/tree-2-478c1329.svg",
     "src": "resources/img/vector/tree-2.svg"
+  },
+  "resources/img/vector/tree-3.svg": {
+    "file": "assets/tree-3-1a526dec.svg",
+    "src": "resources/img/vector/tree-3.svg"
+  },
+  "resources/img/vector/tree-4.svg": {
+    "file": "assets/tree-4-5cfc841a.svg",
+    "src": "resources/img/vector/tree-4.svg"
   },
   "resources/img/vector/wave-1.svg": {
     "file": "assets/wave-1-1a4afa5c.svg",

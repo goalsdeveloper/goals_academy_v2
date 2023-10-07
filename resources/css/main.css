@@ -19,21 +19,21 @@ h4 {
 }
 
 h5 {
-    @apply text-14 xs:text-16 md:text-8 lg:text-12 xl:text-16 3xl:text-20;
+    @apply text-14 xs:text-18 sm:text-20 md:text-8 lg:text-12 xl:text-16 3xl:text-20;
 }
 
 h6 {
     @apply text-10 xs:text-12 md:text-6 lg:text-8 xl:text-12 3xl:text-16;
 }
 
-#form-right *, #form header * {
-    @apply md:text-16 xl:text-14 3xl:text-20;
+.swiper-program {
+    @apply overflow-visible !important;
 }
 
-#form header .icon {
-    @apply text-28;
+.swiper-program .swiper-slide-active {
+    @apply scale-110 !important;
 }
 
-#form header .nav-icon {
-    @apply text-20 xs:text-24;
+#form-right * {
+    @apply text-12 xs:text-12 sm:text-12 md:text-16 xl:text-14 3xl:text-20;
 }

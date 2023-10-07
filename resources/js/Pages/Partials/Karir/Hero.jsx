@@ -20,7 +20,7 @@ export default function Hero () {
                         <h3 className="mt-2 md:mt-2 lg:mt-3 xl:mt-4 text-12 xs:text-14 sm:text-16 md:text-14 lg:text-18 xl:text-24 3xl:text-32 leading-normal">Mari Berkenalan Lebih Lanjut <br /><span className="text-primary">Dengan Tim Goals Academy</span></h3>
                     </div>
                     <div className="w-7/12 md:w-5/12 flex justify-center md:justify-end">
-                        <a href="https://wa.me/6285637564245" className="w-10/12 md:w-6/12 h-8 md:h-8 lg:h-10 xl:h-12 3xl:h-16" target="_blank">
+                        <a href="/profil_perusahaan" className="w-10/12 md:w-6/12 h-8 md:h-8 lg:h-10 xl:h-12 3xl:h-16">
                             <ButtonHoverSlide className="h-full before:p-1 md:before:p-1.5 lg:before:p-1 xl:before:p-1.5 before:content-arrow-right-20 lg:before:content-arrow-right-32 xl:before:content-arrow-right-32 after:content-career after:text-primary after:font-medium border-1 xl:border-2 border-primary rounded-full before:w-[160%] before:-ms-[160%] before:duration-300 after:w-full after:duration-300 hover:before:-ms-[30%] hover:after:-me-[100%] before:bg-sweep-primary text-10 xs:text-12 md:text-8 lg:text-12 xl:text-14 3xl:text-20 bg-white"></ButtonHoverSlide>
                         </a>
                     </div>

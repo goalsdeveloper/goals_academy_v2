@@ -1,7 +1,9 @@
 import "/resources/css/main.css";
 import { useState } from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
+import TECollapseItem from "@/Components/TECollapseItem";
 import CornerWaveVector from "@/Components/CornerWaveVector";
+import CornerWaveVector2 from "@/Components/CornerWaveVector2";
 import logo from "/resources/img/icon/goals-3.svg";
 import figure7 from "/resources/img/figure/7.svg";
 import rectangle from "/resources/img/vector/rectangle-1.svg";
@@ -66,8 +68,8 @@ export default function Form({ title }) {
                 className="w-8/12 relative hidden xl:flex items-end justify-center select-none"
             >
                 <CornerWaveVector
-                    rightCornerClassName="w-10/12"
-                    leftCornerClassName="w-6/12"
+                    rightCornerClassName="w-6/12"
+                    leftCornerClassName="w-10/12"
                 />
                 <div className="w-full flex flex-col justify-center items-center gap-4 3xl:gap-6 z-10 text-white">
                     <img className="w-2/12" src={logo} alt="Goals Academy" />
@@ -295,17 +297,6 @@ function SubmitButton({ children }) {
     );
 }
 
-function TECollapseItem({ children }) {
-    return (
-        <>
-            <br />
-            <div className="grid gap-4 lg:gap-3 xl:gap-4 3xl:gap-6 text-start py-4 px-6 xl:py-3 xl:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 bg-white shadow-centered rounded-md">
-                {children}
-            </div>
-        </>
-    );
-}
-
 function Header({ title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false);
 
@@ -347,11 +338,11 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
     return (
         <>
             <div
-                className={`xl:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold text-white h-screen py-6 xs:py-8 duration-500 ${
+                className={`xl:hidden w-full absolute z-50 top-0 bottom-0 right-0 bg-white font-bold text-white py-6 xs:py-8 duration-500 ${
                     mobileNavbar ? "" : "opacity-0 translate-x-[110%]"
                 }`}
             >
-                <div className="container mx-auto">
+                <div className="container mx-auto md:text-16 xl:text-14 3xl:text-20;">
                     <div className="flex justify-end mb-6 xs:mb-8">
                         <button onClick={() => setMobileNavbar(false)}>
                             <i
@@ -368,7 +359,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                         >
                             Produk
                             <CornerWaveVector cornerClassName="w-4/12" />
-                            <i className="fa-solid fa-arrow-up rotate-45 nav-icon"></i>
+                            <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
                         </Link>
                         <Link
                             href="/artikel"
@@ -378,7 +369,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                         >
                             Artikel
                             <CornerWaveVector cornerClassName="w-4/12" />
-                            <i className="fa-solid fa-arrow-up rotate-45 nav-icon"></i>
+                            <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
                         </Link>
                         <Link
                             href="/diskusi"
@@ -388,7 +379,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                         >
                             Diskusi
                             <CornerWaveVector cornerClassName="w-4/12" />
-                            <i className="fa-solid fa-arrow-up rotate-45 nav-icon"></i>
+                            <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
                         </Link>
                         <Link
                             href="/karir"
@@ -398,13 +389,13 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                         >
                             Karir
                             <CornerWaveVector cornerClassName="w-4/12" />
-                            <i className="fa-solid fa-arrow-up rotate-45 nav-icon"></i>
+                            <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
                         </Link>
                         <button
-                            className={`w-full relative font-poppins flex justify-center`}
+                            className={`w-full relative font-poppins flex flex-col justify-center`}
                         >
                             <span
-                                className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 w-full ${
+                                className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 w-full ${
                                     title == "Profil Perusahaan" ||
                                     title == "Profil Tutor"
                                         ? "font"
@@ -419,7 +410,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                                 Profil
                                 <CornerWaveVector cornerClassName="w-4/12" />
                                 <i
-                                    className={`fa-solid fa-chevron-down nav-icon duration-300 ${
+                                    className={`fa-solid fa-chevron-down text-20 xs:text-24 duration-300 ${
                                         profileDropdownMobile
                                             ? "rotate-180"
                                             : ""
@@ -428,20 +419,28 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                             </span>
                             <TECollapse
                                 show={profileDropdownMobile}
-                                className="absolute -z-10 top-10 text-dark shadow-none p-1 w-full"
+                                className="shadow-none text-secondary w-full"
                             >
-                                <TECollapseItem>
+                                <TECollapseItem className="gap-8">
                                     <Link
-                                        className="font-poppins"
                                         href="/profil_perusahaan"
+                                        className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 overflow-hidden ${
+                                            title == "Produk" ? "font" : ""
+                                        }`}
                                     >
                                         Profil Perusahaan
+                                        <CornerWaveVector2 cornerClassName="w-4/12" />
+                                        <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
                                     </Link>
                                     <Link
-                                        className="font-poppins"
                                         href="/profil_tutor"
+                                        className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 overflow-hidden ${
+                                            title == "Produk" ? "font" : ""
+                                        }`}
                                     >
                                         Profil Tutor
+                                        <CornerWaveVector2 cornerClassName="w-4/12" />
+                                        <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
                                     </Link>
                                 </TECollapseItem>
                             </TECollapse>

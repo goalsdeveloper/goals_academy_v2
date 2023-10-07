@@ -19,6 +19,8 @@ export default {
             'xl': '1280px',
             '2xl': '1440px',
             '3xl': '1920px',
+            '4xl': '2024px',
+            '5xl': '2560px',
         },
         extend: {
             colors: {
@@ -139,6 +141,10 @@ export default {
                     '@screen 3xl': {
                         width: '70%',
                         maxWidth: '1536px'
+                    },
+                    '@screen 4xl': {
+                        width: '70%',
+                        maxWidth: '1728px'
                     }
                 },
                 '.container-lg': {
@@ -152,6 +158,10 @@ export default {
                     '@screen 3xl': {
                         width: '75%',
                         maxWidth: '1728px'
+                    },
+                    '@screen 4xl': {
+                        width: '75%',
+                        maxWidth: '1920px'
                     }
                 }
             })
