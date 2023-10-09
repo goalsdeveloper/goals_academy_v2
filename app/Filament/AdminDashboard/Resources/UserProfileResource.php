@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\AdminDashboard\Resources\UserProfileResource\Pages;
 use App\Filament\AdminDashboard\Resources\UserProfileResource\RelationManagers;
+use Filament\Tables\Columns\ImageColumn;
 
 class UserProfileResource extends Resource
 {
@@ -37,6 +38,9 @@ class UserProfileResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('profile_image')
+                    ->label('Photo')
+                    ->circular(),
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable(),

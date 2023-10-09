@@ -18,6 +18,7 @@ use App\Filament\AdminDashboard\Resources\UserResource\RelationManagers;
 use App\Filament\AdminDashboard\Resources\UserResource\RelationManagers\ProfileRelationManager;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 
 class UserResource extends Resource
 {
@@ -52,7 +53,9 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                
+                ImageColumn::make('profile.profile_image')
+                    ->label('Photo')
+                    ->circular(),
                 TextColumn::make('profile.name')
                     ->sortable()
                     ->searchable(),
