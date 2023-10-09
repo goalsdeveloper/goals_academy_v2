@@ -12,7 +12,9 @@ class EmailDiskonController extends Controller
     public function handler(Request $request)
     {
         // dd($request);
-        $email = $request->input('email');
+        $email = $request->validate([
+            'email' => 'required|email:dns'
+        ]);
 
         $data = [
             'message' => 'This is Promo Email Test!'
@@ -25,5 +27,12 @@ class EmailDiskonController extends Controller
         Log::info("Email sent successfully to {$email}", ['email' => $email]);
 
         return redirect()->back()->with('success', 'Email sent successfully');
+    }
+
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'Email tidak bisa kosong',
+        ];
     }
 }

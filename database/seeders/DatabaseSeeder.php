@@ -22,9 +22,10 @@ class DatabaseSeeder extends Seeder
     {
         User::create([
             'username' => 'Ayukuriii',
-            'email' => 'ekadianharis@gmail.com',
+            'email' => 'ekadianharis@goalsacademy.id',
             'password' => Hash::make('qwe12334'),
-            'user_role' => 'Admin'
+            'user_role' => 'Admin',
+            'email_verified_at' => now(),
         ]);
 
         UserProfile::create([
