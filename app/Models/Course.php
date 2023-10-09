@@ -10,9 +10,16 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_note',
+        'user_id',
+        'products_id',
+        'order_id',
+        'tutor_id',
+        'course_session_id',
         'location',
         'date',
+        'ongoing',
+        'is_tutor',
+        'is_moderator'
     ];
 
     public function user()

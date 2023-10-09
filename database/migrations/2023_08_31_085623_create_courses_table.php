@@ -23,7 +23,6 @@ return new class extends Migration
             $table->foreignIdFor(Order::class);
             $table->foreignIdFor(Tutor::class);
             $table->foreignIdFor(CourseSession::class);
-            $table->text('user_note');
             $table->text('location');
             $table->date('date');
             $table->boolean('ongoing')->default(true);
