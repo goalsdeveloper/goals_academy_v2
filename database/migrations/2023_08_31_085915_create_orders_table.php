@@ -20,8 +20,9 @@ return new class extends Migration
             $table->string('order_code')->unique();
             $table->unsignedInteger('quantity');
             $table->unsignedInteger('unit_price');
-            $table->unsignedBigInteger('gross_amount');
+            // $table->unsignedBigInteger('gross_amount');
             $table->string('status')->default('pending');
+            $table->longText('notes')->nullable();
             $table->timestamps();
         });
     }
