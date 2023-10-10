@@ -2,24 +2,26 @@
 
 namespace App\Filament\AdminDashboard\Resources;
 
-use App\Enums\UserRoleEnum;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Enums\UserRoleEnum;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Forms\Components\DateTimePicker;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\AdminDashboard\Resources\UserResource\Pages;
 use App\Filament\AdminDashboard\Resources\UserResource\RelationManagers;
 use App\Filament\AdminDashboard\Resources\UserResource\RelationManagers\ProfileRelationManager;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Columns\ImageColumn;
 
 class UserResource extends Resource
 {
@@ -81,7 +83,15 @@ class UserResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('user_role')
+                    ->multiple()
+                    ->options([
+                        'admin' => 'Admin',
+                        'tutor' => 'Tutor',
+                        'moderator' => 'Moderator',
+                        'user' => 'User',
+                    ])
+                    ->native(false),
             ])
             ->actions([
                 ActionGroup::make([

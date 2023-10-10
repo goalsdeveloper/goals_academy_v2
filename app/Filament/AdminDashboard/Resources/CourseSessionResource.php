@@ -32,6 +32,7 @@ class CourseSessionResource extends Resource
         return $form
             ->schema([
                 TimePicker::make('session')
+                    ->seconds(false)
             ]);
     }
 
