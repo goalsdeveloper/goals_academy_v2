@@ -62,7 +62,7 @@ class OrderResource extends Resource
                             ->dehydrated()
                             ->required(),
                         Select::make('user_id')
-                            ->relationship('user', 'email')
+                            ->relationship('user', 'name')
                             ->native(false)
                             ->required(),
                         Select::make('status')
@@ -121,7 +121,7 @@ class OrderResource extends Resource
                     ->label('Order Code')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('user.profile.name')
+                TextColumn::make('user.name')
                     ->label('Customer')
                     ->sortable(),
                 TextColumn::make('products.name')

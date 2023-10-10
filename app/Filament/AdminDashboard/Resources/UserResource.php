@@ -37,9 +37,14 @@ class UserResource extends Resource
             ->schema([
                 TextInput::make('username')
                     ->required(),
-                TextInput::make('email'),
+                TextInput::make('email')
+                    ->required()
+                    ->email(),
+                TextInput::make('name')
+                    ->required(),
                 Select::make('user_role')
                     ->native(false)
+                    ->required()
                     ->options([
                         'user' => UserRoleEnum::USER->value,
                         'tutor' => UserRoleEnum::TUTOR->value,
@@ -61,7 +66,7 @@ class UserResource extends Resource
                 ImageColumn::make('profile.profile_image')
                     ->label('Photo')
                     ->circular(),
-                TextColumn::make('profile.name')
+                TextColumn::make('name')
                     ->label('Name')
                     ->sortable()
                     ->searchable(),

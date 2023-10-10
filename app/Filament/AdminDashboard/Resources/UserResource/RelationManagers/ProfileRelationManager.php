@@ -25,9 +25,6 @@ class ProfileRelationManager extends RelationManager
                     ->required()
                     ->disabled()
                     ->maxLength(255),
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
                 TextInput::make('phone_number')
                     ->numeric()
                     ->required(),
@@ -48,7 +45,6 @@ class ProfileRelationManager extends RelationManager
             ->recordTitleAttribute('user_id')
             ->columns([
                 Tables\Columns\ImageColumn::make('profile_image')->label('Photo')->circular(),
-                Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('phone_number'),
                 Tables\Columns\TextColumn::make('university'),
                 Tables\Columns\TextColumn::make('major'),

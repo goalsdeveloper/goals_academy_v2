@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::create([
+            'name' => 'Ekadian Haris',
             'username' => 'Ayukuriii',
             'email' => 'ekadianharis@goalsacademy.id',
             'password' => Hash::make('qwe12334'),
@@ -29,6 +30,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
+            'name' => 'Ekadian Haris Priyatama',
             'username' => 'Nyanwololo',
             'email' => 'nyanwololo@gmail.com',
             'password' => Hash::make('qwe12334'),
@@ -38,7 +40,6 @@ class DatabaseSeeder extends Seeder
 
         UserProfile::create([
             'user_id' => 1,
-            'name' => 'Ekadian Haris',
             'phone_number' => '087763420873',
             'university' => 'Politeknik Negeri Malang',
             'major' => 'Elektronika',
@@ -46,7 +47,6 @@ class DatabaseSeeder extends Seeder
 
         UserProfile::create([
             'user_id' => 2,
-            'name' => 'Ekadian Haris',
             'phone_number' => '087763420871',
             'university' => 'Politeknik Negeri Malang',
             'major' => 'Elektronika',

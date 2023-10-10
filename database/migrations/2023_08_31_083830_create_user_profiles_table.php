@@ -15,7 +15,6 @@ return new class extends Migration
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained('users');
-            $table->string('name');
             $table->string('phone_number')->unique();
             $table->string('university');
             $table->string('major');

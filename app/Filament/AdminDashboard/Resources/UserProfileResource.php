@@ -43,8 +43,6 @@ class UserProfileResource extends Resource
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->native(false),
-                        TextInput::make('name')
-                            ->required(),
                         TextInput::make('phone_number')
                             ->numeric()
                             ->maxLength(14)
@@ -75,7 +73,8 @@ class UserProfileResource extends Resource
                 ImageColumn::make('profile_image')
                     ->label('Photo')
                     ->circular(),
-                TextColumn::make('name')
+                TextColumn::make('user.name')
+                    ->label('Name')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('user.email')
