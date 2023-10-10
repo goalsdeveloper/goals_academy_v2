@@ -14,6 +14,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\AdminDashboard\Resources\UserProfileResource\Pages;
 use App\Filament\AdminDashboard\Resources\UserProfileResource\RelationManagers;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 
 class UserProfileResource extends Resource
@@ -30,7 +35,36 @@ class UserProfileResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Group::make()->schema([
+                    Section::make()->schema([
+                        Select::make('user_id')
+                            ->label('User ID')
+                            ->relationship('user', 'username')
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->native(false),
+                        TextInput::make('name')
+                            ->required(),
+                        TextInput::make('phone_number')
+                            ->numeric()
+                            ->maxLength(14)
+                            ->required()
+                    ])
+                ]),
+                Group::make()->schema([
+                    Section::make()->schema([
+                        TextInput::make('university')
+                            ->label('Universitas')
+                            ->required(),
+                        TextInput::make('major')
+                            ->label('Jurusan')
+                            ->required(),
+                        FileUpload::make('profile_image')
+                            ->image()
+                            ->directory('user_profile_image')
+                            ->imageEditor()
+                    ])
+                ])
             ]);
     }
 

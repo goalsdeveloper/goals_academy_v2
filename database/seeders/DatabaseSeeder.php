@@ -24,7 +24,15 @@ class DatabaseSeeder extends Seeder
             'username' => 'Ayukuriii',
             'email' => 'ekadianharis@goalsacademy.id',
             'password' => Hash::make('qwe12334'),
-            'user_role' => 'Admin',
+            'user_role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            'username' => 'Nyanwololo',
+            'email' => 'nyanwololo@gmail.com',
+            'password' => Hash::make('qwe12334'),
+            'user_role' => 'tutor',
             'email_verified_at' => now(),
         ]);
 
@@ -32,6 +40,14 @@ class DatabaseSeeder extends Seeder
             'user_id' => 1,
             'name' => 'Ekadian Haris',
             'phone_number' => '087763420873',
+            'university' => 'Politeknik Negeri Malang',
+            'major' => 'Elektronika',
+        ]);
+
+        UserProfile::create([
+            'user_id' => 2,
+            'name' => 'Ekadian Haris',
+            'phone_number' => '087763420871',
             'university' => 'Politeknik Negeri Malang',
             'major' => 'Elektronika',
         ]);

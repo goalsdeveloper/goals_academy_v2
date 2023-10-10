@@ -41,7 +41,7 @@ class Course extends Model
     }
     public function tutorNote()
     {
-        return $this->hasOne(TutorNote::class);
+        return $this->hasMany(TutorNote::class);
     }
     public function courseSession()
     {

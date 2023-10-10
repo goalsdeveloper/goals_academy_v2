@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Course;
+use App\Models\Tutor;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('tutor_notes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Course::class);
+            $table->foreignIdFor(Tutor::class)->constrained('tutors')->cascadeOnDelete();
+            $table->foreignIdFor(Course::class)->constrained('courses')->cascadeOnDelete();
             $table->text('body');
             $table->string('file_name');
             $table->string('file');

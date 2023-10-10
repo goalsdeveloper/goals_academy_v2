@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\AdminDashboard\Resources\UserResource\Pages;
 use App\Filament\AdminDashboard\Resources\UserResource\RelationManagers;
 use App\Filament\AdminDashboard\Resources\UserResource\RelationManagers\ProfileRelationManager;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
@@ -35,17 +36,21 @@ class UserResource extends Resource
         return $form
             ->schema([
                 TextInput::make('username')
-                    ->disabled(),
+                    ->required(),
                 TextInput::make('email'),
                 Select::make('user_role')
                     ->native(false)
                     ->options([
-                        'User' => UserRoleEnum::USER->value,
-                        'Tutor' => UserRoleEnum::TUTOR->value,
-                        'Moderator' => UserRoleEnum::MODERATOR->value,
-                        'Admin' => UserRoleEnum::ADMIN->value,
+                        'user' => UserRoleEnum::USER->value,
+                        'tutor' => UserRoleEnum::TUTOR->value,
+                        'moderator' => UserRoleEnum::MODERATOR->value,
+                        'admin' => UserRoleEnum::ADMIN->value,
                     ]),
-
+                DateTimePicker::make('email_verified_at')
+                    ->default(now()),
+                TextInput::make('password')
+                    ->required()
+                    ->password()
             ]);
     }
 
@@ -57,6 +62,7 @@ class UserResource extends Resource
                     ->label('Photo')
                     ->circular(),
                 TextColumn::make('profile.name')
+                    ->label('Name')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('username')

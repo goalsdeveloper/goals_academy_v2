@@ -13,4 +13,8 @@ class Tutor extends Model
     {
         return $this->hasOne(User::class);
     }
+    public function tutornotes()
+    {
+        return $this->hasMany(TutorNote::class);
+    }
 }
