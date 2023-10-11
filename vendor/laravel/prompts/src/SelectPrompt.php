@@ -4,9 +4,12 @@ namespace Laravel\Prompts;
 
 use Closure;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 class SelectPrompt extends Prompt
 {
+    use Concerns\ReducesScrollingToFitTerminal;
+
     /**
      * The index of the highlighted option.
      */
@@ -35,9 +38,16 @@ class SelectPrompt extends Prompt
         public int|string|null $default = null,
         public int $scroll = 5,
         public ?Closure $validate = null,
-        public string $hint = ''
+        public string $hint = '',
+        public bool|string $required = true,
     ) {
+        if ($this->required === false) {
+            throw new InvalidArgumentException('Argument [required] must be true or a string.');
+        }
+
         $this->options = $options instanceof Collection ? $options->all() : $options;
+
+        $this->reduceScrollingToFitTerminal();
 
         if ($this->default) {
             if (array_is_list($this->options)) {
@@ -45,11 +55,29 @@ class SelectPrompt extends Prompt
             } else {
                 $this->highlighted = array_search($this->default, array_keys($this->options)) ?: 0;
             }
+
+            // If the default is not visible, scroll and center it.
+            // If it's near the end of the list, we just scroll to the end.
+            if ($this->highlighted >= $this->scroll) {
+                $optionsLeft = count($this->options) - $this->highlighted - 1;
+                $halfScroll = (int) floor($this->scroll / 2);
+                $endOffset = max(0, $halfScroll - $optionsLeft);
+
+                // If the scroll is even, we need to subtract one more
+                // in order to take the highlighted option into account.
+                // Since when the scroll is odd the halfScroll is floored,
+                // we don't need to do anything.
+                if ($this->scroll % 2 === 0) {
+                    $endOffset--;
+                }
+
+                $this->firstVisible = $this->highlighted - $halfScroll - $endOffset;
+            }
         }
 
         $this->on('key', fn ($key) => match ($key) {
-            Key::UP, Key::UP_ARROW, Key::LEFT, Key::LEFT_ARROW, Key::SHIFT_TAB, 'k', 'h' => $this->highlightPrevious(),
-            Key::DOWN, Key::DOWN_ARROW, Key::RIGHT, Key::RIGHT_ARROW, Key::TAB, 'j', 'l' => $this->highlightNext(),
+            Key::UP, Key::UP_ARROW, Key::LEFT, Key::LEFT_ARROW, Key::SHIFT_TAB, Key::CTRL_P, Key::CTRL_B, 'k', 'h' => $this->highlightPrevious(),
+            Key::DOWN, Key::DOWN_ARROW, Key::RIGHT, Key::RIGHT_ARROW, Key::TAB, Key::CTRL_N, Key::CTRL_F, 'j', 'l' => $this->highlightNext(),
             Key::ENTER => $this->submit(),
             default => null,
         });
@@ -60,6 +88,10 @@ class SelectPrompt extends Prompt
      */
     public function value(): int|string|null
     {
+        if (static::$interactive === false) {
+            return $this->default;
+        }
+
         if (array_is_list($this->options)) {
             return $this->options[$this->highlighted] ?? null;
         } else {
