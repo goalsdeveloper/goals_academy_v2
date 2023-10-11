@@ -2,15 +2,30 @@
 
 namespace App\Models;
 
+use Filament\Panel;
+use Laravel\Sanctum\HasApiTokens;
+use Filament\Models\Contracts\HasName;
+use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements HasName, FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return str_ends_with($this->email, '@goalsacademy.id') && $this->hasVerifiedEmail();
+    }
+
+    public function getFilamentName(): string
+    {
+        return "{$this->username}";
+    }
+
+
 
     /**
      * The attributes that are mass assignable.
@@ -18,8 +33,10 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
         'username',
         'email',
+        'user_role',
         'email_verified_at',
         'password',
     ];

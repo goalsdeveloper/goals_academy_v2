@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class Order extends Model
 {
@@ -14,12 +15,19 @@ class Order extends Model
         'products_id',
         'order_code',
         'quantity',
-        'gross_amount',
+        'unit_price',
+        'status',
+        'notes',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
     }
 
     public function products()

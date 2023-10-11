@@ -31,7 +31,6 @@ class RequestRefreshTokenEvent extends RequestEvent
 
     /**
      * @return RefreshTokenEntityInterface
-     *
      * @codeCoverageIgnore
      */
     public function getRefreshToken()

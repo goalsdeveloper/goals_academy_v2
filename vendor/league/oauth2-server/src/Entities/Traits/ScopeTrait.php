@@ -16,7 +16,6 @@ trait ScopeTrait
      *
      * @return string
      */
-    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->getIdentifier();

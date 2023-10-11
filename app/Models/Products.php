@@ -16,10 +16,22 @@ class Products extends Model
         'description',
         'features',
         'price',
+        'product_image',
+        'is_visible',
+        'is_featured',
+    ];
+
+    protected $casts = [
+        'features' => 'array',
     ];
 
     public function order()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
     }
 }

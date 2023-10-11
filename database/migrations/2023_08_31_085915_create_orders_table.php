@@ -19,8 +19,10 @@ return new class extends Migration
             $table->foreignIdFor(Products::class);
             $table->string('order_code')->unique();
             $table->unsignedInteger('quantity');
-            $table->unsignedBigInteger('gross_amount');
+            $table->unsignedInteger('unit_price');
+            // $table->unsignedBigInteger('gross_amount');
             $table->string('status')->default('pending');
+            $table->longText('notes')->nullable();
             $table->timestamps();
         });
     }

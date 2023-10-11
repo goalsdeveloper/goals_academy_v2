@@ -9,8 +9,16 @@ class Tutor extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id'
+    ];
+
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
+    }
+    public function tutornotes()
+    {
+        return $this->hasMany(TutorNote::class);
     }
 }

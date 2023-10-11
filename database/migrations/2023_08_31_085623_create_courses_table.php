@@ -18,12 +18,11 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Products::class);
-            $table->foreignIdFor(Order::class);
-            $table->foreignIdFor(Tutor::class);
-            $table->foreignIdFor(CourseSession::class);
-            $table->text('user_note');
+            $table->foreignIdFor(User::class)->constrained('user')->cascadeOnDelete();
+            $table->foreignIdFor(Products::class)->constrained('products')->cascadeOnDelete();
+            $table->foreignIdFor(Order::class)->constrained('order')->cascadeOnDelete();
+            $table->foreignIdFor(Tutor::class)->constrained('tutor')->cascadeOnDelete();
+            $table->foreignIdFor(CourseSession::class)->nullable()->constrained('course_session')->cascadeOnDelete();
             $table->text('location');
             $table->date('date');
             $table->boolean('ongoing')->default(true);
