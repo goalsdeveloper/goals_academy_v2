@@ -6,6 +6,7 @@ use Closure;
 use Laravel\Prompts\Output\ConsoleOutput;
 use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 
 abstract class Prompt
 {
@@ -15,6 +16,7 @@ abstract class Prompt
     use Concerns\Events;
     use Concerns\FakesInputOutput;
     use Concerns\Fallback;
+    use Concerns\Interactivity;
     use Concerns\Themes;
 
     /**
@@ -72,38 +74,48 @@ abstract class Prompt
      */
     public function prompt(): mixed
     {
-        $this->capturePreviousNewLines();
+        try {
+            $this->capturePreviousNewLines();
 
-        if (static::shouldFallback()) {
-            return $this->fallback();
-        }
+            if (static::shouldFallback()) {
+                return $this->fallback();
+            }
 
-        $this->checkEnvironment();
+            static::$interactive ??= stream_isatty(STDIN);
 
-        register_shutdown_function(function () {
-            $this->restoreCursor();
-            static::terminal()->restoreTty();
-        });
+            if (! static::$interactive) {
+                return $this->default();
+            }
 
-        static::terminal()->setTty('-icanon -isig -echo');
-        $this->hideCursor();
-        $this->render();
+            $this->checkEnvironment();
 
-        while (($key = static::terminal()->read()) !== null) {
-            $continue = $this->handleKeyPress($key);
+            try {
+                static::terminal()->setTty('-icanon -isig -echo');
+            } catch (Throwable $e) {
+                static::output()->writeln("<comment>{$e->getMessage()}</comment>");
+                static::fallbackWhen(true);
 
+                return $this->fallback();
+            }
+
+            $this->hideCursor();
             $this->render();
 
-            if ($continue === false || $key === Key::CTRL_C) {
-                $this->restoreCursor();
-                static::terminal()->restoreTty();
+            while (($key = static::terminal()->read()) !== null) {
+                $continue = $this->handleKeyPress($key);
 
-                if ($key === Key::CTRL_C) {
-                    static::terminal()->exit();
+                $this->render();
+
+                if ($continue === false || $key === Key::CTRL_C) {
+                    if ($key === Key::CTRL_C) {
+                        static::terminal()->exit();
+                    }
+
+                    return $this->value();
                 }
-
-                return $this->value();
             }
+        } finally {
+            $this->clearListeners();
         }
     }
 
@@ -295,7 +307,7 @@ abstract class Prompt
     {
         $this->validated = true;
 
-        if (($this->required ?? false) && ($value === '' || $value === [] || $value === false)) {
+        if (($this->required ?? false) && ($value === '' || $value === [] || $value === false || $value === null)) {
             $this->state = 'error';
             $this->error = is_string($this->required) ? $this->required : 'Required.';
 
@@ -326,5 +338,15 @@ abstract class Prompt
         if (PHP_OS_FAMILY === 'Windows') {
             throw new RuntimeException('Prompts is not currently supported on Windows. Please use WSL or configure a fallback.');
         }
+    }
+
+    /**
+     * Restore the cursor and terminal state.
+     */
+    public function __destruct()
+    {
+        $this->restoreCursor();
+
+        static::terminal()->restoreTty();
     }
 }
