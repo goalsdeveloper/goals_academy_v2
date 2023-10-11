@@ -71,6 +71,11 @@ function ProgramMobile ({ data }) {
                         <ProgramCard item={item} className="w-[70vw] h-[100vw] mx-auto" />
                     </SwiperSlide>
                 )})}
+                {data.map((item, index) => {return (
+                    <SwiperSlide key={index} style={{ width: 'fit-content' }} className="items-center duration-300 transition-all">
+                        <ProgramCard item={item} className="w-[70vw] h-[100vw] mx-auto" />
+                    </SwiperSlide>
+                )})}
             </Swiper>
             <div className="text-center mt-12 xs:mt-16 3xl:mt-24">
                 <ButtonPill isLink={true} href="/produk" className="px-4" target="_self">
