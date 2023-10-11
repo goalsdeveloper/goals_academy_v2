@@ -56,6 +56,10 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Form', ['title' => 'register']);
 });
 
+Route::get('/purchase', function () {
+    return Inertia::render('Purchase/Form');
+});
+
 Route::post('/email-diskon', [EmailDiskonController::class, 'handler'])->name('email-diskon');
 
 Route::get('/email/verify/email-verification', [EmailVerificationController::class, 'notice'])->middleware('auth')->name('verification.notice');
