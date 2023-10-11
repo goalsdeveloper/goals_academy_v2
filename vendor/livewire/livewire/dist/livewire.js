@@ -394,6 +394,9 @@
     return Array.isArray(subject) && subject.length === 2 && typeof subject[1] === "object" && Object.keys(subject[1]).includes("s");
   }
   function getCsrfToken() {
+    if (document.querySelector('meta[name="csrf-token"]')) {
+      return document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    }
     if (document.querySelector("[data-csrf]")) {
       return document.querySelector("[data-csrf]").getAttribute("data-csrf");
     }
@@ -1275,7 +1278,11 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
     let rightSideSafeExpression = /^[\n\s]*if.*\(.*\)/.test(expression.trim()) || /^(let|const)\s/.test(expression.trim()) ? `(async()=>{ ${expression} })()` : expression;
     const safeAsyncFunction = () => {
       try {
-        return new AsyncFunction(["__self", "scope"], `with (scope) { __self.result = ${rightSideSafeExpression} }; __self.finished = true; return __self.result;`);
+        let func2 = new AsyncFunction(["__self", "scope"], `with (scope) { __self.result = ${rightSideSafeExpression} }; __self.finished = true; return __self.result;`);
+        Object.defineProperty(func2, "name", {
+          value: `[Alpine] ${expression}`
+        });
+        return func2;
       } catch (error2) {
         handleError(error2, el, expression);
         return Promise.resolve();
@@ -2246,7 +2253,7 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
     get raw() {
       return raw;
     },
-    version: "3.13.0",
+    version: "3.13.1",
     flushAndStopDeferringMutations,
     dontAutoEvaluateFunctions,
     disableEffectScheduling,
@@ -3088,6 +3095,7 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
         placeInDom(el._x_teleport, target2, modifiers);
       });
     };
+    cleanup22(() => clone2.remove());
   });
   var teleportContainerDuringClone = document.createElement("div");
   function getTarget(expression) {
@@ -3762,7 +3770,7 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
     if (!cleanup3)
       cleanup3 = () => {
       };
-    return (name, live) => {
+    return (name, live = false) => {
       let isLive = live;
       let livewireProperty = name;
       let livewireComponent = component.$wire;
@@ -3772,24 +3780,22 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
           console.error(`Livewire Entangle Error: Livewire property ['${livewireProperty}'] cannot be found on component: ['${component.name}']`);
           return;
         }
-        queueMicrotask(() => {
-          let release2 = module_default.entangle({
-            get() {
-              return livewireComponent.get(name);
-            },
-            set(value) {
-              livewireComponent.set(name, value, isLive);
-            }
-          }, {
-            get() {
-              return getter();
-            },
-            set(value) {
-              setter(value);
-            }
-          });
-          cleanup3(() => release2());
+        let release2 = module_default.entangle({
+          get() {
+            return livewireComponent.get(name);
+          },
+          set(value) {
+            livewireComponent.set(name, value, isLive);
+          }
+        }, {
+          get() {
+            return getter();
+          },
+          set(value) {
+            setter(value);
+          }
         });
+        cleanup3(() => release2());
         return livewireComponent.get(name);
       }, (obj) => {
         Object.defineProperty(obj, "live", {
@@ -5536,7 +5542,7 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
       let evaluate2 = evaluateLater2(expression);
       let options = {
         rootMargin: getRootMargin(modifiers),
-        threshold: getThreshhold(modifiers)
+        threshold: getThreshold(modifiers)
       };
       let observer2 = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -5552,7 +5558,7 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
       });
     });
   }
-  function getThreshhold(modifiers) {
+  function getThreshold(modifiers) {
     if (modifiers.includes("full"))
       return 0.99;
     if (modifiers.includes("half"))
@@ -5832,13 +5838,13 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
   function injectStyles() {
     let style = document.createElement("style");
     style.innerHTML = `/* Make clicks pass-through */
+
     #nprogress {
       pointer-events: none;
     }
 
     #nprogress .bar {
-    //   background: #FC70A9;
-      background: #29d;
+      background: var(--livewire-progress-bar-color, #29d);
 
       position: fixed;
       z-index: 1031;
@@ -5879,8 +5885,8 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
       box-sizing: border-box;
 
       border: solid 2px transparent;
-      border-top-color: #29d;
-      border-left-color: #29d;
+      border-top-color: var(--livewire-progress-bar-color, #29d);
+      border-left-color: var(--livewire-progress-bar-color, #29d);
       border-radius: 50%;
 
       -webkit-animation: nprogress-spinner 400ms linear infinite;
@@ -6119,7 +6125,7 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
       });
     });
     setTimeout(() => {
-      fireEventForOtherLibariesToHookInto("alpine:navigated", true);
+      fireEventForOtherLibariesToHookInto("alpine:navigated");
     });
   }
   function fetchHtmlOrUsePrefetchedHtml(fromDestination, callback) {
@@ -6136,8 +6142,8 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
       });
     });
   }
-  function fireEventForOtherLibariesToHookInto(eventName, init = false) {
-    document.dispatchEvent(new CustomEvent(eventName, { bubbles: true, detail: { init } }));
+  function fireEventForOtherLibariesToHookInto(eventName) {
+    document.dispatchEvent(new CustomEvent(eventName, { bubbles: true }));
   }
   function nowInitializeAlpineOnTheNewPage(Alpine3) {
     Alpine3.initTree(document.body, void 0, (el, skip) => {
@@ -6437,8 +6443,8 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
             continue;
           }
         }
-        let isIf = (node) => node && node.nodeType === 8 && node.textContent === " __BLOCK__ ";
-        let isEnd = (node) => node && node.nodeType === 8 && node.textContent === " __ENDBLOCK__ ";
+        let isIf = (node) => node && node.nodeType === 8 && node.textContent === "[if BLOCK]><![endif]";
+        let isEnd = (node) => node && node.nodeType === 8 && node.textContent === "[if ENDBLOCK]><![endif]";
         if (isIf(currentTo) && isIf(currentFrom)) {
           let nestedIfCount = 0;
           let fromBlockStart = currentFrom;
@@ -7078,12 +7084,8 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
   });
 
   // js/features/supportNavigate.js
-  var isNavigating = false;
   shouldHideProgressBar() && Alpine.navigate.disableProgressBar();
   document.addEventListener("alpine:navigated", (e) => {
-    if (e.detail && e.detail.init)
-      return;
-    isNavigating = true;
     document.dispatchEvent(new CustomEvent("livewire:navigated", { bubbles: true }));
   });
   document.addEventListener("alpine:navigating", (e) => {
@@ -7091,7 +7093,7 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
   });
   function shouldRedirectUsingNavigateOr(effects, url, or) {
     let forceNavigate = effects.redirectUsingNavigate;
-    if (forceNavigate || isNavigating) {
+    if (forceNavigate) {
       Alpine.navigate(url);
     } else {
       or();
@@ -7225,7 +7227,7 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
     el.__addedByMorph = true;
   });
   directive2("transition", ({ el, directive: directive3, component, cleanup: cleanup3 }) => {
-    let visibility = module_default.reactive({ state: false });
+    let visibility = module_default.reactive({ state: el.__addedByMorph ? false : true });
     module_default.bind(el, {
       [directive3.rawName.replace("wire:", "x-")]: "",
       "x-show"() {
@@ -7349,13 +7351,14 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
     ]);
   });
   function applyDelay(directive3) {
-    if (!directive3.modifiers.includes("delay"))
+    if (!directive3.modifiers.includes("delay") || directive3.modifiers.includes("none"))
       return [(i) => i(), (i) => i()];
     let duration = 200;
     let delayModifiers = {
       "shortest": 50,
       "shorter": 100,
       "short": 150,
+      "default": 200,
       "long": 300,
       "longer": 500,
       "longest": 1e3
@@ -7610,7 +7613,7 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
       return handleFileUpload(el, expression, component, cleanup3);
     }
     let isLive = modifiers.includes("live");
-    let isLazy = modifiers.includes("lazy");
+    let isLazy = modifiers.includes("lazy") || modifiers.includes("change");
     let onBlur = modifiers.includes("blur");
     let isDebounced = modifiers.includes("debounce");
     let update = () => component.$wire.$commit();
