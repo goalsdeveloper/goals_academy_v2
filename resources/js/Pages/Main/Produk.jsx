@@ -135,47 +135,54 @@ export default function Produk({ auth }) {
     ];
 
     const dataEbook = [
-        {
-            title: "How To Survive Your Thesis? Start with Theme",
-            price: 40000,
-            image: ebook1,
-            link: "https://lynk.id/goalsacademy/XBmqq6J",
-        },
-        {
-            title: "Proposal Biar Diterima",
-            price: 40000,
-            image: ebook2,
-            link: "https://lynk.id/goalsacademy/XBmqq6J",
-        },
-        {
-            title: "Kajian Pustaka",
-            price: 40000,
-            image: ebook3,
-            link: "https://lynk.id/goalsacademy/XBmqq6J",
-        },
+        // {
+        //     title: "How To Survive Your Thesis? Start with Theme",
+        //     price: 40000,
+        //     image: ebook1,
+        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
+        // },
+        // {
+        //     title: "Proposal Biar Diterima",
+        //     price: 40000,
+        //     image: ebook2,
+        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
+        // },
+        // {
+        //     title: "Kajian Pustaka",
+        //     price: 40000,
+        //     image: ebook3,
+        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
+        // },
     ];
 
     const dataWebinar = [
         {
             title: "Mencari Ide Awal Skripsi",
-            price: 40000,
+            price: 34000,
             image: webinar1,
             date: "2023-10-18 19:00:00",
             link: "https://lynk.id/goalsacademy/oZyPAav",
         },
         {
             title: "Teknik Cepat Mencari Referensi & Parafrase",
-            price: 40000,
+            price: 34000,
             image: webinar2,
             date: "2023-10-24 19:00:00",
-            link: "https://lynk.id/goalsacademy/MdNzrXd",
+            link: "https://lynk.id/goalsacademy/a2j9vM8",
         },
         {
             title: "Strategi Sukses Presentasi",
-            price: 40000,
+            price: 34000,
             image: webinar3,
             date: "2023-10-26 19:00:00",
-            link: "https://lynk.id/goalsacademy/NZn6pq4",
+            link: "https://lynk.id/goalsacademy/lmzQOyX",
+        },
+        {
+            title: "Bundling Webinar Series",
+            price: 94000,
+            image: webinar3,
+            date: "2023-10-26 19:00:00",
+            link: "https://lynk.id/goalsacademy/nGV0BrP",
         },
     ];
 

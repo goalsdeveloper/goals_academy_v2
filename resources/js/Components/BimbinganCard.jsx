@@ -5,7 +5,7 @@ export default function BimbinganCard ({ item, className }) {
     const currency = Intl.NumberFormat('id-ID')
 
     return (
-        <div className={`shadow-lg md:shadow-bottom-right lg:shadow-lg rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden ${className}`}>
+        <div className={`shadow-centered rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden ${className}`}>
             <div className="w-full h-[52vw] md:h-[16vw] 3xl:h-[15vw] overflow-hidden">
                 <img className="w-full" src={item.img} alt={item.title} />
             </div>

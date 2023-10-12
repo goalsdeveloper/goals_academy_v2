@@ -1,16 +1,18 @@
+import { useState } from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import ButtonPill from "@/Components/ButtonPill";
-import BorderedChevronButton from "@/Components/BorderedChevronButton";
-import ReactDatePicker from "react-datepicker";
-
-import "react-datepicker/dist/react-datepicker.css";
+import ExpandedButton from "@/Components/ExpandedButton";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker, DesktopDatePicker, StaticDatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 export default function Form({ auth }) {
     return (
         <MainLayout auth={auth} title="Purchase">
             <section id="purchase-form" className="mb-16 xs:mb-20 md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32">
                 <div className="container mx-auto pt-6 flex justify-between">
-                    <FormCard />
+                    <MainCard />
                     <SummaryCard />
                 </div>
             </section>
@@ -18,7 +20,37 @@ export default function Form({ auth }) {
     );
 }
 
-function FormCard () {
+function FormModal ({ show, setShow }) {
+    return (
+        <>
+            <div className={`${show ? '' : 'hidden'} fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`} onClick={() => setShow(false)}>
+            </div>
+            <div className={`${show ? 'top-0 bottom-0 scale-100' : 'top-full -bottom-full scale-0'} fixed left-0 flex flex-col gap-4 w-[30vw] h-[24vw] transition-all duration-500 bg-white shadow-md rounded-xl p-6 z-50 ms-[35vw] mt-[10vw]`}>
+                <div>
+                    <div className="flex justify-between items-center mb-4">
+                        <h5 className="text-secondary font-poppins font-bold">Pilih Jadwal Bimbingan</h5>
+                        <i role="button" className="fa-solid fa-times text-20" onClick={() => setShow(false)}></i>
+                    </div>
+                    <hr className="border-light-grey" />
+                </div>
+                <div>
+                    <p className="font-medium mb-3">Pilih Tanggal Bimbingan :</p>
+                    <ExpandedButton className="shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0">Pilih Tanggal</ExpandedButton>
+                </div>
+                <div>
+                    <p className="font-medium mb-3">Pilih Lokasi Bimbingan :</p>
+                    <ExpandedButton className="shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down">Pilih Lokasi</ExpandedButton>
+                </div>
+                <div className="flex justify-end">
+                    <ButtonPill className="fixed bottom-6 w-3/12" isActive={false}>Simpan</ButtonPill>
+                </div>
+            </div>
+        </>
+    )
+}
+
+function MainCard () {
+    const [showFormModal, setShowFormModal] = useState(false)
     return (
         <div className="w-[70%] relative shadow-centered-spread rounded-2xl p-6 flex flex-col gap-4">
             <p>Bimbingan Skripsi</p>
@@ -41,13 +73,10 @@ function FormCard () {
                 </div>
             </div>
             <div>
-                <label htmlFor="date">
-                    <BorderedChevronButton>
-                        <i className="fa-regular fa-calendar"></i>&nbsp;&nbsp;Pilih Jadwal Bimbingan
-                    </BorderedChevronButton>
-                </label>
-                {/* <input type="date" id="date"/> */}
-                <ReactDatePicker selected={new Date()} />
+                <ExpandedButton onClick={() => setShowFormModal(true)}>
+                    <i className="fa-regular fa-calendar"></i>&nbsp;&nbsp;Pilih Jadwal Bimbingan
+                </ExpandedButton>
+                <FormModal show={showFormModal} setShow={setShowFormModal} />
             </div>
             <div className="flex flex-col">
                 <label htmlFor="file" className="font-medium">
@@ -91,8 +120,8 @@ function SummaryCard () {
                 <h2 className="text-secondary">IDR 47.000</h2>
             </div>
             <div className="grid gap-4">
-                <BorderedChevronButton>Pakai Promo</BorderedChevronButton>
-                <BorderedChevronButton>Pilih Metode Pembayaran</BorderedChevronButton>
+                <ExpandedButton>Pakai Promo</ExpandedButton>
+                <ExpandedButton>Pilih Metode Pembayaran</ExpandedButton>
             </div>
             <ButtonPill className="w-full mt-4" isActive={false}>Bayar Sekarang</ButtonPill>
         </div>
