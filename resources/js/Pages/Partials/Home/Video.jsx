@@ -5,7 +5,7 @@ import ButtonSwiper from '@/Components/ButtonSwiper';
 
 export default function Video () {
     return (
-        <section id="video" className="my-16 xs:my-20 md:my-16 lg:my-20 xl:my-24 3xl:my-32">
+        <section id="video" className="my-16 xs:my-20 md:my-16 lg:my-20 xl:my-24 3xl:my-32 relative">
             <div className="container mx-auto">
                 <div className="flex justify-center md:justify-between mb-8 xl:mb-12">
                     <div className="w-9/12 md:w-6/12">

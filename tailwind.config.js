@@ -100,7 +100,7 @@ export default {
             boxShadow: {
                 'top': '0px -4px 4px 0 rgba(0,0,0,.25)',
                 'centered': '0px 0px 4px 0 rgba(0,0,0,.25)',
-                'centered-spread': '0px 0px 12px 0px rgba(0,0,0,.25)',
+                'centered-spread': '0px 0px 8px 0px rgba(0,0,0,.20)',
                 'centered-left': '0px -3px 4px 0 rgba(0,0,0,.14)',
                 'bottom-right': '2px 3px 4px 0 rgba(0,0,0,.14)',
             },

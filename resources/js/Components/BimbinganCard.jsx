@@ -5,7 +5,7 @@ export default function BimbinganCard ({ item, className }) {
     const currency = Intl.NumberFormat('id-ID')
 
     return (
-        <div className={`shadow-lg md:shadow-bottom-right lg:shadow-lg rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden ${className}`}>
+        <div className={`shadow-centered rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden ${className}`}>
             <div className="w-full h-[52vw] md:h-[16vw] 3xl:h-[15vw] overflow-hidden">
                 <img className="w-full" src={item.img} alt={item.title} />
             </div>
@@ -21,7 +21,7 @@ export default function BimbinganCard ({ item, className }) {
                 </div>
                 <p className="my-6 xs:my-8 md:my-0 h-[14vw] xs:h-20 md:h-12 lg:h-20 xl:h-24 3xl:h-36">{item.excerpt}</p>
                 <div className="flex flex-col gap-2 md:gap-1 lg:gap-2 3xl:gap-3 mb-8 md:mb-4 xl:mb-8 3xl:mb-12">
-                    <p>Layanan</p>
+                    <p>Layanan :</p>
                     <div className="flex items-center gap-2">
                         <i className="fa-regular fa-calendar text-primary"></i>
                         <p>{features.times}x Pertemuan</p>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import Filter from "../Partials/Produk/Filter";
+import SearchBar from "../Partials/Produk/SearchBar";
 import Bimbingan from "../Partials/Produk/Bimbingan";
 import Ebook from "../Partials/Produk/Ebook";
 import Webinar from "../Partials/Produk/Webinar";
@@ -20,7 +21,7 @@ import ebook3 from "/resources/img/ebook/3.png";
 import webinar1 from "/resources/img/webinar/1.png";
 import webinar2 from "/resources/img/webinar/2.png";
 import webinar3 from "/resources/img/webinar/3.png";
-import SearchBar from "../Partials/Produk/SearchBar";
+import webinar4 from "/resources/img/webinar/4.png";
 
 export default function Produk({ auth }) {
     const dataBimbingan = [
@@ -137,45 +138,52 @@ export default function Produk({ auth }) {
     const dataEbook = [
         {
             title: "How To Survive Your Thesis? Start with Theme",
-            price: 40000,
+            price: '-',
             image: ebook1,
             link: "https://lynk.id/goalsacademy/XBmqq6J",
         },
-        {
-            title: "Proposal Biar Diterima",
-            price: 40000,
-            image: ebook2,
-            link: "https://lynk.id/goalsacademy/XBmqq6J",
-        },
-        {
-            title: "Kajian Pustaka",
-            price: 40000,
-            image: ebook3,
-            link: "https://lynk.id/goalsacademy/XBmqq6J",
-        },
+        // {
+        //     title: "Proposal Biar Diterima",
+        //     price: 40000,
+        //     image: ebook2,
+        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
+        // },
+        // {
+        //     title: "Kajian Pustaka",
+        //     price: 40000,
+        //     image: ebook3,
+        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
+        // },
     ];
 
     const dataWebinar = [
         {
-            title: "Mencari Ide Awal Skripsi",
-            price: 40000,
-            image: webinar1,
-            date: "2023-10-18 19:00:00",
+            title: "Tips Membuat Judul Skripsi Mudah ACC",
+            price: 34000,
+            image: webinar2,
+            date: "2023-10-24 19:00:00",
             link: "https://lynk.id/goalsacademy/oZyPAav",
         },
         {
-            title: "Teknik Cepat Mencari Referensi & Parafrase",
-            price: 40000,
-            image: webinar2,
-            date: "2023-10-24 19:00:00",
-            link: "https://lynk.id/goalsacademy/MdNzrXd",
+            title: "Teknik Lolos Paraphrase Penulisan Proposal Skripsi",
+            price: 34000,
+            image: webinar1,
+            date: "2023-10-25 19:00:00",
+            link: "https://lynk.id/goalsacademy/a2j9vM8",
         },
         {
-            title: "Strategi Sukses Presentasi",
-            price: 40000,
+            title: "Tips & Trick Presentasi Sidang Skripsi yang Disukai Dosen",
+            price: 34000,
             image: webinar3,
             date: "2023-10-26 19:00:00",
-            link: "https://lynk.id/goalsacademy/NZn6pq4",
+            link: "https://lynk.id/goalsacademy/lmzQOyX",
+        },
+        {
+            title: "Bundling Webinar Series Goals Academy",
+            price: 94000,
+            image: webinar4,
+            date: "2023-10-24 19:00:00",
+            link: "https://lynk.id/goalsacademy/nGV0BrP",
         },
     ];
 
@@ -204,7 +212,10 @@ export default function Produk({ auth }) {
             .filter((item) => item.title.toLowerCase().includes(keyword));
         setData1(temp1);
         setData2(temp2);
-        setData3(temp3);
+        setData3([]);
+        setTimeout(() => {
+            setData3(temp3);
+        }, 0)
     };
 
     return (
