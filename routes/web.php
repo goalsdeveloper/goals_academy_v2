@@ -28,13 +28,13 @@ Route::get('/produk', function () {
     return Inertia::render('Main/Produk');
 });
 
-Route::get('/artikel', function () {
-    return Inertia::render('Main/Artikel');
-});
+// Route::get('/artikel', function () {
+//     return Inertia::render('Main/Artikel');
+// });
 
-Route::get('/diskusi', function () {
-    return Inertia::render('Main/Diskusi');
-});
+// Route::get('/diskusi', function () {
+//     return Inertia::render('Main/Diskusi');
+// });
 
 Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
@@ -54,6 +54,10 @@ Route::get('/login', function () {
 
 Route::get('/register', function () {
     return Inertia::render('Auth/Form', ['title' => 'register']);
+});
+
+Route::get('/purchase', function () {
+    return Inertia::render('Purchase/Form');
 });
 
 Route::post('/email-diskon', [EmailDiskonController::class, 'handler'])->name('email-diskon');
