@@ -4,6 +4,7 @@ namespace App\Filament\AdminDashboard\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Order;
 use App\Models\Course;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -19,12 +20,14 @@ use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TernaryFilter;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\AdminDashboard\Resources\CourseResource\Pages;
 use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers;
 use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers\OrderRelationManager;
+use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers\TutorNoteRelationManager;
 use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers\TutorRelationManager;
-use Filament\Tables\Filters\TernaryFilter;
+use Filament\Forms\Set;
 
 class CourseResource extends Resource
 {
@@ -59,8 +62,10 @@ class CourseResource extends Resource
                         Select::make('order_id')
                             ->label('Order Code')
                             ->relationship('order', 'order_code')
+                            ->required()
                             ->native(false)
-                            ->required(),
+                            ->reactive()
+                            ->afterStateUpdated(fn (Set $set, $state) => $set('user_id', Order::find($state)->user_id ?? 0)),
                         Select::make('user_id')
                             ->label('Customer Name')
                             ->relationship('user', 'name')
@@ -71,9 +76,9 @@ class CourseResource extends Resource
                             ->relationship('products', 'name')
                             ->native(false)
                             ->required(),
-                        Select::make('tutor_id')
+                        Select::make('tutor')
                             ->label('Tutor')
-                            ->relationship('user', 'name', fn (Builder $query) => $query->where('user_role', 'tutor'))
+                            ->relationship('tutor', 'name', fn (Builder $query) => $query->where('user_role', 'tutor'))
                             ->native(false)
                             ->required(),
                     ])
@@ -177,6 +182,7 @@ class CourseResource extends Resource
     public static function getRelations(): array
     {
         return [
+            TutorNoteRelationManager::class,
             OrderRelationManager::class,
             TutorRelationManager::class
         ];

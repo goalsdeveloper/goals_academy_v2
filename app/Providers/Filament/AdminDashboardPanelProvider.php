@@ -28,16 +28,17 @@ class AdminDashboardPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->login()
             ->discoverResources(in: app_path('Filament/AdminDashboard/Resources'), for: 'App\\Filament\\AdminDashboard\\Resources')
             ->discoverPages(in: app_path('Filament/AdminDashboard/Pages'), for: 'App\\Filament\\AdminDashboard\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/AdminDashboard/Widgets'), for: 'App\\Filament\\AdminDashboard\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
-            ])
+            // ->widgets([
+            //     Widgets\AccountWidget::class,
+            //     Widgets\FilamentInfoWidget::class,
+            // ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

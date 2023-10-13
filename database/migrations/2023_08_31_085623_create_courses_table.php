@@ -18,14 +18,13 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained('user')->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained('users')->cascadeOnDelete();
             $table->foreignIdFor(Products::class)->constrained('products')->cascadeOnDelete();
-            $table->foreignIdFor(Order::class)->constrained('order')->cascadeOnDelete();
-            $table->foreignIdFor(Tutor::class)->constrained('tutor')->cascadeOnDelete();
-            $table->foreignIdFor(CourseSession::class)->nullable()->constrained('course_session')->cascadeOnDelete();
+            $table->foreignIdFor(Order::class)->constrained('orders')->cascadeOnDelete();
+            $table->foreignIdFor(CourseSession::class)->nullable()->constrained('course_sessions')->cascadeOnDelete();
             $table->text('location');
             $table->date('date');
-            $table->boolean('ongoing')->default(true);
+            $table->string('ongoing')->default(true);
             $table->boolean('is_tutor')->default(false);
             $table->boolean('is_moderator')->default(false);
             $table->timestamps();

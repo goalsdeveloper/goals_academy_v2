@@ -21,6 +21,18 @@ class OrderRelationManager extends RelationManager
                 Forms\Components\TextInput::make('order_code')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('notes')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('quantity')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('unit_price')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('status')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -42,16 +54,17 @@ class OrderRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\EditAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 }

@@ -38,6 +38,8 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
+        User::factory(50)->create();
+
         UserProfile::create([
             'user_id' => 1,
             'phone_number' => '087763420873',

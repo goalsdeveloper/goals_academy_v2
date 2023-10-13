@@ -45,7 +45,7 @@ class Course extends Model
     // }
     public function tutor()
     {
-        return $this->belongsTo(User::class, 'tutor_id');
+        return $this->belongsToMany(User::class, 'tutor_courses', 'course_id', 'user_id');
     }
     public function tutorNote()
     {

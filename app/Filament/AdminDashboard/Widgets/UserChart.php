@@ -2,26 +2,22 @@
 
 namespace App\Filament\AdminDashboard\Widgets;
 
-use App\Models\Order;
-use App\Models\Products;
+use App\Models\User;
 use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
 
-class OrderChart extends ChartWidget
+class UserChart extends ChartWidget
 {
-    protected static ?int $sort = 3;
-
-    protected static ?string $heading = 'Order Chart';
+    protected static ?string $heading = 'Chart';
 
     protected function getData(): array
     {
-        $data = $this->getOrderPerMonth();
-
+        $data = $this->getUsersPerMonth();
         return [
             'datasets' => [
                 [
-                    'label' => 'Order Created',
-                    'data' => $data['orderPerMonth']
+                    'label' => 'New User',
+                    'data' => $data['usersPerMonth']
                 ]
             ],
             'labels' => $data['months']
@@ -33,12 +29,12 @@ class OrderChart extends ChartWidget
         return 'line';
     }
 
-    private function getOrderPerMonth(): array
+    private function getUsersPerMonth(): array
     {
         $now = Carbon::now();
 
-        $orderPerMonth = collect(range(1, 12))->map(function ($month) use ($now) {
-            $count = Order::whereMonth('created_at', Carbon::parse($now->month($month)->format('Y-m')))->count();
+        $usersPerMonth = collect(range(1, 12))->map(function ($month) use ($now) {
+            $count = User::whereMonth('created_at', Carbon::parse($now->month($month)->format('Y-m')))->count();
             return $count;
         })->toArray();
 
@@ -47,7 +43,7 @@ class OrderChart extends ChartWidget
         })->toArray();
 
         return [
-            'orderPerMonth' => $orderPerMonth,
+            'usersPerMonth' => $usersPerMonth,
             'months' => $months
         ];
     }
