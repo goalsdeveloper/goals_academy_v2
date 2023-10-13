@@ -58,7 +58,6 @@ function EbookMobile ({ data }) {
 
 function EbookCard ({ item, className }) {
     const currency = Intl.NumberFormat('id-ID')
-
     return (
         <div className={`shadow-centered rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden ${className}`}>
             <div className="w-full h-[90vw] md:h-[27vw] overflow-hidden">
@@ -66,8 +65,9 @@ function EbookCard ({ item, className }) {
             </div>
             <div className="p-4 md:p-3 lg:p-4 2xl:p-6 3xl:p-8">
                 <p className="font-medium text-16 xs:text-20 md:text-10 lg:text-14 xl:text-16 2xl:text-20 3xl:text-24 h-12 xs:h-16 md:h-7 lg:h-8 2xl:h-12 3xl:h-16">{item.title}</p>
-                <p className="font-bold font-poppins text-primary text-20 xs:text-24 md:text-14 lg:text-18 xl:text-24 2xl:text-28 3xl:text-32 my-4 md:my-3 lg:my-4 xl:my-6">IDR {currency.format(item.price)}</p>
-                <ButtonPill href={item.link} className="w-full">Beli Sekarang</ButtonPill>
+                <p className="font-bold font-poppins text-primary text-20 xs:text-24 md:text-14 lg:text-18 xl:text-24 2xl:text-28 3xl:text-32 my-4 md:my-3 lg:my-4 xl:my-6">IDR {item.price != '-' ? currency.format(item.price) : '-'}</p>
+                {/* <ButtonPill href={item.link} className="w-full">Beli Sekarang</ButtonPill> */}
+                <ButtonPill href={item.link} isLink={false} isActive={false} className="w-full">Coming Soon</ButtonPill>
             </div>
         </div>
     )

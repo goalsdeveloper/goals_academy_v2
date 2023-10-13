@@ -28,13 +28,13 @@ Route::get('/produk', function () {
     return Inertia::render('Main/Produk');
 });
 
-Route::get('/artikel', function () {
-    return Inertia::render('Main/Artikel');
-});
+// Route::get('/artikel', function () {
+//     return Inertia::render('Main/Artikel');
+// });
 
-Route::get('/diskusi', function () {
-    return Inertia::render('Main/Diskusi');
-});
+// Route::get('/diskusi', function () {
+//     return Inertia::render('Main/Diskusi');
+// });
 
 Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
