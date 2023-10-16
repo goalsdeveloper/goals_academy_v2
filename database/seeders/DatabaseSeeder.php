@@ -29,16 +29,16 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        User::create([
-            'name' => 'Ekadian Haris Priyatama',
-            'username' => 'Nyanwololo',
-            'email' => 'nyanwololo@gmail.com',
-            'password' => Hash::make('qwe12334'),
-            'user_role' => 'tutor',
-            'email_verified_at' => now(),
-        ]);
+        // User::create([
+        //     'name' => 'Ekadian Haris Priyatama',
+        //     'username' => 'Nyanwololo',
+        //     'email' => 'nyanwololo@gmail.com',
+        //     'password' => Hash::make('qwe12334'),
+        //     'user_role' => 'tutor',
+        //     'email_verified_at' => now(),
+        // ]);
 
-        User::factory(50)->create();
+        // User::factory(50)->create();
 
         UserProfile::create([
             'user_id' => 1,
@@ -47,12 +47,12 @@ class DatabaseSeeder extends Seeder
             'major' => 'Elektronika',
         ]);
 
-        UserProfile::create([
-            'user_id' => 2,
-            'phone_number' => '087763420871',
-            'university' => 'Politeknik Negeri Malang',
-            'major' => 'Elektronika',
-        ]);
+        // UserProfile::create([
+        //     'user_id' => 2,
+        //     'phone_number' => '087763420871',
+        //     'university' => 'Politeknik Negeri Malang',
+        //     'major' => 'Elektronika',
+        // ]);
 
         Category::create([
             'name' => 'Dibimbing Sekali',
