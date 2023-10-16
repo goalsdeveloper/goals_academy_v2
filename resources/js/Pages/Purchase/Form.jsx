@@ -3,10 +3,13 @@ import MainLayout from "@/Layouts/MainLayout";
 import ButtonPill from "@/Components/ButtonPill";
 import ExpandedButton from "@/Components/ExpandedButton";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker, DesktopDatePicker, StaticDatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import moment from "moment";
+import moment from 'moment';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 
@@ -28,9 +31,10 @@ function FormModal ({ show, setShow }) {
     const [showPlaceOptions, setShowPlaceOptions] = useState(false)
     return (
         <>
-            <div className={`${show ? '' : 'hidden'} fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`} onClick={() => setShow(false)}>
+            <div className={`${show ? '' : 'hidden'} fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`} onClick={() => showDatePicker ? setShowDatePicker(false) : setShow(false)}>
             </div>
             <div className={`${show ? 'top-0 bottom-0 scale-100' : 'top-full -bottom-full scale-0'} fixed left-0 flex flex-col gap-4 w-[30vw] h-fit transition-all duration-500 bg-white shadow-md rounded-xl p-6 z-50 ms-[35vw] mt-[10vw]`}>
+                <div className={`${showDatePicker ? '' : 'hidden'} absolute top-0 left-0 right-0 bottom-0 bg-dark bg-opacity-25 rounded-xl`} onClick={() => setShowDatePicker(false)}></div>
                 <div>
                     <div className="flex justify-between items-center mb-4">
                         <h5 className="text-secondary font-poppins font-bold">Pilih Jadwal Bimbingan</h5>
@@ -40,14 +44,28 @@ function FormModal ({ show, setShow }) {
                 </div>
                 <div>
                     <p className="font-medium mb-3">Pilih Tanggal Bimbingan :</p>
-                    <ExpandedButton className="shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0">Pilih Tanggal</ExpandedButton>
+                    <ExpandedButton className="relative shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" onClick={() => setShowDatePicker(!showDatePicker)}>
+                        Pilih Tanggal
+                        <div className={`absolute top-0 left-0 right-0 shadow-centered-spread w-full transition-all duration-500 ${showDatePicker ? 'scale-100' : 'scale-0 -translate-y-[50%] -translate-x-[50%]'}`}>
+                            <LocalizationProvider dateAdapter={AdapterMoment} dateLibInstance={moment}>
+                                <StaticDatePicker
+                                slotProps={{ toolbar: {hidden: true}, actionBar: {sx: {display: 'none'}} }}
+                                timezone="system"
+                                ></StaticDatePicker>
+                            </LocalizationProvider>
+                        </div>
+                    </ExpandedButton>
                 </div>
                 <div>
                     <p className="font-medium mb-3">Pilih Lokasi Bimbingan :</p>
                     <ExpandedButton className="shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down" onClick={() => setShowPlaceOptions(!showPlaceOptions)}>Pilih Lokasi</ExpandedButton>
-                    <TECollapse show={showPlaceOptions} className="w-[110%] -ms-[5%] px-[5%] shadow-none">
-                        <TECollapseItem>
-                            <ExpandedButton className="shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down">Pilih Lokasi</ExpandedButton>
+                    <TECollapse show={showPlaceOptions} className="w-[110%] -ms-[5%] px-[4%] shadow-none">
+                        <TECollapseItem className="grid gap-4 p-1 pe-3 h-[10vw] overflow-y-scroll">
+                            <div className="w-full flex justify-between items-center py-2 px-3 border-1 font-medium shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down">Pilih Lokasi</div>
+                            <div className="w-full flex justify-between items-center py-2 px-3 border-1 font-medium shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down">Pilih Lokasi</div>
+                            <div className="w-full flex justify-between items-center py-2 px-3 border-1 font-medium shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down">Pilih Lokasi</div>
+                            <div className="w-full flex justify-between items-center py-2 px-3 border-1 font-medium shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down">Pilih Lokasi</div>
+                            <div className="w-full flex justify-between items-center py-2 px-3 border-1 font-medium shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down">Pilih Lokasi</div>
                         </TECollapseItem>
                     </TECollapse>
                 </div>
