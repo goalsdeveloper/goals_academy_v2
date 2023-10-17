@@ -78,7 +78,7 @@ class User extends Authenticatable implements HasName, FilamentUser
 
     public function tutor()
     {
-        return $this->belongsToMany(Course::class);
+        return $this->belongsToMany(Course::class, 'courses', 'tutor_id');
     }
 
     public function social()

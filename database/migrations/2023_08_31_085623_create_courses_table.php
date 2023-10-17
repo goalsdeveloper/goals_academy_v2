@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained('users')->cascadeOnDelete();
             $table->foreignIdFor(Products::class)->constrained('products')->cascadeOnDelete();
             $table->foreignIdFor(Order::class)->constrained('orders')->cascadeOnDelete();
-            $table->foreignIdFor(CourseSession::class)->nullable()->constrained('course_sessions')->cascadeOnDelete();
             $table->text('location');
             $table->date('date');
             $table->string('ongoing')->default(true);

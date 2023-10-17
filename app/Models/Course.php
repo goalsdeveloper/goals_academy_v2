@@ -39,10 +39,6 @@ class Course extends Model
     {
         return $this->belongsTo(Products::class);
     }
-    // public function tutor()
-    // {
-    //     return $this->belongsTo(Tutor::class);
-    // }
     public function tutor()
     {
         return $this->belongsToMany(User::class, 'tutor_courses', 'course_id', 'user_id');
@@ -50,9 +46,5 @@ class Course extends Model
     public function tutorNote()
     {
         return $this->hasMany(TutorNote::class);
-    }
-    public function courseSession()
-    {
-        return $this->belongsTo(CourseSession::class);
     }
 }

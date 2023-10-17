@@ -80,6 +80,12 @@ class DatabaseSeeder extends Seeder
             'is_visible' => true,
             'description' => 'E-book yang dapat di download',
         ]);
+        Category::create([
+            'name' => 'Webinar',
+            'slug' => 'webinar',
+            'is_visible' => true,
+            'description' => 'Webinar seru dan informatif',
+        ]);
         // User::create([
         //     'username' => 'tutor',
         //     'email' => 'tutor@gmail.com',
@@ -142,21 +148,6 @@ class DatabaseSeeder extends Seeder
         //         'metode' => 'Bebas Unduh'
         //     ]),
         //     'price' => 9000,
-        // ]);
-        // CourseSession::create([
-        //     'session' => '09:00'
-        // ]);
-        // CourseSession::create([
-        //     'session' => '10:30'
-        // ]);
-        // CourseSession::create([
-        //     'session' => '12:00'
-        // ]);
-        // CourseSession::create([
-        //     'session' => '13:30'
-        // ]);
-        // CourseSession::create([
-        //     'session' => '15:00'
         // ]);
     }
 }

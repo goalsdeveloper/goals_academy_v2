@@ -16,6 +16,8 @@ class Products extends Model
         'description',
         'features',
         'price',
+        'date_start',
+        'date_end',
         'product_image',
         'is_visible',
         'is_featured',

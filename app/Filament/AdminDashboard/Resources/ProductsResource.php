@@ -22,10 +22,13 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\MarkdownEditor;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\AdminDashboard\Resources\ProductsResource\Pages;
 use App\Filament\AdminDashboard\Resources\ProductsResource\RelationManagers;
+use Filament\Tables\Filters\Filter;
 
 class ProductsResource extends Resource
 {
@@ -82,6 +85,18 @@ class ProductsResource extends Resource
                             ->prefix('IDR')
                             ->required()
                             ->columnSpan('full'),
+                        DateTimePicker::make('date_start')
+                            ->label('Tanggal Mulai')
+                            ->seconds(false)
+                            ->native(false)
+                            ->minutesStep(15)
+                            ->prefix('Starts'),
+                        DateTimePicker::make('date_end')
+                            ->label('Tanggal Berakhir')
+                            ->seconds(false)
+                            ->native(false)
+                            ->minutesStep(15)
+                            ->prefix('Ends'),
                         FileUpload::make('product_image')
                             ->directory('product_image')
                             ->image()
@@ -95,17 +110,19 @@ class ProductsResource extends Resource
                             ->required()
                     ])->collapsible()
                 ]),
-                Group::make()->schema([
-                    Section::make('Product Features')->schema([
-                        Repeater::make('features')
-                            ->schema([
-                                TextInput::make('name'),
-                                TextInput::make('feature')
-                            ])
-                            ->columns(2)
-                            ->defaultItems(2)
-                            ->grid()
-                    ])
+
+                Section::make('Product Features')->schema([
+                    Repeater::make('features')
+                        ->schema([
+                            TextInput::make('times'),
+                            TextInput::make('duration'),
+                            TextInput::make('category'),
+                        ])
+                        ->columns(3)
+                        ->addable(false)
+                        ->deletable(false)
+                        ->columnSpan('full')
+
                 ])->columnSpan('full')
             ]);
     }
@@ -132,7 +149,19 @@ class ProductsResource extends Resource
                     ->sortable()
             ])
             ->filters([
-                //
+                TernaryFilter::make('is_visible')
+                    ->label('Visibility')
+                    ->trueLabel('Visible')
+                    ->falseLabel('Hidden')
+                    ->queries(
+                        true: fn (Builder $query) => $query->where('is_visible', true),
+                        false: fn (Builder $query) => $query->where('is_visible', false),
+                    )
+                    ->native(false),
+                Filter::make('is_featured')
+                    ->label('Featured')
+                    ->toggle()
+                    ->query(fn (Builder $query) => $query->where('is_featured', true))
             ])
             ->actions([
                 ActionGroup::make([
