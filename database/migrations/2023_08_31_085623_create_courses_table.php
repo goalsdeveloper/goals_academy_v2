@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignIdFor(Order::class)->constrained('orders')->cascadeOnDelete();
             $table->text('location');
             $table->date('date');
-            $table->string('ongoing')->default(true);
+            $table->string('ongoing')->default('berjalan');
             $table->boolean('is_tutor')->default(false);
             $table->boolean('is_moderator')->default(false);
             $table->timestamps();

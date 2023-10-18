@@ -14,16 +14,11 @@ class Course extends Model
         'products_id',
         'order_id',
         'tutor_id',
-        'course_session_id',
         'location',
         'date',
         'ongoing',
         'is_tutor',
         'is_moderator'
-    ];
-
-    protected $attributes = [
-        'course_session_id' => 1
     ];
 
     public function user()

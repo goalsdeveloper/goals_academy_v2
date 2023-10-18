@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\API\PurchaseController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
@@ -25,3 +26,5 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::apiResource('register', RegisterController::class)->only('store');
+
+Route::apiResource('purchase', PurchaseController::class)->middleware('auth:sanctum');

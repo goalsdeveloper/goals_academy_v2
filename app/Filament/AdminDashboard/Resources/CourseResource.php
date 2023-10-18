@@ -109,10 +109,6 @@ class CourseResource extends Resource
                             ->label('Tanggal Pelaksanaan')
                             // ->format('d/m/Y')
                             ->native(false),
-
-                        Select::make('course_session_id')
-                            ->relationship('courseSession', 'session')
-                            ->native(false),
                     ])
                 ])
             ]);

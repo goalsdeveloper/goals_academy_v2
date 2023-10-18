@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Products::class);
+            $table->foreignIdFor(User::class)->constrained('users')->cascadeOnDelete();
+            $table->foreignIdFor(Products::class)->constrained('products')->cascadeOnDelete();
             $table->string('order_code')->unique();
             $table->unsignedInteger('quantity');
             $table->unsignedInteger('unit_price');
