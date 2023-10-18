@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_promo_codes', function (Blueprint $table) {
+        Schema::create('promo_code_user', function (Blueprint $table) {
             $table->foreignIdFor(User::class)->constrained('users')->cascadeOnDelete();
             $table->foreignIdFor(PromoCode::class)->constrained('promo_codes')->cascadeOnDelete();
-            $table->timestamps();
         });
     }
 

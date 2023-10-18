@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements HasName, FilamentUser
@@ -81,7 +82,7 @@ class User extends Authenticatable implements HasName, FilamentUser
         return $this->hasMany(Social::class);
     }
 
-    public function promo()
+    public function kodePromo(): BelongsToMany
     {
         return $this->belongsToMany(PromoCode::class);
     }

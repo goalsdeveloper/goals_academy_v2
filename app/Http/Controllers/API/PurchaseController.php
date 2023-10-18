@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Enums\OrderEnum;
-use App\Http\Controllers\Controller;
-use App\Models\Course;
+use Carbon\Carbon;
 use App\Models\Order;
+use App\Models\Course;
+use App\Enums\OrderEnum;
 use App\Models\Products;
+use App\Models\PromoCode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
 {
@@ -19,11 +23,23 @@ class PurchaseController extends Controller
         $user = auth()->user();
         $data = Order::all();
 
-        return response()->json([
-            'user' => $user->name,
-            'user purchase' => $data->where('user_id', $user->id)->count(),
-            'items' => $data->where('user_id', $user->id)
-        ]);
+        // cek kondisi tanggal
+        $endDate = Carbon::now()->addDays(7);
+
+        $counts = Course::select('date')
+            ->whereBetween('date', [Carbon::now(), $endDate])
+            ->groupBy('date')
+            ->havingRaw('COUNT(*) > 5')
+            ->get();
+        // end cek kondisi tanggal
+
+        return response()->json(['data' => $counts]);
+
+        // return response()->json([
+        //     'user' => $user->name,
+        //     'user purchase' => $data->where('user_id', $user->id)->count(),
+        //     'items' => $data->where('user_id', $user->id)
+        // ]);
     }
 
     /**
@@ -42,6 +58,7 @@ class PurchaseController extends Controller
         $validateData = $request->validate([
             'user_id' => 'required',
             'products_id' => 'required',
+            'date' => 'required',
             // 'notes' => 'sometimes',
         ]);
 
@@ -54,6 +71,28 @@ class PurchaseController extends Controller
             if (stripos($category->slug, 'dibimbing') !== false) {
                 $produkDibimbing = true;
             }
+        }
+
+        // cek user menggunakan kode promo
+        if ($request->promo_code) {
+            $user = auth()->user();
+
+            $cekPromo = PromoCode::where('promo_code', $request->promo_code)->first();
+            if (!$cekPromo) {
+                return response()->json(['message' => 'Promo tidak ditemukan!']);
+            }
+            if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
+                return response()->json(['message' => 'Kode promo telah terpakai']);
+            } else {
+                $promoCode = $user->kodePromo()->attach($cekPromo->id);
+            }
+            // return response()->json(['message' => 'Kode promo berhasil digunakan']);
+        }
+
+        // cek date
+        $cekDate = Course::where('date', $validateData['date'])->count();
+        if ($cekDate > 7) {
+            return response()->json(['kuota telah habis']);
         }
 
         $order = Order::create([
@@ -69,7 +108,7 @@ class PurchaseController extends Controller
         if ($getProduct->features[0]['category'] == 'online') {
             $location = 'Zoom meeting';
         } elseif ($getProduct->features[0]['category'] == 'offline') {
-            $location = 'Menunggu Approval';
+            $location = 'Menunggu Lokasi';
         }
 
         // jika produk = bimbingan; maka masuk ke tabel course  
@@ -78,7 +117,7 @@ class PurchaseController extends Controller
                 'user_id' => $validateData['user_id'],
                 'products_id' => $validateData['products_id'],
                 'order_id' => $order->id,
-                'date' => now()->addDay()->format('Ymd'),
+                'date' => $validateData['date'],
                 'location' => $location
             ]);
             return response()->json(['message' => Course::where('id', $course->id)->first()]);
@@ -119,7 +158,7 @@ class PurchaseController extends Controller
         //
     }
 
-    private function checkPromo(){
-        
+    private function checkPromo()
+    {
     }
 }

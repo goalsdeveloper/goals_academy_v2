@@ -18,10 +18,10 @@ class PromoCodeFactory extends Factory
     {
         return [
             'promo_code' => fake()->unique()->randomNumber(8),
-            'description' => fake()->paragraph(),
+            'description' => fake()->text(50),
             'value' => fake()->randomFloat(2, 5, 40),
-            'created_at' => fake()->dateTimeThisYear('now'),
-            'updated_at' => fake()->dateTimeBetween('created_at', 'now'),
+            'date_start' => fake()->dateTimeBetween('now', '+2 months'),
+            'date_end' => fake()->dateTimeBetween('now', '+2 months'),
         ];
     }
 }
