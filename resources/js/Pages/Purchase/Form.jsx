@@ -1,86 +1,256 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import moment from 'moment';
 import MainLayout from "@/Layouts/MainLayout";
 import ButtonPill from "@/Components/ButtonPill";
 import ExpandedButton from "@/Components/ExpandedButton";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker, DesktopDatePicker, StaticDatePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
-import moment from 'moment';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import { StaticDatePicker } from "@mui/x-date-pickers";
 import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
+import { useForm } from "@inertiajs/react";
+
+import gopay from "/resources/img/purchase/gopay.png";
+import qris from "/resources/img/purchase/qris.png";
+import bni from "/resources/img/purchase/bni.png";
+import mandiri from "/resources/img/purchase/mandiri.png";
+import bri from "/resources/img/purchase/bri.png";
+import permata from "/resources/img/purchase/permata.png";
 
 export default function Form({ auth }) {
+    const {data, setData, post} = useForm({
+        schedule: "",
+        place: "",
+        document: 0,
+        init_price: 47000,
+        promo: "",
+        discount: 0,
+        admin: 0,
+        purchase_method: "",
+    })
+
+    const totalPrice = data.init_price - data.discount + data.admin
+    const availablePromos = [
+        {code: '123456', percentage: 10},
+        {code: '654321', percentage: 15},
+    ]
+    const unavailableDate = ['2023-10-20', '2023-10-22']
+    const availablePlaces = ['Kafe 1', 'Kafe 2', 'Kafe 3', 'Kafe 4', 'Kafe 5']
+    const purchaseMethods = {
+        emoney: [
+            {name: 'Gopay', img: gopay, admin: 500},
+            {name: 'QRIS', img: qris, admin: 500},
+        ],
+        bank: [
+            {name: 'BNI', img: bni, admin: 2500},
+            {name: 'Mandiri', img: mandiri, admin: 1500},
+            {name: 'BRI', img: bri, admin: 2000},
+            {name: 'Permata', img: permata, admin: 2500},
+        ]
+    }
+
+    const submit = e => {
+        e.preventDefault()
+        post('/purchase')
+    }
+
+    const checkPromo = inputCode => {
+        return availablePromos.find(item => item.code == inputCode)
+    }
+
     return (
         <MainLayout auth={auth} title="Purchase">
             <section id="purchase-form" className="mb-16 xs:mb-20 md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32">
                 <div className="container mx-auto pt-6 flex justify-between">
-                    <MainCard />
-                    <SummaryCard />
+                    <MainCard data={data} setData={setData} unavailableDate={unavailableDate} availablePlaces={availablePlaces} />
+                    <SummaryCard data={data} setData={setData} purchaseMethods={purchaseMethods} totalPrice={totalPrice} checkPromo={checkPromo} submit={submit} />
                 </div>
             </section>
         </MainLayout>
     );
 }
 
-function FormModal ({ show, setShow }) {
-    const [showDatePicker, setShowDatePicker] = useState(false)
-    const [showPlaceOptions, setShowPlaceOptions] = useState(false)
+function PromoForm ({ show, setShow, data, setData, checkPromo }) {
     return (
         <>
-            <div className={`${show ? '' : 'hidden'} fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`} onClick={() => showDatePicker ? setShowDatePicker(false) : setShow(false)}>
-            </div>
-            <div className={`${show ? 'top-0 bottom-0 scale-100' : 'top-full -bottom-full scale-0'} fixed left-0 flex flex-col gap-4 w-[30vw] h-fit transition-all duration-500 bg-white shadow-md rounded-xl p-6 z-50 ms-[35vw] mt-[10vw]`}>
-                <div className={`${showDatePicker ? '' : 'hidden'} absolute top-0 left-0 right-0 bottom-0 bg-dark bg-opacity-25 rounded-xl`} onClick={() => setShowDatePicker(false)}></div>
+            <div className={`${show ? '' : 'hidden'} fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`} onClick={() => setShow(false)}></div>
+            <div className={`${show ? 'top-0 bottom-0 scale-100' : 'top-full -bottom-full scale-0'} fixed left-0 flex flex-col gap-4 w-[30vw] h-fit transition-all duration-500 bg-white shadow-md rounded-xl p-6 z-50 ms-[35vw] mt-[8vw]`}>
                 <div>
                     <div className="flex justify-between items-center mb-4">
-                        <h5 className="text-secondary font-poppins font-bold">Pilih Jadwal Bimbingan</h5>
+                        <h5 className="text-secondary font-poppins font-bold">Pilih Promo</h5>
                         <i role="button" className="fa-solid fa-times text-20" onClick={() => setShow(false)}></i>
                     </div>
                     <hr className="border-light-grey" />
                 </div>
-                <div>
-                    <p className="font-medium mb-3">Pilih Tanggal Bimbingan :</p>
-                    <ExpandedButton className="relative shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" onClick={() => setShowDatePicker(!showDatePicker)}>
-                        Pilih Tanggal
-                        <div className={`absolute top-0 left-0 right-0 shadow-centered-spread w-full transition-all duration-500 ${showDatePicker ? 'scale-100' : 'scale-0 -translate-y-[50%] -translate-x-[50%]'}`}>
-                            <LocalizationProvider dateAdapter={AdapterMoment} dateLibInstance={moment}>
-                                <StaticDatePicker
-                                slotProps={{ toolbar: {hidden: true}, actionBar: {sx: {display: 'none'}} }}
-                                timezone="system"
-                                ></StaticDatePicker>
-                            </LocalizationProvider>
-                        </div>
-                    </ExpandedButton>
-                </div>
-                <div>
-                    <p className="font-medium mb-3">Pilih Lokasi Bimbingan :</p>
-                    <ExpandedButton className="shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down" onClick={() => setShowPlaceOptions(!showPlaceOptions)}>Pilih Lokasi</ExpandedButton>
-                    <TECollapse show={showPlaceOptions} className="w-[110%] -ms-[5%] px-[4%] shadow-none">
-                        <TECollapseItem className="grid gap-4 p-1 pe-3 h-[10vw] overflow-y-scroll">
-                            <div className="w-full flex justify-between items-center py-2 px-3 border-1 font-medium shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down">Pilih Lokasi</div>
-                            <div className="w-full flex justify-between items-center py-2 px-3 border-1 font-medium shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down">Pilih Lokasi</div>
-                            <div className="w-full flex justify-between items-center py-2 px-3 border-1 font-medium shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down">Pilih Lokasi</div>
-                            <div className="w-full flex justify-between items-center py-2 px-3 border-1 font-medium shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down">Pilih Lokasi</div>
-                            <div className="w-full flex justify-between items-center py-2 px-3 border-1 font-medium shadow-centered-spread rounded-sm text-gray-400" borderClassName="border-0" icon="fa-solid fa-chevron-down">Pilih Lokasi</div>
-                        </TECollapseItem>
-                    </TECollapse>
-                </div>
+                <input className="w-full flex justify-between items-center py-2 px-3 shadow-centered-spread rounded-sm border-2 focus:outline-0 text-dark h-10" value={data.promo} onChange={e => setData('promo', e.target.value)} placeholder="Masukkan kode promo disini"></input>
                 <div className="flex justify-end mt-3">
-                    <ButtonPill className="w-3/12" isActive={false}>Simpan</ButtonPill>
+                    <ButtonPill
+                    className="w-3/12"
+                    isActive={(data.promo != "")}
+                    onClick={
+                        e => {
+                            if (data.promo != "") {
+                                const promoInfo = checkPromo(data.promo)
+                                if (!promoInfo) {
+                                    setData({...data, promo: '', discount: 0})
+                                    alert('Promo tidak tersedia!')
+                                } else {
+                                    setData('discount', data.init_price * promoInfo.percentage / 100)
+                                    alert('Promo berhasil dipakai!')
+                                    setShow(false)
+                                }
+                            }
+                        }
+                    }>Simpan</ButtonPill>
                 </div>
             </div>
         </>
     )
 }
 
-function MainCard () {
-    const [showFormModal, setShowFormModal] = useState(false)
+function PurchaseMethodForm ({ show, setShow, data, setData, purchaseMethods }) {
     return (
-        <div className="w-[70%] relative shadow-centered-spread rounded-2xl p-6 flex flex-col gap-4">
+        <>
+            <div className={`${show ? '' : 'hidden'} fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`} onClick={() => setShow(false)}></div>
+            <div className={`${show ? 'top-0 bottom-0 scale-100' : 'top-full -bottom-full scale-0'} fixed left-0 flex flex-col gap-4 w-[30vw] h-fit transition-all duration-500 bg-white shadow-md rounded-xl p-6 z-50 ms-[35vw] mt-[8vw]`}>
+                <div>
+                    <div className="flex justify-between items-center mb-4">
+                        <h5 className="text-secondary font-poppins font-bold">Pilih Metode Pembayaran</h5>
+                        <i role="button" className="fa-solid fa-times text-20" onClick={() => setShow(false)}></i>
+                    </div>
+                    <hr className="border-light-grey" />
+                </div>
+                <div>
+                    <h6 className="font-medium mb-4">Dompet Digital</h6>
+                    <div className="grid gap-2">
+                        {purchaseMethods.emoney.map((item, i) => {
+                            return (
+                                <ExpandedButton key={i}
+                                className="shadow-centered-spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-10"
+                                borderClassName="border-0"
+                                onClick={() => {
+                                    setData({...data, admin: item.admin, purchase_method: item.name.toLowerCase()})
+                                }}>
+                                    <div className="flex items-center gap-2">
+                                        <img src={item.img} alt={item.name} className="w-6" />
+                                        {item.name}
+                                    </div>
+                                </ExpandedButton>
+                            )
+                        })}
+                    </div>
+                </div>
+                <div>
+                    <h6 className="font-medium mb-4">Bank</h6>
+                    <div className="grid gap-2">
+                        {purchaseMethods.bank.map((item, i) => {
+                            return (
+                                <ExpandedButton key={i}
+                                className="shadow-centered-spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-10"
+                                borderClassName="border-0"
+                                onClick={() => {
+                                    setData({...data, admin: item.admin, purchase_method: item.name.toLowerCase()})
+                                }}>
+                                    <div className="flex items-center gap-2">
+                                        <img src={item.img} alt={item.name} className="w-6" />
+                                        Bank {item.name}
+                                    </div>
+                                </ExpandedButton>
+                            )
+                        })}
+                    </div>
+                </div>
+                <div className="flex justify-end mt-3">
+                    <ButtonPill
+                    className="w-3/12"
+                    isActive={data.purchase_method != ""}
+                    onClick={
+                        e => {
+                            if (data.purchase_method != "") {
+                                setShow(false)
+                            }
+                        }
+                    }>Simpan</ButtonPill>
+                </div>
+            </div>
+        </>
+    )
+}
+
+function ScheduleForm ({ show, setShow, data, setData, unavailableDate, availablePlaces }) {
+    const [showDatePicker, setShowDatePicker] = useState(false)
+    const [showPlaceOptions, setShowPlaceOptions] = useState(false)
+    return (
+        <>
+            <div className={`${show ? '' : 'hidden'} fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`} onClick={() => showDatePicker ? setShowDatePicker(false) : setShow(false)}></div>
+            <div className={`${show ? 'top-0 bottom-0 scale-100' : 'top-full -bottom-full scale-0'} fixed left-0 flex flex-col gap-4 w-[30vw] h-fit transition-all duration-500 bg-white shadow-md rounded-xl p-6 z-50 ms-[35vw] mt-[8vw]`}>
+                <div className={`${showDatePicker ? '' : 'hidden'} absolute top-0 left-0 right-0 bottom-0 bg-dark bg-opacity-25 rounded-xl`} onClick={() => setShowDatePicker(false)}></div>
+                <div>
+                    <div className="flex justify-between items-center mb-4">
+                        <h5 className="text-secondary font-poppins font-bold">Pilih Jadwal Bimbingan</h5>
+                        <i role="button" className={"fa-solid fa-times text-20"} onClick={() => setShow(false)}></i>
+                    </div>
+                    <hr className="border-light-grey" />
+                </div>
+                <div>
+                    <p className="font-medium mb-3">Pilih Tanggal Bimbingan :</p>
+                    <div className="relative w-full">
+                        <ExpandedButton className="shadow-centered-spread rounded-sm" borderClassName={data.schedule != "" ? "border-2 border-secondary" : "border-0"} textClassName={`font-medium ${data.schedule != "" ? "text-dark" : "text-gray-400"}`} onClick={() => setShowDatePicker(!showDatePicker)}>
+                            {data.schedule != "" ? data.schedule : "Pilih Tanggal"}
+                        </ExpandedButton>
+                        <div className={`absolute top-0 left-0 right-0 rounded-md shadow-centered-spread w-full transition-all duration-500 overflow-hidden ${showDatePicker ? 'scale-100' : 'scale-0 -translate-y-[50%] -translate-x-[50%]'}`}>
+                            <LocalizationProvider dateAdapter={AdapterMoment} dateLibInstance={moment}>
+                                <StaticDatePicker
+                                slotProps={{ toolbar: {hidden: true}, actionBar: {sx: {display: 'none'}} }}
+                                minDate={moment()}
+                                maxDate={moment().add('6', 'day')}
+                                shouldDisableDate={date => {return unavailableDate.includes(date.format('YYYY-MM-DD'))}}
+                                onChange={date => {
+                                    setData('schedule', date.format('YYYY-MM-DD'))
+                                    setShowDatePicker(false)
+                                }}
+                                ></StaticDatePicker>
+                            </LocalizationProvider>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p className="font-medium mb-3">Pilih Lokasi Bimbingan :</p>
+                    <ExpandedButton className="shadow-centered-spread rounded-sm" borderClassName={data.place != "" ? "border-2 border-secondary" : "border-0"} textClassName={`font-medium ${data.place != "" ? "text-dark" : "text-gray-400"}`} icon={`fa-solid fa-chevron-down duration-500 ${showPlaceOptions ? '-rotate-180' : ''}`} onClick={() => setShowPlaceOptions(!showPlaceOptions)}>
+                        {data.place != "" ? data.place : "Pilih Tempat"}
+                    </ExpandedButton>
+                    <TECollapse show={showPlaceOptions} className="w-[110%] -ms-[5%] px-[4%] shadow-none">
+                        <TECollapseItem className="grid gap-4 p-1 pe-3 h-[10vw] overflow-y-scroll">
+                            {availablePlaces.map((item, i) => {
+                                return (
+                                    <div key={i} className="w-full flex justify-between items-center py-2 px-3 font-medium shadow-centered-spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-gray-400 cursor-pointer" onClick={() => {setData('place', item); setShowPlaceOptions(false)}}>{item}</div>
+                                )
+                            })}
+                        </TECollapseItem>
+                    </TECollapse>
+                </div>
+                <div className="flex justify-end mt-3">
+                    <ButtonPill
+                    className="w-3/12"
+                    isActive={(data.schedule != "") && (data.place != "")}
+                    onClick={
+                        e => {
+                            if ((data.schedule != "") && (data.place != "")) {
+                                setShow(false)
+                            }
+                        }
+                    }
+                    >Simpan</ButtonPill>
+                </div>
+            </div>
+        </>
+    )
+}
+
+function MainCard ({ data, setData, unavailableDate, availablePlaces }) {
+    const [showScheduleForm, setShowScheduleForm] = useState(false)
+    return (
+        <div className="w-[70%] relative shadow-centered-spread rounded-2xl p-6 flex flex-col gap-4 h-fit">
             <p>Bimbingan Skripsi</p>
             <hr className="border-black" />
             <h3 className="text-secondary">Dibimbing Offline 60 Menit</h3>
@@ -101,57 +271,141 @@ function MainCard () {
                 </div>
             </div>
             <div>
-                <ExpandedButton onClick={() => setShowFormModal(true)}>
+                <ExpandedButton className="shadow-centered-spread rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-10" borderClassName={`border-1 outline outline-1 ${data.schedule != "" ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowScheduleForm(true)}>
                     <i className="fa-regular fa-calendar"></i>&nbsp;&nbsp;Pilih Jadwal Bimbingan
                 </ExpandedButton>
-                <FormModal show={showFormModal} setShow={setShowFormModal} />
+                <ScheduleForm show={showScheduleForm} setShow={setShowScheduleForm} data={data} setData={setData} unavailableDate={unavailableDate} availablePlaces={availablePlaces} />
             </div>
             <div className="flex flex-col">
                 <label htmlFor="file" className="font-medium">
                     <p className="mb-2">Berkas Pendukung (opsional)</p>
-                    <div className="w-full border-1 border-light-grey rounded-md flex items-center cursor-pointer overflow-hidden">
-                        <div className="w-3/12 bg-slate-200 text-center p-2 border-e-1 border-light-grey">Pilih File</div>
-                        <div className="p-2 px-3">Belum ada file yang dipilih</div>
+                    <div className={`w-full shadow-centered-spread border-1 outline outline-1 rounded-md flex items-center cursor-pointer overflow-hidden ${data.document != 0 ? "border-secondary outline-secondary" : "border-light-grey outline-none"}`}>
+                        <div className={`w-3/12 bg-slate-200 text-center p-2 ${data.document != 0 ? "border-e-2 border-secondary" : "border-e-1 border-light-grey outline-none"}`}>Pilih File</div>
+                        <div className="p-2 px-3">{data.document != 0 ? data.document.name : 'Belum ada file yang dipilih'}</div>
                     </div>
                 </label>
-                <input type="file" name="file" id="file" accept=".doc, .docx, .pdf" className="hidden" />
+                <input type="file" name="file" id="file" accept=".doc, .docx, .pdf" className="hidden" onChange={e => {setData('document', e.target.files[0])}} />
                 <p className="font-medium text-xs text-light-grey mt-2">PDF, DOCS</p>
             </div>
         </div>
     )
 }
 
-function SummaryCard () {
+function SummaryCard ({ data, setData, purchaseMethods, checkPromo, totalPrice, submit }) {
+    const [showPromoForm, setShowPromoForm] = useState(false)
+    const [showPurchaseMethodForm, setShowPurchaseMethodForm] = useState(false)
+    const currency = Intl.NumberFormat('id-ID')
     return (
-        <div className="w-[30%] relative shadow-centered-spread rounded-2xl p-6 text-xs ms-[3vw] h-fit">
-            <h5 className="font-sans font-bold text-secondary mb-4">Total Pesanan</h5>
-            <hr className="border-black" />
-            <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                <tbody>
-                    <tr>
-                        <td>Dibimbing Sekali</td>
-                        <td className="font-bold text-right">IDR 47.000</td>
-                    </tr>
-                    <tr>
-                        <td>Promo</td>
-                        <td className="font-bold text-right">-</td>
-                    </tr>
-                    <tr>
-                        <td>Biaya Admin</td>
-                        <td className="font-bold text-right">-</td>
-                    </tr>
-                </tbody>
-            </table>
-            <hr className="border-black" />
-            <div className="text-center font-poppins my-4">
-                <p className="font-bold mb-2">Total Pembelian</p>
-                <h2 className="text-secondary">IDR 47.000</h2>
+        <div className="w-[30%] ms-[3vw] flex flex-col gap-8">
+            <div className={`relative shadow-centered-spread rounded-2xl p-6 text-xs h-fit ${data.schedule ? "" : "hidden"}`}>
+                <h5 className="font-sans font-bold text-secondary mb-4">Jadwal Bimbingan</h5>
+                <hr className="border-black" />
+                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                    <tbody>
+                        <tr>
+                            <td>Tanggal</td>
+                            <td className="font-bold text-right">{data.schedule != "" ? data.schedule : "-"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr className="border-black" />
+                <table className={`w-full font-poppins border-separate border-spacing-y-3 my-1 ${data.place != "" ? "" : "hidden"}`}>
+                    <tbody>
+                        <tr>
+                            <td>Lokasi</td>
+                            <td className="font-bold text-right">{data.place != "" ? data.place : "-"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr className={`border-black ${data.place != "" ? "" : "hidden"}`} />
             </div>
-            <div className="grid gap-4">
-                <ExpandedButton>Pakai Promo</ExpandedButton>
-                <ExpandedButton>Pilih Metode Pembayaran</ExpandedButton>
+            <div className={`relative shadow-centered-spread rounded-2xl p-6 text-xs h-fit ${data.document ? '' : 'hidden'}`}>
+                <h5 className="font-sans font-bold text-secondary mb-4">Berkas Pendukung</h5>
+                <hr className="border-black" />
+                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                    <tbody>
+                        <tr>
+                            <td>Nama Berkas</td>
+                            <td className="font-bold text-right">{data.document != "" ? data.document.name : "-"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr className="border-black" />
+                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                    <tbody>
+                        <tr>
+                            <td>Ukuran Berkas</td>
+                            <td className="font-bold text-right">{data.document != "" ? `${Math.ceil(data.document.size/1024)} KB` : "-"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr className="border-black" />
             </div>
-            <ButtonPill className="w-full mt-4" isActive={false}>Bayar Sekarang</ButtonPill>
+            <div className="relative shadow-centered-spread rounded-2xl p-6 text-xs h-fit">
+                <h5 className="font-sans font-bold text-secondary mb-4">Total Pesanan</h5>
+                <hr className="border-black" />
+                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                    <tbody>
+                        <tr>
+                            <td>Dibimbing Sekali</td>
+                            <td className="font-bold text-right">{currency.format(data.init_price) > 0 ? `IDR ${currency.format(data.init_price)}` : '-'}</td>
+                        </tr>
+                        <tr>
+                            <td>Promo</td>
+                            <td className="font-bold text-right">{currency.format(data.discount) > 0 ? `IDR ${currency.format(data.discount)}` : '-'}</td>
+                        </tr>
+                        <tr>
+                            <td>Biaya Admin</td>
+                            <td className="font-bold text-right">{currency.format(data.admin) > 0 ? `IDR ${currency.format(data.admin)}` : '-'}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr className="border-black" />
+                <div className="text-center font-poppins my-4">
+                    <p className="font-bold mb-2">Total Pembelian</p>
+                    <h2 className="text-secondary">IDR {currency.format(totalPrice)}</h2>
+                </div>
+                <div className="grid gap-4">
+                    <ExpandedButton className="shadow-centered-spread rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-10" borderClassName={`border-1 outline outline-1 ${data.discount > 0 ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowPromoForm(!showPromoForm)}>
+                        {data.discount > 0 ? 'Promo Dipakai' : 'Pakai Promo'}
+                    </ExpandedButton>
+                    <ExpandedButton className="shadow-centered-spread rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-10" borderClassName={`border-1 outline outline-1 ${data.purchase_method != "" ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowPurchaseMethodForm(!showPurchaseMethodForm)}>
+                        {data.purchase_method != "" ? (
+                            <>
+                                {
+                                    purchaseMethods.emoney.map((item, id) => {
+                                        if (item.name.toLowerCase() == data.purchase_method) {
+                                            return (
+                                                <div key={id} className="flex items-center gap-2">
+                                                    <img src={item.img} alt={item.name} className="w-6" />
+                                                    {item.name}
+                                                </div>
+                                            )
+                                        }
+                                    })
+                                }
+                                {
+                                    purchaseMethods.bank.map((item, id) => {
+                                        if (item.name.toLowerCase() == data.purchase_method) {
+                                            return (
+                                                <div key={id} className="flex items-center gap-2">
+                                                    <img src={item.img} alt={item.name} className="w-6" />
+                                                    {item.name}
+                                                </div>
+                                            )
+                                        }
+                                    })
+                                }
+                            </>
+                        ) : 'Pilih Metode Pembayaran'}
+                    </ExpandedButton>
+                </div>
+                <div>
+                    <PromoForm show={showPromoForm} setShow={setShowPromoForm} data={data} setData={setData} checkPromo={checkPromo} />
+                    <PurchaseMethodForm show={showPurchaseMethodForm} setShow={setShowPurchaseMethodForm} data={data} setData={setData} purchaseMethods={purchaseMethods} />
+                </div>
+                <ButtonPill className="w-full mt-4" isActive={![data.schedule, data.place, data.purchase_method].includes("")} onClick={submit}>Bayar Sekarang</ButtonPill>
+            </div>
         </div>
     )
 }

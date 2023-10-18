@@ -64,7 +64,7 @@ function ProgramMobile ({ data }) {
                 640: {
                     spaceBetween: 52
                 },
-             }}
+            }}
             >
                 {data.map((item, index) => {return (
                     <SwiperSlide key={index} style={{ width: 'fit-content' }} className="items-center duration-300 transition-all">

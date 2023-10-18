@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Models\Tutor;
 use App\Models\User;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -58,6 +59,10 @@ Route::get('/register', function () {
 
 Route::get('/purchase', function () {
     return Inertia::render('Purchase/Form');
+});
+
+Route::post('/purchase', function (Request $request) {
+    dd($request);
 });
 
 Route::post('/email-diskon', [EmailDiskonController::class, 'handler'])->name('email-diskon');
