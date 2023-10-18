@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\CourseSession;
 use App\Models\Products;
+use App\Models\PromoCode;
 use App\Models\User;
 use App\Models\UserProfile;
 use Database\Factories\UserProfileFactory;
@@ -29,15 +30,6 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // User::create([
-        //     'name' => 'Ekadian Haris Priyatama',
-        //     'username' => 'Nyanwololo',
-        //     'email' => 'nyanwololo@gmail.com',
-        //     'password' => Hash::make('qwe12334'),
-        //     'user_role' => 'tutor',
-        //     'email_verified_at' => now(),
-        // ]);
-
         // User::factory(50)->create();
 
         UserProfile::create([
@@ -46,13 +38,6 @@ class DatabaseSeeder extends Seeder
             'university' => 'Politeknik Negeri Malang',
             'major' => 'Elektronika',
         ]);
-
-        // UserProfile::create([
-        //     'user_id' => 2,
-        //     'phone_number' => '087763420871',
-        //     'university' => 'Politeknik Negeri Malang',
-        //     'major' => 'Elektronika',
-        // ]);
 
         Category::create([
             'name' => 'Dibimbing Sekali',
@@ -86,68 +71,7 @@ class DatabaseSeeder extends Seeder
             'is_visible' => true,
             'description' => 'Webinar seru dan informatif',
         ]);
-        // User::create([
-        //     'username' => 'tutor',
-        //     'email' => 'tutor@gmail.com',
-        //     'password' => Hash::make('password'),
-        //     'user_role' => 'tutor'
-        // ]);
-        // User::create([
-        //     'username' => 'moderator',
-        //     'email' => 'moderator@gmail.com',
-        //     'password' => Hash::make('password'),
-        //     'user_role' => 'moderator'
-        // ]);
-        // User::factory(5)->create();
-        // $this->call(UserProfileSeeder::class);
 
-        // Products::create([
-        //     'name' => 'Dibimbing Sekali',
-        //     'slug' => 'dibimbing-sekali',
-        //     'excerpt' => 'Lorem ipsum dolor sit amet.',
-        //     'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, porro.',
-        //     'features' => json_encode([
-        //         'pertemuan' => '1x Pertemuan',
-        //         'durasi' => '30-45 menit',
-        //         'metode' => 'Online/Offline'
-        //     ]),
-        //     'price' => 47000,
-        // ]);
-        // Products::create([
-        //     'name' => 'Dibimbing Tuntas',
-        //     'slug' => 'dibimbing-tuntas',
-        //     'excerpt' => 'Lorem ipsum dolor sit amet consectetur.',
-        //     'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam modi nobis minima dolore mollitia impedit?',
-        //     'features' => json_encode([
-        //         'pertemuan' => '9x Pertemuan',
-        //         'durasi' => '40-60 menit',
-        //         'metode' => 'Online/Offline'
-        //     ]),
-        //     'price' => 649000,
-        // ]);
-        // Products::create([
-        //     'name' => 'Dibimbing Olah Data',
-        //     'slug' => 'dibimbing-olah-data',
-        //     'excerpt' => 'Lorem ipsum dolor sit.',
-        //     'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident dolorem optio eligendi?',
-        //     'features' => json_encode([
-        //         'pertemuan' => '1x Pertemuan',
-        //         'durasi' => '40-60 menit',
-        //         'metode' => 'Online/Offline'
-        //     ]),
-        //     'price' => 115000,
-        // ]);
-        // Products::create([
-        //     'name' => 'E-Book Skripsi',
-        //     'slug' => 'e-book-skripsi',
-        //     'excerpt' => 'Lorem, ipsum dolor sit amet consectetur adipisicing.',
-        //     'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt?',
-        //     'features' => json_encode([
-        //         'e-book' => '1-4 E-book',
-        //         'device' => 'Semua Device',
-        //         'metode' => 'Bebas Unduh'
-        //     ]),
-        //     'price' => 9000,
-        // ]);
+        PromoCode::factory(10)->create();
     }
 }

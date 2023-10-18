@@ -71,11 +71,6 @@ class User extends Authenticatable implements HasName, FilamentUser
         return $this->hasMany(Order::class);
     }
 
-    // public function course()
-    // {
-    //     return $this->belongsToMany(Course::class, 'tutor_courses', 'user_id', 'course_id');
-    // }
-
     public function tutor()
     {
         return $this->belongsToMany(Course::class, 'courses', 'tutor_id');
@@ -84,5 +79,10 @@ class User extends Authenticatable implements HasName, FilamentUser
     public function social()
     {
         return $this->hasMany(Social::class);
+    }
+
+    public function promo()
+    {
+        return $this->belongsToMany(PromoCode::class);
     }
 }
