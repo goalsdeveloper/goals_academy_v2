@@ -29,18 +29,14 @@ export default function Form({ auth }) {
     ]
     const unavailableDate = ['2023-10-20', '2023-10-22']
     const availablePlaces = ['Kafe 1', 'Kafe 2', 'Kafe 3', 'Kafe 4', 'Kafe 5']
-    const purchaseMethods = {
-        ewallet: [
-            {name: 'Gopay', admin: 500},
-            {name: 'QRIS', admin: 500},
-        ],
-        bank: [
-            {name: 'BNI', admin: 2500},
-            {name: 'Mandiri', admin: 1500},
-            {name: 'BRI', admin: 2000},
-            {name: 'Permata', admin: 2500},
-        ]
-    }
+    const purchaseMethods = [
+        {name: 'Gopay', admin: 2, category: 'ewallet'},
+        {name: 'QRIS', admin: 0.7, category: 'ewallet'},
+        {name: 'BNI', admin: 4000, category: 'bank'},
+        {name: 'Mandiri', admin: 4000, category: 'bank'},
+        {name: 'BRI', admin: 4000, category: 'bank'},
+        {name: 'Permata', admin: 4000, category: 'bank'},
+    ]
 
     const submit = e => {
         e.preventDefault()
@@ -137,40 +133,44 @@ function PurchaseMethodForm ({ show, setShow, data, setData, purchaseMethods }) 
                 <div>
                     <h6 className="font-medium mb-4">Dompet Digital</h6>
                     <div className="grid gap-2">
-                        {purchaseMethods.ewallet.map((item, i) => {
-                            return (
-                                <ExpandedButton key={i}
-                                className="spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-10"
-                                borderClassName="border-0"
-                                onClick={() => {
-                                    setData({...data, admin: item.admin, purchase_method: item.name.toLowerCase()})
-                                }}>
-                                    <div className="flex items-center gap-2">
-                                        <img src={`/img/purchase/${item.name.toLowerCase()}.png`} alt={item.name} className="w-6" />
-                                        {item.name}
-                                    </div>
-                                </ExpandedButton>
-                            )
+                        {purchaseMethods.map((item, i) => {
+                            if (item.category == 'ewallet') {
+                                return (
+                                    <ExpandedButton key={i}
+                                    className="spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-10"
+                                    borderClassName="border-0"
+                                    onClick={() => {
+                                        setData({...data, admin: item.admin * data.init_price / 100, purchase_method: item.name.toLowerCase()})
+                                    }}>
+                                        <div className="flex items-center gap-2">
+                                            <img src={`/img/purchase/${item.name.toLowerCase()}.png`} alt={item.name} className="w-6" />
+                                            {item.name}
+                                        </div>
+                                    </ExpandedButton>
+                                )
+                            }
                         })}
                     </div>
                 </div>
                 <div>
                     <h6 className="font-medium mb-4">Bank</h6>
                     <div className="grid gap-2">
-                        {purchaseMethods.bank.map((item, i) => {
-                            return (
-                                <ExpandedButton key={i}
-                                className="spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-8"
-                                borderClassName="border-0"
-                                onClick={() => {
-                                    setData({...data, admin: item.admin, purchase_method: item.name.toLowerCase()})
-                                }}>
-                                    <div className="flex items-center gap-2">
-                                        <img src={`/img/purchase/${item.name.toLowerCase()}.png`} alt={item.name} className="w-6" />
-                                        Bank {item.name}
-                                    </div>
-                                </ExpandedButton>
-                            )
+                        {purchaseMethods.map((item, i) => {
+                            if (item.category == 'bank') {
+                                return (
+                                    <ExpandedButton key={i}
+                                    className="spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-10"
+                                    borderClassName="border-0"
+                                    onClick={() => {
+                                        setData({...data, admin: item.admin * data.init_price / 100, purchase_method: item.name.toLowerCase()})
+                                    }}>
+                                        <div className="flex items-center gap-2">
+                                            <img src={`/img/purchase/${item.name.toLowerCase()}.png`} alt={item.name} className="w-6" />
+                                            {item.name}
+                                        </div>
+                                    </ExpandedButton>
+                                )
+                            }
                         })}
                     </div>
                 </div>
@@ -387,23 +387,11 @@ function SummaryCard ({ data, setData, purchaseMethods, checkPromo, totalPrice, 
                         {data.purchase_method != "" ? (
                             <>
                                 {
-                                    purchaseMethods.ewallet.map((item, id) => {
+                                    purchaseMethods.map((item, id) => {
                                         if (item.name.toLowerCase() == data.purchase_method) {
                                             return (
                                                 <div key={id} className="flex items-center gap-2">
-                                                    <img src={item.img} alt={item.name} className="w-6" />
-                                                    {item.name}
-                                                </div>
-                                            )
-                                        }
-                                    })
-                                }
-                                {
-                                    purchaseMethods.bank.map((item, id) => {
-                                        if (item.name.toLowerCase() == data.purchase_method) {
-                                            return (
-                                                <div key={id} className="flex items-center gap-2">
-                                                    <img src={`/img/purchase/purchase/${item.name.toLowerCase()}.png`} alt={item.name} className="w-6" />
+                                                    <img src={`/img/purchase/${item.name.toLowerCase()}.png`} alt={item.name} className="w-6" />
                                                     {item.name}
                                                 </div>
                                             )
