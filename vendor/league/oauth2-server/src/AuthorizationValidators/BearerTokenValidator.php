@@ -14,8 +14,8 @@ use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
 use Lcobucci\JWT\Validation\Constraint\ValidAt;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use League\OAuth2\Server\CryptKey;
@@ -44,18 +44,11 @@ class BearerTokenValidator implements AuthorizationValidatorInterface
     private $jwtConfiguration;
 
     /**
-     * @var \DateInterval|null
-     */
-    private $jwtValidAtDateLeeway;
-
-    /**
      * @param AccessTokenRepositoryInterface $accessTokenRepository
-     * @param \DateInterval|null             $jwtValidAtDateLeeway
      */
-    public function __construct(AccessTokenRepositoryInterface $accessTokenRepository, \DateInterval $jwtValidAtDateLeeway = null)
+    public function __construct(AccessTokenRepositoryInterface $accessTokenRepository)
     {
         $this->accessTokenRepository = $accessTokenRepository;
-        $this->jwtValidAtDateLeeway = $jwtValidAtDateLeeway;
     }
 
     /**
@@ -77,14 +70,13 @@ class BearerTokenValidator implements AuthorizationValidatorInterface
     {
         $this->jwtConfiguration = Configuration::forSymmetricSigner(
             new Sha256(),
-            InMemory::plainText('empty', 'empty')
+            InMemory::plainText('')
         );
 
-        $clock = new SystemClock(new DateTimeZone(\date_default_timezone_get()));
         $this->jwtConfiguration->setValidationConstraints(
-            \class_exists(LooseValidAt::class)
-                ? new LooseValidAt($clock, $this->jwtValidAtDateLeeway)
-                : new ValidAt($clock, $this->jwtValidAtDateLeeway),
+            \class_exists(StrictValidAt::class)
+                ? new StrictValidAt(new SystemClock(new DateTimeZone(\date_default_timezone_get())))
+                : new ValidAt(new SystemClock(new DateTimeZone(\date_default_timezone_get()))),
             new SignedWith(
                 new Sha256(),
                 InMemory::plainText($this->publicKey->getKeyContents(), $this->publicKey->getPassPhrase() ?? '')

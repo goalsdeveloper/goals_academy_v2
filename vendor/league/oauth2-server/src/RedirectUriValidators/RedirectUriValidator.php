@@ -9,9 +9,6 @@
 
 namespace League\OAuth2\Server\RedirectUriValidators;
 
-use League\Uri\Exceptions\SyntaxError;
-use League\Uri\Uri;
-
 class RedirectUriValidator implements RedirectUriValidatorInterface
 {
     /**
@@ -62,14 +59,10 @@ class RedirectUriValidator implements RedirectUriValidatorInterface
      */
     private function isLoopbackUri($redirectUri)
     {
-        try {
-            $uri = Uri::createFromString($redirectUri);
-        } catch (SyntaxError $e) {
-            return false;
-        }
+        $parsedUrl = \parse_url($redirectUri);
 
-        return $uri->getScheme() === 'http'
-            && (\in_array($uri->getHost(), ['127.0.0.1', '[::1]'], true));
+        return $parsedUrl['scheme'] === 'http'
+            && (\in_array($parsedUrl['host'], ['127.0.0.1', '[::1]'], true));
     }
 
     /**
@@ -113,8 +106,9 @@ class RedirectUriValidator implements RedirectUriValidatorInterface
      */
     private function parseUrlAndRemovePort($url)
     {
-        $uri = Uri::createFromString($url);
+        $parsedUrl = \parse_url($url);
+        unset($parsedUrl['port']);
 
-        return (string) $uri->withPort(null);
+        return $parsedUrl;
     }
 }

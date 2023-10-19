@@ -10,13 +10,20 @@ class TutorNote extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
+        'course_id',
         'body',
         'file_name',
         'file',
     ];
 
+    public function tutor()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function course()
     {
-        return $this->hasOne(Course::class);
+        return $this->belongsTo(Course::class);
     }
 }

@@ -53,7 +53,10 @@ export default function Form({ auth }) {
 
     return (
         <MainLayout auth={auth} title="Purchase">
-            <section id="purchase-form" className="mb-16 xs:mb-20 md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32">
+            <section
+                id="purchase-form"
+                className="mb-16 xs:mb-20 md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32"
+            >
                 <div className="container mx-auto pt-6 flex justify-between">
                     <MainCard data={data} setData={setData} unavailableDate={unavailableDate} availablePlaces={availablePlaces} />
                     <SummaryCard data={data} setData={setData} purchaseMethods={purchaseMethods} totalPrice={totalPrice} checkPromo={checkPromo} submit={submit} />
@@ -258,7 +261,7 @@ function ScheduleForm ({ show, setShow, data, setData, unavailableDate, availabl
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 function MainCard ({ data, setData, unavailableDate, availablePlaces }) {
@@ -268,7 +271,10 @@ function MainCard ({ data, setData, unavailableDate, availablePlaces }) {
             <p>Bimbingan Skripsi</p>
             <hr className="border-black" />
             <h3 className="text-secondary">Dibimbing Offline 60 Menit</h3>
-            <p>Capai kesuksesan skripsimu melalui bimbingan personal secara 1-on-1, sesuai dengan permasalahan pada skripsimu.</p>
+            <p>
+                Capai kesuksesan skripsimu melalui bimbingan personal secara
+                1-on-1, sesuai dengan permasalahan pada skripsimu.
+            </p>
             <div className="flex flex-col gap-2 md:gap-1 lg:gap-2 3xl:gap-3">
                 <p>Layanan :</p>
                 <div className="flex items-center gap-2">
@@ -302,7 +308,7 @@ function MainCard ({ data, setData, unavailableDate, availablePlaces }) {
                 <p className="font-medium text-xs text-light-grey mt-2">PDF, DOCS</p>
             </div>
         </div>
-    )
+    );
 }
 
 function SummaryCard ({ data, setData, purchaseMethods, checkPromo, totalPrice, submit }) {
@@ -421,5 +427,5 @@ function SummaryCard ({ data, setData, purchaseMethods, checkPromo, totalPrice, 
                 <ButtonPill className="w-full mt-4" isActive={![data.schedule, data.place, data.purchase_method].includes("")} onClick={submit}>Bayar Sekarang</ButtonPill>
             </div>
         </div>
-    )
+    );
 }

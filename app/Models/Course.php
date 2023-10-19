@@ -2,27 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_note',
+        'user_id',
+        'products_id',
+        'order_id',
+        'tutor_id',
         'location',
         'date',
+        'ongoing',
+        'is_tutor',
+        'is_moderator'
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function order()
     {
-        return $this->hasOne(Order::class);
+        return $this->belongsTo(Order::class);
     }
     public function products()
     {
@@ -30,14 +36,10 @@ class Course extends Model
     }
     public function tutor()
     {
-        return $this->belongsTo(Tutor::class);
+        return $this->belongsToMany(User::class, 'tutor_courses', 'course_id', 'user_id');
     }
     public function tutorNote()
     {
-        return $this->hasOne(TutorNote::class);
-    }
-    public function courseSession()
-    {
-        return $this->belongsTo(CourseSession::class);
+        return $this->hasMany(TutorNote::class);
     }
 }

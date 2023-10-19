@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\UserProfile;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -59,6 +60,10 @@ class AuthController extends Controller
         $request['password'] = Hash::make($request['password']);
 
         $user = User::create($validateData);
+
+        $userProfile = UserProfile::create([
+            'user_id' => $user['id'],
+        ]);
 
         event(new Registered($user));
 
