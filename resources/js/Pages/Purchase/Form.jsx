@@ -10,13 +10,6 @@ import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import { useForm } from "@inertiajs/react";
 
-import gopay from "/resources/img/purchase/gopay.png";
-import qris from "/resources/img/purchase/qris.png";
-import bni from "/resources/img/purchase/bni.png";
-import mandiri from "/resources/img/purchase/mandiri.png";
-import bri from "/resources/img/purchase/bri.png";
-import permata from "/resources/img/purchase/permata.png";
-
 export default function Form({ auth }) {
     const {data, setData, post} = useForm({
         schedule: "",
@@ -25,8 +18,8 @@ export default function Form({ auth }) {
         init_price: 47000,
         promo: "",
         discount: 0,
-        admin: 0,
         purchase_method: "",
+        admin: 0,
     })
 
     const totalPrice = data.init_price - data.discount + data.admin
@@ -37,15 +30,15 @@ export default function Form({ auth }) {
     const unavailableDate = ['2023-10-20', '2023-10-22']
     const availablePlaces = ['Kafe 1', 'Kafe 2', 'Kafe 3', 'Kafe 4', 'Kafe 5']
     const purchaseMethods = {
-        emoney: [
-            {name: 'Gopay', img: gopay, admin: 500},
-            {name: 'QRIS', img: qris, admin: 500},
+        ewallet: [
+            {name: 'Gopay', admin: 500},
+            {name: 'QRIS', admin: 500},
         ],
         bank: [
-            {name: 'BNI', img: bni, admin: 2500},
-            {name: 'Mandiri', img: mandiri, admin: 1500},
-            {name: 'BRI', img: bri, admin: 2000},
-            {name: 'Permata', img: permata, admin: 2500},
+            {name: 'BNI', admin: 2500},
+            {name: 'Mandiri', admin: 1500},
+            {name: 'BRI', admin: 2000},
+            {name: 'Permata', admin: 2500},
         ]
     }
 
@@ -82,13 +75,34 @@ function PromoForm ({ show, setShow, data, setData, checkPromo }) {
                     </div>
                     <hr className="border-light-grey" />
                 </div>
-                <input className="w-full flex justify-between items-center py-2 px-3 shadow-centered-spread rounded-sm border-2 focus:outline-0 text-dark h-10" value={data.promo} onChange={e => setData('promo', e.target.value)} placeholder="Masukkan kode promo disini"></input>
+                <form
+                onSubmit={
+                        () => {
+                            if (data.promo != "") {
+                                const promoInfo = checkPromo(data.promo)
+                                if (!promoInfo) {
+                                    setData({...data, promo: '', discount: 0})
+                                    alert('Promo tidak tersedia!')
+                                } else {
+                                    setData('discount', data.init_price * promoInfo.percentage / 100)
+                                    alert('Promo berhasil dipakai!')
+                                    setShow(false)
+                                }
+                            }
+                        }
+                }>
+                    <input
+                    className="w-full flex justify-between items-center py-2 px-3 shadow-centered-spread rounded-sm border-2 focus:outline-0 text-dark h-10"
+                    value={data.promo}
+                    onChange={e => setData('promo', e.target.value)}
+                    placeholder="Masukkan kode promo disini"></input>
+                </form>
                 <div className="flex justify-end mt-3">
                     <ButtonPill
                     className="w-3/12"
                     isActive={(data.promo != "")}
                     onClick={
-                        e => {
+                        () => {
                             if (data.promo != "") {
                                 const promoInfo = checkPromo(data.promo)
                                 if (!promoInfo) {
@@ -123,16 +137,16 @@ function PurchaseMethodForm ({ show, setShow, data, setData, purchaseMethods }) 
                 <div>
                     <h6 className="font-medium mb-4">Dompet Digital</h6>
                     <div className="grid gap-2">
-                        {purchaseMethods.emoney.map((item, i) => {
+                        {purchaseMethods.ewallet.map((item, i) => {
                             return (
                                 <ExpandedButton key={i}
-                                className="shadow-centered-spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-10"
+                                className="spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-10"
                                 borderClassName="border-0"
                                 onClick={() => {
                                     setData({...data, admin: item.admin, purchase_method: item.name.toLowerCase()})
                                 }}>
                                     <div className="flex items-center gap-2">
-                                        <img src={item.img} alt={item.name} className="w-6" />
+                                        <img src={`/img/purchase/${item.name.toLowerCase()}.png`} alt={item.name} className="w-6" />
                                         {item.name}
                                     </div>
                                 </ExpandedButton>
@@ -146,13 +160,13 @@ function PurchaseMethodForm ({ show, setShow, data, setData, purchaseMethods }) 
                         {purchaseMethods.bank.map((item, i) => {
                             return (
                                 <ExpandedButton key={i}
-                                className="shadow-centered-spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-10"
+                                className="spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-8"
                                 borderClassName="border-0"
                                 onClick={() => {
                                     setData({...data, admin: item.admin, purchase_method: item.name.toLowerCase()})
                                 }}>
                                     <div className="flex items-center gap-2">
-                                        <img src={item.img} alt={item.name} className="w-6" />
+                                        <img src={`/img/purchase/${item.name.toLowerCase()}.png`} alt={item.name} className="w-6" />
                                         Bank {item.name}
                                     </div>
                                 </ExpandedButton>
@@ -271,7 +285,7 @@ function MainCard ({ data, setData, unavailableDate, availablePlaces }) {
                 </div>
             </div>
             <div>
-                <ExpandedButton className="shadow-centered-spread rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-10" borderClassName={`border-1 outline outline-1 ${data.schedule != "" ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowScheduleForm(true)}>
+                <ExpandedButton className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8" borderClassName={`border-1 outline outline-1 ${data.schedule != "" ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowScheduleForm(true)}>
                     <i className="fa-regular fa-calendar"></i>&nbsp;&nbsp;Pilih Jadwal Bimbingan
                 </ExpandedButton>
                 <ScheduleForm show={showScheduleForm} setShow={setShowScheduleForm} data={data} setData={setData} unavailableDate={unavailableDate} availablePlaces={availablePlaces} />
@@ -279,7 +293,7 @@ function MainCard ({ data, setData, unavailableDate, availablePlaces }) {
             <div className="flex flex-col">
                 <label htmlFor="file" className="font-medium">
                     <p className="mb-2">Berkas Pendukung (opsional)</p>
-                    <div className={`w-full shadow-centered-spread border-1 outline outline-1 rounded-md flex items-center cursor-pointer overflow-hidden ${data.document != 0 ? "border-secondary outline-secondary" : "border-light-grey outline-none"}`}>
+                    <div className={`w-full border-1 outline outline-1 rounded-md flex items-center cursor-pointer overflow-hidden ${data.document != 0 ? "border-secondary outline-secondary" : "border-light-grey outline-none"}`}>
                         <div className={`w-3/12 bg-slate-200 text-center p-2 ${data.document != 0 ? "border-e-2 border-secondary" : "border-e-1 border-light-grey outline-none"}`}>Pilih File</div>
                         <div className="p-2 px-3">{data.document != 0 ? data.document.name : 'Belum ada file yang dipilih'}</div>
                     </div>
@@ -366,14 +380,14 @@ function SummaryCard ({ data, setData, purchaseMethods, checkPromo, totalPrice, 
                     <h2 className="text-secondary">IDR {currency.format(totalPrice)}</h2>
                 </div>
                 <div className="grid gap-4">
-                    <ExpandedButton className="shadow-centered-spread rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-10" borderClassName={`border-1 outline outline-1 ${data.discount > 0 ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowPromoForm(!showPromoForm)}>
+                    <ExpandedButton className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8" borderClassName={`border-1 outline outline-1 ${data.discount > 0 ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowPromoForm(!showPromoForm)}>
                         {data.discount > 0 ? 'Promo Dipakai' : 'Pakai Promo'}
                     </ExpandedButton>
-                    <ExpandedButton className="shadow-centered-spread rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-10" borderClassName={`border-1 outline outline-1 ${data.purchase_method != "" ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowPurchaseMethodForm(!showPurchaseMethodForm)}>
+                    <ExpandedButton className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8" borderClassName={`border-1 outline outline-1 ${data.purchase_method != "" ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowPurchaseMethodForm(!showPurchaseMethodForm)}>
                         {data.purchase_method != "" ? (
                             <>
                                 {
-                                    purchaseMethods.emoney.map((item, id) => {
+                                    purchaseMethods.ewallet.map((item, id) => {
                                         if (item.name.toLowerCase() == data.purchase_method) {
                                             return (
                                                 <div key={id} className="flex items-center gap-2">
@@ -389,7 +403,7 @@ function SummaryCard ({ data, setData, purchaseMethods, checkPromo, totalPrice, 
                                         if (item.name.toLowerCase() == data.purchase_method) {
                                             return (
                                                 <div key={id} className="flex items-center gap-2">
-                                                    <img src={item.img} alt={item.name} className="w-6" />
+                                                    <img src={`/img/purchase/purchase/${item.name.toLowerCase()}.png`} alt={item.name} className="w-6" />
                                                     {item.name}
                                                 </div>
                                             )
