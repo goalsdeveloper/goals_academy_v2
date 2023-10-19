@@ -8,6 +8,7 @@ use App\Models\Social;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\UserProfile;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Hash;
@@ -58,6 +59,10 @@ class SocialHandler extends Controller
                     'email' => $socialUser->getEmail(),
                     'email_verified_at' => now(),
                     'password' => Hash::make('password'),
+                ]);
+
+                UserProfile::create([
+                    'user_id' => $user['id']
                 ]);
             }
 

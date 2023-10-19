@@ -9,18 +9,23 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum')->except(['index', 'show']);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:sanctum')->except(['index', 'show']);
+    // }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $order = Order::with('user.profile', 'products')->get();
-
+        dd($order);
         return OrderResource::collection($order);
+    }
+
+    public function create()
+    {
+        return inertia('Purchase/Form');
     }
 
     /**
