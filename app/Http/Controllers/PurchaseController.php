@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -12,6 +13,7 @@ class PurchaseController extends Controller
      */
     public function index()
     {
+        dd(Carbon::today());
         return Inertia::render('Purchase/Form');
     }
 
@@ -28,7 +30,6 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        
     }
 
     /**
