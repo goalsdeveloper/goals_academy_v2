@@ -64,14 +64,6 @@ class PurchaseController extends Controller
 
         $quantity = 1;
         $getProduct = Products::where('id', $validateData['products_id'])->with('categories')->first();
-        $produkDibimbing = false;
-
-        // cek produk bimbingan
-        foreach ($getProduct->categories as $category) {
-            if (stripos($category->slug, 'dibimbing') !== false) {
-                $produkDibimbing = true;
-            }
-        }
 
         // cek user menggunakan kode promo
         if ($request->promo_code) {
@@ -111,6 +103,13 @@ class PurchaseController extends Controller
             $location = 'Menunggu Lokasi';
         }
 
+        // cek produk bimbingan
+        $produkDibimbing = false;
+        foreach ($getProduct->categories as $category) {
+            if (stripos($category->slug, 'dibimbing') !== false) {
+                $produkDibimbing = true;
+            }
+        }
         // jika produk = bimbingan; maka masuk ke tabel course  
         if ($produkDibimbing) {
             $course = Course::create([
