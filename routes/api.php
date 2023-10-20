@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\API\HandleMidtransCallbackController;
 use App\Http\Controllers\API\PurchaseController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\OrderController;
@@ -28,3 +29,5 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::apiResource('register', RegisterController::class)->only('store');
 
 Route::apiResource('purchase', PurchaseController::class)->middleware('auth:sanctum');
+
+Route::post('handle_payment', [HandleMidtransCallbackController::class, 'handlePayment']);

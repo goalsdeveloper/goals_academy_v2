@@ -141,6 +141,12 @@ class PurchaseController extends Controller
                     'email' => $user->email,
                     'phone' => $phoneNumber,
                 ),
+                // 'item_details' => array(array(
+                //     'id' => $getProduct->id,
+                //     'price' => $getProduct->price,
+                //     'quantity' => $quantity,
+                //     'name' => $getProduct->name,
+                // ))
             );
 
             try {
