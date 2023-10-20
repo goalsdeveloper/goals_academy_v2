@@ -61,10 +61,6 @@ Route::get('/register', function () {
 
 Route::resource('/purchase', PurchaseController::class);
 
-Route::post('/purchase', function (Request $request) {
-    dd($request);
-});
-
 Route::post('/email-diskon', [EmailDiskonController::class, 'handler'])->name('email-diskon');
 
 Route::get('/email/verify/email-verification', [EmailVerificationController::class, 'notice'])->middleware('auth')->name('verification.notice');

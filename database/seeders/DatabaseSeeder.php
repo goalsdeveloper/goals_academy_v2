@@ -6,10 +6,12 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\CourseSession;
+use App\Models\Order;
 use App\Models\Products;
 use App\Models\PromoCode;
 use App\Models\User;
 use App\Models\UserProfile;
+use Database\Factories\OrderSeederFactory;
 use Database\Factories\UserProfileFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -73,5 +75,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         PromoCode::factory(10)->create();
+
+        Products::create([
+            'name' => 'Dibimbing Sekali Online',
+            'slug' => 'dibimbing-sekali-offline',
+            'excerpt' => 'Kamu akan dibimbing oleh',
+            'description' => 'Kamu akan dibimbing oleh tutor keren dan kece',
+            'features' => '[{"times":"1","duration":"60","category":"offline"}]',
+            'price' => 49000,
+            'product_image' => 'product_image/bhuEAMDWr1N08nbwk0I8LJdqM1LYUn-metaS2F0YWxvZyBQcm9ncmFtIC0gR29hbHMgQWNhZGVteS5wbmc=-.png',
+        ]);
     }
 }
