@@ -141,12 +141,6 @@ class PurchaseController extends Controller
                     'email' => $user->email,
                     'phone' => $phoneNumber,
                 ),
-                // 'item_details' => array(array(
-                //     'id' => $getProduct->id,
-                //     'price' => $getProduct->price,
-                //     'quantity' => $quantity,
-                //     'name' => $getProduct->name,
-                // ))
             );
 
             try {
@@ -187,11 +181,11 @@ class PurchaseController extends Controller
             'notes' => $request['notes'],
         ]);
 
-        $orderHistory = OrderHistory::create([
-            'order_id' => $order->id,
-            'status' => $responseMidtrans->transaction_status,
-            'payload' => json_encode($responseMidtrans),
-        ]);
+        // $orderHistory = OrderHistory::create([
+        //     'order_id' => $order->id,
+        //     'status' => $responseMidtrans->transaction_status,
+        //     'payload' => json_encode($responseMidtrans),
+        // ]);
 
         // jika produk = bimbingan; maka masuk ke tabel course  
         if ($produkDibimbing) {
@@ -215,7 +209,7 @@ class PurchaseController extends Controller
             'data' => [
                 'midtrans charge' => $responseMidtrans,
                 'order' => $order,
-                'order history' => $orderHistory,
+                // 'order history' => $orderHistory,
             ]
         ], 200);
     }
