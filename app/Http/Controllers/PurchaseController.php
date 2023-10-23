@@ -13,7 +13,7 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        dd(Carbon::today());
+        // dd(Carbon::today());
         return Inertia::render('Purchase/Form');
     }
 

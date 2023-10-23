@@ -14,7 +14,8 @@ export default function Form({ auth }) {
     const {data, setData, post} = useForm({
         schedule: "",
         place: "",
-        document: 0,
+        document: "",
+        note: "",
         init_price: 47000,
         promo: "",
         discount: 0,
@@ -30,12 +31,12 @@ export default function Form({ auth }) {
     const unavailableDate = ['2023-10-20', '2023-10-22']
     const availablePlaces = ['Kafe 1', 'Kafe 2', 'Kafe 3', 'Kafe 4', 'Kafe 5']
     const purchaseMethods = [
-        {name: 'Gopay', admin: 2, category: 'ewallet'},
-        {name: 'QRIS', admin: 0.7, category: 'ewallet'},
-        {name: 'BNI', admin: 4000, category: 'bank'},
-        {name: 'Mandiri', admin: 4000, category: 'bank'},
-        {name: 'BRI', admin: 4000, category: 'bank'},
-        {name: 'Permata', admin: 4000, category: 'bank'},
+        {name: 'Gopay', admin: 2, payment_method: 'ewallet'},
+        {name: 'QRIS', admin: 0.7, payment_method: 'ewallet'},
+        {name: 'BNI', admin: 4000, payment_method: 'bank_transfer'},
+        {name: 'Mandiri', admin: 4000, payment_method: 'bank_transfer'},
+        {name: 'BRI', admin: 4000, payment_method: 'bank_transfer'},
+        {name: 'Permata', admin: 4000, payment_method: 'bank_transfer'},
     ]
 
     const submit = e => {
@@ -59,6 +60,157 @@ export default function Form({ auth }) {
                 </div>
             </section>
         </MainLayout>
+    );
+}
+
+function MainCard ({ data, setData, unavailableDate, availablePlaces }) {
+    const [showScheduleForm, setShowScheduleForm] = useState(false)
+    const [showNoteForm, setShowNoteForm] = useState(false)
+    return (
+        <div className="w-[70%] relative shadow-centered-spread rounded-2xl p-6 flex flex-col gap-4 h-fit">
+            <p>Bimbingan Skripsi</p>
+            <hr className="border-black" />
+            <h3 className="text-secondary">Dibimbing Offline 60 Menit</h3>
+            <p>
+                Capai kesuksesan skripsimu melalui bimbingan personal secara
+                1-on-1, sesuai dengan permasalahan pada skripsimu.
+            </p>
+            <div className="flex flex-col gap-2 md:gap-1 lg:gap-2 3xl:gap-3">
+                <p>Layanan :</p>
+                <div className="flex items-center gap-2">
+                    <i className="fa-regular fa-calendar text-primary"></i>
+                    <p>1x Pertemuan</p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <i className="fa-solid fa-clock text-12 md:text-6 lg:text-10 xl:text-12 3xl:text-18 text-primary"></i>
+                    <p>60 Menit</p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <i className="fa-solid fa-location-dot text-primary"></i>
+                    <p>Offline</p>
+                </div>
+            </div>
+            <div>
+                <ExpandedButton className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8" borderClassName={`border-1 outline outline-1 ${data.schedule != "" ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowScheduleForm(true)}>
+                    <i className="fa-regular fa-calendar"></i>&nbsp;&nbsp;Pilih Jadwal Bimbingan
+                </ExpandedButton>
+                <ScheduleForm show={showScheduleForm} setShow={setShowScheduleForm} data={data} setData={setData} unavailableDate={unavailableDate} availablePlaces={availablePlaces} />
+            </div>
+            <div className="flex flex-col">
+                <label htmlFor="file" className="font-medium">
+                    <p className="mb-2">Berkas Pendukung (opsional)</p>
+                    <div className={`w-full border-1 outline outline-1 rounded-md flex items-center cursor-pointer overflow-hidden ${data.document != 0 ? "border-secondary outline-secondary" : "border-light-grey outline-none"}`}>
+                        <div className={`w-3/12 bg-slate-200 text-center p-2 ${data.document != 0 ? "border-e-2 border-secondary" : "border-e-1 border-light-grey outline-none"}`}>Pilih File</div>
+                        <div className="p-2 px-3">{data.document != 0 ? data.document.name : 'Belum ada file yang dipilih'}</div>
+                    </div>
+                </label>
+                <input type="file" name="file" id="file" accept=".doc, .docx, .pdf" className="hidden" onChange={e => {setData('document', e.target.files[0])}} />
+                <p className="font-medium text-xs text-light-grey mt-2">PDF, DOCS</p>
+            </div>
+            <div>
+                <ExpandedButton className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8" borderClassName={`border-1 outline outline-1 ${data.note != "" ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowNoteForm(true)}>
+                    <i className="bi bi-pen"></i>&nbsp;&nbsp;Catatan untuk Tutor
+                </ExpandedButton>
+                <NoteForm show={showNoteForm} setShow={setShowNoteForm} data={data} setData={setData} />
+            </div>
+        </div>
+    );
+}
+
+function SummaryCard ({ data, setData, purchaseMethods, checkPromo, totalPrice, submit }) {
+    const [showPromoForm, setShowPromoForm] = useState(false)
+    const [showPurchaseMethodForm, setShowPurchaseMethodForm] = useState(false)
+    const currency = Intl.NumberFormat('id-ID')
+    return (
+        <div className="w-[30%] ms-[3vw] flex flex-col gap-8">
+            <div className={`relative shadow-centered-spread rounded-2xl p-6 text-xs h-fit ${data.schedule ? "" : "hidden"}`}>
+                <h5 className="font-sans font-bold text-secondary mb-4">Jadwal Bimbingan</h5>
+                <hr className="border-black" />
+                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                    <tbody>
+                        <tr>
+                            <td>Tanggal</td>
+                            <td className="font-bold text-right">{data.schedule != "" ? data.schedule : "-"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr className="border-black" />
+                <table className={`w-full font-poppins border-separate border-spacing-y-3 my-1 ${data.place != "" ? "" : "hidden"}`}>
+                    <tbody>
+                        <tr>
+                            <td>Lokasi</td>
+                            <td className="font-bold text-right">{data.place != "" ? data.place : "-"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr className={`border-black ${data.place != "" ? "" : "hidden"}`} />
+            </div>
+            <div className={`relative shadow-centered-spread rounded-2xl p-6 text-xs h-fit ${data.document ? '' : 'hidden'}`}>
+                <h5 className="font-sans font-bold text-secondary mb-4">Berkas Pendukung</h5>
+                <hr className="border-black" />
+                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                    <tbody>
+                        <tr>
+                            <td>Nama Berkas</td>
+                            <td className="font-bold text-right">{data.document != "" ? data.document.name : "-"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr className="border-black" />
+                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                    <tbody>
+                        <tr>
+                            <td>Ukuran Berkas</td>
+                            <td className="font-bold text-right">{data.document != "" ? `${Math.ceil(data.document.size/1024)} KB` : "-"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr className="border-black" />
+            </div>
+            <div className="relative shadow-centered-spread rounded-2xl p-6 text-xs h-fit">
+                <h5 className="font-sans font-bold text-secondary mb-4">Total Pesanan</h5>
+                <hr className="border-black" />
+                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                    <tbody>
+                        <tr>
+                            <td>Dibimbing Sekali</td>
+                            <td className="font-bold text-right">{currency.format(data.init_price) > 0 ? `IDR ${currency.format(data.init_price)}` : '-'}</td>
+                        </tr>
+                        <tr>
+                            <td>Promo</td>
+                            <td className="font-bold text-right">{currency.format(data.discount) > 0 ? `IDR ${currency.format(data.discount)}` : '-'}</td>
+                        </tr>
+                        <tr>
+                            <td>Biaya Admin</td>
+                            <td className="font-bold text-right">{currency.format(data.admin) > 0 ? `IDR ${currency.format(data.admin)}` : '-'}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr className="border-black" />
+                <div className="text-center font-poppins my-4">
+                    <p className="font-bold mb-2">Total Pembelian</p>
+                    <h2 className="text-secondary">IDR {currency.format(totalPrice)}</h2>
+                </div>
+                <div className="grid gap-4">
+                    <ExpandedButton className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8" borderClassName={`border-1 outline outline-1 ${data.discount > 0 ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowPromoForm(!showPromoForm)}>
+                        {data.discount > 0 ? 'Promo Dipakai' : 'Pakai Promo'}
+                    </ExpandedButton>
+                    <ExpandedButton className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8" borderClassName={`border-1 outline outline-1 ${data.purchase_method != "" ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowPurchaseMethodForm(!showPurchaseMethodForm)}>
+                        {data.purchase_method != "" ? (
+                            <div className="flex items-center gap-2">
+                                <img src={`/img/purchase/${data.purchase_method.toLowerCase()}.png`} alt={data.purchase_method} className="w-6" />
+                                {data.purchase_method}
+                            </div>
+                        ) : 'Pilih Metode Pembayaran'}
+                    </ExpandedButton>
+                </div>
+                <div>
+                    <PromoForm show={showPromoForm} setShow={setShowPromoForm} data={data} setData={setData} checkPromo={checkPromo} />
+                    <PurchaseMethodForm show={showPurchaseMethodForm} setShow={setShowPurchaseMethodForm} data={data} setData={setData} purchaseMethods={purchaseMethods} />
+                </div>
+                <ButtonPill className="w-full mt-4" isActive={![data.schedule, data.place, data.purchase_method].includes("")} onClick={submit}>Bayar Sekarang</ButtonPill>
+            </div>
+        </div>
     );
 }
 
@@ -137,13 +289,13 @@ function PurchaseMethodForm ({ show, setShow, data, setData, purchaseMethods }) 
                     <h6 className="font-medium mb-4">Dompet Digital</h6>
                     <div className="grid gap-2">
                         {purchaseMethods.map((item, i) => {
-                            if (item.category == 'ewallet') {
+                            if (item.payment_method == 'ewallet') {
                                 return (
                                     <ExpandedButton key={i}
                                     className="spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-10"
                                     borderClassName="border-0"
                                     onClick={() => {
-                                        setData({...data, admin: item.admin * data.init_price / 100, purchase_method: item.name.toLowerCase()})
+                                        setData({...data, admin: item.admin * data.init_price / 100, purchase_method: item.name})
                                     }}>
                                         <div className="flex items-center gap-2">
                                             <img src={`/img/purchase/${item.name.toLowerCase()}.png`} alt={item.name} className="w-6" />
@@ -159,13 +311,13 @@ function PurchaseMethodForm ({ show, setShow, data, setData, purchaseMethods }) 
                     <h6 className="font-medium mb-4">Bank</h6>
                     <div className="grid gap-2">
                         {purchaseMethods.map((item, i) => {
-                            if (item.category == 'bank') {
+                            if (item.payment_method == 'bank_transfer') {
                                 return (
                                     <ExpandedButton key={i}
                                     className="spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-10"
                                     borderClassName="border-0"
                                     onClick={() => {
-                                        setData({...data, admin: item.admin * data.init_price / 100, purchase_method: item.name.toLowerCase()})
+                                        setData({...data, admin: item.admin, purchase_method: item.name})
                                     }}>
                                         <div className="flex items-center gap-2">
                                             <img src={`/img/purchase/${item.name.toLowerCase()}.png`} alt={item.name} className="w-6" />
@@ -264,156 +416,35 @@ function ScheduleForm ({ show, setShow, data, setData, unavailableDate, availabl
     );
 }
 
-function MainCard ({ data, setData, unavailableDate, availablePlaces }) {
-    const [showScheduleForm, setShowScheduleForm] = useState(false)
+function NoteForm ({ show, setShow, data, setData }) {
     return (
-        <div className="w-[70%] relative shadow-centered-spread rounded-2xl p-6 flex flex-col gap-4 h-fit">
-            <p>Bimbingan Skripsi</p>
-            <hr className="border-black" />
-            <h3 className="text-secondary">Dibimbing Offline 60 Menit</h3>
-            <p>
-                Capai kesuksesan skripsimu melalui bimbingan personal secara
-                1-on-1, sesuai dengan permasalahan pada skripsimu.
-            </p>
-            <div className="flex flex-col gap-2 md:gap-1 lg:gap-2 3xl:gap-3">
-                <p>Layanan :</p>
-                <div className="flex items-center gap-2">
-                    <i className="fa-regular fa-calendar text-primary"></i>
-                    <p>1x Pertemuan</p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <i className="fa-solid fa-clock text-12 md:text-6 lg:text-10 xl:text-12 3xl:text-18 text-primary"></i>
-                    <p>60 Menit</p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <i className="fa-solid fa-location-dot text-primary"></i>
-                    <p>Offline</p>
-                </div>
-            </div>
-            <div>
-                <ExpandedButton className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8" borderClassName={`border-1 outline outline-1 ${data.schedule != "" ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowScheduleForm(true)}>
-                    <i className="fa-regular fa-calendar"></i>&nbsp;&nbsp;Pilih Jadwal Bimbingan
-                </ExpandedButton>
-                <ScheduleForm show={showScheduleForm} setShow={setShowScheduleForm} data={data} setData={setData} unavailableDate={unavailableDate} availablePlaces={availablePlaces} />
-            </div>
-            <div className="flex flex-col">
-                <label htmlFor="file" className="font-medium">
-                    <p className="mb-2">Berkas Pendukung (opsional)</p>
-                    <div className={`w-full border-1 outline outline-1 rounded-md flex items-center cursor-pointer overflow-hidden ${data.document != 0 ? "border-secondary outline-secondary" : "border-light-grey outline-none"}`}>
-                        <div className={`w-3/12 bg-slate-200 text-center p-2 ${data.document != 0 ? "border-e-2 border-secondary" : "border-e-1 border-light-grey outline-none"}`}>Pilih File</div>
-                        <div className="p-2 px-3">{data.document != 0 ? data.document.name : 'Belum ada file yang dipilih'}</div>
+        <>
+            <div className={`${show ? '' : 'hidden'} fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`} onClick={() => setShow(false)}></div>
+            <div className={`${show ? 'top-0 bottom-0 scale-100' : 'top-full -bottom-full scale-0'} fixed left-0 flex flex-col gap-4 w-[30vw] h-fit transition-all duration-500 bg-white shadow-md rounded-xl p-6 z-50 ms-[35vw] mt-[8vw]`}>
+                <div>
+                    <div className="flex justify-between items-center mb-4">
+                        <h5 className="text-secondary font-poppins font-bold">Catatan untuk Tutor   </h5>
+                        <i role="button" className={"fa-solid fa-times text-20"} onClick={() => setShow(false)}></i>
                     </div>
-                </label>
-                <input type="file" name="file" id="file" accept=".doc, .docx, .pdf" className="hidden" onChange={e => {setData('document', e.target.files[0])}} />
-                <p className="font-medium text-xs text-light-grey mt-2">PDF, DOCS</p>
-            </div>
-        </div>
-    );
-}
-
-function SummaryCard ({ data, setData, purchaseMethods, checkPromo, totalPrice, submit }) {
-    const [showPromoForm, setShowPromoForm] = useState(false)
-    const [showPurchaseMethodForm, setShowPurchaseMethodForm] = useState(false)
-    const currency = Intl.NumberFormat('id-ID')
-    return (
-        <div className="w-[30%] ms-[3vw] flex flex-col gap-8">
-            <div className={`relative shadow-centered-spread rounded-2xl p-6 text-xs h-fit ${data.schedule ? "" : "hidden"}`}>
-                <h5 className="font-sans font-bold text-secondary mb-4">Jadwal Bimbingan</h5>
-                <hr className="border-black" />
-                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                    <tbody>
-                        <tr>
-                            <td>Tanggal</td>
-                            <td className="font-bold text-right">{data.schedule != "" ? data.schedule : "-"}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr className="border-black" />
-                <table className={`w-full font-poppins border-separate border-spacing-y-3 my-1 ${data.place != "" ? "" : "hidden"}`}>
-                    <tbody>
-                        <tr>
-                            <td>Lokasi</td>
-                            <td className="font-bold text-right">{data.place != "" ? data.place : "-"}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr className={`border-black ${data.place != "" ? "" : "hidden"}`} />
-            </div>
-            <div className={`relative shadow-centered-spread rounded-2xl p-6 text-xs h-fit ${data.document ? '' : 'hidden'}`}>
-                <h5 className="font-sans font-bold text-secondary mb-4">Berkas Pendukung</h5>
-                <hr className="border-black" />
-                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                    <tbody>
-                        <tr>
-                            <td>Nama Berkas</td>
-                            <td className="font-bold text-right">{data.document != "" ? data.document.name : "-"}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr className="border-black" />
-                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                    <tbody>
-                        <tr>
-                            <td>Ukuran Berkas</td>
-                            <td className="font-bold text-right">{data.document != "" ? `${Math.ceil(data.document.size/1024)} KB` : "-"}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr className="border-black" />
-            </div>
-            <div className="relative shadow-centered-spread rounded-2xl p-6 text-xs h-fit">
-                <h5 className="font-sans font-bold text-secondary mb-4">Total Pesanan</h5>
-                <hr className="border-black" />
-                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                    <tbody>
-                        <tr>
-                            <td>Dibimbing Sekali</td>
-                            <td className="font-bold text-right">{currency.format(data.init_price) > 0 ? `IDR ${currency.format(data.init_price)}` : '-'}</td>
-                        </tr>
-                        <tr>
-                            <td>Promo</td>
-                            <td className="font-bold text-right">{currency.format(data.discount) > 0 ? `IDR ${currency.format(data.discount)}` : '-'}</td>
-                        </tr>
-                        <tr>
-                            <td>Biaya Admin</td>
-                            <td className="font-bold text-right">{currency.format(data.admin) > 0 ? `IDR ${currency.format(data.admin)}` : '-'}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr className="border-black" />
-                <div className="text-center font-poppins my-4">
-                    <p className="font-bold mb-2">Total Pembelian</p>
-                    <h2 className="text-secondary">IDR {currency.format(totalPrice)}</h2>
-                </div>
-                <div className="grid gap-4">
-                    <ExpandedButton className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8" borderClassName={`border-1 outline outline-1 ${data.discount > 0 ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowPromoForm(!showPromoForm)}>
-                        {data.discount > 0 ? 'Promo Dipakai' : 'Pakai Promo'}
-                    </ExpandedButton>
-                    <ExpandedButton className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8" borderClassName={`border-1 outline outline-1 ${data.purchase_method != "" ? "border-secondary outline-secondary" : "outline-light-grey"}`} onClick={() => setShowPurchaseMethodForm(!showPurchaseMethodForm)}>
-                        {data.purchase_method != "" ? (
-                            <>
-                                {
-                                    purchaseMethods.map((item, id) => {
-                                        if (item.name.toLowerCase() == data.purchase_method) {
-                                            return (
-                                                <div key={id} className="flex items-center gap-2">
-                                                    <img src={`/img/purchase/${item.name.toLowerCase()}.png`} alt={item.name} className="w-6" />
-                                                    {item.name}
-                                                </div>
-                                            )
-                                        }
-                                    })
-                                }
-                            </>
-                        ) : 'Pilih Metode Pembayaran'}
-                    </ExpandedButton>
+                    <hr className="border-light-grey" />
                 </div>
                 <div>
-                    <PromoForm show={showPromoForm} setShow={setShowPromoForm} data={data} setData={setData} checkPromo={checkPromo} />
-                    <PurchaseMethodForm show={showPurchaseMethodForm} setShow={setShowPurchaseMethodForm} data={data} setData={setData} purchaseMethods={purchaseMethods} />
+                    <textarea className="w-full shadow-centered-spread rounded-sm focus:outline-none p-4" rows="10" draggable={false} placeholder="Isi catatan disini..." onChange={e => setData('note', e.target.value)}></textarea>
                 </div>
-                <ButtonPill className="w-full mt-4" isActive={![data.schedule, data.place, data.purchase_method].includes("")} onClick={submit}>Bayar Sekarang</ButtonPill>
+                <div className="flex justify-end mt-3">
+                    <ButtonPill
+                    className="w-3/12"
+                    isActive={data.note != ""}
+                    onClick={
+                        e => {
+                            if (data.note != "") {
+                                setShow(false)
+                            }
+                        }
+                    }
+                    >Simpan</ButtonPill>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

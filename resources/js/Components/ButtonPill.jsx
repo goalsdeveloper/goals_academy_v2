@@ -8,7 +8,7 @@ export default function ButtonPill({ href, children, target="_blank", onClick, c
                 href={href}
                 target={target}
                 className={`inline-block font-medium text-center py-2 md:py-1 xl:py-2 text-white rounded-full ${isActive ? 'bg-secondary hover:bg-primary cursor-pointer' : 'bg-light-grey'} ${className}`}
-                onClick={isActive ? onClick : ''}
+                onClick={isActive ? onClick : () => {}}
             >
                 {children}
             </Link>
@@ -19,7 +19,7 @@ export default function ButtonPill({ href, children, target="_blank", onClick, c
                 href={href}
                 target={target}
                 className={`inline-block font-medium text-center py-2 md:py-1 xl:py-2 text-white rounded-full ${isActive ? 'bg-secondary hover:bg-primary cursor-pointer' : 'bg-light-grey'} ${className}`}
-                onClick={isActive ? onClick : ''}
+                onClick={isActive ? onClick : () => {}}
             >
                 {children}
             </a>
