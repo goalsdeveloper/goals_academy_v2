@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Exception;
 use Carbon\Carbon;
 use Midtrans\Config;
 use App\Models\Order;
@@ -10,11 +11,10 @@ use App\Models\Course;
 use App\Enums\OrderEnum;
 use App\Models\Products;
 use App\Models\PromoCode;
+use App\Models\OrderHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\OrderHistory;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
@@ -72,7 +72,7 @@ class PurchaseController extends Controller
         $user = auth()->user();
         $quantity = 1;
         $adminFee = 0;
-        $discount = 20;
+        $discount = 0;
         $responseMidtrans = null;
         $order_code = 'GA' . str(now()->format('YmdHis'));
 
@@ -90,77 +90,99 @@ class PurchaseController extends Controller
             if (!$cekPromo) {
                 return response()->json(['message' => 'Promo tidak ditemukan!']);
             }
+
             if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
                 return response()->json(['message' => 'Kode promo telah terpakai']);
             } else {
+                if ($cekPromo->is_price != true) {
+                    $discount = ($getProduct->price * $cekPromo->value) / 100;
+                } else {
+                    $discount = $cekPromo->value;
+                }
                 $promoCode = $user->kodePromo()->attach($cekPromo->id);
             }
-            // return response()->json(['message' => 'Kode promo berhasil digunakan']);
         }
 
         // charge midtrans
         $price = $getProduct->price;
         $paymentType = $request['payment_type'];
+        $phoneNumber = $user->profile->phone_number ?? '';
 
-        // Set your Merchant Server Key
         Config::$serverKey = config('midtrans.server_key');
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
         Config::$isProduction = config('midtrans.is_production');
-        // Set sanitization on (default)
         Config::$isSanitized = config('midtrans.is_sanitized');
-        // Set 3DS transaction for credit card to true
         Config::$is3ds = config('midtrans.is_3ds');
 
-        if ($validateData['payment_method'] == 'ewallet') {
+        switch ($validateData['payment_method']) {
+            case "ewallet":
+                switch ($paymentType) {
+                    case "gopay":
+                        $adminFee = (2 / 100) * $price;
+                        break;
+                    case "qris":
+                        $adminFee = round((0.7 / 100) * $price);
+                        break;
+                    case "shopeePay":
+                        $adminFee = (2 / 100) * $price;
+                        break;
+                }
 
-            switch ($paymentType) {
-                case "gopay":
-                    $adminFee = (2 / 100) * $price;
-                    break;
-                case "qris":
-                    $adminFee = round((0.7 / 100) * $price);
-                    break;
-                case "shopeePay":
-                    $adminFee = (2 / 100) * $price;
-                    break;
-            }
+                $grossAmount = $price - $discount + $adminFee;
+                $params = array(
+                    'payment_type' => $paymentType,
+                    'transaction_details' => array(
+                        'order_id' => $order_code,
+                        'gross_amount' => $grossAmount
+                    ),
+                    'customer_details' => array(
+                        'first_name' => $user->name,
+                        'last_name' => '',
+                        'email' => $user->email,
+                        'phone' => $phoneNumber,
+                    ),
+                );
+                try {
+                    $responseMidtrans = CoreApi::charge($params);
+                } catch (Exception $e) {
+                    return response()->json(['message' => $e->getMessage()], 500);
+                }
+                break;
 
-            $discount = ($price * $discount) / 100;
-            $grossAmount = $price - $discount + $adminFee;
+            case "bank_transfer":
+                $adminFee = 4000;
+                $grossAmount = $price - $discount + $adminFee;
+                $params = array(
+                    'payment_type' => $validateData['payment_method'],
+                    'transaction_details' => array(
+                        'order_id' => $order_code,
+                        'gross_amount' => $grossAmount
+                    ),
+                    'customer_details' => array(
+                        'first_name' => $user->name,
+                        'last_name' => '',
+                        'email' => $user->email,
+                        'phone' => $phoneNumber,
+                    ),
+                    'bank_transfer' => [
+                        'bank' => $request->bank
+                    ]
+                );
+                try {
+                    $responseMidtrans = CoreApi::charge($params);
+                } catch (Exception $e) {
+                    return response()->json(['message' => $e->getMessage()], 500);
+                }
 
-            $phoneNumber = $user->profile->phone_number ?? '';
-            $params = array(
-                'payment_type' => $paymentType,
-                'transaction_details' => array(
-                    'order_id' => $order_code,
-                    'gross_amount' => $grossAmount
-                ),
-                'customer_details' => array(
-                    'first_name' => $user->name,
-                    'last_name' => '',
-                    'email' => $user->email,
-                    'phone' => $phoneNumber,
-                ),
-            );
-
-            try {
-                $responseMidtrans = CoreApi::charge($params);
-            } catch (Exception $e) {
-                return response()->json(['message' => $e->getMessage()], 500);
-            }
-            // return $responseMidtrans;
-        } elseif ($validateData['payment_method'] == 'bank') {
-            $adminFee = 4000;
-            $discount = ($price * $discount) / 100;
-            $grossAmount = $price - $discount + $adminFee;
-            return response()->json([
-                'data' => [
-                    'Harga produk' => $price,
-                    'Kupon' => $discount,
-                    'Biaya Admin' => $adminFee,
-                    'Total' => $grossAmount
-                ]
-            ]);
+                // return response()->json([
+                //     'data' => [
+                //         'Harga produk' => $price,
+                //         'Kupon' => $discount,
+                //         'Biaya Admin' => $adminFee,
+                //         'Total' => $grossAmount,
+                //         'response' => $responseMidtrans,
+                //     ]
+                // ]);
+                break;
         }
 
         // cek produk bimbingan
@@ -180,12 +202,6 @@ class PurchaseController extends Controller
             'status' => OrderEnum::PENDING->value,
             'notes' => $request['notes'],
         ]);
-
-        // $orderHistory = OrderHistory::create([
-        //     'order_id' => $order->id,
-        //     'status' => $responseMidtrans->transaction_status,
-        //     'payload' => json_encode($responseMidtrans),
-        // ]);
 
         // jika produk = bimbingan; maka masuk ke tabel course  
         if ($produkDibimbing) {

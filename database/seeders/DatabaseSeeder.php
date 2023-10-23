@@ -74,7 +74,15 @@ class DatabaseSeeder extends Seeder
             'description' => 'Webinar seru dan informatif',
         ]);
 
-        PromoCode::factory(10)->create();
+        PromoCode::create([
+            'promo_code' => 19283155,
+            'description' => 'sauqweksdlaskd',
+            'value' => 15000,
+            'is_price' => true,
+            'date_start' => today()->addDay(),
+            'date_end'  => today()->addWeek()
+        ]);
+        PromoCode::factory(9)->create();
 
         Products::create([
             'name' => 'Dibimbing Sekali Online',

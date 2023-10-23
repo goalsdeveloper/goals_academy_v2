@@ -34,5 +34,5 @@ Route::apiResource('purchase', PurchaseController::class)->middleware('auth:sanc
 
 Route::post('handle_payment', [HandleMidtransCallbackController::class, 'handlePayment']);
 
-Route::get('coupon-check', [CouponCheckController::class, 'couponCheck']);
+Route::post('coupon-check', [CouponCheckController::class, 'couponCheck']);
 Route::get('date-check', [DateCheckController::class, 'dateCheck']);

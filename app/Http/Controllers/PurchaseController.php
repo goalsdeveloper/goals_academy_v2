@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Carbon\Carbon;
 use Inertia\Inertia;
+use Midtrans\Config;
 use App\Models\Order;
+use Midtrans\CoreApi;
 use App\Models\Course;
 use App\Enums\OrderEnum;
 use App\Models\Products;
@@ -54,14 +57,116 @@ class PurchaseController extends Controller
             'purchase_method' => 'required',
         ]);
 
+        $user = auth()->user();
+        $quantity = 1;
+        $adminFee = 0;
+        $discount = 0;
+        $responseMidtrans = null;
+        $order_code = 'GA' . str(now()->format('YmdHis'));
+
         // cek kuota tanggal
         $cekDate = Course::where('date', $validateData['schedule'])->count();
         if ($cekDate > 7) {
             return response()->json(['kuota telah habis']);
         }
 
-        $quantity = 1;
         $getProduct = Products::where('id', 1)->with('categories')->first();
+
+        // cek user menggunakan kode promo
+        if ($request->promo_code) {
+            $cekPromo = PromoCode::where('promo_code', $request->promo_code)->first();
+            if (!$cekPromo) {
+                return response()->json(['message' => 'Promo tidak ditemukan!']);
+            }
+            if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
+                return response()->json(['message' => 'Kode promo telah terpakai']);
+            } else {
+                //
+                $promoCode = $user->kodePromo()->attach($cekPromo->id);
+            }
+        }
+
+        // charge midtrans
+        $price = $getProduct->price;
+        $paymentType = $request['payment_type'];
+        $phoneNumber = $user->profile->phone_number ?? '';
+
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = config('midtrans.is_sanitized');
+        Config::$is3ds = config('midtrans.is_3ds');
+
+        switch ($validateData['payment_method']) {
+            case "ewallet":
+                switch ($paymentType) {
+                    case "gopay":
+                        $adminFee = (2 / 100) * $price;
+                        break;
+                    case "qris":
+                        $adminFee = round((0.7 / 100) * $price);
+                        break;
+                    case "shopeePay":
+                        $adminFee = (2 / 100) * $price;
+                        break;
+                }
+
+                $grossAmount = $price - $discount + $adminFee;
+                $params = array(
+                    'payment_type' => $paymentType,
+                    'transaction_details' => array(
+                        'order_id' => $order_code,
+                        'gross_amount' => $grossAmount
+                    ),
+                    'customer_details' => array(
+                        'first_name' => $user->name,
+                        'last_name' => '',
+                        'email' => $user->email,
+                        'phone' => $phoneNumber,
+                    ),
+                );
+                try {
+                    $responseMidtrans = CoreApi::charge($params);
+                } catch (Exception $e) {
+                    return response()->json(['message' => $e->getMessage()], 500);
+                }
+                break;
+
+            case "bank_transfer":
+                $adminFee = 4000;
+                $grossAmount = $price - $discount + $adminFee;
+                $params = array(
+                    'payment_type' => $paymentType,
+                    'transaction_details' => array(
+                        'order_id' => $order_code,
+                        'gross_amount' => $grossAmount
+                    ),
+                    'customer_details' => array(
+                        'first_name' => $user->name,
+                        'last_name' => '',
+                        'email' => $user->email,
+                        'phone' => $phoneNumber,
+                    ),
+                    'bank_transfer' => array(
+                        'bank' => $request->bank
+                    ),
+                );
+                try {
+                    $responseMidtrans = CoreApi::charge($params);
+                } catch (Exception $e) {
+                    return response()->json(['message' => $e->getMessage()], 500);
+                }
+
+                return response()->json([
+                    'data' => [
+                        'Harga produk' => $price,
+                        'Kupon' => $discount,
+                        'Biaya Admin' => $adminFee,
+                        'Total' => $grossAmount,
+                        'response' => $responseMidtrans,
+                    ]
+                ]);
+                break;
+        }
 
         //cek produk bimbingan
         $produkDibimbing = false;
@@ -74,7 +179,7 @@ class PurchaseController extends Controller
         $order = Order::create([
             'user_id' => $validateData['user_id'],
             'products_id' => $validateData['products_id'],
-            'order_code' => 'GA' . str(now()->format('YmdHis')),
+            'order_code' => $order_code,
             'quantity' => $quantity,
             'unit_price' => $getProduct->price,
             'status' => OrderEnum::PENDING->value,
@@ -91,33 +196,21 @@ class PurchaseController extends Controller
 
             $course = Course::create([
                 'user_id' => $validateData['user_id'],
-                'products_id' => 1,
+                'products_id' => $validateData['products_id'],
                 'order_id' => $order->id,
-                'date' => $validateData['schedule'],
+                'date' => $validateData['date'],
                 'location' => $location
             ]);
         }
 
-        // cek user menggunakan kode promo
-        if ($request->promo) {
-            $user = auth()->user();
-
-            $cekPromo = PromoCode::where('promo_code', $request->promo)->first();
-            if (!$cekPromo) {
-                // jika promo tidak valid
-                return response()->json(['message' => 'Promo tidak ditemukan!']);
-            }
-            if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
-                // user telah memakai promo yang sama
-                return response()->json(['message' => 'Kode promo telah terpakai']);
-            } else {
-                // berhasil memakai promo
-                $promoCode = $user->kodePromo()->attach($cekPromo->id);
-            }
-        }
-        
-        // charge midtrans
-        
+        return response()->json([
+            'message' => 'transaction charged',
+            'data' => [
+                'midtrans charge' => $responseMidtrans,
+                'order' => $order,
+                // 'order history' => $orderHistory,
+            ]
+        ], 200);
     }
 
     /**

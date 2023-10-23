@@ -22,7 +22,6 @@ class CouponCheckController extends Controller
             } else {
                 $promoCode = $user->kodePromo()->attach($cekPromo->id);
             }
-            // return response()->json(['message' => 'Kode promo berhasil digunakan']);
         }
     }
 }
