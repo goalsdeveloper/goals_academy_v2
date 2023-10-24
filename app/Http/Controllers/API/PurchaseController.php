@@ -80,13 +80,13 @@ class PurchaseController extends Controller
 
         $paymentMethod = PaymentMethod::where('name', $validateData['payment_method'])->first();
 
+        $getProduct = Products::where('id', $validateData['products_id'])->with('categories')->first();
+
         // cek date
         $cekDate = Course::where('date', $validateData['date'])->count();
         if ($cekDate > 7) {
             return response()->json(['kuota telah habis']);
         }
-
-        $getProduct = Products::where('id', $validateData['products_id'])->with('categories')->first();
 
         // cek user menggunakan kode promo
         if ($request->promo_code) {
@@ -167,7 +167,7 @@ class PurchaseController extends Controller
                         'phone' => $phoneNumber,
                     ),
                     'bank_transfer' => array(
-                        'bank' => $request->bank
+                        'bank' => $paymentMethod->payment_type,
                     ),
                 );
                 try {
