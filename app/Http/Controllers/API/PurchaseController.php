@@ -15,6 +15,7 @@ use App\Models\OrderHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
@@ -61,6 +62,8 @@ class PurchaseController extends Controller
     public function store(Request $request)
     {
         // return response()->json($request);
+        $user = auth()->user();
+
         $validateData = $request->validate([
             'user_id' => 'required',
             'products_id' => 'required',
@@ -69,12 +72,13 @@ class PurchaseController extends Controller
             // 'notes' => 'sometimes',
         ]);
 
-        $user = auth()->user();
         $quantity = 1;
         $adminFee = 0;
         $discount = 0;
         $responseMidtrans = null;
         $order_code = 'GA' . str(now()->format('YmdHis'));
+
+        $paymentMethod = PaymentMethod::where('name', $validateData['payment_method'])->first();
 
         // cek date
         $cekDate = Course::where('date', $validateData['date'])->count();
@@ -105,7 +109,6 @@ class PurchaseController extends Controller
 
         // charge midtrans
         $price = $getProduct->price;
-        $paymentType = $request['payment_type'];
         $phoneNumber = $user->profile->phone_number ?? '';
 
         Config::$serverKey = config('midtrans.server_key');
@@ -113,23 +116,23 @@ class PurchaseController extends Controller
         Config::$isSanitized = config('midtrans.is_sanitized');
         Config::$is3ds = config('midtrans.is_3ds');
 
-        switch ($validateData['payment_method']) {
+        switch ($paymentMethod->category) {
             case "ewallet":
-                switch ($paymentType) {
+                switch ($paymentMethod->payment_type) {
                     case "gopay":
-                        $adminFee = (2 / 100) * $price;
+                        $adminFee = ($paymentMethod->admin_fee / 100) * $price;
                         break;
                     case "qris":
-                        $adminFee = round((0.7 / 100) * $price);
+                        $adminFee = round(($paymentMethod->admin_fee / 100) * $price);
                         break;
                     case "shopeePay":
-                        $adminFee = (2 / 100) * $price;
+                        $adminFee = ($paymentMethod->admin_fee / 100) * $price;
                         break;
                 }
 
                 $grossAmount = $price - $discount + $adminFee;
                 $params = array(
-                    'payment_type' => $paymentType,
+                    'payment_type' => $paymentMethod->payment_type,
                     'transaction_details' => array(
                         'order_id' => $order_code,
                         'gross_amount' => $grossAmount
@@ -149,10 +152,10 @@ class PurchaseController extends Controller
                 break;
 
             case "bank_transfer":
-                $adminFee = 4000;
+                $adminFee = $paymentMethod->admin_fee;
                 $grossAmount = $price - $discount + $adminFee;
                 $params = array(
-                    'payment_type' => $validateData['payment_method'],
+                    'payment_type' => 'bank_transfer',
                     'transaction_details' => array(
                         'order_id' => $order_code,
                         'gross_amount' => $grossAmount
@@ -163,25 +166,15 @@ class PurchaseController extends Controller
                         'email' => $user->email,
                         'phone' => $phoneNumber,
                     ),
-                    'bank_transfer' => [
+                    'bank_transfer' => array(
                         'bank' => $request->bank
-                    ]
+                    ),
                 );
                 try {
                     $responseMidtrans = CoreApi::charge($params);
                 } catch (Exception $e) {
                     return response()->json(['message' => $e->getMessage()], 500);
                 }
-
-                // return response()->json([
-                //     'data' => [
-                //         'Harga produk' => $price,
-                //         'Kupon' => $discount,
-                //         'Biaya Admin' => $adminFee,
-                //         'Total' => $grossAmount,
-                //         'response' => $responseMidtrans,
-                //     ]
-                // ]);
                 break;
         }
 
@@ -196,6 +189,7 @@ class PurchaseController extends Controller
         $order = Order::create([
             'user_id' => $validateData['user_id'],
             'products_id' => $validateData['products_id'],
+            'payment_method_id' => $paymentMethod->id,
             'order_code' => $order_code,
             'quantity' => $quantity,
             'unit_price' => $getProduct->price,
@@ -225,7 +219,6 @@ class PurchaseController extends Controller
             'data' => [
                 'midtrans charge' => $responseMidtrans,
                 'order' => $order,
-                // 'order history' => $orderHistory,
             ]
         ], 200);
     }

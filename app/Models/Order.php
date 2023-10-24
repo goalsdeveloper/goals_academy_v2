@@ -40,6 +40,11 @@ class Order extends Model
         return $this->hasOne(Course::class);
     }
 
+    public function paymentMehod()
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
     public function orderHistory()
     {
         return $this->hasMany(OrderHistory::class);
