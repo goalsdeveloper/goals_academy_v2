@@ -42,7 +42,9 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Purchase/Form', [
+            'dataProduct' => Products::where('id', 1)->get(),
+        ]);
     }
 
     /**

@@ -62,10 +62,6 @@ Route::get('/register', function () {
 
 Route::resource('/purchase', PurchaseController::class);
 
-Route::post('/purchase', function (Request $request) {
-    dd($request);
-});
-
 Route::get('/purchase/status/{order:order_code}', function (Order $order) {
     return Inertia::render('Purchase/Status', [
         'data' => $order

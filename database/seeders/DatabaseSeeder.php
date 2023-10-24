@@ -134,7 +134,7 @@ class DatabaseSeeder extends Seeder
             'excerpt' => 'Kamu akan dibimbing oleh',
             'description' => 'Kamu akan dibimbing oleh tutor keren dan kece',
             'features' => '[{"times":"1","duration":"60","category":"offline"}]',
-            'price' => 49000,
+            'price' => 47000,
             'product_image' => 'product_image/bhuEAMDWr1N08nbwk0I8LJdqM1LYUn-metaS2F0YWxvZyBQcm9ncmFtIC0gR29hbHMgQWNhZGVteS5wbmc=-.png',
         ]);
     }

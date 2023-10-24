@@ -51,9 +51,11 @@ class PurchaseController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Products $products)
     {
-        //
+        return response()->json([
+            'data' => $products
+            ]);
     }
 
     /**
