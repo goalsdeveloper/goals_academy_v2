@@ -30,7 +30,7 @@ function BimbinganMobile ({ data }) {
         <div className="container mx-auto md:hidden">
             <div className="flex justify-between mb-6 xs:mb-8">
                 <div className="md:w-6/12">
-                    <h2>Bimbingan Skripsi</h2>
+                    <h2 className="text-[5vw]">Bimbingan <span className="text-primary">Skripsi</span></h2>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                     <ButtonSwiper name="bimbingan-prev" direction="left" />

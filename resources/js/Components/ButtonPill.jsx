@@ -15,12 +15,8 @@ export default function ButtonPill({
             <Link
                 href={href}
                 target={target}
-                className={`inline-block font-medium text-center py-2 md:py-1 xl:py-2 text-white rounded-full ${
-                    isActive
-                        ? "bg-secondary hover:bg-primary cursor-pointer"
-                        : "bg-light-grey"
-                } ${className}`}
-                onClick={isActive ? onClick : ""}
+                className={`inline-block font-medium text-center py-2 md:py-1 xl:py-2 text-white rounded-full ${isActive ? 'bg-secondary hover:bg-primary cursor-pointer' : 'bg-light-grey'} ${className}`}
+                onClick={isActive ? onClick : () => {}}
             >
                 {children}
             </Link>
@@ -30,12 +26,8 @@ export default function ButtonPill({
             <a
                 href={href}
                 target={target}
-                className={`inline-block font-medium text-center py-2 md:py-1 xl:py-2 text-white rounded-full ${
-                    isActive
-                        ? "bg-secondary hover:bg-primary cursor-pointer"
-                        : "bg-light-grey"
-                } ${className}`}
-                onClick={isActive ? onClick : ""}
+                className={`inline-block font-medium text-center py-2 md:py-1 xl:py-2 text-white rounded-full ${isActive ? 'bg-secondary hover:bg-primary cursor-pointer' : 'bg-light-grey'} ${className}`}
+                onClick={isActive ? onClick : () => {}}
             >
                 {children}
             </a>

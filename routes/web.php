@@ -5,6 +5,7 @@ use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
+use App\Models\Order;
 use App\Models\Tutor;
 use App\Models\User;
 use Illuminate\Foundation\Application;
@@ -60,6 +61,16 @@ Route::get('/register', function () {
 });
 
 Route::resource('/purchase', PurchaseController::class);
+
+Route::post('/purchase', function (Request $request) {
+    dd($request);
+});
+
+Route::get('/purchase/status/{order:order_code}', function (Order $order) {
+    return Inertia::render('Purchase/Status', [
+        'data' => $order
+    ]);
+});
 
 Route::post('/email-diskon', [EmailDiskonController::class, 'handler'])->name('email-diskon');
 

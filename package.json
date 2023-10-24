@@ -25,7 +25,6 @@
         "@mui/material": "^5.14.13",
         "@mui/styled-engine-sc": "^6.0.0-alpha.1",
         "@mui/x-date-pickers": "^6.16.1",
-        "dayjs": "^1.11.10",
         "moment": "^2.29.4",
         "styled-components": "^6.0.8",
         "swiper": "^10.2.0",

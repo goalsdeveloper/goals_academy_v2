@@ -88,6 +88,7 @@ function ProgramMobile ({ data }) {
 }
 
 function ProgramCard ({ item, priority, className }) {
+    const currency = Intl.NumberFormat('id-ID')
     return (
         <div className={`relative flex flex-col text-center bg-white overflow-hidden rounded-xl shadow-centered px-6 3xl:px-8 py-8 xs:py-12 md:py-8 xl:py-12 3xl:py-16 gap-[6vw] md:gap-[2.4vw] 3xl:gap-[2vw]  ${className}`}>
             <p className={`absolute top-[4%] -right-[12%] rotate-[35deg] bg-secondary text-white w-1/2 py-1 ${priority ? '' : 'hidden'}`}>Terlaris</p>
@@ -95,7 +96,7 @@ function ProgramCard ({ item, priority, className }) {
             <h3 className="font-semibold text-[5vw] md:text-[1.5vw]">{item.title}</h3>
             <div className="text-secondary">
                 <p className="font-poppins font-bold text-[3vw] md:text-[0.8vw]">Harga Mulai Dari</p>
-                <h2 className="text-secondary py-1 text-[6vw] md:text-[2vw]">IDR {item.price}</h2>
+                <h2 className="text-secondary py-1 text-[6vw] md:text-[2vw]">IDR {currency.format(item.price)}</h2>
                 <span className="font-semibold text-[3vw] md:text-[0.8vw] bg-red-100 px-1 lg:py-0.5">Diskon Tersedia</span>
             </div>
             <div className="flex flex-col text-start gap-2 md:gap-1 lg:gap-2 3xl:gap-4 text-[3.5vw] md:text-[1.2vw]">
