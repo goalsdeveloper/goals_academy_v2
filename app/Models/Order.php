@@ -41,7 +41,7 @@ class Order extends Model
         return $this->hasOne(Course::class);
     }
 
-    public function paymentMehod()
+    public function paymentMethod()
     {
         return $this->belongsTo(PaymentMethod::class);
     }

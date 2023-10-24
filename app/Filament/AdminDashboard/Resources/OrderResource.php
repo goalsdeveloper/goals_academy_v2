@@ -127,6 +127,9 @@ class OrderResource extends Resource
                 TextColumn::make('products.name')
                     ->label('Product')
                     ->sortable(),
+                TextColumn::make('paymentMethod.name')
+                    ->label('Payment')
+                    ->sortable(),
                 TextColumn::make('status')
                     ->sortable(),
                 TextColumn::make('created_at')

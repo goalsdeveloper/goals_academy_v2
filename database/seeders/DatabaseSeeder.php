@@ -92,21 +92,21 @@ class DatabaseSeeder extends Seeder
         PaymentMethod::create([
             'name' => 'BNI',
             'category' => 'bank_transfer',
-            'payment_type' => 'bank_transfer',
+            'payment_type' => 'bni',
             'admin_fee' => 4000,
             'is_price' => true,
         ]);
         PaymentMethod::create([
             'name' => 'BRI',
             'category' => 'bank_transfer',
-            'payment_type' => 'bank_transfer',
+            'payment_type' => 'bri',
             'admin_fee' => 4000,
             'is_price' => true,
         ]);
         PaymentMethod::create([
             'name' => 'Permata',
             'category' => 'bank_transfer',
-            'payment_type' => 'bank_transfer',
+            'payment_type' => 'permata',
             'admin_fee' => 4000,
             'is_price' => true,
         ]);
