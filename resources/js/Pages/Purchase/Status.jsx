@@ -9,12 +9,30 @@ import { Link } from "@inertiajs/react";
 export default function Status({ auth, data }) {
     const [showTutorial, setShowTutorial] = useState(false)
     const currency = Intl.NumberFormat('id-ID')
+    const target = moment('2024-10-24 21:00:00');
+    const [countdown, setCountdown] = useState(moment().hours(0).minutes(0).seconds(0));
+
+    setInterval(() => {
+        const difference = target.diff(moment());
+        if (difference <= 1) {
+            setCountdown(moment().hours(0).minutes(0).seconds(0));
+        } else {
+            const remaining = moment();
+
+            remaining.hours(Math.floor(difference  / (1000*60*60)));
+            remaining.minutes(Math.floor(difference % (1000*60*60) / (1000*60)));
+            remaining.seconds(Math.floor(difference % (1000*60*60) % (1000*60) / (1000)));
+
+            setCountdown(remaining);
+        }
+    }, 1000);
+
     moment.updateLocale('id', {
         weekdays : [
             "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"
         ]
     });
-    const date = moment(data.created_at.split('T')[0]).locale('id').format('dddd, YYYY-MM-DD')
+    const date = moment(data.created_at).locale('id').format('dddd, YYYY-MM-DD')
     return (
         <MainLayout auth={auth} title="Purchase">
             <section
@@ -30,11 +48,11 @@ export default function Status({ auth, data }) {
                         <table className="w-full text-center font-poppins">
                             <tbody>
                                 <tr className="font-bold text-36">
-                                    <td>23</td>
+                                    <td className="w-3/12">{countdown.format('HH')}</td>
                                     <td>:</td>
-                                    <td>59</td>
+                                    <td className="w-3/12">{countdown.format('mm')}</td>
                                     <td>:</td>
-                                    <td>59</td>
+                                    <td className="w-3/12">{countdown.format('ss')}</td>
                                 </tr>
                                 <tr className="text-16">
                                     <td>Jam</td>
