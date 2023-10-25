@@ -209,7 +209,7 @@ class PurchaseController extends Controller
             ]);
         }
 
-        return redirect()->route('purchase.status', $order);
+        return redirect()->route('purchase.show', $order->order_code);
         // return response()->json([
         //     'message' => 'transaction charged',
         //     'data' => [
@@ -223,9 +223,18 @@ class PurchaseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $order)
     {
-        //
+        $order = Order::where('order_code', $order)->with('orderHistory', 'paymentMethod')->first();
+
+        $orderHistory = $order->orderHistory->where('status', 'pending')->first();
+        $stringToJson = json_decode($orderHistory->payload);
+        // dd($stringToJson);
+        return Inertia::render('Purchase/Status', [
+            'data' => $order,
+            'orderHistory' => $stringToJson,
+            'paymentMethod' => $order->paymentMethod,
+        ]);
     }
 
     /**

@@ -21,6 +21,8 @@ class Order extends Model
         'notes',
     ];
 
+    protected $hidden = ['id'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
