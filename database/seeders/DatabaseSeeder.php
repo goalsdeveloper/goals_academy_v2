@@ -129,7 +129,7 @@ class DatabaseSeeder extends Seeder
         PromoCode::factory(9)->create();
 
         Products::create([
-            'name' => 'Dibimbing Sekali Online',
+            'name' => 'Dibimbing Sekali Offline',
             'slug' => 'dibimbing-sekali-offline',
             'excerpt' => 'Kamu akan dibimbing oleh',
             'description' => 'Kamu akan dibimbing oleh tutor keren dan kece',

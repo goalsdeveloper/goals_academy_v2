@@ -39,7 +39,12 @@ class PurchaseController extends Controller
             ->get();
         // end cek kondisi tanggal
 
-        return response()->json(['data' => $counts]);
+        $paymentMethods = PaymentMethod::all();
+
+        return response()->json([
+            'data' => $counts,
+            'paymentMethod' => $paymentMethods
+        ]);
 
         // return response()->json([
         //     'user' => $user->name,
@@ -55,7 +60,7 @@ class PurchaseController extends Controller
     {
         return response()->json([
             'data' => $products
-            ]);
+        ]);
     }
 
     /**

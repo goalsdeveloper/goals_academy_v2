@@ -60,13 +60,13 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Form', ['title' => 'register']);
 });
 
-Route::resource('/purchase', PurchaseController::class);
+Route::resource('/purchase', PurchaseController::class)->middleware('auth');
 
 Route::get('/purchase/status/{order:order_code}', function (Order $order) {
     return Inertia::render('Purchase/Status', [
         'data' => $order
     ]);
-});
+})->name('purchase.status');
 
 Route::post('/email-diskon', [EmailDiskonController::class, 'handler'])->name('email-diskon');
 

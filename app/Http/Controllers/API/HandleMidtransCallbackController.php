@@ -36,11 +36,14 @@ class HandleMidtransCallbackController extends Controller
 
         $transactionStatus = $payload['transaction_status'];
         $getOrderId = Order::where('order_code', $orderId)->first();
-        OrderHistory::create([
-            'order_id' => $getOrderId->id,
-            'status' => $transactionStatus,
-            'payload' => json_encode($payload),
-        ]);
+
+        if ($payload['transaction_status'] != 'pending') {
+            OrderHistory::create([
+                'order_id' => $getOrderId->id,
+                'status' => $transactionStatus,
+                'payload' => json_encode($payload),
+            ]);
+        }
 
         $order = Order::where('order_code', '=', $orderId)->first();
         if (!$order) {

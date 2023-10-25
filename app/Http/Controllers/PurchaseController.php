@@ -10,9 +10,11 @@ use App\Models\Order;
 use Midtrans\CoreApi;
 use App\Models\Course;
 use App\Enums\OrderEnum;
+use App\Models\OrderHistory;
 use App\Models\Products;
 use App\Models\PromoCode;
 use Illuminate\Http\Request;
+use App\Models\PaymentMethod;
 
 class PurchaseController extends Controller
 {
@@ -32,8 +34,13 @@ class PurchaseController extends Controller
             ->get();
         // end cek kondisi tanggal
 
+        $paymentMethods = PaymentMethod::all();
+
+
         return Inertia::render('Purchase/Form', [
             'date' => $counts,
+            'paymentMethods' => $paymentMethods,
+            'dataProduct' => Products::where('id', 1)->first(),
         ]);
     }
 
@@ -42,9 +49,7 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Purchase/Form', [
-            'dataProduct' => Products::where('id', 1)->get(),
-        ]);
+        //
     }
 
     /**
@@ -52,34 +57,37 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request);
+        $user = auth()->user();
         $validateData = $request->validate([
             'schedule' => 'required|date',
             'init_price' => 'required',
             'purchase_method' => 'required',
         ]);
 
-        $user = auth()->user();
         $quantity = 1;
         $adminFee = 0;
         $discount = 0;
         $responseMidtrans = null;
         $order_code = 'GA' . str(now()->format('YmdHis'));
 
-        // cek kuota tanggal
+        $paymentMethod = PaymentMethod::where('name', $validateData['purchase_method'])->first();
+
+        $getProduct = Products::where('id', $request['product_id'])->with('categories')->first();
+
+        // cek date
         $cekDate = Course::where('date', $validateData['schedule'])->count();
         if ($cekDate > 7) {
             return response()->json(['kuota telah habis']);
         }
 
-        $getProduct = Products::where('id', 1)->with('categories')->first();
-
         // cek user menggunakan kode promo
-        if ($request->promo_code) {
-            $cekPromo = PromoCode::where('promo_code', $request->promo_code)->first();
+        if ($request->promo) {
+            $cekPromo = PromoCode::where('promo_code', $request->promo)->first();
             if (!$cekPromo) {
                 return response()->json(['message' => 'Promo tidak ditemukan!']);
             }
+
             if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
                 return response()->json(['message' => 'Kode promo telah terpakai']);
             } else {
@@ -90,7 +98,6 @@ class PurchaseController extends Controller
 
         // charge midtrans
         $price = $getProduct->price;
-        $paymentType = $request['payment_type'];
         $phoneNumber = $user->profile->phone_number ?? '';
 
         Config::$serverKey = config('midtrans.server_key');
@@ -98,23 +105,23 @@ class PurchaseController extends Controller
         Config::$isSanitized = config('midtrans.is_sanitized');
         Config::$is3ds = config('midtrans.is_3ds');
 
-        switch ($validateData['payment_method']) {
+        switch ($paymentMethod->category) {
             case "ewallet":
-                switch ($paymentType) {
+                switch ($paymentMethod->payment_type) {
                     case "gopay":
-                        $adminFee = (2 / 100) * $price;
+                        $adminFee = ($paymentMethod->admin_fee / 100) * $price;
                         break;
                     case "qris":
-                        $adminFee = round((0.7 / 100) * $price);
+                        $adminFee = round(($paymentMethod->admin_fee / 100) * $price);
                         break;
                     case "shopeePay":
-                        $adminFee = (2 / 100) * $price;
+                        $adminFee = ($paymentMethod->admin_fee / 100) * $price;
                         break;
                 }
 
                 $grossAmount = $price - $discount + $adminFee;
                 $params = array(
-                    'payment_type' => $paymentType,
+                    'payment_type' => $paymentMethod->payment_type,
                     'transaction_details' => array(
                         'order_id' => $order_code,
                         'gross_amount' => $grossAmount
@@ -134,10 +141,10 @@ class PurchaseController extends Controller
                 break;
 
             case "bank_transfer":
-                $adminFee = 4000;
+                $adminFee = $paymentMethod->admin_fee;
                 $grossAmount = $price - $discount + $adminFee;
                 $params = array(
-                    'payment_type' => $paymentType,
+                    'payment_type' => 'bank_transfer',
                     'transaction_details' => array(
                         'order_id' => $order_code,
                         'gross_amount' => $grossAmount
@@ -149,7 +156,7 @@ class PurchaseController extends Controller
                         'phone' => $phoneNumber,
                     ),
                     'bank_transfer' => array(
-                        'bank' => $request->bank
+                        'bank' => $paymentMethod->payment_type,
                     ),
                 );
                 try {
@@ -157,16 +164,6 @@ class PurchaseController extends Controller
                 } catch (Exception $e) {
                     return response()->json(['message' => $e->getMessage()], 500);
                 }
-
-                return response()->json([
-                    'data' => [
-                        'Harga produk' => $price,
-                        'Kupon' => $discount,
-                        'Biaya Admin' => $adminFee,
-                        'Total' => $grossAmount,
-                        'response' => $responseMidtrans,
-                    ]
-                ]);
                 break;
         }
 
@@ -179,13 +176,20 @@ class PurchaseController extends Controller
         }
 
         $order = Order::create([
-            'user_id' => $validateData['user_id'],
-            'products_id' => $validateData['products_id'],
+            'user_id' => $user->id,
+            'products_id' => $getProduct->id,
+            'payment_method_id' => $paymentMethod->id,
             'order_code' => $order_code,
             'quantity' => $quantity,
             'unit_price' => $getProduct->price,
             'status' => OrderEnum::PENDING->value,
             'notes' => $request['notes'],
+        ]);
+
+        OrderHistory::create([
+            'order_id' => $order->id,
+            'status' => 'pending',
+            'payload' => json_encode($responseMidtrans)
         ]);
 
         // jika produk = bimbingan | store -> course
@@ -197,22 +201,23 @@ class PurchaseController extends Controller
             }
 
             $course = Course::create([
-                'user_id' => $validateData['user_id'],
-                'products_id' => $validateData['products_id'],
+                'user_id' => $user->id,
+                'products_id' => $request->product_id,
                 'order_id' => $order->id,
-                'date' => $validateData['date'],
+                'date' => $validateData['schedule'],
                 'location' => $location
             ]);
         }
 
-        return response()->json([
-            'message' => 'transaction charged',
-            'data' => [
-                'midtrans charge' => $responseMidtrans,
-                'order' => $order,
-                // 'order history' => $orderHistory,
-            ]
-        ], 200);
+        return redirect()->route('purchase.status', $order);
+        // return response()->json([
+        //     'message' => 'transaction charged',
+        //     'data' => [
+        //         'midtrans charge' => $responseMidtrans,
+        //         'order' => $order,
+        //         // 'order history' => $orderHistory,
+        //     ]
+        // ], 200);
     }
 
     /**

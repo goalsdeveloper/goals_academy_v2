@@ -21,6 +21,7 @@ export default function Form({ auth, date, dataProduct }) {
         discount: 0,
         purchase_method: "",
         admin: 0,
+        product_id: 1,
     });
 
     const totalPrice = data.init_price - data.discount + data.admin;
@@ -28,7 +29,7 @@ export default function Form({ auth, date, dataProduct }) {
         { code: "123456", percentage: 10 },
         { code: "654321", percentage: 15 },
     ];
-    const unavailableDate = ["2023-10-20", "2023-10-22"];
+    const unavailableDate = date.map((i) => i.date);
     const availablePlaces = ["Kafe 1", "Kafe 2", "Kafe 3", "Kafe 4", "Kafe 5"];
     const purchaseMethods = [
         { name: "Gopay", admin: 2, payment_method: "ewallet" },
