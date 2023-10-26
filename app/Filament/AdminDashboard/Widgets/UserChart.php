@@ -8,7 +8,7 @@ use Filament\Widgets\ChartWidget;
 
 class UserChart extends ChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = 'New User By Month';
 
     protected function getData(): array
     {

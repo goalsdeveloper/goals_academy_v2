@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\PaymentMethod;
 use App\Models\Products;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained('users')->cascadeOnDelete();
             $table->foreignIdFor(Products::class)->constrained('products')->cascadeOnDelete();
+            $table->foreignIdFor(PaymentMethod::class)->constrained('payment_methods')->cascadeOnDelete();
             $table->string('order_code')->unique();
             $table->unsignedInteger('quantity');
             $table->unsignedInteger('unit_price');

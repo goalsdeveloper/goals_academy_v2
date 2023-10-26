@@ -26,8 +26,6 @@ class User extends Authenticatable implements HasName, FilamentUser
         return "{$this->username}";
     }
 
-
-
     /**
      * The attributes that are mass assignable.
      *
@@ -47,10 +45,10 @@ class User extends Authenticatable implements HasName, FilamentUser
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+        protected $hidden = [
+            'password',
+            'remember_token',
+        ];
 
     /**
      * The attributes that should be cast.

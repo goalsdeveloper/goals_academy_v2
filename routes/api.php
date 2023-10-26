@@ -1,11 +1,14 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\API\PurchaseController;
 use App\Http\Controllers\Api\RegisterController;
-use App\Http\Controllers\OrderController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\DateCheckController;
+use App\Http\Controllers\API\CouponCheckController;
+use App\Http\Controllers\API\HandleMidtransCallbackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +31,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::apiResource('register', RegisterController::class)->only('store');
 
 Route::apiResource('purchase', PurchaseController::class)->middleware('auth:sanctum');
+
+Route::post('handle_payment', [HandleMidtransCallbackController::class, 'handlePayment']);
+
+Route::post('coupon-check', [CouponCheckController::class, 'couponCheck']);
+Route::get('date-check', [DateCheckController::class, 'dateCheck']);

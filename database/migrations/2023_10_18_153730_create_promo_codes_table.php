@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('promo_code')->nullable()->unique();
             $table->string('description')->nullable();
-            $table->string('value')->nullable();
+            $table->unsignedBigInteger('value')->nullable();
+            $table->boolean('is_price')->nullable()->default(false);
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();
             $table->timestamps();

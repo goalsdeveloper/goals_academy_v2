@@ -1,7 +1,15 @@
 import { Link } from "@inertiajs/react";
 
-export default function ButtonPill({ href, children, target="_blank", onClick, className, isLink=false, isActive=true }) {
-    href = isActive ? href : null
+export default function ButtonPill({
+    href,
+    children,
+    target = "_blank",
+    onClick,
+    className,
+    isLink = false,
+    isActive = true,
+}) {
+    href = isActive ? href : null;
     if (isLink) {
         return (
             <Link
@@ -12,7 +20,7 @@ export default function ButtonPill({ href, children, target="_blank", onClick, c
             >
                 {children}
             </Link>
-        )
+        );
     } else {
         return (
             <a

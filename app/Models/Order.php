@@ -13,12 +13,15 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'products_id',
+        'payment_method_id',
         'order_code',
         'quantity',
         'unit_price',
         'status',
         'notes',
     ];
+
+    protected $hidden = ['id'];
 
     public function user()
     {
@@ -38,6 +41,11 @@ class Order extends Model
     public function course()
     {
         return $this->hasOne(Course::class);
+    }
+
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class);
     }
 
     public function orderHistory()

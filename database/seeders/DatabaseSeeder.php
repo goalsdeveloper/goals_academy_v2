@@ -6,10 +6,13 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\CourseSession;
+use App\Models\Order;
+use App\Models\PaymentMethod;
 use App\Models\Products;
 use App\Models\PromoCode;
 use App\Models\User;
 use App\Models\UserProfile;
+use Database\Factories\OrderSeederFactory;
 use Database\Factories\UserProfileFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -72,6 +75,67 @@ class DatabaseSeeder extends Seeder
             'description' => 'Webinar seru dan informatif',
         ]);
 
-        PromoCode::factory(10)->create();
+        PaymentMethod::create([
+            'name' => 'QRIS',
+            'category' => 'ewallet',
+            'payment_type' => 'qris',
+            'admin_fee' => 0.7,
+            'is_price' => false,
+        ]);
+        PaymentMethod::create([
+            'name' => 'Gopay',
+            'category' => 'ewallet',
+            'payment_type' => 'gopay',
+            'admin_fee' => 2,
+            'is_price' => false,
+        ]);
+        PaymentMethod::create([
+            'name' => 'BNI',
+            'category' => 'bank_transfer',
+            'payment_type' => 'bni',
+            'admin_fee' => 4000,
+            'is_price' => true,
+        ]);
+        PaymentMethod::create([
+            'name' => 'BRI',
+            'category' => 'bank_transfer',
+            'payment_type' => 'bri',
+            'admin_fee' => 4000,
+            'is_price' => true,
+        ]);
+        PaymentMethod::create([
+            'name' => 'Permata',
+            'category' => 'bank_transfer',
+            'payment_type' => 'permata',
+            'admin_fee' => 4000,
+            'is_price' => true,
+        ]);
+        PaymentMethod::create([
+            'name' => 'Mandiri',
+            'category' => 'bank_transfer',
+            'payment_type' => 'echannel',
+            'admin_fee' => 4000,
+            'is_price' => true,
+        ]);
+
+        PromoCode::create([
+            'promo_code' => 19283155,
+            'description' => 'sauqweksdlaskd',
+            'value' => 15000,
+            'is_price' => true,
+            'date_start' => today()->addDay(),
+            'date_end'  => today()->addWeek()
+        ]);
+        PromoCode::factory(9)->create();
+
+        Products::create([
+            'name' => 'Dibimbing Sekali Offline',
+            'slug' => 'dibimbing-sekali-offline',
+            'excerpt' => 'Kamu akan dibimbing oleh',
+            'description' => 'Kamu akan dibimbing oleh tutor keren dan kece',
+            'features' => '[{"times":"1","duration":"60","category":"offline"}]',
+            'price' => 47000,
+            'product_image' => 'product_image/bhuEAMDWr1N08nbwk0I8LJdqM1LYUn-metaS2F0YWxvZyBQcm9ncmFtIC0gR29hbHMgQWNhZGVteS5wbmc=-.png',
+        ]);
     }
 }

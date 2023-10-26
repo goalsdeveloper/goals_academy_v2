@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import moment from 'moment/moment';
+import moment from "moment";
 import MainLayout from "@/Layouts/MainLayout";
 import ExpandedButton from "@/Components/ExpandedButton";
 import { TECollapse } from "tw-elements-react";
@@ -7,11 +7,11 @@ import TECollapseItem from "@/Components/TECollapseItem";
 import { Link } from "@inertiajs/react";
 import { useRef } from "react";
 
-export default function Status({ auth, data }) {
+export default function Status({ auth, data, orderHistory, paymentMethod }) {
     const [showTutorial, setShowTutorial] = useState(false)
     const [countdown, setCountdown] = useState(moment().hours(0).minutes(0).seconds(0));
     const currency = Intl.NumberFormat('id-ID')
-    const target = moment('2023-10-25 24:00:00');
+    const target = moment(orderHistory.expiry_time);
     const [purchaseStatus, setPurchaseStatus] = useState('pending')
 
     let countdownInterval = useRef()
@@ -43,10 +43,16 @@ export default function Status({ auth, data }) {
         }
     }, [])
 
-    moment.updateLocale('id', {
-        weekdays : [
-            "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"
-        ]
+    moment.updateLocale("id", {
+        weekdays: [
+            "Minggu",
+            "Senin",
+            "Selasa",
+            "Rabu",
+            "Kamis",
+            "Jum'at",
+            "Sabtu",
+        ],
     });
     const date = moment(data.created_at).locale('id').format('dddd, YYYY-MM-DD')
 
@@ -123,11 +129,13 @@ export default function Status({ auth, data }) {
                             <tbody>
                                 <tr>
                                     <td>Metode Pembayaran</td>
-                                    <td className="flex justify-end items-center gap-2 font-semibold">Gopay <img className="w-[10%]" src={`/img/purchase/${'gopay'}.png`} alt="" /></td>
+                                    <td className="flex justify-end items-center gap-2 font-semibold">{paymentMethod.name} <img className="w-[10%]" src={`/img/purchase/${'gopay'}.png`} alt="" /></td>
                                 </tr>
                                 <tr>
                                     <td>ID Transaksi</td>
-                                    <td className="flex justify-end items-center gap-2 font-semibold">{data.order_code}</td>
+                                    <td className="flex justify-end items-center gap-2 font-semibold">
+                                        {data.order_code}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Tanggal Transaksi</td>
@@ -137,35 +145,76 @@ export default function Status({ auth, data }) {
                                 </tr>
                                 <tr>
                                     <td>Total Pembelian</td>
-                                    <td className="flex justify-end items-center gap-2 font-semibold">IDR {currency.format(data.unit_price)}</td>
+                                    <td className="flex justify-end items-center gap-2 font-semibold">
+                                        IDR{" "}
+                                        {currency.format(
+                                            orderHistory.gross_amount
+                                        )}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                         <hr className="w-full border-light-grey" />
                         <div className="w-full block">
-                            <ExpandedButton borderClassName="border-1 border-dark" textClassName="font-medium text-dark" icon={`fa-solid fa-chevron-down duration-500 ${showTutorial ? '-rotate-180' : ''}`} onClick={() => setShowTutorial(!showTutorial)}>
+                            <ExpandedButton
+                                borderClassName="border-1 border-dark"
+                                textClassName="font-medium text-dark"
+                                icon={`fa-solid fa-chevron-down duration-500 ${
+                                    showTutorial ? "-rotate-180" : ""
+                                }`}
+                                onClick={() => setShowTutorial(!showTutorial)}
+                            >
                                 Lihat Langkah Pembayaran
                             </ExpandedButton>
-                            <TECollapse show={showTutorial} className="relative w-[110%] -ms-[5%] px-[4%] shadow-none -translate-y-2">
+                            <TECollapse
+                                show={showTutorial}
+                                className="relative w-[110%] -ms-[5%] px-[4%] shadow-none -translate-y-2"
+                            >
                                 <TECollapseItem className="grid gap-4 px-1">
                                     <div className="border-1 border-dark rounded-md p-3">
-                                        <p className="font-bold">1. Transaksi melalui Desktop</p>
-                                        <p>Berikut langkah pembayaran menggunakan GoPay melalui Desktop:</p>
+                                        <p className="font-bold">
+                                            1. Transaksi melalui Desktop
+                                        </p>
+                                        <p>
+                                            Berikut langkah pembayaran
+                                            menggunakan GoPay melalui Desktop:
+                                        </p>
                                         <ul>
-                                            <li>Buka aplikasi Gojek pada smarhphone Anda</li>
-                                            <li>Klik "Pay" dan "Scan" QR Code</li>
-                                            <li>Periksa detail pembayaran lalu klik "Confirm & Pay"</li>
+                                            <li>
+                                                Buka aplikasi Gojek pada
+                                                smarhphone Anda
+                                            </li>
+                                            <li>
+                                                Klik "Pay" dan "Scan" QR Code
+                                            </li>
+                                            <li>
+                                                Periksa detail pembayaran lalu
+                                                klik "Confirm & Pay"
+                                            </li>
                                             <li>Masukkan "PIN" GoPay Anda</li>
                                             <li>Pembayaran selesai</li>
                                         </ul>
                                     </div>
                                     <div className="border-1 border-dark rounded-md p-3">
-                                        <p className="font-bold">2. Transaksi melalui Mobile</p>
-                                        <p>Berikut langkah pembayaran menggunakan GoPay melalui Mobile:</p>
+                                        <p className="font-bold">
+                                            2. Transaksi melalui Mobile
+                                        </p>
+                                        <p>
+                                            Berikut langkah pembayaran
+                                            menggunakan GoPay melalui Mobile:
+                                        </p>
                                         <ul>
-                                            <li>Buka aplikasi Gojek pada smarhphone Anda</li>
-                                            <li>Klik "Pay" dan "Scan" QR Code</li>
-                                            <li>Periksa detail pembayaran lalu klik "Confirm & Pay"</li>
+                                            <li>
+                                                Buka aplikasi Gojek pada
+                                                smarhphone Anda
+                                            </li>
+                                            <li>
+                                                Klik "Pay" dan "Scan" QR Code
+                                            </li>
+                                            <li>
+                                                Periksa detail pembayaran lalu
+                                                klik "Confirm & Pay"
+                                            </li>
                                             <li>Masukkan "PIN" GoPay Anda</li>
                                             <li>Pembayaran selesai</li>
                                         </ul>
@@ -174,8 +223,18 @@ export default function Status({ auth, data }) {
                             </TECollapse>
                         </div>
                         <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-1 xl:border-2 border-primary font-poppins rounded-full">
-                            <Link href="/produk" className="p-1.5 md:p-2 xl:p-2 3xl:p-3 font-medium text-center bg-white text-primary">Belanja Lagi</Link>
-                            <Link href="#" className="p-1.5 md:p-2 xl:p-2 3xl:p-3 font-medium text-center bg-primary text-white">Cek Status Transaksi</Link>
+                            <Link
+                                href="/produk"
+                                className="p-1.5 md:p-2 xl:p-2 3xl:p-3 font-medium text-center bg-white text-primary"
+                            >
+                                Belanja Lagi
+                            </Link>
+                            <Link
+                                href="#"
+                                className="p-1.5 md:p-2 xl:p-2 3xl:p-3 font-medium text-center bg-primary text-white"
+                            >
+                                Cek Status Transaksi
+                            </Link>
                         </div>
                     </div>
                 </div>
