@@ -357,7 +357,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                             </span>
                             <TECollapse
                                 show={profileDropdownMobile}
-                                className="shadow-none text-secondary w-full"
+                                className="shadow-none text-secondary -translate-x-[5%] px-[5%] w-[110%]"
                             >
                                 <TECollapseItem className="gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6">
                                     <Link
