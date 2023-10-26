@@ -5,6 +5,7 @@ import { Navigation, Pagination, A11y, FreeMode } from 'swiper/modules';
 import ButtonSwiper from '@/Components/ButtonSwiper';
 import ButtonPill from "@/Components/ButtonPill";
 import moment from 'moment/moment';
+import { useRef } from 'react';
 
 export default function Webinar ({ data, active, status }) {
     return (
@@ -63,22 +64,34 @@ function WebinarCard ({ item, className }) {
     const target = moment(item.date);
     const [countdown, setCountdown] = useState('00:00:00:00');
 
-    setInterval(() => {
-        const difference = target.diff(moment());
-        if (difference <= 1) {
-            clearInterval(countdown);
-            setCountdown("00:00:00:00");
-        } else {
-            const days = (target.diff(moment(), 'days')).toString().padStart(2, '0');
-            const remaining = moment();
+    let countdownInterval = useRef()
 
-            remaining.hours(Math.floor(difference  / (1000*60*60)));
-            remaining.minutes(Math.floor(difference % (1000*60*60) / (1000*60)));
-            remaining.seconds(Math.floor(difference % (1000*60*60) % (1000*60) / (1000)));
+    const startCountdown = () => {
+        countdownInterval.current = setInterval(() => {
+            const difference = target.diff(moment());
+            console.log(difference)
+            if (difference <= 1) {
+                setCountdown("00:00:00:00");
+                clearInterval(countdownInterval.current)
+            } else {
+                const days = (target.diff(moment(), 'days')).toString().padStart(2, '0');
+                const remaining = moment();
 
-            setCountdown(days+remaining.format(':HH:mm:ss'));
+                remaining.hours(Math.floor(difference  / (1000*60*60)));
+                remaining.minutes(Math.floor(difference % (1000*60*60) / (1000*60)));
+                remaining.seconds(Math.floor(difference % (1000*60*60) % (1000*60) / (1000)));
+
+                setCountdown(days+remaining.format(':HH:mm:ss'));
+            }
+        }, 1000);
+    }
+
+    useEffect(() => {
+        startCountdown()
+        return () => {
+            clearInterval(countdownInterval.current)
         }
-    }, 1000);
+    }, [])
 
     return (
         <div className={`relative shadow-centered rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden ${className}`}>
