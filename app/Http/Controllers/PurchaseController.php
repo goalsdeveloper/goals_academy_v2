@@ -10,9 +10,10 @@ use App\Models\Order;
 use Midtrans\CoreApi;
 use App\Models\Course;
 use App\Enums\OrderEnum;
-use App\Models\OrderHistory;
 use App\Models\Products;
 use App\Models\PromoCode;
+use Illuminate\Support\Str;
+use App\Models\OrderHistory;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
 
@@ -226,6 +227,7 @@ class PurchaseController extends Controller
     public function show(string $order)
     {
         $order = Order::where('order_code', $order)->with('orderHistory', 'paymentMethod')->first();
+        $paymentName = Str::lower($order->paymentMethod->name);
 
         $orderHistory = $order->orderHistory->where('status', 'pending')->first();
         $stringToJson = json_decode($orderHistory->payload);
@@ -234,6 +236,7 @@ class PurchaseController extends Controller
             'data' => $order,
             'orderHistory' => $stringToJson,
             'paymentMethod' => $order->paymentMethod,
+            'bankName' => $paymentName,
         ]);
     }
 

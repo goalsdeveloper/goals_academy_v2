@@ -7,7 +7,7 @@ import TECollapseItem from "@/Components/TECollapseItem";
 import { Link } from "@inertiajs/react";
 import { useRef } from "react";
 
-export default function Status({ auth, data, orderHistory, paymentMethod }) {
+export default function Status({ auth, data, orderHistory, paymentMethod, bankName }) {
     const [showTutorial, setShowTutorial] = useState(false)
     const [countdown, setCountdown] = useState(moment().hours(0).minutes(0).seconds(0));
     const currency = Intl.NumberFormat('id-ID')
@@ -129,7 +129,7 @@ export default function Status({ auth, data, orderHistory, paymentMethod }) {
                             <tbody>
                                 <tr>
                                     <td>Metode Pembayaran</td>
-                                    <td className="flex justify-end items-center gap-2 font-semibold">{paymentMethod.name} <img className="w-[10%]" src={`/img/purchase/${'gopay'}.png`} alt="" /></td>
+                                    <td className="flex justify-end items-center gap-2 font-semibold">{paymentMethod.name} <img className="w-[10%]" src={`/img/purchase/${bankName}.png`} alt="" /></td>
                                 </tr>
                                 <tr>
                                     <td>ID Transaksi</td>
