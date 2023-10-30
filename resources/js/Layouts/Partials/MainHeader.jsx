@@ -16,7 +16,7 @@ export default function MainHeader({ auth, title }) {
             <div className="hidden xl:h-24 3xl:h-36"></div>{" "}
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">
-                <div className="w-7/12 md:w-2/12">
+                <div className="w-6/12 md:w-2/12">
                     <Link href="/">
                         <img
                             className="w-full md:h-5 xl:h-8 3xl:h-10 mb-1 md:mb-2"
@@ -84,8 +84,8 @@ function NavbarExpand({ auth, title }) {
                 >
                     Karir
                 </Link>
-                <button
-                    className={`font-poppins flex justify-center ${
+                <div
+                    className={`font-poppins flex justify-center cursor-pointer ${
                         title == "Profil Perusahaan" || title == "Profil Tutor"
                             ? "font"
                             : ""
@@ -114,7 +114,7 @@ function NavbarExpand({ auth, title }) {
                             </Link>
                         </TECollapseItem>
                     </TECollapse>
-                </button>
+                </div>
             </div>
             {!auth.user ? (
                 <div className="w-auto hidden md:flex flex-wrap justify-end gap-2 3xl:gap-4 font-medium text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20">
@@ -139,8 +139,8 @@ function NavbarExpand({ auth, title }) {
                         <i className="fa-regular fa-bell text-primary md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
                         <div className="absolute border-1 border-white rounded-full top-0 right-0 w-2 h-2 3xl:w-3 3xl:h-3 bg-red-500"></div>
                     </Link>
-                    <button
-                        className={`font-poppins flex justify-center ${
+                    <div
+                        className={`font-poppins flex justify-center cursor-pointer ${
                             title == "Profil Perusahaan" ||
                             title == "Profil Tutor"
                                 ? "font"
@@ -188,7 +188,7 @@ function NavbarExpand({ auth, title }) {
                                 </Link>
                             </TECollapseItem>
                         </TECollapse>
-                    </button>
+                    </div>
                 </div>
             )}
         </>
@@ -230,8 +230,8 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                                     <i className="fa-regular fa-bell text-primary text-28 md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
                                     <div className="absolute border-1 border-white rounded-full top-0 right-0 w-2 h-2 3xl:w-3 3xl:h-3 bg-red-500"></div>
                                 </Link>
-                                <button
-                                    className={`font-poppins flex justify-center ${
+                                <div
+                                    className={`font-poppins flex justify-center cursor-pointer ${
                                         title == "Profil Perusahaan" ||
                                         title == "Profil Tutor"
                                             ? "font"
@@ -279,7 +279,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                                             </Link>
                                         </TECollapseItem>
                                     </TECollapse>
-                                </button>
+                                </div>
                             </div>
                         )}
                         <button onClick={() => setMobileNavbar(false)}>
@@ -329,7 +329,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                             <CornerWaveVector cornerClassName="w-4/12" />
                             <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
                         </Link>
-                        <button
+                        <div
                             className={`w-full relative font-poppins flex flex-col justify-center`}
                         >
                             <span
@@ -382,7 +382,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                                     </Link>
                                 </TECollapseItem>
                             </TECollapse>
-                        </button>
+                        </div>
                     </div>
                 </div>
             </div>
