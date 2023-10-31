@@ -15,7 +15,7 @@ export default function Status({
     paymentName,
     bankName,
 }) {
-    console.log(bankName);
+    // console.log(orderHistory.actions[0].url);
     const [showTutorial, setShowTutorial] = useState(false);
     const [countdown, setCountdown] = useState(
         moment().hours(0).minutes(0).seconds(0)
@@ -102,7 +102,7 @@ export default function Status({
                                     {paymentMethod.category !=
                                     "bank_transfer" ? (
                                         <img
-                                            src="https://www.researchgate.net/profile/Hafiza-Abas/publication/288303807/figure/fig1/AS:311239419940864@1451216668048/An-example-of-QR-code.png"
+                                            src={orderHistory.actions[0].url}
                                             className="h-full"
                                             alt=""
                                         />
