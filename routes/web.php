@@ -68,6 +68,8 @@ Route::get('/purchase/status/{order:order_code}', function (Order $order) {
     ]);
 })->name('purchase.status');
 
+Route::resource('/profile', ProfileController::class);
+
 Route::post('/email-diskon', [EmailDiskonController::class, 'handler'])->name('email-diskon');
 
 Route::get('/email/verify/email-verification', [EmailVerificationController::class, 'notice'])->middleware('auth')->name('verification.notice');

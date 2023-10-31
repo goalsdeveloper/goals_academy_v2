@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements HasName, FilamentUser
+class User extends Authenticatable implements HasName, FilamentUser, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -45,10 +45,10 @@ class User extends Authenticatable implements HasName, FilamentUser
      *
      * @var array<int, string>
      */
-        protected $hidden = [
-            'password',
-            'remember_token',
-        ];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     /**
      * The attributes that should be cast.

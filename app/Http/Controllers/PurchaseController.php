@@ -211,14 +211,6 @@ class PurchaseController extends Controller
         }
 
         return redirect()->route('purchase.show', $order->order_code);
-        // return response()->json([
-        //     'message' => 'transaction charged',
-        //     'data' => [
-        //         'midtrans charge' => $responseMidtrans,
-        //         'order' => $order,
-        //         // 'order history' => $orderHistory,
-        //     ]
-        // ], 200);
     }
 
     /**

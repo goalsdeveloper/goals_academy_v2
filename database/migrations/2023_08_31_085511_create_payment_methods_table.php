@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('payment_type');
             $table->float('admin_fee');
             $table->boolean('is_price')->default(false);
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
