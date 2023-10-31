@@ -7,41 +7,57 @@ import TECollapseItem from "@/Components/TECollapseItem";
 import { Link } from "@inertiajs/react";
 import { useRef } from "react";
 
-export default function Status({ auth, data, orderHistory, paymentMethod, bankName }) {
-    const [showTutorial, setShowTutorial] = useState(false)
-    const [countdown, setCountdown] = useState(moment().hours(0).minutes(0).seconds(0));
-    const currency = Intl.NumberFormat('id-ID')
+export default function Status({
+    auth,
+    data,
+    orderHistory,
+    paymentMethod,
+    paymentName,
+    bankName,
+}) {
+    console.log(bankName);
+    const [showTutorial, setShowTutorial] = useState(false);
+    const [countdown, setCountdown] = useState(
+        moment().hours(0).minutes(0).seconds(0)
+    );
+    const currency = Intl.NumberFormat("id-ID");
     const target = moment(orderHistory.expiry_time);
-    const [purchaseStatus, setPurchaseStatus] = useState('pending')
+    const [purchaseStatus, setPurchaseStatus] = useState("pending");
 
-    let countdownInterval = useRef()
+    let countdownInterval = useRef();
 
     const startCountdown = () => {
         countdownInterval.current = setInterval(() => {
             const difference = target.diff(moment());
             if (difference <= 1) {
-                clearInterval(countdownInterval.current)
+                clearInterval(countdownInterval.current);
                 setCountdown(moment().hours(0).minutes(0).seconds(0));
-                alert('Waktu Pembayaran Telah Habis!')
+                alert("Waktu Pembayaran Telah Habis!");
             } else {
                 const remaining = moment();
 
-                remaining.hours(Math.floor(difference  / (1000*60*60)));
-                remaining.minutes(Math.floor(difference % (1000*60*60) / (1000*60)));
-                remaining.seconds(Math.floor(difference % (1000*60*60) % (1000*60) / (1000)));
+                remaining.hours(Math.floor(difference / (1000 * 60 * 60)));
+                remaining.minutes(
+                    Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
+                );
+                remaining.seconds(
+                    Math.floor(
+                        ((difference % (1000 * 60 * 60)) % (1000 * 60)) / 1000
+                    )
+                );
 
-                console.log(remaining.format('HH:mm:ss'))
+                // console.log(remaining.format("HH:mm:ss"));
                 setCountdown(remaining);
             }
         }, 1000);
-    }
+    };
 
     useEffect(() => {
-        startCountdown()
+        startCountdown();
         return () => {
-            clearInterval(countdownInterval.current)
-        }
-    }, [])
+            clearInterval(countdownInterval.current);
+        };
+    }, []);
 
     moment.updateLocale("id", {
         weekdays: [
@@ -54,7 +70,9 @@ export default function Status({ auth, data, orderHistory, paymentMethod, bankNa
             "Sabtu",
         ],
     });
-    const date = moment(data.created_at).locale('id').format('dddd, YYYY-MM-DD')
+    const date = moment(data.created_at)
+        .locale("id")
+        .format("dddd, YYYY-MM-DD");
 
     return (
         <MainLayout auth={auth} title="Purchase">
@@ -65,50 +83,82 @@ export default function Status({ auth, data, orderHistory, paymentMethod, bankNa
                 <div className="container mx-auto pt-4 flex flex-col gap-12 items-center">
                     <div className="w-1/2 relative shadow-centered-spread rounded-2xl p-6 flex flex-col items-center gap-4 h-fit overflow-hidden">
                         <div className="flex w-[200%] duration-1000 translate-x-1/4 overflow-hidden">
-                            <h5 className="w-1/2 text-center text-green-500 font-bold">Status : Pembayaran Berhasil</h5>
-                            <h5 className="w-1/2 text-center text-secondary font-bold">Status : Menunggu Pembayaran</h5>
+                            <h5 className="w-1/2 text-center text-green-500 font-bold">
+                                Status : Pembayaran Berhasil
+                            </h5>
+                            <h5 className="w-1/2 text-center text-secondary font-bold">
+                                Status : Menunggu Pembayaran
+                            </h5>
                         </div>
                         <hr className="w-full duration-1000 border-green-500" />
                         <div className="w-full h-[22vw]">
-                            <div className={"w-full h-full flex justify-center items-center gap-4 duration-1000"}>
+                            {/* <div className={"w-full h-full flex justify-center items-center gap-4 duration-1000"}>
                                 <svg className="h-[16vw] fill-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.25 16.518l-4.5-4.319 1.396-1.435 3.078 2.937 6.105-6.218 1.421 1.409-7.5 7.626z"/></svg>
-                            </div>
-                            {/* <div className={`w-full flex flex-col items-center gap-4 duration-1000`}>
+                            </div> */}
+                            <div
+                                className={`w-full flex flex-col items-center gap-4 duration-1000`}
+                            >
                                 <div className="w-full h-[14vw] flex justify-center items-center">
-                                    {1 ? (
+                                    {paymentMethod.category !=
+                                    "bank_transfer" ? (
+                                        <img
+                                            src="https://www.researchgate.net/profile/Hafiza-Abas/publication/288303807/figure/fig1/AS:311239419940864@1451216668048/An-example-of-QR-code.png"
+                                            className="h-full"
+                                            alt=""
+                                        />
+                                    ) : (
                                         <div className="text-center">
-                                            <h5 className="font-medium">Nomor VA Mandiri :</h5>
+                                            <h5 className="font-medium">
+                                                Nomor VA {bankName} :
+                                            </h5>
                                             <h2
-                                            className="leading-loose cursor-pointer"
-                                            onClick={() => {
-                                                navigator.clipboard.writeText('8902801272925499')
-                                                alert('Text copied!')
-                                            }}
+                                                className="leading-loose cursor-pointer"
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(
+                                                        orderHistory
+                                                            .va_numbers[0]
+                                                            .va_number
+                                                    );
+                                                    alert("Text copied!");
+                                                }}
                                             >
-                                                8902801272925499
+                                                {
+                                                    orderHistory.va_numbers[0]
+                                                        .va_number
+                                                }
                                             </h2>
                                             <p
-                                            className="font-medium hover:text-primary cursor-pointer"
-                                            onClick={() => {
-                                                navigator.clipboard.writeText('8902801272925499')
-                                                alert('Text copied!')
-                                            }}>
-                                                <i className="bi bi-copy"></i> Salin
+                                                className="font-medium hover:text-primary cursor-pointer"
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(
+                                                        orderHistory
+                                                            .va_numbers[0]
+                                                            .va_number
+                                                    );
+                                                    alert("Text copied!");
+                                                }}
+                                            >
+                                                <i className="bi bi-copy"></i>{" "}
+                                                Salin
                                             </p>
                                         </div>
-                                    ) : (
-                                        <img src="https://www.researchgate.net/profile/Hafiza-Abas/publication/288303807/figure/fig1/AS:311239419940864@1451216668048/An-example-of-QR-code.png" className="h-full" alt="" />
                                     )}
                                 </div>
                                 <hr className="w-full border-light-grey" />
                                 <table className="w-full text-center font-poppins">
                                     <tbody>
                                         <tr className="font-bold text-[3vw]">
-                                            <td className="w-3/12">{countdown.format('HH')}</td>
+                                            <td className="w-3/12">
+                                                {countdown.format("HH")}
+                                            </td>
                                             <td>:</td>
-                                            <td className="w-3/12">{countdown.format('mm')}</td>
+                                            <td className="w-3/12">
+                                                {countdown.format("mm")}
+                                            </td>
                                             <td>:</td>
-                                            <td className="w-3/12">{countdown.format('ss')}</td>
+                                            <td className="w-3/12">
+                                                {countdown.format("ss")}
+                                            </td>
                                         </tr>
                                         <tr className="text-[1vw]">
                                             <td>Jam</td>
@@ -119,7 +169,7 @@ export default function Status({ auth, data, orderHistory, paymentMethod, bankNa
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div> */}
+                            </div>
                         </div>
                         <hr className="w-full border-dark" />
                     </div>
@@ -129,7 +179,14 @@ export default function Status({ auth, data, orderHistory, paymentMethod, bankNa
                             <tbody>
                                 <tr>
                                     <td>Metode Pembayaran</td>
-                                    <td className="flex justify-end items-center gap-2 font-semibold">{paymentMethod.name} <img className="w-[10%]" src={`/img/purchase/${bankName}.png`} alt="" /></td>
+                                    <td className="flex justify-end items-center gap-2 font-semibold">
+                                        {paymentMethod.name}{" "}
+                                        <img
+                                            className="w-[10%]"
+                                            src={`/img/purchase/${paymentName}.png`}
+                                            alt=""
+                                        />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>ID Transaksi</td>

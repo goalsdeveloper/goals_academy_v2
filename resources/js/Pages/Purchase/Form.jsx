@@ -32,12 +32,12 @@ export default function Form({ auth, date, dataProduct }) {
     const unavailableDate = date.map((i) => i.date);
     const availablePlaces = ["Kafe 1", "Kafe 2", "Kafe 3", "Kafe 4", "Kafe 5"];
     const purchaseMethods = [
-        { name: "Gopay", admin: 2, payment_method: "ewallet" },
-        { name: "QRIS", admin: 0.7, payment_method: "ewallet" },
-        { name: "BNI", admin: 4000, payment_method: "bank_transfer" },
-        { name: "Mandiri", admin: 4000, payment_method: "bank_transfer" },
-        { name: "BRI", admin: 4000, payment_method: "bank_transfer" },
-        { name: "Permata", admin: 4000, payment_method: "bank_transfer" },
+        { name: "Gopay", admin: 2, purchase_method: "ewallet" },
+        { name: "QRIS", admin: 0.7, purchase_method: "ewallet" },
+        { name: "BNI", admin: 4000, purchase_method: "bank_transfer" },
+        { name: "Mandiri", admin: 4000, purchase_method: "bank_transfer" },
+        { name: "BRI", admin: 4000, purchase_method: "bank_transfer" },
+        { name: "Permata", admin: 4000, purchase_method: "bank_transfer" },
     ];
 
     const submit = (e) => {
@@ -511,7 +511,7 @@ function PurchaseMethodForm({ show, setShow, data, setData, purchaseMethods }) {
                     <h6 className="font-medium mb-4">Dompet Digital</h6>
                     <div className="grid gap-2">
                         {purchaseMethods.map((item, i) => {
-                            if (item.payment_method == "ewallet") {
+                            if (item.purchase_method == "ewallet") {
                                 return (
                                     <ExpandedButton
                                         key={i}
@@ -546,7 +546,7 @@ function PurchaseMethodForm({ show, setShow, data, setData, purchaseMethods }) {
                     <h6 className="font-medium mb-4">Bank</h6>
                     <div className="grid gap-2">
                         {purchaseMethods.map((item, i) => {
-                            if (item.payment_method == "bank_transfer") {
+                            if (item.purchase_method == "bank_transfer") {
                                 return (
                                     <ExpandedButton
                                         key={i}

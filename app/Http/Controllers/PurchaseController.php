@@ -223,12 +223,13 @@ class PurchaseController extends Controller
 
         $orderHistory = $order->orderHistory->where('status', 'pending')->first();
         $stringToJson = json_decode($orderHistory->payload);
-        // dd($stringToJson);
+        // dd($stringToJson, $order->paymentMethod);
         return Inertia::render('Purchase/Status', [
             'data' => $order,
             'orderHistory' => $stringToJson,
             'paymentMethod' => $order->paymentMethod,
-            'bankName' => $paymentName,
+            'bankName' => $order->paymentMethod->name,
+            'paymentName' => $paymentName,
         ]);
     }
 
