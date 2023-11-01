@@ -9,9 +9,23 @@ import { StaticDatePicker } from "@mui/x-date-pickers";
 import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import { useForm } from "@inertiajs/react";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 export default function Form({ auth, date, dataProduct }) {
     const { data, setData, post } = useForm({
+        schedule: "",
+        place: "",
+        document: "",
+        note: "",
+        init_price: 47000,
+        promo: "",
+        discount: 0,
+        purchase_method: "",
+        admin: 0,
+        product_id: 1,
+    });
+
+    const { data: temp, setData: setTemp } = useForm({
         schedule: "",
         place: "",
         document: "",
@@ -53,18 +67,22 @@ export default function Form({ auth, date, dataProduct }) {
         <MainLayout auth={auth} title="Purchase">
             <section
                 id="purchase-form"
-                className="mb-16 xs:mb-20 md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32"
+                className="mb-[12vw] md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32"
             >
-                <div className="container mx-auto pt-6 flex justify-between">
+                <div className="md:container mx-auto pt-[12vw] md:pt-[1vw] flex flex-col md:flex-row justify-between text-[3.5vw] md:text-[1vw] gap-[4vw] md:gap-0">
                     <MainCard
                         data={data}
                         setData={setData}
+                        temp={temp}
+                        setTemp={setTemp}
                         unavailableDate={unavailableDate}
                         availablePlaces={availablePlaces}
                     />
                     <SummaryCard
                         data={data}
                         setData={setData}
+                        temp={temp}
+                        setTemp={setTemp}
                         purchaseMethods={purchaseMethods}
                         totalPrice={totalPrice}
                         checkPromo={checkPromo}
@@ -76,113 +94,129 @@ export default function Form({ auth, date, dataProduct }) {
     );
 }
 
-function MainCard({ data, setData, unavailableDate, availablePlaces }) {
+function MainCard({ data, setData, temp, setTemp, unavailableDate, availablePlaces }) {
     const [showScheduleForm, setShowScheduleForm] = useState(false);
     const [showNoteForm, setShowNoteForm] = useState(false);
     return (
-        <div className="w-[70%] relative shadow-centered-spread rounded-2xl p-6 flex flex-col gap-4 h-fit">
-            <p>Bimbingan Skripsi</p>
-            <hr className="border-black" />
-            <h3 className="text-secondary">Dibimbing Offline 60 Menit</h3>
-            <p>
-                Capai kesuksesan skripsimu melalui bimbingan personal secara
-                1-on-1, sesuai dengan permasalahan pada skripsimu.
-            </p>
-            <div className="flex flex-col gap-2 md:gap-1 lg:gap-2 3xl:gap-3">
-                <p>Layanan :</p>
-                <div className="flex items-center gap-2">
-                    <i className="fa-regular fa-calendar text-primary"></i>
-                    <p>1x Pertemuan</p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <i className="fa-solid fa-clock text-12 md:text-6 lg:text-10 xl:text-12 3xl:text-18 text-primary"></i>
-                    <p>60 Menit</p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <i className="fa-solid fa-location-dot text-primary"></i>
-                    <p>Offline</p>
-                </div>
-            </div>
-            <div>
-                <ExpandedButton
-                    className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8"
-                    borderClassName={`border-1 outline outline-1 ${
-                        data.schedule != ""
-                            ? "border-secondary outline-secondary"
-                            : "outline-light-grey"
-                    }`}
-                    onClick={() => setShowScheduleForm(true)}
-                >
-                    <i className="fa-regular fa-calendar"></i>&nbsp;&nbsp;Pilih
-                    Jadwal Bimbingan
-                </ExpandedButton>
-                <ScheduleForm
-                    show={showScheduleForm}
-                    setShow={setShowScheduleForm}
-                    data={data}
-                    setData={setData}
-                    unavailableDate={unavailableDate}
-                    availablePlaces={availablePlaces}
-                />
-            </div>
-            <div className="flex flex-col">
-                <label htmlFor="file" className="font-medium">
-                    <p className="mb-2">Berkas Pendukung (opsional)</p>
-                    <div
-                        className={`w-full border-1 outline outline-1 rounded-md flex items-center cursor-pointer overflow-hidden ${
-                            data.document != 0
-                                ? "border-secondary outline-secondary"
-                                : "border-light-grey outline-none"
-                        }`}
-                    >
-                        <div
-                            className={`w-3/12 bg-slate-200 text-center p-2 ${
-                                data.document != 0
-                                    ? "border-e-2 border-secondary"
-                                    : "border-e-1 border-light-grey outline-none"
-                            }`}
-                        >
-                            Pilih File
+        <div className="md:w-[70%] relative md:shadow-centered-spread md:rounded-[1vw] md:p-[1.75vw] h-fit">
+            <div className="flex flex-col gap-[4vw] md:gap-0">
+                <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[1vw] md:py-0">
+                    <p className="text-secondary">Bimbingan Skripsi</p>
+                    <hr className="border-secondary" />
+                    <h3 className="w-8/12 md:w-full text-secondary text-[5vw] md:text-[1.5vw]">Dibimbing Offline 60 Menit</h3>
+                    <p>
+                        Capai kesuksesan skripsimu melalui bimbingan personal secara
+                        1-on-1, sesuai dengan permasalahan pada skripsimu.
+                    </p>
+                    <div className="flex flex-col gap-[3vw] md:gap-[.5vw] mb-[2vw]">
+                        <p>Layanan :</p>
+                        <div className="flex items-center gap-[3vw] md:gap-[1vw]">
+                            <i className="fa-regular fa-calendar text-primary"></i>
+                            <p>1x Pertemuan</p>
                         </div>
-                        <div className="p-2 px-3">
-                            {data.document != 0
-                                ? data.document.name
-                                : "Belum ada file yang dipilih"}
+                        <div className="flex items-center gap-[3vw] md:gap-[1vw]">
+                            <i className="fa-solid fa-clock text-[3vw] md:text-[.9vw] text-primary"></i>
+                            <p>60 Menit</p>
+                        </div>
+                        <div className="flex items-center gap-[3vw] md:gap-[1vw]">
+                            <i className="fa-solid fa-location-dot text-primary"></i>
+                            <p>Offline</p>
                         </div>
                     </div>
-                </label>
-                <input
-                    type="file"
-                    name="file"
-                    id="file"
-                    accept=".doc, .docx, .pdf"
-                    className="hidden"
-                    onChange={(e) => {
-                        setData("document", e.target.files[0]);
-                    }}
-                />
-                <p className="font-medium text-xs text-light-grey mt-2">
-                    PDF, DOCS
-                </p>
-            </div>
-            <div>
-                <ExpandedButton
-                    className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8"
-                    borderClassName={`border-1 outline outline-1 ${
-                        data.note != ""
-                            ? "border-secondary outline-secondary"
-                            : "outline-light-grey"
-                    }`}
-                    onClick={() => setShowNoteForm(true)}
-                >
-                    <i className="bi bi-pen"></i>&nbsp;&nbsp;Catatan untuk Tutor
-                </ExpandedButton>
-                <NoteForm
-                    show={showNoteForm}
-                    setShow={setShowNoteForm}
-                    data={data}
-                    setData={setData}
-                />
+                </div>
+                <div className="md:hidden h-[4vw] bg-slate-100"></div>
+                <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
+                    <div>
+                        <p className="font-medium mb-[2vw] md:mb-[.5vw]">Jadwal Bimbingan:</p>
+                        <ExpandedButton
+                            className="rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
+                            borderClassName={`border-1 outline outline-1 ${
+                                data.schedule != ""
+                                    ? "border-secondary outline-secondary text-secondary"
+                                    : "outline-light-grey text-light-grey"
+                            }`}
+                            onClick={() => setShowScheduleForm(true)}
+                        >
+                            <i className="fa-regular fa-calendar"></i>&nbsp;&nbsp;{data.schedule != "" ? "Jadwal telah dipilih" : "Pilih Jadwal"}
+                        </ExpandedButton>
+                        <ScheduleForm
+                            show={showScheduleForm}
+                            setShow={setShowScheduleForm}
+                            data={data}
+                            setData={setData}
+                            temp={temp}
+                            setTemp={setTemp}
+                            unavailableDate={unavailableDate}
+                            availablePlaces={availablePlaces}
+                        />
+                    </div>
+                    <div>
+                        <p className="font-medium mb-[2vw] md:mb-[.5vw]">Catatan untuk Tutor:</p>
+                        <ExpandedButton
+                            className="rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
+                            borderClassName={`border-1 outline outline-1 ${
+                                data.note != ""
+                                    ? "border-secondary outline-secondary text-secondary"
+                                    : "outline-light-grey text-light-grey"
+                            }`}
+                            onClick={() => setShowNoteForm(true)}
+                        >
+                            <i className="bi bi-pen"></i>&nbsp;&nbsp;{data.note != "" ? "Catatan telah diisi" : "Isi catatan"}
+                        </ExpandedButton>
+                        <NoteForm
+                            show={showNoteForm}
+                            setShow={setShowNoteForm}
+                            data={data}
+                            setData={setData}
+                            temp={temp}
+                            setTemp={setTemp}
+                        />
+                    </div>
+                    <div className="flex flex-col text-light-grey">
+                        <label htmlFor="file" className="font-medium">
+                            <p className="mb-[2vw] md:mb-[.5vw] text-dark">Berkas Pendukung (opsional)</p>
+                            <div
+                                className={`w-full border-1 outline outline-1 rounded-[1vw] md:rounded-[.4vw] flex items-center cursor-pointer overflow-hidden h-[9vw] md:h-[2.5vw] ${
+                                    data.document != 0
+                                        ? "border-secondary outline-secondary"
+                                        : "border-light-grey outline-none"
+                                }`}
+                            >
+                                <div
+                                    className={`w-3/12 h-full bg-slate-200 flex justify-center items-center ${
+                                        data.document != 0
+                                            ? "border-e-2 border-secondary"
+                                            : "border-e-1 border-light-grey outline-none"
+                                    }`}
+                                >
+                                    Pilih File
+                                </div>
+                                <div className="w-9/12 px-[3vw] md:px-[1vw] flex justify-between items-center">
+                                    <span className={data.document != 0 ? "text-secondary" : ""}>
+                                        {data.document != 0
+                                            ? "File telah dipilih"
+                                            : "Belum ada file yang dipilih"}
+                                    </span>
+                                    <i className="fa-solid fa-chevron-right"></i>
+                                </div>
+                            </div>
+                        </label>
+                        <input
+                            type="file"
+                            name="file"
+                            id="file"
+                            accept=".doc, .docx, .pdf"
+                            className="hidden"
+                            onChange={(e) => {
+                                setData("document", e.target.files[0]);
+                            }}
+                        />
+                        <p className="font-medium text-[2.5vw] md:text-[.8vw] text-light-grey mt-[2.25vw] md:mt-[.75vw]">
+                            PDF, DOCS
+                        </p>
+                    </div>
+                </div>
+                <div className="md:hidden h-[4vw] bg-slate-100"></div>
             </div>
         </div>
     );
@@ -191,6 +225,8 @@ function MainCard({ data, setData, unavailableDate, availablePlaces }) {
 function SummaryCard({
     data,
     setData,
+    temp,
+    setTemp,
     purchaseMethods,
     checkPromo,
     totalPrice,
@@ -200,236 +236,294 @@ function SummaryCard({
     const [showPurchaseMethodForm, setShowPurchaseMethodForm] = useState(false);
     const currency = Intl.NumberFormat("id-ID");
     return (
-        <div className="w-[30%] ms-[3vw] flex flex-col gap-8">
+        <div className="md:w-[30%] md:ms-[3vw] flex flex-col gap-[4vw] md:gap-[2vw]">
             <div
-                className={`relative shadow-centered-spread rounded-2xl p-6 text-xs h-fit ${
+                className={`relative md:shadow-centered-spread md:rounded-[1vw] md:p-[1.75vw] text-xs h-fit text-[3.4vw] md:text-[.9vw] ${
                     data.schedule ? "" : "hidden"
                 }`}
             >
-                <h5 className="font-sans font-bold text-secondary mb-4">
-                    Jadwal Bimbingan
-                </h5>
-                <hr className="border-black" />
-                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                    <tbody>
-                        <tr>
-                            <td>Tanggal</td>
-                            <td className="font-bold text-right">
-                                {data.schedule != "" ? data.schedule : "-"}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr className="border-black" />
-                <table
-                    className={`w-full font-poppins border-separate border-spacing-y-3 my-1 ${
-                        data.place != "" ? "" : "hidden"
-                    }`}
-                >
-                    <tbody>
-                        <tr>
-                            <td>Lokasi</td>
-                            <td className="font-bold text-right">
-                                {data.place != "" ? data.place : "-"}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr
-                    className={`border-black ${
-                        data.place != "" ? "" : "hidden"
-                    }`}
-                />
+                <div className="container md:w-full mx-auto">
+                    <h5 className="font-bold text-secondary mb-[1vw]">
+                        Jadwal Bimbingan
+                    </h5>
+                    <hr className="border-secondary" />
+                    <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                        <tbody>
+                            <tr>
+                                <td>Tanggal</td>
+                                <td className="font-bold text-right">
+                                    {data.schedule != "" ? data.schedule : "-"}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr className="border-black" />
+                    <table
+                        className={`w-full font-poppins border-separate border-spacing-y-3 my-1 ${
+                            data.place != "" ? "" : "hidden"
+                        }`}
+                    >
+                        <tbody>
+                            <tr>
+                                <td>Lokasi</td>
+                                <td className="font-bold text-right">
+                                    {data.place != "" ? data.place : "-"}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr
+                        className={`border-black ${
+                            data.place != "" ? "" : "hidden"
+                        }`}
+                    />
+                </div>
+                <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
+            </div>
+
+            <div
+                className={`relative md:shadow-centered-spread md:rounded-[1vw] md:p-[1.75vw] text-xs h-fit ${
+                    data.note ? "" : "hidden"
+                }`}
+            >
+                <div className="container md:w-full mx-auto">
+                    <h5 className="font-bold text-secondary mb-[1vw]">
+                        Catatan untuk Tutor
+                    </h5>
+                    <hr className="border-secondary" />
+                    <p className="font-poppins md:font-medium leading-[5vw] md:leading-[1.25vw] my-[4vw] md:my-[1vw] text-[3.4vw] md:text-[.9vw]">
+                        {data.note}
+                    </p>
+                    <hr className="border-black" />
+                </div>
+                <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
             </div>
             <div
-                className={`relative shadow-centered-spread rounded-2xl p-6 text-xs h-fit ${
+                className={`relative md:shadow-centered-spread md:rounded-[1vw] md:p-[1.75vw] text-xs h-fit text-[3.4vw] md:text-[.9vw] ${
                     data.document ? "" : "hidden"
                 }`}
             >
-                <h5 className="font-sans font-bold text-secondary mb-4">
-                    Berkas Pendukung
-                </h5>
-                <hr className="border-black" />
-                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                    <tbody>
-                        <tr>
-                            <td>Nama Berkas</td>
-                            <td className="font-bold text-right">
-                                {data.document != "" ? data.document.name : "-"}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr className="border-black" />
-                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                    <tbody>
-                        <tr>
-                            <td>Ukuran Berkas</td>
-                            <td className="font-bold text-right">
-                                {data.document != ""
-                                    ? `${Math.ceil(
-                                          data.document.size / 1024
-                                      )} KB`
-                                    : "-"}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr className="border-black" />
+                <div className="container md:w-full mx-auto">
+                    <h5 className="font-bold text-secondary mb-[1vw]">
+                        Berkas Pendukung
+                    </h5>
+                    <hr className="border-secondary" />
+                    <table className="w-full font-poppins border-separate border-spacing-y-3 my-[2vw] md:my-1">
+                        <tbody>
+                            <tr>
+                                <td>Nama Berkas</td>
+                                <td className="font-bold text-right">
+                                    {data.document != "" ? data.document.name : "-"}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr className="border-black" />
+                    <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                        <tbody>
+                            <tr>
+                                <td>Ukuran Berkas</td>
+                                <td className="font-bold text-right">
+                                    {data.document != ""
+                                        ? `${Math.ceil(
+                                            data.document.size / 1024
+                                        )} KB`
+                                        : "-"}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr className="border-black" />
+                </div>
+                <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
             </div>
-            <div className="relative shadow-centered-spread rounded-2xl p-6 text-xs h-fit">
-                <h5 className="font-sans font-bold text-secondary mb-4">
-                    Total Pesanan
-                </h5>
-                <hr className="border-black" />
-                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                    <tbody>
-                        <tr>
-                            <td>Dibimbing Sekali</td>
-                            <td className="font-bold text-right">
-                                {currency.format(data.init_price) > 0
-                                    ? `IDR ${currency.format(data.init_price)}`
-                                    : "-"}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Promo</td>
-                            <td className="font-bold text-right">
-                                {currency.format(data.discount) > 0
-                                    ? `IDR ${currency.format(data.discount)}`
-                                    : "-"}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Biaya Admin</td>
-                            <td className="font-bold text-right">
-                                {currency.format(data.admin) > 0
-                                    ? `IDR ${currency.format(data.admin)}`
-                                    : "-"}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr className="border-black" />
-                <div className="text-center font-poppins my-4">
-                    <p className="font-bold mb-2">Total Pembelian</p>
-                    <h2 className="text-secondary">
-                        IDR {currency.format(totalPrice)}
-                    </h2>
-                </div>
-                <div className="grid gap-4">
-                    <ExpandedButton
-                        className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8"
-                        borderClassName={`border-1 outline outline-1 ${
-                            data.discount > 0
-                                ? "border-secondary outline-secondary"
-                                : "outline-light-grey"
-                        }`}
-                        onClick={() => setShowPromoForm(!showPromoForm)}
-                    >
-                        {data.discount > 0 ? "Promo Dipakai" : "Pakai Promo"}
-                    </ExpandedButton>
-                    <ExpandedButton
-                        className="rounded-md hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white text-dark h-8"
-                        borderClassName={`border-1 outline outline-1 ${
-                            data.purchase_method != ""
-                                ? "border-secondary outline-secondary"
-                                : "outline-light-grey"
-                        }`}
-                        onClick={() =>
-                            setShowPurchaseMethodForm(!showPurchaseMethodForm)
-                        }
-                    >
-                        {data.purchase_method != "" ? (
-                            <div className="flex items-center gap-2">
-                                <img
-                                    src={`/img/purchase/${data.purchase_method.toLowerCase()}.png`}
-                                    alt={data.purchase_method}
-                                    className="w-6"
-                                />
-                                {data.purchase_method}
+            <div className="relative md:shadow-centered-spread md:rounded-[1vw] pt-[2vw] md:p-[1.75vw] h-fit">
+                <div className="container md:w-full mx-auto">
+                    <div className="flex flex-col-reverse md:flex-col gap-[4vw] md:gap-0">
+                        <div className="text-[3.25vw] md:text-[.9vw]">
+                            <div className="hidden md:block">
+                                <h5 className="font-bold text-secondary mb-[2vw] md:mb-[1vw] text-[3vw] md:text-[1.2vw]">
+                                    Total Pesanan
+                                </h5>
+                                <hr className="border-secondary" />
                             </div>
-                        ) : (
-                            "Pilih Metode Pembayaran"
-                        )}
-                    </ExpandedButton>
+                            <div className="md:hidden">
+                                <h5 className="md:hidden font-medium my-[2vw] md:mb-[1vw] text-[3vw] md:text-[1.2vw]">
+                                    Ringkasan Transaksi
+                                </h5>
+                                <hr className="border-dark" />
+                            </div>
+                            <table className="w-full font-poppins border-separate border-spacing-y-[3vw] md:border-spacing-y-[1vw] my-1">
+                                <tbody>
+                                    <tr>
+                                        <td>Dibimbing Sekali</td>
+                                        <td className="font-bold text-right">
+                                            {currency.format(data.init_price) > 0
+                                                ? `IDR ${currency.format(data.init_price)}`
+                                                : "-"}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Promo</td>
+                                        <td className="font-bold text-right">
+                                            {currency.format(data.discount) > 0
+                                                ? `IDR ${currency.format(data.discount)}`
+                                                : "-"}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Biaya Admin</td>
+                                        <td className="font-bold text-right">
+                                            {currency.format(data.admin) > 0
+                                                ? `IDR ${currency.format(data.admin)}`
+                                                : "-"}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr className="border-black" />
+                        </div>
+                        <div className="hidden md:block text-center font-poppins my-[1.25vw]">
+                            <p className="font-bold mb-[2vw] md:mb-[.5vw]">Total Pembelian</p>
+                            <h2 className="text-secondary md:text-[2.25vw]">
+                                IDR {currency.format(totalPrice)}
+                            </h2>
+                        </div>
+                        <div className="grid gap-[4vw] md:gap-[1.25vw]">
+                            <ExpandedButton
+                                className="rounded-[.8vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
+                                borderClassName={`border-1 outline outline-1 ${
+                                    data.discount > 0
+                                        ? "border-secondary outline-secondary text-secondary"
+                                        : "outline-light-grey text-light-grey"
+                                }`}
+                                onClick={() => setShowPromoForm(!showPromoForm)}
+                            >
+                                {data.discount > 0 ? "Promo Terpakai" : "Pakai Promo"}
+                            </ExpandedButton>
+                            <ExpandedButton
+                                className="rounded-[.8vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
+                                borderClassName={`border-1 outline outline-1 ${
+                                    data.purchase_method != ""
+                                        ? "border-secondary outline-secondary text-secondary"
+                                        : "outline-light-grey text-light-grey"
+                                }`}
+                                onClick={() =>
+                                    setShowPurchaseMethodForm(!showPurchaseMethodForm)
+                                }
+                            >
+                                {data.purchase_method != "" ? (
+                                    <div className="flex items-center gap-[2vw] md:gap-[.5vw]">
+                                        <img
+                                            src={`/img/purchase/${data.purchase_method.toLowerCase()}.png`}
+                                            alt={data.purchase_method}
+                                            className="w-[4vw] md:w-[1.5vw]"
+                                        />
+                                        {data.purchase_method}
+                                    </div>
+                                ) : (
+                                    "Pilih Metode Pembayaran"
+                                )}
+                            </ExpandedButton>
+                        </div>
+                    </div>
+                    <div>
+                        <PromoForm
+                            show={showPromoForm}
+                            setShow={setShowPromoForm}
+                            data={data}
+                            setData={setData}
+                            temp={temp}
+                            setTemp={setTemp}
+                            checkPromo={checkPromo}
+                        />
+                        <PurchaseMethodForm
+                            show={showPurchaseMethodForm}
+                            setShow={setShowPurchaseMethodForm}
+                            data={data}
+                            setData={setData}
+                            temp={temp}
+                            setTemp={setTemp}
+                            purchaseMethods={purchaseMethods}
+                        />
+                    </div>
+                    <div className="flex justify-between items-center mt-[4vw] md:mt-0">
+                        <div className="md:hidden">
+                            <p className="mb-[1vw]">Total pembelian</p>
+                            <p className="font-poppins text-secondary font-bold text-[5.25vw]">IDR {currency.format(totalPrice)}</p>
+                        </div>
+                        <ButtonPill
+                            className="w-6/12 md:w-full mt-[1.25vw]"
+                            isActive={
+                                ![
+                                    data.schedule,
+                                    data.place,
+                                    data.purchase_method,
+                                ].includes("")
+                            }
+                            onClick={submit}
+                        >
+                            Bayar Sekarang
+                        </ButtonPill>
+                    </div>
                 </div>
-                <div>
-                    <PromoForm
-                        show={showPromoForm}
-                        setShow={setShowPromoForm}
-                        data={data}
-                        setData={setData}
-                        checkPromo={checkPromo}
-                    />
-                    <PurchaseMethodForm
-                        show={showPurchaseMethodForm}
-                        setShow={setShowPurchaseMethodForm}
-                        data={data}
-                        setData={setData}
-                        purchaseMethods={purchaseMethods}
-                    />
-                </div>
-                <ButtonPill
-                    className="w-full mt-4"
-                    isActive={
-                        ![
-                            data.schedule,
-                            data.place,
-                            data.purchase_method,
-                        ].includes("")
-                    }
-                    onClick={submit}
-                >
-                    Bayar Sekarang
-                </ButtonPill>
             </div>
         </div>
     );
 }
 
-function PromoForm({ show, setShow, data, setData, checkPromo }) {
+function PromoForm({ show, setShow, data, setData, temp, setTemp, checkPromo }) {
     return (
         <>
             <div
                 className={`${
                     show ? "" : "hidden"
                 } fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`}
-                onClick={() => setShow(false)}
+                onClick={() => {
+                    if (data.promo != "") {
+                        setTemp({ ...temp, promo: data.promo, discount: 0});
+                    }
+                    setShow(false);
+                }}
             ></div>
             <div
                 className={`${
                     show
-                        ? "top-0 bottom-0 scale-100"
-                        : "top-full -bottom-full scale-0"
-                } fixed left-0 flex flex-col gap-4 w-[30vw] h-fit transition-all duration-500 bg-white shadow-md rounded-xl p-6 z-50 ms-[35vw] mt-[8vw]`}
+                        ? "md:top-0 bottom-0 md:scale-100"
+                        : "md:top-full -bottom-full md:scale-0"
+                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
             >
                 <div>
-                    <div className="flex justify-between items-center mb-4">
-                        <h5 className="text-secondary font-poppins font-bold">
+                    <div className="flex justify-between items-center mb-[3vw] md:mb-[1vw]">
+                        <h5 className="text-secondary font-poppins font-bold text-[4.5vw] md:text-[1.2vw]">
                             Pilih Promo
                         </h5>
                         <i
                             role="button"
-                            className="fa-solid fa-times text-20"
-                            onClick={() => setShow(false)}
+                            className="fa-solid fa-times text-[5vw] md:text-[1.5vw]"
+                            onClick={() => {
+                                if (data.promo != "") {
+                                    setTemp({ ...temp, promo: data.promo, discount: 0});
+                                }
+                                setShow(false);
+                            }}
                         ></i>
                     </div>
                     <hr className="border-light-grey" />
                 </div>
                 <form
                     onSubmit={() => {
-                        if (data.promo != "") {
-                            const promoInfo = checkPromo(data.promo);
+                        if (temp.promo != "") {
+                            const promoInfo = checkPromo(temp.promo);
                             if (!promoInfo) {
-                                setData({ ...data, promo: "", discount: 0 });
+                                setTemp({ ...temp, promo: data.promo, discount: 0});
                                 alert("Promo tidak tersedia!");
                             } else {
-                                setData(
-                                    "discount",
-                                    (data.init_price * promoInfo.percentage) /
-                                        100
-                                );
+                                setData({
+                                    ...data,
+                                    promo: temp.promo,
+                                    discount: (data.init_price * promoInfo.percentage) / 100
+                                });
                                 alert("Promo berhasil dipakai!");
                                 setShow(false);
                             }
@@ -437,33 +531,28 @@ function PromoForm({ show, setShow, data, setData, checkPromo }) {
                     }}
                 >
                     <input
-                        className="w-full flex justify-between items-center py-2 px-3 shadow-centered-spread rounded-sm border-2 focus:outline-0 text-dark h-10"
-                        value={data.promo}
-                        onChange={(e) => setData("promo", e.target.value)}
+                        className="w-full flex justify-between items-center px-[3vw] md:px-[1vw] shadow-centered-spread rounded-sm border-2 focus:outline-0 text-dark h-[9vw] md:h-[2.5vw]"
+                        value={temp.promo}
+                        onChange={(e) => {setTemp("promo", e.target.value)}}
                         placeholder="Masukkan kode promo disini"
                     ></input>
                 </form>
-                <div className="flex justify-end mt-3">
+                <div className="flex justify-center md:justify-end mt-[.75vw]">
                     <ButtonPill
-                        className="w-3/12"
-                        isActive={data.promo != ""}
+                        className="w-6/12 md:w-3/12"
+                        isActive={temp.promo != ""}
                         onClick={() => {
-                            if (data.promo != "") {
-                                const promoInfo = checkPromo(data.promo);
+                            if (temp.promo != "") {
+                                const promoInfo = checkPromo(temp.promo);
                                 if (!promoInfo) {
-                                    setData({
-                                        ...data,
-                                        promo: "",
-                                        discount: 0,
-                                    });
+                                    setTemp({ ...temp, promo: data.promo, discount: 0});
                                     alert("Promo tidak tersedia!");
                                 } else {
-                                    setData(
-                                        "discount",
-                                        (data.init_price *
-                                            promoInfo.percentage) /
-                                            100
-                                    );
+                                    setData({
+                                        ...data,
+                                        promo: temp.promo,
+                                        discount: (data.init_price * promoInfo.percentage) / 100
+                                    });
                                     alert("Promo berhasil dipakai!");
                                     setShow(false);
                                 }
@@ -478,7 +567,7 @@ function PromoForm({ show, setShow, data, setData, checkPromo }) {
     );
 }
 
-function PurchaseMethodForm({ show, setShow, data, setData, purchaseMethods }) {
+function PurchaseMethodForm({ show, setShow, data, setData, temp, setTemp, purchaseMethods }) {
     return (
         <>
             <div
@@ -490,96 +579,103 @@ function PurchaseMethodForm({ show, setShow, data, setData, purchaseMethods }) {
             <div
                 className={`${
                     show
-                        ? "top-0 bottom-0 scale-100"
-                        : "top-full -bottom-full scale-0"
-                } fixed left-0 flex flex-col gap-4 w-[30vw] h-fit transition-all duration-500 bg-white shadow-md rounded-xl p-6 z-50 ms-[35vw] mt-[8vw]`}
+                        ? "md:top-0 bottom-0 md:scale-100"
+                        : "md:top-full -bottom-full md:scale-0"
+                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
             >
                 <div>
-                    <div className="flex justify-between items-center mb-4">
-                        <h5 className="text-secondary font-poppins font-bold">
+                    <div className="flex justify-between items-center mb-[3vw] md:mb-[1vw]">
+                        <h5 className="text-secondary font-poppins font-bold text-[4.5vw] md:text-[1.2vw]">
                             Pilih Metode Pembayaran
                         </h5>
                         <i
                             role="button"
-                            className="fa-solid fa-times text-20"
+                            className="fa-solid fa-times text-[5vw] md:text-[1.5vw]"
                             onClick={() => setShow(false)}
                         ></i>
                     </div>
                     <hr className="border-light-grey" />
                 </div>
-                <div>
-                    <h6 className="font-medium mb-4">Dompet Digital</h6>
-                    <div className="grid gap-2">
-                        {purchaseMethods.map((item, i) => {
-                            if (item.purchase_method == "ewallet") {
-                                return (
-                                    <ExpandedButton
-                                        key={i}
-                                        className="spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-10"
-                                        borderClassName="border-0"
-                                        onClick={() => {
-                                            setData({
-                                                ...data,
-                                                admin:
-                                                    (item.admin *
-                                                        data.init_price) /
-                                                    100,
-                                                purchase_method: item.name,
-                                            });
-                                        }}
-                                    >
-                                        <div className="flex items-center gap-2">
-                                            <img
-                                                src={`/img/purchase/${item.name.toLowerCase()}.png`}
-                                                alt={item.name}
-                                                className="w-6"
-                                            />
-                                            {item.name}
-                                        </div>
-                                    </ExpandedButton>
-                                );
-                            }
-                        })}
+                <div className="h-[40vh] md:h-fit flex flex-col gap-[3vw] md:gap-[1.5vw] overflow-auto scrollbar-hidden">
+                    <div>
+                        <h6 className="font-medium mb-[2vw] md:mb-[1vw]">Dompet Digital</h6>
+                        <div className="grid gap-[3vw] md:gap-[1vw]">
+                            {purchaseMethods.map((item, i) => {
+                                if (item.purchase_method == "ewallet") {
+                                    return (
+                                        <ExpandedButton
+                                            key={i}
+                                            className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${temp.purchase_method == item.name ? "border-secondary" : ""}`}
+                                            borderClassName="border-0"
+                                            onClick={() => {
+                                                setTemp({
+                                                    ...temp,
+                                                    admin:
+                                                        (item.admin *
+                                                            data.init_price) /
+                                                        100,
+                                                    purchase_method: item.name,
+                                                });
+                                            }}
+                                        >
+                                            <div className="flex items-center gap-[2vw] md:gap-[1vw]">
+                                                <img
+                                                    src={`/img/purchase/${item.name.toLowerCase()}.png`}
+                                                    alt={item.name}
+                                                    className="w-[4vw] md:w-[2vw]"
+                                                />
+                                                {item.name}
+                                            </div>
+                                        </ExpandedButton>
+                                    );
+                                }
+                            })}
+                        </div>
+                    </div>
+                    <div>
+                        <h6 className="font-medium mb-[2vw] md:mb-[1vw]">Bank</h6>
+                        <div className="grid gap-[3vw] md:gap-[1vw]">
+                            {purchaseMethods.map((item, i) => {
+                                if (item.purchase_method == "bank_transfer") {
+                                    return (
+                                        <ExpandedButton
+                                            key={i}
+                                            className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${temp.purchase_method == item.name ? "border-secondary" : ""}`}
+                                            borderClassName="border-0"
+                                            onClick={() => {
+                                                setTemp({
+                                                    ...temp,
+                                                    admin: item.admin,
+                                                    purchase_method: item.name,
+                                                });
+                                            }}
+                                        >
+                                            <div className="flex items-center gap-[2vw] md:gap-[1vw]">
+                                                <img
+                                                    src={`/img/purchase/${item.name.toLowerCase()}.png`}
+                                                    alt={item.name}
+                                                    className="w-[4vw] md:w-[2vw]"
+                                                />
+                                                {item.name}
+                                            </div>
+                                        </ExpandedButton>
+                                    );
+                                }
+                            })}
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <h6 className="font-medium mb-4">Bank</h6>
-                    <div className="grid gap-2">
-                        {purchaseMethods.map((item, i) => {
-                            if (item.purchase_method == "bank_transfer") {
-                                return (
-                                    <ExpandedButton
-                                        key={i}
-                                        className="spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-dark h-10"
-                                        borderClassName="border-0"
-                                        onClick={() => {
-                                            setData({
-                                                ...data,
-                                                admin: item.admin,
-                                                purchase_method: item.name,
-                                            });
-                                        }}
-                                    >
-                                        <div className="flex items-center gap-2">
-                                            <img
-                                                src={`/img/purchase/${item.name.toLowerCase()}.png`}
-                                                alt={item.name}
-                                                className="w-6"
-                                            />
-                                            {item.name}
-                                        </div>
-                                    </ExpandedButton>
-                                );
-                            }
-                        })}
-                    </div>
-                </div>
-                <div className="flex justify-end mt-3">
+                <div className="flex justify-center md:justify-end mt-[1vw]">
                     <ButtonPill
-                        className="w-3/12"
-                        isActive={data.purchase_method != ""}
+                        className="w-6/12 md:w-3/12"
+                        isActive={temp.purchase_method != ""}
                         onClick={(e) => {
-                            if (data.purchase_method != "") {
+                            if (temp.purchase_method != "") {
+                                setData({
+                                    ...data,
+                                    admin: temp.admin,
+                                    purchase_method: temp.purchase_method,
+                                })
                                 setShow(false);
                             }
                         }}
@@ -597,11 +693,21 @@ function ScheduleForm({
     setShow,
     data,
     setData,
+    temp,
+    setTemp,
     unavailableDate,
     availablePlaces,
 }) {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showPlaceOptions, setShowPlaceOptions] = useState(false);
+    const theme = createTheme({
+        typography: {
+            fontSize: {
+                1: '1vw',
+                4: '4vw',
+            }
+        }
+    })
     return (
         <>
             <div
@@ -615,9 +721,9 @@ function ScheduleForm({
             <div
                 className={`${
                     show
-                        ? "top-0 bottom-0 scale-100"
-                        : "top-full -bottom-full scale-0"
-                } fixed left-0 flex flex-col gap-4 w-[30vw] h-fit transition-all duration-500 bg-white shadow-md rounded-xl p-6 z-50 ms-[35vw] mt-[8vw]`}
+                        ? "md:top-0 bottom-0 md:scale-100"
+                        : "md:top-full -bottom-full md:scale-0"
+                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
             >
                 <div
                     className={`${
@@ -626,107 +732,129 @@ function ScheduleForm({
                     onClick={() => setShowDatePicker(false)}
                 ></div>
                 <div>
-                    <div className="flex justify-between items-center mb-4">
-                        <h5 className="text-secondary font-poppins font-bold">
+                    <div className="flex justify-between items-center mb-[3vw] md:mb-[1vw]">
+                        <h5 className="text-secondary font-poppins font-bold text-[4.5vw] md:text-[1.2vw]">
                             Pilih Jadwal Bimbingan
                         </h5>
                         <i
                             role="button"
-                            className={"fa-solid fa-times text-20"}
+                            className={"fa-solid fa-times text-[5vw] md:text-[1.5vw]"}
                             onClick={() => setShow(false)}
                         ></i>
                     </div>
                     <hr className="border-light-grey" />
                 </div>
                 <div>
-                    <p className="font-medium mb-3">
+                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">
                         Pilih Tanggal Bimbingan :
                     </p>
                     <div className="relative w-full">
                         <ExpandedButton
-                            className="shadow-centered-spread rounded-sm"
+                            className="shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw]"
                             borderClassName={
-                                data.schedule != ""
+                                temp.schedule != ""
                                     ? "border-2 border-secondary"
                                     : "border-0"
                             }
                             textClassName={`font-medium ${
-                                data.schedule != ""
+                                temp.schedule != ""
                                     ? "text-dark"
                                     : "text-gray-400"
                             }`}
                             onClick={() => setShowDatePicker(!showDatePicker)}
                         >
-                            {data.schedule != ""
-                                ? data.schedule
+                            {temp.schedule != ""
+                                ? temp.schedule
                                 : "Pilih Tanggal"}
                         </ExpandedButton>
                         <div
-                            className={`absolute top-0 left-0 right-0 rounded-md shadow-centered-spread w-full transition-all duration-500 overflow-hidden ${
+                            className={`hidden md:block absolute top-0 left-0 right-0 rounded-[.4vw] shadow-centered-spread w-full transition-all duration-500 overflow-visible ${
                                 showDatePicker
                                     ? "scale-100"
                                     : "scale-0 -translate-y-[50%] -translate-x-[50%]"
                             }`}
                         >
-                            <LocalizationProvider
-                                dateAdapter={AdapterMoment}
-                                dateLibInstance={moment}
-                            >
-                                <StaticDatePicker
-                                    slotProps={{
-                                        toolbar: { hidden: true },
-                                        actionBar: { sx: { display: "none" } },
-                                    }}
-                                    minDate={moment()}
-                                    maxDate={moment().add("6", "day")}
-                                    shouldDisableDate={(date) => {
-                                        return unavailableDate.includes(
-                                            date.format("YYYY-MM-DD")
-                                        );
-                                    }}
-                                    onChange={(date) => {
-                                        setData(
-                                            "schedule",
-                                            date.format("YYYY-MM-DD")
-                                        );
-                                        setShowDatePicker(false);
-                                    }}
-                                ></StaticDatePicker>
-                            </LocalizationProvider>
+                            <ThemeProvider theme={theme}>
+                                <LocalizationProvider
+                                    dateAdapter={AdapterMoment}
+                                    dateLibInstance={moment}
+                                >
+                                    <StaticDatePicker
+                                        slotProps={{
+                                            toolbar: { hidden: true },
+                                            actionBar: { sx: { display: "none" } },
+                                            switchViewButton: {sx: { display: "none" }},
+                                            nextIconButton: { sx: { fontSize: "1.75vw" }},
+                                            previousIconButton: { sx: { fontSize: "1.75vw" }},
+                                            calendarHeader: { sx: {fontSize: "1.25vw", height: "4vw", maxHeight: "unset", margin: 0, padding: "0 .75vw 0 1.5vw"}},
+                                        }}
+                                        sx={{
+                                            fontSize: "fontSize.1",
+                                            minWidth: "unset",
+                                            width: "100%",
+                                            height: "25vw",
+                                            padding: "1vw 1vw 2vw",
+                                            maxHeight: "unset",
+                                            "& .MuiDateCalendar-root": { width: "100%", height: "fit-content", maxHeight: "unset" },
+                                            "& .MuiPickersLayout-contentWrapper": { width: "100%", height: "100%" },
+                                            "& .MuiDayCalendar-monthContainer": { width: "100%", height: "fit-content", position: "relative" },
+                                            "& .MuiPickersSlideTransition-root": { width: "100%", height: "fit-content", minHeight: "unset" },
+                                            "& .MuiDayCalendar-weekDayLabel": { width: "3vw", height: "3vw" },
+                                            "& .MuiPickersDay-root": { width: "3vw", height: "3vw" },
+                                            "& .MuiPickersDay-root.Mui-selected": { backgroundColor: "#FF8854" },
+                                            "& .MuiPickersYear-yearButton.Mui-selected": { backgroundColor: "#FF8854" },
+                                        }}
+                                        minDate={moment()}
+                                        maxDate={moment().add("6", "day")}
+                                        shouldDisableDate={(date) => {
+                                            return unavailableDate.includes(
+                                                date.format("YYYY-MM-DD")
+                                            );
+                                        }}
+                                        onChange={(date) => {
+                                            setTemp(
+                                                "schedule",
+                                                date.format("YYYY-MM-DD")
+                                            );
+                                            setShowDatePicker(false);
+                                        }}
+                                    ></StaticDatePicker>
+                                </LocalizationProvider>
+                            </ThemeProvider>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <p className="font-medium mb-3">Pilih Lokasi Bimbingan :</p>
+                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">Pilih Lokasi Bimbingan :</p>
                     <ExpandedButton
-                        className="shadow-centered-spread rounded-sm"
+                        className="shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw]"
                         borderClassName={
-                            data.place != ""
+                            temp.place != ""
                                 ? "border-2 border-secondary"
                                 : "border-0"
                         }
                         textClassName={`font-medium ${
-                            data.place != "" ? "text-dark" : "text-gray-400"
+                            temp.place != "" ? "text-dark" : "text-gray-400"
                         }`}
                         icon={`fa-solid fa-chevron-down duration-500 ${
-                            showPlaceOptions ? "-rotate-180" : ""
+                            showPlaceOptions ? "-rotate-180 -z-10" : ""
                         }`}
                         onClick={() => setShowPlaceOptions(!showPlaceOptions)}
                     >
-                        {data.place != "" ? data.place : "Pilih Tempat"}
+                        {temp.place != "" ? temp.place : "Pilih Tempat"}
                     </ExpandedButton>
                     <TECollapse
                         show={showPlaceOptions}
                         className="w-[110%] -ms-[5%] px-[4%] shadow-none"
                     >
-                        <TECollapseItem className="grid gap-4 p-1 pe-3 h-[10vw] overflow-y-scroll">
+                        <TECollapseItem className="grid gap-[5vw] md:gap-[1.75vw] p-[.5vw] pe-[1.5vw] md:pe-[1.5vw] h-[18vw] md:h-[10vw] overflow-y-scroll">
                             {availablePlaces.map((item, i) => {
                                 return (
                                     <div
                                         key={i}
-                                        className="w-full flex justify-between items-center py-2 px-3 font-medium shadow-centered-spread rounded-sm border-2 hover:border-secondary hover:bg-secondary hover:text-white text-gray-400 cursor-pointer"
+                                        className="w-full flex justify-between items-center h-[8vw] md:h-[3vw] px-[4vw] md:px-[1vw] font-medium shadow-centered rounded-sm border-0 hover:bg-secondary hover:text-white text-gray-400 cursor-pointer"
                                         onClick={() => {
-                                            setData("place", item);
+                                            setTemp("place", item);
                                             setShowPlaceOptions(false);
                                         }}
                                     >
@@ -737,12 +865,13 @@ function ScheduleForm({
                         </TECollapseItem>
                     </TECollapse>
                 </div>
-                <div className="flex justify-end mt-3">
+                <div className="flex justify-center md:justify-end mt-[1vw]">
                     <ButtonPill
-                        className="w-3/12"
-                        isActive={data.schedule != "" && data.place != ""}
+                        className="w-6/12 md:w-3/12"
+                        isActive={temp.schedule != "" && temp.place != ""}
                         onClick={(e) => {
-                            if (data.schedule != "" && data.place != "") {
+                            if (temp.schedule != "" && temp.place != "") {
+                                setData({ ...data, schedule: temp.schedule, place: temp.place })
                                 setShow(false);
                             }
                         }}
@@ -751,11 +880,70 @@ function ScheduleForm({
                     </ButtonPill>
                 </div>
             </div>
+            <div
+                className={`${
+                    showDatePicker
+                        ? "md:top-0 bottom-0 md:scale-100"
+                        : "md:top-full -bottom-full md:scale-0"
+                } md:hidden fixed left-0 flex justify-center items-center gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
+            >
+                <div
+                    className={`rounded-[1vw] flex md:rounded-[.4vw] shadow-centered-spread w-full h-full transition-all duration-500 overflow-visible`}
+                >
+                    <ThemeProvider theme={theme}>
+                        <LocalizationProvider
+                            dateAdapter={AdapterMoment}
+                            dateLibInstance={moment}
+                        >
+                            <StaticDatePicker
+                                slotProps={{
+                                    toolbar: { hidden: true },
+                                    actionBar: { sx: { display: "none" } },
+                                    switchViewButton: {sx: { display: "none" }},
+                                    nextIconButton: { sx: { fontSize: "6vw" }},
+                                    previousIconButton: { sx: { fontSize: "6vw" }},
+                                    calendarHeader: { sx: {fontSize: "5vw", height: "10vw", maxHeight: "unset", margin: 0, padding: "1vw 0 6vw 4vw"}},
+                                }}
+                                sx={{
+                                    fontSize: "fontSize.4",
+                                    minWidth: "unset",
+                                    width: "100%",
+                                    height: "39vh",
+                                    padding: "6vw 3vw 6vw",
+                                    maxHeight: "unset",
+                                    "& .MuiDateCalendar-root": { width: "100%", height: "fit-content", maxHeight: "unset" },
+                                    "& .MuiPickersLayout-contentWrapper": { width: "100%", height: "100%" },
+                                    "& .MuiDayCalendar-monthContainer": { width: "100%", height: "fit-content", position: "relative" },
+                                    "& .MuiPickersSlideTransition-root": { width: "100%", height: "fit-content", minHeight: "unset" },
+                                    "& .MuiDayCalendar-weekDayLabel": { width: "10vw", height: "10vw" },
+                                    "& .MuiPickersDay-root": { width: "10vw", height: "10vw" },
+                                    "& .MuiPickersDay-root.Mui-selected": { backgroundColor: "#FF8854" },
+                                    "& .MuiPickersYear-yearButton.Mui-selected": { backgroundColor: "#FF8854" },
+                                }}
+                                minDate={moment()}
+                                maxDate={moment().add("6", "day")}
+                                shouldDisableDate={(date) => {
+                                    return unavailableDate.includes(
+                                        date.format("YYYY-MM-DD")
+                                    );
+                                }}
+                                onChange={(date) => {
+                                    setTemp(
+                                        "schedule",
+                                        date.format("YYYY-MM-DD")
+                                    );
+                                    setShowDatePicker(false);
+                                }}
+                            ></StaticDatePicker>
+                        </LocalizationProvider>
+                    </ThemeProvider>
+                </div>
+            </div>
         </>
     );
 }
 
-function NoteForm({ show, setShow, data, setData }) {
+function NoteForm({ show, setShow, data, setData, temp, setTemp }) {
     return (
         <>
             <div
@@ -767,18 +955,18 @@ function NoteForm({ show, setShow, data, setData }) {
             <div
                 className={`${
                     show
-                        ? "top-0 bottom-0 scale-100"
-                        : "top-full -bottom-full scale-0"
-                } fixed left-0 flex flex-col gap-4 w-[30vw] h-fit transition-all duration-500 bg-white shadow-md rounded-xl p-6 z-50 ms-[35vw] mt-[8vw]`}
+                        ? "md:top-0 bottom-0 md:scale-100"
+                        : "md:top-full -bottom-full md:scale-0"
+                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
             >
                 <div>
-                    <div className="flex justify-between items-center mb-4">
-                        <h5 className="text-secondary font-poppins font-bold">
+                    <div className="flex justify-between items-center mb-[3vw] md:mb-[1vw]">
+                        <h5 className="text-secondary font-poppins font-bold text-[4.5vw] md:text-[1.2vw]">
                             Catatan untuk Tutor{" "}
                         </h5>
                         <i
                             role="button"
-                            className={"fa-solid fa-times text-20"}
+                            className={"fa-solid fa-times text-[5vw] md:text-[1.5vw]"}
                             onClick={() => setShow(false)}
                         ></i>
                     </div>
@@ -786,19 +974,20 @@ function NoteForm({ show, setShow, data, setData }) {
                 </div>
                 <div>
                     <textarea
-                        className="w-full shadow-centered-spread rounded-sm focus:outline-none p-4"
+                        className="w-full shadow-centered-spread rounded-md md:rounded-sm focus:outline-none p-[3vw] md:p-[1vw]"
                         rows="10"
                         draggable={false}
                         placeholder="Isi catatan disini..."
-                        onChange={(e) => setData("note", e.target.value)}
+                        onChange={(e) => setTemp("note", e.target.value)}
                     ></textarea>
                 </div>
-                <div className="flex justify-end mt-3">
+                <div className="flex justify-center md:justify-end mt-[1vw]">
                     <ButtonPill
-                        className="w-3/12"
-                        isActive={data.note != ""}
+                        className="w-6/12 md:w-3/12"
+                        isActive={temp.note != ""}
                         onClick={(e) => {
-                            if (data.note != "") {
+                            if (temp.note != "") {
+                                setData("note", temp.note)
                                 setShow(false);
                             }
                         }}

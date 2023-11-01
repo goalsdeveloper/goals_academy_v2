@@ -132,9 +132,6 @@ export default {
             addComponents({
                 '.container': {
                     width: '85%',
-                    '@screen xs': {
-                        width: '80%',
-                    },
                     '@screen md': {
                         width: '75%'
                     },
@@ -149,9 +146,6 @@ export default {
                 },
                 '.container-lg': {
                     width: '85%',
-                    '@screen xs': {
-                        width: '80%',
-                    },
                     '@screen md': {
                         width: '80%'
                     },
