@@ -291,7 +291,7 @@ function SummaryCard({
                         Catatan untuk Tutor
                     </h5>
                     <hr className="border-secondary" />
-                    <p className="font-poppins md:font-medium leading-[5vw] my-[4vw] md:my-[1vw] text-[3.4vw] md:text-[.9vw]">
+                    <p className="font-poppins md:font-medium leading-[5vw] md:leading-[1.25vw] my-[4vw] md:my-[1vw] text-[3.4vw] md:text-[.9vw]">
                         {data.note}
                     </p>
                     <hr className="border-black" />
@@ -596,7 +596,7 @@ function PurchaseMethodForm({ show, setShow, data, setData, temp, setTemp, purch
                     </div>
                     <hr className="border-light-grey" />
                 </div>
-                <div className="h-[40vh] flex flex-col gap-[3vw] overflow-auto scrollbar-hidden">
+                <div className="h-[40vh] md:h-fit flex flex-col gap-[3vw] md:gap-[1.5vw] overflow-auto scrollbar-hidden">
                     <div>
                         <h6 className="font-medium mb-[2vw] md:mb-[1vw]">Dompet Digital</h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
