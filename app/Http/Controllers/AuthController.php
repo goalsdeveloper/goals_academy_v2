@@ -29,7 +29,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credential)) {
+        if (Auth::attempt($credential, true)) {
             $request->session()->regenerate();
             $user = auth()->user();
             Log::info("User {username} has been Log in.", ['username' => $user->username]);
@@ -67,7 +67,7 @@ class AuthController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        Auth::login($user, true);
 
         return redirect(RouteServiceProvider::HOME);
     }

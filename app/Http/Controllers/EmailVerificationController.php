@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -19,7 +20,8 @@ class EmailVerificationController extends Controller
     {
         $request->fulfill();
         Session::flash('email-verified', 'Email anda telah terverifikasi, selamat datang di Goals Academy!');
-        return view('auth.email-verification');
+        // return view('auth.email-verification');
+        return RouteServiceProvider::HOME;
     }
 
     public function resend(Request $request)
