@@ -12,16 +12,17 @@ class CouponCheckController extends Controller
     {
         $user = auth()->user();
 
-        if ($request->promo_code) {
-            $cekPromo = PromoCode::where('promo_code', $request->promo_code)->first();
+        if ($request->inputCode) {
+            $cekPromo = PromoCode::where('promo_code', $request->inputCode)->first();
             if (!$cekPromo) {
                 return response()->json(['message' => 'Promo tidak ditemukan!']);
             }
-            if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
-                return response()->json(['message' => 'Kode promo telah terpakai']);
-            } else {
-                $promoCode = $user->kodePromo()->attach($cekPromo->id);
-            }
+            return response()->json(['message' => 'Promo berhasil terpakai', 'data' => $cekPromo]);
+            // if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
+            //     return response()->json(['message' => 'Kode promo telah terpakai']);
+            // } else {
+            //     // $promoCode = $user->kodePromo()->attach($cekPromo->id);
+            // }
         }
     }
 }

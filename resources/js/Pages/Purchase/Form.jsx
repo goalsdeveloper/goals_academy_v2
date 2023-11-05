@@ -10,10 +10,12 @@ import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import { useForm } from "@inertiajs/react";
 import { ThemeProvider, createTheme } from "@mui/material";
+import '@/script/momentCustomLocale';
 
 export default function Form({ auth, date, dataProduct }) {
     const { data, setData, post } = useForm({
         schedule: "",
+        city: "",
         place: "",
         document: "",
         note: "",
@@ -27,6 +29,7 @@ export default function Form({ auth, date, dataProduct }) {
 
     const { data: temp, setData: setTemp } = useForm({
         schedule: "",
+        city: "",
         place: "",
         document: "",
         note: "",
@@ -44,7 +47,12 @@ export default function Form({ auth, date, dataProduct }) {
         { code: "654321", percentage: 15 },
     ];
     const unavailableDate = date.map((i) => i.date);
-    const availablePlaces = ["Kafe 1", "Kafe 2", "Kafe 3", "Kafe 4", "Kafe 5"];
+    const cities = ["Malang", "Surabaya", "Jakarta"];
+    const places = {
+        "Malang": ["Kafe 1", "Kafe 2", "Kafe 3", "Kafe 4", "Kafe 5"],
+        "Surabaya": ["Kafe 6", "Kafe 7", "Kafe 8", "Kafe 9", "Kafe 10"],
+        "Jakarta": ["Kafe 11", "Kafe 12", "Kafe 13", "Kafe 14", "Kafe 15"],
+    };
     const purchaseMethods = [
         { name: "Gopay", admin: 2, purchase_method: "ewallet" },
         { name: "QRIS", admin: 0.7, purchase_method: "ewallet" },
@@ -59,8 +67,40 @@ export default function Form({ auth, date, dataProduct }) {
         post("/purchase");
     };
 
-    const checkPromo = (inputCode) => {
-        return availablePromos.find((item) => item.code == inputCode);
+    const promoHandler = (inputCode, successCallback, processCallback) => {
+        processCallback(true);
+        fetch('/api/coupon-check', {
+            method: 'post',
+            headers: {
+                accept: 'application.json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'inputCode': inputCode}),
+        })
+        .then(response => response.json())
+        .then(response => {
+            processCallback(false);
+            if ('data' in response) {
+                if (response.data.is_price) {
+                    setData({
+                        ...data,
+                        promo: temp.promo,
+                        discount: response.data.value
+                    });
+                } else {
+                    setData({
+                        ...data,
+                        promo: temp.promo,
+                        discount: (data.init_price * response.data.value) / 100
+                    });
+                }
+                alert(response.message);
+                successCallback();
+            } else {
+                setTemp({ ...temp, promo: data.promo, discount: 0});
+                alert(response.message);
+            }
+        });
     };
 
     return (
@@ -76,7 +116,8 @@ export default function Form({ auth, date, dataProduct }) {
                         temp={temp}
                         setTemp={setTemp}
                         unavailableDate={unavailableDate}
-                        availablePlaces={availablePlaces}
+                        cities={cities}
+                        places={places}
                     />
                     <SummaryCard
                         data={data}
@@ -85,7 +126,7 @@ export default function Form({ auth, date, dataProduct }) {
                         setTemp={setTemp}
                         purchaseMethods={purchaseMethods}
                         totalPrice={totalPrice}
-                        checkPromo={checkPromo}
+                        promoHandler={promoHandler}
                         submit={submit}
                     />
                 </div>
@@ -94,7 +135,7 @@ export default function Form({ auth, date, dataProduct }) {
     );
 }
 
-function MainCard({ data, setData, temp, setTemp, unavailableDate, availablePlaces }) {
+function MainCard({ data, setData, temp, setTemp, unavailableDate, cities, places }) {
     const [showScheduleForm, setShowScheduleForm] = useState(false);
     const [showNoteForm, setShowNoteForm] = useState(false);
     return (
@@ -147,7 +188,8 @@ function MainCard({ data, setData, temp, setTemp, unavailableDate, availablePlac
                             temp={temp}
                             setTemp={setTemp}
                             unavailableDate={unavailableDate}
-                            availablePlaces={availablePlaces}
+                            cities={cities}
+                            places={places}
                         />
                     </div>
                     <div>
@@ -228,12 +270,14 @@ function SummaryCard({
     temp,
     setTemp,
     purchaseMethods,
-    checkPromo,
+    promoHandler,
     totalPrice,
     submit,
 }) {
     const [showPromoForm, setShowPromoForm] = useState(false);
     const [showPurchaseMethodForm, setShowPurchaseMethodForm] = useState(false);
+    const [showNote, setShowNote] = useState(true);
+    const [showDocument, setShowDocument] = useState(true);
     const currency = Intl.NumberFormat("id-ID");
     return (
         <div className="md:w-[30%] md:ms-[3vw] flex flex-col gap-[4vw] md:gap-[2vw]">
@@ -252,7 +296,7 @@ function SummaryCard({
                             <tr>
                                 <td>Tanggal</td>
                                 <td className="font-bold text-right">
-                                    {data.schedule != "" ? data.schedule : "-"}
+                                    {data.schedule != "" ? moment(data.schedule).format('dddd, DD MMMM YYYY') : "-"}
                                 </td>
                             </tr>
                         </tbody>
@@ -291,8 +335,16 @@ function SummaryCard({
                         Catatan untuk Tutor
                     </h5>
                     <hr className="border-secondary" />
-                    <p className="font-poppins md:font-medium leading-[5vw] md:leading-[1.25vw] my-[4vw] md:my-[1vw] text-[3.4vw] md:text-[.9vw]">
-                        {data.note}
+                    <p className="font-poppins md:font-medium leading-[5vw] md:leading-[1.25vw] my-[4vw] md:my-[1vw] text-[3.4vw] md:text-[.9vw] cursor-pointer" onClick={() => setShowNote(!showNote)}>
+                        {showNote ? (
+                            data.note.split(' ').length > 15 ? (
+                                data.note.split(' ').slice(0, 15).join(' ')+'...'
+                            ) : (
+                                data.note
+                            )
+                        ) : (
+                            data.note
+                        )}
                     </p>
                     <hr className="border-black" />
                 </div>
@@ -308,12 +360,24 @@ function SummaryCard({
                         Berkas Pendukung
                     </h5>
                     <hr className="border-secondary" />
-                    <table className="w-full font-poppins border-separate border-spacing-y-3 my-[2vw] md:my-1">
+                    <table className="w-full font-poppins border-separate border-spacing-y-3 my-[2vw] md:my-1 cursor-pointer">
                         <tbody>
                             <tr>
                                 <td>Nama Berkas</td>
-                                <td className="font-bold text-right">
-                                    {data.document != "" ? data.document.name : "-"}
+                                <td className="font-bold text-right" onClick={() => setShowDocument(!showDocument)}>
+                                    {data.document != "" ? (
+                                        showDocument ? (
+                                            data.document.name.split(' ').length > 5 ? (
+                                                data.document.name.split(' ').slice(0, 5).join(' ')+'...'
+                                            ) : (
+                                                data.document.name
+                                            )
+                                        ) : (
+                                            data.document.name
+                                        )
+                                    ) : (
+                                        ""
+                                    )}
                                 </td>
                             </tr>
                         </tbody>
@@ -435,7 +499,7 @@ function SummaryCard({
                             setData={setData}
                             temp={temp}
                             setTemp={setTemp}
-                            checkPromo={checkPromo}
+                            promoHandler={promoHandler}
                         />
                         <PurchaseMethodForm
                             show={showPurchaseMethodForm}
@@ -472,7 +536,8 @@ function SummaryCard({
     );
 }
 
-function PromoForm({ show, setShow, data, setData, temp, setTemp, checkPromo }) {
+function PromoForm({ show, setShow, data, setData, temp, setTemp, promoHandler }) {
+    const [isProcess, setIsProcess] = useState(false)
     return (
         <>
             <div
@@ -512,30 +577,27 @@ function PromoForm({ show, setShow, data, setData, temp, setTemp, checkPromo }) 
                     <hr className="border-light-grey" />
                 </div>
                 <form
-                    onSubmit={() => {
+                    onSubmit={(e) => {
+                        e.preventDefault()
                         if (temp.promo != "") {
-                            const promoInfo = checkPromo(temp.promo);
-                            if (!promoInfo) {
-                                setTemp({ ...temp, promo: data.promo, discount: 0});
-                                alert("Promo tidak tersedia!");
-                            } else {
-                                setData({
-                                    ...data,
-                                    promo: temp.promo,
-                                    discount: (data.init_price * promoInfo.percentage) / 100
-                                });
-                                alert("Promo berhasil dipakai!");
-                                setShow(false);
-                            }
+                            promoHandler(
+                                temp.promo,
+                                () => setShow(false),
+                                setIsProcess,
+                            );
                         }
                     }}
+                    className="relative"
                 >
                     <input
                         className="w-full flex justify-between items-center px-[3vw] md:px-[1vw] shadow-centered-spread rounded-sm border-2 focus:outline-0 text-dark h-[9vw] md:h-[2.5vw]"
                         value={temp.promo}
                         onChange={(e) => {setTemp("promo", e.target.value)}}
                         placeholder="Masukkan kode promo disini"
-                    ></input>
+                    />
+                    <div className={`absolute h-full top-0 right-0 flex items-center px-[3vw] md:px-[1vw] ${isProcess ? '' : 'hidden'}`}>
+                        <i className="fa-solid fa-circle-notch fa-spin"></i>
+                    </div>
                 </form>
                 <div className="flex justify-center md:justify-end mt-[.75vw]">
                     <ButtonPill
@@ -543,23 +605,15 @@ function PromoForm({ show, setShow, data, setData, temp, setTemp, checkPromo }) 
                         isActive={temp.promo != ""}
                         onClick={() => {
                             if (temp.promo != "") {
-                                const promoInfo = checkPromo(temp.promo);
-                                if (!promoInfo) {
-                                    setTemp({ ...temp, promo: data.promo, discount: 0});
-                                    alert("Promo tidak tersedia!");
-                                } else {
-                                    setData({
-                                        ...data,
-                                        promo: temp.promo,
-                                        discount: (data.init_price * promoInfo.percentage) / 100
-                                    });
-                                    alert("Promo berhasil dipakai!");
-                                    setShow(false);
-                                }
+                                promoHandler(
+                                    temp.promo,
+                                    () => setShow(false),
+                                    setIsProcess,
+                                );
                             }
                         }}
                     >
-                        Simpan
+                        Pakai
                     </ButtonPill>
                 </div>
             </div>
@@ -696,9 +750,11 @@ function ScheduleForm({
     temp,
     setTemp,
     unavailableDate,
-    availablePlaces,
+    cities,
+    places,
 }) {
     const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showCityOptions, setShowCityOptions] = useState(false);
     const [showPlaceOptions, setShowPlaceOptions] = useState(false);
     const theme = createTheme({
         typography: {
@@ -723,7 +779,7 @@ function ScheduleForm({
                     show
                         ? "md:top-0 bottom-0 md:scale-100"
                         : "md:top-full -bottom-full md:scale-0"
-                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
+                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh] h-[70vh]`}
             >
                 <div
                     className={`${
@@ -764,7 +820,7 @@ function ScheduleForm({
                             onClick={() => setShowDatePicker(!showDatePicker)}
                         >
                             {temp.schedule != ""
-                                ? temp.schedule
+                                ? moment(temp.schedule).format('dddd, DD MMMM YYYY')
                                 : "Pilih Tanggal"}
                         </ExpandedButton>
                         <div
@@ -802,6 +858,7 @@ function ScheduleForm({
                                             "& .MuiDayCalendar-weekDayLabel": { width: "3vw", height: "3vw" },
                                             "& .MuiPickersDay-root": { width: "3vw", height: "3vw" },
                                             "& .MuiPickersDay-root.Mui-selected": { backgroundColor: "#FF8854" },
+                                            "& .MuiPickersDay-root.Mui-selected:hover": { backgroundColor: "#FF6420" },
                                             "& .MuiPickersYear-yearButton.Mui-selected": { backgroundColor: "#FF8854" },
                                         }}
                                         minDate={moment()}
@@ -825,9 +882,59 @@ function ScheduleForm({
                     </div>
                 </div>
                 <div>
-                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">Pilih Lokasi Bimbingan :</p>
+                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">Pilih Kota Bimbingan :</p>
                     <ExpandedButton
                         className="shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw]"
+                        borderClassName={
+                            temp.city != ""
+                                ? "border-2 border-secondary"
+                                : "border-0"
+                        }
+                        textClassName={`font-medium ${
+                            temp.city != "" ? "text-dark" : "text-gray-400"
+                        }`}
+                        icon={`fa-solid fa-chevron-down duration-500 ${
+                            showCityOptions ? "-rotate-180 -z-10" : ""
+                        }`}
+                        onClick={() => {
+                            if (showPlaceOptions) {
+                                setShowPlaceOptions(false)
+                            }
+                            setShowCityOptions(!showCityOptions)
+                        }}
+                    >
+                        {temp.city != "" ? temp.city : "Pilih Kota"}
+                    </ExpandedButton>
+                    <TECollapse
+                        show={showCityOptions}
+                        className="w-[110%] -ms-[5%] px-[4%] shadow-none"
+                    >
+                        <TECollapseItem className="grid gap-[5vw] md:gap-[1.75vw] p-[.5vw] pe-[1.5vw] md:pe-[1.5vw] h-[20vw] md:h-[10vw] overflow-y-scroll">
+                            {cities.map((item, i) => {
+                                return (
+                                    <div
+                                        key={i}
+                                        className="w-full flex justify-between items-center h-[8vw] md:h-[3vw] px-[4vw] md:px-[1vw] font-medium shadow-centered rounded-sm border-0 hover:bg-secondary hover:text-white text-gray-400 cursor-pointer"
+                                        onClick={() => {
+                                            if (temp.city != item) {
+                                                setTemp({...temp, city: item, place: ""})
+                                            } else {
+                                                setTemp("city", item);
+                                            }
+                                            setShowCityOptions(false);
+                                        }}
+                                    >
+                                        {item}
+                                    </div>
+                                );
+                            })}
+                        </TECollapseItem>
+                    </TECollapse>
+                </div>
+                <div>
+                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">Pilih Lokasi Bimbingan :</p>
+                    <ExpandedButton
+                        className={`shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw] ${temp.city != "" ? "" : "bg-slate-100"}`}
                         borderClassName={
                             temp.place != ""
                                 ? "border-2 border-secondary"
@@ -839,29 +946,45 @@ function ScheduleForm({
                         icon={`fa-solid fa-chevron-down duration-500 ${
                             showPlaceOptions ? "-rotate-180 -z-10" : ""
                         }`}
-                        onClick={() => setShowPlaceOptions(!showPlaceOptions)}
+                        onClick={() => {
+                            if (temp.city != "") {
+                                if (showCityOptions) {
+                                    setShowCityOptions(false)
+                                }
+                                setShowPlaceOptions(!showPlaceOptions)
+                            }
+                        }}
                     >
-                        {temp.place != "" ? temp.place : "Pilih Tempat"}
+                        {temp.place != "" ? temp.place : "Pilih Lokasi"}
                     </ExpandedButton>
                     <TECollapse
                         show={showPlaceOptions}
                         className="w-[110%] -ms-[5%] px-[4%] shadow-none"
                     >
-                        <TECollapseItem className="grid gap-[5vw] md:gap-[1.75vw] p-[.5vw] pe-[1.5vw] md:pe-[1.5vw] h-[18vw] md:h-[10vw] overflow-y-scroll">
-                            {availablePlaces.map((item, i) => {
-                                return (
-                                    <div
-                                        key={i}
-                                        className="w-full flex justify-between items-center h-[8vw] md:h-[3vw] px-[4vw] md:px-[1vw] font-medium shadow-centered rounded-sm border-0 hover:bg-secondary hover:text-white text-gray-400 cursor-pointer"
-                                        onClick={() => {
-                                            setTemp("place", item);
-                                            setShowPlaceOptions(false);
-                                        }}
-                                    >
-                                        {item}
-                                    </div>
-                                );
-                            })}
+                        <TECollapseItem className="grid gap-[5vw] md:gap-[1.75vw] p-[.5vw] pe-[1.5vw] md:pe-[1.5vw] h-[20vw] md:h-[10vw] overflow-y-scroll">
+                            {temp.city != "" ? (
+                                places[temp.city].map((item, i) => {
+                                    return (
+                                        <div
+                                            key={i}
+                                            className="w-full flex justify-between items-center h-[8vw] md:h-[3vw] px-[4vw] md:px-[1vw] font-medium shadow-centered rounded-sm border-0 hover:bg-secondary hover:text-white text-gray-400 cursor-pointer"
+                                            onClick={() => {
+                                                setTemp("place", item);
+                                                setShowPlaceOptions(false);
+                                            }}
+                                        >
+                                            {item}
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <div
+                                    className="w-full flex justify-between items-center h-[8vw] md:h-[3vw] px-[4vw] md:px-[1vw] font-medium shadow-centered rounded-sm border-0 hover:bg-secondary hover:text-white text-gray-400 cursor-pointer"
+                                    onClick={() => setShowPlaceOptions(false)}
+                                >
+                                    Kosong
+                                </div>
+                            )}
                         </TECollapseItem>
                     </TECollapse>
                 </div>
@@ -885,10 +1008,10 @@ function ScheduleForm({
                     showDatePicker
                         ? "md:top-0 bottom-0 md:scale-100"
                         : "md:top-full -bottom-full md:scale-0"
-                } md:hidden fixed left-0 flex justify-center items-center gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
+                } md:hidden fixed left-0 flex justify-center items-center gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh] h-[70vh]`}
             >
                 <div
-                    className={`rounded-[1vw] flex md:rounded-[.4vw] shadow-centered-spread w-full h-full transition-all duration-500 overflow-visible`}
+                    className={`rounded-[1vw] flex md:rounded-[.4vw] shadow-centered-spread w-full h-[50vh] transition-all duration-500 overflow-visible`}
                 >
                     <ThemeProvider theme={theme}>
                         <LocalizationProvider
@@ -908,7 +1031,7 @@ function ScheduleForm({
                                     fontSize: "fontSize.4",
                                     minWidth: "unset",
                                     width: "100%",
-                                    height: "39vh",
+                                    height: "50vh",
                                     padding: "6vw 3vw 6vw",
                                     maxHeight: "unset",
                                     "& .MuiDateCalendar-root": { width: "100%", height: "fit-content", maxHeight: "unset" },

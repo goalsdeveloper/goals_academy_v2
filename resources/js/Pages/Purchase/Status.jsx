@@ -6,6 +6,7 @@ import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import { Link } from "@inertiajs/react";
 import { useRef } from "react";
+import '@/script/momentCustomLocale';
 
 export default function Status({
     auth,
@@ -28,11 +29,18 @@ export default function Status({
 
     const startCountdown = () => {
         countdownInterval.current = setInterval(() => {
+            fetch(`/api/check-payment-status/${data.order_code}`)
+                .then(response => response.json())
+                .then(data => setPurchaseStatus(data['status'].toLowerCase()))
+
             const difference = target.diff(moment());
             if (difference <= 1) {
                 clearInterval(countdownInterval.current);
                 setCountdown(moment().hours(0).minutes(0).seconds(0));
                 alert("Waktu Pembayaran Telah Habis!");
+            } if (purchaseStatus.toLowerCase() == 'success') {
+                clearInterval(countdownInterval.current);
+                setCountdown(moment().hours(0).minutes(0).seconds(0));
             } else {
                 const remaining = moment();
 
@@ -59,239 +67,232 @@ export default function Status({
         };
     }, []);
 
-    moment.updateLocale("id", {
-        weekdays: [
-            "Minggu",
-            "Senin",
-            "Selasa",
-            "Rabu",
-            "Kamis",
-            "Jum'at",
-            "Sabtu",
-        ],
-    });
-    const date = moment(data.created_at)
-        .locale("id")
-        .format("dddd, YYYY-MM-DD");
-
     return (
         <MainLayout auth={auth} title="Purchase">
             <section
                 id="purchase-form"
                 className="mb-16 xs:mb-20 md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32"
             >
-                <div className="container mx-auto pt-4 flex flex-col gap-12 items-center">
-                    <div className="w-1/2 relative shadow-centered-spread rounded-2xl p-6 flex flex-col items-center gap-4 h-fit overflow-hidden">
-                        <div className="flex w-[200%] duration-1000 translate-x-1/4 overflow-hidden">
-                            <h5 className="w-1/2 text-center text-green-500 font-bold">
-                                Status : Pembayaran Berhasil
-                            </h5>
-                            <h5 className="w-1/2 text-center text-secondary font-bold">
-                                Status : Menunggu Pembayaran
-                            </h5>
-                        </div>
-                        <hr className="w-full duration-1000 border-green-500" />
-                        <div className="w-full h-[22vw]">
-                            {/* <div className={"w-full h-full flex justify-center items-center gap-4 duration-1000"}>
-                                <svg className="h-[16vw] fill-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.25 16.518l-4.5-4.319 1.396-1.435 3.078 2.937 6.105-6.218 1.421 1.409-7.5 7.626z"/></svg>
-                            </div> */}
-                            <div
-                                className={`w-full flex flex-col items-center gap-4 duration-1000`}
-                            >
-                                <div className="w-full h-[14vw] flex justify-center items-center">
-                                    {paymentMethod.category !=
-                                    "bank_transfer" ? (
-                                        <img
-                                            src={orderHistory.actions[0].url}
-                                            className="h-full"
-                                            alt=""
-                                        />
-                                    ) : (
-                                        <div className="text-center">
-                                            <h5 className="font-medium">
-                                                Nomor VA {bankName} :
-                                            </h5>
-                                            <h2
-                                                className="leading-loose cursor-pointer"
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(
-                                                        orderHistory
-                                                            .va_numbers[0]
-                                                            .va_number
-                                                    );
-                                                    alert("Text copied!");
-                                                }}
-                                            >
-                                                {
-                                                    orderHistory.va_numbers[0]
-                                                        .va_number
-                                                }
-                                            </h2>
-                                            <p
-                                                className="font-medium hover:text-primary cursor-pointer"
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(
-                                                        orderHistory
-                                                            .va_numbers[0]
-                                                            .va_number
-                                                    );
-                                                    alert("Text copied!");
-                                                }}
-                                            >
-                                                <i className="bi bi-copy"></i>{" "}
-                                                Salin
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
-                                <hr className="w-full border-light-grey" />
-                                <table className="w-full text-center font-poppins">
-                                    <tbody>
-                                        <tr className="font-bold text-[3vw]">
-                                            <td className="w-3/12">
-                                                {countdown.format("HH")}
-                                            </td>
-                                            <td>:</td>
-                                            <td className="w-3/12">
-                                                {countdown.format("mm")}
-                                            </td>
-                                            <td>:</td>
-                                            <td className="w-3/12">
-                                                {countdown.format("ss")}
-                                            </td>
-                                        </tr>
-                                        <tr className="text-[1vw]">
-                                            <td>Jam</td>
-                                            <td></td>
-                                            <td>Menit</td>
-                                            <td></td>
-                                            <td>Detik</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                <div className="md:container mx-auto pt-[16vw] md:pt-[1vw] flex flex-col gap-[4vw] md:gap-[3vw] items-center text-[3.5vw] md:text-[1vw]">
+                    <div className="w-full md:w-1/2 relative md:shadow-centered-spread md:rounded-[1vw] md:p-[1.5vw] h-fit overflow-hidden">
+                        <div className="container md:w-full mx-auto flex flex-col items-center gap-[4vw] md:gap-[1vw] overflow-hidden">
+                            <div className={`flex w-[200%] duration-1000 overflow-hidden ${purchaseStatus == 'success' ? 'translate-x-1/4' : '-translate-x-1/4'}`}>
+                                <h5 className="w-1/2 text-center text-green-500 font-bold text-[4.5vw] md:text-[1.2vw]">
+                                    Pembayaran Berhasil
+                                </h5>
+                                <h5 className="w-1/2 text-center text-secondary font-bold text-[4.5vw] md:text-[1.2vw]">
+                                    Mari Selesaikan Pembayaranmu
+                                </h5>
                             </div>
-                        </div>
-                        <hr className="w-full border-dark" />
-                    </div>
-                    <div className="w-1/2 relative shadow-centered-spread rounded-2xl p-6 flex flex-col items-center gap-6 h-fit">
-                        <hr className="w-full border-light-grey" />
-                        <table className="w-full font-poppins border-separate border-spacing-y-4 -my-4">
-                            <tbody>
-                                <tr>
-                                    <td>Metode Pembayaran</td>
-                                    <td className="flex justify-end items-center gap-2 font-semibold">
-                                        {paymentMethod.name}{" "}
-                                        <img
-                                            className="w-[10%]"
-                                            src={`/img/purchase/${paymentName}.png`}
-                                            alt=""
-                                        />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>ID Transaksi</td>
-                                    <td className="flex justify-end items-center gap-2 font-semibold">
-                                        {data.order_code}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Tanggal Transaksi</td>
-                                    <td className="flex justify-end items-center gap-2 font-semibold">
-                                        {date}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Total Pembelian</td>
-                                    <td className="flex justify-end items-center gap-2 font-semibold">
-                                        IDR{" "}
-                                        {currency.format(
-                                            orderHistory.gross_amount
+                            <hr className={`w-full duration-1000 ${purchaseStatus == 'success' ? 'border-green-500' : 'border-secondary'}`} />
+                            <div className={`w-[200%] flex h-[88vw] md:h-[22vw] duration-1000 ${purchaseStatus == 'success' ? 'translate-x-1/4' : '-translate-x-1/4'}`}>
+                                <div className={`w-full h-full flex justify-center items-center gap-[4vw] md:gap-[1vw] duration-1000 ${purchaseStatus == 'success' ? 'scale-100' : 'scale-0'}`}>
+                                    <svg className="h-[60vw] md:h-[16vw] fill-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.25 16.518l-4.5-4.319 1.396-1.435 3.078 2.937 6.105-6.218 1.421 1.409-7.5 7.626z"/></svg>
+                                </div>
+                                <div className={`w-full flex flex-col items-center gap-[4vw] md:gap-[1vw] duration-1000 ${purchaseStatus == 'success' ? 'scale-0' : 'scale-100'}`}>
+                                    <div className="w-full h-[56vw] md:h-[14vw] flex justify-center items-center">
+                                        {paymentMethod.category !=
+                                        "bank_transfer" ? (
+                                            <img
+                                                src={orderHistory.actions[0].url}
+                                                className="h-full"
+                                                alt=""
+                                            />
+                                        ) : (
+                                            <div className="text-center">
+                                                <h5 className="font-medium text-[4.5vw] md:text-[1.2vw]">
+                                                    Nomor VA {bankName} :
+                                                </h5>
+                                                <h2
+                                                    className="leading-loose cursor-pointer text-[6vw] md:text-[2.3vw]"
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                            orderHistory
+                                                                .va_numbers[0]
+                                                                .va_number
+                                                        );
+                                                        alert("Text copied!");
+                                                    }}
+                                                >
+                                                    {
+                                                        orderHistory.va_numbers[0]
+                                                            .va_number
+                                                    }
+                                                </h2>
+                                                <p
+                                                    className="font-medium hover:text-primary cursor-pointer"
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                            orderHistory
+                                                                .va_numbers[0]
+                                                                .va_number
+                                                        );
+                                                        alert("Text copied!");
+                                                    }}
+                                                >
+                                                    <i className="bi bi-copy"></i>{" "}
+                                                    Salin
+                                                </p>
+                                            </div>
                                         )}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <hr className="w-full border-light-grey" />
-                        <div className="w-full block">
-                            <ExpandedButton
-                                borderClassName="border-1 border-dark"
-                                textClassName="font-medium text-dark"
-                                icon={`fa-solid fa-chevron-down duration-500 ${
-                                    showTutorial ? "-rotate-180" : ""
-                                }`}
-                                onClick={() => setShowTutorial(!showTutorial)}
-                            >
-                                Lihat Langkah Pembayaran
-                            </ExpandedButton>
-                            <TECollapse
-                                show={showTutorial}
-                                className="relative w-[110%] -ms-[5%] px-[4%] shadow-none -translate-y-2"
-                            >
-                                <TECollapseItem className="grid gap-4 px-1">
-                                    <div className="border-1 border-dark rounded-md p-3">
-                                        <p className="font-bold">
-                                            1. Transaksi melalui Desktop
-                                        </p>
-                                        <p>
-                                            Berikut langkah pembayaran
-                                            menggunakan GoPay melalui Desktop:
-                                        </p>
-                                        <ul>
-                                            <li>
-                                                Buka aplikasi Gojek pada
-                                                smarhphone Anda
-                                            </li>
-                                            <li>
-                                                Klik "Pay" dan "Scan" QR Code
-                                            </li>
-                                            <li>
-                                                Periksa detail pembayaran lalu
-                                                klik "Confirm & Pay"
-                                            </li>
-                                            <li>Masukkan "PIN" GoPay Anda</li>
-                                            <li>Pembayaran selesai</li>
-                                        </ul>
                                     </div>
-                                    <div className="border-1 border-dark rounded-md p-3">
-                                        <p className="font-bold">
-                                            2. Transaksi melalui Mobile
-                                        </p>
-                                        <p>
-                                            Berikut langkah pembayaran
-                                            menggunakan GoPay melalui Mobile:
-                                        </p>
-                                        <ul>
-                                            <li>
-                                                Buka aplikasi Gojek pada
-                                                smarhphone Anda
-                                            </li>
-                                            <li>
-                                                Klik "Pay" dan "Scan" QR Code
-                                            </li>
-                                            <li>
-                                                Periksa detail pembayaran lalu
-                                                klik "Confirm & Pay"
-                                            </li>
-                                            <li>Masukkan "PIN" GoPay Anda</li>
-                                            <li>Pembayaran selesai</li>
-                                        </ul>
-                                    </div>
-                                </TECollapseItem>
-                            </TECollapse>
+                                    <hr className="w-full border-light-grey" />
+                                    <table className="w-10/12 md:w-full text-center font-poppins border-separate border-spacing-y-[2vw] md:border-spacing-0 my-[1vw] md:my-0">
+                                        <tbody>
+                                            <tr className="font-bold text-[8vw] md:text-[3vw]">
+                                                <td className="w-3/12">
+                                                    {countdown.format("HH")}
+                                                </td>
+                                                <td>:</td>
+                                                <td className="w-3/12">
+                                                    {countdown.format("mm")}
+                                                </td>
+                                                <td>:</td>
+                                                <td className="w-3/12">
+                                                    {countdown.format("ss")}
+                                                </td>
+                                            </tr>
+                                            <tr className="text-[3vw] md:text-[1vw]">
+                                                <td>Jam</td>
+                                                <td></td>
+                                                <td>Menit</td>
+                                                <td></td>
+                                                <td>Detik</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <hr className="w-full border-dark" />
                         </div>
-                        <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-1 xl:border-2 border-primary font-poppins rounded-full">
-                            <Link
-                                href="/produk"
-                                className="p-1.5 md:p-2 xl:p-2 3xl:p-3 font-medium text-center bg-white text-primary"
-                            >
-                                Belanja Lagi
-                            </Link>
-                            <Link
-                                href="#"
-                                className="p-1.5 md:p-2 xl:p-2 3xl:p-3 font-medium text-center bg-primary text-white"
-                            >
-                                Cek Status Transaksi
-                            </Link>
+                    </div>
+                    <div className="w-full md:w-1/2 relative md:shadow-centered-spread md:rounded-[1vw] md:p-[1.5vw] h-fit">
+                        <div className="container md:w-full mx-auto flex flex-col items-center gap-[4vw] md:gap-[1.5vw]">
+                            <hr className="hidden md:block w-full border-light-grey" />
+                            <table className="w-full font-poppins border-separate border-spacing-y-[4vw] md:border-spacing-y-[1.2vw] -my-[1vw] text-[3.25vw] md:text-[1vw]">
+                                <tbody>
+                                    <tr>
+                                        <td>Metode Pembayaran</td>
+                                        <td className="flex justify-end items-center gap-[.8vw] font-semibold">
+                                            {paymentMethod.name}{" "}
+                                            <img
+                                                className="w-[10%]"
+                                                src={`/img/purchase/${paymentName}.png`}
+                                                alt=""
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ID Transaksi</td>
+                                        <td className="flex justify-end text-end items-center font-semibold">
+                                            {data.order_code}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tanggal Transaksi</td>
+                                        <td className="flex justify-end text-end items-center font-semibold">
+                                            <span className="hidden md:inline-block">{moment(data.created_at).locale("id").format("dddd, DD MMMM YYYY")}</span>
+                                            <span className="md:hidden">
+                                                {moment(data.created_at).locale("id").format("dddd,")}<br/>
+                                                {moment(data.created_at).locale("id").format("DD MMMM YYYY")}
+
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Pembelian</td>
+                                        <td className="flex justify-end text-end items-center font-semibold">
+                                            IDR{" "}
+                                            {currency.format(
+                                                orderHistory.gross_amount
+                                            )}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr className="w-full border-light-grey" />
+                            <div className="w-full block my-[2vw] md:my-0">
+                                <ExpandedButton
+                                    borderClassName="border-1 border-dark"
+                                    textClassName="font-medium text-dark"
+                                    icon={`fa-solid fa-chevron-down duration-500 ${
+                                        showTutorial ? "-rotate-180" : ""
+                                    }`}
+                                    className="h-[9vw] md:h-[3vw]"
+                                    onClick={() => setShowTutorial(!showTutorial)}
+                                >
+                                    Lihat Langkah Pembayaran
+                                </ExpandedButton>
+                                <TECollapse
+                                    show={showTutorial}
+                                    className="relative w-[110%] -ms-[5%] px-[4%] shadow-none -translate-y-[4vw] md:-translate-y-[1vw]"
+                                >
+                                    <TECollapseItem className="grid gap-[4vw] md:gap-[1.2vw] px-[.3vw]">
+                                        <div className="border-1 border-dark rounded-[1.5vw] md:rounded-[.6vw] p-[4vw] md:p-[1vw] flex flex-col gap-[2vw]">
+                                            <p className="font-bold">
+                                                1. Transaksi melalui Desktop
+                                            </p>
+                                            <p>
+                                                Berikut langkah pembayaran
+                                                menggunakan GoPay melalui Desktop:
+                                            </p>
+                                            <ul className="list-disc ms-[6vw] md:ms-[2vw]">
+                                                <li>
+                                                    Buka aplikasi Gojek pada
+                                                    smarhphone Anda
+                                                </li>
+                                                <li>
+                                                    Klik "Pay" dan "Scan" QR Code
+                                                </li>
+                                                <li>
+                                                    Periksa detail pembayaran lalu
+                                                    klik "Confirm & Pay"
+                                                </li>
+                                                <li>Masukkan "PIN" GoPay Anda</li>
+                                                <li>Pembayaran selesai</li>
+                                            </ul>
+                                        </div>
+                                        <div className="border-1 border-dark rounded-[1.5vw] md:rounded-[.6vw] p-[4vw] md:p-[1vw] flex flex-col gap-[2vw]">
+                                            <p className="font-bold">
+                                                2. Transaksi melalui Mobile
+                                            </p>
+                                            <p>
+                                                Berikut langkah pembayaran
+                                                menggunakan GoPay melalui Mobile:
+                                            </p>
+                                            <ul className="list-disc ms-[6vw] md:ms-[2vw]">
+                                                <li>
+                                                    Buka aplikasi Gojek pada
+                                                    smarhphone Anda
+                                                </li>
+                                                <li>
+                                                    Klik "Pay" dan "Scan" QR Code
+                                                </li>
+                                                <li>
+                                                    Periksa detail pembayaran lalu
+                                                    klik "Confirm & Pay"
+                                                </li>
+                                                <li>Masukkan "PIN" GoPay Anda</li>
+                                                <li>Pembayaran selesai</li>
+                                            </ul>
+                                        </div>
+                                    </TECollapseItem>
+                                </TECollapse>
+                            </div>
+                            <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-1 xl:border-2 border-primary font-poppins rounded-full">
+                                <Link
+                                    href="/produk"
+                                    className="p-[2vw] md:p-[.6vw] font-medium text-center bg-white text-primary text-[3vw] md:text-[1vw]"
+                                >
+                                    Belanja Lagi
+                                </Link>
+                                <Link
+                                    href="#"
+                                    className="p-[2vw] md:p-[.6vw] font-medium text-center bg-primary text-white text-[3vw] md:text-[1vw]"
+                                >
+                                    Cek Status Transaksi
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
