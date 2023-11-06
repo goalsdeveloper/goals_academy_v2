@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\API\DateCheckController;
 use App\Http\Controllers\API\CouponCheckController;
 use App\Http\Controllers\API\HandleMidtransCallbackController;
+use App\Models\Order;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,5 +35,11 @@ Route::apiResource('purchase', PurchaseController::class)->middleware('auth:sanc
 
 Route::post('handle_payment', [HandleMidtransCallbackController::class, 'handlePayment']);
 
-Route::post('coupon-check', [CouponCheckController::class, 'couponCheck']);
+Route::post('/coupon-check', [CouponCheckController::class, 'couponCheck']);
 Route::get('date-check', [DateCheckController::class, 'dateCheck']);
+
+Route::get('/check-payment-status/{order:order_code}', function (Order $order) {
+    return response()->json([
+        'status' => $order->status
+    ]);
+});
