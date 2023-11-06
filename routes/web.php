@@ -79,4 +79,4 @@ Route::get('/email/verify/resend-verification', [EmailVerificationController::cl
 require __DIR__ . '/auth.php';
 require __DIR__ . '/socialite.php';
 
-// Route::resource('purchase', OrderController::class);
+
