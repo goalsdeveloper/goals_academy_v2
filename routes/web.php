@@ -60,7 +60,7 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Form', ['title' => 'register']);
 });
 
-Route::resource('/purchase', PurchaseController::class)->middleware('auth');
+Route::resource('/purchase/{products:slug}', PurchaseController::class)->middleware('auth');
 
 Route::get('/purchase/status/{order:order_code}', function (Order $order) {
     return Inertia::render('Purchase/Status', [

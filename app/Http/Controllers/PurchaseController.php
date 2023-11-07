@@ -22,7 +22,7 @@ class PurchaseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Products $products)
     {
         // cek kondisi tanggal
         $endDate = Carbon::now()->addDays(7);
@@ -41,7 +41,7 @@ class PurchaseController extends Controller
         return Inertia::render('Purchase/Form', [
             'date' => $counts,
             'paymentMethods' => $paymentMethods,
-            'dataProduct' => Products::where('id', 1)->first(),
+            'dataProduct' => $products,
         ]);
     }
 
