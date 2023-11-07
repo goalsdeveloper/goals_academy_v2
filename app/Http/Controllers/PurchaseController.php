@@ -19,29 +19,19 @@ use App\Models\PaymentMethod;
 
 class PurchaseController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index']);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index(Products $products)
     {
-        // cek kondisi tanggal
-        $endDate = Carbon::now()->addDays(7);
-
-        $counts = Course::select('date')
-            ->selectRaw('COUNT(*) as count')
-            ->whereBetween('date', [Carbon::today(), $endDate])
-            ->groupBy('date')
-            ->havingRaw('COUNT(*) > 5')
-            ->get();
-        // end cek kondisi tanggal
-
-        $paymentMethods = PaymentMethod::all();
-
-
-        return Inertia::render('Purchase/Form', [
-            'date' => $counts,
-            'paymentMethods' => $paymentMethods,
-            'dataProduct' => $products,
+        $dataProduct = Products::get();
+        // dd($dataProduct);
+        return Inertia::render('Main/Produk', [
+            'dataProduct' => $dataProduct
         ]);
     }
 
@@ -89,12 +79,18 @@ class PurchaseController extends Controller
                 return response()->json(['message' => 'Promo tidak ditemukan!']);
             }
 
-            if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
-                return response()->json(['message' => 'Kode promo telah terpakai']);
+            if ($cekPromo->is_price == 1) {
+                $discount = $cekPromo->value;
             } else {
-                //
-                $promoCode = $user->kodePromo()->attach($cekPromo->id);
+                $discount = ($cekPromo->value / 100) * $getProduct->price;
             }
+
+            // if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
+            //     return response()->json(['message' => 'Kode promo telah terpakai']);
+            // } else {
+
+            //     // $promoCode = $user->kodePromo()->attach($cekPromo->id);
+            // }
         }
 
         // charge midtrans
@@ -210,7 +206,7 @@ class PurchaseController extends Controller
             ]);
         }
 
-        return redirect()->route('purchase.show', $order->order_code);
+        return redirect()->route('purchase.status', $order->order_code);
     }
 
     /**
@@ -218,18 +214,23 @@ class PurchaseController extends Controller
      */
     public function show(string $order)
     {
-        $order = Order::where('order_code', $order)->with('orderHistory', 'paymentMethod')->first();
-        $paymentName = Str::lower($order->paymentMethod->name);
+        // cek kondisi tanggal
+        $endDate = Carbon::now()->addDays(7);
 
-        $orderHistory = $order->orderHistory->where('status', 'pending')->first();
-        $stringToJson = json_decode($orderHistory->payload);
-        // dd($stringToJson, $order->paymentMethod);
-        return Inertia::render('Purchase/Status', [
-            'data' => $order,
-            'orderHistory' => $stringToJson,
-            'paymentMethod' => $order->paymentMethod,
-            'bankName' => $order->paymentMethod->name,
-            'paymentName' => $paymentName,
+        $counts = Course::select('date')
+            ->selectRaw('COUNT(*) as count')
+            ->whereBetween('date', [Carbon::today(), $endDate])
+            ->groupBy('date')
+            ->havingRaw('COUNT(*) > 5')
+            ->get();
+        // end cek kondisi tanggal
+
+        $paymentMethods = PaymentMethod::all();
+
+        return Inertia::render('Purchase/Form', [
+            'date' => $counts,
+            'paymentMethods' => $paymentMethods,
+            'dataProduct' => Products::where('slug', $order)->with('categories')->first(),
         ]);
     }
 

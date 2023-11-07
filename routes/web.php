@@ -4,6 +4,7 @@ use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Http\Controllers\PurchaseController;
 use App\Models\Order;
 use App\Models\Tutor;
@@ -28,9 +29,9 @@ Route::get('/', function () {
     return Inertia::render('Index');
 });
 
-Route::get('/produk', function () {
-    return Inertia::render('Main/Produk');
-});
+// Route::get('/produk', function () {
+//     return Inertia::render('Main/Produk');
+// });
 
 // Route::get('/artikel', function () {
 //     return Inertia::render('Main/Artikel');
@@ -60,13 +61,9 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Form', ['title' => 'register']);
 });
 
-Route::resource('/purchase/{products:slug}', PurchaseController::class)->middleware('auth');
+Route::resource('/produk', PurchaseController::class);
 
-Route::get('/purchase/status/{order:order_code}', function (Order $order) {
-    return Inertia::render('Purchase/Status', [
-        'data' => $order
-    ]);
-})->name('purchase.status');
+Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status');
 
 Route::resource('/profile', ProfileController::class);
 
@@ -78,5 +75,3 @@ Route::get('/email/verify/resend-verification', [EmailVerificationController::cl
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/socialite.php';
-
-// Route::resource('purchase', OrderController::class);
