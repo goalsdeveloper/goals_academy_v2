@@ -10,9 +10,10 @@ import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import { useForm } from "@inertiajs/react";
 import { ThemeProvider, createTheme } from "@mui/material";
-import '@/script/momentCustomLocale';
+import "@/script/momentCustomLocale";
 
 export default function Form({ auth, date, dataProduct }) {
+    console.log(dataProduct);
     const { data, setData, post } = useForm({
         schedule: "",
         city: "",
@@ -49,9 +50,9 @@ export default function Form({ auth, date, dataProduct }) {
     const unavailableDate = date.map((i) => i.date);
     const cities = ["Malang", "Surabaya", "Jakarta"];
     const places = {
-        "Malang": ["Kafe 1", "Kafe 2", "Kafe 3", "Kafe 4", "Kafe 5"],
-        "Surabaya": ["Kafe 6", "Kafe 7", "Kafe 8", "Kafe 9", "Kafe 10"],
-        "Jakarta": ["Kafe 11", "Kafe 12", "Kafe 13", "Kafe 14", "Kafe 15"],
+        Malang: ["Kafe 1", "Kafe 2", "Kafe 3", "Kafe 4", "Kafe 5"],
+        Surabaya: ["Kafe 6", "Kafe 7", "Kafe 8", "Kafe 9", "Kafe 10"],
+        Jakarta: ["Kafe 11", "Kafe 12", "Kafe 13", "Kafe 14", "Kafe 15"],
     };
     const purchaseMethods = [
         { name: "Gopay", admin: 2, purchase_method: "ewallet" },
@@ -69,38 +70,39 @@ export default function Form({ auth, date, dataProduct }) {
 
     const promoHandler = (inputCode, successCallback, processCallback) => {
         processCallback(true);
-        fetch('/api/coupon-check', {
-            method: 'post',
+        fetch("/api/coupon-check", {
+            method: "post",
             headers: {
-                accept: 'application.json',
-                'Content-Type': 'application/json'
+                accept: "application.json",
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify({'inputCode': inputCode}),
+            body: JSON.stringify({ inputCode: inputCode }),
         })
-        .then(response => response.json())
-        .then(response => {
-            processCallback(false);
-            if ('data' in response) {
-                if (response.data.is_price) {
-                    setData({
-                        ...data,
-                        promo: temp.promo,
-                        discount: response.data.value
-                    });
+            .then((response) => response.json())
+            .then((response) => {
+                processCallback(false);
+                if ("data" in response) {
+                    if (response.data.is_price) {
+                        setData({
+                            ...data,
+                            promo: temp.promo,
+                            discount: response.data.value,
+                        });
+                    } else {
+                        setData({
+                            ...data,
+                            promo: temp.promo,
+                            discount:
+                                (data.init_price * response.data.value) / 100,
+                        });
+                    }
+                    alert(response.message);
+                    successCallback();
                 } else {
-                    setData({
-                        ...data,
-                        promo: temp.promo,
-                        discount: (data.init_price * response.data.value) / 100
-                    });
+                    setTemp({ ...temp, promo: data.promo, discount: 0 });
+                    alert(response.message);
                 }
-                alert(response.message);
-                successCallback();
-            } else {
-                setTemp({ ...temp, promo: data.promo, discount: 0});
-                alert(response.message);
-            }
-        });
+            });
     };
 
     return (
@@ -135,7 +137,15 @@ export default function Form({ auth, date, dataProduct }) {
     );
 }
 
-function MainCard({ data, setData, temp, setTemp, unavailableDate, cities, places }) {
+function MainCard({
+    data,
+    setData,
+    temp,
+    setTemp,
+    unavailableDate,
+    cities,
+    places,
+}) {
     const [showScheduleForm, setShowScheduleForm] = useState(false);
     const [showNoteForm, setShowNoteForm] = useState(false);
     return (
@@ -144,10 +154,13 @@ function MainCard({ data, setData, temp, setTemp, unavailableDate, cities, place
                 <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[1vw] md:py-0">
                     <p className="text-secondary">Bimbingan Skripsi</p>
                     <hr className="border-secondary" />
-                    <h3 className="w-8/12 md:w-full text-secondary text-[5vw] md:text-[1.5vw]">Dibimbing Offline 60 Menit</h3>
+                    <h3 className="w-8/12 md:w-full text-secondary text-[5vw] md:text-[1.5vw]">
+                        Dibimbing Offline 60 Menit
+                    </h3>
                     <p>
-                        Capai kesuksesan skripsimu melalui bimbingan personal secara
-                        1-on-1, sesuai dengan permasalahan pada skripsimu.
+                        Capai kesuksesan skripsimu melalui bimbingan personal
+                        secara 1-on-1, sesuai dengan permasalahan pada
+                        skripsimu.
                     </p>
                     <div className="flex flex-col gap-[3vw] md:gap-[.5vw] mb-[2vw]">
                         <p>Layanan :</p>
@@ -168,7 +181,9 @@ function MainCard({ data, setData, temp, setTemp, unavailableDate, cities, place
                 <div className="md:hidden h-[4vw] bg-slate-100"></div>
                 <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
                     <div>
-                        <p className="font-medium mb-[2vw] md:mb-[.5vw]">Jadwal Bimbingan:</p>
+                        <p className="font-medium mb-[2vw] md:mb-[.5vw]">
+                            Jadwal Bimbingan:
+                        </p>
                         <ExpandedButton
                             className="rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
                             borderClassName={`border-1 outline outline-1 ${
@@ -178,7 +193,11 @@ function MainCard({ data, setData, temp, setTemp, unavailableDate, cities, place
                             }`}
                             onClick={() => setShowScheduleForm(true)}
                         >
-                            <i className="fa-regular fa-calendar"></i>&nbsp;&nbsp;{data.schedule != "" ? "Jadwal telah dipilih" : "Pilih Jadwal"}
+                            <i className="fa-regular fa-calendar"></i>
+                            &nbsp;&nbsp;
+                            {data.schedule != ""
+                                ? "Jadwal telah dipilih"
+                                : "Pilih Jadwal"}
                         </ExpandedButton>
                         <ScheduleForm
                             show={showScheduleForm}
@@ -193,7 +212,9 @@ function MainCard({ data, setData, temp, setTemp, unavailableDate, cities, place
                         />
                     </div>
                     <div>
-                        <p className="font-medium mb-[2vw] md:mb-[.5vw]">Catatan untuk Tutor:</p>
+                        <p className="font-medium mb-[2vw] md:mb-[.5vw]">
+                            Catatan untuk Tutor:
+                        </p>
                         <ExpandedButton
                             className="rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
                             borderClassName={`border-1 outline outline-1 ${
@@ -203,7 +224,10 @@ function MainCard({ data, setData, temp, setTemp, unavailableDate, cities, place
                             }`}
                             onClick={() => setShowNoteForm(true)}
                         >
-                            <i className="bi bi-pen"></i>&nbsp;&nbsp;{data.note != "" ? "Catatan telah diisi" : "Isi catatan"}
+                            <i className="bi bi-pen"></i>&nbsp;&nbsp;
+                            {data.note != ""
+                                ? "Catatan telah diisi"
+                                : "Isi catatan"}
                         </ExpandedButton>
                         <NoteForm
                             show={showNoteForm}
@@ -216,7 +240,9 @@ function MainCard({ data, setData, temp, setTemp, unavailableDate, cities, place
                     </div>
                     <div className="flex flex-col text-light-grey">
                         <label htmlFor="file" className="font-medium">
-                            <p className="mb-[2vw] md:mb-[.5vw] text-dark">Berkas Pendukung (opsional)</p>
+                            <p className="mb-[2vw] md:mb-[.5vw] text-dark">
+                                Berkas Pendukung (opsional)
+                            </p>
                             <div
                                 className={`w-full border-1 outline outline-1 rounded-[1vw] md:rounded-[.4vw] flex items-center cursor-pointer overflow-hidden h-[9vw] md:h-[2.5vw] ${
                                     data.document != 0
@@ -234,7 +260,13 @@ function MainCard({ data, setData, temp, setTemp, unavailableDate, cities, place
                                     Pilih File
                                 </div>
                                 <div className="w-9/12 px-[3vw] md:px-[1vw] flex justify-between items-center">
-                                    <span className={data.document != 0 ? "text-secondary" : ""}>
+                                    <span
+                                        className={
+                                            data.document != 0
+                                                ? "text-secondary"
+                                                : ""
+                                        }
+                                    >
                                         {data.document != 0
                                             ? "File telah dipilih"
                                             : "Belum ada file yang dipilih"}
@@ -296,7 +328,11 @@ function SummaryCard({
                             <tr>
                                 <td>Tanggal</td>
                                 <td className="font-bold text-right">
-                                    {data.schedule != "" ? moment(data.schedule).format('dddd, DD MMMM YYYY') : "-"}
+                                    {data.schedule != ""
+                                        ? moment(data.schedule).format(
+                                              "dddd, DD MMMM YYYY"
+                                          )
+                                        : "-"}
                                 </td>
                             </tr>
                         </tbody>
@@ -335,16 +371,16 @@ function SummaryCard({
                         Catatan untuk Tutor
                     </h5>
                     <hr className="border-secondary" />
-                    <p className="font-poppins md:font-medium leading-[5vw] md:leading-[1.25vw] my-[4vw] md:my-[1vw] text-[3.4vw] md:text-[.9vw] cursor-pointer" onClick={() => setShowNote(!showNote)}>
-                        {showNote ? (
-                            data.note.split(' ').length > 15 ? (
-                                data.note.split(' ').slice(0, 15).join(' ')+'...'
-                            ) : (
-                                data.note
-                            )
-                        ) : (
-                            data.note
-                        )}
+                    <p
+                        className="font-poppins md:font-medium leading-[5vw] md:leading-[1.25vw] my-[4vw] md:my-[1vw] text-[3.4vw] md:text-[.9vw] cursor-pointer"
+                        onClick={() => setShowNote(!showNote)}
+                    >
+                        {showNote
+                            ? data.note.split(" ").length > 15
+                                ? data.note.split(" ").slice(0, 15).join(" ") +
+                                  "..."
+                                : data.note
+                            : data.note}
                     </p>
                     <hr className="border-black" />
                 </div>
@@ -364,20 +400,23 @@ function SummaryCard({
                         <tbody>
                             <tr>
                                 <td>Nama Berkas</td>
-                                <td className="font-bold text-right" onClick={() => setShowDocument(!showDocument)}>
-                                    {data.document != "" ? (
-                                        showDocument ? (
-                                            data.document.name.split(' ').length > 5 ? (
-                                                data.document.name.split(' ').slice(0, 5).join(' ')+'...'
-                                            ) : (
-                                                data.document.name
-                                            )
-                                        ) : (
-                                            data.document.name
-                                        )
-                                    ) : (
-                                        ""
-                                    )}
+                                <td
+                                    className="font-bold text-right"
+                                    onClick={() =>
+                                        setShowDocument(!showDocument)
+                                    }
+                                >
+                                    {data.document != ""
+                                        ? showDocument
+                                            ? data.document.name.split(" ")
+                                                  .length > 5
+                                                ? data.document.name
+                                                      .split(" ")
+                                                      .slice(0, 5)
+                                                      .join(" ") + "..."
+                                                : data.document.name
+                                            : data.document.name
+                                        : ""}
                                 </td>
                             </tr>
                         </tbody>
@@ -390,8 +429,8 @@ function SummaryCard({
                                 <td className="font-bold text-right">
                                     {data.document != ""
                                         ? `${Math.ceil(
-                                            data.document.size / 1024
-                                        )} KB`
+                                              data.document.size / 1024
+                                          )} KB`
                                         : "-"}
                                 </td>
                             </tr>
@@ -422,8 +461,11 @@ function SummaryCard({
                                     <tr>
                                         <td>Dibimbing Sekali</td>
                                         <td className="font-bold text-right">
-                                            {currency.format(data.init_price) > 0
-                                                ? `IDR ${currency.format(data.init_price)}`
+                                            {currency.format(data.init_price) >
+                                            0
+                                                ? `IDR ${currency.format(
+                                                      data.init_price
+                                                  )}`
                                                 : "-"}
                                         </td>
                                     </tr>
@@ -431,7 +473,9 @@ function SummaryCard({
                                         <td>Promo</td>
                                         <td className="font-bold text-right">
                                             {currency.format(data.discount) > 0
-                                                ? `IDR ${currency.format(data.discount)}`
+                                                ? `IDR ${currency.format(
+                                                      data.discount
+                                                  )}`
                                                 : "-"}
                                         </td>
                                     </tr>
@@ -439,7 +483,9 @@ function SummaryCard({
                                         <td>Biaya Admin</td>
                                         <td className="font-bold text-right">
                                             {currency.format(data.admin) > 0
-                                                ? `IDR ${currency.format(data.admin)}`
+                                                ? `IDR ${currency.format(
+                                                      data.admin
+                                                  )}`
                                                 : "-"}
                                         </td>
                                     </tr>
@@ -448,7 +494,9 @@ function SummaryCard({
                             <hr className="border-black" />
                         </div>
                         <div className="hidden md:block text-center font-poppins my-[1.25vw]">
-                            <p className="font-bold mb-[2vw] md:mb-[.5vw]">Total Pembelian</p>
+                            <p className="font-bold mb-[2vw] md:mb-[.5vw]">
+                                Total Pembelian
+                            </p>
                             <h2 className="text-secondary md:text-[2.25vw]">
                                 IDR {currency.format(totalPrice)}
                             </h2>
@@ -463,7 +511,9 @@ function SummaryCard({
                                 }`}
                                 onClick={() => setShowPromoForm(!showPromoForm)}
                             >
-                                {data.discount > 0 ? "Promo Terpakai" : "Pakai Promo"}
+                                {data.discount > 0
+                                    ? "Promo Terpakai"
+                                    : "Pakai Promo"}
                             </ExpandedButton>
                             <ExpandedButton
                                 className="rounded-[.8vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
@@ -473,7 +523,9 @@ function SummaryCard({
                                         : "outline-light-grey text-light-grey"
                                 }`}
                                 onClick={() =>
-                                    setShowPurchaseMethodForm(!showPurchaseMethodForm)
+                                    setShowPurchaseMethodForm(
+                                        !showPurchaseMethodForm
+                                    )
                                 }
                             >
                                 {data.purchase_method != "" ? (
@@ -514,7 +566,9 @@ function SummaryCard({
                     <div className="flex justify-between items-center mt-[4vw] md:mt-0">
                         <div className="md:hidden">
                             <p className="mb-[1vw]">Total pembelian</p>
-                            <p className="font-poppins text-secondary font-bold text-[5.25vw]">IDR {currency.format(totalPrice)}</p>
+                            <p className="font-poppins text-secondary font-bold text-[5.25vw]">
+                                IDR {currency.format(totalPrice)}
+                            </p>
                         </div>
                         <ButtonPill
                             className="w-6/12 md:w-full mt-[1.25vw]"
@@ -536,8 +590,16 @@ function SummaryCard({
     );
 }
 
-function PromoForm({ show, setShow, data, setData, temp, setTemp, promoHandler }) {
-    const [isProcess, setIsProcess] = useState(false)
+function PromoForm({
+    show,
+    setShow,
+    data,
+    setData,
+    temp,
+    setTemp,
+    promoHandler,
+}) {
+    const [isProcess, setIsProcess] = useState(false);
     return (
         <>
             <div
@@ -546,7 +608,7 @@ function PromoForm({ show, setShow, data, setData, temp, setTemp, promoHandler }
                 } fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`}
                 onClick={() => {
                     if (data.promo != "") {
-                        setTemp({ ...temp, promo: data.promo, discount: 0});
+                        setTemp({ ...temp, promo: data.promo, discount: 0 });
                     }
                     setShow(false);
                 }}
@@ -568,7 +630,11 @@ function PromoForm({ show, setShow, data, setData, temp, setTemp, promoHandler }
                             className="fa-solid fa-times text-[5vw] md:text-[1.5vw]"
                             onClick={() => {
                                 if (data.promo != "") {
-                                    setTemp({ ...temp, promo: data.promo, discount: 0});
+                                    setTemp({
+                                        ...temp,
+                                        promo: data.promo,
+                                        discount: 0,
+                                    });
                                 }
                                 setShow(false);
                             }}
@@ -578,12 +644,12 @@ function PromoForm({ show, setShow, data, setData, temp, setTemp, promoHandler }
                 </div>
                 <form
                     onSubmit={(e) => {
-                        e.preventDefault()
+                        e.preventDefault();
                         if (temp.promo != "") {
                             promoHandler(
                                 temp.promo,
                                 () => setShow(false),
-                                setIsProcess,
+                                setIsProcess
                             );
                         }
                     }}
@@ -592,10 +658,16 @@ function PromoForm({ show, setShow, data, setData, temp, setTemp, promoHandler }
                     <input
                         className="w-full flex justify-between items-center px-[3vw] md:px-[1vw] shadow-centered-spread rounded-sm border-2 focus:outline-0 text-dark h-[9vw] md:h-[2.5vw]"
                         value={temp.promo}
-                        onChange={(e) => {setTemp("promo", e.target.value)}}
+                        onChange={(e) => {
+                            setTemp("promo", e.target.value);
+                        }}
                         placeholder="Masukkan kode promo disini"
                     />
-                    <div className={`absolute h-full top-0 right-0 flex items-center px-[3vw] md:px-[1vw] ${isProcess ? '' : 'hidden'}`}>
+                    <div
+                        className={`absolute h-full top-0 right-0 flex items-center px-[3vw] md:px-[1vw] ${
+                            isProcess ? "" : "hidden"
+                        }`}
+                    >
                         <i className="fa-solid fa-circle-notch fa-spin"></i>
                     </div>
                 </form>
@@ -608,7 +680,7 @@ function PromoForm({ show, setShow, data, setData, temp, setTemp, promoHandler }
                                 promoHandler(
                                     temp.promo,
                                     () => setShow(false),
-                                    setIsProcess,
+                                    setIsProcess
                                 );
                             }
                         }}
@@ -621,7 +693,15 @@ function PromoForm({ show, setShow, data, setData, temp, setTemp, promoHandler }
     );
 }
 
-function PurchaseMethodForm({ show, setShow, data, setData, temp, setTemp, purchaseMethods }) {
+function PurchaseMethodForm({
+    show,
+    setShow,
+    data,
+    setData,
+    temp,
+    setTemp,
+    purchaseMethods,
+}) {
     return (
         <>
             <div
@@ -652,14 +732,21 @@ function PurchaseMethodForm({ show, setShow, data, setData, temp, setTemp, purch
                 </div>
                 <div className="h-[40vh] md:h-fit flex flex-col gap-[3vw] md:gap-[1.5vw] overflow-auto scrollbar-hidden">
                     <div>
-                        <h6 className="font-medium mb-[2vw] md:mb-[1vw]">Dompet Digital</h6>
+                        <h6 className="font-medium mb-[2vw] md:mb-[1vw]">
+                            Dompet Digital
+                        </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
                                 if (item.purchase_method == "ewallet") {
                                     return (
                                         <ExpandedButton
                                             key={i}
-                                            className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${temp.purchase_method == item.name ? "border-secondary" : ""}`}
+                                            className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
+                                                temp.purchase_method ==
+                                                item.name
+                                                    ? "border-secondary"
+                                                    : ""
+                                            }`}
                                             borderClassName="border-0"
                                             onClick={() => {
                                                 setTemp({
@@ -687,14 +774,21 @@ function PurchaseMethodForm({ show, setShow, data, setData, temp, setTemp, purch
                         </div>
                     </div>
                     <div>
-                        <h6 className="font-medium mb-[2vw] md:mb-[1vw]">Bank</h6>
+                        <h6 className="font-medium mb-[2vw] md:mb-[1vw]">
+                            Bank
+                        </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
                                 if (item.purchase_method == "bank_transfer") {
                                     return (
                                         <ExpandedButton
                                             key={i}
-                                            className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${temp.purchase_method == item.name ? "border-secondary" : ""}`}
+                                            className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
+                                                temp.purchase_method ==
+                                                item.name
+                                                    ? "border-secondary"
+                                                    : ""
+                                            }`}
                                             borderClassName="border-0"
                                             onClick={() => {
                                                 setTemp({
@@ -729,7 +823,7 @@ function PurchaseMethodForm({ show, setShow, data, setData, temp, setTemp, purch
                                     ...data,
                                     admin: temp.admin,
                                     purchase_method: temp.purchase_method,
-                                })
+                                });
                                 setShow(false);
                             }
                         }}
@@ -759,11 +853,11 @@ function ScheduleForm({
     const theme = createTheme({
         typography: {
             fontSize: {
-                1: '1vw',
-                4: '4vw',
-            }
-        }
-    })
+                1: "1vw",
+                4: "4vw",
+            },
+        },
+    });
     return (
         <>
             <div
@@ -794,7 +888,9 @@ function ScheduleForm({
                         </h5>
                         <i
                             role="button"
-                            className={"fa-solid fa-times text-[5vw] md:text-[1.5vw]"}
+                            className={
+                                "fa-solid fa-times text-[5vw] md:text-[1.5vw]"
+                            }
                             onClick={() => setShow(false)}
                         ></i>
                     </div>
@@ -820,7 +916,9 @@ function ScheduleForm({
                             onClick={() => setShowDatePicker(!showDatePicker)}
                         >
                             {temp.schedule != ""
-                                ? moment(temp.schedule).format('dddd, DD MMMM YYYY')
+                                ? moment(temp.schedule).format(
+                                      "dddd, DD MMMM YYYY"
+                                  )
                                 : "Pilih Tanggal"}
                         </ExpandedButton>
                         <div
@@ -838,11 +936,27 @@ function ScheduleForm({
                                     <StaticDatePicker
                                         slotProps={{
                                             toolbar: { hidden: true },
-                                            actionBar: { sx: { display: "none" } },
-                                            switchViewButton: {sx: { display: "none" }},
-                                            nextIconButton: { sx: { fontSize: "1.75vw" }},
-                                            previousIconButton: { sx: { fontSize: "1.75vw" }},
-                                            calendarHeader: { sx: {fontSize: "1.25vw", height: "4vw", maxHeight: "unset", margin: 0, padding: "0 .75vw 0 1.5vw"}},
+                                            actionBar: {
+                                                sx: { display: "none" },
+                                            },
+                                            switchViewButton: {
+                                                sx: { display: "none" },
+                                            },
+                                            nextIconButton: {
+                                                sx: { fontSize: "1.75vw" },
+                                            },
+                                            previousIconButton: {
+                                                sx: { fontSize: "1.75vw" },
+                                            },
+                                            calendarHeader: {
+                                                sx: {
+                                                    fontSize: "1.25vw",
+                                                    height: "4vw",
+                                                    maxHeight: "unset",
+                                                    margin: 0,
+                                                    padding: "0 .75vw 0 1.5vw",
+                                                },
+                                            },
                                         }}
                                         sx={{
                                             fontSize: "fontSize.1",
@@ -851,15 +965,42 @@ function ScheduleForm({
                                             height: "25vw",
                                             padding: "1vw 1vw 2vw",
                                             maxHeight: "unset",
-                                            "& .MuiDateCalendar-root": { width: "100%", height: "fit-content", maxHeight: "unset" },
-                                            "& .MuiPickersLayout-contentWrapper": { width: "100%", height: "100%" },
-                                            "& .MuiDayCalendar-monthContainer": { width: "100%", height: "fit-content", position: "relative" },
-                                            "& .MuiPickersSlideTransition-root": { width: "100%", height: "fit-content", minHeight: "unset" },
-                                            "& .MuiDayCalendar-weekDayLabel": { width: "3vw", height: "3vw" },
-                                            "& .MuiPickersDay-root": { width: "3vw", height: "3vw" },
-                                            "& .MuiPickersDay-root.Mui-selected": { backgroundColor: "#FF8854" },
-                                            "& .MuiPickersDay-root.Mui-selected:hover": { backgroundColor: "#FF6420" },
-                                            "& .MuiPickersYear-yearButton.Mui-selected": { backgroundColor: "#FF8854" },
+                                            "& .MuiDateCalendar-root": {
+                                                width: "100%",
+                                                height: "fit-content",
+                                                maxHeight: "unset",
+                                            },
+                                            "& .MuiPickersLayout-contentWrapper":
+                                                {
+                                                    width: "100%",
+                                                    height: "100%",
+                                                },
+                                            "& .MuiDayCalendar-monthContainer":
+                                                {
+                                                    width: "100%",
+                                                    height: "fit-content",
+                                                    position: "relative",
+                                                },
+                                            "& .MuiPickersSlideTransition-root":
+                                                {
+                                                    width: "100%",
+                                                    height: "fit-content",
+                                                    minHeight: "unset",
+                                                },
+                                            "& .MuiDayCalendar-weekDayLabel": {
+                                                width: "3vw",
+                                                height: "3vw",
+                                            },
+                                            "& .MuiPickersDay-root": {
+                                                width: "3vw",
+                                                height: "3vw",
+                                            },
+                                            "& .MuiPickersDay-root.Mui-selected":
+                                                { backgroundColor: "#FF8854" },
+                                            "& .MuiPickersDay-root.Mui-selected:hover":
+                                                { backgroundColor: "#FF6420" },
+                                            "& .MuiPickersYear-yearButton.Mui-selected":
+                                                { backgroundColor: "#FF8854" },
                                         }}
                                         minDate={moment()}
                                         maxDate={moment().add("6", "day")}
@@ -882,7 +1023,9 @@ function ScheduleForm({
                     </div>
                 </div>
                 <div>
-                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">Pilih Kota Bimbingan :</p>
+                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">
+                        Pilih Kota Bimbingan :
+                    </p>
                     <ExpandedButton
                         className="shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw]"
                         borderClassName={
@@ -898,9 +1041,9 @@ function ScheduleForm({
                         }`}
                         onClick={() => {
                             if (showPlaceOptions) {
-                                setShowPlaceOptions(false)
+                                setShowPlaceOptions(false);
                             }
-                            setShowCityOptions(!showCityOptions)
+                            setShowCityOptions(!showCityOptions);
                         }}
                     >
                         {temp.city != "" ? temp.city : "Pilih Kota"}
@@ -917,7 +1060,11 @@ function ScheduleForm({
                                         className="w-full flex justify-between items-center h-[8vw] md:h-[3vw] px-[4vw] md:px-[1vw] font-medium shadow-centered rounded-sm border-0 hover:bg-secondary hover:text-white text-gray-400 cursor-pointer"
                                         onClick={() => {
                                             if (temp.city != item) {
-                                                setTemp({...temp, city: item, place: ""})
+                                                setTemp({
+                                                    ...temp,
+                                                    city: item,
+                                                    place: "",
+                                                });
                                             } else {
                                                 setTemp("city", item);
                                             }
@@ -932,9 +1079,13 @@ function ScheduleForm({
                     </TECollapse>
                 </div>
                 <div>
-                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">Pilih Lokasi Bimbingan :</p>
+                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">
+                        Pilih Lokasi Bimbingan :
+                    </p>
                     <ExpandedButton
-                        className={`shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw] ${temp.city != "" ? "" : "bg-slate-100"}`}
+                        className={`shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw] ${
+                            temp.city != "" ? "" : "bg-slate-100"
+                        }`}
                         borderClassName={
                             temp.place != ""
                                 ? "border-2 border-secondary"
@@ -949,9 +1100,9 @@ function ScheduleForm({
                         onClick={() => {
                             if (temp.city != "") {
                                 if (showCityOptions) {
-                                    setShowCityOptions(false)
+                                    setShowCityOptions(false);
                                 }
-                                setShowPlaceOptions(!showPlaceOptions)
+                                setShowPlaceOptions(!showPlaceOptions);
                             }
                         }}
                     >
@@ -994,7 +1145,11 @@ function ScheduleForm({
                         isActive={temp.schedule != "" && temp.place != ""}
                         onClick={(e) => {
                             if (temp.schedule != "" && temp.place != "") {
-                                setData({ ...data, schedule: temp.schedule, place: temp.place })
+                                setData({
+                                    ...data,
+                                    schedule: temp.schedule,
+                                    place: temp.place,
+                                });
                                 setShow(false);
                             }
                         }}
@@ -1022,10 +1177,22 @@ function ScheduleForm({
                                 slotProps={{
                                     toolbar: { hidden: true },
                                     actionBar: { sx: { display: "none" } },
-                                    switchViewButton: {sx: { display: "none" }},
-                                    nextIconButton: { sx: { fontSize: "6vw" }},
-                                    previousIconButton: { sx: { fontSize: "6vw" }},
-                                    calendarHeader: { sx: {fontSize: "5vw", height: "10vw", maxHeight: "unset", margin: 0, padding: "1vw 0 6vw 4vw"}},
+                                    switchViewButton: {
+                                        sx: { display: "none" },
+                                    },
+                                    nextIconButton: { sx: { fontSize: "6vw" } },
+                                    previousIconButton: {
+                                        sx: { fontSize: "6vw" },
+                                    },
+                                    calendarHeader: {
+                                        sx: {
+                                            fontSize: "5vw",
+                                            height: "10vw",
+                                            maxHeight: "unset",
+                                            margin: 0,
+                                            padding: "1vw 0 6vw 4vw",
+                                        },
+                                    },
                                 }}
                                 sx={{
                                     fontSize: "fontSize.4",
@@ -1034,14 +1201,38 @@ function ScheduleForm({
                                     height: "50vh",
                                     padding: "6vw 3vw 6vw",
                                     maxHeight: "unset",
-                                    "& .MuiDateCalendar-root": { width: "100%", height: "fit-content", maxHeight: "unset" },
-                                    "& .MuiPickersLayout-contentWrapper": { width: "100%", height: "100%" },
-                                    "& .MuiDayCalendar-monthContainer": { width: "100%", height: "fit-content", position: "relative" },
-                                    "& .MuiPickersSlideTransition-root": { width: "100%", height: "fit-content", minHeight: "unset" },
-                                    "& .MuiDayCalendar-weekDayLabel": { width: "10vw", height: "10vw" },
-                                    "& .MuiPickersDay-root": { width: "10vw", height: "10vw" },
-                                    "& .MuiPickersDay-root.Mui-selected": { backgroundColor: "#FF8854" },
-                                    "& .MuiPickersYear-yearButton.Mui-selected": { backgroundColor: "#FF8854" },
+                                    "& .MuiDateCalendar-root": {
+                                        width: "100%",
+                                        height: "fit-content",
+                                        maxHeight: "unset",
+                                    },
+                                    "& .MuiPickersLayout-contentWrapper": {
+                                        width: "100%",
+                                        height: "100%",
+                                    },
+                                    "& .MuiDayCalendar-monthContainer": {
+                                        width: "100%",
+                                        height: "fit-content",
+                                        position: "relative",
+                                    },
+                                    "& .MuiPickersSlideTransition-root": {
+                                        width: "100%",
+                                        height: "fit-content",
+                                        minHeight: "unset",
+                                    },
+                                    "& .MuiDayCalendar-weekDayLabel": {
+                                        width: "10vw",
+                                        height: "10vw",
+                                    },
+                                    "& .MuiPickersDay-root": {
+                                        width: "10vw",
+                                        height: "10vw",
+                                    },
+                                    "& .MuiPickersDay-root.Mui-selected": {
+                                        backgroundColor: "#FF8854",
+                                    },
+                                    "& .MuiPickersYear-yearButton.Mui-selected":
+                                        { backgroundColor: "#FF8854" },
                                 }}
                                 minDate={moment()}
                                 maxDate={moment().add("6", "day")}
@@ -1089,7 +1280,9 @@ function NoteForm({ show, setShow, data, setData, temp, setTemp }) {
                         </h5>
                         <i
                             role="button"
-                            className={"fa-solid fa-times text-[5vw] md:text-[1.5vw]"}
+                            className={
+                                "fa-solid fa-times text-[5vw] md:text-[1.5vw]"
+                            }
                             onClick={() => setShow(false)}
                         ></i>
                     </div>
@@ -1110,7 +1303,7 @@ function NoteForm({ show, setShow, data, setData, temp, setTemp }) {
                         isActive={temp.note != ""}
                         onClick={(e) => {
                             if (temp.note != "") {
-                                setData("note", temp.note)
+                                setData("note", temp.note);
                                 setShow(false);
                             }
                         }}

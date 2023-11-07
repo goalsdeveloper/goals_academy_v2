@@ -22,123 +22,16 @@ import webinar1 from "/resources/img/webinar/1.png";
 import webinar2 from "/resources/img/webinar/2.png";
 import webinar3 from "/resources/img/webinar/3.png";
 import webinar4 from "/resources/img/webinar/4.png";
+import { data } from "autoprefixer";
 
-export default function Produk({ auth }) {
-    const dataBimbingan = [
-        {
-            id: 1,
-            title: "Dibimbing Online 30 Menit",
-            slug: "dibimbing-online-30-menit",
-            img: program1,
-            excerpt:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.",
-            description:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.",
-            features: {
-                times: 1,
-                duration: 30,
-                category: "Online",
-            },
-            price: 47000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/baE8kEv",
-        },
-        {
-            id: 2,
-            title: "Dibimbing Online 45 Menit",
-            slug: "dibimbing-online-45-menit",
-            img: program2,
-            excerpt:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.",
-            description:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.",
-            features: {
-                times: 1,
-                duration: 45,
-                category: "Online",
-            },
-            price: 69000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/aW2pNBO",
-        },
-        {
-            id: 3,
-            title: "Dibimbing Offline 60 Menit",
-            slug: "dibimbing-offline-60-menit",
-            img: program3,
-            excerpt:
-                "Bimbingan personal 1-on-1 secara tatap muka selama 60 Menit, khusus area Kota Malang.",
-            description:
-                "Bimbingan personal 1-on-1 secara tatap muka selama 60 Menit, khusus area Kota Malang.",
-            features: {
-                times: 1,
-                duration: 60,
-                category: "Offline",
-            },
-            price: 129000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/k74ZZ3v",
-        },
-        {
-            id: 4,
-            title: "Dibimbing Offline 90 Menit",
-            slug: "dibimbing-offline-90-menit",
-            img: program4,
-            excerpt:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.",
-            description:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.",
-            features: {
-                times: 1,
-                duration: 90,
-                category: "Offline",
-            },
-            price: 189000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/E4g55Dn",
-        },
-        {
-            id: 5,
-            title: "Dibimbing Tuntas",
-            slug: "dibimbing-tuntas",
-            img: program5,
-            excerpt:
-                "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
-            description:
-                "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
-            features: {
-                times: 7,
-                duration: 60,
-                category: "Online",
-            },
-            price: 649000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/7q7r96V",
-        },
-        {
-            id: 6,
-            title: "Dibimbing Olah Data",
-            slug: "dibimbing-olah-data",
-            img: program6,
-            excerpt:
-                "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
-            description:
-                "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
-            features: {
-                times: 1,
-                duration: 60,
-                category: "Online",
-            },
-            price: 115000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/DqqGx5x",
-        },
-    ];
+export default function Produk({ auth, dataProduct }) {
+    console.log(dataProduct);
+    const dataBimbingan = dataProduct;
 
     const dataEbook = [
         {
             title: "How To Survive Your Thesis? Start with Theme",
-            price: '-',
+            price: "-",
             image: ebook1,
             link: "https://lynk.id/goalsacademy/XBmqq6J",
         },
@@ -215,7 +108,7 @@ export default function Produk({ auth }) {
         setData3([]);
         setTimeout(() => {
             setData3(temp3);
-        }, 0)
+        }, 0);
     };
 
     return (

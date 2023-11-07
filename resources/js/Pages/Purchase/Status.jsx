@@ -6,7 +6,7 @@ import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import { Link } from "@inertiajs/react";
 import { useRef } from "react";
-import '@/script/momentCustomLocale';
+import "@/script/momentCustomLocale";
 
 export default function Status({
     auth,
@@ -30,15 +30,18 @@ export default function Status({
     const startCountdown = () => {
         countdownInterval.current = setInterval(() => {
             fetch(`/api/check-payment-status/${data.order_code}`)
-                .then(response => response.json())
-                .then(data => setPurchaseStatus(data['status'].toLowerCase()))
+                .then((response) => response.json())
+                .then((data) =>
+                    setPurchaseStatus(data["status"].toLowerCase())
+                );
 
             const difference = target.diff(moment());
             if (difference <= 1) {
                 clearInterval(countdownInterval.current);
                 setCountdown(moment().hours(0).minutes(0).seconds(0));
                 alert("Waktu Pembayaran Telah Habis!");
-            } if (purchaseStatus.toLowerCase() == 'success') {
+            }
+            if (purchaseStatus.toLowerCase() == "success") {
                 clearInterval(countdownInterval.current);
                 setCountdown(moment().hours(0).minutes(0).seconds(0));
             } else {
@@ -76,7 +79,13 @@ export default function Status({
                 <div className="md:container mx-auto pt-[16vw] md:pt-[1vw] flex flex-col gap-[4vw] md:gap-[3vw] items-center text-[3.5vw] md:text-[1vw]">
                     <div className="w-full md:w-1/2 relative md:shadow-centered-spread md:rounded-[1vw] md:p-[1.5vw] h-fit overflow-hidden">
                         <div className="container md:w-full mx-auto flex flex-col items-center gap-[4vw] md:gap-[1vw] overflow-hidden">
-                            <div className={`flex w-[200%] duration-1000 overflow-hidden ${purchaseStatus == 'success' ? 'translate-x-1/4' : '-translate-x-1/4'}`}>
+                            <div
+                                className={`flex w-[200%] duration-1000 overflow-hidden ${
+                                    purchaseStatus == "success"
+                                        ? "translate-x-1/4"
+                                        : "-translate-x-1/4"
+                                }`}
+                            >
                                 <h5 className="w-1/2 text-center text-green-500 font-bold text-[4.5vw] md:text-[1.2vw]">
                                     Pembayaran Berhasil
                                 </h5>
@@ -84,17 +93,49 @@ export default function Status({
                                     Mari Selesaikan Pembayaranmu
                                 </h5>
                             </div>
-                            <hr className={`w-full duration-1000 ${purchaseStatus == 'success' ? 'border-green-500' : 'border-secondary'}`} />
-                            <div className={`w-[200%] flex h-[88vw] md:h-[22vw] duration-1000 ${purchaseStatus == 'success' ? 'translate-x-1/4' : '-translate-x-1/4'}`}>
-                                <div className={`w-full h-full flex justify-center items-center gap-[4vw] md:gap-[1vw] duration-1000 ${purchaseStatus == 'success' ? 'scale-100' : 'scale-0'}`}>
-                                    <svg className="h-[60vw] md:h-[16vw] fill-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.25 16.518l-4.5-4.319 1.396-1.435 3.078 2.937 6.105-6.218 1.421 1.409-7.5 7.626z"/></svg>
+                            <hr
+                                className={`w-full duration-1000 ${
+                                    purchaseStatus == "success"
+                                        ? "border-green-500"
+                                        : "border-secondary"
+                                }`}
+                            />
+                            <div
+                                className={`w-[200%] flex h-[88vw] md:h-[22vw] duration-1000 ${
+                                    purchaseStatus == "success"
+                                        ? "translate-x-1/4"
+                                        : "-translate-x-1/4"
+                                }`}
+                            >
+                                <div
+                                    className={`w-full h-full flex justify-center items-center gap-[4vw] md:gap-[1vw] duration-1000 ${
+                                        purchaseStatus == "success"
+                                            ? "scale-100"
+                                            : "scale-0"
+                                    }`}
+                                >
+                                    <svg
+                                        className="h-[60vw] md:h-[16vw] fill-green-500"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.25 16.518l-4.5-4.319 1.396-1.435 3.078 2.937 6.105-6.218 1.421 1.409-7.5 7.626z" />
+                                    </svg>
                                 </div>
-                                <div className={`w-full flex flex-col items-center gap-[4vw] md:gap-[1vw] duration-1000 ${purchaseStatus == 'success' ? 'scale-0' : 'scale-100'}`}>
+                                <div
+                                    className={`w-full flex flex-col items-center gap-[4vw] md:gap-[1vw] duration-1000 ${
+                                        purchaseStatus == "success"
+                                            ? "scale-0"
+                                            : "scale-100"
+                                    }`}
+                                >
                                     <div className="w-full h-[56vw] md:h-[14vw] flex justify-center items-center">
                                         {paymentMethod.category !=
                                         "bank_transfer" ? (
                                             <img
-                                                src={orderHistory.actions[0].url}
+                                                src={
+                                                    orderHistory.actions[0].url
+                                                }
                                                 className="h-full"
                                                 alt=""
                                             />
@@ -114,10 +155,11 @@ export default function Status({
                                                         alert("Text copied!");
                                                     }}
                                                 >
-                                                    {
-                                                        orderHistory.va_numbers[0]
-                                                            .va_number
-                                                    }
+                                                    {orderHistory.va_numbers
+                                                        ? orderHistory
+                                                              .va_numbers[0]
+                                                              .va_number
+                                                        : orderHistory.permata_va_number}
                                                 </h2>
                                                 <p
                                                     className="font-medium hover:text-primary cursor-pointer"
@@ -191,11 +233,21 @@ export default function Status({
                                     <tr>
                                         <td>Tanggal Transaksi</td>
                                         <td className="flex justify-end text-end items-center font-semibold">
-                                            <span className="hidden md:inline-block">{moment(data.created_at).locale("id").format("dddd, DD MMMM YYYY")}</span>
+                                            <span className="hidden md:inline-block">
+                                                {moment(data.created_at)
+                                                    .locale("id")
+                                                    .format(
+                                                        "dddd, DD MMMM YYYY"
+                                                    )}
+                                            </span>
                                             <span className="md:hidden">
-                                                {moment(data.created_at).locale("id").format("dddd,")}<br/>
-                                                {moment(data.created_at).locale("id").format("DD MMMM YYYY")}
-
+                                                {moment(data.created_at)
+                                                    .locale("id")
+                                                    .format("dddd,")}
+                                                <br />
+                                                {moment(data.created_at)
+                                                    .locale("id")
+                                                    .format("DD MMMM YYYY")}
                                             </span>
                                         </td>
                                     </tr>
@@ -219,7 +271,9 @@ export default function Status({
                                         showTutorial ? "-rotate-180" : ""
                                     }`}
                                     className="h-[9vw] md:h-[3vw]"
-                                    onClick={() => setShowTutorial(!showTutorial)}
+                                    onClick={() =>
+                                        setShowTutorial(!showTutorial)
+                                    }
                                 >
                                     Lihat Langkah Pembayaran
                                 </ExpandedButton>
@@ -234,7 +288,8 @@ export default function Status({
                                             </p>
                                             <p>
                                                 Berikut langkah pembayaran
-                                                menggunakan GoPay melalui Desktop:
+                                                menggunakan GoPay melalui
+                                                Desktop:
                                             </p>
                                             <ul className="list-disc ms-[6vw] md:ms-[2vw]">
                                                 <li>
@@ -242,13 +297,16 @@ export default function Status({
                                                     smarhphone Anda
                                                 </li>
                                                 <li>
-                                                    Klik "Pay" dan "Scan" QR Code
+                                                    Klik "Pay" dan "Scan" QR
+                                                    Code
                                                 </li>
                                                 <li>
-                                                    Periksa detail pembayaran lalu
-                                                    klik "Confirm & Pay"
+                                                    Periksa detail pembayaran
+                                                    lalu klik "Confirm & Pay"
                                                 </li>
-                                                <li>Masukkan "PIN" GoPay Anda</li>
+                                                <li>
+                                                    Masukkan "PIN" GoPay Anda
+                                                </li>
                                                 <li>Pembayaran selesai</li>
                                             </ul>
                                         </div>
@@ -258,7 +316,8 @@ export default function Status({
                                             </p>
                                             <p>
                                                 Berikut langkah pembayaran
-                                                menggunakan GoPay melalui Mobile:
+                                                menggunakan GoPay melalui
+                                                Mobile:
                                             </p>
                                             <ul className="list-disc ms-[6vw] md:ms-[2vw]">
                                                 <li>
@@ -266,13 +325,16 @@ export default function Status({
                                                     smarhphone Anda
                                                 </li>
                                                 <li>
-                                                    Klik "Pay" dan "Scan" QR Code
+                                                    Klik "Pay" dan "Scan" QR
+                                                    Code
                                                 </li>
                                                 <li>
-                                                    Periksa detail pembayaran lalu
-                                                    klik "Confirm & Pay"
+                                                    Periksa detail pembayaran
+                                                    lalu klik "Confirm & Pay"
                                                 </li>
-                                                <li>Masukkan "PIN" GoPay Anda</li>
+                                                <li>
+                                                    Masukkan "PIN" GoPay Anda
+                                                </li>
                                                 <li>Pembayaran selesai</li>
                                             </ul>
                                         </div>
