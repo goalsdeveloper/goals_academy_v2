@@ -26,7 +26,7 @@ class PurchaseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Products $products)
     {
         $dataProduct = Products::get();
         // dd($dataProduct);

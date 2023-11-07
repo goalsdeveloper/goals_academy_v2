@@ -65,13 +65,6 @@ Route::resource('/produk', PurchaseController::class);
 
 Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status');
 
-// Route::get('/purchase/status/{order:order_code}', function (Order $order) {
-//     return Inertia::render('Purchase/Status', [
-//         'data' => $order
-//     ]);
-// })->name('purchase.status');
-
-
 Route::resource('/profile', ProfileController::class);
 
 Route::post('/email-diskon', [EmailDiskonController::class, 'handler'])->name('email-diskon');

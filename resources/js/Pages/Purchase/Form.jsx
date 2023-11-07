@@ -20,7 +20,7 @@ export default function Form({ auth, date, dataProduct }) {
         place: "",
         document: "",
         note: "",
-        init_price: 47000,
+        init_price: dataProduct.price,
         promo: "",
         discount: 0,
         purchase_method: "",
@@ -34,7 +34,7 @@ export default function Form({ auth, date, dataProduct }) {
         place: "",
         document: "",
         note: "",
-        init_price: 47000,
+        init_price: dataProduct.price,
         promo: "",
         discount: 0,
         purchase_method: "",
@@ -43,10 +43,10 @@ export default function Form({ auth, date, dataProduct }) {
     });
 
     const totalPrice = data.init_price - data.discount + data.admin;
-    const availablePromos = [
-        { code: "123456", percentage: 10 },
-        { code: "654321", percentage: 15 },
-    ];
+    // const availablePromos = [
+    //     { code: "123456", percentage: 10 },
+    //     { code: "654321", percentage: 15 },
+    // ];
     const unavailableDate = date.map((i) => i.date);
     const cities = ["Malang", "Surabaya", "Jakarta"];
     const places = {
@@ -113,6 +113,7 @@ export default function Form({ auth, date, dataProduct }) {
             >
                 <div className="md:container mx-auto pt-[12vw] md:pt-[1vw] flex flex-col md:flex-row justify-between text-[3.5vw] md:text-[1vw] gap-[4vw] md:gap-0">
                     <MainCard
+                        dataProduct={dataProduct}
                         data={data}
                         setData={setData}
                         temp={temp}
@@ -122,6 +123,7 @@ export default function Form({ auth, date, dataProduct }) {
                         places={places}
                     />
                     <SummaryCard
+                        dataProduct={dataProduct}
                         data={data}
                         setData={setData}
                         temp={temp}
@@ -137,44 +139,31 @@ export default function Form({ auth, date, dataProduct }) {
     );
 }
 
-function MainCard({
-    data,
-    setData,
-    temp,
-    setTemp,
-    unavailableDate,
-    cities,
-    places,
-}) {
+function MainCard({ dataProduct, data, setData, temp, setTemp, unavailableDate, cities, places }) {
     const [showScheduleForm, setShowScheduleForm] = useState(false);
     const [showNoteForm, setShowNoteForm] = useState(false);
+    const features = JSON.parse(dataProduct.features)[0]
     return (
         <div className="md:w-[70%] relative md:shadow-centered-spread md:rounded-[1vw] md:p-[1.75vw] h-fit">
             <div className="flex flex-col gap-[4vw] md:gap-0">
                 <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[1vw] md:py-0">
                     <p className="text-secondary">Bimbingan Skripsi</p>
                     <hr className="border-secondary" />
-                    <h3 className="w-8/12 md:w-full text-secondary text-[5vw] md:text-[1.5vw]">
-                        Dibimbing Offline 60 Menit
-                    </h3>
-                    <p>
-                        Capai kesuksesan skripsimu melalui bimbingan personal
-                        secara 1-on-1, sesuai dengan permasalahan pada
-                        skripsimu.
-                    </p>
+                    <h3 className="w-8/12 md:w-full text-secondary text-[5vw] md:text-[1.5vw]">{dataProduct.name}</h3>
+                    <p>{dataProduct.description}</p>
                     <div className="flex flex-col gap-[3vw] md:gap-[.5vw] mb-[2vw]">
                         <p>Layanan :</p>
                         <div className="flex items-center gap-[3vw] md:gap-[1vw]">
                             <i className="fa-regular fa-calendar text-primary"></i>
-                            <p>1x Pertemuan</p>
+                            <p>{features.times}x Pertemuan</p>
                         </div>
                         <div className="flex items-center gap-[3vw] md:gap-[1vw]">
                             <i className="fa-solid fa-clock text-[3vw] md:text-[.9vw] text-primary"></i>
-                            <p>60 Menit</p>
+                            <p>{features.duration} Menit</p>
                         </div>
                         <div className="flex items-center gap-[3vw] md:gap-[1vw]">
                             <i className="fa-solid fa-location-dot text-primary"></i>
-                            <p>Offline</p>
+                            <p>{features.category.slice(0,1).toUpperCase()+features.category.slice(1)}</p>
                         </div>
                     </div>
                 </div>
@@ -202,6 +191,7 @@ function MainCard({
                         <ScheduleForm
                             show={showScheduleForm}
                             setShow={setShowScheduleForm}
+                            category={features.category}
                             data={data}
                             setData={setData}
                             temp={temp}
@@ -297,6 +287,7 @@ function MainCard({
 }
 
 function SummaryCard({
+    dataProduct,
     data,
     setData,
     temp,
@@ -311,6 +302,7 @@ function SummaryCard({
     const [showNote, setShowNote] = useState(true);
     const [showDocument, setShowDocument] = useState(true);
     const currency = Intl.NumberFormat("id-ID");
+    const features = JSON.parse(dataProduct.features)[0]
     return (
         <div className="md:w-[30%] md:ms-[3vw] flex flex-col gap-[4vw] md:gap-[2vw]">
             <div
@@ -573,9 +565,14 @@ function SummaryCard({
                         <ButtonPill
                             className="w-6/12 md:w-full mt-[1.25vw]"
                             isActive={
+                                features.category == 'offline' ?
                                 ![
                                     data.schedule,
                                     data.place,
+                                    data.purchase_method,
+                                ].includes("") :
+                                ![
+                                    data.schedule,
                                     data.purchase_method,
                                 ].includes("")
                             }
@@ -839,6 +836,7 @@ function PurchaseMethodForm({
 function ScheduleForm({
     show,
     setShow,
+    category,
     data,
     setData,
     temp,
@@ -1022,10 +1020,8 @@ function ScheduleForm({
                         </div>
                     </div>
                 </div>
-                <div>
-                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">
-                        Pilih Kota Bimbingan :
-                    </p>
+                <div className={category == 'offline' ? '' : 'hidden'}>
+                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">Pilih Kota Bimbingan :</p>
                     <ExpandedButton
                         className="shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw]"
                         borderClassName={
@@ -1078,10 +1074,8 @@ function ScheduleForm({
                         </TECollapseItem>
                     </TECollapse>
                 </div>
-                <div>
-                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">
-                        Pilih Lokasi Bimbingan :
-                    </p>
+                <div className={category == 'offline' ? '' : 'hidden'}>
+                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">Pilih Lokasi Bimbingan :</p>
                     <ExpandedButton
                         className={`shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw] ${
                             temp.city != "" ? "" : "bg-slate-100"
@@ -1142,14 +1136,10 @@ function ScheduleForm({
                 <div className="flex justify-center md:justify-end mt-[1vw]">
                     <ButtonPill
                         className="w-6/12 md:w-3/12"
-                        isActive={temp.schedule != "" && temp.place != ""}
+                        isActive={category == 'offline' ? temp.schedule != "" && temp.place != "" : temp.schedule != ""}
                         onClick={(e) => {
-                            if (temp.schedule != "" && temp.place != "") {
-                                setData({
-                                    ...data,
-                                    schedule: temp.schedule,
-                                    place: temp.place,
-                                });
+                            if (category == 'offline' ? temp.schedule != "" && temp.place != "" : temp.schedule != "") {
+                                setData({ ...data, schedule: temp.schedule, place: temp.place })
                                 setShow(false);
                             }
                         }}
