@@ -3,6 +3,7 @@ import { Link } from "@inertiajs/react";
 import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import logo from "/resources/img/icon/goals-1.svg";
+import logo2 from "/resources/img/icon/goals-2.svg";
 import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
 import CornerWaveVector from "@/Components/CornerWaveVector";
 import CornerWaveVector2 from "@/Components/CornerWaveVector2";
@@ -10,30 +11,115 @@ import user from "/resources/img/icon/user.png";
 
 export default function MainHeader({ auth, title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false);
-
+    const [authDropdown, setAuthDropdown] = useState(false);
     return (
         <header className="fixed w-full top-0 right-0 bg-white text-dark lg:text-base z-50">
             <div className="hidden xl:h-24 3xl:h-36"></div>{" "}
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">
-                <div className="w-6/12 md:w-2/12">
-                    <Link href="/">
-                        <img
-                            className="w-full md:h-5 xl:h-8 3xl:h-10 mb-1 md:mb-2"
-                            src={logo}
-                            alt="Goals Academy"
-                        />
-                    </Link>
-                </div>
+                {!auth.user ? (
+                    <div className="w-6/12 md:w-2/12">
+                        <Link href="/">
+                            <img
+                                className="w-full md:h-5 xl:h-8 3xl:h-10 mb-1 md:mb-2"
+                                src={logo}
+                                alt="Goals Academy"
+                            />
+                        </Link>
+                    </div>
+                ) : (
+                    <>
+                        <div className="w-6/12 md:hidden flex items-center gap-2">
+                            <div className="w-3/12 md:hidden">
+                                <Link href="/">
+                                    <img
+                                        className="w-full md:h-5 xl:h-8 3xl:h-10 mb-1 md:mb-2"
+                                        src={logo2}
+                                        alt="Goals Academy"
+                                    />
+                                </Link>
+                            </div>
+                            <div onClick={() => setMobileNavbar(true)}>{title} <i className={`fa-solid fa-chevron-down ${mobileNavbar ? '-rotate-180' : ''} duration-300`}></i></div>
+                        </div>
+                        <div className="hidden md:block md:w-2/12">
+                            <Link href="/">
+                                <img
+                                    className="w-full md:h-5 xl:h-8 3xl:h-10 mb-1 md:mb-2"
+                                    src={logo}
+                                    alt="Goals Academy"
+                                />
+                            </Link>
+                        </div>
+                    </>
+                )}
                 <NavbarExpand auth={auth} title={title} />
                 <div className="md:hidden">
-                    <button onClick={() => setMobileNavbar(true)}>
-                        <i
-                            className={`fa-solid fa-bars text-28 duration-300 ${
-                                mobileNavbar ? "opacity-0 rotate-180" : ""
-                            }`}
-                        ></i>
-                    </button>
+                    {!auth.user ? (
+                        <button onClick={() => setMobileNavbar(true)}>
+                            <i
+                                className={`fa-solid fa-bars text-28 duration-300 ${
+                                    mobileNavbar ? "opacity-0 rotate-180" : ""
+                                }`}
+                            ></i>
+                        </button>
+                    ) : (
+                        <div className="w-auto flex flex-wrap justify-end items-center gap-3 md:gap-3 xl:gap-4 3xl:gap-6 font-medium">
+                            <Link href="/login" className="relative">
+                                <i className="fa-regular fa-bell text-28 md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
+                                <div className="absolute border-1 border-white rounded-full top-0 right-0 w-2 h-2 3xl:w-3 3xl:h-3 bg-red-500"></div>
+                            </Link>
+                            <div
+                                className={`font-poppins flex justify-end cursor-pointer ${
+                                    title == "Profil Perusahaan" ||
+                                    title == "Profil Tutor"
+                                        ? "font"
+                                        : ""
+                                }`}
+                                onMouseEnter={() => setAuthDropdown(true)}
+                                onMouseLeave={() => setAuthDropdown(false)}
+                                onClick={() => setAuthDropdown(!authDropdown)}
+                            >
+                                <div className="overflow-hidden rounded-full h-7 md:h-4 lg:h-5 xl:h-7 3xl:h-9">
+                                    <img
+                                        className="w-full h-full"
+                                        src={user}
+                                        alt="User Profile"
+                                    />
+                                </div>
+                                <TECollapse
+                                    show={authDropdown}
+                                    className="absolute z-10 shadow-none p-1 translate-y-4"
+                                >
+                                    {/* profile navbar */}
+                                    <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
+                                        <Link
+                                            className="flex gap-2 items-center font-poppins hover:text-primary"
+                                            href="/profil_perusahaan"
+                                        >
+                                            <i className="fa-regular fa-circle-user md:text-12 lg:text-20 3xl:text-24"></i>
+                                            Profil
+                                        </Link>
+                                        <Link
+                                            className="flex gap-2 items-center font-poppins hover:text-primary"
+                                            href="/profil_tutor"
+                                        >
+                                            <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
+                                            Pengaturan
+                                        </Link>
+                                        <Link
+                                            as="button"
+                                            className="flex gap-2 items-center font-poppins hover:text-primary"
+                                            href="/logout"
+                                            method="post"
+                                        >
+                                            <i className="bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24"></i>
+                                            Log Out
+                                        </Link>
+                                    </TECollapseItem>
+                                </TECollapse>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </nav>
             <NavbarMobile
@@ -132,11 +218,11 @@ function NavbarExpand({ auth, title }) {
                 </div>
             ) : (
                 <div className="w-auto hidden md:flex flex-wrap justify-end items-center md:gap-3 xl:gap-4 3xl:gap-6 font-medium text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20">
-                    <Link href="#">
+                    {/* <Link href="#">
                         <i className="fa-solid fa-cart-shopping text-primary md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
-                    </Link>
+                    </Link> */}
                     <Link href="#" className="relative">
-                        <i className="fa-regular fa-bell text-primary md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
+                        <i className="fa-regular fa-bell md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
                         <div className="absolute border-1 border-white rounded-full top-0 right-0 w-2 h-2 3xl:w-3 3xl:h-3 bg-red-500"></div>
                     </Link>
                     <div
@@ -197,7 +283,6 @@ function NavbarExpand({ auth, title }) {
 
 function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
     const [profileDropdownMobile, setProfileDropdownMobile] = useState(false);
-    const [authDropdown, setAuthDropdown] = useState(false);
     return (
         <div className="text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20">
             <div
@@ -206,82 +291,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                 }`}
             >
                 <div className="container mx-auto">
-                    <div className="w-full flex justify-between mb-6 xs:mb-8 text-dark">
-                        {!auth.user ? (
-                            <div className="w-auto flex flex-wrap justify-end items-center gap-2 3xl:gap-4 font-medium">
-                                <Link href="/login">
-                                    <ButtonHoverSlide className="text-secondary before:-z-10 hover:text-white border-1 xl:border-2 border-secondary hover:border-primary shadow-md md:shadow-none rounded-md md:rounded-lg xl:rounded-xl 3xl:rounded-2xl px-4 py-1.5 md:px-4 md:py-1 xl:px-6 xl:py-2 3xl:px-8 3xl:py-3 before:w-[200%] before:-ms-[200%] before:duration-300 hover:before:-ms-[50%] before:bg-sweep-primary">
-                                        Login
-                                    </ButtonHoverSlide>
-                                </Link>
-                                <Link
-                                    href="/register"
-                                    className="text-white border-1 xl:border-2 border-secondary bg-secondary hover:bg-primary hover:border-primary shadow-md md:shadow-none rounded-md md:rounded-lg xl:rounded-xl 3xl:rounded-2xl px-4 py-1.5 md:px-4 md:py-1 xl:px-6 xl:py-2 3xl:px-8 3xl:py-3"
-                                >
-                                    Daftar
-                                </Link>
-                            </div>
-                        ) : (
-                            <div className="w-auto flex flex-wrap justify-end items-center gap-4 md:gap-3 xl:gap-4 3xl:gap-6 font-medium">
-                                <Link href="/login">
-                                    <i className="fa-solid fa-cart-shopping text-primary text-28 md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
-                                </Link>
-                                <Link href="/login" className="relative">
-                                    <i className="fa-regular fa-bell text-primary text-28 md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
-                                    <div className="absolute border-1 border-white rounded-full top-0 right-0 w-2 h-2 3xl:w-3 3xl:h-3 bg-red-500"></div>
-                                </Link>
-                                <div
-                                    className={`font-poppins flex justify-center cursor-pointer ${
-                                        title == "Profil Perusahaan" ||
-                                        title == "Profil Tutor"
-                                            ? "font"
-                                            : ""
-                                    }`}
-                                    onMouseEnter={() => setAuthDropdown(true)}
-                                    onMouseLeave={() => setAuthDropdown(false)}
-                                    onClick={() => setAuthDropdown(!authDropdown)}
-                                >
-                                    <div className="overflow-hidden rounded-full h-8 md:h-4 lg:h-5 xl:h-7 3xl:h-9">
-                                        <img
-                                            className="w-full h-full"
-                                            src={user}
-                                            alt="User Profile"
-                                        />
-                                    </div>
-                                    <TECollapse
-                                        show={authDropdown}
-                                        className="absolute z-10 shadow-none p-1 translate-y-4"
-                                    >
-                                        {/* profile navbar */}
-                                        <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
-                                            <Link
-                                                className="flex gap-2 items-center font-poppins hover:text-primary"
-                                                href="/profil_perusahaan"
-                                            >
-                                                <i className="fa-regular fa-circle-user md:text-12 lg:text-20 3xl:text-24"></i>
-                                                Profil
-                                            </Link>
-                                            <Link
-                                                className="flex gap-2 items-center font-poppins hover:text-primary"
-                                                href="/profil_tutor"
-                                            >
-                                                <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
-                                                Pengaturan
-                                            </Link>
-                                            <Link
-                                                as="button"
-                                                className="flex gap-2 items-center font-poppins hover:text-primary"
-                                                href="/logout"
-                                                method="post"
-                                            >
-                                                <i className="bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24"></i>
-                                                Log Out
-                                            </Link>
-                                        </TECollapseItem>
-                                    </TECollapse>
-                                </div>
-                            </div>
-                        )}
+                    <div className="w-full flex justify-end mb-6 xs:mb-8 text-dark">
                         <button onClick={() => setMobileNavbar(false)}>
                             <i
                                 className={`fa-solid fa-xmark text-dark text-36`}
@@ -383,6 +393,16 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                                 </TECollapseItem>
                             </TECollapse>
                         </div>
+                        {!auth.user ? (
+                            <Link
+                                href="/login"
+                                className="relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4"
+                            >
+                                Masuk/Daftar
+                                <CornerWaveVector cornerClassName="w-4/12" />
+                                <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                            </Link>
+                        ) : (<br/>)}
                     </div>
                 </div>
             </div>

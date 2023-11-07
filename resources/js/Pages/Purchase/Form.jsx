@@ -65,7 +65,7 @@ export default function Form({ auth, date, dataProduct }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post("/purchase");
+        post("/produk");
     };
 
     const promoHandler = (inputCode, successCallback, processCallback) => {
