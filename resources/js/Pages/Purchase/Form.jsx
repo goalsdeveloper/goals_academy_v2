@@ -139,17 +139,28 @@ export default function Form({ auth, date, dataProduct }) {
     );
 }
 
-function MainCard({ dataProduct, data, setData, temp, setTemp, unavailableDate, cities, places }) {
+function MainCard({
+    dataProduct,
+    data,
+    setData,
+    temp,
+    setTemp,
+    unavailableDate,
+    cities,
+    places,
+}) {
     const [showScheduleForm, setShowScheduleForm] = useState(false);
     const [showNoteForm, setShowNoteForm] = useState(false);
-    const features = JSON.parse(dataProduct.features)[0]
+    const features = dataProduct.features[0];
     return (
         <div className="md:w-[70%] relative md:shadow-centered-spread md:rounded-[1vw] md:p-[1.75vw] h-fit">
             <div className="flex flex-col gap-[4vw] md:gap-0">
                 <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[1vw] md:py-0">
                     <p className="text-secondary">Bimbingan Skripsi</p>
                     <hr className="border-secondary" />
-                    <h3 className="w-8/12 md:w-full text-secondary text-[5vw] md:text-[1.5vw]">{dataProduct.name}</h3>
+                    <h3 className="w-8/12 md:w-full text-secondary text-[5vw] md:text-[1.5vw]">
+                        {dataProduct.name}
+                    </h3>
                     <p>{dataProduct.description}</p>
                     <div className="flex flex-col gap-[3vw] md:gap-[.5vw] mb-[2vw]">
                         <p>Layanan :</p>
@@ -163,7 +174,10 @@ function MainCard({ dataProduct, data, setData, temp, setTemp, unavailableDate, 
                         </div>
                         <div className="flex items-center gap-[3vw] md:gap-[1vw]">
                             <i className="fa-solid fa-location-dot text-primary"></i>
-                            <p>{features.category.slice(0,1).toUpperCase()+features.category.slice(1)}</p>
+                            <p>
+                                {features.category.slice(0, 1).toUpperCase() +
+                                    features.category.slice(1)}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -302,7 +316,7 @@ function SummaryCard({
     const [showNote, setShowNote] = useState(true);
     const [showDocument, setShowDocument] = useState(true);
     const currency = Intl.NumberFormat("id-ID");
-    const features = JSON.parse(dataProduct.features)[0]
+    const features = dataProduct.features[0];
     return (
         <div className="md:w-[30%] md:ms-[3vw] flex flex-col gap-[4vw] md:gap-[2vw]">
             <div
@@ -565,16 +579,16 @@ function SummaryCard({
                         <ButtonPill
                             className="w-6/12 md:w-full mt-[1.25vw]"
                             isActive={
-                                features.category == 'offline' ?
-                                ![
-                                    data.schedule,
-                                    data.place,
-                                    data.purchase_method,
-                                ].includes("") :
-                                ![
-                                    data.schedule,
-                                    data.purchase_method,
-                                ].includes("")
+                                features.category == "offline"
+                                    ? ![
+                                          data.schedule,
+                                          data.place,
+                                          data.purchase_method,
+                                      ].includes("")
+                                    : ![
+                                          data.schedule,
+                                          data.purchase_method,
+                                      ].includes("")
                             }
                             onClick={submit}
                         >
@@ -1020,8 +1034,10 @@ function ScheduleForm({
                         </div>
                     </div>
                 </div>
-                <div className={category == 'offline' ? '' : 'hidden'}>
-                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">Pilih Kota Bimbingan :</p>
+                <div className={category == "offline" ? "" : "hidden"}>
+                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">
+                        Pilih Kota Bimbingan :
+                    </p>
                     <ExpandedButton
                         className="shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw]"
                         borderClassName={
@@ -1074,8 +1090,10 @@ function ScheduleForm({
                         </TECollapseItem>
                     </TECollapse>
                 </div>
-                <div className={category == 'offline' ? '' : 'hidden'}>
-                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">Pilih Lokasi Bimbingan :</p>
+                <div className={category == "offline" ? "" : "hidden"}>
+                    <p className="font-medium mb-[3vw] md:mb-[1.25vw]">
+                        Pilih Lokasi Bimbingan :
+                    </p>
                     <ExpandedButton
                         className={`shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw] ${
                             temp.city != "" ? "" : "bg-slate-100"
@@ -1136,10 +1154,22 @@ function ScheduleForm({
                 <div className="flex justify-center md:justify-end mt-[1vw]">
                     <ButtonPill
                         className="w-6/12 md:w-3/12"
-                        isActive={category == 'offline' ? temp.schedule != "" && temp.place != "" : temp.schedule != ""}
+                        isActive={
+                            category == "offline"
+                                ? temp.schedule != "" && temp.place != ""
+                                : temp.schedule != ""
+                        }
                         onClick={(e) => {
-                            if (category == 'offline' ? temp.schedule != "" && temp.place != "" : temp.schedule != "") {
-                                setData({ ...data, schedule: temp.schedule, place: temp.place })
+                            if (
+                                category == "offline"
+                                    ? temp.schedule != "" && temp.place != ""
+                                    : temp.schedule != ""
+                            ) {
+                                setData({
+                                    ...data,
+                                    schedule: temp.schedule,
+                                    place: temp.place,
+                                });
                                 setShow(false);
                             }
                         }}
