@@ -139,7 +139,7 @@ class DatabaseSeeder extends Seeder
             'slug' => 'dibimbing-online-30-menit',
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.',
-            'features' => '[{"times":"1","duration":"30","category":"online"}]',
+            'features' => array(["times"=>"1","duration"=>"30","category"=>"online"]),
             'price' => 47000,
             'product_image' => 'product_image/bhuEAMDWr1N08nbwk0I8LJdqM1LYUn-metaS2F0YWxvZyBQcm9ncmFtIC0gR29hbHMgQWNhZGVteS5wbmc=-.png',
         ]);
@@ -148,7 +148,7 @@ class DatabaseSeeder extends Seeder
             'slug' => 'dibimbing-online-45-menit',
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
-            'features' => '[{"times":"1","duration":"45","category":"online"}]',
+            'features' => array(["times"=>"1","duration"=>"45","category"=>"online"]),
             'price' => 69000,
             'product_image' => 'product_image/bhuEAMDWr1N08nbwk0I8LJdqM1LYUn-metaS2F0YWxvZyBQcm9ncmFtIC0gR29hbHMgQWNhZGVteS5wbmc=-.png',
         ]);
@@ -157,7 +157,9 @@ class DatabaseSeeder extends Seeder
             'slug' => 'dibimbing-offline-60-menit',
             'excerpt' => 'Bimbingan personal 1-on-1 secara tatap',
             'description' => 'Bimbingan personal 1-on-1 secara tatap muka selama 60 Menit, khusus area Kota Malang.',
-            'features' => '[{"times":"1","duration":"60","category":"offline"}]',
+            'features' => array(
+                ["times"=>"1","duration"=>"60","category"=>"offline"]
+            ),
             'price' => 120000,
             'product_image' => 'product_image/bhuEAMDWr1N08nbwk0I8LJdqM1LYUn-metaS2F0YWxvZyBQcm9ncmFtIC0gR29hbHMgQWNhZGVteS5wbmc=-.png',
         ]);
