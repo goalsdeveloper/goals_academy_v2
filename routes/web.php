@@ -60,7 +60,7 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Form', ['title' => 'register']);
 });
 
-Route::resource('/purchase', PurchaseController::class)->middleware('auth');
+Route::resource('/purchase', PurchaseController::class);
 
 Route::get('/purchase/status/{order:order_code}', function (Order $order) {
     return Inertia::render('Purchase/Status', [
@@ -78,5 +78,3 @@ Route::get('/email/verify/resend-verification', [EmailVerificationController::cl
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/socialite.php';
-
-

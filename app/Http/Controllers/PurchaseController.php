@@ -19,6 +19,10 @@ use App\Models\PaymentMethod;
 
 class PurchaseController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -89,14 +93,20 @@ class PurchaseController extends Controller
                 return response()->json(['message' => 'Promo tidak ditemukan!']);
             }
 
-            if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
-                return response()->json(['message' => 'Kode promo telah terpakai']);
+            if ($cekPromo->is_price == 1) {
+                $discount = $cekPromo->value;
             } else {
-                //
-                $promoCode = $user->kodePromo()->attach($cekPromo->id);
+                $discount = ($cekPromo->value / 100) * $getProduct->price;
             }
-        }
 
+            // if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
+            //     return response()->json(['message' => 'Kode promo telah terpakai']);
+            // } else {
+
+            //     // $promoCode = $user->kodePromo()->attach($cekPromo->id);
+            // }
+        }
+        
         // charge midtrans
         $price = $getProduct->price;
         $phoneNumber = $user->profile->phone_number ?? '';
