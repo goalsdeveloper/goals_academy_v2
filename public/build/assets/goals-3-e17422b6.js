@@ -1,1 +1,0 @@
-import{j as s}from"./app-057c3215.js";function e({className:a,children:o}){return s.jsxs(s.Fragment,{children:[s.jsx("br",{}),s.jsx("div",{className:`grid ${a}`,children:o})]})}const r="/build/assets/goals-3-1442ea32.svg";export{e as T,r as l};
