@@ -79,7 +79,7 @@ export default function MainHeader({ auth, title }) {
                                 onMouseLeave={() => setAuthDropdown(false)}
                                 onClick={() => setAuthDropdown(!authDropdown)}
                             >
-                                <div className="overflow-hidden rounded-full h-7 md:h-4 lg:h-5 xl:h-7 3xl:h-9">
+                                <div className="overflow-hidden rounded-full w-7 md:w-4 lg:w-5 xl:w-7 3xl:w-9 h-7 md:h-4 lg:h-5 xl:h-7 3xl:h-9">
                                     <img
                                         className="w-full h-full"
                                         src={user}
@@ -94,7 +94,7 @@ export default function MainHeader({ auth, title }) {
                                     <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
                                         <Link
                                             className="flex gap-2 items-center font-poppins hover:text-primary"
-                                            href="/profil_perusahaan"
+                                            href="/user"
                                         >
                                             <i className="fa-regular fa-circle-user md:text-12 lg:text-20 3xl:text-24"></i>
                                             Profil
@@ -251,7 +251,7 @@ function NavbarExpand({ auth, title }) {
                             <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
                                 <Link
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
-                                    href="#"
+                                    href="/user"
                                 >
                                     <i className="fa-regular fa-circle-user md:text-12 lg:text-20 3xl:text-24"></i>
                                     Profil
