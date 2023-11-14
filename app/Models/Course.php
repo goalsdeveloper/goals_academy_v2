@@ -16,6 +16,7 @@ class Course extends Model
         'tutor_id',
         'location',
         'date',
+        'time',
         'ongoing',
         'is_tutor',
         'is_moderator'
@@ -36,7 +37,13 @@ class Course extends Model
     }
     public function tutor()
     {
-        return $this->belongsToMany(User::class, 'tutor_courses', 'course_id', 'user_id');
+        return $this->belongsTo(User::class, 'tutor_id');
+    }
+
+    // Define a separate relationship for the condition
+    public function userRoleTutor()
+    {
+        return $this->belongsTo(User::class, 'tutor_id')->where('user_role', 'tutor');
     }
     public function tutorNote()
     {

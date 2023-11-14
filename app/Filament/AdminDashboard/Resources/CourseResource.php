@@ -3,13 +3,16 @@
 namespace App\Filament\AdminDashboard\Resources;
 
 use Filament\Forms;
+use App\Models\User;
 use Filament\Tables;
 use App\Models\Order;
 use App\Models\Course;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Enums\CourseStatusEnum;
 use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
@@ -19,15 +22,16 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TimePicker;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TernaryFilter;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\AdminDashboard\Resources\CourseResource\Pages;
 use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers;
 use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers\OrderRelationManager;
-use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers\TutorNoteRelationManager;
 use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers\TutorRelationManager;
-use Filament\Forms\Set;
+use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers\TutorNoteRelationManager;
 
 class CourseResource extends Resource
 {
@@ -76,11 +80,17 @@ class CourseResource extends Resource
                             ->relationship('products', 'name')
                             ->native(false)
                             ->required(),
-                        Select::make('tutor')
+                        Select::make('tutor_id')
                             ->label('Tutor')
-                            ->relationship('tutor', 'name', fn (Builder $query) => $query->where('user_role', 'tutor'))
-                            ->native(false)
+                            ->relationship('userRoleTutor', 'name', function (Builder $query) {
+                                // This condition will be applied through the pre-loaded relationship
+                            })
+                            ->options(
+                                User::where('user_role', 'tutor')->pluck('name', 'id')
+                            )
+                            ->searchable()
                             ->required(),
+
                     ])
                 ]),
                 Group::make()->schema([
@@ -109,6 +119,9 @@ class CourseResource extends Resource
                             ->label('Tanggal Pelaksanaan')
                             // ->format('d/m/Y')
                             ->native(false),
+                        TimePicker::make('time')
+                            ->label('Waktu Bimbingan')
+                        // ->native(false)
                     ])
                 ])
             ]);
@@ -118,6 +131,8 @@ class CourseResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('order.order_code')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('user.name')
                     ->label('Customer')
                     ->sortable()
@@ -139,6 +154,9 @@ class CourseResource extends Resource
                 TextColumn::make('ongoing')
                     ->label('Status')
                     ->sortable(),
+                TextColumn::make('order.status')
+                    ->label('Pembayaran')
+                    ->sortable(),
                 IconColumn::make('is_tutor')
                     ->label('Tutor')
                     ->sortable()
@@ -150,6 +168,9 @@ class CourseResource extends Resource
             ])
             ->defaultSort('ongoing', 'asc')
             ->filters([
+                SelectFilter::make('status')
+                    ->relationship('order', 'status')
+                    ->native(false),
                 TernaryFilter::make('ongoing')
                     ->label('Status Bimbingan')
                     ->trueLabel('Sedang berjalan')
