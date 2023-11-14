@@ -8,14 +8,23 @@ use App\Models\Course;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Facades\Filament;
+use App\Enums\CourseStatusEnum;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Group;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TimePicker;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Tutor\Resources\CourseResource\Pages;
 use App\Filament\Tutor\Resources\CourseResource\RelationManagers;
+use Filament\Forms\Components\FileUpload;
 
 class CourseResource extends Resource
 {
@@ -27,7 +36,56 @@ class CourseResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Group::make()->schema([
+                    Section::make()->schema([
+                        Select::make('order_code')
+                            ->relationship('order', 'order_code')
+                            ->disabled(),
+                        Select::make('user_id')
+                            ->relationship('user', 'name')
+                            ->disabled(),
+                        Select::make('product_id')
+                            ->relationship('products', 'name')
+                            ->disabled()
+                    ]),
+                    Section::make()->schema([
+                        FileUpload::make('attachment')
+                            ->directory('file_uploads')
+                    ])
+                ]),
+                Group::make()->schema([
+                    Section::make()->schema([
+                        Toggle::make('is_tutor')
+                            ->label('Tutor Approve')
+                            ->default(false)
+                            ->helperText('Telah disetujui Tutor'),
+                        Toggle::make('is_moderator')
+                            ->label('Moderator Approve')
+                            ->default(false)
+                            ->disabled()
+                            ->helperText('Telah disetujui Moderator'),
+                        Select::make('ongoing')
+                            ->label('Status Bimbingan')
+                            ->native(false)
+                            ->options([
+                                'berjalan' => CourseStatusEnum::ONGOING->value,
+                                'selesai' => CourseStatusEnum::SUCCESS->value
+                            ])
+                    ]),
+                    Section::make()->schema([
+                        TextInput::make('location')
+                            ->label('Lokasi')
+                            ->required(),
+                        DatePicker::make('date')
+                            ->label('Tanggal Pelaksanaan')
+                            // ->format('d/m/Y')
+                            ->native(false),
+                        TimePicker::make('time')
+                            ->label('Waktu Bimbingan')
+                        // ->native(false)
+                    ])
+                ]),
+
             ]);
     }
 
@@ -37,9 +95,7 @@ class CourseResource extends Resource
 
         return $table
             ->modifyQueryUsing(function (Builder $query) use ($userId) {
-                $query->join('tutor_courses', 'courses.id', '=', 'tutor_courses.course_id')
-                    ->join('users', 'users.id', '=', 'courses.user_id') // Ubah join ke tabel users
-                    ->where('tutor_courses.user_id', $userId);
+                $query->where('tutor_id', $userId);
             })
             ->columns([
                 TextColumn::make('user.name')

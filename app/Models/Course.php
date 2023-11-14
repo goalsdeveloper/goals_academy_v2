@@ -49,4 +49,9 @@ class Course extends Model
     {
         return $this->hasMany(TutorNote::class);
     }
+
+    public function fileUploads()
+    {
+        return $this->belongsToMany(FileUpload::class);
+    }
 }
