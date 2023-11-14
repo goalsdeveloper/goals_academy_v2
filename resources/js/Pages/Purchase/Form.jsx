@@ -25,7 +25,7 @@ export default function Form({ auth, date, dataProduct }) {
         discount: 0,
         purchase_method: "",
         admin: 0,
-        product_id: 1,
+        product_id: dataProduct.id,
     });
 
     const { data: temp, setData: setTemp } = useForm({
@@ -39,7 +39,7 @@ export default function Form({ auth, date, dataProduct }) {
         discount: 0,
         purchase_method: "",
         admin: 0,
-        product_id: 1,
+        product_id: dataProduct.id,
     });
 
     const totalPrice = data.init_price - data.discount + data.admin;

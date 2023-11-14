@@ -168,6 +168,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\Filament\AdminDashboardPanelProvider::class,
+        App\Providers\Filament\ModeratorPanelProvider::class,
+        App\Providers\Filament\TutorPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
     ])->toArray(),
