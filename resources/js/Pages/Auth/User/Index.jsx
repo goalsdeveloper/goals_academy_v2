@@ -70,7 +70,7 @@ export default function Index ({ auth }) {
     ]
 
     return (
-        <UserLayout auth={auth} title="Pembelajaran Saya">
+        <UserLayout auth={auth} title="Dashboard">
             {data.length == 0 ? (
                 <div className="md:min-h-[21vw] flex flex-col justify-center items-center gap-[3vw] md:gap-[2vw]">
                     <img src={figure} alt="" className="h-[25vw] w-[25vw] md:h-[10vw] md:w-[10vw]" />
