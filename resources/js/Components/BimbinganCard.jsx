@@ -49,7 +49,7 @@ export default function BimbinganCard({ item, className }) {
                         <p>{features.category}</p>
                     </div>
                 </div>
-                <ButtonPill href={`/produk/${item.slug}`} className={"w-full"}>
+                <ButtonPill href={`/produk/${item.slug}`} className={"w-full"} isLink={true}>
                     Daftar Sekarang
                 </ButtonPill>
             </div>

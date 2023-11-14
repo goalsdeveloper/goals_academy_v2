@@ -26,6 +26,7 @@
         "@mui/styled-engine-sc": "^6.0.0-alpha.1",
         "@mui/x-date-pickers": "^6.16.1",
         "moment": "^2.29.4",
+        "react-circular-progressbar": "^2.1.0",
         "styled-components": "^6.0.8",
         "swiper": "^10.2.0",
         "tw-elements": "^1.0.0-rc.1",
