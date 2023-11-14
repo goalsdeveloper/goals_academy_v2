@@ -29,7 +29,7 @@ export default function UserLayout ({ auth, title, children }) {
 function Preliminary ({ auth, title }) {
     const percentage = 68
     return (
-        <div className={`container mx-auto shadow-centered-spread rounded-[1vw] overflow-hidden mt-[3vw] mb-[6vw] md:mb-[3vw] ${title != 'Dashboard' ? 'hidden md:block' : ''}`}>
+        <div className={`container mx-auto shadow-centered-spread rounded-[1vw] overflow-hidden mt-[3vw] mb-[6vw] md:mb-[3vw] ${title == 'Dashboard' ? '' : 'hidden md:block'}`}>
             <div className="relative">
                 <div className="flex flex-col md:flex-row text-center md:text-left items-center gap-[3vw] md:gap-[1.5vw] p-[6vw] pb-[12vw] md:p-[3vw]">
                     <img className="w-[22vw] h-[22vw] md:w-[6vw] md:h-[6vw]" src={userIcon} alt="User" />
@@ -37,13 +37,13 @@ function Preliminary ({ auth, title }) {
                         <h2 className="font-sans font-medium text-[4vw] md:text-[2.25vw] mb-[.5vw]">Selamat Datang <span className="text-secondary">{auth.user.name}</span></h2>
                         <p>Hello {auth.user.name}! Selamat datang di website Goals Academy!</p>
                     </div>
-                <img src={wave5} className="hidden md:block absolute w-full bottom-0 select-none" />
-                <img src={wave7} className="md:hidden absolute w-full bottom-0 select-none" />
+                <img src={wave5} className="hidden md:block absolute w-full left-0 right-0 bottom-0 select-none" />
+                <img src={wave7} className="md:hidden absolute w-full left-0 right-0 bottom-0 select-none" />
                 </div>
             </div>
             <div className="relative bg-secondary text-white">
-                <img src={wave6} className="hidden md:block absolute w-full top-0 select-none" />
-                <img src={wave8} className="md:hidden absolute w-full top-0 select-none" />
+                <img src={wave6} className="hidden md:block absolute w-full left-0 right-0 top-0 select-none" />
+                <img src={wave8} className="md:hidden absolute w-full left-0 right-0 top-0 select-none" />
                 <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-normal items-center gap-[4vw] md:gap-[1.5vw] p-[6vw] pt-[12vw] md:p-[3vw]">
                     <div className="w-[22vw] h-[22vw] md:w-[6vw] md:h-[6vw] overflow-visible">
                         <CircularProgressbar
@@ -117,10 +117,10 @@ function Preliminary ({ auth, title }) {
 function DashboardContent ({ title, children }) {
     return (
         <div className="container mx-auto flex gap-[1.75vw]">
-            <DashboardNavbar className="sticky top-24 xs:top-28 md:top-24 xl:top-28 3xl:top-40 z-10 w-full md:w-3/12 h-fit" title={title} />
-            <div className={`w-9/12 h-fit p-[2.5vw] shadow-centered-spread md:rounded-xl ${title == 'Dashboard' ? 'hidden md:block' : ''}`}>
-                <div className="text-center mb-[2vw]">
-                    <h1 className="font-medium text-secondary text-[2vw] leading-[4vw]">{title == 'Dashboard' ? 'Pembelajaran Saya' : title}</h1>
+            <DashboardNavbar className={`sticky top-24 xs:top-28 md:top-24 xl:top-28 3xl:top-40 z-10 w-full md:w-3/12 h-fit ${title == 'Dashboard' ? '' : 'hidden md:flex'}`} title={title} />
+            <div className={`w-full md:w-9/12 h-fit md:p-[2.5vw] md:shadow-centered-spread md:rounded-xl ${title == 'Dashboard' ? 'hidden md:block' : ''}`}>
+                <div className="text-center mb-[8vw] md:mb-[2vw]">
+                    <h1 className="md:font-medium text-secondary text-[4vw] md:text-[2vw] leading-[12vw] md:leading-[4vw]">{title == 'Dashboard' ? 'Pembelajaran Saya' : title}</h1>
                     <hr className="border-1 border-secondary" />
                 </div>
                 {children}

@@ -7,10 +7,11 @@ import CornerWaveVector from "@/Components/CornerWaveVector";
 import "@/script/momentCustomLocale";
 
 export default function Index ({ auth }) {
-    const bimbingan = [
+    const data = [
         {
             id: 1,
             products_id: 1,
+            category_id: 1,
             order_id: 'GA1234578',
             name: 'Bimbingan Online 45 Menit',
             date: '2023-12-01',
@@ -21,6 +22,7 @@ export default function Index ({ auth }) {
         {
             id: 2,
             products_id: 1,
+            category_id: 1,
             order_id: 'GA87654321',
             name: 'Bimbingan Offline 60 Menit',
             date: '2023-11-28',
@@ -28,13 +30,48 @@ export default function Index ({ auth }) {
             duration: 60,
             ongoing: false,
         },
+        {
+            id: 1,
+            products_id: 7,
+            category_id: 2,
+            order_id: 'GA1238064',
+            name: 'Ebook 1',
+            date: '2023-12-01',
+        },
+        {
+            id: 2,
+            products_id: 1,
+            category_id: 1,
+            order_id: 'GA7823164',
+            name: 'Bimbingan Offline 60 Menit',
+            date: '2023-11-28',
+            time: '19:00',
+            duration: 60,
+            ongoing: false,
+        },
+        {
+            id: 2,
+            products_id: 10,
+            category_id: 2,
+            order_id: 'GA1918263',
+            name: 'Ebook 2',
+            date: '2023-12-01',
+        },
+        {
+            id: 1,
+            products_id: 8,
+            category_id: 3,
+            order_id: 'GA1237840',
+            name: 'Webinar 1',
+            date: '2023-12-12',
+            time: '19:00',
+            duration: 60,
+        },
     ]
-    const ebook = []
-    const webinar = []
 
     return (
         <UserLayout auth={auth} title="Dashboard">
-            {bimbingan.length + ebook.length + webinar.length == 0 ? (
+            {data.length == 0 ? (
                 <div className="min-h-[21vw] flex flex-col justify-center items-center gap-[2vw]">
                     <img src={figure} alt="" className="h-[10vw] w-[10vw]" />
                     <p className="text-[1.5vw] text-secondary">Anda Belum Memiliki Program</p>
@@ -48,20 +85,20 @@ export default function Index ({ auth }) {
             ) : (
                 <div className="min-h-[21vw] flex flex-col gap-[2vw]">
                     <div className="flex flex-col gap-[1vw]">
-                        {bimbingan.map((item, index) => {
-                            return (
-                                <BimbinganItem key={index} data={item} />
-                            )
-                        })}
-                        {ebook.map((item, index) => {
-                            return (
-                                <EbookItem key={index} data={item} />
-                            )
-                        })}
-                        {webinar.map((item, index) => {
-                            return (
-                                <WebinarItem key={index} data={item} />
-                            )
+                        {data.map((item, index) => {
+                            if (item.category_id == 1) {
+                                return (
+                                    <BimbinganItem key={index} data={item} />
+                                )
+                            } else if (item.category_id == 2) {
+                                return (
+                                    <EbookItem key={index} data={item} />
+                                )
+                            } else if (item.category_id == 3) {
+                                return (
+                                    <WebinarItem key={index} data={item} />
+                                )
+                            }
                         })}
                     </div>
                 </div>
@@ -102,7 +139,7 @@ function EbookItem ({ data }) {
                 <div className="flex gap-[1vw] text-[.95vw]">
                     <span className="bg-white text-secondary text-center rounded-[.3vw] w-4/12 py-[.1vw]">Ebook Skripsi</span>
                 </div>
-                <h4 className="text-white font-normal font-sans text-[1.75vw]">Dibimbing Sekali Offline 60 Menit</h4>
+                <h4 className="text-white font-normal font-sans text-[1.75vw]">{data.name}</h4>
             </div>
             <Link href={`/ebook/${data.id}`} className="w-[30%] h-[3vw] cursor-pointer">
                 <ButtonHoverSlide className="h-full md:before:p-0.5 lg:before:p-1 xl:before:p-1.5 3xl:before:p-2 before:content-arrow-right-secondary-20 xs:before:content-arrow-right-secondary-32 md:before:content-arrow-right-secondary-20 xl:before:content-arrow-right-secondary-24 3xl:before:content-arrow-right-secondary-32 after:content-detail after:text-white medium border-1 xl:border-2 border-white rounded-full before:w-[160%] before:-ms-[160%] before:duration-300 after:w-full after:duration-300 hover:before:-ms-[30%] hover:after:-me-[100%] before:bg-sweep-white"></ButtonHoverSlide>
@@ -121,7 +158,7 @@ function WebinarItem ({ data }) {
                 <div className="flex gap-[1vw] text-[.95vw]">
                     <span className="bg-white text-secondary text-center rounded-[.3vw] w-4/12 py-[.1vw]">Webinar Skripsi</span>
                 </div>
-                <h4 className="text-white font-normal font-sans text-[1.75vw]">Dibimbing Sekali Offline 60 Menit</h4>
+                <h4 className="text-white font-normal font-sans text-[1.75vw]">{data.name}</h4>
                 <div className="text-[.9vw]">
                     <p>{moment(data.date).format('dddd, DD MMMM YYYY')}</p>
                     <p>{start_time} - {finish_time}</p>

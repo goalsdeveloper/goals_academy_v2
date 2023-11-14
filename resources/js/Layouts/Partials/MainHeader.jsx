@@ -29,8 +29,8 @@ export default function MainHeader({ auth, title }) {
                     </div>
                 ) : (
                     <>
-                        <div className="w-6/12 md:hidden flex items-center gap-2">
-                            <div className="w-3/12 md:hidden">
+                        <div className="md:hidden flex items-center gap-2">
+                            <div className="w-[10vw] md:hidden">
                                 <Link href="/">
                                     <img
                                         className="w-full md:h-5 xl:h-8 3xl:h-10 mb-1 md:mb-2"
