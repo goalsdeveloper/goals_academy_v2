@@ -83,7 +83,7 @@ export default function Index ({ auth }) {
                     </Link>
                 </div>
             ) : (
-                <div className="min-h-[21vw] flex flex-col gap-[2vw]">
+                <div className="md:min-h-[21vw] flex flex-col gap-[2vw]">
                     <div className="flex flex-col gap-[6vw] md:gap-[1vw]">
                         {data.map((item, index) => {
                             if (item.category_id == 1) {
