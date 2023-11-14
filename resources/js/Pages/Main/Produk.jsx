@@ -24,30 +24,35 @@ import webinar3 from "/resources/img/webinar/3.png";
 import webinar4 from "/resources/img/webinar/4.png";
 import { data } from "autoprefixer";
 
-export default function Produk({ auth, dataProduct }) {
-    console.log(dataProduct);
-    const dataBimbingan = dataProduct;
+export default function Produk({
+    auth,
+    dataDibimbing,
+    ebookData,
+    webinarData,
+}) {
+    const dataBimbingan = dataDibimbing;
 
-    const dataEbook = [
-        {
-            title: "How To Survive Your Thesis? Start with Theme",
-            price: "-",
-            image: ebook1,
-            link: "https://lynk.id/goalsacademy/XBmqq6J",
-        },
-        // {
-        //     title: "Proposal Biar Diterima",
-        //     price: 40000,
-        //     image: ebook2,
-        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
-        // },
-        // {
-        //     title: "Kajian Pustaka",
-        //     price: 40000,
-        //     image: ebook3,
-        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
-        // },
-    ];
+    const dataEbook = ebookData;
+    // const dataEbook = [
+    //     {
+    //         title: "How To Survive Your Thesis? Start with Theme",
+    //         price: "-",
+    //         image: ebook1,
+    //         link: "https://lynk.id/goalsacademy/XBmqq6J",
+    //     },
+    //     {
+    //         title: "Proposal Biar Diterima",
+    //         price: 40000,
+    //         image: ebook2,
+    //         link: "https://lynk.id/goalsacademy/XBmqq6J",
+    //     },
+    //     {
+    //         title: "Kajian Pustaka",
+    //         price: 40000,
+    //         image: ebook3,
+    //         link: "https://lynk.id/goalsacademy/XBmqq6J",
+    //     },
+    // ];
 
     const dataWebinar = [
         {

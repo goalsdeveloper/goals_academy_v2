@@ -33,6 +33,32 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
+        User::create([
+            'name' => 'Gilbert Timothy',
+            'username' => 'Timo123',
+            'email' => 'gilbert@goalsacademy.id',
+            'password' => Hash::make('password'),
+            'user_role' => 'tutor',
+            'email_verified_at' => now(),
+        ]);
+        User::create([
+            'name' => 'Wendi Ngotes',
+            'username' => 'Wendingotes_',
+            'email' => 'wendi@goalsacademy.id',
+            'password' => Hash::make('password'),
+            'user_role' => 'tutor',
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            'name' => 'Akhmad Roziqin',
+            'username' => 'Iqin123',
+            'email' => 'roziqin@goalsacademy.id',
+            'password' => Hash::make('password'),
+            'user_role' => 'moderator',
+            'email_verified_at' => now(),
+        ]);
+
         // User::factory(50)->create();
 
         UserProfile::create([
@@ -40,6 +66,24 @@ class DatabaseSeeder extends Seeder
             'phone_number' => '087763420873',
             'university' => 'Politeknik Negeri Malang',
             'major' => 'Elektronika',
+        ]);
+        UserProfile::create([
+            'user_id' => 2,
+            'phone_number' => '087763420872',
+            'university' => 'Universitas Brawijaya',
+            'major' => 'Hukum',
+        ]);
+        UserProfile::create([
+            'user_id' => 3,
+            'phone_number' => '087763420876',
+            'university' => 'Universitas Brawijaya',
+            'major' => 'Hukum',
+        ]);
+        UserProfile::create([
+            'user_id' => 3,
+            'phone_number' => '087763420871',
+            'university' => 'Universitas Islam Malang',
+            'major' => 'Matematika',
         ]);
 
         Category::create([
@@ -139,18 +183,18 @@ class DatabaseSeeder extends Seeder
             'slug' => 'dibimbing-online-30-menit',
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.',
-            'features' => array(["times"=>"1","duration"=>"30","category"=>"online"]),
+            'features' => array(["times" => "1", "duration" => "30", "category" => "online"]),
             'price' => 47000,
-            'product_image' => 'product_image/bhuEAMDWr1N08nbwk0I8LJdqM1LYUn-metaS2F0YWxvZyBQcm9ncmFtIC0gR29hbHMgQWNhZGVteS5wbmc=-.png',
+            'product_image' => 'resource/img/program/dibimbing-online-30.png',
         ]);
         Products::create([
             'name' => 'Dibimbing Online 45 Menit',
             'slug' => 'dibimbing-online-45-menit',
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
-            'features' => array(["times"=>"1","duration"=>"45","category"=>"online"]),
+            'features' => array(["times" => "1", "duration" => "45", "category" => "online"]),
             'price' => 69000,
-            'product_image' => 'product_image/bhuEAMDWr1N08nbwk0I8LJdqM1LYUn-metaS2F0YWxvZyBQcm9ncmFtIC0gR29hbHMgQWNhZGVteS5wbmc=-.png',
+            'product_image' => 'resource/img/program/dibimbing-online-45.png',
         ]);
         Products::create([
             'name' => 'Dibimbing Offline 60 Menit',
@@ -158,10 +202,32 @@ class DatabaseSeeder extends Seeder
             'excerpt' => 'Bimbingan personal 1-on-1 secara tatap',
             'description' => 'Bimbingan personal 1-on-1 secara tatap muka selama 60 Menit, khusus area Kota Malang.',
             'features' => array(
-                ["times"=>"1","duration"=>"60","category"=>"offline"]
+                ["times" => "1", "duration" => "60", "category" => "offline"]
             ),
             'price' => 120000,
-            'product_image' => 'product_image/bhuEAMDWr1N08nbwk0I8LJdqM1LYUn-metaS2F0YWxvZyBQcm9ncmFtIC0gR29hbHMgQWNhZGVteS5wbmc=-.png',
+            'product_image' => 'resource/img/program/dibimbing-offline-60.png',
+        ]);
+        Products::create([
+            'name' => 'How To Survive Your Thesis? Start with Theme',
+            'slug' => 'how-to-survive-your-thesis-?-start-with-theme',
+            'excerpt' => '',
+            'description' => ' ',
+            'features' => array(
+                ["times" => " ", "duration" => " ", "category" => " "]
+            ),
+            'price' => 15000,
+            'product_image' => 'resource/img/ebook/1.png',
+        ]);
+        Products::create([
+            'name' => 'Webinar A',
+            'slug' => 'webinar-a',
+            'excerpt' => ' ',
+            'description' => ' ',
+            'features' => array(
+                ["times" => " ", "duration" => " ", "category" => " "]
+            ),
+            'price' => 49000,
+            'product_image' => 'resource/img/webinar/1.png',
         ]);
     }
 }

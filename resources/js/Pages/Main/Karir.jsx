@@ -19,7 +19,7 @@ export default function Karir({ auth }) {
                 "Mempunyai Komunikasi yang Baik",
                 "Berpengalaman dalam Penulisan dan Penelitian Karya Tulis",
             ],
-            link: "https://www.google.com/",
+            link: "https://docs.google.com/forms/d/e/1FAIpQLSfzl7tOOgtIKlQ9La6zWw9T0qP9nNAtt_axagw80oo8qf9m_A/viewform?usp=pp_url",
         },
         {
             title: "Brand Ambassador",
@@ -30,7 +30,7 @@ export default function Karir({ auth }) {
                 "Minimal 5K Followers di Media Sosial",
                 "Memiliki Kemauan untuk Mencari Jaringan Pemasaran Affiliasi",
             ],
-            link: "https://www.google.com/",
+            link: "https://docs.google.com/forms/d/e/1FAIpQLSc4VMh1H5lyF4MO3IywudWVg5WnTY3e8JGRzNwWqjp5kBhruw/viewform?usp=pp_url",
         },
         {
             title: "Tutor Olah Data",
@@ -41,7 +41,7 @@ export default function Karir({ auth }) {
                 "IPK Minimum 3.25",
                 "Memiliki Kemampuan Komunikasi yang Baik",
             ],
-            link: "https://www.google.com/",
+            link: "https://docs.google.com/forms/d/e/1FAIpQLSfzl7tOOgtIKlQ9La6zWw9T0qP9nNAtt_axagw80oo8qf9m_A/viewform?usp=pp_url",
         },
         {
             title: "Academic Internship",

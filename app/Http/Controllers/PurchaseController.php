@@ -10,6 +10,7 @@ use App\Models\Order;
 use Midtrans\CoreApi;
 use App\Models\Course;
 use App\Enums\OrderEnum;
+use App\Models\Category;
 use App\Models\Products;
 use App\Models\PromoCode;
 use Illuminate\Support\Str;
@@ -28,10 +29,16 @@ class PurchaseController extends Controller
      */
     public function index(Products $products)
     {
-        $dataProduct = Products::get();
-        // dd($dataProduct);
+        $dataDibimbing = Category::where('slug', 'dibimbing-sekali')->first()->products;
+        $dataEbook = Category::where('slug', 'e-book')->first()->products;
+        $dataWebinar = Category::where('slug', 'webinar')->first()->products;
+
+
+        // dd($dataDibimbing, $dataEbook, $dataWebinar);
         return Inertia::render('Main/Produk', [
-            'dataProduct' => $dataProduct
+            'dataDibimbing' => $dataDibimbing,
+            'ebookData' => $dataEbook,
+            'webinarData' => $dataWebinar,
         ]);
     }
 

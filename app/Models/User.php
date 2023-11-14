@@ -70,9 +70,14 @@ class User extends Authenticatable implements HasName, FilamentUser, MustVerifyE
         return $this->hasMany(Order::class);
     }
 
+    public function course()
+    {
+        return $this->hasMany(Course::class, 'user_id');
+    }
+
     public function tutor()
     {
-        return $this->belongsToMany(Course::class, 'courses', 'tutor_id');
+        return $this->hasMany(Course::class, 'tutor_id');
     }
 
     public function social()
