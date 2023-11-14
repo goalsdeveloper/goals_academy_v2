@@ -29,6 +29,7 @@ class TutorPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->login()
+            ->sidebarCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/Tutor/Resources'), for: 'App\\Filament\\Tutor\\Resources')
             ->discoverPages(in: app_path('Filament/Tutor/Pages'), for: 'App\\Filament\\Tutor\\Pages')
             ->pages([
