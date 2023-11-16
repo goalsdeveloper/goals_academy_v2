@@ -11,6 +11,7 @@ use Midtrans\CoreApi;
 use App\Models\Course;
 use App\Enums\OrderEnum;
 use App\Models\Category;
+use App\Models\FileUpload;
 use App\Models\Products;
 use App\Models\PromoCode;
 use Illuminate\Support\Str;
@@ -91,13 +92,6 @@ class PurchaseController extends Controller
             } else {
                 $discount = ($cekPromo->value / 100) * $getProduct->price;
             }
-
-            // if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
-            //     return response()->json(['message' => 'Kode promo telah terpakai']);
-            // } else {
-
-            //     // $promoCode = $user->kodePromo()->attach($cekPromo->id);
-            // }
         }
 
         // charge midtrans
@@ -197,11 +191,13 @@ class PurchaseController extends Controller
         ]);
 
         // jika produk = bimbingan | store -> course
+        $city = $request['city'] ?? '';
         if ($produkDibimbing) {
             if ($getProduct->features[0]['category'] == 'online') {
                 $location = 'Zoom meeting';
             } elseif ($getProduct->features[0]['category'] == 'offline') {
-                $location = 'Menunggu Lokasi';
+                $city = $request['city'] ?? '';
+                $location = $request['place'];
             }
 
             $course = Course::create([
@@ -209,10 +205,20 @@ class PurchaseController extends Controller
                 'products_id' => $request->product_id,
                 'order_id' => $order->id,
                 'date' => $validateData['schedule'],
+                'city' => $city,
                 'location' => $location
             ]);
         }
+        if ($request->hasFile('document')) {
+            $file = $request->file('document');
+            $path = $file->store('/public/file_uploads');
 
+            $upload = new FileUpload();
+            $upload->course_id = $course->id;
+            $upload->filename = $file->getClientOriginalName();
+            $upload->path = $path;
+            $upload->save();
+        }
         return redirect()->route('purchase.status', $order->order_code);
     }
 

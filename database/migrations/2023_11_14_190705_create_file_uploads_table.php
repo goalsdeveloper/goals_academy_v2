@@ -13,10 +13,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('file_uploads', function (Blueprint $table) {
-            $table->uuid();
+            $table->id();
             $table->foreignIdFor(Course::class)->constrained('courses')->cascadeOnDelete();
             $table->string('filename');
-            $table->string('basename');
             $table->string('path');
             $table->timestamps();
         });

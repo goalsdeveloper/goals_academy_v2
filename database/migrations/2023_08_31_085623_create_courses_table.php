@@ -22,7 +22,9 @@ return new class extends Migration
             $table->foreignIdFor(Products::class)->constrained('products')->cascadeOnDelete();
             $table->foreignIdFor(Order::class)->constrained('orders')->cascadeOnDelete();
             $table->foreignIdFor(User::class, 'tutor_id')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->text('location');
+            $table->string('city');
+            $table->string('location');
+            $table->text('note')->nullable();
             $table->date('date');
             $table->time('time')->nullable();
             $table->string('ongoing')->default('berjalan');

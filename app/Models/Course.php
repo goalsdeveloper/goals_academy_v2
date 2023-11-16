@@ -14,6 +14,7 @@ class Course extends Model
         'products_id',
         'order_id',
         'tutor_id',
+        'city',
         'location',
         'date',
         'time',

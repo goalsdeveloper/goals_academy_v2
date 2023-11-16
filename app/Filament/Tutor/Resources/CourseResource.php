@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Tutor\Resources\CourseResource\Pages;
 use App\Filament\Tutor\Resources\CourseResource\RelationManagers;
+use App\Filament\Tutor\Resources\CourseResource\RelationManagers\TutorNoteRelationManager;
 use Filament\Forms\Components\FileUpload;
 
 class CourseResource extends Resource
@@ -75,14 +76,15 @@ class CourseResource extends Resource
                     Section::make()->schema([
                         TextInput::make('location')
                             ->label('Lokasi')
+                            ->disabled()
                             ->required(),
                         DatePicker::make('date')
                             ->label('Tanggal Pelaksanaan')
-                            // ->format('d/m/Y')
+                            ->disabled()
                             ->native(false),
                         TimePicker::make('time')
                             ->label('Waktu Bimbingan')
-                        // ->native(false)
+                            ->disabled()
                     ])
                 ]),
 
@@ -147,7 +149,7 @@ class CourseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TutorNoteRelationManager::class,
         ];
     }
 
