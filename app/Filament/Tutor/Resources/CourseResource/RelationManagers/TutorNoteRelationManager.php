@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers;
+namespace App\Filament\Tutor\Resources\CourseResource\RelationManagers;
 
-use App\Models\Course;
-use App\Models\TutorNote;
-use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use App\Models\User;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Forms\Components\Group;
+use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class TutorNoteRelationManager extends RelationManager
 {
-    protected static string $relationship = 'tutorNote';
+    protected static string $relationship = 'TutorNote';
 
     public function form(Form $form): Form
     {
@@ -27,7 +26,7 @@ class TutorNoteRelationManager extends RelationManager
                     Section::make()->schema([
                         Forms\Components\Select::make('user_id')
                             ->label('Tutor')
-                            ->relationship('tutor', 'name',  fn (Builder $query) => $query->where('user_role', 'tutor'))
+                            ->relationship('tutor', 'name',  fn (Builder $query) => $query->where('id', Auth::user()->id))
                             ->native(false)
                             ->required(),
                         Forms\Components\FileUpload::make('file')
@@ -60,13 +59,16 @@ class TutorNoteRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
-                    ->label('Beri catatan baru'),
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([]);
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 }

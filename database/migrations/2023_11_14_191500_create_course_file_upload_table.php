@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('course_file_upload', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Course::class)->constrained('courses')->cascadeOnDelete();
-            $table->foreignIdFor(FileUpload::class)->constrained('file_uploads')->cascadeOnDelete();
+            $table->foreignIdFor(FileUpload::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

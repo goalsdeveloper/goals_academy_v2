@@ -13,7 +13,7 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import "@/script/momentCustomLocale";
 
 export default function Form({ auth, date, dataProduct }) {
-    console.log(dataProduct);
+    // console.log(dataProduct);
     const { data, setData, post } = useForm({
         schedule: "",
         city: "",
@@ -1169,6 +1169,7 @@ function ScheduleForm({
                                     ...data,
                                     schedule: temp.schedule,
                                     place: temp.place,
+                                    city: temp.city,
                                 });
                                 setShow(false);
                             }

@@ -90,7 +90,6 @@ class CourseResource extends Resource
                             )
                             ->searchable()
                             ->required(),
-
                     ])
                 ]),
                 Group::make()->schema([
@@ -169,7 +168,13 @@ class CourseResource extends Resource
             ->defaultSort('ongoing', 'asc')
             ->filters([
                 SelectFilter::make('status')
+                    ->options([
+                        'Failed' => 'Failed',
+                        'Success' => 'Success'
+                    ])
                     ->relationship('order', 'status')
+                    // ->default('Success')
+                    ->preload()
                     ->native(false),
                 TernaryFilter::make('ongoing')
                     ->label('Status Bimbingan')
