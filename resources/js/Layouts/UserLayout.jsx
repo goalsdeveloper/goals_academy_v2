@@ -1,21 +1,21 @@
 import "/resources/css/main.css";
 import { Head, Link } from "@inertiajs/react";
+import { CircularProgressbar } from 'react-circular-progressbar';
 import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
+import DashboardNavbarItem from "@/Components/DashboardNavbarItem";
 import MainHeader from "./Partials/MainHeader";
-import "@/script/mainHeader";
 import wave5 from "/resources/img/vector/wave-5.svg";
 import wave6 from "/resources/img/vector/wave-6.svg";
 import wave7 from "/resources/img/vector/wave-7.svg";
 import wave8 from "/resources/img/vector/wave-8.svg";
 import userIcon from "/resources/img/icon/user.png";
-import { CircularProgressbar } from 'react-circular-progressbar';
-import ExpandedButton from "@/Components/ExpandedButton";
+import "@/script/mainHeader";
 
 export default function UserLayout ({ auth, title, children }) {
     return (
         <>
             <Head title={title} />
-            <MainHeader auth={auth} title={title} />
+            <MainHeader auth={auth} title="Dashboard" />
             <main className="text-dark pt-20 xs:pt-20 md:pt-20 xl:pt-32 3xl:pt-48 pb-[8vw] md:pb-[3vw] text-[2.5vw] md:text-[1.15vw] overflow-visible">
                 <Preliminary auth={auth} title={title} />
                 <DashboardContent title={title}>
@@ -119,7 +119,7 @@ function DashboardContent ({ title, children }) {
         <div className="container mx-auto flex gap-[1.75vw]">
             <DashboardNavbar className={`sticky top-24 xs:top-28 md:top-24 xl:top-28 3xl:top-40 z-10 w-full md:w-3/12 h-fit ${title == 'Dashboard' ? '' : 'hidden md:flex'}`} title={title} />
             <div className={`w-full md:w-9/12 h-fit md:p-[2.5vw] md:shadow-centered-spread md:rounded-xl ${title == 'Dashboard' ? 'hidden md:block' : ''}`}>
-                <div className="text-center mb-[8vw] md:mb-[2vw]">
+                <div className="text-center mb-[6vw] md:mb-[2vw]">
                     <h1 className="md:font-medium text-secondary text-[4vw] md:text-[2vw] leading-[12vw] md:leading-[4vw]">{title == 'Dashboard' ? 'Pembelajaran Saya' : title}</h1>
                     <hr className="border-1 border-secondary" />
                 </div>
@@ -132,50 +132,33 @@ function DashboardContent ({ title, children }) {
 function DashboardNavbar ({ title, className }) {
     return (
         <div className={`flex flex-col gap-[5.5vw] md:gap-[1.25vw] ${className}`}>
-            <NavbarItem className={`${title == 'Dashboard' ? 'hidden md:inline-block' : ''}`} href="/pembelajaran-saya" active={title == 'Dashboard' || title == 'Pembelajaran Saya'}>
+            <DashboardNavbarItem className={`${title == 'Dashboard' ? 'hidden md:inline-block' : ''}`} href="/pembelajaran_saya" active={title == 'Dashboard' || title == 'Pembelajaran Saya'}>
                 <i className="fa-regular fa-file-lines"></i>
                 <span>Pembelajaran Saya</span>
-            </NavbarItem>
-            <NavbarItem className="md:hidden" href="/pembelajaran-saya" active={false}>
+            </DashboardNavbarItem>
+            <DashboardNavbarItem className="md:hidden" href="/pembelajaran_saya" active={false}>
                 <i className="fa-regular fa-file-lines"></i>
                 <span>Pembelajaran Saya</span>
-            </NavbarItem>
-            <NavbarItem href="/riwayat-transaksi" active={title == 'Riwayat Transaksi'}>
+            </DashboardNavbarItem>
+            <DashboardNavbarItem href="/riwayat_transaksi" active={title == 'Riwayat Transaksi'}>
                 <i className="fa-solid fa-clock-rotate-left"></i>
                 <span>Riwayat Transaksi</span>
-            </NavbarItem>
-            <NavbarItem href="/notifikasi" active={title == 'Notifikasi'}>
+            </DashboardNavbarItem>
+            <DashboardNavbarItem href="/notifikasi" active={title == 'Notifikasi'}>
                 <div className="relative">
                     <i className="fa-regular fa-bell"></i>
                     <div className="absolute border-1 border-white rounded-full top-[.2vw] right-0 w-[.4vw] h-[.4vw] 3xl:w-3 3xl:h-3 bg-red-500"></div>
                 </div>
                 <span>Notifikasi</span>
-            </NavbarItem>
-            <NavbarItem href="/obrolan" active={title == 'Obrolan'}>
+            </DashboardNavbarItem>
+            <DashboardNavbarItem href="/obrolan" active={title == 'Obrolan'}>
                 <i className="bi bi-chat-square-text"></i>
-                <span>Obrolan</span>
-            </NavbarItem>
-            <NavbarItem href="/pengaturan" active={title == 'Pengaturan'}>
+                <span>Obrolan <span className="bg-secondary text-white font-normal text-[.8vw] rounded-[.7vw] py-[.1vw] px-[.5vw]">Soon</span></span>
+            </DashboardNavbarItem>
+            <DashboardNavbarItem href="/pengaturan" active={title == 'Pengaturan'}>
                 <i className="bi bi-gear"></i>
                 <span>Pengaturan</span>
-            </NavbarItem>
+            </DashboardNavbarItem>
         </div>
-    )
-}
-
-function NavbarItem ({ href, active, className, children }) {
-    return (
-        <Link className={className} href={href}>
-            <ExpandedButton
-            className={`h-[12vw] md:h-[3.5vw] shadow-centered-spread px-[8vw] md:px-[1.5vw] md:rounded-xl ${active ? 'bg-secondary' : 'bg-white hover:bg-soft'}`}
-            textClassName={`font-medium text-[4vw] md:text-[1.15vw] ${active ? 'text-white' : 'text-secondary'}`}
-            iconClassName={active ? 'text-white' : 'text-secondary'}
-            borderClassName=""
-            >
-                <div className="flex items-center gap-[4vw] md:gap-[1vw]">
-                    {children}
-                </div>
-            </ExpandedButton>
-        </Link>
     )
 }

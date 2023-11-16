@@ -91,7 +91,7 @@ export default function MainHeader({ auth, title }) {
                                     className="absolute z-10 shadow-none p-1 translate-y-4"
                                 >
                                     {/* profile navbar */}
-                                    <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
+                                    <TECollapseItem className="py-4 px-4 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-[4vw] md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
                                         <Link
                                             className="flex gap-2 items-center font-poppins hover:text-primary"
                                             href="/user"
@@ -101,7 +101,7 @@ export default function MainHeader({ auth, title }) {
                                         </Link>
                                         <Link
                                             className="flex gap-2 items-center font-poppins hover:text-primary"
-                                            href="/profil_tutor"
+                                            href="/pengaturan"
                                         >
                                             <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
                                             Pengaturan
@@ -258,7 +258,7 @@ function NavbarExpand({ auth, title }) {
                                 </Link>
                                 <Link
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
-                                    href="#"
+                                    href="/pengaturan"
                                 >
                                     <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
                                     Pengaturan

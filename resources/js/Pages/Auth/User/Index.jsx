@@ -2,7 +2,7 @@ import UserLayout from "@/Layouts/UserLayout";
 import { Link } from "@inertiajs/react";
 import moment from "moment";
 import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
-import figure from "/resources/img/user/empty-program.png";
+import figure from "/resources/img/figure/8.svg";
 import CornerWaveVector from "@/Components/CornerWaveVector";
 import "@/script/momentCustomLocale";
 
@@ -72,8 +72,8 @@ export default function Index ({ auth }) {
     return (
         <UserLayout auth={auth} title="Dashboard">
             {data.length == 0 ? (
-                <div className="md:min-h-[21vw] flex flex-col justify-center items-center gap-[3vw] md:gap-[2vw]">
-                    <img src={figure} alt="" className="h-[25vw] w-[25vw] md:h-[10vw] md:w-[10vw]" />
+                <div className="min-h-[60vh] md:min-h-[22vw] flex flex-col justify-center items-center gap-[4vw] md:gap-[2vw]">
+                    <img src={figure} alt="" className="h-[30vw] w-[30vw] md:h-[14vw] md:w-[14vw]" />
                     <p className="text-[3vw] md:text-[1.5vw] md:text-secondary">Anda Belum Memiliki Program</p>
                     <Link
                         href="/produk"
@@ -83,24 +83,22 @@ export default function Index ({ auth }) {
                     </Link>
                 </div>
             ) : (
-                <div className="md:min-h-[21vw] flex flex-col gap-[2vw]">
-                    <div className="flex flex-col gap-[6vw] md:gap-[1vw]">
-                        {data.map((item, index) => {
-                            if (item.category_id == 1) {
-                                return (
-                                    <BimbinganItem key={index} data={item} />
-                                )
-                            } else if (item.category_id == 2) {
-                                return (
-                                    <EbookItem key={index} data={item} />
-                                )
-                            } else if (item.category_id == 3) {
-                                return (
-                                    <WebinarItem key={index} data={item} />
-                                )
-                            }
-                        })}
-                    </div>
+                <div className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[1vw]">
+                    {data.map((item, index) => {
+                        if (item.category_id == 1) {
+                            return (
+                                <BimbinganItem key={index} data={item} />
+                            )
+                        } else if (item.category_id == 2) {
+                            return (
+                                <EbookItem key={index} data={item} />
+                            )
+                        } else if (item.category_id == 3) {
+                            return (
+                                <WebinarItem key={index} data={item} />
+                            )
+                        }
+                    })}
                 </div>
             )}
         </UserLayout>

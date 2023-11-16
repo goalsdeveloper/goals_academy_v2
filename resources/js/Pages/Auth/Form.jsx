@@ -10,7 +10,6 @@ import rectangle from "/resources/img/vector/rectangle-1.svg";
 
 import { TECollapse } from "tw-elements-react";
 import icon from "/resources/img/icon/goals-4.svg";
-import user from "/resources/img/icon/user.png";
 
 export default function Form({ title }) {
     const [active, setActive] = useState(title);
