@@ -30,6 +30,7 @@ class ModeratorPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->login()
+            ->sidebarCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/Moderator/Resources'), for: 'App\\Filament\\Moderator\\Resources')
             ->discoverPages(in: app_path('Filament/Moderator/Pages'), for: 'App\\Filament\\Moderator\\Pages')
             ->pages([
