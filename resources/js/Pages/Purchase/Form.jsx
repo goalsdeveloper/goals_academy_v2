@@ -1168,6 +1168,7 @@ function ScheduleForm({
                                 setData({
                                     ...data,
                                     schedule: temp.schedule,
+                                    city: temp.city,
                                     place: temp.place,
                                     city: temp.city,
                                 });

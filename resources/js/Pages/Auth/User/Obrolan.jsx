@@ -22,11 +22,11 @@ export default function Index ({ auth }) {
     ]
 
     return (
-        <UserLayout auth={auth} title="Notifikasi">
+        <UserLayout auth={auth} title="Obrolan">
             {data.length == 0 ? (
                 <div className="min-h-[60vh] md:min-h-[22vw] flex flex-col justify-center items-center gap-[6vw] md:gap-[2vw]">
-                    <img src={figure} alt="" className="h-[30vw] w-[30vw] md:h-[14vw] md:w-[14vw]" />
-                    <p className="text-[3vw] md:text-[1.5vw] md:text-secondary">Anda Belum Memiliki Notifikasi</p>
+                    {/* <img src={figure} alt="" className="h-[30vw] w-[30vw] md:h-[14vw] md:w-[14vw]" /> */}
+                    <p className="text-[3vw] md:text-[1.5vw] md:text-secondary">Coming Soon</p>
                 </div>
             ) : (
                 <div className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[1vw]">

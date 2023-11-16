@@ -66,11 +66,11 @@ Route::get('/user', function () {
     return Inertia::render('Auth/User/Index');
 });
 
-Route::get('/pembelajaran-saya', function () {
+Route::get('/pembelajaran_saya', function () {
     return Inertia::render('Auth/User/PembelajaranSaya');
 });
 
-Route::get('/riwayat-transaksi', function () {
+Route::get('/riwayat_transaksi', function () {
     return Inertia::render('Auth/User/RiwayatTransaksi');
 });
 
@@ -83,7 +83,15 @@ Route::get('/obrolan', function () {
 });
 
 Route::get('/pengaturan', function () {
-    return Inertia::render('Auth/User/Pengaturan');
+    return Inertia::render('Auth/User/Pengaturan/Index');
+});
+
+Route::get('/pengaturan/ubah_profil', function () {
+    return Inertia::render('Auth/User/Pengaturan/UbahProfil');
+});
+
+Route::get('/pengaturan/ubah_password', function () {
+    return Inertia::render('Auth/User/Pengaturan/UbahPassword');
 });
 
 require __DIR__ . '/auth.php';
