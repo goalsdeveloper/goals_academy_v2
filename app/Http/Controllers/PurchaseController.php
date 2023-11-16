@@ -216,7 +216,6 @@ class PurchaseController extends Controller
             $upload = new FileUpload();
             $upload->course_id = $course->id;
             $upload->filename = $file->getClientOriginalName();
-            $upload->basename = 'asd';
             $upload->path = $path;
             $upload->save();
         }
