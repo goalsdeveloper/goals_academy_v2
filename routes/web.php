@@ -42,10 +42,6 @@ Route::get('/profil_tutor', function () {
     return Inertia::render('Main/ProfilTutor');
 });
 
-Route::get('/login', function () {
-    return Inertia::render('Auth/Form', ['title' => 'login']);
-});
-
 Route::get('/register', function () {
     return Inertia::render('Auth/Form', ['title' => 'register']);
 });
@@ -62,37 +58,6 @@ Route::get('/email/verify/email-verification', [EmailVerificationController::cla
 Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('auth', 'signed')->name('verification.verify');
 Route::get('/email/verify/resend-verification', [EmailVerificationController::class, 'resend'])->middleware('auth', 'throttle:6,1')->name('verification.resend');
 
-Route::get('/user', function () {
-    return Inertia::render('Auth/User/Index');
-});
-
-Route::get('/pembelajaran_saya', function () {
-    return Inertia::render('Auth/User/PembelajaranSaya');
-});
-
-Route::get('/riwayat_transaksi', function () {
-    return Inertia::render('Auth/User/RiwayatTransaksi');
-});
-
-Route::get('/notifikasi', function () {
-    return Inertia::render('Auth/User/Notifikasi');
-});
-
-Route::get('/obrolan', function () {
-    return Inertia::render('Auth/User/Obrolan');
-});
-
-Route::get('/pengaturan', function () {
-    return Inertia::render('Auth/User/Pengaturan/Index');
-});
-
-Route::get('/pengaturan/ubah_profil', function () {
-    return Inertia::render('Auth/User/Pengaturan/UbahProfil');
-});
-
-Route::get('/pengaturan/ubah_password', function () {
-    return Inertia::render('Auth/User/Pengaturan/UbahPassword');
-});
-
+require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/socialite.php';

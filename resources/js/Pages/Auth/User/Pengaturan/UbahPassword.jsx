@@ -2,7 +2,7 @@ import PengaturanLayout from "@/Layouts/PengaturanLayout";
 import { useForm } from "@inertiajs/react";
 import "@/script/momentCustomLocale";
 
-export default function Index ({ auth }) {
+export default function Index({ auth }) {
     const { data, setData, post } = useForm({
         old_password: "",
         new_password: "",
@@ -10,27 +10,26 @@ export default function Index ({ auth }) {
     });
 
     const submit = (e) => {
-        e.preventDefault()
-        console.log(data)
-    }
+        e.preventDefault();
+        post("/pengaturan/ubah_password");
+    };
 
     return (
         <PengaturanLayout auth={auth} title="Ubah Password">
-            <form onSubmit={submit} className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[2vw]">
+            <form
+                onSubmit={submit}
+                className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[2vw]"
+            >
                 <Input
                     value={data.old_password}
-                    onChange={(e) =>
-                        setData("old_password", e.target.value)
-                    }
+                    onChange={(e) => setData("old_password", e.target.value)}
                     type="old_password"
                     id="old_password"
                     label="Password Lama"
                 />
                 <Input
                     value={data.new_password}
-                    onChange={(e) =>
-                        setData("new_password", e.target.value)
-                    }
+                    onChange={(e) => setData("new_password", e.target.value)}
                     type="password"
                     id="new_password"
                     label="Password Baru"
@@ -52,7 +51,7 @@ export default function Index ({ auth }) {
                 </button>
             </form>
         </PengaturanLayout>
-    )
+    );
 }
 
 function Input({ type, id, label, value, onChange }) {

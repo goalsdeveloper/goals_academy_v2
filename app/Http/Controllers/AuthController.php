@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use App\Models\UserProfile;
-use App\Providers\RouteServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Log;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -18,7 +19,7 @@ class AuthController extends Controller
     public function index()
     {
         // LOGIN/REGISTER VIEW HERE...
-        return "this is Auth Page!";
+        return Inertia::render('Auth/Form', ['title' => 'login']);
     }
 
     public function login(Request $request)

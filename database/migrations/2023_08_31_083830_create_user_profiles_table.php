@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained('users');
             $table->string('phone_number')->unique()->nullable();
             $table->string('university')->nullable();
+            $table->string('faculty')->nullable();
             $table->string('major')->nullable();
             $table->longText('profile_image')->nullable();
             $table->timestamps();
