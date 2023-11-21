@@ -30,16 +30,14 @@ function Preliminary ({ auth, title }) {
     const percentage = 68
     return (
         <div className={`container mx-auto shadow-centered-spread rounded-[1vw] overflow-hidden mt-[3vw] mb-[6vw] md:mb-[3vw] ${title == 'Dashboard' ? '' : 'hidden md:block'}`}>
-            <div className="relative">
-                <div className="flex flex-col md:flex-row text-center md:text-left items-center gap-[3vw] md:gap-[1.5vw] p-[6vw] pb-[12vw] md:p-[3vw]">
-                    <img className="w-[22vw] h-[22vw] md:w-[6vw] md:h-[6vw]" src={userIcon} alt="User" />
-                    <div>
-                        <h2 className="font-sans font-medium text-[4vw] md:text-[2.25vw] mb-[.5vw]">Selamat Datang <span className="text-secondary">{auth.user.name}</span></h2>
-                        <p>Hello {auth.user.name}! Selamat datang di website Goals Academy!</p>
-                    </div>
+            <div className="relative flex flex-col md:flex-row text-center md:text-left items-center gap-[3vw] md:gap-[1.5vw] p-[6vw] pb-[12vw] md:p-[3vw]">
+                <img className="w-[22vw] h-[22vw] md:w-[6vw] md:h-[6vw]" src={userIcon} alt="User" />
+                <div>
+                    <h2 className="font-sans font-medium text-[4vw] md:text-[2.25vw] mb-[.5vw]">Selamat Datang <span className="text-secondary">{auth.user.name}</span></h2>
+                    <p>Hello {auth.user.name}! Selamat datang di website Goals Academy!</p>
+                </div>
                 <img src={wave5} className="hidden md:block absolute w-full left-0 right-0 bottom-0 select-none" />
                 <img src={wave7} className="md:hidden absolute w-full left-0 right-0 bottom-0 select-none" />
-                </div>
             </div>
             <div className="relative bg-secondary text-white">
                 <img src={wave6} className="hidden md:block absolute w-full left-0 right-0 top-0 select-none" />

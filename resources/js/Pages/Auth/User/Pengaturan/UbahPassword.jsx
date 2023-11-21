@@ -22,8 +22,10 @@ export default function Index({ auth }) {
             >
                 <Input
                     value={data.old_password}
-                    onChange={(e) => setData("old_password", e.target.value)}
-                    type="old_password"
+                    onChange={(e) =>
+                        setData("old_password", e.target.value)
+                    }
+                    type="password"
                     id="old_password"
                     label="Password Lama"
                 />

@@ -58,6 +58,10 @@ Route::get('/email/verify/email-verification', [EmailVerificationController::cla
 Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('auth', 'signed')->name('verification.verify');
 Route::get('/email/verify/resend-verification', [EmailVerificationController::class, 'resend'])->middleware('auth', 'throttle:6,1')->name('verification.resend');
 
+Route::get('/purchase/detail/{id}', function (Request $request) {
+    return Inertia::render('Auth/User/DetailPesanan');
+});
+
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/socialite.php';
