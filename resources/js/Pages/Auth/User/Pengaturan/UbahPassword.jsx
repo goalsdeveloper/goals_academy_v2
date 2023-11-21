@@ -22,7 +22,7 @@ export default function Index ({ auth }) {
                     onChange={(e) =>
                         setData("old_password", e.target.value)
                     }
-                    type="old_password"
+                    type="password"
                     id="old_password"
                     label="Password Lama"
                 />

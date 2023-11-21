@@ -94,5 +94,9 @@ Route::get('/pengaturan/ubah_password', function () {
     return Inertia::render('Auth/User/Pengaturan/UbahPassword');
 });
 
+Route::get('/purchase/detail/{id}', function (Request $request) {
+    return Inertia::render('Auth/User/DetailPesanan');
+});
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/socialite.php';
