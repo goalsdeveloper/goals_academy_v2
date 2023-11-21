@@ -181,7 +181,7 @@ class PurchaseController extends Controller
             'quantity' => $quantity,
             'unit_price' => $getProduct->price,
             'status' => OrderEnum::PENDING->value,
-            'notes' => $request['notes'],
+            'note' => $request['notes'],
         ]);
 
         OrderHistory::create([
@@ -216,7 +216,9 @@ class PurchaseController extends Controller
             $upload = new FileUpload();
             $upload->course_id = $course->id;
             $upload->filename = $file->getClientOriginalName();
+            $upload->mime_type = $file->getMimeType();
             $upload->path = $path;
+            $upload->size = $file->getSize();
             $upload->save();
         }
         return redirect()->route('purchase.status', $order->order_code);
