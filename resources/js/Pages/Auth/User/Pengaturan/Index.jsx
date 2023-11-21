@@ -2,20 +2,20 @@ import PengaturanLayout from "@/Layouts/PengaturanLayout";
 import { useForm } from "@inertiajs/react";
 import "@/script/momentCustomLocale";
 
-export default function Index ({ auth }) {
+export default function Index ({ auth, userData, profileData }) {
     const { data, setData, post } = useForm({
-        username: auth.user.username,
-        name: auth.user.name,
-        phone_number: "",
-        university: "",
-        faculty: "",
-        major: "",
+        username: userData.username,
+        name: userData.name,
+        phone_number: profileData.phone_number,
+        university: profileData.university,
+        faculty: profileData.faculty,
+        major: profileData.major,
         referral: "",
     });
 
     const submit = (e) => {
         e.preventDefault()
-        console.log(data)
+        post('/pengaturan')
     }
 
     return (
