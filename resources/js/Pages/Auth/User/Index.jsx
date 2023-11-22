@@ -153,7 +153,7 @@ function BimbinganItem({ data }) {
                 </div>
             </div>
             <Link
-                href={`/pembelajaran/${data.order_code}`}
+                href={`/purchase/detail/${data.order_code}`}
                 className="w-4/12 h-[6vw] md:w-[30%] md:h-[3vw] cursor-pointer"
             >
                 <ButtonHoverSlide className="h-full md:before:p-0.5 lg:before:p-1 xl:before:p-1.5 3xl:before:p-2 before:content-arrow-right-secondary-20 xs:before:content-arrow-right-secondary-32 md:before:content-arrow-right-secondary-20 xl:before:content-arrow-right-secondary-24 3xl:before:content-arrow-right-secondary-32 after:content-detail after:text-white after:text-[2.5vw] md:after:text-[1vw] medium border-1 xl:border-2 border-white rounded-full before:w-[160%] before:-ms-[160%] before:duration-300 after:w-full after:duration-300 hover:before:-ms-[30%] hover:after:-me-[100%] before:bg-sweep-white"></ButtonHoverSlide>

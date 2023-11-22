@@ -8,67 +8,6 @@ import "@/script/momentCustomLocale";
 
 export default function Index({ auth, orderBimbingan }) {
     console.log(orderBimbingan);
-    // const data = [
-    //     {
-    //         id: 1,
-    //         products_id: 1,
-    //         category_id: 1,
-    //         order_id: 'GA1234578',
-    //         name: 'Bimbingan Online 45 Menit',
-    //         date: '2023-12-01',
-    //         time: '18:30',
-    //         duration: 45,
-    //         ongoing: true,
-    //     },
-    //     {
-    //         id: 2,
-    //         products_id: 1,
-    //         category_id: 1,
-    //         order_id: 'GA87654321',
-    //         name: 'Bimbingan Offline 60 Menit',
-    //         date: '2023-11-28',
-    //         time: '19:00',
-    //         duration: 60,
-    //         ongoing: false,
-    //     },
-    //     {
-    //         id: 1,
-    //         products_id: 7,
-    //         category_id: 2,
-    //         order_id: 'GA1238064',
-    //         name: 'Ebook 1',
-    //         date: '2023-12-01',
-    //     },
-    //     {
-    //         id: 2,
-    //         products_id: 1,
-    //         category_id: 1,
-    //         order_id: 'GA7823164',
-    //         name: 'Bimbingan Offline 60 Menit',
-    //         date: '2023-11-28',
-    //         time: '19:00',
-    //         duration: 60,
-    //         ongoing: false,
-    //     },
-    //     {
-    //         id: 2,
-    //         products_id: 10,
-    //         category_id: 2,
-    //         order_id: 'GA1918263',
-    //         name: 'Ebook 2',
-    //         date: '2023-12-01',
-    //     },
-    //     {
-    //         id: 1,
-    //         products_id: 8,
-    //         category_id: 3,
-    //         order_id: 'GA1237840',
-    //         name: 'Webinar 1',
-    //         date: '2023-12-12',
-    //         time: '19:00',
-    //         duration: 60,
-    //     },
-    // ]
     const data = orderBimbingan;
 
     return (
@@ -93,7 +32,10 @@ export default function Index({ auth, orderBimbingan }) {
             ) : (
                 <div className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[1vw]">
                     {data.map((item, index) => {
-                        if (item.products.features[0].category == "online") {
+                        if (
+                            item.products.features[0].category == "online" ||
+                            item.products.features[0].category == "offline"
+                        ) {
                             return <BimbinganItem key={index} data={item} />;
                         } else if (item.category_id == 2) {
                             return <EbookItem key={index} data={item} />;
@@ -108,12 +50,16 @@ export default function Index({ auth, orderBimbingan }) {
 }
 
 function BimbinganItem({ data }) {
-    const start_time = moment(data.course.time, "HH:mm").format("HH:mm");
-    const finish_time = moment()
-        .hours(data.course.time.split(":")[0])
-        .minutes(data.course.time.split(":")[1])
-        .add(data.products.features[0].duration, "minutes")
-        .format("HH:mm");
+    const start_time = data.course.time
+        ? moment(data.course.time, "HH:mm").format("HH:mm")
+        : "N/A";
+    const finish_time = data.course.time
+        ? moment()
+              .hours(data.course.time.split(":")[0])
+              .minutes(data.course.time.split(":")[1])
+              .add(data.products.features[0].duration, "minutes")
+              .format("HH:mm")
+        : "N/A";
     return (
         <div className="relative w-full flex flex-wrap md:flex-nowrap justify-center md:justify-between items-center bg-secondary rounded-[1vw] text-white p-[6vw] md:p-[2vw] gap-[4vw] md:gap-0">
             <CornerWaveVector cornerClassName="w-4/12 md:w-3/12" />
@@ -134,9 +80,13 @@ function BimbinganItem({ data }) {
                     {data.products.name}
                 </h4>
                 <div className="text-[2.75vw] md:text-[.95vw]">
-                    <p>{moment(data.course.date).format("dddd, DD MMMM YYYY")}</p>
                     <p>
-                        {start_time} - {finish_time}
+                        {moment(data.course.date).format("dddd, DD MMMM YYYY")}
+                    </p>
+                    <p>
+                        {data.course.time
+                            ? start_time + "-" + finish_time
+                            : "Waktu Belum Ditentukan"}
                     </p>
                 </div>
             </div>

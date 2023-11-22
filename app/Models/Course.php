@@ -16,6 +16,7 @@ class Course extends Model
         'tutor_id',
         'city',
         'location',
+        'note',
         'date',
         'time',
         'ongoing',
