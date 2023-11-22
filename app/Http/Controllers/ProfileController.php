@@ -6,6 +6,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -14,7 +15,8 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $user = User::find(auth()->user()->id)->with('profile')->first();
+        $user = User::where('id', Auth::user()->id)->with('profile')->first();
+        // dd($user);
         $orderBimbingan = Order::where('user_id', $user->id)
             ->whereHas('products.categories', function ($query) {
                 $query->where('name', 'like', '%dibimbing%');
@@ -42,7 +44,7 @@ class ProfileController extends Controller
 
     public function pembelajaranSaya()
     {
-        $user = User::find(auth()->user()->id)->with('profile')->first();
+        $user = User::where('id', Auth::user()->id)->with('profile')->first();
         $orderBimbingan = Order::where('user_id', $user->id)
             ->whereHas('products.categories', function ($query) {
                 $query->where('name', 'like', '%dibimbing%');
