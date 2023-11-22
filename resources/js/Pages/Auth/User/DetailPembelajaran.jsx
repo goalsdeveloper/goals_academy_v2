@@ -19,6 +19,7 @@ export default function DetailPesanan ({ auth }) {
         tutor_note: '',
         review: '',
         rate: 0,
+        ongoing: true,
     }
 
     const {data: reviewData, setData: setReviewData, post} = useForm({
@@ -88,7 +89,7 @@ export default function DetailPesanan ({ auth }) {
                         </tr>
                         <tr className="border-1 md:border-2 border-transparent border-b-dark">
                             <td className="py-[4vw] md:py-[2vw]">Lampiran Dokumen Hasil</td>
-                            <td className="font-bold text-right py-[4vw] md:py-[2vw]">{data.tutor_document == '' ? '-' : data.tutor_document.name}</td>
+                            <td className="font-bold text-right py-[4vw] md:py-[2vw]">{data.tutor_document == '' ? '-' : (<a role="button">{data.tutor_document.name}&nbsp;&nbsp;<i className="fa-solid fa-download text-secondary"></i></a>)}</td>
                         </tr>
                         <tr className="border-1 md:border-2 border-transparent border-b-dark">
                             <td className="py-[4vw] md:py-[2vw]">Catatan dari Tutor</td>
@@ -97,7 +98,7 @@ export default function DetailPesanan ({ auth }) {
                     </tbody>
                 </table>
             </div>
-            <div className="w-full h-fit relative p-[6vw] md:p-[3vw] shadow-centered-spread rounded-[1kkvw] md:rounded-xl">
+            <div className={`${data.ongoing ? 'hidden' : ''} w-full h-fit relative p-[6vw] md:p-[3vw] shadow-centered-spread rounded-[1kkvw] md:rounded-xl`}>
                 <CornerWaveVector2 className="md:hidden" cornerClassName="w-4/12" />
                 <div>
                     <h1 className="font-medium text-center md:text-left text-secondary text-[4vw] md:text-[2vw] mb-[2vw] md:mb-[1vw]">Ulasan Hasil Pembelajaran</h1>
@@ -118,7 +119,7 @@ export default function DetailPesanan ({ auth }) {
                     </tbody>
                 </table>
             </div>
-            <div className="flex flex-col gap-[3vw] md:gap-[1.5vw]">
+            <div className={`${data.ongoing ? 'hidden' : ''} flex flex-col gap-[3vw] md:gap-[1.5vw]`}>
                 <ButtonPill activeStyle="text-secondary border-2 border-secondary hover:text-white hover:bg-secondary" onClick={() => setShowReviewForm(true)}>Beri Ulasan</ButtonPill>
                 <ButtonPill isActive={reviewData.review != '' & reviewData.rate != 0}>Selesaikan Pembelajaran</ButtonPill>
             </div>
