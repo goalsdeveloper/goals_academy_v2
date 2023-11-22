@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\User;
 use Inertia\Inertia;
 use Midtrans\Config;
 use App\Models\Order;
@@ -11,13 +12,14 @@ use Midtrans\CoreApi;
 use App\Models\Course;
 use App\Enums\OrderEnum;
 use App\Models\Category;
-use App\Models\FileUpload;
 use App\Models\Products;
 use App\Models\PromoCode;
+use App\Models\FileUpload;
 use Illuminate\Support\Str;
 use App\Models\OrderHistory;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
+use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
 {
@@ -57,12 +59,27 @@ class PurchaseController extends Controller
     public function store(Request $request)
     {
         // dd($request);
-        $user = auth()->user();
+        $user = User::where('id', Auth::user()->id)->first();
         $validateData = $request->validate([
             'schedule' => 'required|date',
             'init_price' => 'required',
             'purchase_method' => 'required',
         ]);
+
+        // jika user menggunakan promo code
+        if ($request->promo) {
+            $cekPromo = PromoCode::where('promo_code', $request->promo)->first();
+            if(!$cekPromo){
+                return response()->json(['message' => 'promo tidak ditemukan!']);
+            }
+            if($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()){
+                return response()->json(['message' => 'promo sudah anda gunakan, cari promo lain!']);
+            } else {
+                $user->kodePromo()->attach($cekPromo->id);
+            }
+        } else {
+            dd($user);
+        }
 
         $quantity = 1;
         $adminFee = 0;
@@ -181,7 +198,7 @@ class PurchaseController extends Controller
             'quantity' => $quantity,
             'unit_price' => $getProduct->price,
             'status' => OrderEnum::PENDING->value,
-            'note' => $request['notes'],
+            'notes' => $request['note'],
         ]);
 
         OrderHistory::create([
@@ -206,7 +223,8 @@ class PurchaseController extends Controller
                 'order_id' => $order->id,
                 'date' => $validateData['schedule'],
                 'city' => $city,
-                'location' => $location
+                'location' => $location,
+                'note' => $request['note']
             ]);
         }
         if ($request->hasFile('document')) {
@@ -220,6 +238,8 @@ class PurchaseController extends Controller
             $upload->path = $path;
             $upload->size = $file->getSize();
             $upload->save();
+
+            $course->fileUploads()->attach($upload->id);
         }
         return redirect()->route('purchase.status', $order->order_code);
     }

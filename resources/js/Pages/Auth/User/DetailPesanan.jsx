@@ -4,7 +4,7 @@ import "@/script/momentCustomLocale";
 import CornerWaveVector2 from "@/Components/CornerWaveVector2";
 
 export default function DetailPesanan({ auth, dataDetail }) {
-    console.log(dataDetail);
+    // console.log(dataDetail);
 
     const payloadObject = JSON.parse(dataDetail.order_history[0].payload);
     const expiryTime = payloadObject.expiry_time;
