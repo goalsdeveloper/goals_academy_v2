@@ -98,5 +98,9 @@ Route::get('/purchase/detail/{id}', function (Request $request) {
     return Inertia::render('Auth/User/DetailPesanan');
 });
 
+Route::get('/pembelajaran/{id}', function (Request $request) {
+    return Inertia::render('Auth/User/DetailPembelajaran');
+});
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/socialite.php';
