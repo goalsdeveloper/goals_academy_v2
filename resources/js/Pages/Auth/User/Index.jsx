@@ -7,7 +7,7 @@ import CornerWaveVector from "@/Components/CornerWaveVector";
 import "@/script/momentCustomLocale";
 
 export default function Index({ auth, orderBimbingan }) {
-    console.log(orderBimbingan);
+    // console.log(orderBimbingan);
     // const data = [
     //     {
     //         id: 1,
