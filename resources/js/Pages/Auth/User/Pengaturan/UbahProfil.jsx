@@ -2,84 +2,73 @@ import PengaturanLayout from "@/Layouts/PengaturanLayout";
 import { useForm } from "@inertiajs/react";
 import "@/script/momentCustomLocale";
 
-export default function Index ({ auth }) {
+export default function Index({ auth, userData, profileData }) {
     const { data, setData, post } = useForm({
-        username: auth.user.username,
-        name: auth.user.name,
-        phone_number: "",
-        university: "",
-        faculty: "",
-        major: "",
+        username: userData.username,
+        name: userData.name,
+        phone_number: profileData.phone_number,
+        university: profileData.university,
+        faculty: profileData.faculty,
+        major: profileData.major,
         referral: "",
     });
 
     const submit = (e) => {
-        e.preventDefault()
-        console.log(data)
-    }
+        e.preventDefault();
+        post("/pengaturan");
+    };
 
     return (
         <PengaturanLayout auth={auth} title="Ubah Profil">
-            <form onSubmit={submit} className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[2vw]">
+            <form
+                onSubmit={submit}
+                className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[2vw]"
+            >
                 <Input
                     value={data.username}
-                    onChange={(e) =>
-                        setData("username", e.target.value)
-                    }
+                    onChange={(e) => setData("username", e.target.value)}
                     type="text"
                     id="username"
                     label="Username"
                 />
                 <Input
                     value={data.name}
-                    onChange={(e) =>
-                        setData("name", e.target.value)
-                    }
+                    onChange={(e) => setData("name", e.target.value)}
                     type="text"
                     id="name"
                     label="Nama Lengkap"
                 />
                 <Input
                     value={data.phone_number}
-                    onChange={(e) =>
-                        setData("phone_number", e.target.value)
-                    }
+                    onChange={(e) => setData("phone_number", e.target.value)}
                     type="text"
                     id="phone_number"
                     label="Nomor Telepon"
                 />
                 <Input
                     value={data.university}
-                    onChange={(e) =>
-                        setData("university", e.target.value)
-                    }
+                    onChange={(e) => setData("university", e.target.value)}
                     type="text"
                     id="university"
                     label="Universitas"
                 />
                 <Input
                     value={data.faculty}
-                    onChange={(e) =>
-                        setData("faculty", e.target.value)
-                    }
+                    onChange={(e) => setData("faculty", e.target.value)}
                     type="text"
                     id="faculty"
                     label="Fakultas"
                 />
                 <Input
                     value={data.major}
-                    onChange={(e) =>
-                        setData("major", e.target.value)
-                    }
+                    onChange={(e) => setData("major", e.target.value)}
                     type="text"
                     id="major"
                     label="Jurusan"
                 />
                 <Input
                     value={data.referral}
-                    onChange={(e) =>
-                        setData("referral", e.target.value)
-                    }
+                    onChange={(e) => setData("referral", e.target.value)}
                     type="text"
                     id="referral"
                     label="Kode Referral"
@@ -92,7 +81,7 @@ export default function Index ({ auth }) {
                 </button>
             </form>
         </PengaturanLayout>
-    )
+    );
 }
 
 function Input({ type, id, label, value, onChange }) {

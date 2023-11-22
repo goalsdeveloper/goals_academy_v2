@@ -13,7 +13,8 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import "@/script/momentCustomLocale";
 
 export default function Form({ auth, date, dataProduct }) {
-    // console.log(dataProduct);
+    // console.log(auth.user.id);
+    const userId = auth.user.id;
     const { data, setData, post } = useForm({
         schedule: "",
         city: "",
@@ -76,7 +77,7 @@ export default function Form({ auth, date, dataProduct }) {
                 accept: "application.json",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ inputCode: inputCode }),
+            body: JSON.stringify({ inputCode: inputCode, userId: userId }),
         })
             .then((response) => response.json())
             .then((response) => {
@@ -245,7 +246,7 @@ function MainCard({
                     <div className="flex flex-col text-light-grey">
                         <label htmlFor="file" className="font-medium">
                             <p className="mb-[2vw] md:mb-[.5vw] text-dark">
-                                Berkas Pendukung (opsional)
+                                Berkas Pendukung (opsional);
                             </p>
                             <div
                                 className={`w-full border-1 outline outline-1 rounded-[1vw] md:rounded-[.4vw] flex items-center cursor-pointer overflow-hidden h-[9vw] md:h-[2.5vw] ${

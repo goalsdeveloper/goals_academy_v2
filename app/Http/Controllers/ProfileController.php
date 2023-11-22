@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
 use App\Models\User;
-use App\Models\UserProfile;
+use Inertia\Inertia;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -17,13 +17,13 @@ class ProfileController extends Controller
         $user = User::find(auth()->user()->id)->with('profile')->first();
         $orderBimbingan = Order::where('user_id', $user->id)
             ->whereHas('products.categories', function ($query) {
-                $query->where('name', 'webinar');
+                $query->where('name', 'like', '%dibimbing%');
             })
-            ->with('products.categories')
+            ->with('products.categories', 'course')
             ->get();
         $orderEbook = Order::where('user_id', $user->id)
             ->whereHas('products.categories', function ($query) {
-                $query->where('name', 'webinar');
+                $query->where('name', 'ebook');
             })
             ->with('products.categories')
             ->get();
@@ -35,54 +35,23 @@ class ProfileController extends Controller
             ->get();
 
 
-        //return ke dashboard user
+        return Inertia::render('Auth/User/Index', [
+            'orderBimbingan' => $orderBimbingan,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function pembelajaranSaya()
     {
-        //
-    }
+        $user = User::find(auth()->user()->id)->with('profile')->first();
+        $orderBimbingan = Order::where('user_id', $user->id)
+            ->whereHas('products.categories', function ($query) {
+                $query->where('name', 'like', '%dibimbing%');
+            })
+            ->with('products.categories', 'course')
+            ->get();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return Inertia::render('Auth/User/PembelajaranSaya', [
+            'orderBimbingan' => $orderBimbingan,
+        ]);
     }
 }

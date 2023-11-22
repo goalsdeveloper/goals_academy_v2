@@ -120,6 +120,8 @@ class CourseResource extends Resource
                             ->native(false),
                         TimePicker::make('time')
                             ->label('Waktu Bimbingan')
+                            ->seconds(false)
+                            ->format('H:i')
                         // ->native(false)
                     ])
                 ])

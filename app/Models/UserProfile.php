@@ -13,6 +13,7 @@ class UserProfile extends Model
         'user_id',
         'phone_number',
         'university',
+        'faculty',
         'major',
         'profile_image',
     ];
