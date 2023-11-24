@@ -147,7 +147,7 @@ function ReviewForm({ show, setShow, data, setData, temp, setTemp, post }) {
                 <div>
                     <div className="flex justify-between items-center mb-[3vw] md:mb-[1vw]">
                         <h5 className="text-secondary font-poppins font-bold text-[4.5vw] md:text-[1.2vw]">
-                            Ulasan Hasil Pembelajaran{" "}
+                            Ulasan Hasil Pembelajaran
                         </h5>
                         <i
                             role="button"

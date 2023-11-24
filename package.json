@@ -12,6 +12,7 @@
         "@vitejs/plugin-react": "^4.0.3",
         "autoprefixer": "^10.4.12",
         "axios": "^1.1.2",
+        "get-orientation": "^1.1.2",
         "laravel-vite-plugin": "^0.8.0",
         "postcss": "^8.4.18",
         "react": "^18.2.0",

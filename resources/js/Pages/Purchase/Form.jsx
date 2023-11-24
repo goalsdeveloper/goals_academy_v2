@@ -1299,7 +1299,7 @@ function NoteForm({ show, setShow, data, setData, temp, setTemp }) {
                 <div>
                     <div className="flex justify-between items-center mb-[3vw] md:mb-[1vw]">
                         <h5 className="text-secondary font-poppins font-bold text-[4.5vw] md:text-[1.2vw]">
-                            Catatan untuk Tutor{" "}
+                            Catatan untuk Tutor
                         </h5>
                         <i
                             role="button"
