@@ -53,7 +53,9 @@ function Virtual(_ref) {
     if (!params.renderSlide) {
       slideEl.innerHTML = slide;
     }
-    if (params.cache) swiper.virtual.cache[index] = slideEl;
+    if (params.cache) {
+      swiper.virtual.cache[index] = slideEl;
+    }
     return slideEl;
   }
   function update(force) {
@@ -160,14 +162,14 @@ function Virtual(_ref) {
       return slideIndex;
     };
     if (force) {
-      swiper.slidesEl.querySelectorAll(`.${swiper.params.slideClass}, swiper-slide`).forEach(slideEl => {
+      swiper.slides.filter(el => el.matches(`.${swiper.params.slideClass}, swiper-slide`)).forEach(slideEl => {
         slideEl.remove();
       });
     } else {
       for (let i = previousFrom; i <= previousTo; i += 1) {
         if (i < from || i > to) {
           const slideIndex = getSlideIndex(i);
-          swiper.slidesEl.querySelectorAll(`.${swiper.params.slideClass}[data-swiper-slide-index="${slideIndex}"], swiper-slide[data-swiper-slide-index="${slideIndex}"]`).forEach(slideEl => {
+          swiper.slides.filter(el => el.matches(`.${swiper.params.slideClass}[data-swiper-slide-index="${slideIndex}"], swiper-slide[data-swiper-slide-index="${slideIndex}"]`)).forEach(slideEl => {
             slideEl.remove();
           });
         }
@@ -249,18 +251,34 @@ function Virtual(_ref) {
     let activeIndex = swiper.activeIndex;
     if (Array.isArray(slidesIndexes)) {
       for (let i = slidesIndexes.length - 1; i >= 0; i -= 1) {
-        swiper.virtual.slides.splice(slidesIndexes[i], 1);
         if (swiper.params.virtual.cache) {
           delete swiper.virtual.cache[slidesIndexes[i]];
+          // shift cache indexes
+          Object.keys(swiper.virtual.cache).forEach(key => {
+            if (key > slidesIndexes) {
+              swiper.virtual.cache[key - 1] = swiper.virtual.cache[key];
+              swiper.virtual.cache[key - 1].setAttribute('data-swiper-slide-index', key - 1);
+              delete swiper.virtual.cache[key];
+            }
+          });
         }
+        swiper.virtual.slides.splice(slidesIndexes[i], 1);
         if (slidesIndexes[i] < activeIndex) activeIndex -= 1;
         activeIndex = Math.max(activeIndex, 0);
       }
     } else {
-      swiper.virtual.slides.splice(slidesIndexes, 1);
       if (swiper.params.virtual.cache) {
         delete swiper.virtual.cache[slidesIndexes];
+        // shift cache indexes
+        Object.keys(swiper.virtual.cache).forEach(key => {
+          if (key > slidesIndexes) {
+            swiper.virtual.cache[key - 1] = swiper.virtual.cache[key];
+            swiper.virtual.cache[key - 1].setAttribute('data-swiper-slide-index', key - 1);
+            delete swiper.virtual.cache[key];
+          }
+        });
       }
+      swiper.virtual.slides.splice(slidesIndexes, 1);
       if (slidesIndexes < activeIndex) activeIndex -= 1;
       activeIndex = Math.max(activeIndex, 0);
     }
@@ -296,9 +314,7 @@ function Virtual(_ref) {
     swiper.classNames.push(`${swiper.params.containerModifierClass}virtual`);
     swiper.params.watchSlidesProgress = true;
     swiper.originalParams.watchSlidesProgress = true;
-    if (!swiper.params.initialSlide) {
-      update();
-    }
+    update();
   });
   on('setTranslate', () => {
     if (!swiper.params.virtual.enabled) return;

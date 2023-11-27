@@ -140,7 +140,11 @@ function Navigation(_ref) {
     } = swiper.navigation;
     nextEl = makeElementsArray(nextEl);
     prevEl = makeElementsArray(prevEl);
-    [...nextEl, ...prevEl].filter(el => !!el).forEach(el => el.classList[swiper.enabled ? 'remove' : 'add'](swiper.params.navigation.lockClass));
+    if (swiper.enabled) {
+      update();
+      return;
+    }
+    [...nextEl, ...prevEl].filter(el => !!el).forEach(el => el.classList.add(swiper.params.navigation.lockClass));
   });
   on('click', (_s, e) => {
     let {

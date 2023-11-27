@@ -164,6 +164,7 @@ export interface EmittedPrebuiltChunk {
 	exports?: string[];
 	fileName: string;
 	map?: SourceMap;
+	sourcemapFileName?: string;
 	type: 'prebuilt-chunk';
 }
 
@@ -369,7 +370,7 @@ export type WatchChangeHook = (
  * ```
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export type PluginImpl<O extends object = object> = (options?: O) => Plugin;
+export type PluginImpl<O extends object = object, A = any> = (options?: O) => Plugin<A>;
 
 export interface OutputBundle {
 	[fileName: string]: OutputAsset | OutputChunk;
@@ -497,12 +498,12 @@ export interface OutputPlugin
 	version?: string;
 }
 
-export interface Plugin extends OutputPlugin, Partial<PluginHooks> {
+export interface Plugin<A = any> extends OutputPlugin, Partial<PluginHooks> {
 	// for inter-plugin communication
-	api?: any;
+	api?: A;
 }
 
-type TreeshakingPreset = 'smallest' | 'safest' | 'recommended';
+export type TreeshakingPreset = 'smallest' | 'safest' | 'recommended';
 
 export interface NormalizedTreeshakingOptions {
 	annotations: boolean;
@@ -744,6 +745,7 @@ export interface OutputOptions {
 	sourcemapBaseUrl?: string;
 	sourcemapExcludeSources?: boolean;
 	sourcemapFile?: string;
+	sourcemapFileNames?: string | ((chunkInfo: PreRenderedChunk) => string);
 	sourcemapIgnoreList?: boolean | SourcemapIgnoreListOption;
 	sourcemapPathTransform?: SourcemapPathTransformOption;
 	strict?: boolean;
@@ -799,6 +801,7 @@ export interface NormalizedOutputOptions {
 	sourcemapBaseUrl: string | undefined;
 	sourcemapExcludeSources: boolean;
 	sourcemapFile: string | undefined;
+	sourcemapFileNames: string | ((chunkInfo: PreRenderedChunk) => string) | undefined;
 	sourcemapIgnoreList: SourcemapIgnoreListOption;
 	sourcemapPathTransform: SourcemapPathTransformOption | undefined;
 	strict: boolean;
@@ -862,6 +865,7 @@ export interface RenderedChunk extends PreRenderedChunk {
 export interface OutputChunk extends RenderedChunk {
 	code: string;
 	map: SourceMap | null;
+	sourcemapFileName: string | null;
 	preliminaryFileName: string;
 }
 
