@@ -80,7 +80,7 @@ class DatabaseSeeder extends Seeder
             'major' => 'Hukum',
         ]);
         UserProfile::create([
-            'user_id' => 3,
+            'user_id' => 4,
             'phone_number' => '087763420871',
             'university' => 'Universitas Islam Malang',
             'major' => 'Matematika',
