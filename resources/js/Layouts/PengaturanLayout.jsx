@@ -1,5 +1,5 @@
 import "/resources/css/main.css";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { useState, useCallback } from "react";
 import Cropper from "react-easy-crop";
 import DashboardNavbarItem from "@/Components/DashboardNavbarItem";
@@ -12,6 +12,7 @@ import "@/script/mainHeader";
 export default function UserLayout ({ auth, title, children }) {
     const [showImageUploader, setShowImageUploader] = useState(false)
     const [profileImage, setProfileImage] = useState(auth.profile_image ? auth.profile_image : userIcon)
+
     return (
         <>
             <Head title={title} />
@@ -31,7 +32,7 @@ function Preliminary ({ auth, title, profileImage, setShowImageUploader }) {
     return (
         <div className={`md:hidden container mx-auto shadow-centered-spread rounded-[1vw] overflow-hidden mt-[3vw] mb-[6vw] md:mb-[3vw] ${title == 'Pengaturan' ? '' : 'hidden'}`}>
             <div className="relative flex flex-col md:flex-row text-center md:text-left items-center gap-[3vw] md:gap-[1.5vw] p-[6vw] pb-[12vw] md:p-[3vw]">
-                <img className="w-[22vw] h-[22vw] md:w-[6vw] md:h-[6vw]" src={profileImage ? profileImage : userIcon} alt="User" />
+                <img className="w-[22vw] h-[22vw] md:w-[6vw] md:h-[6vw] rounded-full" src={profileImage ? profileImage : userIcon} alt="User" />
                 <div>
                     <h2 className="font-sans font-medium text-[4vw] md:text-[2.25vw] mb-[5vw]">Selamat Datang <span className="text-secondary">{auth.user.name}</span></h2>
                     <span className="bg-secondary text-white rounded-[1vw] py-[.75vw] px-[2.5vw] text-[2.75vw]" onClick={() => setShowImageUploader(true)}><i className="bi bi-pen"></i> Ubah Foto</span>
@@ -201,15 +202,24 @@ function ImageUploader ({ show, setShow, profileImage, setProfileImage }) {
             pixelCrop.height
         )
 
+        var scaledCanvas = document.createElement('canvas');    //off-screen canvas
+
+        scaledCanvas.width = 256;  //size of new canvas, make sure they are proportional
+        scaledCanvas.height = 256; //compared to original canvas
+
+        // scale original image to new canvas
+        var scaledCtx = scaledCanvas.getContext('2d');
+        scaledCtx.drawImage(croppedCanvas, 0, 0, scaledCanvas.width, scaledCanvas.height);
+
         // As Base64 string
-        // return croppedCanvas.toDataURL('image/jpeg');
+        return scaledCanvas.toDataURL('image/jpeg');
 
         // As a blob
-        return new Promise((resolve, reject) => {
-            croppedCanvas.toBlob((file) => {
-            resolve(URL.createObjectURL(file))
-            }, 'image/jpeg')
-        })
+        // return new Promise((resolve, reject) => {
+        //     croppedCanvas.toBlob((file) => {
+        //         resolve(URL.createObjectURL(file))
+        //     }, 'image/jpeg')
+        // })
     }
 
     const imageSubmit = async () => {
@@ -218,9 +228,9 @@ function ImageUploader ({ show, setShow, profileImage, setProfileImage }) {
                 tempImage,
                 tempAreaPixels,
             )
-            console.log('done', { croppedImage })
             setProfileImage(croppedImage)
             // post croppedImage here
+            router.post('/profile_image', {image: croppedImage})
         } catch (e) {
             console.error(e)
         }

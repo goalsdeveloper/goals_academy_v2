@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\User;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Api\AuthController;
@@ -9,7 +12,6 @@ use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\API\DateCheckController;
 use App\Http\Controllers\API\CouponCheckController;
 use App\Http\Controllers\API\HandleMidtransCallbackController;
-use App\Models\Order;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,4 +44,9 @@ Route::get('/check-payment-status/{order:order_code}', function (Order $order) {
     return response()->json([
         'status' => $order->status
     ]);
+});
+
+Route::get('/profile_image/{id}', function ($id) {
+    $profile_image = User::where('id', $id)->with('profile')->first()->profile->profile_image;
+    return response()->json(['profile_image' => $profile_image]);
 });
