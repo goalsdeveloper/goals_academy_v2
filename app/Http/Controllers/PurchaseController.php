@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 use App\Models\OrderHistory;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
+use App\Notifications\InvoiceNotification;
 use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
@@ -32,7 +33,10 @@ class PurchaseController extends Controller
      */
     public function index(Products $products)
     {
-        $dataDibimbing = Category::where('slug', 'dibimbing-sekali')->first()->products;
+        // $dataDibimbing = Category::where('slug', 'like', 'dibimbing%')->first()->products;
+        $dataDibimbing = Products::whereHas('categories', function ($query) {
+            $query->where('slug', 'LIKE', 'dibimbing%');
+        })->with('categories')->get();
         $dataEbook = Category::where('slug', 'e-book')->first()->products;
         $dataWebinar = Category::where('slug', 'webinar')->first()->products;
 
@@ -69,16 +73,14 @@ class PurchaseController extends Controller
         // jika user menggunakan promo code
         if ($request->promo) {
             $cekPromo = PromoCode::where('promo_code', $request->promo)->first();
-            if(!$cekPromo){
+            if (!$cekPromo) {
                 return response()->json(['message' => 'promo tidak ditemukan!']);
             }
-            if($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()){
+            if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
                 return response()->json(['message' => 'promo sudah anda gunakan, cari promo lain!']);
             } else {
                 $user->kodePromo()->attach($cekPromo->id);
             }
-        } else {
-            dd($user);
         }
 
         $quantity = 1;
@@ -241,6 +243,7 @@ class PurchaseController extends Controller
 
             $course->fileUploads()->attach($upload->id);
         }
+        $user->notify(new InvoiceNotification($order));
         return redirect()->route('purchase.status', $order->order_code);
     }
 
