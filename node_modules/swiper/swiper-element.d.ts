@@ -1,5 +1,5 @@
 // @ts-ignore
-import { SwiperOptions, Swiper } from './types/index.d.ts';
+import { Swiper, SwiperOptions } from './types/index.d.ts';
 
 declare const register: () => void;
 
@@ -39,6 +39,24 @@ interface SwiperContainerEventMap extends Omit<HTMLElementEventMap, 'click' | 'p
    * Event will be fired on key press
    */
   keypress: CustomEvent<[swiper: Swiper, keyCode: string]>;/**
+   * Event will be fired on mousewheel scroll
+   */
+  scroll: CustomEvent<[swiper: Swiper, event: WheelEvent]>;/**
+   * Event will be fired on navigation hide
+   */
+  navigationhide: CustomEvent<[swiper: Swiper]>;
+  /**
+   * Event will be fired on navigation show
+   */
+  navigationshow: CustomEvent<[swiper: Swiper]>;
+  /**
+   * Event will be fired on navigation prev button click
+   */
+  navigationprev: CustomEvent<[swiper: Swiper]>;
+  /**
+   * Event will be fired on navigation next button click
+   */
+  navigationnext: CustomEvent<[swiper: Swiper]>;/**
    * Event will be fired after pagination rendered
    */
   paginationrender: CustomEvent<[swiper: Swiper, paginationEl: HTMLElement]>;
@@ -57,9 +75,6 @@ interface SwiperContainerEventMap extends Omit<HTMLElementEventMap, 'click' | 'p
    * Event will be fired on pagination show
    */
   paginationshow: CustomEvent<[swiper: Swiper]>;/**
-   * Event will be fired on mousewheel scroll
-   */
-  scroll: CustomEvent<[swiper: Swiper, event: WheelEvent]>;/**
    * Event will be fired on draggable scrollbar drag start
    */
   scrollbardragstart: CustomEvent<[swiper: Swiper, event: MouseEvent | TouchEvent | PointerEvent]>;
@@ -75,22 +90,7 @@ interface SwiperContainerEventMap extends Omit<HTMLElementEventMap, 'click' | 'p
   scrollbardragend: CustomEvent<[swiper: Swiper, event: MouseEvent | TouchEvent | PointerEvent]>;/**
    * Event will be fired on zoom change
    */
-  zoomchange: CustomEvent<[swiper: Swiper, scale: number, imageEl: HTMLElement, slideEl: HTMLElement]>;/**
-   * Event will be fired on navigation hide
-   */
-  navigationhide: CustomEvent<[swiper: Swiper]>;
-  /**
-   * Event will be fired on navigation show
-   */
-  navigationshow: CustomEvent<[swiper: Swiper]>;
-  /**
-   * Event will be fired on navigation prev button click
-   */
-  navigationprev: CustomEvent<[swiper: Swiper]>;
-  /**
-   * Event will be fired on navigation next button click
-   */
-  navigationnext: CustomEvent<[swiper: Swiper]>;
+  zoomchange: CustomEvent<[swiper: Swiper, scale: number, imageEl: HTMLElement, slideEl: HTMLElement]>;
 
   
   /**
@@ -430,4 +430,11 @@ interface SwiperSlide extends HTMLElement {
   lazy: string | boolean;
 }
 
-export { register, SwiperContainer, SwiperSlide };
+declare global {
+  interface HTMLElementTagNameMap {
+    'swiper-container': SwiperContainer;
+    'swiper-slide': SwiperSlide;
+  }
+}
+
+export { SwiperContainer, SwiperSlide, register };

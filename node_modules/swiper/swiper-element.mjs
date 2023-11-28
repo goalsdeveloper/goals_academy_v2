@@ -1,5 +1,5 @@
 /**
- * Swiper Custom Element 10.2.0
+ * Swiper Custom Element 10.3.1
  * Most modern mobile touch slider and framework with hardware accelerated transitions
  * https://swiperjs.com
  *
@@ -7,7 +7,7 @@
  *
  * Released under the MIT License
  *
- * Released on: August 17, 2023
+ * Released on: September 28, 2023
  */
 
 import { S as Swiper } from './shared/swiper-core.mjs';
@@ -166,7 +166,7 @@ class SwiperContainer extends ClassToExtend {
         }
         const event = new CustomEvent(eventName, {
           detail: args,
-          bubbles: true,
+          bubbles: name !== 'hashChange',
           cancelable: true
         });
         _this.dispatchEvent(event);
@@ -238,7 +238,7 @@ paramsList.forEach(paramName => {
       if (!this.passedParams) this.passedParams = {};
       this.passedParams[paramName] = value;
       if (!this.initialized) return;
-      this.updateSwiperOnPropChange(paramName);
+      this.updateSwiperOnPropChange(paramName, value);
     }
   });
 });

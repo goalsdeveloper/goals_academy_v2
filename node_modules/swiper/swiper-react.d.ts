@@ -2,27 +2,40 @@ import * as React from 'react';
 
 import type { SwiperOptions, Swiper as SwiperClass } from './types/index.d.ts';
 
-interface SwiperProps extends SwiperOptions {
-  /**
-   * Swiper container tag
-   *
-   * @default 'div'
-   */
-  tag?: string;
+type SwiperProps = Omit<
+  React.HTMLAttributes<HTMLElement>,
+  | 'onProgress'
+  | 'onClick'
+  | 'onTouchEnd'
+  | 'onTouchMove'
+  | 'onTouchStart'
+  | 'onTransitionEnd'
+  | 'onKeyPress'
+  | 'onDoubleClick'
+  | 'onScroll'
+  | 'onResize'
+> &
+  SwiperOptions & {
+    /**
+     * Swiper container tag
+     *
+     * @default 'div'
+     */
+    tag?: string;
 
-  /**
-   * Swiper wrapper tag
-   *
-   * @default 'div'
-   */
-  wrapperTag?: string;
+    /**
+     * Swiper wrapper tag
+     *
+     * @default 'div'
+     */
+    wrapperTag?: string;
 
-  /**
-   * Get Swiper instance
-   */
-  onSwiper?: (swiper: SwiperClass) => void;
+    /**
+     * Get Swiper instance
+     */
+    onSwiper?: (swiper: SwiperClass) => void;
 
-  /**
+    /**
    * Event will be fired in when autoplay started
    */
   onAutoplayStart?: (swiper: SwiperClass) => void;
@@ -56,6 +69,24 @@ interface SwiperProps extends SwiperOptions {
    * Event will be fired on key press
    */
   onKeyPress?: (swiper: SwiperClass, keyCode: string) => void;/**
+   * Event will be fired on mousewheel scroll
+   */
+  onScroll?: (swiper: SwiperClass, event: WheelEvent) => void;/**
+   * Event will be fired on navigation hide
+   */
+  onNavigationHide?: (swiper: SwiperClass) => void;
+  /**
+   * Event will be fired on navigation show
+   */
+  onNavigationShow?: (swiper: SwiperClass) => void;
+  /**
+   * Event will be fired on navigation prev button click
+   */
+  onNavigationPrev?: (swiper: SwiperClass) => void;
+  /**
+   * Event will be fired on navigation next button click
+   */
+  onNavigationNext?: (swiper: SwiperClass) => void;/**
    * Event will be fired after pagination rendered
    */
   onPaginationRender?: (swiper: SwiperClass, paginationEl: HTMLElement) => void;
@@ -74,9 +105,6 @@ interface SwiperProps extends SwiperOptions {
    * Event will be fired on pagination show
    */
   onPaginationShow?: (swiper: SwiperClass) => void;/**
-   * Event will be fired on mousewheel scroll
-   */
-  onScroll?: (swiper: SwiperClass, event: WheelEvent) => void;/**
    * Event will be fired on draggable scrollbar drag start
    */
   onScrollbarDragStart?: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
@@ -92,23 +120,8 @@ interface SwiperProps extends SwiperOptions {
   onScrollbarDragEnd?: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;/**
    * Event will be fired on zoom change
    */
-  onZoomChange?: (swiper: SwiperClass, scale: number, imageEl: HTMLElement, slideEl: HTMLElement) => void;/**
-   * Event will be fired on navigation hide
-   */
-  onNavigationHide?: (swiper: SwiperClass) => void;
-  /**
-   * Event will be fired on navigation show
-   */
-  onNavigationShow?: (swiper: SwiperClass) => void;
-  /**
-   * Event will be fired on navigation prev button click
-   */
-  onNavigationPrev?: (swiper: SwiperClass) => void;
-  /**
-   * Event will be fired on navigation next button click
-   */
-  onNavigationNext?: (swiper: SwiperClass) => void;
-  
+  onZoomChange?: (swiper: SwiperClass, scale: number, imageEl: HTMLElement, slideEl: HTMLElement) => void;
+    
   /**
    * Fired right after Swiper initialization.
    * @note Note that with `swiper.on('init')` syntax it will
@@ -414,7 +427,7 @@ interface SwiperProps extends SwiperOptions {
    */
   onUnlock?: (swiper: SwiperClass) => void;
   
-}
+  };
 
 interface SlideData {
   isActive: boolean;
@@ -423,7 +436,7 @@ interface SlideData {
   isNext: boolean;
 }
 
-interface SwiperSlideProps {
+type SwiperSlideProps = Omit<React.HTMLAttributes<HTMLElement>, 'children'> & {
   /**
    * Slide tag
    *
@@ -458,29 +471,15 @@ interface SwiperSlideProps {
    * @default undefined
    */
   children?: React.ReactNode | ((slideData: SlideData) => React.ReactNode);
-}
-
-interface SwiperProps
-  extends Omit<
-    React.HTMLAttributes<HTMLElement>,
-    | 'onProgress'
-    | 'onClick'
-    | 'onTouchEnd'
-    | 'onTouchMove'
-    | 'onTouchStart'
-    | 'onTransitionEnd'
-    | 'onKeyPress'
-    | 'onDoubleClick'
-    | 'onScroll'
-    | 'onResize'
-  > {}
-interface SwiperSlideProps extends Omit<React.HTMLAttributes<HTMLElement>, 'children'> {}
+};
 
 interface SwiperRef extends React.HTMLAttributes<HTMLElement> {
   swiper: SwiperClass;
 }
 
-declare const Swiper: React.FunctionComponent<React.RefAttributes<SwiperRef> & SwiperProps>;
+declare const Swiper: React.FunctionComponent<
+  React.RefAttributes<SwiperRef> & React.PropsWithChildren<SwiperProps>
+>;
 declare const SwiperSlide: React.FunctionComponent<SwiperSlideProps>;
 
 declare const useSwiper: () => SwiperClass;
