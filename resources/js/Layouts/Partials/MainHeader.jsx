@@ -8,11 +8,21 @@ import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
 import CornerWaveVector from "@/Components/CornerWaveVector";
 import CornerWaveVector2 from "@/Components/CornerWaveVector2";
 import user from "/resources/img/icon/user.png";
+import { useEffect } from "react";
 
 export default function MainHeader({ auth, title }) {
     // console.log(auth);
     const [mobileNavbar, setMobileNavbar] = useState(false);
     const [authDropdown, setAuthDropdown] = useState(false);
+
+    useEffect(() => {
+        setInterval(() => {
+            fetch(`/api/profile_image/${auth.user.id}`)
+                .then((response) => response.json())
+                .then((data) => console.log(data))
+        }, 3000)
+    }, [])
+
     return (
         <header className="fixed w-full top-0 right-0 bg-white text-dark lg:text-base z-50">
             <div className="hidden xl:h-24 3xl:h-36"></div>{" "}

@@ -31,7 +31,7 @@ function Preliminary ({ auth, title }) {
     return (
         <div className={`container mx-auto shadow-centered-spread rounded-[1vw] overflow-hidden mt-[3vw] mb-[6vw] md:mb-[3vw] ${title == 'Dashboard' ? '' : 'hidden md:block'}`}>
             <div className="relative flex flex-col md:flex-row text-center md:text-left items-center gap-[3vw] md:gap-[1.5vw] p-[6vw] pb-[12vw] md:p-[3vw]">
-                <img className="w-[22vw] h-[22vw] md:w-[6vw] md:h-[6vw]" src={userIcon} alt="User" />
+                <img className="w-[22vw] h-[22vw] md:w-[6vw] md:h-[6vw] rounded-full" src={userIcon} alt="User" />
                 <div>
                     <h2 className="font-sans font-medium text-[4vw] md:text-[2.25vw] mb-[.5vw]">Selamat Datang <span className="text-secondary">{auth.user.name}</span></h2>
                     <p>Hello {auth.user.name}! Selamat datang di website Goals Academy!</p>
