@@ -10,6 +10,7 @@ import CornerWaveVector2 from "@/Components/CornerWaveVector2";
 import user from "/resources/img/icon/user.png";
 
 export default function MainHeader({ auth, title }) {
+    // console.log(auth);
     const [mobileNavbar, setMobileNavbar] = useState(false);
     const [authDropdown, setAuthDropdown] = useState(false);
     return (
@@ -39,7 +40,14 @@ export default function MainHeader({ auth, title }) {
                                     />
                                 </Link>
                             </div>
-                            <div onClick={() => setMobileNavbar(true)}>{title} <i className={`fa-solid fa-chevron-down ${mobileNavbar ? '-rotate-180' : ''} duration-300`}></i></div>
+                            <div onClick={() => setMobileNavbar(true)}>
+                                {title}{" "}
+                                <i
+                                    className={`fa-solid fa-chevron-down ${
+                                        mobileNavbar ? "-rotate-180" : ""
+                                    } duration-300`}
+                                ></i>
+                            </div>
                         </div>
                         <div className="hidden md:block md:w-2/12">
                             <Link href="/">
@@ -402,7 +410,9 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                                 <CornerWaveVector cornerClassName="w-4/12" />
                                 <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
                             </Link>
-                        ) : (<br/>)}
+                        ) : (
+                            <br />
+                        )}
                     </div>
                 </div>
             </div>

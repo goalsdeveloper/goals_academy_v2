@@ -149,6 +149,10 @@ class CourseResource extends Resource
                     ->label('Tanggal')
                     ->date()
                     ->sortable(),
+                TextColumn::make('time')
+                    ->label('Waktu')
+                    ->time('H:i')
+                    ->sortable(),
                 TextColumn::make('location')
                     ->label('Lokasi')
                     ->wrap(),
