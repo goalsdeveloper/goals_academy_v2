@@ -33,7 +33,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $this->getUserWithProfile($request),
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
@@ -46,5 +46,16 @@ class HandleInertiaRequests extends Middleware
         //         'user' => $request->user()
         //     ]
         // ]);
+    }
+    protected function getUserWithProfile(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user) {
+            // Load the 'profile' relation along with the user
+            $user->load('profile');
+        }
+
+        return $user;
     }
 }
