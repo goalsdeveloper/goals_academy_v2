@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Notifications\CourseNotification;
+use App\Observers\CourseObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model
@@ -55,5 +57,30 @@ class Course extends Model
     public function fileUploads()
     {
         return $this->belongsToMany(FileUpload::class);
+    }
+
+    public function routeNotificationForMail($notification)
+    {
+        return $this->user->email;
+    }
+
+    public function sendCourseNotification($attribute, $oldValue, $newValue)
+    {
+        $oldValue = $oldValue ? $oldValue : null;
+        if ($attribute == 'location') {
+            if ($oldValue != null) {
+                $this->notify(new CourseNotification("Lokasi anda dirubah dari $oldValue ke $newValue"));
+            } else {
+                $this->notify(new CourseNotification("Lokasi anda berada di $newValue"));
+            }
+        } elseif ($attribute == 'date') {
+            $this->notify(new CourseNotification("Tanggal bimbingan dirubah dari $oldValue ke $newValue"));
+        } elseif ($attribute == 'time') {
+            if ($oldValue != null) {
+                $this->notify(new CourseNotification("Waktu bimbingan anda dirubah dari $oldValue ke $newValue"));
+            } else {
+                $this->notify(new CourseNotification("Waktu bimbingan anda adalah $newValue"));
+            }
+        }
     }
 }
