@@ -55,7 +55,7 @@ export default function Index({ auth, dataOrder }) {
             ) : (
                 <div className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[1vw]">
                     {data.map((item, index) => {
-                        return <Item key={index} data={item} />;
+                        return <RiwayatItem key={index} data={item} />;
                     })}
                 </div>
             )}
@@ -63,7 +63,7 @@ export default function Index({ auth, dataOrder }) {
     );
 }
 
-function Item({ data }) {
+function RiwayatItem({ data }) {
     return (
         <div className="relative w-full flex flex-col gap-[2vw] md:gap-[1vw] bg-secondary text-white rounded-[1vw] p-[6vw] md:p-[2vw]">
             <p className="font-poppins text-[3vw] md:text-[.95vw]">
