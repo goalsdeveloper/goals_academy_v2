@@ -59,10 +59,13 @@ class CourseObserver
         $changes = $course->getChanges();
         $user = User::find($original['user_id']);
         $admin = User::where('user_role', 'admin')->get();
+        $moderators = User::where('user_role', 'moderator')->get();
+
         foreach ($changes as $key => $value) {
             if ($course->wasChanged($key)) {
                 // Lakukan sesuatu untuk setiap perubahan
                 if ($original[$key] != $value) {
+                    $tutorId = User::where('id', $course->tutor_id)->first();
                     switch ($key) {
                         case "tutor_id":
                             $tutorOld = User::find($course->getOriginal($key));
@@ -119,16 +122,110 @@ class CourseObserver
                             }
                             break;
                         case "location":
-                            Log::info("Lokasi kamu telah dirubah menjadi $value");
+                            Notification::make()
+                                ->title('Perubahan Lokasi | ' . $course->order->order_code)
+                                ->body(auth()->user()->name . ' | Telah merubah lokasi bimbingan ' . $course->order->order_code . '. Lihat selengkapnya:')
+                                ->info()
+                                ->actions([
+                                    Action::make('View')->url(
+                                        TutorCourseResource::getUrl('edit', ['record' => $course], true, 'tutor'),
+                                    )
+                                ])
+                                ->sendToDatabase($tutorId);
+                            foreach ($moderators as $moderator) {
+                                Notification::make()
+                                    ->title('Perubahan Lokasi | ' . $course->order->order_code)
+                                    ->body(auth()->user()->name . ' | Telah merubah lokasi bimbingan ' . $course->order->order_code . '. Lihat selengkapnya:')
+                                    ->info()
+                                    ->actions([
+                                        Action::make('View')->url(
+                                            ModeratorCourseResource::getUrl('edit', ['record' => $course], true, 'moderator'),
+                                        )
+                                    ])
+                                    ->sendToDatabase($moderator);
+                            }
+                            $user->notify(new CourseNotification($course, $key));
+                            Log::info("Lokasi kamu telah dirubah menjadi $key");
                             break;
                         case "date":
+                            Notification::make()
+                                ->title('Perubahan Tanggal | ' . $course->order->order_code)
+                                ->body(auth()->user()->name . ' | Telah merubah tanggal bimbingan ' . $course->order->order_code . '. Lihat selengkapnya:')
+                                ->info()
+                                ->actions([
+                                    Action::make('View')->url(
+                                        TutorCourseResource::getUrl('edit', ['record' => $course], true, 'tutor'),
+                                    )
+                                ])
+                                ->sendToDatabase($tutorId);
+                            foreach ($moderators as $moderator) {
+                                Notification::make()
+                                    ->title('Perubahan Tanggal | ' . $course->order->order_code)
+                                    ->body(auth()->user()->name . ' | Telah merubah lokasi bimbingan ' . $course->order->order_code)
+                                    ->info()
+                                    ->actions([
+                                        Action::make('View')->url(
+                                            ModeratorCourseResource::getUrl('edit', ['record' => $course], true, 'moderator'),
+                                        )
+                                    ])
+                                    ->sendToDatabase($moderator);
+                            }
+                            $user->notify(new CourseNotification($course, $key));
                             Log::info("Tanggal bimbinganmu telah dirubah mejadi $value");
                             break;
                         case "time":
                             if ($original['time'] == null) {
-                                Log::info("Waktu bimbinganmu telah ditetapkan $value");
+                                $pesan = "Waktu bimbinganmu telah ditetapkan $value";
+                                Notification::make()
+                                    ->title($pesan . ' | ' . $course->order->order_code)
+                                    ->body(auth()->user()->name . ' | Telah mengatur waktu bimbingan ' . $course->order->order_code . '. Lihat selengkapnya:')
+                                    ->info()
+                                    ->actions([
+                                        Action::make('View')->url(
+                                            TutorCourseResource::getUrl('edit', ['record' => $course], true, 'tutor'),
+                                        )
+                                    ])
+                                    ->sendToDatabase($tutorId);
+                                foreach ($moderators as $moderator) {
+                                    Notification::make()
+                                        ->title('Waktu Bimbingan Ditetapkan | ' . $course->order->order_code)
+                                        ->body(auth()->user()->name . ' | Telah menetapkan waktu bimbingan ' . $course->order->order_code)
+                                        ->info()
+                                        ->actions([
+                                            Action::make('View')->url(
+                                                ModeratorCourseResource::getUrl('edit', ['record' => $course], true, 'moderator'),
+                                            )
+                                        ])
+                                        ->sendToDatabase($moderator);
+                                }
+                                $user->notify(new CourseNotification($course, $key, $pesan));
+                                Log::info($pesan);
                             } else {
-                                Log::info("Waktu bimbinganmu dirubah dari {$course->getOriginal($key)} menjadi $value");
+                                $pesan = "Waktu bimbinganmu dirubah dari {$course->getOriginal($key)} menjadi $value";
+                                Notification::make()
+                                    ->title($pesan . ' | ' . $course->order->order_code)
+                                    ->body(auth()->user()->name . ' | Telah merubah waktu bimbingan ' . $course->order->order_code . '. Lihat selengkapnya:')
+                                    ->info()
+                                    ->actions([
+                                        Action::make('View')->url(
+                                            TutorCourseResource::getUrl('edit', ['record' => $course], true, 'tutor'),
+                                        )
+                                    ])
+                                    ->sendToDatabase($tutorId);
+                                foreach ($moderators as $moderator) {
+                                    Notification::make()
+                                        ->title('Waktu Bimbingan Dirubah | ' . $course->order->order_code)
+                                        ->body(auth()->user()->name . ' | Telah merubah waktu bimbingan ' . $course->order->order_code)
+                                        ->info()
+                                        ->actions([
+                                            Action::make('View')->url(
+                                                ModeratorCourseResource::getUrl('edit', ['record' => $course], true, 'moderator'),
+                                            )
+                                        ])
+                                        ->sendToDatabase($moderator);
+                                }
+                                $user->notify(new CourseNotification($course, $key, $pesan));
+                                Log::info($pesan);
                             }
                             break;
                     }
