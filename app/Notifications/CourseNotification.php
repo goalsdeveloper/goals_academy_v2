@@ -34,7 +34,11 @@ class CourseNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        if ($notifiable->user_role == 'user') {
+            return ['mail', 'database'];
+        } else {
+            return ['mail'];
+        }
     }
 
     /**
@@ -79,9 +83,11 @@ class CourseNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
+        $resultContent = $this->handleSwitchNotificationContent($this->key);
         return [
-            'title' => "ini adalah title notifikasi",
-            'body' => "ini adalah body notifikasi",
+            'category' => 'Pembelajaran',
+            'title' => $resultContent['title'],
+            'description' => $resultContent['description'],
             'link' => url('/pembelajaran/' . $this->course->order->order_code),
         ];
     }
@@ -109,6 +115,30 @@ class CourseNotification extends Notification
                     $result['subject'] = "Perubahan Waktu Bimbingan";
                 }
                 $result['line1'] = "Kamu mendapat perubahan pada Waktu bimbingan, lihat selengkapnya di:";
+                break;
+        }
+        return $result;
+    }
+
+    public function handleSwitchNotificationContent($value)
+    {
+        $result = ['title', 'description'];
+        switch ($value) {
+            case 'tutor_id':
+                $result['title'] = 'Perubahan Tutor Bimbingan';
+                $result['description'] = 'Kamu mendapat perubahan pada tutor, yuk cek sekarang!';
+                break;
+            case 'location':
+                $result['title'] = 'Perubahan Lokasi Bimbingan';
+                $result['description'] = 'Lokasi bimbinganmu telah berubah, yuk cek sekarang!';
+                break;
+            case 'date':
+                $result['title'] = 'Perubahan Tanggal Bimbingan';
+                $result['description'] = 'Jadwal Bimbinganmu telah berubah, yuk cek sekarang!';
+                break;
+            case 'time':
+                $result['title'] = 'Perubahan Waktu Bimbingan';
+                $result['description'] = 'Waktu bimbinganmu telah berubah, yuk cek sekarang!';
                 break;
         }
         return $result;

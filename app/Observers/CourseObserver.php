@@ -64,6 +64,7 @@ class CourseObserver
         foreach ($changes as $key => $value) {
             if ($course->wasChanged($key)) {
                 // Lakukan sesuatu untuk setiap perubahan
+                Log::info($key);
                 if ($original[$key] != $value) {
                     $tutorId = User::where('id', $course->tutor_id)->first();
                     switch ($key) {

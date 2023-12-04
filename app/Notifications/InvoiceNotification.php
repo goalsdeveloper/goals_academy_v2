@@ -56,7 +56,7 @@ class InvoiceNotification extends Notification
         return [
             'category' => 'Transaksi',
             'title' => 'Segera Lakukan Pembayaran!',
-            'expiry_time' => 'asd',
+            'expiry_time' => $paymentMethod->expiry_time,
             'order_id' => $this->order->order_code,
             'payment_method' => $paymentMethod->payment_type,
         ];
