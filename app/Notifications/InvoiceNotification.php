@@ -52,8 +52,13 @@ class InvoiceNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
+        $paymentMethod = json_decode($this->order->orderHistory()->where('status', 'pending')->first()->payload);
         return [
-            //
+            'category' => 'Transaksi',
+            'title' => 'Segera Lakukan Pembayaran!',
+            'expiry_time' => 'asd',
+            'order_id' => $this->order->order_code,
+            'payment_method' => $paymentMethod->payment_type,
         ];
     }
 }
