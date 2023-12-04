@@ -89,4 +89,9 @@ class User extends Authenticatable implements HasName, FilamentUser, MustVerifyE
     {
         return $this->belongsToMany(PromoCode::class);
     }
+
+    public function user_role()
+    {
+        return $this->user_role;
+    }
 }

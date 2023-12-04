@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Notifications\CourseNotification;
+use App\Observers\CourseObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model
@@ -26,7 +28,7 @@ class Course extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     public function order()
@@ -55,5 +57,10 @@ class Course extends Model
     public function fileUploads()
     {
         return $this->belongsToMany(FileUpload::class);
+    }
+
+    public function routeNotificationForMail($notification)
+    {
+        return $this->user->email;
     }
 }
