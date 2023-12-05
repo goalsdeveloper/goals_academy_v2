@@ -12,44 +12,11 @@ import user from "/resources/img/icon/user.png";
 import { useEffect } from "react";
 
 export default function MainHeader({ auth, title }) {
-    console.log(auth);
+    console.log(auth.notifications);
     const [mobileNavbar, setMobileNavbar] = useState(false);
     const [authDropdown, setAuthDropdown] = useState(false);
     const [notificationDropdown, setNotificationDropdown] = useState(false);
-    const notificationData = auth.notifications
-    // const notificationData = [
-    //     {
-    //         id: 1,
-    //         category: "Transaksi",
-    //         title: "Mari Selesaikan Pembayaranmu!",
-    //         description: "",
-    //         is_read: false,
-    //         expiry_time: "2023-12-28 13:20",
-    //         order_id: "GA12345678",
-    //         payment_method: "Gopay",
-    //     },
-    //     {
-    //         id: 2,
-    //         category: "Pembelajaran",
-    //         title: "Jadwal Pada Pelaksanaan Programmu!",
-    //         description: "Jadwal pelaksanaan programmu telah keluar.",
-    //         is_read: false,
-    //     },
-    //     {
-    //         id: 3,
-    //         category: "Pembelajaran",
-    //         title: "Jadwal Pada Pelaksanaan Programmu!",
-    //         description: "Tutormu telah ditentukan.",
-    //         is_read: false,
-    //     },
-    //     {
-    //         id: 4,
-    //         category: "Diskon",
-    //         title: "Diskon Merdeka!",
-    //         description: "Dapatkan diskon s/d max. IDR 19.000 dengan melakukan pembayaran menggunakan OVO!",
-    //         is_read: true,
-    //     },
-    // ]
+    const notificationData = auth.notifications;
 
     // useEffect(() => {
     //     setInterval(() => {
@@ -106,7 +73,11 @@ export default function MainHeader({ auth, title }) {
                         </div>
                     </>
                 )}
-                <NavbarExpand auth={auth} title={title} notificationData={notificationData} />
+                <NavbarExpand
+                    auth={auth}
+                    title={title}
+                    notificationData={notificationData}
+                />
                 <div className="md:hidden">
                     {!auth.user ? (
                         <button onClick={() => setMobileNavbar(true)}>
@@ -120,9 +91,17 @@ export default function MainHeader({ auth, title }) {
                         <div className="w-auto flex flex-wrap justify-end items-center gap-3 md:gap-3 xl:gap-4 3xl:gap-6 font-medium">
                             <div
                                 className={`font-poppins flex justify-end cursor-pointer`}
-                                onMouseEnter={() => setNotificationDropdown(true)}
-                                onMouseLeave={() => setNotificationDropdown(false)}
-                                onClick={() => setNotificationDropdown(!notificationDropdown)}
+                                onMouseEnter={() =>
+                                    setNotificationDropdown(true)
+                                }
+                                onMouseLeave={() =>
+                                    setNotificationDropdown(false)
+                                }
+                                onClick={() =>
+                                    setNotificationDropdown(
+                                        !notificationDropdown
+                                    )
+                                }
                             >
                                 <div className="relative">
                                     <i className="fa-regular fa-bell text-28 md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
@@ -135,13 +114,23 @@ export default function MainHeader({ auth, title }) {
                                     {/* profile navbar */}
                                     <TECollapseItem className="w-[75vw] py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-4 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
                                         <div className="flex justify-between items-center">
-                                            <span className="text-[3.5vw] md:text-[1.25vw]">Notifikasi</span>
-                                            <Link href="/notifikasi" className="font-normal hover:text-secondary">Lihat Semua</Link>
+                                            <span className="text-[3.5vw] md:text-[1.25vw]">
+                                                Notifikasi
+                                            </span>
+                                            <Link
+                                                href="/notifikasi"
+                                                className="font-normal hover:text-secondary"
+                                            >
+                                                Lihat Semua
+                                            </Link>
                                         </div>
                                         {notificationData.map((item, index) => {
                                             return (
-                                                <NotifikasiItem key={index} item={item} />
-                                            )
+                                                <NotifikasiItem
+                                                    key={index}
+                                                    item={item}
+                                                />
+                                            );
                                         })}
                                     </TECollapseItem>
                                 </TECollapse>
@@ -296,7 +285,9 @@ function NavbarExpand({ auth, title, notificationData }) {
                         className={`font-poppins flex justify-center cursor-pointer`}
                         onMouseEnter={() => setNotificationDropdown(true)}
                         onMouseLeave={() => setNotificationDropdown(false)}
-                        onClick={() => setNotificationDropdown(!notificationDropdown)}
+                        onClick={() =>
+                            setNotificationDropdown(!notificationDropdown)
+                        }
                     >
                         <div href="#" className="relative">
                             <i className="fa-regular fa-bell md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
@@ -309,13 +300,23 @@ function NavbarExpand({ auth, title, notificationData }) {
                             {/* profile navbar */}
                             <TECollapseItem className="w-[30vw] py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-[1.25vw]">Notifikasi</span>
-                                    <Link href="/notifikasi" className="font-normal hover:text-secondary">Lihat Semua</Link>
+                                    <span className="text-[1.25vw]">
+                                        Notifikasi
+                                    </span>
+                                    <Link
+                                        href="/notifikasi"
+                                        className="font-normal hover:text-secondary"
+                                    >
+                                        Lihat Semua
+                                    </Link>
                                 </div>
                                 {notificationData.map((item, index) => {
                                     return (
-                                        <NotifikasiItem key={index} item={item} />
-                                    )
+                                        <NotifikasiItem
+                                            key={index}
+                                            item={item}
+                                        />
+                                    );
                                 })}
                             </TECollapseItem>
                         </TECollapse>
@@ -508,58 +509,84 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
     );
 }
 
-function NotifikasiItem ({ item }) {
-    if (item.category == 'Transaksi') {
+function NotifikasiItem({ item }) {
+    if (item.data.category == "Transaksi") {
         return (
-            <Link href="" className="relative w-full flex justify-between items-center shadow-centered-spread rounded-[.25vw] p-[4vw] md:p-[1vw] hover:bg-soft">
+            <Link
+                href=""
+                className="relative w-full flex justify-between items-center shadow-centered-spread rounded-[.25vw] p-[4vw] md:p-[1vw] hover:bg-soft"
+            >
                 <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
                     <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[2.5vw] md:text-[.75vw]">
                         {item.data.category}
                     </span>
                     <div className="flex items-center gap-[2vw] md:gap-[.5vw]">
-                        <img src={`/img/purchase/${item.payment_method.toLowerCase()}.png`} className="w-[8vw] h-[8vw] md:w-[3vw] md:h-[3vw]" alt={item.payment_method} />
+                        <img
+                            src={`/img/purchase/${item.data.payment_method.toLowerCase()}.png`}
+                            className="w-[8vw] h-[8vw] md:w-[3vw] md:h-[3vw]"
+                            alt={item.data.payment_method}
+                        />
                         <div>
                             <h4 className="text-secondary font-normal font-sans text-[2.5vw] md:text-[1vw]">
-                                {item.title}
+                                {item.data.title}
                             </h4>
                             <table className="text-[2vw] md:text-[.75vw]">
                                 <tbody>
                                     <tr>
                                         <td>Bayar Sebelum</td>
-                                        <td className="ps-[2vw] pe-[.5vw]">:</td>
-                                        <td>{moment(item.expiry_time).format('DD MMMM YYYY, HH:mm')}</td>
+                                        <td className="ps-[2vw] pe-[.5vw]">
+                                            :
+                                        </td>
+                                        <td>
+                                            {moment(item.data.expiry_time).format(
+                                                "DD MMMM YYYY, HH:mm"
+                                            )}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Kode Pesanan</td>
-                                        <td className="ps-[2vw] pe-[.5vw]">:</td>
-                                        <td>{item.order_id}</td>
+                                        <td className="ps-[2vw] pe-[.5vw]">
+                                            :
+                                        </td>
+                                        <td>{item.data.order_id}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-                <div className={`${item.is_read ? 'hidden' : ''} bg-secondary rounded-full w-[3vw] h-[3vw] md:w-[.9vw] md:h-[.9vw]`}></div>
+                <div
+                    className={`${
+                        item.read_at ? "hidden" : ""
+                    } bg-secondary rounded-full w-[3vw] h-[3vw] md:w-[.9vw] md:h-[.9vw]`}
+                ></div>
             </Link>
-        )
+        );
     } else {
         return (
-            <Link href="" className="relative w-full flex justify-between items-center shadow-centered-spread rounded-[.25vw] p-[4vw] md:p-[1vw] hover:bg-soft">
+            <Link
+                href=""
+                className="relative w-full flex justify-between items-center shadow-centered-spread rounded-[.25vw] p-[4vw] md:p-[1vw] hover:bg-soft"
+            >
                 <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
                     <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[2.5vw] md:text-[.75vw]">
-                        {item.category}
+                        {item.data.category}
                     </span>
                     <div>
                         <h4 className="text-secondary font-normal font-sans text-[2.5vw] md:text-[1vw]">
-                            {item.title}
+                            {item.data.title}
                         </h4>
                         <div className="text-[2vw] md:text-[.75vw]">
-                            {item.description}
+                            {item.data.description}
                         </div>
                     </div>
                 </div>
-                <div className={`${item.is_read ? 'hidden' : ''} bg-secondary rounded-full w-[3vw] h-[3vw] md:w-[.9vw] md:h-[.9vw]`}></div>
+                <div
+                    className={`${
+                        item.read_at ? "hidden" : ""
+                    } bg-secondary rounded-full w-[3vw] h-[3vw] md:w-[.9vw] md:h-[.9vw]`}
+                ></div>
             </Link>
-        )
+        );
     }
 }
