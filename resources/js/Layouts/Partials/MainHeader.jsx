@@ -12,51 +12,52 @@ import user from "/resources/img/icon/user.png";
 import { useEffect } from "react";
 
 export default function MainHeader({ auth, title }) {
-    // console.log(auth);
+    console.log(auth);
     const [mobileNavbar, setMobileNavbar] = useState(false);
     const [authDropdown, setAuthDropdown] = useState(false);
     const [notificationDropdown, setNotificationDropdown] = useState(false);
-    const notificationData = [
-        {
-            id: 1,
-            category: "Transaksi",
-            title: "Mari Selesaikan Pembayaranmu!",
-            description: "",
-            is_read: false,
-            expiry_time: "2023-12-28 13:20",
-            order_id: "GA12345678",
-            payment_method: "Gopay",
-        },
-        {
-            id: 2,
-            category: "Pembelajaran",
-            title: "Jadwal Pada Pelaksanaan Programmu!",
-            description: "Jadwal pelaksanaan programmu telah keluar.",
-            is_read: false,
-        },
-        {
-            id: 3,
-            category: "Pembelajaran",
-            title: "Jadwal Pada Pelaksanaan Programmu!",
-            description: "Tutormu telah ditentukan.",
-            is_read: false,
-        },
-        {
-            id: 4,
-            category: "Diskon",
-            title: "Diskon Merdeka!",
-            description: "Dapatkan diskon s/d max. IDR 19.000 dengan melakukan pembayaran menggunakan OVO!",
-            is_read: true,
-        },
-    ]
+    const notificationData = auth.notifications
+    // const notificationData = [
+    //     {
+    //         id: 1,
+    //         category: "Transaksi",
+    //         title: "Mari Selesaikan Pembayaranmu!",
+    //         description: "",
+    //         is_read: false,
+    //         expiry_time: "2023-12-28 13:20",
+    //         order_id: "GA12345678",
+    //         payment_method: "Gopay",
+    //     },
+    //     {
+    //         id: 2,
+    //         category: "Pembelajaran",
+    //         title: "Jadwal Pada Pelaksanaan Programmu!",
+    //         description: "Jadwal pelaksanaan programmu telah keluar.",
+    //         is_read: false,
+    //     },
+    //     {
+    //         id: 3,
+    //         category: "Pembelajaran",
+    //         title: "Jadwal Pada Pelaksanaan Programmu!",
+    //         description: "Tutormu telah ditentukan.",
+    //         is_read: false,
+    //     },
+    //     {
+    //         id: 4,
+    //         category: "Diskon",
+    //         title: "Diskon Merdeka!",
+    //         description: "Dapatkan diskon s/d max. IDR 19.000 dengan melakukan pembayaran menggunakan OVO!",
+    //         is_read: true,
+    //     },
+    // ]
 
-    useEffect(() => {
-        setInterval(() => {
-            fetch(`/api/profile_image/${auth.user.id}`)
-                .then((response) => response.json())
-                .then((data) => console.log(data))
-        }, 5000)
-    }, [])
+    // useEffect(() => {
+    //     setInterval(() => {
+    //         fetch(`/api/profile_image/${auth.user.id}`)
+    //             .then((response) => response.json())
+    //             .then((data) => console.log(data))
+    //     }, 5000)
+    // }, [])
 
     return (
         <header className="fixed w-full top-0 right-0 bg-white text-dark lg:text-base z-50">
@@ -513,7 +514,7 @@ function NotifikasiItem ({ item }) {
             <Link href="" className="relative w-full flex justify-between items-center shadow-centered-spread rounded-[.25vw] p-[4vw] md:p-[1vw] hover:bg-soft">
                 <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
                     <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[2.5vw] md:text-[.75vw]">
-                        {item.category}
+                        {item.data.category}
                     </span>
                     <div className="flex items-center gap-[2vw] md:gap-[.5vw]">
                         <img src={`/img/purchase/${item.payment_method.toLowerCase()}.png`} className="w-[8vw] h-[8vw] md:w-[3vw] md:h-[3vw]" alt={item.payment_method} />

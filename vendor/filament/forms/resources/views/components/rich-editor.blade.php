@@ -1,9 +1,11 @@
-<x-dynamic-component :component="$getFieldWrapperView()" :field="$field">
-    @php
-        $id = $getId();
-        $statePath = $getStatePath();
-    @endphp
+@php
+    use Filament\Support\Facades\FilamentView;
 
+    $id = $getId();
+    $statePath = $getStatePath();
+@endphp
+
+<x-dynamic-component :component="$getFieldWrapperView()" :field="$field">
     @if ($isDisabled())
         <div
             x-data="{
@@ -25,7 +27,11 @@
             }}
         >
             <div
-                ax-load
+                @if (FilamentView::hasSpaMode())
+                    ax-load="visible"
+                @else
+                    ax-load
+                @endif
                 ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('rich-editor', 'filament/forms') }}"
                 x-data="richEditorFormComponent({
                             state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')", isOptimisticallyLive: false) }},
@@ -65,7 +71,7 @@
                 <trix-toolbar
                     id="trix-toolbar-{{ $id }}"
                     @class([
-                        'relative flex flex-col gap-x-3 border-b border-gray-100 px-2.5 py-2 dark:border-white/10',
+                        'fi-fo-rich-editor-toolbar relative flex flex-col gap-x-3 border-b border-gray-100 px-2.5 py-2 dark:border-white/10',
                         'hidden' => ! count($getToolbarButtons()),
                     ])
                 >
@@ -477,7 +483,7 @@
                     wire:ignore
                     {{
                         $getExtraInputAttributeBag()->class([
-                            'prose min-h-[theme(spacing.48)] max-w-none !border-none px-3 py-1.5 text-base text-gray-950 dark:prose-invert focus:outline-none focus-visible:outline-none dark:text-white sm:text-sm sm:leading-6',
+                            'prose min-h-[theme(spacing.48)] max-w-none !border-none px-3 py-1.5 text-base text-gray-950 dark:prose-invert focus-visible:outline-none dark:text-white sm:text-sm sm:leading-6',
                         ])
                     }}
                 ></trix-editor>

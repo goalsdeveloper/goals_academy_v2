@@ -6,6 +6,7 @@
     {{
         $attributes->class([
             'fi-topbar sticky top-0 z-20 overflow-x-clip',
+            'fi-topbar-with-navigation' => filament()->hasTopNavigation(),
         ])
     }}
 >
@@ -25,7 +26,6 @@
             x-on:click="$store.sidebar.open()"
             x-show="! $store.sidebar.isOpen"
             @class([
-                '-ms-1.5',
                 'lg:hidden' => (! filament()->isSidebarFullyCollapsibleOnDesktop()) || filament()->isSidebarCollapsibleOnDesktop(),
             ])
         />
@@ -40,7 +40,7 @@
             x-data="{}"
             x-on:click="$store.sidebar.close()"
             x-show="$store.sidebar.isOpen"
-            class="-ms-1.5 lg:hidden"
+            class="lg:hidden"
         />
 
         @if (filament()->hasTopNavigation())
@@ -79,7 +79,6 @@
                                     @foreach ($group->getItems() as $item)
                                         @php
                                             $icon = $item->getIcon();
-                                            $shouldOpenUrlInNewTab = $item->shouldOpenUrlInNewTab();
                                         @endphp
 
                                         <x-filament::dropdown.list.item
@@ -88,7 +87,7 @@
                                             :href="$item->getUrl()"
                                             :icon="$item->isActive() ? ($item->getActiveIcon() ?? $icon) : $icon"
                                             tag="a"
-                                            :target="$shouldOpenUrlInNewTab ? '_blank' : null"
+                                            :target="$item->shouldOpenUrlInNewTab() ? '_blank' : null"
                                         >
                                             {{ $item->getLabel() }}
                                         </x-filament::dropdown.list.item>

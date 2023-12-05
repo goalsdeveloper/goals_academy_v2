@@ -6,6 +6,7 @@ use Closure;
 use Filament\Actions\Concerns\CanCustomizeProcess;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Support\Services\RelationshipJoiner;
 use Filament\Tables\Table;
 use Illuminate\Database\Connection;
@@ -13,9 +14,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+
+use function Filament\Support\generate_search_column_expression;
+use function Filament\Support\generate_search_term_expression;
 
 class AttachAction extends Action
 {
@@ -51,7 +53,7 @@ class AttachAction extends Action
 
         $this->modalSubmitActionLabel(__('filament-actions::attach.single.modal.actions.attach.label'));
 
-        $this->modalWidth('lg');
+        $this->modalWidth(MaxWidth::Large);
 
         $this->extraModalFooterActions(function (): array {
             return $this->canAttachAnother() ? [
@@ -70,7 +72,7 @@ class AttachAction extends Action
             /** @var BelongsToMany $relationship */
             $relationship = Relation::noConstraints(fn () => $table->getRelationship());
 
-            $relationshipQuery = (new RelationshipJoiner())->prepareQueryForNoConstraints($relationship);
+            $relationshipQuery = app(RelationshipJoiner::class)->prepareQueryForNoConstraints($relationship);
 
             $isMultiple = is_array($data['recordId']);
 
@@ -178,11 +180,11 @@ class AttachAction extends Action
     {
         $table = $this->getTable();
 
-        $getOptions = function (?string $search = null, ?array $searchColumns = []) use ($table): array {
+        $getOptions = function (int $optionsLimit, ?string $search = null, ?array $searchColumns = []) use ($table): array {
             /** @var BelongsToMany $relationship */
             $relationship = Relation::noConstraints(fn () => $table->getRelationship());
 
-            $relationshipQuery = (new RelationshipJoiner())->prepareQueryForNoConstraints($relationship);
+            $relationshipQuery = app(RelationshipJoiner::class)->prepareQueryForNoConstraints($relationship);
 
             if ($this->modifyRecordSelectOptionsQueryUsing) {
                 $relationshipQuery = $this->evaluate($this->modifyRecordSelectOptionsQueryUsing, [
@@ -190,30 +192,30 @@ class AttachAction extends Action
                 ]) ?? $relationshipQuery;
             }
 
+            if (! isset($relationshipQuery->getQuery()->limit)) {
+                $relationshipQuery->limit($optionsLimit);
+            }
+
             $titleAttribute = $this->getRecordTitleAttribute();
             $titleAttribute = filled($titleAttribute) ? $relationshipQuery->qualifyColumn($titleAttribute) : null;
 
             if (filled($search) && ($searchColumns || filled($titleAttribute))) {
+                /** @var Connection $databaseConnection */
+                $databaseConnection = $relationshipQuery->getConnection();
+
+                $isForcedCaseInsensitive = $this->isSearchForcedCaseInsensitive();
+
+                $search = generate_search_term_expression($search, $isForcedCaseInsensitive, $databaseConnection);
                 $searchColumns ??= [$titleAttribute];
+
                 $isFirst = true;
-                $isForcedCaseInsensitive = $this->isSearchForcedCaseInsensitive($relationshipQuery);
 
-                if ($isForcedCaseInsensitive) {
-                    $search = Str::lower($search);
-                }
-
-                $relationshipQuery->where(function (Builder $query) use ($isFirst, $isForcedCaseInsensitive, $searchColumns, $search): Builder {
+                $relationshipQuery->where(function (Builder $query) use ($databaseConnection, $isFirst, $isForcedCaseInsensitive, $searchColumns, $search): Builder {
                     foreach ($searchColumns as $searchColumn) {
-                        $searchColumn = $query->qualifyColumn($searchColumn);
-
-                        $caseAwareSearchColumn = $isForcedCaseInsensitive ?
-                            new Expression("lower({$searchColumn})") :
-                            $searchColumn;
-
                         $whereClause = $isFirst ? 'where' : 'orWhere';
 
                         $query->{$whereClause}(
-                            $caseAwareSearchColumn,
+                            generate_search_column_expression($query->qualifyColumn($searchColumn), $isForcedCaseInsensitive, $databaseConnection),
                             'like',
                             "%{$search}%",
                         );
@@ -237,7 +239,11 @@ class AttachAction extends Action
                     ),
                 );
 
-            if (filled($titleAttribute)) {
+            if (
+                filled($titleAttribute) &&
+                (! $this->hasCustomRecordTitle()) &&
+                ($this->hasCustomRecordTitleAttribute() || (! $this->getTable()->hasCustomRecordTitle()))
+            ) {
                 if (empty($relationshipQuery->getQuery()->orders)) {
                     $relationshipQuery->orderBy($titleAttribute);
                 }
@@ -259,15 +265,24 @@ class AttachAction extends Action
             ->label(__('filament-actions::attach.single.modal.fields.record_id.label'))
             ->required()
             ->searchable($this->getRecordSelectSearchColumns() ?? true)
-            ->getSearchResultsUsing(static fn (Select $component, string $search): array => $getOptions(search: $search, searchColumns: $component->getSearchColumns()))
+            ->getSearchResultsUsing(static fn (Select $component, string $search): array => $getOptions(optionsLimit: $component->getOptionsLimit(), search: $search, searchColumns: $component->getSearchColumns()))
             ->getOptionLabelUsing(function ($value) use ($table): string {
                 $relationship = Relation::noConstraints(fn () => $table->getRelationship());
 
-                $relationshipQuery = (new RelationshipJoiner())->prepareQueryForNoConstraints($relationship);
+                $relationshipQuery = app(RelationshipJoiner::class)->prepareQueryForNoConstraints($relationship);
 
                 return $this->getRecordTitle($relationshipQuery->find($value));
             })
-            ->options(fn (): array => $this->isRecordSelectPreloaded() ? $getOptions() : [])
+            ->getOptionLabelsUsing(function (array $values) use ($table): array {
+                $relationship = Relation::noConstraints(fn () => $table->getRelationship());
+
+                $relationshipQuery = app(RelationshipJoiner::class)->prepareQueryForNoConstraints($relationship);
+
+                return $relationshipQuery->find($values)
+                    ->mapWithKeys(fn (Model $record): array => [$record->getKey() => $this->getRecordTitle($record)])
+                    ->all();
+            })
+            ->options(fn (Select $component): array => $this->isRecordSelectPreloaded() ? $getOptions(optionsLimit: $component->getOptionsLimit()) : [])
             ->hiddenLabel();
 
         if ($this->modifyRecordSelectUsing) {
@@ -286,14 +301,8 @@ class AttachAction extends Action
         return $this;
     }
 
-    public function isSearchForcedCaseInsensitive(Builder $query): bool
+    public function isSearchForcedCaseInsensitive(): ?bool
     {
-        /** @var Connection $databaseConnection */
-        $databaseConnection = $query->getConnection();
-
-        return $this->evaluate($this->isSearchForcedCaseInsensitive) ?? match ($databaseConnection->getDriverName()) {
-            'pgsql' => true,
-            default => false,
-        };
+        return $this->evaluate($this->isSearchForcedCaseInsensitive);
     }
 }

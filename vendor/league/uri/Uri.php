@@ -507,6 +507,47 @@ final class Uri implements UriInterface
     }
 
     /**
+     * Create a new instance from a data string.
+     *
+     * @throws SyntaxError If the parameter syntax is invalid
+     */
+    public static function fromData(string $data, string $mimetype = '', string $parameters = ''): self
+    {
+        static $regexpMimetype = ',^\w+/[-.\w]+(?:\+[-.\w]+)?$,';
+
+        $mimetype = match (true) {
+            '' === $mimetype => 'text/plain',
+            1 === preg_match($regexpMimetype, $mimetype) =>  $mimetype,
+            default => throw new SyntaxError('Invalid mimeType, `'.$mimetype.'`.'),
+        };
+
+        if ('' === $parameters) {
+            return self::fromComponents([
+                'scheme' => 'data',
+                'path' => self::formatDataPath($mimetype.','.rawurlencode($data)),
+            ]);
+        }
+
+        $isInvalidParameter = static function (string $parameter): bool {
+            $properties = explode('=', $parameter);
+
+            return 2 !== count($properties) || 'base64' === strtolower($properties[0]);
+        };
+
+        if (str_starts_with($parameters, ';')) {
+            $parameters = substr($parameters, 1);
+        }
+
+        return match ([]) {
+            array_filter(explode(';', $parameters), $isInvalidParameter) => self::fromComponents([
+               'scheme' => 'data',
+               'path' => self::formatDataPath($mimetype.';'.$parameters.','.rawurlencode($data)),
+            ]),
+            default => throw new SyntaxError(sprintf('Invalid mediatype parameters, `%s`.', $parameters))
+        };
+    }
+
+    /**
      * Create a new instance from a Unix path string.
      */
     public static function fromUnixPath(Stringable|string $path): self
@@ -546,6 +587,23 @@ final class Uri implements UriInterface
         [$host, $path] = explode('/', substr($path, 2), 2) + [1 => ''];
 
         return Uri::fromComponents(['host' => $host, 'path' => '/'.$path, 'scheme' => 'file']);
+    }
+
+    /**
+     * Creates a new instance from a RFC8089 compatible URI.
+     *
+     * @see https://datatracker.ietf.org/doc/html/rfc8089
+     */
+    public static function fromRfc8089(Stringable|string $uri): UriInterface
+    {
+        $fileUri = self::new((string) preg_replace(',^(file:/)([^/].*)$,i', 'file:///$2', (string) $uri));
+        $scheme = $fileUri->getScheme();
+
+        return match (true) {
+            'file' !== $scheme => throw new SyntaxError('As per RFC8089, the URI scheme must be `file`.'),
+            'localhost' === $fileUri->getAuthority() => $fileUri->withHost(''),
+            default => $fileUri,
+        };
     }
 
     /**
@@ -690,7 +748,7 @@ final class Uri implements UriInterface
     private function formatPath(string $path): string
     {
         return match (true) {
-            'data' === $this->scheme => Encoder::encodePath($this->formatDataPath($path)),
+            'data' === $this->scheme => Encoder::encodePath(self::formatDataPath($path)),
             'file' === $this->scheme => $this->formatFilePath(Encoder::encodePath($path)),
             default => Encoder::encodePath($path),
         };
@@ -703,7 +761,7 @@ final class Uri implements UriInterface
      *
      * @throws SyntaxError If the path is not compliant with RFC2397
      */
-    private function formatDataPath(string $path): string
+    private static function formatDataPath(string $path): string
     {
         if ('' == $path) {
             return 'text/plain;charset=us-ascii,';
@@ -726,7 +784,7 @@ final class Uri implements UriInterface
             $parameters = 'charset=us-ascii';
         }
 
-        $this->assertValidPath($mimetype, $parameters, $data);
+        self::assertValidPath($mimetype, $parameters, $data);
 
         return $mimetype.';'.$parameters.','.$data;
     }
@@ -738,7 +796,7 @@ final class Uri implements UriInterface
      *
      * @throws SyntaxError If the mediatype or the data are not compliant with the RFC2397
      */
-    private function assertValidPath(string $mimetype, string $parameters, string $data): void
+    private static function assertValidPath(string $mimetype, string $parameters, string $data): void
     {
         if (1 !== preg_match(self::REGEXP_MIMETYPE, $mimetype)) {
             throw new SyntaxError('The path mimetype `'.$mimetype.'` is invalid.');
@@ -749,9 +807,9 @@ final class Uri implements UriInterface
             $parameters = substr($parameters, 0, - strlen($matches[0]));
         }
 
-        $res = array_filter(array_filter(explode(';', $parameters), $this->validateParameter(...)));
+        $res = array_filter(array_filter(explode(';', $parameters), self::validateParameter(...)));
         if ([] !== $res) {
-            throw new SyntaxError('The path paremeters `'.$parameters.'` is invalid.');
+            throw new SyntaxError('The path parameters `'.$parameters.'` is invalid.');
         }
 
         if (!$isBinary) {
@@ -767,7 +825,7 @@ final class Uri implements UriInterface
     /**
      * Validate mediatype parameter.
      */
-    private function validateParameter(string $parameter): bool
+    private static function validateParameter(string $parameter): bool
     {
         $properties = explode('=', $parameter);
 
