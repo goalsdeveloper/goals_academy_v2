@@ -2,16 +2,20 @@
 
 namespace Kirschbaum\PowerJoins\Mixins;
 
+use Stringable;
+use Illuminate\Support\Str;
 use Kirschbaum\PowerJoins\StaticCache;
 use Kirschbaum\PowerJoins\PowerJoinClause;
+use Kirschbaum\PowerJoins\Tests\Models\Post;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * @method \Illuminate\Database\Eloquent\Model getModel()
@@ -49,20 +53,16 @@ class RelationshipsExtraMethods
      */
     public function performJoinForEloquentPowerJoins()
     {
-        return function ($builder, $joinType = 'leftJoin', $callback = null, $alias = null, bool $disableExtraConditions = false) {
-            if ($this instanceof MorphToMany) {
-                return $this->performJoinForEloquentPowerJoinsForMorphToMany($builder, $joinType, $callback, $alias, $disableExtraConditions);
-            } elseif ($this instanceof BelongsToMany) {
-                return $this->performJoinForEloquentPowerJoinsForBelongsToMany($builder, $joinType, $callback, $alias, $disableExtraConditions);
-            } elseif ($this instanceof MorphOneOrMany) {
-                return $this->performJoinForEloquentPowerJoinsForMorph($builder, $joinType, $callback, $alias, $disableExtraConditions);
-            } elseif ($this instanceof HasMany || $this instanceof HasOne) {
-                return $this->performJoinForEloquentPowerJoinsForHasMany($builder, $joinType, $callback, $alias, $disableExtraConditions);
-            } elseif ($this instanceof HasManyThrough) {
-                return $this->performJoinForEloquentPowerJoinsForHasManyThrough($builder, $joinType, $callback, $alias, $disableExtraConditions);
-            } else {
-                return $this->performJoinForEloquentPowerJoinsForBelongsTo($builder, $joinType, $callback, $alias, $disableExtraConditions);
-            }
+        return function ($builder, $joinType = 'leftJoin', $callback = null, $alias = null, bool $disableExtraConditions = false, string $morphable = null) {
+            return match (true) {
+                $this instanceof MorphToMany => $this->performJoinForEloquentPowerJoinsForMorphToMany($builder, $joinType, $callback, $alias, $disableExtraConditions),
+                $this instanceof BelongsToMany => $this->performJoinForEloquentPowerJoinsForBelongsToMany($builder, $joinType, $callback, $alias, $disableExtraConditions),
+                $this instanceof MorphOneOrMany => $this->performJoinForEloquentPowerJoinsForMorph($builder, $joinType, $callback, $alias, $disableExtraConditions),
+                $this instanceof HasMany || $this instanceof HasOne => $this->performJoinForEloquentPowerJoinsForHasMany($builder, $joinType, $callback, $alias, $disableExtraConditions),
+                $this instanceof HasManyThrough => $this->performJoinForEloquentPowerJoinsForHasManyThrough($builder, $joinType, $callback, $alias, $disableExtraConditions),
+                $this instanceof MorphTo => $this->performJoinForEloquentPowerJoinsForMorphTo($builder, $joinType, $callback, $alias, $disableExtraConditions, $morphable),
+                default => $this->performJoinForEloquentPowerJoinsForBelongsTo($builder, $joinType, $callback, $alias, $disableExtraConditions),
+            };
         };
     }
 
@@ -244,6 +244,38 @@ class RelationshipsExtraMethods
     }
 
     /**
+     * Perform the JOIN clause for when calling the morphTo method from the morphable class.
+     */
+    protected function performJoinForEloquentPowerJoinsForMorphTo()
+    {
+        return function ($builder, $joinType, $callback = null, $alias = null, bool $disableExtraConditions = false, string $morphable = null) {
+            $modelInstance = new $morphable;
+
+            $builder->{$joinType}($modelInstance->getTable(), function ($join) use ($modelInstance, $callback, $disableExtraConditions) {
+                $join->on(
+                    "{$this->getModel()->getTable()}.{$this->getForeignKeyName()}",
+                    '=',
+                    "{$modelInstance->getTable()}.{$modelInstance->getKeyName()}"
+                )->where("{$this->getModel()->getTable()}.{$this->getMorphType()}", '=', $modelInstance->getMorphClass());
+
+                if ($disableExtraConditions === false && $this->usesSoftDeletes($modelInstance)) {
+                    $join->whereNull($modelInstance->getQualifiedDeletedAtColumn());
+                }
+
+                if ($disableExtraConditions === false) {
+                    $this->applyExtraConditions($join);
+                }
+
+                if ($callback && is_callable($callback)) {
+                    $callback($join);
+                }
+            }, $modelInstance);
+
+            return $this;
+        };
+    }
+
+    /**
      * Perform the JOIN clause for the HasMany (or similar) relationships.
      */
     protected function performJoinForEloquentPowerJoinsForHasMany()
@@ -356,10 +388,18 @@ class RelationshipsExtraMethods
      */
     public function performHavingForEloquentPowerJoins()
     {
-        return function ($builder, $operator, $count) {
-            $builder
-                ->selectRaw(sprintf('count(%s) as %s_count', $this->query->getModel()->getQualifiedKeyName(), $this->query->getModel()->getTable()))
-                ->havingRaw(sprintf('count(%s) %s %d', $this->query->getModel()->getQualifiedKeyName(), $operator, $count));
+        return function ($builder, $operator, $count, string $morphable = null) {
+            if ($morphable) {
+                $modelInstance = new $morphable;
+
+                $builder
+                    ->selectRaw(sprintf('count(%s) as %s_count', $modelInstance->getQualifiedKeyName(), $modelInstance->getTable()))
+                    ->havingRaw(sprintf('count(%s) %s %d', $modelInstance->getQualifiedKeyName(), $operator, $count));
+            } else {
+                $builder
+                    ->selectRaw(sprintf('count(%s) as %s_count', $this->query->getModel()->getQualifiedKeyName(), $this->query->getModel()->getTable()))
+                    ->havingRaw(sprintf('count(%s) %s %d', $this->query->getModel()->getQualifiedKeyName(), $operator, $count));
+            }
         };
     }
 
@@ -447,7 +487,13 @@ class RelationshipsExtraMethods
     public function shouldNotApplyExtraCondition()
     {
         return function ($condition) {
-            $key = $this->getPowerJoinExistenceCompareKey();
+            if (isset($condition['column']) && Str::endsWith($condition['column'], '.')) {
+                return true;
+            }
+
+            if (! $key = $this->getPowerJoinExistenceCompareKey()) {
+                return true;
+            }
 
             if (isset($condition['query'])) {
                 return false;
@@ -464,6 +510,10 @@ class RelationshipsExtraMethods
     public function getPowerJoinExistenceCompareKey()
     {
         return function () {
+            if ($this instanceof MorphTo) {
+                return [$this->getMorphType(), $this->getForeignKeyName()];
+            }
+
             if ($this instanceof BelongsTo) {
                 return $this->getQualifiedOwnerKeyName();
             }

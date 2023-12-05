@@ -1,6 +1,3 @@
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
-
 <p align="center"><img src="/art/socialcard.png" alt="Social Card of Invade"></p>
 
 # A PHP function to access private properties and methods
@@ -64,20 +61,10 @@ Using `invade` you can also call private functions.
 invade($myClass)->privateMethod(); // returns 'private return value'
 ```
 
-### Making PHPStan understand Invade
-
-PHPStan will report errors for every invaded private method and property as it is not aware that you can now access them. To remove these errors install the [PHPStan extension installer](https://github.com/phpstan/extension-installer) or add the invade PHPStan extension manually to your PHPStan configuration:
-
-```yaml
-includes:
-    - ./vendor/spatie/invade/phpstan-extension.neon
-```
-
 ## Testing
 
 ```bash
 composer test
-vendor/bin/phpstan analyse -c types/phpstan.neon.dist
 ```
 
 ## Changelog

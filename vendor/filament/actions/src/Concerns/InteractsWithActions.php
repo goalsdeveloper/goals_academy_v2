@@ -11,7 +11,9 @@ use Filament\Support\Exceptions\Cancel;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
+use Livewire\Attributes\Url;
 
 use function Livewire\store;
 
@@ -34,6 +36,18 @@ trait InteractsWithActions
      * @var array<string, array<string, mixed>> | null
      */
     public ?array $mountedActionsData = [];
+
+    /**
+     * @var mixed
+     */
+    #[Url(as: 'action')]
+    public $defaultAction = null;
+
+    /**
+     * @var mixed
+     */
+    #[Url(as: 'actionArguments')]
+    public $defaultActionArguments = null;
 
     /**
      * @var array<string, Action>
@@ -89,6 +103,19 @@ trait InteractsWithActions
         } catch (Halt $exception) {
             return null;
         } catch (Cancel $exception) {
+        } catch (ValidationException $exception) {
+            if (! $this->mountedActionShouldOpenModal()) {
+                $action->resetArguments();
+                $action->resetFormData();
+
+                $this->unmountAction();
+            }
+
+            throw $exception;
+        }
+
+        if (store($this)->has('redirect')) {
+            return $result;
         }
 
         $action->resetArguments();
@@ -100,10 +127,6 @@ trait InteractsWithActions
             $action->clearRecordAfter();
 
             return null;
-        }
-
-        if (store($this)->has('redirect')) {
-            return $result;
         }
 
         $this->unmountAction();
@@ -137,8 +160,6 @@ trait InteractsWithActions
 
             return null;
         }
-
-        $action->arguments($arguments);
 
         $this->cacheMountedActionForm();
 
@@ -326,11 +347,21 @@ trait InteractsWithActions
      */
     protected function getMountableModalActionFromAction(Action $action, array $modalActionNames, string $parentActionName): ?Action
     {
+        $arguments = $this->mountedActionsArguments;
+
+        if (($actionArguments = array_shift($arguments)) !== null) {
+            $action->arguments($actionArguments);
+        }
+
         foreach ($modalActionNames as $modalActionName) {
             $action = $action->getMountableModalAction($modalActionName);
 
             if (! $action) {
                 return null;
+            }
+
+            if (($actionArguments = array_shift($arguments)) !== null) {
+                $action->arguments($actionArguments);
             }
 
             $parentActionName = $modalActionName;
@@ -387,6 +418,11 @@ trait InteractsWithActions
             $this->closeActionModal();
 
             $action?->clearRecordAfter();
+
+            // Setting these to `null` creates a bug where the properties are
+            // actually set to `'null'` strings and remain in the URL.
+            $this->defaultAction = [];
+            $this->defaultActionArguments = [];
 
             return;
         }

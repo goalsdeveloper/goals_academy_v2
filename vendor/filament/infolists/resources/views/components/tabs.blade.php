@@ -1,20 +1,42 @@
 @php
+    use Filament\Infolists\Components\Tabs\Tab;
+
     $isContained = $isContained();
 @endphp
 
 <div
     x-cloak
     x-data="{
-        tab: null,
+        tab: @if ($isTabPersisted() && filled($persistenceId = $getId())) $persist(null).as('tabs-{{ $persistenceId }}') @else null @endif,
 
         init: function () {
+            const tabs = this.getTabs()
+
+            if ((! this.tab) || (! tabs.includes(this.tab))) {
+                 this.tab = tabs[@js($getActiveTab()) - 1]
+            }
+
             this.$watch('tab', () => this.updateQueryString())
 
-            this.tab = @js(collect($getChildComponentContainer()->getComponents())
-                        ->filter(static fn (\Filament\Infolists\Components\Tabs\Tab $tab): bool => $tab->isVisible())
-                        ->map(static fn (\Filament\Infolists\Components\Tabs\Tab $tab) => $tab->getId())
-                        ->values()
-                        ->get($getActiveTab() - 1))
+            Livewire.hook('commit', ({ component, commit, succeed, fail, respond }) => {
+                succeed(({ snapshot, effect }) => {
+                    $nextTick(() => {
+                        if (component.id !== @js($this->getId())) {
+                            return
+                        }
+
+                        const tabs = this.getTabs()
+
+                        if (! tabs.includes(this.tab)) {
+                             this.tab = tabs[@js($getActiveTab()) - 1]
+                        }
+                    })
+                })
+            })
+        },
+
+        getTabs: function () {
+            return JSON.parse(this.$refs.tabsData.value)
         },
 
         updateQueryString: function () {
@@ -41,6 +63,18 @@
             ])
     }}
 >
+    <input
+        type="hidden"
+        value="{{
+            collect($getChildComponentContainer()->getComponents())
+                ->filter(static fn (Tab $tab): bool => $tab->isVisible())
+                ->map(static fn (Tab $tab) => $tab->getId())
+                ->values()
+                ->toJson()
+        }}"
+        x-ref="tabsData"
+    />
+
     <x-filament::tabs :contained="$isContained" :label="$getLabel()">
         @foreach ($getChildComponentContainer()->getComponents() as $tab)
             @php
@@ -50,6 +84,7 @@
             <x-filament::tabs.item
                 :alpine-active="'tab === \'' . $tabId . '\''"
                 :badge="$tab->getBadge()"
+                :badge-color="$tab->getBadgeColor()"
                 :icon="$tab->getIcon()"
                 :icon-position="$tab->getIconPosition()"
                 :x-on:click="'tab = \'' . $tabId . '\''"

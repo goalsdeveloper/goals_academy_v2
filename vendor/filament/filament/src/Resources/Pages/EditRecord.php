@@ -14,8 +14,12 @@ use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Support\Exceptions\Halt;
+use Filament\Support\Facades\FilamentIcon;
+use Filament\Support\Facades\FilamentView;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
+
+use function Filament\Support\is_app_url;
 
 /**
  * @property Form $form
@@ -23,7 +27,9 @@ use Illuminate\Database\Eloquent\Model;
 class EditRecord extends Page
 {
     use Concerns\HasRelationManagers;
-    use Concerns\InteractsWithRecord;
+    use Concerns\InteractsWithRecord {
+        configureAction as configureActionRecord;
+    }
     use InteractsWithFormActions;
 
     /**
@@ -38,7 +44,12 @@ class EditRecord extends Page
 
     public ?string $previousUrl = null;
 
-    protected static ?string $navigationIcon = 'heroicon-o-pencil';
+    public static function getNavigationIcon(): ?string
+    {
+        return static::$navigationIcon
+            ?? FilamentIcon::resolve('panels::resources.pages.edit-record.navigation-item')
+            ?? 'heroicon-o-pencil-square';
+    }
 
     public function getBreadcrumb(): string
     {
@@ -155,7 +166,11 @@ class EditRecord extends Page
         $this->getSavedNotification()?->send();
 
         if ($shouldRedirect && ($redirectUrl = $this->getRedirectUrl())) {
-            $this->redirect($redirectUrl);
+            if (FilamentView::hasSpaMode()) {
+                $this->redirect($redirectUrl, navigate: is_app_url($redirectUrl));
+            } else {
+                $this->redirect($redirectUrl);
+            }
         }
     }
 
@@ -206,9 +221,7 @@ class EditRecord extends Page
 
     protected function configureAction(Action $action): void
     {
-        $action
-            ->record($this->getRecord())
-            ->recordTitle($this->getRecordTitle());
+        $this->configureActionRecord($action);
 
         match (true) {
             $action instanceof DeleteAction => $this->configureDeleteAction($action),
@@ -337,36 +350,6 @@ class EditRecord extends Page
     protected function getRedirectUrl(): ?string
     {
         return null;
-    }
-
-    protected function getMountedActionFormModel(): Model
-    {
-        return $this->getRecord();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getWidgetData(): array
-    {
-        return [
-            'record' => $this->getRecord(),
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getSubNavigationParameters(): array
-    {
-        return [
-            'record' => $this->getRecord(),
-        ];
-    }
-
-    public function getSubNavigation(): array
-    {
-        return static::getResource()::getRecordSubNavigation($this);
     }
 
     public static function shouldRegisterNavigation(array $parameters = []): bool

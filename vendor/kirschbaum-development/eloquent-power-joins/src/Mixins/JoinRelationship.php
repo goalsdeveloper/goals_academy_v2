@@ -93,7 +93,8 @@ class JoinRelationship
             $callback = null,
             $joinType = 'join',
             $useAlias = false,
-            bool $disableExtraConditions = false
+            bool $disableExtraConditions = false,
+            string $morphable = null
         ) {
             $joinType = JoinsHelper::$joinMethodsMap[$joinType] ?? $joinType;
             $useAlias = is_string($callback) ? false : $useAlias;
@@ -145,7 +146,8 @@ class JoinRelationship
                 joinType: $joinType,
                 callback: $callback,
                 alias: $alias,
-                disableExtraConditions: $disableExtraConditions
+                disableExtraConditions: $disableExtraConditions,
+                morphable: $morphable,
             );
 
             return $this;
@@ -459,7 +461,7 @@ class JoinRelationship
      */
     public function powerJoinHas(): Closure
     {
-        return function ($relation, $operator = '>=', $count = 1, $boolean = 'and', $callback = null): static {
+        return function ($relation, $operator = '>=', $count = 1, $boolean = 'and', Closure|array $callback = null, string $morphable = null): static {
             if (is_null($this->getSelect())) {
                 $this->select(sprintf('%s.*', $this->getModel()->getTable()));
             }
@@ -477,29 +479,30 @@ class JoinRelationship
 
                 $relation = $this->getRelationWithoutConstraintsProxy($relation);
             }
-
-            $relation->performJoinForEloquentPowerJoins($this, 'leftPowerJoin', $callback);
-            $relation->performHavingForEloquentPowerJoins($this, $operator, $count);
+            $relation->performJoinForEloquentPowerJoins($this, 'leftPowerJoin', $callback, morphable: $morphable);
+            $relation->performHavingForEloquentPowerJoins($this, $operator, $count, morphable: $morphable);
             return $this;
         };
     }
 
     public function hasNestedUsingJoins(): Closure
     {
-        return function ($relations, $operator = '>=', $count = 1, $boolean = 'and', Closure $callback = null): static {
+        return function ($relations, $operator = '>=', $count = 1, $boolean = 'and', Closure|array $callback = null): static {
             $relations = explode('.', $relations);
 
             /** @var Relation */
             $latestRelation = null;
 
             foreach ($relations as $index => $relation) {
-                if (!$latestRelation) {
+                $relationName = $relation;
+
+                if (! $latestRelation) {
                     $relation = $this->getRelationWithoutConstraintsProxy($relation);
                 } else {
                     $relation = $latestRelation->getModel()->query()->getRelationWithoutConstraintsProxy($relation);
                 }
 
-                $relation->performJoinForEloquentPowerJoins($this, 'leftPowerJoin', $callback);
+                $relation->performJoinForEloquentPowerJoins($this, 'leftPowerJoin', is_callable($callback) ? $callback : $callback[$relationName] ?? null);
 
                 if (count($relations) === ($index + 1)) {
                     $relation->performHavingForEloquentPowerJoins($this, $operator, $count);

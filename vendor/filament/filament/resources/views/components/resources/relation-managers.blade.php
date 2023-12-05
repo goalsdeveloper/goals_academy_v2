@@ -67,10 +67,11 @@
                 role="tabpanel"
                 tabindex="0"
             @endif
+            wire:key="{{ $this->getId() }}.relation-managers.active"
             class="flex flex-col gap-y-4"
         >
             @php
-                $managerLivewireProperties = ['lazy' => true, 'ownerRecord' => $ownerRecord, 'pageClass' => $pageClass];
+                $managerLivewireProperties = ['ownerRecord' => $ownerRecord, 'pageClass' => $pageClass];
 
                 if (filled($activeLocale)) {
                     $managerLivewireProperties['activeLocale'] = $activeLocale;
@@ -78,15 +79,15 @@
             @endphp
 
             @if ($managers[$activeManager] instanceof \Filament\Resources\RelationManagers\RelationGroup)
-                @foreach ($managers[$activeManager]->ownerRecord($ownerRecord)->pageClass($pageClass)->getManagers() as $groupedManager)
+                @foreach ($managers[$activeManager]->ownerRecord($ownerRecord)->pageClass($pageClass)->getManagers() as $groupedManagerKey => $groupedManager)
                     @php
                         $normalizedGroupedManagerClass = $normalizeRelationManagerClass($groupedManager);
                     @endphp
 
                     @livewire(
                         $normalizedGroupedManagerClass,
-                        [...$managerLivewireProperties, ...(($groupedManager instanceof \Filament\Resources\RelationManagers\RelationManagerConfiguration) ? $groupedManager->properties : [])],
-                        key($normalizedGroupedManagerClass),
+                        [...$managerLivewireProperties, ...(($groupedManager instanceof \Filament\Resources\RelationManagers\RelationManagerConfiguration) ? [...$groupedManager->relationManager::getDefaultProperties(), ...$groupedManager->properties] : $groupedManager::getDefaultProperties())],
+                        key("{$normalizedGroupedManagerClass}-{$groupedManagerKey}"),
                     )
                 @endforeach
             @else
@@ -97,7 +98,7 @@
 
                 @livewire(
                     $normalizedManagerClass,
-                    [...$managerLivewireProperties, ...(($manager instanceof \Filament\Resources\RelationManagers\RelationManagerConfiguration) ? $manager->properties : [])],
+                    [...$managerLivewireProperties, ...(($manager instanceof \Filament\Resources\RelationManagers\RelationManagerConfiguration) ? [...$manager->relationManager::getDefaultProperties(), ...$manager->properties] : $manager::getDefaultProperties())],
                     key($normalizedManagerClass),
                 )
             @endif
