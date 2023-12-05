@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Profile\NotificationProfileController;
 use App\Http\Controllers\Profile\PembeljaranSayaController;
 use App\Http\Controllers\Profile\RiwayatTransaksiController;
 use Inertia\Inertia;
@@ -15,9 +16,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/riwayat_transaksi', [RiwayatTransaksiController::class, 'index'])->name('user.profile.riwayatTransaksi');
 
-    Route::get('/notifikasi', function () {
-        return Inertia::render('Auth/User/Notifikasi');
-    });
+    Route::get('/notifikasi', [NotificationProfileController::class, 'index'])->name('user.profile.notifikasi');
 
     Route::get('/obrolan', function () {
         return Inertia::render('Auth/User/Obrolan');
