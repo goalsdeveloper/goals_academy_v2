@@ -34,6 +34,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $this->getUserWithProfile($request),
+                'notifications' => $this->getUserNotification($request),
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
@@ -57,5 +58,16 @@ class HandleInertiaRequests extends Middleware
         }
 
         return $user;
+    }
+
+    protected function getUserNotification(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user) {
+            return $user->notifications;
+        }
+
+        return null;
     }
 }
