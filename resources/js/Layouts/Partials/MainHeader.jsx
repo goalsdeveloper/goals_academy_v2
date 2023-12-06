@@ -16,7 +16,7 @@ export default function MainHeader({ auth, title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false);
     const [mobileAuthDropdown, setMobileAuthDropdown] = useState(false);
     const [mobileNotification, setMobileNotification] = useState(false);
-    const notificationData = auth.notifications;
+    const notificationData = auth.notifications || [];
 
     // useEffect(() => {
     //     setInterval(() => {
