@@ -12,10 +12,10 @@ import user from "/resources/img/icon/user.png";
 import { useEffect } from "react";
 
 export default function MainHeader({ auth, title }) {
-    console.log(auth.notifications);
+    // console.log(auth.notifications)
     const [mobileNavbar, setMobileNavbar] = useState(false);
-    const [authDropdown, setAuthDropdown] = useState(false);
-    const [notificationDropdown, setNotificationDropdown] = useState(false);
+    const [mobileAuthDropdown, setMobileAuthDropdown] = useState(false);
+    const [mobileNotification, setMobileNotification] = useState(false);
     const notificationData = auth.notifications;
 
     // useEffect(() => {
@@ -35,7 +35,7 @@ export default function MainHeader({ auth, title }) {
                     <div className="w-6/12 md:w-2/12">
                         <Link href="/">
                             <img
-                                className="w-full md:h-5 xl:h-8 3xl:h-10 mb-1 md:mb-2"
+                                className="w-full md:h-[2vw] mb-1 md:mb-2"
                                 src={logo}
                                 alt="Goals Academy"
                             />
@@ -47,7 +47,7 @@ export default function MainHeader({ auth, title }) {
                             <div className="w-[10vw] md:hidden">
                                 <Link href="/">
                                     <img
-                                        className="w-full md:h-5 xl:h-8 3xl:h-10 mb-1 md:mb-2"
+                                        className="w-full md:h-[2vw] mb-1 md:mb-2"
                                         src={logo2}
                                         alt="Goals Academy"
                                     />
@@ -65,7 +65,7 @@ export default function MainHeader({ auth, title }) {
                         <div className="hidden md:block md:w-2/12">
                             <Link href="/">
                                 <img
-                                    className="w-full md:h-5 xl:h-8 3xl:h-10 mb-1 md:mb-2"
+                                    className="w-full md:h-[2vw] mb-1 md:mb-2"
                                     src={logo}
                                     alt="Goals Academy"
                                 />
@@ -82,103 +82,37 @@ export default function MainHeader({ auth, title }) {
                     {!auth.user ? (
                         <button onClick={() => setMobileNavbar(true)}>
                             <i
-                                className={`fa-solid fa-bars text-28 duration-300 ${
+                                className={`fa-solid fa-bars text-[7.5vw] duration-300 ${
                                     mobileNavbar ? "opacity-0 rotate-180" : ""
                                 }`}
                             ></i>
                         </button>
                     ) : (
-                        <div className="w-auto flex flex-wrap justify-end items-center gap-3 md:gap-3 xl:gap-4 3xl:gap-6 font-medium">
+                        <div className="w-auto flex flex-wrap justify-end items-center gap-[3vw] md:gap-[1vw] font-medium">
                             <div
                                 className={`font-poppins flex justify-end cursor-pointer`}
-                                onMouseEnter={() =>
-                                    setNotificationDropdown(true)
-                                }
-                                onMouseLeave={() =>
-                                    setNotificationDropdown(false)
-                                }
                                 onClick={() =>
-                                    setNotificationDropdown(
-                                        !notificationDropdown
+                                    setMobileNotification(
+                                        !mobileNotification
                                     )
                                 }
                             >
-                                <div className="relative">
-                                    <i className="fa-regular fa-bell text-28 md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
-                                    <div className="absolute border-1 border-white rounded-full top-0 right-0 w-2 h-2 3xl:w-3 3xl:h-3 bg-red-500"></div>
+                                <div className={`${auth.user.user_role == 'user' ? '' : 'hidden'} relative`}>
+                                    <i className="fa-regular fa-bell text-[7.5vw] md:text-[2vw]"></i>
+                                    <div className={`${notificationData.length > 0 ? '' : 'hidden'} absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}></div>
                                 </div>
-                                <TECollapse
-                                    show={notificationDropdown}
-                                    className="absolute z-10 shadow-none p-1 translate-y-4"
-                                >
-                                    {/* profile navbar */}
-                                    <TECollapseItem className="w-[75vw] py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-4 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-[3.5vw] md:text-[1.25vw]">
-                                                Notifikasi
-                                            </span>
-                                            <Link
-                                                href="/notifikasi"
-                                                className="font-normal hover:text-secondary"
-                                            >
-                                                Lihat Semua
-                                            </Link>
-                                        </div>
-                                        {notificationData.map((item, index) => {
-                                            return (
-                                                <NotifikasiItem
-                                                    key={index}
-                                                    item={item}
-                                                />
-                                            );
-                                        })}
-                                    </TECollapseItem>
-                                </TECollapse>
                             </div>
                             <div
                                 className={`font-poppins flex justify-end cursor-pointer}`}
-                                onMouseEnter={() => setAuthDropdown(true)}
-                                onMouseLeave={() => setAuthDropdown(false)}
-                                onClick={() => setAuthDropdown(!authDropdown)}
+                                onClick={() => setMobileAuthDropdown(!mobileAuthDropdown)}
                             >
-                                <div className="overflow-hidden rounded-full w-7 md:w-4 lg:w-5 xl:w-7 3xl:w-9 h-7 md:h-4 lg:h-5 xl:h-7 3xl:h-9">
+                                <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
                                     <img
                                         className="w-full h-full"
                                         src={user}
                                         alt="User Profile"
                                     />
                                 </div>
-                                <TECollapse
-                                    show={authDropdown}
-                                    className="absolute z-10 shadow-none p-1 translate-y-4"
-                                >
-                                    {/* profile navbar */}
-                                    <TECollapseItem className="py-4 px-4 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-[4vw] md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
-                                        <Link
-                                            className="flex gap-2 items-center font-poppins hover:text-primary"
-                                            href="/user"
-                                        >
-                                            <i className="fa-regular fa-circle-user md:text-12 lg:text-20 3xl:text-24"></i>
-                                            Profil
-                                        </Link>
-                                        <Link
-                                            className="flex gap-2 items-center font-poppins hover:text-primary"
-                                            href="/pengaturan"
-                                        >
-                                            <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
-                                            Pengaturan
-                                        </Link>
-                                        <Link
-                                            as="button"
-                                            className="flex gap-2 items-center font-poppins hover:text-primary"
-                                            href="/logout"
-                                            method="post"
-                                        >
-                                            <i className="bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24"></i>
-                                            Log Out
-                                        </Link>
-                                    </TECollapseItem>
-                                </TECollapse>
                             </div>
                         </div>
                     )}
@@ -187,9 +121,11 @@ export default function MainHeader({ auth, title }) {
             <NavbarMobile
                 auth={auth}
                 title={title}
-                mobileNavbar={mobileNavbar}
-                setMobileNavbar={setMobileNavbar}
+                show={mobileNavbar}
+                setShow={setMobileNavbar}
             />
+            <NotifikasiMobile data={notificationData} show={mobileNotification} setShow={setMobileNotification} />
+            <AuthDropdownMobile show={mobileAuthDropdown} setShow={setMobileAuthDropdown} />
         </header>
     );
 }
@@ -200,7 +136,7 @@ function NavbarExpand({ auth, title, notificationData }) {
     const [profileDropdown, setProfileDropdown] = useState(false);
     return (
         <>
-            <div className="hidden md:grid grid-cols-5 md:gap-6 xl:gap-9 3xl:gap-12 font-medium text-center text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20">
+            <div className="hidden md:grid grid-cols-5 md:gap-[3vw] font-medium text-center text-[4vw] md:text-[1vw]">
                 <Link
                     href="/produk"
                     className={`font-poppins hover:text-primary flex justify-center ${
@@ -248,7 +184,7 @@ function NavbarExpand({ auth, title, notificationData }) {
                         show={profileDropdown}
                         className="absolute z-10 shadow-none p-1 translate-y-2"
                     >
-                        <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
+                        <TECollapseItem className="py-[2vw] px-[3vw] md:py-[1vw] md:px-[1.5vw] gap-[2vw] md:gap-[1vw] text-start bg-white shadow-centered rounded-xl">
                             <Link
                                 className="font-poppins hover:text-primary"
                                 href="/profil_perusahaan"
@@ -266,7 +202,7 @@ function NavbarExpand({ auth, title, notificationData }) {
                 </div>
             </div>
             {!auth.user ? (
-                <div className="w-auto hidden md:flex flex-wrap justify-end gap-2 3xl:gap-4 font-medium text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20">
+                <div className="w-auto hidden md:flex flex-wrap justify-end gap-2 3xl:gap-4 font-medium text-[4vw] md:text-[1vw]">
                     <Link href="/login">
                         <ButtonHoverSlide className="text-secondary before:-z-10 hover:text-white border-1 xl:border-2 border-secondary hover:border-primary md:rounded-lg xl:rounded-xl 3xl:rounded-2xl md:px-4 md:py-1 xl:px-6 xl:py-2 3xl:px-8 3xl:py-3 before:w-[200%] before:-ms-[200%] before:duration-300 hover:before:-ms-[50%] before:bg-sweep-primary">
                             Masuk
@@ -280,7 +216,7 @@ function NavbarExpand({ auth, title, notificationData }) {
                     </Link>
                 </div>
             ) : (
-                <div className="w-auto hidden md:flex flex-wrap justify-end items-center md:gap-3 xl:gap-4 3xl:gap-6 font-medium text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20">
+                <div className="w-auto hidden md:flex flex-wrap justify-end items-center gap-[3vw] md:gap-[1vw] font-medium text-[4vw] md:text-[1vw]">
                     <div
                         className={`font-poppins flex justify-center cursor-pointer`}
                         onMouseEnter={() => setNotificationDropdown(true)}
@@ -289,23 +225,23 @@ function NavbarExpand({ auth, title, notificationData }) {
                             setNotificationDropdown(!notificationDropdown)
                         }
                     >
-                        <div href="#" className="relative">
-                            <i className="fa-regular fa-bell md:text-16 lg:text-20 xl:text-24 3xl:text-32"></i>
-                            <div className="absolute border-1 border-white rounded-full top-0 right-0 w-2 h-2 3xl:w-3 3xl:h-3 bg-red-500"></div>
+                        <div className={`${auth.user.user_role == 'user' ? '' : 'hidden'} relative`}>
+                            <i className="fa-regular fa-bell md:text-[2vw]"></i>
+                            <div className={`${notificationData.length > 0 ? '' : 'hidden'} absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}></div>
                         </div>
                         <TECollapse
                             show={notificationDropdown}
                             className="absolute z-10 shadow-none p-1 translate-y-4"
                         >
                             {/* profile navbar */}
-                            <TECollapseItem className="w-[30vw] py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
+                            <TECollapseItem className="w-[30vw] py-[2vw] px-[3vw] md:py-[1vw] md:px-[1.5vw] gap-[2vw] md:gap-[1vw] text-start bg-white shadow-centered rounded-xl">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-[1.25vw]">
+                                    <span className="font-poppins text-[4vw] md:text-[1.25vw]">
                                         Notifikasi
                                     </span>
                                     <Link
                                         href="/notifikasi"
-                                        className="font-normal hover:text-secondary"
+                                        className="font-normal text-[4vw] md:text-[1vw] hover:text-secondary"
                                     >
                                         Lihat Semua
                                     </Link>
@@ -327,7 +263,7 @@ function NavbarExpand({ auth, title, notificationData }) {
                         onMouseLeave={() => setAuthDropdown(false)}
                         onClick={() => setAuthDropdown(!authDropdown)}
                     >
-                        <div className="overflow-hidden rounded-full md:h-4 lg:h-5 xl:h-7 3xl:h-9">
+                        <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
                             <img
                                 className="w-full h-full"
                                 src={user}
@@ -339,7 +275,7 @@ function NavbarExpand({ auth, title, notificationData }) {
                             className="absolute z-10 shadow-none p-1 translate-y-4"
                         >
                             {/* profile navbar */}
-                            <TECollapseItem className="py-4 px-6 md:py-3 md:px-4 lg:py-4 lg:px-6 3xl:py-6 3xl:px-8 gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6 text-start bg-white shadow-centered rounded-xl">
+                            <TECollapseItem className="py-[2vw] px-[3vw] md:py-[1vw] md:px-[1.5vw] gap-[2vw] md:gap-[1vw] text-start bg-white shadow-centered rounded-xl">
                                 <Link
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
                                     href="/user"
@@ -361,7 +297,7 @@ function NavbarExpand({ auth, title, notificationData }) {
                                     method="post"
                                 >
                                     <i className="bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24"></i>
-                                    Log Out
+                                    Keluar
                                 </Link>
                             </TECollapseItem>
                         </TECollapse>
@@ -372,69 +308,69 @@ function NavbarExpand({ auth, title, notificationData }) {
     );
 }
 
-function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
+function NavbarMobile({ auth, title, show, setShow }) {
     const [profileDropdownMobile, setProfileDropdownMobile] = useState(false);
     return (
-        <div className="text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20">
+        <div className="font-medium text-[4vw] md:text-[1vw]">
             <div
-                className={`md:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold text-white min-h-screen py-6 xs:py-8 duration-500 ${
-                    mobileNavbar ? "" : "opacity-0 translate-x-[110%]"
+                className={`md:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold text-white min-h-screen py-[6vw] duration-500 ${
+                    show ? "" : "opacity-0 translate-x-[110%]"
                 }`}
             >
                 <div className="container mx-auto">
-                    <div className="w-full flex justify-end mb-6 xs:mb-8 text-dark">
-                        <button onClick={() => setMobileNavbar(false)}>
+                    <div className="w-full flex justify-end mb-[6vw] text-dark">
+                        <button onClick={() => setShow(false)}>
                             <i
-                                className={`fa-solid fa-xmark text-dark text-36`}
+                                className={`fa-solid fa-xmark text-dark text-[8vw]`}
                             ></i>
                         </button>
                     </div>
-                    <div className="grid gap-8">
+                    <div className="grid gap-[8vw]">
                         <Link
                             href="/produk"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 ${
+                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-[4.25vw] ${
                                 title == "Produk" ? "font" : ""
                             }`}
                         >
                             Produk
                             <CornerWaveVector cornerClassName="w-4/12" />
-                            <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                            <i className="fa-solid fa-arrow-up rotate-45 text-[6vw]"></i>
                         </Link>
                         <Link
                             href="/artikel"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 ${
+                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-[4.25vw] ${
                                 title == "Artikel" ? "font" : ""
                             }`}
                         >
                             Artikel
                             <CornerWaveVector cornerClassName="w-4/12" />
-                            <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                            <i className="fa-solid fa-arrow-up rotate-45 text-[6vw]"></i>
                         </Link>
                         <Link
                             href="/diskusi"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 ${
+                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-[4.25vw] ${
                                 title == "Diskusi" ? "font" : ""
                             }`}
                         >
                             Diskusi
                             <CornerWaveVector cornerClassName="w-4/12" />
-                            <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                            <i className="fa-solid fa-arrow-up rotate-45 text-[6vw]"></i>
                         </Link>
                         <Link
                             href="/karir"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 ${
+                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-[4.25vw] ${
                                 title == "Karir" ? "font" : ""
                             }`}
                         >
                             Karir
                             <CornerWaveVector cornerClassName="w-4/12" />
-                            <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                            <i className="fa-solid fa-arrow-up rotate-45 text-[6vw]"></i>
                         </Link>
                         <div
                             className={`w-full relative font-poppins flex flex-col justify-center`}
                         >
                             <span
-                                className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 w-full ${
+                                className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-[4.25vw] w-full ${
                                     title == "Profil Perusahaan" ||
                                     title == "Profil Tutor"
                                         ? "font"
@@ -449,7 +385,7 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                                 Profil
                                 <CornerWaveVector cornerClassName="w-4/12" />
                                 <i
-                                    className={`fa-solid fa-chevron-down text-20 xs:text-24 duration-300 ${
+                                    className={`fa-solid fa-chevron-down text-[6vw] duration-300 ${
                                         profileDropdownMobile
                                             ? "rotate-180"
                                             : ""
@@ -460,26 +396,26 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                                 show={profileDropdownMobile}
                                 className="shadow-none text-secondary -translate-x-[5%] px-[5%] w-[110%]"
                             >
-                                <TECollapseItem className="gap-8 md:gap-2 lg:gap-3 xl:gap-4 3xl:gap-6">
+                                <TECollapseItem className="gap-[8vw] md:gap-[1vw]">
                                     <Link
                                         href="/profil_perusahaan"
-                                        className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 overflow-hidden ${
+                                        className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-[4.25vw] overflow-hidden ${
                                             title == "Produk" ? "font" : ""
                                         }`}
                                     >
                                         Profil Perusahaan
                                         <CornerWaveVector2 cornerClassName="w-4/12" />
-                                        <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                                        <i className="fa-solid fa-arrow-up rotate-45 text-[6vw]"></i>
                                     </Link>
                                     <Link
                                         href="/profil_tutor"
-                                        className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 overflow-hidden ${
+                                        className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-[4.25vw] overflow-hidden ${
                                             title == "Produk" ? "font" : ""
                                         }`}
                                     >
                                         Profil Tutor
                                         <CornerWaveVector2 cornerClassName="w-4/12" />
-                                        <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                                        <i className="fa-solid fa-arrow-up rotate-45 text-[6vw]"></i>
                                     </Link>
                                 </TECollapseItem>
                             </TECollapse>
@@ -487,11 +423,11 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
                         {!auth.user ? (
                             <Link
                                 href="/login"
-                                className="relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4"
+                                className="relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-[4.25vw]"
                             >
                                 Masuk/Daftar
                                 <CornerWaveVector cornerClassName="w-4/12" />
-                                <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                                <i className="fa-solid fa-arrow-up rotate-45 text-[6vw]"></i>
                             </Link>
                         ) : (
                             <br />
@@ -501,12 +437,114 @@ function NavbarMobile({ auth, title, mobileNavbar, setMobileNavbar }) {
             </div>
             <div
                 className={`absolute z-30 top-0 left-0 h-screen w-screen bg-dark bg-opacity-50 md:hidden ${
-                    mobileNavbar ? "" : "hidden"
+                    show ? "" : "hidden"
                 }`}
-                onClick={() => setMobileNavbar(false)}
+                onClick={() => setShow(false)}
             ></div>
         </div>
     );
+}
+
+
+function AuthDropdownMobile({ show, setShow }) {
+    return (
+        <div className="font-medium text-[4vw] md:text-[1vw]">
+            <div
+                className={`md:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold text-white min-h-screen py-[6vw] duration-500 ${
+                    show ? "" : "opacity-0 translate-x-[110%]"
+                }`}
+            >
+                <div className="container mx-auto">
+                    <div className="w-full flex justify-end mb-[6vw] text-dark">
+                        <button onClick={() => setShow(false)}>
+                            <i
+                                className={`fa-solid fa-xmark text-dark text-[8vw]`}
+                            ></i>
+                        </button>
+                    </div>
+                    <div className="grid gap-[8vw]">
+                        <Link
+                            href="/user"
+                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-[4.25vw]`}
+                        >
+                            Profil
+                            <CornerWaveVector cornerClassName="w-4/12" />
+                            <i className="fa-solid fa-arrow-up rotate-45 text-[6vw]"></i>
+                        </Link>
+                        <Link
+                            href="/pengaturan"
+                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-[4.25vw]`}
+                        >
+                            Pengaturan
+                            <CornerWaveVector cornerClassName="w-4/12" />
+                            <i className="fa-solid fa-arrow-up rotate-45 text-[6vw]"></i>
+                        </Link>
+                        <Link
+                            method="post"
+                            href="/logout"
+                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-soft text-secondary p-[4.25vw]`}
+                        >
+                            Keluar
+                            <CornerWaveVector2 cornerClassName="w-4/12" />
+                            <i className="fa-solid fa-arrow-up rotate-45 text-[6vw]"></i>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+            <div
+                className={`absolute z-30 top-0 left-0 h-screen w-screen bg-dark bg-opacity-50 md:hidden ${
+                    show ? "" : "hidden"
+                }`}
+                onClick={() => setShow(false)}
+            ></div>
+        </div>
+    );
+}
+
+function NotifikasiMobile ({ data, show, setShow }) {
+    return (
+        <div className="font-medium text-[4vw] md:text-[1vw]">
+            <div
+                className={`md:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold min-h-screen py-[6vw] duration-500 ${
+                    show ? "" : "opacity-0 translate-x-[110%]"
+                }`}
+            >
+                <div className="container mx-auto">
+                    <div className="w-full flex justify-end mb-[6vw] text-dark">
+                        <button onClick={() => setShow(false)}>
+                            <i
+                                className={`fa-solid fa-xmark text-dark text-[8vw]`}
+                            ></i>
+                        </button>
+                    </div>
+                    <div className="grid gap-[8vw]">
+                        <div className="flex justify-between items-center">
+                            <span className="font-poppins text-[4vw] md:text-[1.25vw]">
+                                Notifikasi
+                            </span>
+                            <Link
+                                href="/notifikasi"
+                                className="font-normal text-[4vw] md:text-[1vw] hover:text-secondary"
+                            >
+                                Lihat Semua
+                            </Link>
+                        </div>
+                        {data.map((item, index) => {
+                            return (
+                                <NotifikasiItem key={index} item={item} />
+                            )
+                        })}
+                    </div>
+                </div>
+            </div>
+            <div
+                className={`absolute z-30 top-0 left-0 h-screen w-screen bg-dark bg-opacity-50 md:hidden ${
+                    show ? "" : "hidden"
+                }`}
+                onClick={() => setShow(false)}
+            ></div>
+        </div>
+    )
 }
 
 function NotifikasiItem({ item }) {
@@ -527,7 +565,7 @@ function NotifikasiItem({ item }) {
                             alt={item.data.payment_method}
                         />
                         <div>
-                            <h4 className="text-secondary font-normal font-sans text-[2.5vw] md:text-[1vw]">
+                            <h4 className="text-secondary font-normal font-sans text-[2.5vw] md:text-[1vw] md:mb-[.5vw]">
                                 {item.data.title}
                             </h4>
                             <table className="text-[2vw] md:text-[.75vw]">
@@ -573,7 +611,7 @@ function NotifikasiItem({ item }) {
                         {item.data.category}
                     </span>
                     <div>
-                        <h4 className="text-secondary font-normal font-sans text-[2.5vw] md:text-[1vw]">
+                        <h4 className="text-secondary font-normal font-sans text-[2.5vw] md:text-[1vw] md:mb-[.5vw]">
                             {item.data.title}
                         </h4>
                         <div className="text-[2vw] md:text-[.75vw]">

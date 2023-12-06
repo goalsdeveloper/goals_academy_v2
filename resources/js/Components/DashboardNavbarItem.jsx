@@ -3,7 +3,7 @@ import ExpandedButton from "./ExpandedButton"
 
 export default function DashboardNavbarItem ({ href, method, active, className, children }) {
     return (
-        <Link className={className} href={href} method={method} as="button">
+        <Link className={className} href={href} method={method}>
             <ExpandedButton
             className={`h-[12vw] md:h-[3.5vw] shadow-centered-spread px-[8vw] md:px-[1.5vw] md:rounded-xl ${active ? 'bg-secondary' : 'bg-white hover:bg-soft'}`}
             textClassName={`font-medium text-[4vw] md:text-[1.15vw] ${active ? 'text-white' : 'text-secondary'}`}
