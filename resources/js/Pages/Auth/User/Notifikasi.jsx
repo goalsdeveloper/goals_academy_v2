@@ -5,10 +5,9 @@ import figure from "/resources/img/figure/8.svg";
 import "@/script/momentCustomLocale";
 
 export default function Index({ auth, notifications }) {
-    console.log(notifications);
-    const dataNotif = notifications.map((item, index) => {
-        console.log(item.data.category);
-    });
+    // const dataNotif = notifications.map((item, index) => {
+    //     console.log(item.data.category);
+    // });
     const data = notifications;
     // const data = [
     //     {
@@ -87,7 +86,7 @@ function NotifikasiItem({ item }) {
                             alt={item.data.payment_method}
                         />
                         <div>
-                            <h4 className="text-secondary font-normal font-sans text-[3.5vw] md:text-[1.75vw]">
+                            <h4 className="text-secondary font-normal font-sans text-[3.5vw] md:text-[1.7vw]">
                                 {item.data.title}
                             </h4>
                             <table className="text-[2.5vw] md:text-[.95vw]">
@@ -133,7 +132,7 @@ function NotifikasiItem({ item }) {
                         {item.data.category}
                     </span>
                     <div>
-                        <h4 className="text-secondary font-normal font-sans text-[3.5vw] md:text-[1.75vw]">
+                        <h4 className="text-secondary font-normal font-sans text-[3.5vw] md:text-[1.7vw]">
                             {item.data.title}
                         </h4>
                         <div className="text-[2.5vw] md:text-[.95vw]">
