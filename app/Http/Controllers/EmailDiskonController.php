@@ -15,16 +15,16 @@ class EmailDiskonController extends Controller
         $email = $request->validate([
             'email' => 'required|email:dns'
         ]);
-
+        
         $data = [
             'message' => 'This is Promo Email Test!'
         ];
 
         Mail::send('emails.email-layout', $data, function (Message $message) use ($email) {
-            $message->to($email)->subject('Promo Test Email.');
+            $message->to($email['email'])->subject('Promo Test Email.');
         });
 
-        Log::info("Email sent successfully to {$email}", ['email' => $email]);
+        Log::info("Email sent successfully to {$email['email']}", ['email' => $email['email']]);
 
         return redirect()->back()->with('success', 'Email sent successfully');
     }
