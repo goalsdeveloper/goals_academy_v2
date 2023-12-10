@@ -4,17 +4,16 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Category;
-use App\Models\CourseSession;
+use App\Models\User;
 use App\Models\Order;
-use App\Models\PaymentMethod;
+use App\Models\Category;
 use App\Models\Products;
 use App\Models\PromoCode;
-use App\Models\User;
 use App\Models\UserProfile;
-use Database\Factories\OrderSeederFactory;
-use Database\Factories\UserProfileFactory;
+use App\Models\CourseSession;
+use App\Models\PaymentMethod;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -239,5 +238,8 @@ class DatabaseSeeder extends Seeder
             'price' => 49000,
             'product_image' => 'resource/img/webinar/1.png',
         ]);
+
+        DB::insert('insert into category_products (category_id, products_id) values (2, 1)');
+        DB::insert('insert into category_products (category_id, products_id) values (3, 1)');
     }
 }

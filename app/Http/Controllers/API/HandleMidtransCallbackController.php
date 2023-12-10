@@ -8,6 +8,9 @@ use App\Models\OrderHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Notifications\MidtransNotifications\CancelNotification;
+use App\Notifications\MidtransNotifications\ExpireNotification;
+use App\Notifications\MidtransNotifications\SuccessNotification;
 
 class HandleMidtransCallbackController extends Controller
 {
@@ -52,12 +55,25 @@ class HandleMidtransCallbackController extends Controller
             ], 400);
         }
 
-        if ($transactionStatus == 'settlement') {
-            $order->status = OrderEnum::SUCCESS->value;
-            $order->save();
-        } else if ($transactionStatus == 'expire') {
-            $order->status = OrderEnum::FAILED->value;
-            $order->save();
+        switch ($transactionStatus) {
+            case 'settlement':
+                $order->status = OrderEnum::SUCCESS->value;
+                $order->save();
+                $order->user->notify(new SuccessNotification($order));
+                Log::info("Transaksi {$order->order_code} telah berhasil pada " . now());
+                break;
+            case 'expire':
+                $order->status = OrderEnum::FAILED->value;
+                $order->save();
+                $order->user->notify(new ExpireNotification($order));
+                Log::info("Transaksi {$order->order_code} telah gagal pada " . now());
+                break;
+            case 'cancel':
+                $order->status = OrderEnum::CANCEL->value;
+                $order->save();
+                $order->user->notify(new CancelNotification($order));
+                Log::info("Transaksi {$order->order_code} telah dibatalkan pada " . now());
+                break;
         }
 
         return response()->json(['message' => 'success'], 200);

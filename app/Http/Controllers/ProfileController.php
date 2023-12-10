@@ -36,7 +36,6 @@ class ProfileController extends Controller
             ->with('products.categories')
             ->get();
 
-
         return Inertia::render('Auth/User/Index', [
             'orderBimbingan' => $orderBimbingan,
         ]);

@@ -11,6 +11,7 @@ use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Enums\CourseStatusEnum;
+use App\Enums\OrderEnum;
 use Filament\Resources\Resource;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Group;
@@ -129,9 +130,11 @@ class CourseResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->join('orders', 'courses.order_id', '=', 'orders.id')
+                ->where('orders.status', 'Success')->get();
+            })
             ->columns([
-                // TextColumn::make('order.order_code')
-                //     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('user.name')
                     ->label('Customer')
                     ->sortable()
@@ -157,9 +160,9 @@ class CourseResource extends Resource
                 TextColumn::make('ongoing')
                     ->label('Status')
                     ->sortable(),
-                TextColumn::make('order.status')
-                    ->label('Pembayaran')
-                    ->sortable(),
+                // TextColumn::make('order.status')
+                //     ->label('Pembayaran')
+                //     ->sortable(),
                 IconColumn::make('is_tutor')
                     ->label('Tutor')
                     ->sortable()
@@ -171,15 +174,6 @@ class CourseResource extends Resource
             ])
             ->defaultSort('ongoing', 'asc')
             ->filters([
-                SelectFilter::make('status')
-                    ->options([
-                        'Failed' => 'Failed',
-                        'Success' => 'Success'
-                    ])
-                    ->relationship('order', 'status')
-                    // ->default('Success')
-                    ->preload()
-                    ->native(false),
                 TernaryFilter::make('ongoing')
                     ->label('Status Bimbingan')
                     ->trueLabel('Sedang berjalan')
