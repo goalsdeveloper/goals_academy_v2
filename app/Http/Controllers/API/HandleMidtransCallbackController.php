@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\CourseStatusEnum;
 use App\Enums\OrderEnum;
 use App\Models\Order;
 use App\Models\OrderHistory;
@@ -65,12 +66,16 @@ class HandleMidtransCallbackController extends Controller
             case 'expire':
                 $order->status = OrderEnum::FAILED->value;
                 $order->save();
+                $order->course->ongoing = CourseStatusEnum::CANCEL->value;
+                $order->course->save();
                 $order->user->notify(new ExpireNotification($order));
                 Log::info("Transaksi {$order->order_code} telah gagal pada " . now());
                 break;
             case 'cancel':
                 $order->status = OrderEnum::CANCEL->value;
                 $order->save();
+                $order->course->ongoing = CourseStatusEnum::CANCEL->value;
+                $order->course->save();
                 $order->user->notify(new CancelNotification($order));
                 Log::info("Transaksi {$order->order_code} telah dibatalkan pada " . now());
                 break;

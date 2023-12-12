@@ -48,14 +48,20 @@ class CourseResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('ongoing', '=', 'berjalan')->count();
+        return static::getModel()::where('ongoing', '=', 'berjalan')
+            ->whereHas('order', function (Builder $query) {
+                $query->where('status', 'Success');
+            })
+            ->count();
     }
 
     public static function getNavigationBadgeColor(): string|array|null
     {
-        return static::getModel()::where('ongoing', '=', 'berjalan')->count() > 0
-            ? 'warning'
-            : '';
+        return static::getModel()::where('ongoing', '=', 'berjalan')
+            ->whereHas('order', function (Builder $query) {
+                $query->where('status', 'Success');
+            })
+            ->count() > 0 ? 'warning' : '';
     }
 
     public static function form(Form $form): Form
@@ -132,7 +138,7 @@ class CourseResource extends Resource
         return $table
             ->modifyQueryUsing(function (Builder $query) {
                 $query->join('orders', 'courses.order_id', '=', 'orders.id')
-                ->where('orders.status', 'Success')->get();
+                    ->where('orders.status', 'Success')->get();
             })
             ->columns([
                 TextColumn::make('user.name')
