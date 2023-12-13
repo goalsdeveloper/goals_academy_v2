@@ -36,6 +36,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $this->getUserWithProfile($request),
                 'notifications' => $this->getUserNotification($request),
             ],
+            'message' => fn () => $request->session()->get('message'),
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

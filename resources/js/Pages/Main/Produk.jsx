@@ -31,7 +31,7 @@ export default function Produk({
     webinarData,
 }) {
     const dataBimbingan = dataDibimbing;
-
+    console.log(dataDibimbing);
     const dataEbook = ebookData;
     // const dataEbook = [
     //     {

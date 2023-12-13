@@ -13,8 +13,10 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import "@/script/momentCustomLocale";
 
 export default function Form({ auth, date, dataProduct }) {
-    // console.log(auth.user.id);
     const userId = auth.user.id;
+
+    console.log(dataProduct)
+    // Code to input form data
     const { data, setData, post } = useForm({
         schedule: "",
         city: "",
@@ -27,8 +29,10 @@ export default function Form({ auth, date, dataProduct }) {
         purchase_method: "",
         admin: 0,
         product_id: dataProduct.id,
+        add_on: ""
     });
 
+    // Code to input temp form data
     const { data: temp, setData: setTemp } = useForm({
         schedule: "",
         city: "",
@@ -41,20 +45,74 @@ export default function Form({ auth, date, dataProduct }) {
         purchase_method: "",
         admin: 0,
         product_id: dataProduct.id,
+        add_on: ""
     });
 
+    // Initialize product's category
+    const categoriesName = dataProduct.categories.map(item => item.name).join(' ').toLowerCase();
+    // const category = categoriesName.includes('online') ? 'online' :
+    //     categoriesName.includes('offline') ? 'offline' :
+    //     categoriesName.includes('tuntas') ? 'tuntas' :
+    //     categoriesName.includes('review') ? 'review' :
+    //     '';
+    const category = 'tuntas'
+
+    // Initialize form rules
+    let rules = {}
+
+    // Initialize available availableAddOn
+    let availableAddOn = [
+        {id: 1, name: 'Riset Jurnal', price: 11000},
+        {id: 2, name: 'Recording', price: 21000},
+        {id: 3, name: 'Upgrade durasi (20 menit)', price: 15000},
+    ]
+
+    if (category == 'online') {
+        rules = {
+            schedule: 1,
+            note: 0,
+            document: 0,
+            add_on: 0
+        }
+    } else if (category == 'offline') {
+        rules = {
+            schedule: 1,
+            city: 1,
+            place: 1,
+            note: 0,
+            document: 0,
+            add_on: 0
+        }
+    } else if (category == 'tuntas') {
+        rules = {
+            note: 0,
+            document: 0,
+            add_on: 0
+        }
+        availableAddOn.pop()
+    } else if (category == 'review') {
+        rules = {
+            note: 1,
+            document: 1,
+            add_on: 0
+        }
+    }
+
+    // Code to count totalPrice
     const totalPrice = data.init_price - data.discount + data.admin;
-    // const availablePromos = [
-    //     { code: "123456", percentage: 10 },
-    //     { code: "654321", percentage: 15 },
-    // ];
+
+    // Code to initialize unavailable dates
     const unavailableDate = date.map((i) => i.date);
+
+    // Initialize Cities and Places option
     const cities = ["Malang", "Surabaya", "Jakarta"];
     const places = {
         Malang: ["Kafe 1", "Kafe 2", "Kafe 3", "Kafe 4", "Kafe 5"],
         Surabaya: ["Kafe 6", "Kafe 7", "Kafe 8", "Kafe 9", "Kafe 10"],
         Jakarta: ["Kafe 11", "Kafe 12", "Kafe 13", "Kafe 14", "Kafe 15"],
     };
+
+    // Initialize purchase methods
     const purchaseMethods = [
         { name: "Gopay", admin: 2, purchase_method: "ewallet" },
         { name: "QRIS", admin: 0.7, purchase_method: "ewallet" },
@@ -64,11 +122,13 @@ export default function Form({ auth, date, dataProduct }) {
         { name: "Permata", admin: 4000, purchase_method: "bank_transfer" },
     ];
 
+    // Submit function
     const submit = (e) => {
         e.preventDefault();
         post("/produk");
     };
 
+    // Code to check and input promo
     const promoHandler = (inputCode, successCallback, processCallback) => {
         processCallback(true);
         fetch("/api/coupon-check", {
@@ -122,6 +182,7 @@ export default function Form({ auth, date, dataProduct }) {
                         unavailableDate={unavailableDate}
                         cities={cities}
                         places={places}
+                        rules={rules}
                     />
                     <SummaryCard
                         dataProduct={dataProduct}
@@ -133,6 +194,7 @@ export default function Form({ auth, date, dataProduct }) {
                         totalPrice={totalPrice}
                         promoHandler={promoHandler}
                         submit={submit}
+                        rules={rules}
                     />
                 </div>
             </section>
@@ -149,6 +211,7 @@ function MainCard({
     unavailableDate,
     cities,
     places,
+    rules
 }) {
     const [showScheduleForm, setShowScheduleForm] = useState(false);
     const [showNoteForm, setShowNoteForm] = useState(false);
@@ -184,9 +247,9 @@ function MainCard({
                 </div>
                 <div className="md:hidden h-[4vw] bg-slate-100"></div>
                 <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
-                    <div>
+                    <div className={'schedule' in rules ? '' : 'hidden'}>
                         <p className="font-medium mb-[2vw] md:mb-[.5vw]">
-                            Jadwal Bimbingan:
+                            Jadwal Bimbingan{'schedule' in rules ? (rules.schedule ? '' : ' (opsional)') : ''}:
                         </p>
                         <ExpandedButton
                             className="rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
@@ -206,7 +269,6 @@ function MainCard({
                         <ScheduleForm
                             show={showScheduleForm}
                             setShow={setShowScheduleForm}
-                            category={features.category}
                             data={data}
                             setData={setData}
                             temp={temp}
@@ -214,11 +276,12 @@ function MainCard({
                             unavailableDate={unavailableDate}
                             cities={cities}
                             places={places}
+                            rules={rules}
                         />
                     </div>
-                    <div>
+                    <div className={'note' in rules ? '' : 'hidden'}>
                         <p className="font-medium mb-[2vw] md:mb-[.5vw]">
-                            Catatan untuk Tutor:
+                            Catatan untuk Tutor{'note' in rules ? (rules.note ? '' : ' (opsional)') : ''}:
                         </p>
                         <ExpandedButton
                             className="rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
@@ -243,10 +306,10 @@ function MainCard({
                             setTemp={setTemp}
                         />
                     </div>
-                    <div className="flex flex-col text-light-grey">
+                    <div className={`${'document' in rules ? '' : 'hidden'} flex flex-col text-light-grey`}>
                         <label htmlFor="file" className="font-medium">
                             <p className="mb-[2vw] md:mb-[.5vw] text-dark">
-                                Berkas Pendukung (opsional);
+                                Berkas Pendukung{'document' in rules ? (rules.document ? '' : ' (opsional)') : ''}:
                             </p>
                             <div
                                 className={`w-full border-1 outline outline-1 rounded-[1vw] md:rounded-[.4vw] flex items-center cursor-pointer overflow-hidden h-[9vw] md:h-[2.5vw] ${
@@ -311,6 +374,7 @@ function SummaryCard({
     promoHandler,
     totalPrice,
     submit,
+    rules
 }) {
     const [showPromoForm, setShowPromoForm] = useState(false);
     const [showPurchaseMethodForm, setShowPurchaseMethodForm] = useState(false);
@@ -367,7 +431,6 @@ function SummaryCard({
                 </div>
                 <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
             </div>
-
             <div
                 className={`relative md:shadow-centered-spread md:rounded-[1vw] md:p-[1.75vw] text-xs h-fit ${
                     data.note ? "" : "hidden"
@@ -580,16 +643,14 @@ function SummaryCard({
                         <ButtonPill
                             className="w-6/12 md:w-full mt-[1.25vw]"
                             isActive={
-                                features.category == "offline"
-                                    ? ![
-                                          data.schedule,
-                                          data.place,
-                                          data.purchase_method,
-                                      ].includes("")
-                                    : ![
-                                          data.schedule,
-                                          data.purchase_method,
-                                      ].includes("")
+                                !(
+                                    data['purchase_method'] == "" ||
+                                    Object.keys(
+                                        Object.fromEntries(
+                                            Object.entries(rules).filter(([key, value]) => value)
+                                        )
+                                    ).map(i => data[i]).includes("")
+                                )
                             }
                             onClick={submit}
                         >
@@ -851,7 +912,6 @@ function PurchaseMethodForm({
 function ScheduleForm({
     show,
     setShow,
-    category,
     data,
     setData,
     temp,
@@ -859,6 +919,7 @@ function ScheduleForm({
     unavailableDate,
     cities,
     places,
+    rules,
 }) {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showCityOptions, setShowCityOptions] = useState(false);
@@ -1035,9 +1096,9 @@ function ScheduleForm({
                         </div>
                     </div>
                 </div>
-                <div className={category == "offline" ? "" : "hidden"}>
+                <div className={'city' in rules ? '' : 'hidden'}>
                     <p className="font-medium mb-[3vw] md:mb-[1.25vw]">
-                        Pilih Kota Bimbingan :
+                        Pilih Kota Bimbingan {'city' in rules ? (rules.city ? '' : ' (opsional)') : ''}:
                     </p>
                     <ExpandedButton
                         className="shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw]"
@@ -1091,9 +1152,9 @@ function ScheduleForm({
                         </TECollapseItem>
                     </TECollapse>
                 </div>
-                <div className={category == "offline" ? "" : "hidden"}>
+                <div className={'place' in rules ? '' : 'hidden'}>
                     <p className="font-medium mb-[3vw] md:mb-[1.25vw]">
-                        Pilih Lokasi Bimbingan :
+                        Pilih Lokasi Bimbingan {'place' in rules ? (rules.place ? '' : ' (opsional)') : ''}:
                     </p>
                     <ExpandedButton
                         className={`shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw] ${
@@ -1156,13 +1217,13 @@ function ScheduleForm({
                     <ButtonPill
                         className="w-6/12 md:w-3/12"
                         isActive={
-                            category == "offline"
+                            'place' in rules
                                 ? temp.schedule != "" && temp.place != ""
                                 : temp.schedule != ""
                         }
                         onClick={(e) => {
                             if (
-                                category == "offline"
+                                'place' in rules
                                     ? temp.schedule != "" && temp.place != ""
                                     : temp.schedule != ""
                             ) {

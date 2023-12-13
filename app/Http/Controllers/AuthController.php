@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -25,10 +26,16 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         // dd(auth()->user()->username);
+        // $credential = Validator::make($request->all(), [
+        //     'email' => 'required|email:dns',
+        //     'password' => 'required|min:8',
+        // ]);
         $credential = $request->validate([
             'email' => 'required|email:dns',
-            'password' => 'required',
+            'password' => 'required|min:8',
         ]);
+
+        // dd($credential);
 
         if (Auth::attempt($credential, true)) {
             $request->session()->regenerate();
@@ -36,9 +43,7 @@ class AuthController extends Controller
             Log::info("User {username} has been Log in.", ['username' => $user->username]);
             return redirect(RouteServiceProvider::HOME);
         } else {
-            return response()->json([
-                'message' => 'Gagal login, mohon cek kembali email dan password anda!'
-            ]);
+            // return redirect()->back()->with('message', ['login' => $credential->errors()->messages()]);
         }
     }
 
