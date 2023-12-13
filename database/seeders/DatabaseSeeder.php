@@ -25,6 +25,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::create([
+            'name' => 'Admin Goals',
+            'username' => 'AdminGoals',
+            'email' => 'admingoals@goalsacademy.id',
+            'password' => Hash::make('password'),
+            'user_role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
+        User::create([
             'name' => 'Ekadian Haris',
             'username' => 'Ayukuriii',
             'email' => 'ekadianharis@goalsacademy.id',
@@ -49,7 +57,6 @@ class DatabaseSeeder extends Seeder
             'user_role' => 'tutor',
             'email_verified_at' => now(),
         ]);
-
         User::create([
             'name' => 'Akhmad Roziqin',
             'username' => 'Iqin123',
@@ -63,24 +70,27 @@ class DatabaseSeeder extends Seeder
 
         UserProfile::create([
             'user_id' => 1,
+        ]);
+        UserProfile::create([
+            'user_id' => 2,
             'phone_number' => '087763420873',
             'university' => 'Politeknik Negeri Malang',
             'major' => 'Elektronika',
         ]);
         UserProfile::create([
-            'user_id' => 2,
+            'user_id' => 3,
             'phone_number' => '087763420872',
             'university' => 'Universitas Brawijaya',
             'major' => 'Hukum',
         ]);
         UserProfile::create([
-            'user_id' => 3,
+            'user_id' => 4,
             'phone_number' => '087763420876',
             'university' => 'Universitas Brawijaya',
             'major' => 'Hukum',
         ]);
         UserProfile::create([
-            'user_id' => 4,
+            'user_id' => 5,
             'phone_number' => '087763420871',
             'university' => 'Universitas Islam Malang',
             'major' => 'Matematika',

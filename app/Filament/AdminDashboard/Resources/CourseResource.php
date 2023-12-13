@@ -130,8 +130,8 @@ class CourseResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('order.order_code')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                // TextColumn::make('order.order_code')
+                //     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('user.name')
                     ->label('Customer')
                     ->sortable()
