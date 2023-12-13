@@ -15,7 +15,6 @@ import "@/script/momentCustomLocale";
 export default function Form({ auth, date, dataProduct }) {
     const userId = auth.user.id;
 
-    console.log(dataProduct)
     // Code to input form data
     const { data, setData, post } = useForm({
         schedule: "",
@@ -29,7 +28,8 @@ export default function Form({ auth, date, dataProduct }) {
         purchase_method: "",
         admin: 0,
         product_id: dataProduct.id,
-        add_on: ""
+        add_on: [],
+        add_on_price: 0
     });
 
     // Code to input temp form data
@@ -45,17 +45,17 @@ export default function Form({ auth, date, dataProduct }) {
         purchase_method: "",
         admin: 0,
         product_id: dataProduct.id,
-        add_on: ""
+        add_on: [],
+        add_on_price: 0
     });
 
     // Initialize product's category
     const categoriesName = dataProduct.categories.map(item => item.name).join(' ').toLowerCase();
-    // const category = categoriesName.includes('online') ? 'online' :
-    //     categoriesName.includes('offline') ? 'offline' :
-    //     categoriesName.includes('tuntas') ? 'tuntas' :
-    //     categoriesName.includes('review') ? 'review' :
-    //     '';
-    const category = 'tuntas'
+    const category = categoriesName.includes('online') ? 'online' :
+        categoriesName.includes('offline') ? 'offline' :
+        categoriesName.includes('tuntas') ? 'tuntas' :
+        categoriesName.includes('review') ? 'review' :
+        '';
 
     // Initialize form rules
     let rules = {}
@@ -99,7 +99,7 @@ export default function Form({ auth, date, dataProduct }) {
     }
 
     // Code to count totalPrice
-    const totalPrice = data.init_price - data.discount + data.admin;
+    const totalPrice = data.init_price - data.discount + data.admin + data.add_on_price;
 
     // Code to initialize unavailable dates
     const unavailableDate = date.map((i) => i.date);
@@ -180,6 +180,7 @@ export default function Form({ auth, date, dataProduct }) {
                         temp={temp}
                         setTemp={setTemp}
                         unavailableDate={unavailableDate}
+                        availableAddOn={availableAddOn}
                         cities={cities}
                         places={places}
                         rules={rules}
@@ -209,12 +210,14 @@ function MainCard({
     temp,
     setTemp,
     unavailableDate,
+    availableAddOn,
     cities,
     places,
     rules
 }) {
     const [showScheduleForm, setShowScheduleForm] = useState(false);
     const [showNoteForm, setShowNoteForm] = useState(false);
+    const [showAddOnForm, setShowAddOnForm] = useState(false);
     const features = dataProduct.features[0];
     return (
         <div className="md:w-[70%] relative md:shadow-centered-spread md:rounded-[1vw] md:p-[1.75vw] h-fit">
@@ -258,6 +261,7 @@ function MainCard({
                                     ? "border-secondary outline-secondary text-secondary"
                                     : "outline-light-grey text-light-grey"
                             }`}
+                            iconClassName={`group-hover:text-white ${data.schedule != "" ? "text-grey" : ""}`}
                             onClick={() => setShowScheduleForm(true)}
                         >
                             <i className="fa-regular fa-calendar"></i>
@@ -290,6 +294,7 @@ function MainCard({
                                     ? "border-secondary outline-secondary text-secondary"
                                     : "outline-light-grey text-light-grey"
                             }`}
+                            iconClassName={`group-hover:text-white ${data.note != "" ? "text-grey" : ""}`}
                             onClick={() => setShowNoteForm(true)}
                         >
                             <i className="bi bi-pen"></i>&nbsp;&nbsp;
@@ -357,6 +362,35 @@ function MainCard({
                             PDF, DOCS
                         </p>
                     </div>
+                    <div className={'add_on' in rules ? '' : 'hidden'}>
+                        <p className="font-medium mb-[2vw] md:mb-[.5vw]">
+                            Add-On{'add_on' in rules ? (rules.add_on ? '' : ' (opsional)') : ''}:
+                        </p>
+                        <ExpandedButton
+                            className="rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
+                            borderClassName={`border-1 outline outline-1 ${
+                                data.add_on.length
+                                    ? "border-secondary outline-secondary text-secondary"
+                                    : "outline-light-grey text-light-grey"
+                            }`}
+                            iconClassName={`group-hover:text-white ${data.add_on.length ? "text-grey" : ""}`}
+                            onClick={() => setShowAddOnForm(true)}
+                        >
+                            <i className="fa-solid fa-plus"></i>&nbsp;&nbsp;
+                            {data.add_on.length
+                                ? "Add-On telah dipilih"
+                                : "Pilih Add-On"}
+                        </ExpandedButton>
+                        <AddOnForm
+                            show={showAddOnForm}
+                            setShow={setShowAddOnForm}
+                            data={data}
+                            setData={setData}
+                            temp={temp}
+                            setTemp={setTemp}
+                            availableAddOn={availableAddOn}
+                        />
+                    </div>
                 </div>
                 <div className="md:hidden h-[4vw] bg-slate-100"></div>
             </div>
@@ -381,7 +415,6 @@ function SummaryCard({
     const [showNote, setShowNote] = useState(true);
     const [showDocument, setShowDocument] = useState(true);
     const currency = Intl.NumberFormat("id-ID");
-    const features = dataProduct.features[0];
     return (
         <div className="md:w-[30%] md:ms-[3vw] flex flex-col gap-[4vw] md:gap-[2vw]">
             <div
@@ -510,6 +543,34 @@ function SummaryCard({
                 </div>
                 <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
             </div>
+            <div
+                className={`relative md:shadow-centered-spread md:rounded-[1vw] md:p-[1.75vw] text-xs h-fit text-[3.4vw] md:text-[.9vw] ${
+                    data.add_on.length ? "" : "hidden"
+                }`}
+            >
+                <div className="container md:w-full mx-auto">
+                    <h5 className="font-bold text-secondary mb-[1vw]">
+                        Add-On
+                    </h5>
+                    <hr className="border-secondary" />
+                    {data.add_on.sort((x, y) => x.id - y.id).map((item, index) => {
+                        return (
+                            <div key={index}>
+                                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                                    <tbody>
+                                        <tr>
+                                            <td>{item.name}</td>
+                                            <td className="font-bold text-right">IDR {currency.format(item.price)}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <hr className="border-black" />
+                            </div>
+                        )
+                    })}
+                </div>
+                <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
+            </div>
             <div className="relative md:shadow-centered-spread md:rounded-[1vw] pt-[2vw] md:p-[1.75vw] h-fit">
                 <div className="container md:w-full mx-auto">
                     <div className="flex flex-col-reverse md:flex-col gap-[4vw] md:gap-0">
@@ -550,6 +611,16 @@ function SummaryCard({
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td>Add-On</td>
+                                        <td className="font-bold text-right">
+                                            {currency.format(data.add_on_price) > 0
+                                                ? `IDR ${currency.format(
+                                                      data.add_on_price
+                                                  )}`
+                                                : "-"}
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td>Biaya Admin</td>
                                         <td className="font-bold text-right">
                                             {currency.format(data.admin) > 0
@@ -579,6 +650,7 @@ function SummaryCard({
                                         ? "border-secondary outline-secondary text-secondary"
                                         : "outline-light-grey text-light-grey"
                                 }`}
+                                iconClassName={`group-hover:text-white ${data.discount != "" ? "text-grey" : ""}`}
                                 onClick={() => setShowPromoForm(!showPromoForm)}
                             >
                                 {data.discount > 0
@@ -592,6 +664,7 @@ function SummaryCard({
                                         ? "border-secondary outline-secondary text-secondary"
                                         : "outline-light-grey text-light-grey"
                                 }`}
+                                iconClassName={`group-hover:text-white ${data.purchase_method != "" ? "text-grey" : ""}`}
                                 onClick={() =>
                                     setShowPurchaseMethodForm(
                                         !showPurchaseMethodForm
@@ -1398,4 +1471,93 @@ function NoteForm({ show, setShow, data, setData, temp, setTemp }) {
             </div>
         </>
     );
+}
+
+function AddOnForm({ show, setShow, data, setData, temp, setTemp, availableAddOn }) {
+    return (
+        <>
+            <div
+                className={`${
+                    show ? "" : "hidden"
+                } fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`}
+                onClick={() => setShow(false)}
+            ></div>
+            <div
+                className={`${
+                    show
+                        ? "md:top-0 bottom-0 md:scale-100"
+                        : "md:top-full -bottom-full md:scale-0"
+                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
+            >
+                <div>
+                    <div className="flex justify-between items-center mb-[3vw] md:mb-[1vw]">
+                        <h5 className="text-secondary font-poppins font-bold text-[4.5vw] md:text-[1.2vw]">
+                            Pilih Add-On
+                        </h5>
+                        <i
+                            role="button"
+                            className={
+                                "fa-solid fa-times text-[5vw] md:text-[1.5vw]"
+                            }
+                            onClick={() => setShow(false)}
+                        ></i>
+                    </div>
+                    <hr className="border-light-grey" />
+                </div>
+                <div className="grid gap-[3vw] md:gap-[1vw]">
+                    {availableAddOn.map((item, index) => {
+                        return (
+                            <AddOnOption
+                                key={index}
+                                item={item}
+                                checked={temp.add_on.filter(i => i.id == item.id).length}
+                                onClick={() => {
+                                    if (temp.add_on.filter(i => i.id == item.id).length) {
+                                        setTemp('add_on', temp.add_on.filter(i => i.id != item.id))
+                                    } else {
+                                        const tempAddOn = temp.add_on.slice()
+                                        tempAddOn.push(item)
+                                        setTemp('add_on', tempAddOn)
+                                    }
+                                }}
+                            />
+                        )
+                    })}
+                </div>
+                <div className="flex justify-center md:justify-end mt-[1vw]">
+                    <ButtonPill
+                        className="w-6/12 md:w-3/12"
+                        isActive={!(data.add_on.length == 0 && temp.add_on.length == 0) && !(data.add_on.every(i => temp.add_on.filter(j => j.id == i.id).length) && temp.add_on.every(i => data.add_on.filter(j => j.id == i.id).length))}
+                        onClick={(e) => {
+                            if (!(data.add_on.length == 0 && temp.add_on.length == 0) && !(data.add_on.every(i => temp.add_on.filter(j => j.id == i.id).length) && temp.add_on.every(i => data.add_on.filter(j => j.id == i.id).length))) {
+                                if (temp.add_on.length) {
+                                    setData({...data, add_on: temp.add_on, add_on_price: temp.add_on.map(i => i.price).reduce((total, i) => total + i)});
+                                } else {
+                                    setData({...data, add_on: temp.add_on, add_on_price: 0});
+                                }
+                                setShow(false);
+                            }
+                        }}
+                    >
+                        Simpan
+                    </ButtonPill>
+                </div>
+            </div>
+        </>
+    );
+}
+
+function AddOnOption ({ item, onClick, checked=false }) {
+    const currency = Intl.NumberFormat("id-ID");
+    return (
+        <div onClick={onClick} className="flex items-center p-[1vw] shadow-centered rounded-[.2vw] h-[9vw] md:h-[3vw] cursor-pointer">
+            <div className="w-[90%] flex justify-between font-medium md:text-[.95vw]">
+                <span>{item.name}</span>
+                <span>IDR {currency.format(item.price)}</span>
+            </div>
+            <div className="w-[10%] text-right">
+                <i className={`fa-solid fa-square-check text-[2vw] ${checked ? 'text-secondary' : 'text-light-grey'}`}></i>
+            </div>
+        </div>
+    )
 }
