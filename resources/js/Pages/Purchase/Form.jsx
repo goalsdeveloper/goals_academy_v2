@@ -1550,13 +1550,13 @@ function AddOnForm({ show, setShow, data, setData, temp, setTemp, availableAddOn
 function AddOnOption ({ item, onClick, checked=false }) {
     const currency = Intl.NumberFormat("id-ID");
     return (
-        <div onClick={onClick} className="flex items-center p-[1vw] shadow-centered rounded-[.2vw] h-[9vw] md:h-[3vw] cursor-pointer">
-            <div className="w-[90%] flex justify-between font-medium md:text-[.95vw]">
+        <div onClick={onClick} className="flex items-center px-[3vw] md:px-[1vw] shadow-centered md:rounded-[.2vw] h-[9vw] md:h-[3vw] cursor-pointer">
+            <div className="w-[90%] flex items-center justify-between font-medium md:text-[.95vw]">
                 <span>{item.name}</span>
                 <span>IDR {currency.format(item.price)}</span>
             </div>
-            <div className="w-[10%] text-right">
-                <i className={`fa-solid fa-square-check text-[2vw] ${checked ? 'text-secondary' : 'text-light-grey'}`}></i>
+            <div className="w-[10%] flex items-center justify-end">
+                <i className={`fa-solid fa-square-check text-[6vw] md:text-[2vw] ${checked ? 'text-secondary' : 'text-light-grey'}`}></i>
             </div>
         </div>
     )
