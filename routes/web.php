@@ -1,18 +1,19 @@
 <?php
 
-use App\Http\Controllers\EmailDiskonController;
-use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Purchase\PurchaseStatusController;
-use App\Http\Controllers\PurchaseController;
-use App\Models\Order;
-use App\Models\Tutor;
 use App\Models\User;
-use Illuminate\Foundation\Application;
+use Inertia\Inertia;
+use App\Models\TutorNote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\EmailDiskonController;
+use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\Purchase\PurchaseStatusController;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 Route::get('/', function () {
     return Inertia::render('Index');
@@ -54,8 +55,24 @@ Route::get('/email/verify/email-verification', [EmailVerificationController::cla
 Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('auth', 'signed')->name('verification.verify');
 Route::get('/email/verify/resend-verification', [EmailVerificationController::class, 'resend'])->middleware('auth', 'throttle:6,1')->name('verification.resend');
 
-Route::get('/pembelajaran/{id}', function (Request $request) {
-    return Inertia::render('Auth/User/DetailPembelajaran');
+//download file
+Route::get('/unduhfile/{slug}', function (string $slug) {
+    $file = TutorNote::where('slug', $slug)->firstOrFail();
+    $filePath = $file->file; // Assuming $file->file already contains the relative path
+
+
+    // Construct the full path to the file
+    $fullPath = storage_path("app/public/{$filePath}");
+    $fileName = $file->file_name;
+
+    // Check if the file exists
+    if (file_exists($fullPath)) {
+        return response()->download($fullPath);
+        // return response()->download($fullPath, $fileName);
+    } else {
+        // Handle the case where the file doesn't exist
+        return response()->json(['error' => 'File not found'], 404);
+    }
 });
 
 require __DIR__ . '/profile/profile.php';

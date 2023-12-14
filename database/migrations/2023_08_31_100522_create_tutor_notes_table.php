@@ -18,9 +18,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained('users')->cascadeOnDelete();
             $table->foreignIdFor(Course::class)->constrained('courses')->cascadeOnDelete();
+            $table->string('file')->nullable();
+            $table->string('file_name')->nullable();
+            $table->string('slug');
             $table->text('body');
-            $table->string('file_name');
-            $table->string('file');
             $table->timestamps();
         });
     }

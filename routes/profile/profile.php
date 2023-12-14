@@ -12,6 +12,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/pembelajaran_saya', [ProfileController::class, 'pembelajaranSaya'])->name('user.profile.pembelajaranSaya');
 
+    Route::get('/pembelajaran/{id}', [PembeljaranSayaController::class, 'detailPembelajaran'])->name('user.profile.detailPembelajaran');
+
     Route::get('/purchase/detail/{order_code}', [PembeljaranSayaController::class, 'index'])->name('user.profile.detailPesanan');
 
     Route::get('/riwayat_transaksi', [RiwayatTransaksiController::class, 'index'])->name('user.profile.riwayatTransaksi');

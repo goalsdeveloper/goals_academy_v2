@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\MidtransNotifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Log;
 
-class InvoiceNotification extends Notification
+class ExpireNotification extends Notification
 {
     use Queueable;
 
-    private $order;
+    protected $order;
 
     /**
      * Create a new notification instance.
@@ -38,11 +37,11 @@ class InvoiceNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $url = url('/purchase/' . $this->order->order_code);
+
         return (new MailMessage)
-            ->subject('Segera Lakukan Pembayaran')
-            ->greeting('Hello')
-            ->line('Orderan kamu siap untuk dibayar nih!')
-            ->action('Detail Pembayaran', $url)
+            ->subject('Pembayaran Gagal')
+            ->line("Pembayaran kamu pada pembelian {$this->order->order_code} telah gagal! Lihat detail pembayaran kamu di:")
+            ->action('Lihat Detail', $url)
             ->line('Terimakasih telah menggunakan Goals Academy!');
     }
 
@@ -59,10 +58,10 @@ class InvoiceNotification extends Notification
         } else {
             $paymentType = $paymentMethod->payment_type;
         }
-        
+
         return [
             'category' => 'Transaksi',
-            'title' => 'Segera Lakukan Pembayaran!',
+            'title' => 'Transaksi Gagal!',
             'expiry_time' => $paymentMethod->expiry_time,
             'order_id' => $this->order->order_code,
             'payment_method' => $paymentType,

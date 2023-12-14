@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderEnum;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Order;
@@ -18,6 +19,7 @@ class ProfileController extends Controller
         $user = User::where('id', Auth::user()->id)->with('profile')->first();
         // dd($user);
         $orderBimbingan = Order::where('user_id', $user->id)
+            ->where('status', OrderEnum::SUCCESS->value)
             ->whereHas('products.categories', function ($query) {
                 $query->where('name', 'like', '%dibimbing%');
             })
@@ -36,7 +38,6 @@ class ProfileController extends Controller
             ->with('products.categories')
             ->get();
 
-
         return Inertia::render('Auth/User/Index', [
             'orderBimbingan' => $orderBimbingan,
         ]);
@@ -46,6 +47,7 @@ class ProfileController extends Controller
     {
         $user = User::where('id', Auth::user()->id)->with('profile')->first();
         $orderBimbingan = Order::where('user_id', $user->id)
+            ->where('status', OrderEnum::SUCCESS->value)
             ->whereHas('products.categories', function ($query) {
                 $query->where('name', 'like', '%dibimbing%');
             })

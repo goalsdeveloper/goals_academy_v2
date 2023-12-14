@@ -8,68 +8,6 @@ import "@/script/momentCustomLocale";
 
 export default function Index({ auth, orderBimbingan }) {
     // console.log(orderBimbingan);
-    // console.log(auth);
-    // const data = [
-    //     {
-    //         id: 1,
-    //         products_id: 1,
-    //         category_id: 1,
-    //         order_id: orderBimbingan[0].order_code,
-    //         name: orderBimbingan[0].products.name,
-    //         date: '2023-12-01',
-    //         time: '18:30',
-    //         duration: 45,
-    //         ongoing: true,
-    //     },
-    //     {
-    //         id: 2,
-    //         products_id: 1,
-    //         category_id: 1,
-    //         order_id: 'GA87654321',
-    //         name: 'Bimbingan Offline 60 Menit',
-    //         date: '2023-11-28',
-    //         time: '19:00',
-    //         duration: 60,
-    //         ongoing: false,
-    //     },
-    //     {
-    //         id: 1,
-    //         products_id: 7,
-    //         category_id: 2,
-    //         order_id: 'GA1238064',
-    //         name: 'Ebook 1',
-    //         date: '2023-12-01',
-    //     },
-    //     {
-    //         id: 2,
-    //         products_id: 1,
-    //         category_id: 1,
-    //         order_id: 'GA7823164',
-    //         name: 'Bimbingan Offline 60 Menit',
-    //         date: '2023-11-28',
-    //         time: '19:00',
-    //         duration: 60,
-    //         ongoing: false,
-    //     },
-    //     {
-    //         id: 2,
-    //         products_id: 10,
-    //         category_id: 2,
-    //         order_id: 'GA1918263',
-    //         name: 'Ebook 2',
-    //         date: '2023-12-01',
-    //     },
-    //     {
-    //         id: 1,
-    //         products_id: 8,
-    //         category_id: 3,
-    //         order_id: 'GA1237840',
-    //         name: 'Webinar 1',
-    //         date: '2023-12-12',
-    //         time: '19:00',
-    //         duration: 60,
-    //     },
-    // ]
     const data = orderBimbingan;
 
     return (

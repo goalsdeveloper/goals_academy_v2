@@ -12,11 +12,17 @@ import user from "/resources/img/icon/user.png";
 import { useEffect } from "react";
 
 export default function MainHeader({ auth, title }) {
-    // console.log(auth.notifications)
+    // console.log(auth);
     const [mobileNavbar, setMobileNavbar] = useState(false);
     const [mobileAuthDropdown, setMobileAuthDropdown] = useState(false);
     const [mobileNotification, setMobileNotification] = useState(false);
     const notificationData = auth.notifications || [];
+    let profileImage = "";
+    if (auth.user !== null) {
+        profileImage = auth.user.profile.profile_image
+            ? `/storage/${auth.user.profile.profile_image}`
+            : user;
+    }
 
     // useEffect(() => {
     //     setInterval(() => {
@@ -77,6 +83,7 @@ export default function MainHeader({ auth, title }) {
                     auth={auth}
                     title={title}
                     notificationData={notificationData}
+                    profileImage={profileImage}
                 />
                 <div className="md:hidden">
                     {!auth.user ? (
@@ -92,24 +99,36 @@ export default function MainHeader({ auth, title }) {
                             <div
                                 className={`font-poppins flex justify-end cursor-pointer`}
                                 onClick={() =>
-                                    setMobileNotification(
-                                        !mobileNotification
-                                    )
+                                    setMobileNotification(!mobileNotification)
                                 }
                             >
-                                <div className={`${auth.user.user_role == 'user' ? '' : 'hidden'} relative`}>
+                                <div
+                                    className={`${
+                                        auth.user.user_role == "user"
+                                            ? ""
+                                            : "hidden"
+                                    } relative`}
+                                >
                                     <i className="fa-regular fa-bell text-[7.5vw] md:text-[2vw]"></i>
-                                    <div className={`${notificationData.length > 0 ? '' : 'hidden'} absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}></div>
+                                    <div
+                                        className={`${
+                                            notificationData.length > 0
+                                                ? ""
+                                                : "hidden"
+                                        } absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}
+                                    ></div>
                                 </div>
                             </div>
                             <div
                                 className={`font-poppins flex justify-end cursor-pointer}`}
-                                onClick={() => setMobileAuthDropdown(!mobileAuthDropdown)}
+                                onClick={() =>
+                                    setMobileAuthDropdown(!mobileAuthDropdown)
+                                }
                             >
                                 <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
                                     <img
                                         className="w-full h-full"
-                                        src={user}
+                                        src={profileImage}
                                         alt="User Profile"
                                     />
                                 </div>
@@ -124,13 +143,20 @@ export default function MainHeader({ auth, title }) {
                 show={mobileNavbar}
                 setShow={setMobileNavbar}
             />
-            <NotifikasiMobile data={notificationData} show={mobileNotification} setShow={setMobileNotification} />
-            <AuthDropdownMobile show={mobileAuthDropdown} setShow={setMobileAuthDropdown} />
+            <NotifikasiMobile
+                data={notificationData}
+                show={mobileNotification}
+                setShow={setMobileNotification}
+            />
+            <AuthDropdownMobile
+                show={mobileAuthDropdown}
+                setShow={setMobileAuthDropdown}
+            />
         </header>
     );
 }
 
-function NavbarExpand({ auth, title, notificationData }) {
+function NavbarExpand({ auth, title, notificationData, profileImage }) {
     const [authDropdown, setAuthDropdown] = useState(false);
     const [notificationDropdown, setNotificationDropdown] = useState(false);
     const [profileDropdown, setProfileDropdown] = useState(false);
@@ -225,9 +251,17 @@ function NavbarExpand({ auth, title, notificationData }) {
                             setNotificationDropdown(!notificationDropdown)
                         }
                     >
-                        <div className={`${auth.user.user_role == 'user' ? '' : 'hidden'} relative`}>
+                        <div
+                            className={`${
+                                auth.user.user_role == "user" ? "" : "hidden"
+                            } relative`}
+                        >
                             <i className="fa-regular fa-bell md:text-[2vw]"></i>
-                            <div className={`${notificationData.length > 0 ? '' : 'hidden'} absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}></div>
+                            <div
+                                className={`${
+                                    notificationData.length > 0 ? "" : "hidden"
+                                } absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}
+                            ></div>
                         </div>
                         <TECollapse
                             show={notificationDropdown}
@@ -266,7 +300,7 @@ function NavbarExpand({ auth, title, notificationData }) {
                         <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
                             <img
                                 className="w-full h-full"
-                                src={user}
+                                src={profileImage}
                                 alt="User Profile"
                             />
                         </div>
@@ -445,7 +479,6 @@ function NavbarMobile({ auth, title, show, setShow }) {
     );
 }
 
-
 function AuthDropdownMobile({ show, setShow }) {
     return (
         <div className="font-medium text-[4vw] md:text-[1vw]">
@@ -501,7 +534,7 @@ function AuthDropdownMobile({ show, setShow }) {
     );
 }
 
-function NotifikasiMobile ({ data, show, setShow }) {
+function NotifikasiMobile({ data, show, setShow }) {
     return (
         <div className="font-medium text-[4vw] md:text-[1vw]">
             <div
@@ -530,9 +563,7 @@ function NotifikasiMobile ({ data, show, setShow }) {
                             </Link>
                         </div>
                         {data.map((item, index) => {
-                            return (
-                                <NotifikasiItem key={index} item={item} />
-                            )
+                            return <NotifikasiItem key={index} item={item} />;
                         })}
                     </div>
                 </div>
@@ -544,7 +575,7 @@ function NotifikasiMobile ({ data, show, setShow }) {
                 onClick={() => setShow(false)}
             ></div>
         </div>
-    )
+    );
 }
 
 function NotifikasiItem({ item }) {
@@ -576,9 +607,9 @@ function NotifikasiItem({ item }) {
                                             :
                                         </td>
                                         <td>
-                                            {moment(item.data.expiry_time).format(
-                                                "DD MMMM YYYY, HH:mm"
-                                            )}
+                                            {moment(
+                                                item.data.expiry_time
+                                            ).format("DD MMMM YYYY, HH:mm")}
                                         </td>
                                     </tr>
                                     <tr>

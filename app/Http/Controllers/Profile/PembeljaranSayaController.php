@@ -6,6 +6,8 @@ use Inertia\Inertia;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Course;
+use Illuminate\Database\Eloquent\Builder;
 
 class PembeljaranSayaController extends Controller
 {
@@ -16,6 +18,19 @@ class PembeljaranSayaController extends Controller
             ->first();
         return Inertia::render('Auth/User/DetailPesanan', [
             'dataDetail' => $data,
+        ]);
+    }
+
+    public function detailPembelajaran(string $id)
+    {
+        $course = Course::whereHas('order', function (Builder $query) use ($id) {
+            $query->where('order_code', $id);
+        })
+            ->with('order', 'tutor', 'tutorNote', 'fileUploads', 'products')
+            ->get();
+        // dd($course);
+        return Inertia::render('Auth/User/DetailPembelajaran', [
+            'courseDetail' => $course,
         ]);
     }
 }
