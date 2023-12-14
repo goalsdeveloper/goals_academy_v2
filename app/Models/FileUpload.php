@@ -10,7 +10,7 @@ class FileUpload extends Model
     use HasFactory;
 
     protected $fillable = [
-        'course_id', 'filename', 'basename', 'path'
+        'course_id', 'slug', 'filename', 'mem_type', 'path'
     ];
 
     public function courses()

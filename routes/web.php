@@ -67,7 +67,7 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
 
     // Check if the file exists
     if (file_exists($fullPath)) {
-        return response()->download($fullPath);
+        return response()->download($fullPath, $fileName);
         // return response()->download($fullPath, $fileName);
     } else {
         // Handle the case where the file doesn't exist
