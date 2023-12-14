@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Moderator\Resources\CourseResource\Pages;
 use App\Filament\Moderator\Resources\CourseResource\RelationManagers;
+use App\Filament\Moderator\Resources\CourseResource\RelationManagers\FileUploadsRelationManager;
 
 class CourseResource extends Resource
 {
@@ -165,7 +166,7 @@ class CourseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            FileUploadsRelationManager::class,
         ];
     }
 

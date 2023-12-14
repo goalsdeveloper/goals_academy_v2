@@ -30,6 +30,7 @@ use Filament\Tables\Filters\TernaryFilter;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\AdminDashboard\Resources\CourseResource\Pages;
 use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers;
+use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers\FileUploadsRelationManager;
 use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers\OrderRelationManager;
 use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers\TutorRelationManager;
 use App\Filament\AdminDashboard\Resources\CourseResource\RelationManagers\TutorNoteRelationManager;
@@ -208,6 +209,7 @@ class CourseResource extends Resource
     public static function getRelations(): array
     {
         return [
+            FileUploadsRelationManager::class,
             TutorNoteRelationManager::class,
             OrderRelationManager::class,
             TutorRelationManager::class

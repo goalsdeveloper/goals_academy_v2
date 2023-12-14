@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Tutor\Resources\CourseResource\Pages;
 use App\Filament\Tutor\Resources\CourseResource\RelationManagers;
+use App\Filament\Tutor\Resources\CourseResource\RelationManagers\FileUploadsRelationManager;
 use App\Filament\Tutor\Resources\CourseResource\RelationManagers\TutorNoteRelationManager;
 use Filament\Forms\Components\FileUpload;
 
@@ -49,10 +50,6 @@ class CourseResource extends Resource
                             ->relationship('products', 'name')
                             ->disabled()
                     ]),
-                    Section::make()->schema([
-                        FileUpload::make('User attachment')
-                            ->directory('file_uploads')
-                    ])
                 ]),
                 Group::make()->schema([
                     Section::make()->schema([
@@ -153,6 +150,7 @@ class CourseResource extends Resource
     public static function getRelations(): array
     {
         return [
+            FileUploadsRelationManager::class,
             TutorNoteRelationManager::class,
         ];
     }
