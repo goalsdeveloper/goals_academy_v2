@@ -50,7 +50,7 @@ class CourseResource extends Resource
                             ->disabled()
                     ]),
                     Section::make()->schema([
-                        FileUpload::make('attachment')
+                        FileUpload::make('User attachment')
                             ->directory('file_uploads')
                     ])
                 ]),

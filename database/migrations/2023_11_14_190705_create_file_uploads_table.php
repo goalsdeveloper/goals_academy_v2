@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Course::class)->constrained('courses')->cascadeOnDelete();
             $table->string('filename');
+            $table->string('slug');
             $table->string('mime_type');
             $table->string('path');
             $table->unsignedBigInteger('size');

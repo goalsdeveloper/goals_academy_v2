@@ -60,6 +60,15 @@ class User extends Authenticatable implements HasName, FilamentUser, MustVerifyE
         'password' => 'hashed',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->name = explode('@', $user->email)[0];
+        });
+    }
+
     public function profile()
     {
         return $this->hasOne(UserProfile::class);

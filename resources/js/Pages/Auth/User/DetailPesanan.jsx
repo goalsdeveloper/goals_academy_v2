@@ -4,7 +4,7 @@ import "@/script/momentCustomLocale";
 import CornerWaveVector2 from "@/Components/CornerWaveVector2";
 
 export default function DetailPesanan({ auth, dataDetail }) {
-    // console.log(dataDetail);
+    console.log(dataDetail);
 
     const payloadObject = JSON.parse(dataDetail.order_history[0].payload);
     const expiryTime = payloadObject.expiry_time;
@@ -87,7 +87,12 @@ export default function DetailPesanan({ auth, dataDetail }) {
                             </td>
                         </tr>
                         <tr className="border-1 md:border-2 border-transparent border-b-dark">
-                            <td>Kota Pelaksanaan</td>
+                            {dataDetail.products.features[0].category ==
+                            "online" ? (
+                                <td>Metode Pelaksanaan</td>
+                            ) : (
+                                <td>Kota Pelaksanaan</td>
+                            )}
                             <td className="font-bold text-right py-[4vw] md:py-[2vw]">
                                 {data.course.city ? data.course.city : "Online"}
                             </td>
