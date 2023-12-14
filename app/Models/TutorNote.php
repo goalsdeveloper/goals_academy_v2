@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TutorNote extends Model
 {
@@ -14,8 +15,18 @@ class TutorNote extends Model
         'course_id',
         'body',
         'file_name',
+        'slug',
         'file',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($tutorNote) {
+            $tutorNote->slug = Str::slug($tutorNote->file_name);
+        });
+    }
 
     public function tutor()
     {

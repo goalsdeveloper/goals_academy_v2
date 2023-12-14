@@ -32,7 +32,7 @@ class CourseObserver
     {
         $original = $course->getOriginal();
         $changes = $course->getChanges();
-        Log::alert($changes['ongoing']);
+        // Log::alert($changes['ongoing']);
         if (!isset($changes['ongoing'])) {
             $user = User::find($original['user_id']);
             $admin = User::where('user_role', 'admin')->get();

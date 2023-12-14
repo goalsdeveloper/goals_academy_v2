@@ -236,6 +236,7 @@ class PurchaseController extends Controller
             $upload = new FileUpload();
             $upload->course_id = $course->id;
             $upload->filename = $file->getClientOriginalName();
+            $upload->slug = Str::slug($file->getClientOriginalName());
             $upload->mime_type = $file->getMimeType();
             $upload->path = $path;
             $upload->size = $file->getSize();
