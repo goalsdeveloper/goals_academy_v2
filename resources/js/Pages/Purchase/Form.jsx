@@ -1299,13 +1299,12 @@ function ScheduleForm({
                                 'place' in rules
                                     ? temp.schedule != "" && temp.place != ""
                                     : temp.schedule != ""
-                            ) {
+                            ) {k
                                 setData({
                                     ...data,
                                     schedule: temp.schedule,
                                     city: temp.city,
                                     place: temp.place,
-                                    city: temp.city,
                                 });
                                 setShow(false);
                             }

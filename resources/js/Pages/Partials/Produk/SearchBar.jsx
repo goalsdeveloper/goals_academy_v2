@@ -1,14 +1,9 @@
 import { useForm } from "@inertiajs/react";
 
-export default function SearchBar ({ searchHandler, className }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        keyword: ''
-    })
-
+export default function SearchBar ({ searchHandler, className, data, setData }) {
     const search = e => {
         e.preventDefault()
         searchHandler(data.keyword.toLowerCase())
-        reset('keyword')
     }
 
     return (

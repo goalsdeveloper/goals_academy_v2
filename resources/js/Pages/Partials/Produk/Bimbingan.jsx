@@ -4,7 +4,7 @@ import { Navigation, Pagination, A11y, FreeMode } from 'swiper/modules';
 import ButtonSwiper from '@/Components/ButtonSwiper';
 import BimbinganCard from '@/Components/BimbinganCard';
 
-export default function Bimbingan ({ data, active, status }) {
+export default function Bimbingan ({ data, active, status, categories, category, setCategory, filterHandler }) {
     return (
         <section id="bimbingan" className={`${active || status ? '' : 'hidden'} my-8 xl:my-12 3xl:my-16 overflow-hidden`}>
             <div className="container mx-auto hidden md:block">
@@ -20,12 +20,12 @@ export default function Bimbingan ({ data, active, status }) {
                     })}
                 </div>
             </div>
-            <BimbinganMobile data={data} />
+            <BimbinganMobile data={data} categories={categories} category={category} setCategory={setCategory} filterHandler={filterHandler} />
         </section>
     )
 }
 
-function BimbinganMobile ({ data }) {
+function BimbinganMobile ({ data, categories, category, setCategory, filterHandler }) {
     return (
         <div className="container mx-auto md:hidden">
             <div className="flex justify-between mb-6 xs:mb-8">
@@ -37,6 +37,18 @@ function BimbinganMobile ({ data }) {
                     <ButtonSwiper name="bimbingan-next" direction="right" />
                 </div>
             </div>
+            <Swiper
+            modules={[Navigation, Pagination, A11y, FreeMode]}
+            slidesPerView={"auto"}
+            grabCursor={true}
+            freeMode={true}
+            >
+                {categories.map((item, index) => {return (
+                    <SwiperSlide key={index} style={{ width: "fit-content" }} className="p-1 md:p-2 lg:p-3 xl:p-4">
+                        <div className={`rounded-full px-[2vw] py-[.5vw] border-[.25vw] ${category == item ? 'border-secondary text-secondary' : 'border-light-grey'}`} onClick={() => filterHandler(item, "bimbingan")}>{item}</div>
+                    </SwiperSlide>
+                )})}
+            </Swiper>
             <Swiper
             modules={[Navigation, Pagination, A11y, FreeMode]}
             className='swiper-custom'
