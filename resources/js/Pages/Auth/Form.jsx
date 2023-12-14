@@ -11,8 +11,9 @@ import rectangle from "/resources/img/vector/rectangle-1.svg";
 import { TECollapse } from "tw-elements-react";
 import icon from "/resources/img/icon/goals-4.svg";
 
-export default function Form({ title }) {
+export default function Form({ title, message }) {
     const [active, setActive] = useState(title);
+    console.log(message)
     const {
         data: loginData,
         setData: setLoginData,

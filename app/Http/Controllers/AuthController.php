@@ -32,7 +32,7 @@ class AuthController extends Controller
         // ]);
         $credential = Validator::make($request->all(), [
             'email' => 'required|email:dns',
-            'password' => 'required',
+            'password' => 'required|min:8',
         ]);
 
         if ($credential->fails()) {
@@ -47,9 +47,7 @@ class AuthController extends Controller
             Log::info("User {username} has been Log in.", ['username' => $user->username]);
             return redirect(RouteServiceProvider::HOME);
         } else {
-            return response()->json([
-                'message' => 'Gagal login, mohon cek kembali email dan password anda!'
-            ]);
+            // return redirect()->back()->with('message', ['login' => $credential->errors()->messages()]);
         }
     }
 
