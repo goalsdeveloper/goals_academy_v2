@@ -75,7 +75,7 @@ return array(
     'Midtrans\\' => array($vendorDir . '/midtrans/midtrans-php/Midtrans'),
     'Masterminds\\' => array($vendorDir . '/masterminds/html5/src'),
     'Livewire\\' => array($vendorDir . '/livewire/livewire/src'),
-    'League\\Uri\\' => array($vendorDir . '/league/uri-interfaces', $vendorDir . '/league/uri'),
+    'League\\Uri\\' => array($vendorDir . '/league/uri', $vendorDir . '/league/uri-interfaces'),
     'League\\OAuth2\\Server\\' => array($vendorDir . '/league/oauth2-server/src'),
     'League\\OAuth1\\Client\\' => array($vendorDir . '/league/oauth1-client/src'),
     'League\\MimeTypeDetection\\' => array($vendorDir . '/league/mime-type-detection/src'),

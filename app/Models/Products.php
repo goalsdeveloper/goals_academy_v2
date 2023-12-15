@@ -36,4 +36,9 @@ class Products extends Model
     {
         return $this->belongsToMany(Category::class);
     }
+
+    public function addOns()
+    {
+        return $this->belongsToMany(AddOn::class);
+    }
 }

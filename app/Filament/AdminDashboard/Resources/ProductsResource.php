@@ -28,7 +28,10 @@ use Filament\Forms\Components\MarkdownEditor;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\AdminDashboard\Resources\ProductsResource\Pages;
 use App\Filament\AdminDashboard\Resources\ProductsResource\RelationManagers;
+use App\Models\AddOn;
+use App\Models\Category;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Grouping\Group as GroupingGroup;
 
 class ProductsResource extends Resource
 {
@@ -103,13 +106,23 @@ class ProductsResource extends Resource
                             ->imageEditor(),
 
                     ]),
-                    Section::make('Category')->schema([
+                ]),
+
+                Group::make()->schema([
+                    Section::make('Category & Add On')->schema([
                         Select::make('category')
                             ->relationship('categories', 'name')
                             ->multiple()
                             ->required()
-                    ])->collapsible()
-                ]),
+                            ->options(Category::all()->pluck('name', 'id')),
+                        Select::make('add_on')
+                            ->relationship('addOns', 'name')
+                            ->multiple()
+                            ->options(AddOn::all()->pluck('name', 'id')),
+                    ])
+                        ->collapsible()
+                        ->columns(2)
+                ])->columnSpanFull(),
 
                 Section::make('Product Features')->schema([
                     Repeater::make('features')
@@ -144,7 +157,7 @@ class ProductsResource extends Resource
                     ->label('Featured')
                     ->sortable()
                     ->boolean(),
-                TextColumn::make('categories.name'),
+                TextColumn::make('addOns.name'),
                 TextColumn::make('price')
                     ->sortable()
             ])
