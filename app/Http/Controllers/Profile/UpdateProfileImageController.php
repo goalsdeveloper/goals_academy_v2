@@ -23,6 +23,10 @@ class UpdateProfileImageController extends Controller
             Storage::disk('public')->delete($oldImage);
         }
 
+        if (!Storage::disk('public')->exists('user_profile_image')) {
+            Storage::disk('public')->makeDirectory('user_profile_image');
+        }
+
         try {
             $image = $request->image;
             $image = str_replace('data:image/jpeg;base64,', '', $image);
@@ -30,11 +34,10 @@ class UpdateProfileImageController extends Controller
             $image = base64_decode($image);
 
             $fileName = 'usrProfile' . $user->id . time() . '.jpeg';
-            $path = storage_path('/app/public/profile_image/' . $fileName);
-
+            $path = storage_path('/app/public/user_profile_image/' . $fileName);
             file_put_contents($path, $image);
             $user->profile->update([
-                'profile_image' => 'profile_image/' . $fileName
+                'profile_image' => 'user_profile_image/' . $fileName
             ]);
             return back();
         } catch (Exception $e) {
