@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\AddOn;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Category;
@@ -237,6 +238,22 @@ class DatabaseSeeder extends Seeder
             ),
             'price' => 49000,
             'product_image' => 'resource/img/webinar/1.png',
+        ]);
+
+        AddOn::create([
+            'name' => '+ Durasi 20 Menit',
+            'slug' => 'durasi-20-menit',
+            'price' => 15000,
+        ]);
+        AddOn::create([
+            'name' => 'Record',
+            'slug' => 'record',
+            'price' => 10000,
+        ]);
+        AddOn::create([
+            'name' => 'Desk Review',
+            'slug' => 'desk-review',
+            'price' => 25000,
         ]);
 
         DB::insert('insert into category_products (category_id, products_id) values (2, 1)');
