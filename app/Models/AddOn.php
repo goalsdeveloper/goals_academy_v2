@@ -15,4 +15,9 @@ class AddOn extends Model
     {
         return $this->belongsToMany(Products::class);
     }
+
+    public function course()
+    {
+        return $this->belongsToMany(Course::class);
+    }
 }
