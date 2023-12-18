@@ -12,9 +12,10 @@ import { useForm } from "@inertiajs/react";
 import { ThemeProvider, createTheme } from "@mui/material";
 import "@/script/momentCustomLocale";
 
-export default function Form({ auth, date, dataProduct }) {
+export default function Form({ auth, date, dataProduct, paymentMethods }) {
+    // console.log(paymentMethods);
     const userId = auth.user.id;
-
+    // console.log(dataProduct);
     // Code to input form data
     const { data, setData, post } = useForm({
         schedule: "",
@@ -25,11 +26,11 @@ export default function Form({ auth, date, dataProduct }) {
         init_price: dataProduct.price,
         promo: "",
         discount: 0,
-        purchase_method: "",
+        category: "",
         admin: 0,
         product_id: dataProduct.id,
         add_on: [],
-        add_on_price: 0
+        add_on_price: 0,
     });
 
     // Code to input temp form data
@@ -42,64 +43,68 @@ export default function Form({ auth, date, dataProduct }) {
         init_price: dataProduct.price,
         promo: "",
         discount: 0,
-        purchase_method: "",
+        category: "",
         admin: 0,
         product_id: dataProduct.id,
         add_on: [],
-        add_on_price: 0
+        add_on_price: 0,
     });
 
     // Initialize product's category
-    const categoriesName = dataProduct.categories.map(item => item.name).join(' ').toLowerCase();
-    const category = categoriesName.includes('online') ? 'online' :
-        categoriesName.includes('offline') ? 'offline' :
-        categoriesName.includes('tuntas') ? 'tuntas' :
-        categoriesName.includes('review') ? 'review' :
-        '';
+    const categoriesName = dataProduct.categories
+        .map((item) => item.name)
+        .join(" ")
+        .toLowerCase();
+    const category = categoriesName.includes("online")
+        ? "online"
+        : categoriesName.includes("offline")
+        ? "offline"
+        : categoriesName.includes("tuntas")
+        ? "tuntas"
+        : categoriesName.includes("review")
+        ? "review"
+        : "";
 
     // Initialize form rules
-    let rules = {}
+    let rules = {};
 
     // Initialize available availableAddOn
-    let availableAddOn = [
-        {id: 1, name: 'Riset Jurnal', price: 11000},
-        {id: 2, name: 'Recording', price: 21000},
-        {id: 3, name: 'Upgrade durasi (20 menit)', price: 15000},
-    ]
+    let availableAddOn = dataProduct.add_ons;
 
-    if (category == 'online') {
+    if (category == "online") {
         rules = {
             schedule: 1,
             note: 0,
             document: 0,
-            add_on: 0
-        }
-    } else if (category == 'offline') {
+            add_on: 0,
+        };
+    } else if (category == "offline") {
         rules = {
             schedule: 1,
             city: 1,
             place: 1,
             note: 0,
             document: 0,
-            add_on: 0
-        }
-    } else if (category == 'tuntas') {
+            add_on: 0,
+        };
+    } else if (category == "tuntas") {
         rules = {
             note: 0,
             document: 0,
-            add_on: 0
-        }
-        availableAddOn.pop()
-    } else if (category == 'review') {
+            add_on: 0,
+        };
+        availableAddOn.pop();
+    } else if (category == "review") {
         rules = {
             note: 1,
             document: 1,
-            add_on: 0
-        }
+            add_on: 0,
+        };
     }
 
     // Code to count totalPrice
-    const totalPrice = data.init_price - data.discount + data.admin + data.add_on_price;
+    const totalPrice =
+        data.init_price - data.discount + data.admin + data.add_on_price;
 
     // Code to initialize unavailable dates
     const unavailableDate = date.map((i) => i.date);
@@ -113,14 +118,15 @@ export default function Form({ auth, date, dataProduct }) {
     };
 
     // Initialize purchase methods
-    const purchaseMethods = [
-        { name: "Gopay", admin: 2, purchase_method: "ewallet" },
-        { name: "QRIS", admin: 0.7, purchase_method: "ewallet" },
-        { name: "BNI", admin: 4000, purchase_method: "bank_transfer" },
-        { name: "Mandiri", admin: 4000, purchase_method: "bank_transfer" },
-        { name: "BRI", admin: 4000, purchase_method: "bank_transfer" },
-        { name: "Permata", admin: 4000, purchase_method: "bank_transfer" },
-    ];
+    const purchaseMethods = paymentMethods;
+    // const purchaseMethods = [
+    //     { name: "Gopay", admin: 2, purchase_method: "ewallet" },
+    //     { name: "QRIS", admin: 0.7, purchase_method: "ewallet" },
+    //     { name: "BNI", admin: 4000, purchase_method: "bank_transfer" },
+    //     { name: "Mandiri", admin: 4000, purchase_method: "bank_transfer" },
+    //     { name: "BRI", admin: 4000, purchase_method: "bank_transfer" },
+    //     { name: "Permata", admin: 4000, purchase_method: "bank_transfer" },
+    // ];
 
     // Submit function
     const submit = (e) => {
@@ -213,7 +219,7 @@ function MainCard({
     availableAddOn,
     cities,
     places,
-    rules
+    rules,
 }) {
     const [showScheduleForm, setShowScheduleForm] = useState(false);
     const [showNoteForm, setShowNoteForm] = useState(false);
@@ -250,9 +256,15 @@ function MainCard({
                 </div>
                 <div className="md:hidden h-[4vw] bg-slate-100"></div>
                 <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
-                    <div className={'schedule' in rules ? '' : 'hidden'}>
+                    <div className={"schedule" in rules ? "" : "hidden"}>
                         <p className="font-medium mb-[2vw] md:mb-[.5vw]">
-                            Jadwal Bimbingan{'schedule' in rules ? (rules.schedule ? '' : ' (opsional)') : ''}:
+                            Jadwal Bimbingan
+                            {"schedule" in rules
+                                ? rules.schedule
+                                    ? ""
+                                    : " (opsional)"
+                                : ""}
+                            :
                         </p>
                         <ExpandedButton
                             className="rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
@@ -261,7 +273,9 @@ function MainCard({
                                     ? "border-secondary outline-secondary text-secondary"
                                     : "outline-light-grey text-light-grey"
                             }`}
-                            iconClassName={`group-hover:text-white ${data.schedule != "" ? "text-grey" : ""}`}
+                            iconClassName={`group-hover:text-white ${
+                                data.schedule != "" ? "text-grey" : ""
+                            }`}
                             onClick={() => setShowScheduleForm(true)}
                         >
                             <i className="fa-regular fa-calendar"></i>
@@ -283,9 +297,15 @@ function MainCard({
                             rules={rules}
                         />
                     </div>
-                    <div className={'note' in rules ? '' : 'hidden'}>
+                    <div className={"note" in rules ? "" : "hidden"}>
                         <p className="font-medium mb-[2vw] md:mb-[.5vw]">
-                            Catatan untuk Tutor{'note' in rules ? (rules.note ? '' : ' (opsional)') : ''}:
+                            Catatan untuk Tutor
+                            {"note" in rules
+                                ? rules.note
+                                    ? ""
+                                    : " (opsional)"
+                                : ""}
+                            :
                         </p>
                         <ExpandedButton
                             className="rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
@@ -294,7 +314,9 @@ function MainCard({
                                     ? "border-secondary outline-secondary text-secondary"
                                     : "outline-light-grey text-light-grey"
                             }`}
-                            iconClassName={`group-hover:text-white ${data.note != "" ? "text-grey" : ""}`}
+                            iconClassName={`group-hover:text-white ${
+                                data.note != "" ? "text-grey" : ""
+                            }`}
                             onClick={() => setShowNoteForm(true)}
                         >
                             <i className="bi bi-pen"></i>&nbsp;&nbsp;
@@ -311,10 +333,20 @@ function MainCard({
                             setTemp={setTemp}
                         />
                     </div>
-                    <div className={`${'document' in rules ? '' : 'hidden'} flex flex-col text-light-grey`}>
+                    <div
+                        className={`${
+                            "document" in rules ? "" : "hidden"
+                        } flex flex-col text-light-grey`}
+                    >
                         <label htmlFor="file" className="font-medium">
                             <p className="mb-[2vw] md:mb-[.5vw] text-dark">
-                                Berkas Pendukung{'document' in rules ? (rules.document ? '' : ' (opsional)') : ''}:
+                                Berkas Pendukung
+                                {"document" in rules
+                                    ? rules.document
+                                        ? ""
+                                        : " (opsional)"
+                                    : ""}
+                                :
                             </p>
                             <div
                                 className={`w-full border-1 outline outline-1 rounded-[1vw] md:rounded-[.4vw] flex items-center cursor-pointer overflow-hidden h-[9vw] md:h-[2.5vw] ${
@@ -362,9 +394,15 @@ function MainCard({
                             PDF, DOCS
                         </p>
                     </div>
-                    <div className={'add_on' in rules ? '' : 'hidden'}>
+                    <div className={"add_on" in rules ? "" : "hidden"}>
                         <p className="font-medium mb-[2vw] md:mb-[.5vw]">
-                            Add-On{'add_on' in rules ? (rules.add_on ? '' : ' (opsional)') : ''}:
+                            Add-On
+                            {"add_on" in rules
+                                ? rules.add_on
+                                    ? ""
+                                    : " (opsional)"
+                                : ""}
+                            :
                         </p>
                         <ExpandedButton
                             className="rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
@@ -373,7 +411,9 @@ function MainCard({
                                     ? "border-secondary outline-secondary text-secondary"
                                     : "outline-light-grey text-light-grey"
                             }`}
-                            iconClassName={`group-hover:text-white ${data.add_on.length ? "text-grey" : ""}`}
+                            iconClassName={`group-hover:text-white ${
+                                data.add_on.length ? "text-grey" : ""
+                            }`}
                             onClick={() => setShowAddOnForm(true)}
                         >
                             <i className="fa-solid fa-plus"></i>&nbsp;&nbsp;
@@ -408,7 +448,7 @@ function SummaryCard({
     promoHandler,
     totalPrice,
     submit,
-    rules
+    rules,
 }) {
     const [showPromoForm, setShowPromoForm] = useState(false);
     const [showPurchaseMethodForm, setShowPurchaseMethodForm] = useState(false);
@@ -553,21 +593,28 @@ function SummaryCard({
                         Add-On
                     </h5>
                     <hr className="border-secondary" />
-                    {data.add_on.sort((x, y) => x.id - y.id).map((item, index) => {
-                        return (
-                            <div key={index}>
-                                <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                                    <tbody>
-                                        <tr>
-                                            <td>{item.name}</td>
-                                            <td className="font-bold text-right">IDR {currency.format(item.price)}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <hr className="border-black" />
-                            </div>
-                        )
-                    })}
+                    {data.add_on
+                        .sort((x, y) => x.id - y.id)
+                        .map((item, index) => {
+                            return (
+                                <div key={index}>
+                                    <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                                        <tbody>
+                                            <tr>
+                                                <td>{item.name}</td>
+                                                <td className="font-bold text-right">
+                                                    IDR{" "}
+                                                    {currency.format(
+                                                        item.price
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <hr className="border-black" />
+                                </div>
+                            );
+                        })}
                 </div>
                 <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
             </div>
@@ -613,7 +660,9 @@ function SummaryCard({
                                     <tr>
                                         <td>Add-On</td>
                                         <td className="font-bold text-right">
-                                            {currency.format(data.add_on_price) > 0
+                                            {currency.format(
+                                                data.add_on_price
+                                            ) > 0
                                                 ? `IDR ${currency.format(
                                                       data.add_on_price
                                                   )}`
@@ -650,7 +699,9 @@ function SummaryCard({
                                         ? "border-secondary outline-secondary text-secondary"
                                         : "outline-light-grey text-light-grey"
                                 }`}
-                                iconClassName={`group-hover:text-white ${data.discount != "" ? "text-grey" : ""}`}
+                                iconClassName={`group-hover:text-white ${
+                                    data.discount != "" ? "text-grey" : ""
+                                }`}
                                 onClick={() => setShowPromoForm(!showPromoForm)}
                             >
                                 {data.discount > 0
@@ -664,7 +715,11 @@ function SummaryCard({
                                         ? "border-secondary outline-secondary text-secondary"
                                         : "outline-light-grey text-light-grey"
                                 }`}
-                                iconClassName={`group-hover:text-white ${data.purchase_method != "" ? "text-grey" : ""}`}
+                                iconClassName={`group-hover:text-white ${
+                                    data.purchase_method != ""
+                                        ? "text-grey"
+                                        : ""
+                                }`}
                                 onClick={() =>
                                     setShowPurchaseMethodForm(
                                         !showPurchaseMethodForm
@@ -717,12 +772,16 @@ function SummaryCard({
                             className="w-6/12 md:w-full mt-[1.25vw]"
                             isActive={
                                 !(
-                                    data['purchase_method'] == "" ||
+                                    data["purchase_method"] == "" ||
                                     Object.keys(
                                         Object.fromEntries(
-                                            Object.entries(rules).filter(([key, value]) => value)
+                                            Object.entries(rules).filter(
+                                                ([key, value]) => value
+                                            )
                                         )
-                                    ).map(i => data[i]).includes("")
+                                    )
+                                        .map((i) => data[i])
+                                        .includes("")
                                 )
                             }
                             onClick={submit}
@@ -883,13 +942,12 @@ function PurchaseMethodForm({
                         </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
-                                if (item.purchase_method == "ewallet") {
+                                if (item.category == "ewallet") {
                                     return (
                                         <ExpandedButton
                                             key={i}
                                             className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
-                                                temp.purchase_method ==
-                                                item.name
+                                                temp.category == item.name
                                                     ? "border-secondary"
                                                     : ""
                                             }`}
@@ -899,9 +957,10 @@ function PurchaseMethodForm({
                                                     ...temp,
                                                     admin:
                                                         (item.admin *
-                                                            data.init_price) /
+                                                            (data.init_price +
+                                                                data.add_on_price)) /
                                                         100,
-                                                    purchase_method: item.name,
+                                                    category: item.name,
                                                 });
                                             }}
                                         >
@@ -925,13 +984,12 @@ function PurchaseMethodForm({
                         </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
-                                if (item.purchase_method == "bank_transfer") {
+                                if (item.category == "bank_transfer") {
                                     return (
                                         <ExpandedButton
                                             key={i}
                                             className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
-                                                temp.purchase_method ==
-                                                item.name
+                                                temp.category == item.name
                                                     ? "border-secondary"
                                                     : ""
                                             }`}
@@ -940,7 +998,7 @@ function PurchaseMethodForm({
                                                 setTemp({
                                                     ...temp,
                                                     admin: item.admin,
-                                                    purchase_method: item.name,
+                                                    category: item.name,
                                                 });
                                             }}
                                         >
@@ -962,13 +1020,13 @@ function PurchaseMethodForm({
                 <div className="flex justify-center md:justify-end mt-[1vw]">
                     <ButtonPill
                         className="w-6/12 md:w-3/12"
-                        isActive={temp.purchase_method != ""}
+                        isActive={temp.category != ""}
                         onClick={(e) => {
-                            if (temp.purchase_method != "") {
+                            if (temp.category != "") {
                                 setData({
                                     ...data,
                                     admin: temp.admin,
-                                    purchase_method: temp.purchase_method,
+                                    category: temp.category,
                                 });
                                 setShow(false);
                             }
@@ -1169,9 +1227,15 @@ function ScheduleForm({
                         </div>
                     </div>
                 </div>
-                <div className={'city' in rules ? '' : 'hidden'}>
+                <div className={"city" in rules ? "" : "hidden"}>
                     <p className="font-medium mb-[3vw] md:mb-[1.25vw]">
-                        Pilih Kota Bimbingan {'city' in rules ? (rules.city ? '' : ' (opsional)') : ''}:
+                        Pilih Kota Bimbingan{" "}
+                        {"city" in rules
+                            ? rules.city
+                                ? ""
+                                : " (opsional)"
+                            : ""}
+                        :
                     </p>
                     <ExpandedButton
                         className="shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw]"
@@ -1225,9 +1289,15 @@ function ScheduleForm({
                         </TECollapseItem>
                     </TECollapse>
                 </div>
-                <div className={'place' in rules ? '' : 'hidden'}>
+                <div className={"place" in rules ? "" : "hidden"}>
                     <p className="font-medium mb-[3vw] md:mb-[1.25vw]">
-                        Pilih Lokasi Bimbingan {'place' in rules ? (rules.place ? '' : ' (opsional)') : ''}:
+                        Pilih Lokasi Bimbingan{" "}
+                        {"place" in rules
+                            ? rules.place
+                                ? ""
+                                : " (opsional)"
+                            : ""}
+                        :
                     </p>
                     <ExpandedButton
                         className={`shadow-centered-spread rounded-sm h-[9vw] md:h-[2.5vw] ${
@@ -1290,13 +1360,13 @@ function ScheduleForm({
                     <ButtonPill
                         className="w-6/12 md:w-3/12"
                         isActive={
-                            'place' in rules
+                            "place" in rules
                                 ? temp.schedule != "" && temp.place != ""
                                 : temp.schedule != ""
                         }
                         onClick={(e) => {
                             if (
-                                'place' in rules
+                                "place" in rules
                                     ? temp.schedule != "" && temp.place != ""
                                     : temp.schedule != ""
                             ) {k
@@ -1472,7 +1542,15 @@ function NoteForm({ show, setShow, data, setData, temp, setTemp }) {
     );
 }
 
-function AddOnForm({ show, setShow, data, setData, temp, setTemp, availableAddOn }) {
+function AddOnForm({
+    show,
+    setShow,
+    data,
+    setData,
+    temp,
+    setTemp,
+    availableAddOn,
+}) {
     return (
         <>
             <div
@@ -1509,30 +1587,88 @@ function AddOnForm({ show, setShow, data, setData, temp, setTemp, availableAddOn
                             <AddOnOption
                                 key={index}
                                 item={item}
-                                checked={temp.add_on.filter(i => i.id == item.id).length}
+                                checked={
+                                    temp.add_on.filter((i) => i.id == item.id)
+                                        .length
+                                }
                                 onClick={() => {
-                                    if (temp.add_on.filter(i => i.id == item.id).length) {
-                                        setTemp('add_on', temp.add_on.filter(i => i.id != item.id))
+                                    if (
+                                        temp.add_on.filter(
+                                            (i) => i.id == item.id
+                                        ).length
+                                    ) {
+                                        setTemp(
+                                            "add_on",
+                                            temp.add_on.filter(
+                                                (i) => i.id != item.id
+                                            )
+                                        );
                                     } else {
-                                        const tempAddOn = temp.add_on.slice()
-                                        tempAddOn.push(item)
-                                        setTemp('add_on', tempAddOn)
+                                        const tempAddOn = temp.add_on.slice();
+                                        tempAddOn.push(item);
+                                        setTemp("add_on", tempAddOn);
                                     }
                                 }}
                             />
-                        )
+                        );
                     })}
                 </div>
                 <div className="flex justify-center md:justify-end mt-[1vw]">
                     <ButtonPill
                         className="w-6/12 md:w-3/12"
-                        isActive={!(data.add_on.length == 0 && temp.add_on.length == 0) && !(data.add_on.every(i => temp.add_on.filter(j => j.id == i.id).length) && temp.add_on.every(i => data.add_on.filter(j => j.id == i.id).length))}
+                        isActive={
+                            !(
+                                data.add_on.length == 0 &&
+                                temp.add_on.length == 0
+                            ) &&
+                            !(
+                                data.add_on.every(
+                                    (i) =>
+                                        temp.add_on.filter((j) => j.id == i.id)
+                                            .length
+                                ) &&
+                                temp.add_on.every(
+                                    (i) =>
+                                        data.add_on.filter((j) => j.id == i.id)
+                                            .length
+                                )
+                            )
+                        }
                         onClick={(e) => {
-                            if (!(data.add_on.length == 0 && temp.add_on.length == 0) && !(data.add_on.every(i => temp.add_on.filter(j => j.id == i.id).length) && temp.add_on.every(i => data.add_on.filter(j => j.id == i.id).length))) {
+                            if (
+                                !(
+                                    data.add_on.length == 0 &&
+                                    temp.add_on.length == 0
+                                ) &&
+                                !(
+                                    data.add_on.every(
+                                        (i) =>
+                                            temp.add_on.filter(
+                                                (j) => j.id == i.id
+                                            ).length
+                                    ) &&
+                                    temp.add_on.every(
+                                        (i) =>
+                                            data.add_on.filter(
+                                                (j) => j.id == i.id
+                                            ).length
+                                    )
+                                )
+                            ) {
                                 if (temp.add_on.length) {
-                                    setData({...data, add_on: temp.add_on, add_on_price: temp.add_on.map(i => i.price).reduce((total, i) => total + i)});
+                                    setData({
+                                        ...data,
+                                        add_on: temp.add_on,
+                                        add_on_price: temp.add_on
+                                            .map((i) => i.price)
+                                            .reduce((total, i) => total + i),
+                                    });
                                 } else {
-                                    setData({...data, add_on: temp.add_on, add_on_price: 0});
+                                    setData({
+                                        ...data,
+                                        add_on: temp.add_on,
+                                        add_on_price: 0,
+                                    });
                                 }
                                 setShow(false);
                             }
@@ -1546,17 +1682,24 @@ function AddOnForm({ show, setShow, data, setData, temp, setTemp, availableAddOn
     );
 }
 
-function AddOnOption ({ item, onClick, checked=false }) {
+function AddOnOption({ item, onClick, checked = false }) {
     const currency = Intl.NumberFormat("id-ID");
     return (
-        <div onClick={onClick} className="flex items-center px-[3vw] md:px-[1vw] shadow-centered md:rounded-[.2vw] h-[9vw] md:h-[3vw] cursor-pointer">
+        <div
+            onClick={onClick}
+            className="flex items-center px-[3vw] md:px-[1vw] shadow-centered md:rounded-[.2vw] h-[9vw] md:h-[3vw] cursor-pointer"
+        >
             <div className="w-[90%] flex items-center justify-between font-medium md:text-[.95vw]">
                 <span>{item.name}</span>
                 <span>IDR {currency.format(item.price)}</span>
             </div>
             <div className="w-[10%] flex items-center justify-end">
-                <i className={`fa-solid fa-square-check text-[6vw] md:text-[2vw] ${checked ? 'text-secondary' : 'text-light-grey'}`}></i>
+                <i
+                    className={`fa-solid fa-square-check text-[6vw] md:text-[2vw] ${
+                        checked ? "text-secondary" : "text-light-grey"
+                    }`}
+                ></i>
             </div>
         </div>
-    )
+    );
 }

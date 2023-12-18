@@ -36,9 +36,16 @@ class PurchaseController extends Controller
         // $dataDibimbing = Category::where('slug', 'like', 'dibimbing%')->first()->products;
         $dataDibimbing = Products::whereHas('categories', function ($query) {
             $query->where('slug', 'LIKE', 'dibimbing%');
-        })->with('categories')->get();
-        $dataEbook = Category::where('slug', 'e-book')->first()->products;
-        $dataWebinar = Category::where('slug', 'webinar')->first()->products;
+        })
+            ->where('is_visible', true)
+            ->with('categories')->get();
+        $dataEbook = Category::where('slug', 'e-book')
+            ->where('is_visible', true)
+            ->with('products')->get();
+        $dataWebinar = Category::where('slug', 'webinar')
+            ->where('is_visible', true)
+            ->with('products')
+            ->get();
 
 
         // dd($dataDibimbing, $dataEbook, $dataWebinar);
@@ -62,7 +69,8 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
+        dd($request);
+        // dd($request->admin);
         $user = User::where('id', Auth::user()->id)->first();
         $validateData = $request->validate([
             'schedule' => 'required|date',
@@ -114,7 +122,7 @@ class PurchaseController extends Controller
         }
 
         // charge midtrans
-        $price = $getProduct->price;
+        $price = $getProduct->price + $request->add_on_price;
         $phoneNumber = $user->profile->phone_number ?? '';
 
         Config::$serverKey = config('midtrans.server_key');
@@ -134,6 +142,10 @@ class PurchaseController extends Controller
                     case "shopeePay":
                         $adminFee = ($paymentMethod->admin_fee / 100) * $price;
                         break;
+                }
+
+                if ($adminFee != $request->admin) {
+                    return response()->json(['message' => 'pembelian tidak valid!', 'admin' => $adminFee, 'req' => $request->admin]);
                 }
 
                 $grossAmount = $price - $discount + $adminFee;
@@ -229,6 +241,11 @@ class PurchaseController extends Controller
                 'note' => $request['note']
             ]);
         }
+
+        foreach ($request->add_on as $addon) {
+            $course->addOns()->attach($addon['id']);
+        }
+
         if ($request->hasFile('document')) {
             $file = $request->file('document');
             $path = $file->store('/public/file_uploads');
@@ -266,10 +283,14 @@ class PurchaseController extends Controller
 
         $paymentMethods = PaymentMethod::all();
 
+        $product = Products::where('slug', $order)
+            ->with('categories', 'addOns')
+            ->first();
+
         return Inertia::render('Purchase/Form', [
             'date' => $counts,
             'paymentMethods' => $paymentMethods,
-            'dataProduct' => Products::where('slug', $order)->with('categories')->first(),
+            'dataProduct' => $product,
         ]);
     }
 

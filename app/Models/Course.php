@@ -63,4 +63,9 @@ class Course extends Model
     {
         return $this->user->email;
     }
+
+    public function addOns()
+    {
+        return $this->belongsToMany(AddOn::class);
+    }
 }
