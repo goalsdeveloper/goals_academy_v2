@@ -13,7 +13,7 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import "@/script/momentCustomLocale";
 
 export default function Form({ auth, date, dataProduct, paymentMethods }) {
-    // console.log(paymentMethods);
+    console.log(paymentMethods);
     const userId = auth.user.id;
     // console.log(dataProduct);
     // Code to input form data
@@ -26,7 +26,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         init_price: dataProduct.price,
         promo: "",
         discount: 0,
-        category: "",
+        purchase_method: "",
         admin: 0,
         product_id: dataProduct.id,
         add_on: [],
@@ -43,7 +43,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         init_price: dataProduct.price,
         promo: "",
         discount: 0,
-        category: "",
+        purchase_method: "",
         admin: 0,
         product_id: dataProduct.id,
         add_on: [],
@@ -118,15 +118,15 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
     };
 
     // Initialize purchase methods
-    const purchaseMethods = paymentMethods;
-    // const purchaseMethods = [
-    //     { name: "Gopay", admin: 2, purchase_method: "ewallet" },
-    //     { name: "QRIS", admin: 0.7, purchase_method: "ewallet" },
-    //     { name: "BNI", admin: 4000, purchase_method: "bank_transfer" },
-    //     { name: "Mandiri", admin: 4000, purchase_method: "bank_transfer" },
-    //     { name: "BRI", admin: 4000, purchase_method: "bank_transfer" },
-    //     { name: "Permata", admin: 4000, purchase_method: "bank_transfer" },
-    // ];
+    // const purchaseMethods = paymentMethods
+    const purchaseMethods = [
+        { name: "Gopay", admin: 2, purchase_method: "ewallet" },
+        { name: "QRIS", admin: 0.7, purchase_method: "ewallet" },
+        { name: "BNI", admin: 4000, purchase_method: "bank_transfer" },
+        { name: "Mandiri", admin: 4000, purchase_method: "bank_transfer" },
+        { name: "BRI", admin: 4000, purchase_method: "bank_transfer" },
+        { name: "Permata", admin: 4000, purchase_method: "bank_transfer" },
+    ];
 
     // Submit function
     const submit = (e) => {
@@ -942,12 +942,13 @@ function PurchaseMethodForm({
                         </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
-                                if (item.category == "ewallet") {
+                                if (item.purchase_method == "ewallet") {
                                     return (
                                         <ExpandedButton
                                             key={i}
                                             className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
-                                                temp.category == item.name
+                                                temp.purchase_method ==
+                                                item.name
                                                     ? "border-secondary"
                                                     : ""
                                             }`}
@@ -960,7 +961,7 @@ function PurchaseMethodForm({
                                                             (data.init_price +
                                                                 data.add_on_price)) /
                                                         100,
-                                                    category: item.name,
+                                                    purchase_method: item.name,
                                                 });
                                             }}
                                         >
@@ -984,12 +985,13 @@ function PurchaseMethodForm({
                         </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
-                                if (item.category == "bank_transfer") {
+                                if (item.purchase_method == "bank_transfer") {
                                     return (
                                         <ExpandedButton
                                             key={i}
                                             className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
-                                                temp.category == item.name
+                                                temp.purchase_method ==
+                                                item.name
                                                     ? "border-secondary"
                                                     : ""
                                             }`}
@@ -998,7 +1000,7 @@ function PurchaseMethodForm({
                                                 setTemp({
                                                     ...temp,
                                                     admin: item.admin,
-                                                    category: item.name,
+                                                    purchase_method: item.name,
                                                 });
                                             }}
                                         >
@@ -1020,13 +1022,13 @@ function PurchaseMethodForm({
                 <div className="flex justify-center md:justify-end mt-[1vw]">
                     <ButtonPill
                         className="w-6/12 md:w-3/12"
-                        isActive={temp.category != ""}
+                        isActive={temp.purchase_method != ""}
                         onClick={(e) => {
-                            if (temp.category != "") {
+                            if (temp.purchase_method != "") {
                                 setData({
                                     ...data,
                                     admin: temp.admin,
-                                    category: temp.category,
+                                    purchase_method: temp.purchase_method,
                                 });
                                 setShow(false);
                             }
