@@ -69,7 +69,8 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
+        dd($request);
+        // dd($request->admin);
         $user = User::where('id', Auth::user()->id)->first();
         $validateData = $request->validate([
             'schedule' => 'required|date',
@@ -141,6 +142,10 @@ class PurchaseController extends Controller
                     case "shopeePay":
                         $adminFee = ($paymentMethod->admin_fee / 100) * $price;
                         break;
+                }
+
+                if ($adminFee != $request->admin) {
+                    return response()->json(['message' => 'pembelian tidak valid!', 'admin' => $adminFee, 'req' => $request->admin]);
                 }
 
                 $grossAmount = $price - $discount + $adminFee;

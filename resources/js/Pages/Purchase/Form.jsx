@@ -12,9 +12,10 @@ import { useForm } from "@inertiajs/react";
 import { ThemeProvider, createTheme } from "@mui/material";
 import "@/script/momentCustomLocale";
 
-export default function Form({ auth, date, dataProduct }) {
+export default function Form({ auth, date, dataProduct, paymentMethods }) {
+    // console.log(paymentMethods);
     const userId = auth.user.id;
-    console.log(dataProduct);
+    // console.log(dataProduct);
     // Code to input form data
     const { data, setData, post } = useForm({
         schedule: "",
@@ -25,7 +26,7 @@ export default function Form({ auth, date, dataProduct }) {
         init_price: dataProduct.price,
         promo: "",
         discount: 0,
-        purchase_method: "",
+        category: "",
         admin: 0,
         product_id: dataProduct.id,
         add_on: [],
@@ -42,7 +43,7 @@ export default function Form({ auth, date, dataProduct }) {
         init_price: dataProduct.price,
         promo: "",
         discount: 0,
-        purchase_method: "",
+        category: "",
         admin: 0,
         product_id: dataProduct.id,
         add_on: [],
@@ -117,14 +118,15 @@ export default function Form({ auth, date, dataProduct }) {
     };
 
     // Initialize purchase methods
-    const purchaseMethods = [
-        { name: "Gopay", admin: 2, purchase_method: "ewallet" },
-        { name: "QRIS", admin: 0.7, purchase_method: "ewallet" },
-        { name: "BNI", admin: 4000, purchase_method: "bank_transfer" },
-        { name: "Mandiri", admin: 4000, purchase_method: "bank_transfer" },
-        { name: "BRI", admin: 4000, purchase_method: "bank_transfer" },
-        { name: "Permata", admin: 4000, purchase_method: "bank_transfer" },
-    ];
+    const purchaseMethods = paymentMethods;
+    // const purchaseMethods = [
+    //     { name: "Gopay", admin: 2, purchase_method: "ewallet" },
+    //     { name: "QRIS", admin: 0.7, purchase_method: "ewallet" },
+    //     { name: "BNI", admin: 4000, purchase_method: "bank_transfer" },
+    //     { name: "Mandiri", admin: 4000, purchase_method: "bank_transfer" },
+    //     { name: "BRI", admin: 4000, purchase_method: "bank_transfer" },
+    //     { name: "Permata", admin: 4000, purchase_method: "bank_transfer" },
+    // ];
 
     // Submit function
     const submit = (e) => {
@@ -940,13 +942,12 @@ function PurchaseMethodForm({
                         </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
-                                if (item.purchase_method == "ewallet") {
+                                if (item.category == "ewallet") {
                                     return (
                                         <ExpandedButton
                                             key={i}
                                             className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
-                                                temp.purchase_method ==
-                                                item.name
+                                                temp.category == item.name
                                                     ? "border-secondary"
                                                     : ""
                                             }`}
@@ -956,9 +957,10 @@ function PurchaseMethodForm({
                                                     ...temp,
                                                     admin:
                                                         (item.admin *
-                                                            data.init_price) /
+                                                            (data.init_price +
+                                                                data.add_on_price)) /
                                                         100,
-                                                    purchase_method: item.name,
+                                                    category: item.name,
                                                 });
                                             }}
                                         >
@@ -982,13 +984,12 @@ function PurchaseMethodForm({
                         </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
-                                if (item.purchase_method == "bank_transfer") {
+                                if (item.category == "bank_transfer") {
                                     return (
                                         <ExpandedButton
                                             key={i}
                                             className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
-                                                temp.purchase_method ==
-                                                item.name
+                                                temp.category == item.name
                                                     ? "border-secondary"
                                                     : ""
                                             }`}
@@ -997,7 +998,7 @@ function PurchaseMethodForm({
                                                 setTemp({
                                                     ...temp,
                                                     admin: item.admin,
-                                                    purchase_method: item.name,
+                                                    category: item.name,
                                                 });
                                             }}
                                         >
@@ -1019,13 +1020,13 @@ function PurchaseMethodForm({
                 <div className="flex justify-center md:justify-end mt-[1vw]">
                     <ButtonPill
                         className="w-6/12 md:w-3/12"
-                        isActive={temp.purchase_method != ""}
+                        isActive={temp.category != ""}
                         onClick={(e) => {
-                            if (temp.purchase_method != "") {
+                            if (temp.category != "") {
                                 setData({
                                     ...data,
                                     admin: temp.admin,
-                                    purchase_method: temp.purchase_method,
+                                    category: temp.category,
                                 });
                                 setShow(false);
                             }
