@@ -1377,7 +1377,6 @@ function ScheduleForm({
                                     schedule: temp.schedule,
                                     city: temp.city,
                                     place: temp.place,
-                                    city: temp.city,
                                 });
                                 setShow(false);
                             }
