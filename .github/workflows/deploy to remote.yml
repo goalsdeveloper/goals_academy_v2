@@ -3,6 +3,9 @@ name: Deploy to remote
 on:
   push:
     branches: [main]
+  pull_request:
+    types: [merged]
+    branches: [main]
 
 jobs:
   zero:
