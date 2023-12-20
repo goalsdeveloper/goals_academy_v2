@@ -1,0 +1,36 @@
+name: Deploy to remote
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  zero:
+    name: try to scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Dastardly Action Step
+        continue-on-error: true # This allows subsequent steps to run even if this step fails
+        uses: PortSwigger/dastardly-github-action@main
+        with:
+          target-url: "https://test.goalsacademy.id"
+  first:
+    name: Pull from github
+    needs: zero
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy goalsacademy - pulling
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ${{ secrets.DIR }}
+            git pull origin main && composer install && composer update && php artisan optimize
+            php artisan config:clear
+            php artisan storage:link
