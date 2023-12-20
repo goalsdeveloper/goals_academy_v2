@@ -29,5 +29,6 @@ jobs:
           script: |
             cd ${{ secrets.DIR }}
             git pull origin master && composer install && composer update && php artisan optimize
+            npm run build
             php artisan config:clear
             php artisan storage:link
