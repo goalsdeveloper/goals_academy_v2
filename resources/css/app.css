@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.before\:icon-primary::before {
+    background-size: 100% 100%;
+    z-index: -1;
+    @apply bg-icon-primary bg-no-repeat before:content-[''] absolute;
+}
+
+.swiper-mobile {
+    @apply overflow-visible md:hidden !important;
+}
+
+.swiper-tablet {
+    @apply overflow-hidden hidden md:flex !important;
+}
+
+.swiper-custom {
+    @apply overflow-visible md:overflow-hidden !important;
+}
+
+.swiper-pagination-bullet {
+    @apply p-1 m-1 bg-white rounded-full ease-in-out duration-300;
+}
+
+.swiper-pagination-bullet-active {
+    @apply px-4;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+@layer base {
+    html {
+        font-size: 16px;
+    }
+    * {
+        @apply scroll-smooth leading-tight;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-poppins font-bold;
+        @apply leading-normal md:leading-tight;
+    }
+    h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
+        font-family: inherit;
+        font-size: inherit;
+        @apply text-inherit;
+    }
+}
