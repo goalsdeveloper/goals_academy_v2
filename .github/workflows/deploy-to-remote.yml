@@ -14,9 +14,29 @@ jobs:
         uses: PortSwigger/dastardly-github-action@main
         with:
           target-url: "https://test.goalsacademy.id"
+
+  build:
+    name: Build project
+    needs: zero
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
   first:
     name: Pull from github
-    needs: zero
+    needs: [zero, build]
     runs-on: ubuntu-latest
     steps:
       - name: deploy goalsacademy - pulling
@@ -29,6 +49,5 @@ jobs:
           script: |
             cd ${{ secrets.DIR }}
             git pull origin master && composer install && composer update && php artisan optimize
-            npm run build
             php artisan config:clear
             php artisan storage:link
