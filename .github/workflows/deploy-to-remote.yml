@@ -25,7 +25,9 @@ jobs:
 
       - name: Install composer dependencies
         run: composer install --prefer-dist --no-dev --no-interaction
-        
+
+      - name: Create deployment artifact 
+        run: tar -czf app.tar.gz --exclude=*.git 
 
 # on:
 #   push:
