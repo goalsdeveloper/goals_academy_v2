@@ -48,6 +48,6 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd ${{ secrets.DIR }}
-            git pull origin master && composer install && composer update && php artisan optimize
+            git pull origin master && npm install && composer install && composer update && php artisan optimize
             php artisan config:clear
             php artisan storage:link

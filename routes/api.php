@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\API\PurchaseController;
-use App\Http\Controllers\Api\RegisterController;
+// use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\API\DateCheckController;
 use App\Http\Controllers\API\CouponCheckController;
 use App\Http\Controllers\API\HandleMidtransCallbackController;
@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::apiResource('register', RegisterController::class)->only('store');
+// Route::apiResource('register', RegisterController::class)->only('store');
 
 Route::apiResource('purchase', PurchaseController::class)->middleware('auth:sanctum');
 
