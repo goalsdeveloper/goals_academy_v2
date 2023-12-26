@@ -11,3 +11,6 @@ Route::get('/register', function () {
 Route::post('login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth')->name('auth.logout');
+Route::get('/lupa_password', function () {
+    return Inertia::render('Auth/LupaPassword');
+});
