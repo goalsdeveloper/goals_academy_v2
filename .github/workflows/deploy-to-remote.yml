@@ -179,7 +179,7 @@ jobs:
             ln -s -f "${STORAGE_PATH}" "${RELEASE_PATH}"
             ln -s -f "${RELEASE_PATH}/public" "${BASE_PATH}"
             ln -s -f "${STORAGE_PATH}/app/public" "${RELEASE_PATH}/public"
-            mv "${RELEASE_PATH}/public" "${RELEASE_PATH}/storage"
+            mv "${RELEASE_PATH}/public/public" "${RELEASE_PATH}/public/storage"
             ln -s -n -f "${RELEASE_PATH}" "${ACTIVE_RELEASE_PATH}"
 
   run-after-hooks:
