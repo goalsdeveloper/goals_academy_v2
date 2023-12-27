@@ -1,0 +1,11 @@
+[
+    {
+        "name": "server-1",
+        "ip": "203.175.8.64",
+        "username": "goaj9748",
+        "port": "2223",
+        "beforeHooks": "",
+        "afterHooks": "",
+        "path": "/home/goaj9748/public_html/goals_academy"
+    }
+]
