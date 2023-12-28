@@ -19,6 +19,7 @@
         "laravel/socialite": "^5.9",
         "laravel/tinker": "^2.8",
         "midtrans/midtrans-php": "^2.5",
+        "nesbot/carbon": "^2.72",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
