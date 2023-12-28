@@ -14,3 +14,6 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth')->na
 Route::get('/lupa_password', function () {
     return Inertia::render('Auth/LupaPassword');
 });
+Route::get('/verifikasi_email', function () {
+    return Inertia::render('Auth/VerifikasiEmail');
+});
