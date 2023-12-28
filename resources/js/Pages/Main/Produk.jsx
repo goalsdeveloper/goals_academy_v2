@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useForm } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import Filter from "../Partials/Produk/Filter";
 import SearchBar from "../Partials/Produk/SearchBar";
@@ -31,7 +32,7 @@ export default function Produk({
     webinarData,
 }) {
     const dataBimbingan = dataDibimbing;
-    console.log(dataDibimbing);
+    const bimbinganCategories = ['Semua', 'Dibimbing Sekali', 'Dibimbing Sekali Online', 'Dibimbing Tuntas']
     const dataEbook = ebookData;
     // const dataEbook = [
     //     {
@@ -86,9 +87,11 @@ export default function Produk({
     ];
 
     const [show, setShow] = useState(Array(3).fill(false));
+    const { data: searchKeyword, setData: setSearchKeyword } = useForm({keyword: ''})
     const [data1, setData1] = useState(dataBimbingan.slice());
     const [data2, setData2] = useState(dataEbook.slice());
     const [data3, setData3] = useState(dataWebinar.slice());
+    const [category1, setCategory1] = useState('Semua');
 
     const status = ((show[0] == show[1]) == show[2]) == false;
 
@@ -99,9 +102,17 @@ export default function Produk({
     };
 
     const searchHandler = (keyword) => {
-        const temp1 = dataBimbingan
-            .slice()
-            .filter((item) => item.title.toLowerCase().includes(keyword));
+        let temp1
+        if (category1 == 'Semua') {
+            temp1 = dataBimbingan
+                .slice()
+                .filter((item) => item.name.toLowerCase().includes(keyword));
+        } else {
+            temp1 = dataBimbingan
+                .slice()
+                .filter((item) => item.name.toLowerCase().includes(keyword))
+                .filter((item) => item.categories.map(category => category.name).includes(category1))
+        }
         const temp2 = dataEbook
             .slice()
             .filter((item) => item.title.toLowerCase().includes(keyword));
@@ -116,15 +127,30 @@ export default function Produk({
         }, 0);
     };
 
+    const filterByCategory = (category, productType) => {
+        if (productType == "bimbingan") {
+            let temp1
+            if (category == 'Semua') {
+                temp1 = dataBimbingan
+                .slice()
+                .filter((item) => item.name.toLowerCase().includes(searchKeyword.keyword));
+            } else {
+                temp1 = dataBimbingan
+                    .slice()
+                    .filter((item) => item.name.toLowerCase().includes(searchKeyword.keyword))
+                    .filter((item) => item.categories.map(category => category.name).includes(category))
+            }
+            setData1(temp1)
+            setCategory1(category)
+        }
+    }
+
     return (
         <MainLayout auth={auth} title="Produk">
-            <SearchBar searchHandler={searchHandler} className="md:hidden" />
+            <SearchBar searchHandler={searchHandler} className="md:hidden" data={searchKeyword} setData={setSearchKeyword} />
             <Filter show={show} showHandler={showHandler} />
-            <SearchBar
-                searchHandler={searchHandler}
-                className="hidden md:block"
-            />
-            <Bimbingan data={data1} active={show[0]} status={status} />
+            <SearchBar searchHandler={searchHandler} className="hidden md:block" data={searchKeyword} setData={setSearchKeyword} />
+            <Bimbingan data={data1} active={show[0]} status={status} categories={bimbinganCategories} category={category1} setCategory={setCategory1} filterHandler={filterByCategory} />
             <Ebook data={data2} active={show[1]} status={status} />
             {/* <Webinar data={data3} active={show[2]} status={status} /> */}
             <Consultation />

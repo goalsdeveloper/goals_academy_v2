@@ -31,6 +31,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         product_id: dataProduct.id,
         add_on: [],
         add_on_price: 0,
+        total_price: 0
     });
 
     // Code to input temp form data
@@ -104,7 +105,11 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
 
     // Code to count totalPrice
     const totalPrice =
-        data.init_price - data.discount + data.admin + data.add_on_price;
+        data.purchase_method != "" ?
+            data.purchase_method.category == "ewallet" ?
+                (parseInt(data.init_price) - parseInt(data.discount) + parseInt(data.add_on_price)) + (parseInt(data.init_price) - parseInt(data.discount) + parseInt(data.add_on_price)) * parseInt(data.purchase_method.admin_fee) / 100 :
+                parseInt(data.init_price) - parseInt(data.discount) + parseInt(data.purchase_method.admin_fee) + parseInt(data.add_on_price)
+        : parseInt(data.init_price)
 
     // Code to initialize unavailable dates
     const unavailableDate = date.map((i) => i.date);
@@ -131,6 +136,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
     // Submit function
     const submit = (e) => {
         e.preventDefault();
+        setData("total_price", totalPrice)
         post("/produk");
     };
 
@@ -672,10 +678,13 @@ function SummaryCard({
                                     <tr>
                                         <td>Biaya Admin</td>
                                         <td className="font-bold text-right">
-                                            {currency.format(data.admin) > 0
-                                                ? `IDR ${currency.format(
-                                                      data.admin
+                                            {data.purchase_method != ""
+                                                ? (data.purchase_method.category == "ewallet" ? `IDR ${currency.format(
+                                                    data.purchase_method.admin_fee * (data.init_price - data.discount + data.add_on_price) / 100
                                                   )}`
+                                                  : `IDR ${currency.format(
+                                                    data.purchase_method.admin_fee
+                                                  )}`)
                                                 : "-"}
                                         </td>
                                     </tr>
@@ -729,11 +738,11 @@ function SummaryCard({
                                 {data.purchase_method != "" ? (
                                     <div className="flex items-center gap-[2vw] md:gap-[.5vw]">
                                         <img
-                                            src={`/img/purchase/${data.purchase_method.toLowerCase()}.png`}
-                                            alt={data.purchase_method}
+                                            src={`/img/purchase/${data.purchase_method.name.toLowerCase()}.png`}
+                                            alt={data.purchase_method.name}
                                             className="w-[4vw] md:w-[1.5vw]"
                                         />
-                                        {data.purchase_method}
+                                        {data.purchase_method.name}
                                     </div>
                                 ) : (
                                     "Pilih Metode Pembayaran"
@@ -947,22 +956,13 @@ function PurchaseMethodForm({
                                         <ExpandedButton
                                             key={i}
                                             className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
-                                                temp.purchase_method ==
-                                                item.name
+                                                temp.purchase_method == item
                                                     ? "border-secondary"
                                                     : ""
                                             }`}
                                             borderClassName="border-0"
                                             onClick={() => {
-                                                setTemp({
-                                                    ...temp,
-                                                    admin:
-                                                        (item.admin *
-                                                            (data.init_price +
-                                                                data.add_on_price)) /
-                                                        100,
-                                                    purchase_method: item.name,
-                                                });
+                                                setTemp('purchase_method', item);
                                             }}
                                         >
                                             <div className="flex items-center gap-[2vw] md:gap-[1vw]">
@@ -990,18 +990,13 @@ function PurchaseMethodForm({
                                         <ExpandedButton
                                             key={i}
                                             className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
-                                                temp.purchase_method ==
-                                                item.name
+                                                temp.purchase_method == item
                                                     ? "border-secondary"
                                                     : ""
                                             }`}
                                             borderClassName="border-0"
                                             onClick={() => {
-                                                setTemp({
-                                                    ...temp,
-                                                    admin: item.admin,
-                                                    purchase_method: item.name,
-                                                });
+                                                setTemp('purchase_method', item);
                                             }}
                                         >
                                             <div className="flex items-center gap-[2vw] md:gap-[1vw]">
@@ -1025,12 +1020,9 @@ function PurchaseMethodForm({
                         isActive={temp.purchase_method != ""}
                         onClick={(e) => {
                             if (temp.purchase_method != "") {
-                                setData({
-                                    ...data,
-                                    admin: temp.admin,
-                                    purchase_method: temp.purchase_method,
-                                });
+                                setData('purchase_method', temp.purchase_method);
                                 setShow(false);
+                                console.log(temp.purchase_method)
                             }
                         }}
                     >
