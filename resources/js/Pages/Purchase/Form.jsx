@@ -27,11 +27,11 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         promo: "",
         discount: 0,
         purchase_method: "",
-        admin: 0,
+        // admin: 0,
         product_id: dataProduct.id,
         add_on: [],
         add_on_price: 0,
-        total_price: 0
+        total_price: 0,
     });
 
     // Code to input temp form data
@@ -45,7 +45,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         promo: "",
         discount: 0,
         purchase_method: "",
-        admin: 0,
+        // admin: 0,
         product_id: dataProduct.id,
         add_on: [],
         add_on_price: 0,
@@ -105,11 +105,20 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
 
     // Code to count totalPrice
     const totalPrice =
-        data.purchase_method != "" ?
-            data.purchase_method.category == "ewallet" ?
-                (parseInt(data.init_price) - parseInt(data.discount) + parseInt(data.add_on_price)) + (parseInt(data.init_price) - parseInt(data.discount) + parseInt(data.add_on_price)) * parseInt(data.purchase_method.admin_fee) / 100 :
-                parseInt(data.init_price) - parseInt(data.discount) + parseInt(data.purchase_method.admin_fee) + parseInt(data.add_on_price)
-        : parseInt(data.init_price)
+        data.purchase_method != ""
+            ? data.purchase_method.category == "ewallet"
+                ? parseInt(data.init_price) -
+                  parseInt(data.discount) +
+                  parseInt(data.add_on_price) +
+                  (parseInt(data.init_price) -
+                      parseInt(data.discount) +
+                      parseInt(data.add_on_price)) *
+                      (parseInt(data.purchase_method.admin_fee) / 100)
+                : parseInt(data.init_price) -
+                  parseInt(data.discount) +
+                  parseInt(data.purchase_method.admin_fee) +
+                  parseInt(data.add_on_price)
+            : parseInt(data.init_price);
 
     // Code to initialize unavailable dates
     const unavailableDate = date.map((i) => i.date);
@@ -123,20 +132,12 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
     };
 
     // Initialize purchase methods
-    // const purchaseMethods = paymentMethods
-    const purchaseMethods = [
-        { name: "Gopay", admin: 2, purchase_method: "ewallet" },
-        { name: "QRIS", admin: 0.7, purchase_method: "ewallet" },
-        { name: "BNI", admin: 4000, purchase_method: "bank_transfer" },
-        { name: "Mandiri", admin: 4000, purchase_method: "bank_transfer" },
-        { name: "BRI", admin: 4000, purchase_method: "bank_transfer" },
-        { name: "Permata", admin: 4000, purchase_method: "bank_transfer" },
-    ];
+    const purchaseMethods = paymentMethods;
 
     // Submit function
     const submit = (e) => {
         e.preventDefault();
-        setData("total_price", totalPrice)
+        setData("total_price", totalPrice);
         post("/produk");
     };
 
@@ -679,12 +680,20 @@ function SummaryCard({
                                         <td>Biaya Admin</td>
                                         <td className="font-bold text-right">
                                             {data.purchase_method != ""
-                                                ? (data.purchase_method.category == "ewallet" ? `IDR ${currency.format(
-                                                    data.purchase_method.admin_fee * (data.init_price - data.discount + data.add_on_price) / 100
-                                                  )}`
-                                                  : `IDR ${currency.format(
-                                                    data.purchase_method.admin_fee
-                                                  )}`)
+                                                ? data.purchase_method
+                                                      .category == "ewallet"
+                                                    ? `IDR ${currency.format(
+                                                          (data.purchase_method
+                                                              .admin_fee *
+                                                              (data.init_price -
+                                                                  data.discount +
+                                                                  data.add_on_price)) /
+                                                              100
+                                                      )}`
+                                                    : `IDR ${currency.format(
+                                                          data.purchase_method
+                                                              .admin_fee
+                                                      )}`
                                                 : "-"}
                                         </td>
                                     </tr>
@@ -951,7 +960,7 @@ function PurchaseMethodForm({
                         </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
-                                if (item.purchase_method == "ewallet") {
+                                if (item.category == "ewallet") {
                                     return (
                                         <ExpandedButton
                                             key={i}
@@ -962,7 +971,10 @@ function PurchaseMethodForm({
                                             }`}
                                             borderClassName="border-0"
                                             onClick={() => {
-                                                setTemp('purchase_method', item);
+                                                setTemp(
+                                                    "purchase_method",
+                                                    item
+                                                );
                                             }}
                                         >
                                             <div className="flex items-center gap-[2vw] md:gap-[1vw]">
@@ -985,7 +997,7 @@ function PurchaseMethodForm({
                         </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
-                                if (item.purchase_method == "bank_transfer") {
+                                if (item.category == "bank_transfer") {
                                     return (
                                         <ExpandedButton
                                             key={i}
@@ -996,7 +1008,10 @@ function PurchaseMethodForm({
                                             }`}
                                             borderClassName="border-0"
                                             onClick={() => {
-                                                setTemp('purchase_method', item);
+                                                setTemp(
+                                                    "purchase_method",
+                                                    item
+                                                );
                                             }}
                                         >
                                             <div className="flex items-center gap-[2vw] md:gap-[1vw]">
@@ -1020,9 +1035,12 @@ function PurchaseMethodForm({
                         isActive={temp.purchase_method != ""}
                         onClick={(e) => {
                             if (temp.purchase_method != "") {
-                                setData('purchase_method', temp.purchase_method);
+                                setData(
+                                    "purchase_method",
+                                    temp.purchase_method
+                                );
                                 setShow(false);
-                                console.log(temp.purchase_method)
+                                console.log(temp.purchase_method);
                             }
                         }}
                     >
