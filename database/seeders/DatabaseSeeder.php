@@ -258,5 +258,9 @@ class DatabaseSeeder extends Seeder
 
         DB::insert('insert into category_products (category_id, products_id) values (2, 1)');
         DB::insert('insert into category_products (category_id, products_id) values (3, 1)');
+
+        DB::insert('insert into add_on_products (add_on_id, products_id) values (1, 1)');
+        DB::insert('insert into add_on_products (add_on_id, products_id) values (2, 1)');
+        DB::insert('insert into add_on_products (add_on_id, products_id) values (3, 1)');
     }
 }

@@ -13,7 +13,7 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import "@/script/momentCustomLocale";
 
 export default function Form({ auth, date, dataProduct, paymentMethods }) {
-    // console.log(paymentMethods);
+    console.log(paymentMethods);
     const userId = auth.user.id;
     // console.log(dataProduct);
     // Code to input form data
@@ -123,15 +123,15 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
     };
 
     // Initialize purchase methods
-    const purchaseMethods = paymentMethods;
-    // const purchaseMethods = [
-    //     { name: "Gopay", admin: 2, purchase_method: "ewallet" },
-    //     { name: "QRIS", admin: 0.7, purchase_method: "ewallet" },
-    //     { name: "BNI", admin: 4000, purchase_method: "bank_transfer" },
-    //     { name: "Mandiri", admin: 4000, purchase_method: "bank_transfer" },
-    //     { name: "BRI", admin: 4000, purchase_method: "bank_transfer" },
-    //     { name: "Permata", admin: 4000, purchase_method: "bank_transfer" },
-    // ];
+    // const purchaseMethods = paymentMethods
+    const purchaseMethods = [
+        { name: "Gopay", admin: 2, purchase_method: "ewallet" },
+        { name: "QRIS", admin: 0.7, purchase_method: "ewallet" },
+        { name: "BNI", admin: 4000, purchase_method: "bank_transfer" },
+        { name: "Mandiri", admin: 4000, purchase_method: "bank_transfer" },
+        { name: "BRI", admin: 4000, purchase_method: "bank_transfer" },
+        { name: "Permata", admin: 4000, purchase_method: "bank_transfer" },
+    ];
 
     // Submit function
     const submit = (e) => {
@@ -951,7 +951,7 @@ function PurchaseMethodForm({
                         </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
-                                if (item.category == "ewallet") {
+                                if (item.purchase_method == "ewallet") {
                                     return (
                                         <ExpandedButton
                                             key={i}
@@ -985,7 +985,7 @@ function PurchaseMethodForm({
                         </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
-                                if (item.category == "bank_transfer") {
+                                if (item.purchase_method == "bank_transfer") {
                                     return (
                                         <ExpandedButton
                                             key={i}

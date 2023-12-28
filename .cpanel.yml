@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/goaj9748/public_html/dev_goalsacademy
+    - /bin/cp -R * $DEPLOYPATH
