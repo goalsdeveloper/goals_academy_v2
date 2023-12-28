@@ -53,37 +53,37 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        // dd($request);
-        $validateData = Validator::make($request->all(), [
-            'username' => 'required|min:8|max:15',
-            'email' => 'required|email:dns|unique:users,email',
-            'password' => 'required',
-            'confirmation_password' => 'required'
-        ]);
+        dd($request);
+        // $validateData = Validator::make($request->all(), [
+        //     'username' => 'required|min:8|max:15',
+        //     'email' => 'required|email:dns|unique:users,email',
+        //     'password' => 'required',
+        //     'confirmation_password' => 'required'
+        // ]);
 
-        if ($validateData->fails()) {
-            return response()->json(['message' => 'gagal']);
-        }
+        // if ($validateData->fails()) {
+        //     return response()->json(['message' => 'gagal']);
+        // }
 
-        if ($request['password'] !== $request['confirmation_password']) {
-            return response()->json([
-                'message' => 'Password tidak cocok'
-            ]);
-        }
+        // if ($request['password'] !== $request['confirmation_password']) {
+        //     return response()->json([
+        //         'message' => 'Password tidak cocok'
+        //     ]);
+        // }
 
-        $request['password'] = Hash::make($request['password']);
+        // $request['password'] = Hash::make($request['password']);
 
-        $user = User::create($validateData->validate());
+        // $user = User::create($validateData->validate());
 
-        $userProfile = UserProfile::create([
-            'user_id' => $user['id'],
-        ]);
+        // $userProfile = UserProfile::create([
+        //     'user_id' => $user['id'],
+        // ]);
 
-        event(new Registered($user));
+        // event(new Registered($user));
 
-        Auth::login($user, true);
+        // Auth::login($user, true);
 
-        return redirect(RouteServiceProvider::HOME);
+        // return redirect(RouteServiceProvider::HOME);
     }
 
     public function logout(Request $request)

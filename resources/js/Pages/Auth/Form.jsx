@@ -1,6 +1,8 @@
 import "/resources/css/main.css";
 import { useState } from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
+import Input from "@/Components/OnBorderLabeledInput";
+import SubmitButton from "@/Components/BorderedSubmitButton";
 import TECollapseItem from "@/Components/TECollapseItem";
 import CornerWaveVector from "@/Components/CornerWaveVector";
 import CornerWaveVector2 from "@/Components/CornerWaveVector2";
@@ -11,7 +13,7 @@ import rectangle from "/resources/img/vector/rectangle-1.svg";
 import { TECollapse } from "tw-elements-react";
 import icon from "/resources/img/icon/goals-4.svg";
 
-export default function Form({ title, message }) {
+export default function Form ({ title, message }) {
     const [active, setActive] = useState(title);
     console.log(message)
     const {
@@ -31,6 +33,7 @@ export default function Form({ title, message }) {
         email: "",
         password: "",
         confirmation_password: "",
+        agreement: false,
     });
 
     const switchForm = (request) => {
@@ -58,21 +61,21 @@ export default function Form({ title, message }) {
     return (
         <div
             id="form"
-            className="relative flex flex-wrap min-h-screen xl:h-screen bg-secondary pb-20 xs:pb-24 xl:p-0 overflow-hidden"
+            className="relative flex flex-wrap min-h-screen xl:h-screen bg-secondary text-[2vw] md:text-[1vw] pb-20 xs:pb-24 xl:p-0 overflow-hidden"
         >
             <Head title={active == "register" ? "Register" : "Login"} />
             <Header title={title} />
             <CornerWaveVector className="xl:hidden" cornerClassName="w-8/12" />
             <div
                 id="form-left"
-                className="w-8/12 relative hidden xl:flex items-end justify-center select-none"
+                className="w-[70%] relative hidden xl:flex items-end justify-center select-none"
             >
                 <CornerWaveVector
                     rightCornerClassName="w-6/12"
                     leftCornerClassName="w-10/12"
                 />
                 <div className="w-full flex flex-col justify-center items-center gap-4 3xl:gap-6 z-10 text-white">
-                    <img className="w-2/12" src={logo} alt="Goals Academy" />
+                    <img className="w-[9vw]" src={logo} alt="Goals Academy" />
                     <div className="text-center mb-[8vh]">
                         <h2 className="text-white">Selamat Datang</h2>
                         <p className="tracking-wider xl:text-16 3xl:text-24">
@@ -88,10 +91,10 @@ export default function Form({ title, message }) {
             </div>
             <div
                 id="form-right"
-                className="container mx-auto xl:w-4/12 h-fit xl:h-screen rounded-lg xl:rounded-none bg-white flex flex-col items-center p-6 xl:p-16 py-20 xl:py-[15vh] relative"
+                className="container mx-auto xl:w-[30%] h-fit xl:h-screen rounded-lg xl:rounded-none bg-white flex flex-col items-center p-6 xl:p-16 py-20 xl:py-[10vh] relative"
             >
                 <div className="grid gap-6 xl:gap-8 w-full">
-                    <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-1 xl:border-2 border-primary font-poppins rounded-md xl:rounded-lg 3xl:rounded-xl">
+                    <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-1 xl:border-2 border-secondary font-poppins rounded-[1vw] md:rounded-[.5vw]">
                         <SwitchButton
                             switchForm={switchForm}
                             target={"login"}
@@ -151,20 +154,27 @@ export default function Form({ title, message }) {
                                 id="confirmation_password"
                                 label="Ulangi Password"
                             />
-                            <SubmitButton>Daftar</SubmitButton>
+                            <div className="flex justify-center gap-[1vw]">
+                                <input type="checkbox" className="w-[2vw]" checked={registerData.agreement} onChange={() => setRegisterData("agreement", !registerData.agreement)} />
+                                <p className="text-[.95vw]">Saya setuju dengan <a target="_blank" href="/syarat_dan_ketentuan" className="text-secondary font-medium">Syarat dan Ketentuan</a> yang berlaku di Goals Academy</p>
+                            </div>
+                            <SubmitButton
+                                className="w-full rounded-[1vw] md:rounded-[.4vw]"
+                                disabled={Object.keys(registerData).map(i => registerData[i]).includes("") || !registerData.agreement || !(registerData.password == registerData.confirmation_password)}
+                            >Daftar</SubmitButton>
                         </form>
                         <p className="text-center">atau</p>
                         <div className="w-full grid gap-4 3xl:gap-6 text-dark">
                             <a
                                 as="button"
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.4vw] p-2 md:p-3 xl:p-2 3xl:p-3"
                                 href="/auth/google"
                             >
                                 Daftar dengan Google
                             </a>
                             <a
                                 as="button"
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.4vw] p-2 md:p-3 xl:p-2 3xl:p-3"
                                 href="/auth/facebook"
                             >
                                 Daftar dengan Facebook
@@ -199,24 +209,27 @@ export default function Form({ title, message }) {
                                     id="login_password"
                                     label="Password"
                                 />
-                                <Link className="absolute -bottom-4 right-0 text-blue-500 text-12 3xl:text-16">
+                                <Link href="/lupa_password" className="absolute -bottom-4 right-0 text-blue-500 text-12 3xl:text-16">
                                     Lupa password?
                                 </Link>
                             </div>
-                            <SubmitButton>Masuk</SubmitButton>
+                            <SubmitButton
+                                className="w-full rounded-[1vw] md:rounded-[.4vw]"
+                                disabled={Object.keys(loginData).map(i => loginData[i]).includes("")}
+                            >Masuk</SubmitButton>
                         </form>
                         <p className="text-center">atau</p>
                         <div className="w-full grid gap-4 3xl:gap-6 text-dark">
                             <a
                                 as="button"
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.4vw] p-2 md:p-3 xl:p-2 3xl:p-3"
                                 href="/auth/google"
                             >
                                 Masuk dengan Google
                             </a>
                             <a
                                 as="button"
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-primary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2 3xl:p-3"
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.4vw] p-2 md:p-3 xl:p-2 3xl:p-3"
                                 href="/auth/facebook"
                             >
                                 Masuk dengan Facebook
@@ -224,22 +237,22 @@ export default function Form({ title, message }) {
                         </div>
                     </div>
                     <div className="absolute w-full h-full top-0 left-0 z-0 select-none">
-                        <div className="absolute w-12 xl:w-16 h-4 xl:h-5 3xl:w-24 3xl:h-8 bg-secondary rounded-sm 3xl:rounded-lg top-6 left-6"></div>
-                        <div className="absolute w-12 xl:w-16 h-4 xl:h-5 3xl:w-24 3xl:h-8 bg-secondary rounded-sm 3xl:rounded-lg top-6 right-3"></div>
-                        <div className="absolute w-12 xl:w-16 h-4 xl:h-5 3xl:w-24 3xl:h-8 bg-secondary rounded-sm 3xl:rounded-lg bottom-6 left-6"></div>
-                        <div className="absolute w-12 xl:w-16 h-4 xl:h-5 3xl:w-24 3xl:h-8 bg-secondary rounded-sm 3xl:rounded-lg bottom-4 right-5"></div>
+                        <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] top-6 left-6"></div>
+                        <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] top-6 right-3"></div>
+                        <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] bottom-6 left-6"></div>
+                        <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] bottom-4 right-5"></div>
                         <img
-                            className="absolute w-12 xl:w-16 3xl:w-24 top-11 right-12 3xl:top-14"
+                            className="absolute w-12 xl:w-[3.6vw] top-11 right-12 3xl:top-14"
                             src={rectangle}
                             alt="vector"
                         />
                         <img
-                            className="absolute w-12 xl:w-16 3xl:w-24 bottom-11 left-12 3xl:bottom-14"
+                            className="absolute w-12 xl:w-[3.6vw] bottom-11 left-12 3xl:bottom-14"
                             src={rectangle}
                             alt="vector"
                         />
                         <img
-                            className="absolute w-12 xl:w-16 3xl:w-24 bottom-12 right-8 3xl:bottom-20"
+                            className="absolute w-12 xl:w-[3.6vw] bottom-12 right-8 3xl:bottom-20"
                             src={rectangle}
                             alt="vector"
                         />
@@ -256,43 +269,11 @@ function SwitchButton({ switchForm, target, active }) {
             onClick={() => switchForm(target)}
             className={`p-1.5 md:p-2 xl:p-2 3xl:p-3 font-medium ${
                 active == target
-                    ? "bg-primary text-white"
-                    : "bg-white text-primary"
+                    ? "bg-secondary text-white"
+                    : "bg-white text-secondary"
             }`}
         >
             {target == "login" ? "Masuk" : "Daftar"}
-        </button>
-    );
-}
-
-function Input({ type, id, label, value, onChange }) {
-    return (
-        <div className="relative flex">
-            <input
-                value={value}
-                onChange={onChange}
-                id={id}
-                type={type}
-                className="w-full border-1 xl:border-2 border-primary placeholder-shown:border-light-grey font-poppins rounded-md xl:rounded-lg 3xl:rounded-xl pt-2 pb-1 md:pt-3 md:pb-2 3xl:pt-5 3xl:pb-3 px-3 md:px-4 xl:px-5 3xl:px-6 focus:outline-none focus:border-primary peer"
-                placeholder=" "
-            />
-            <label
-                htmlFor={id}
-                className="absolute px-2 3xl:px-4 bg-white text-primary peer-focus:text-primary peer-placeholder-shown:text-light-grey ms-4 -mt-2"
-            >
-                {label}
-            </label>
-        </div>
-    );
-}
-
-function SubmitButton({ children }) {
-    return (
-        <button
-            type="submit"
-            className="w-4/12 mx-auto border-1 xl:border-2 border-primary text-primary hover:text-white hover:bg-primary font-poppins font-medium rounded-md xl:rounded-lg 3xl:rounded-xl p-2 md:p-3 xl:p-2"
-        >
-            {children}
         </button>
     );
 }
@@ -353,7 +334,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                     <div className="grid gap-8">
                         <Link
                             href="/produk"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${
+                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-secondary p-4 ${
                                 title == "Produk" ? "font" : ""
                             }`}
                         >
@@ -363,7 +344,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                         </Link>
                         <Link
                             href="/artikel"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${
+                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-secondary p-4 ${
                                 title == "Artikel" ? "font" : ""
                             }`}
                         >
@@ -373,7 +354,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                         </Link>
                         <Link
                             href="/diskusi"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${
+                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-secondary p-4 ${
                                 title == "Diskusi" ? "font" : ""
                             }`}
                         >
@@ -383,7 +364,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                         </Link>
                         <Link
                             href="/karir"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-primary p-4 ${
+                            className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-secondary p-4 ${
                                 title == "Karir" ? "font" : ""
                             }`}
                         >
@@ -395,7 +376,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                             className={`w-full relative font-poppins flex flex-col justify-center`}
                         >
                             <span
-                                className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-4 w-full ${
+                                className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-secondary p-4 w-full ${
                                     title == "Profil Perusahaan" ||
                                     title == "Profil Tutor"
                                         ? "font"

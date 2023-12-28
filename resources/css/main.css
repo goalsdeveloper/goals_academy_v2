@@ -33,7 +33,3 @@ h6 {
 .swiper-program .swiper-slide-active {
     @apply scale-110 !important;
 }
-
-#form-right * {
-    @apply text-12 xs:text-12 sm:text-12 md:text-16 xl:text-14 3xl:text-20;
-}

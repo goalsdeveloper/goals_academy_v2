@@ -43,6 +43,10 @@ Route::get('/profil_tutor', function () {
     return Inertia::render('Main/ProfilTutor');
 });
 
+Route::get('/syarat_dan_ketentuan', function () {
+    return Inertia::render('Main/SyaratDanKetentuan');
+});
+
 Route::resource('/produk', PurchaseController::class);
 
 Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status');
