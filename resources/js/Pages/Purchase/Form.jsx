@@ -107,9 +107,9 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
     const totalPrice =
         data.purchase_method != "" ?
             data.purchase_method.category == "ewallet" ?
-                (data.init_price - data.discount + data.add_on_price) + (data.init_price - data.discount + data.add_on_price) * data.purchase_method.admin_fee / 100 :
-                data.init_price - data.discount + data.purchase_method.admin_fee + data.add_on_price
-        : data.init_price
+                (parseInt(data.init_price) - parseInt(data.discount) + parseInt(data.add_on_price)) + (parseInt(data.init_price) - parseInt(data.discount) + parseInt(data.add_on_price)) * parseInt(data.purchase_method.admin_fee) / 100 :
+                parseInt(data.init_price) - parseInt(data.discount) + parseInt(data.purchase_method.admin_fee) + parseInt(data.add_on_price)
+        : parseInt(data.init_price)
 
     // Code to initialize unavailable dates
     const unavailableDate = date.map((i) => i.date);
