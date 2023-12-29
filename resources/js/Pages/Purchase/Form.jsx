@@ -26,11 +26,11 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         promo: "",
         discount: 0,
         purchase_method: "",
-        admin: 0,
+        // admin: 0,
         product_id: dataProduct.id,
         add_on: [],
         add_on_price: 0,
-        total_price: 0
+        total_price: 0,
     });
 
     // Code to input temp form data
@@ -44,7 +44,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         promo: "",
         discount: 0,
         purchase_method: "",
-        admin: 0,
+        // admin: 0,
         product_id: dataProduct.id,
         add_on: [],
         add_on_price: 0,
@@ -661,12 +661,20 @@ function SummaryCard({
                                         <td>Biaya Admin</td>
                                         <td className="font-bold text-right">
                                             {data.purchase_method != ""
-                                                ? (data.purchase_method.category == "ewallet" ? `IDR ${currency.format(
-                                                    data.purchase_method.admin_fee * (data.init_price - data.discount + data.add_on_price) / 100
-                                                  )}`
-                                                  : `IDR ${currency.format(
-                                                    data.purchase_method.admin_fee
-                                                  )}`)
+                                                ? data.purchase_method
+                                                      .category == "ewallet"
+                                                    ? `IDR ${currency.format(
+                                                          (data.purchase_method
+                                                              .admin_fee *
+                                                              (data.init_price -
+                                                                  data.discount +
+                                                                  data.add_on_price)) /
+                                                              100
+                                                      )}`
+                                                    : `IDR ${currency.format(
+                                                          data.purchase_method
+                                                              .admin_fee
+                                                      )}`
                                                 : "-"}
                                         </td>
                                     </tr>
