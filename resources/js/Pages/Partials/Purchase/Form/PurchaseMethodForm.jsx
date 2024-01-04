@@ -114,9 +114,20 @@ export default function PurchaseMethodForm({
                         isActive={temp.purchase_method != ""}
                         onClick={(e) => {
                             if (temp.purchase_method != "") {
-                                setData('purchase_method', temp.purchase_method);
+                                let adminFee = 0
+                                if (temp.purchase_method.is_price) {
+                                    adminFee = temp.purchase_method.admin_fee
+                                } else {
+                                    adminFee = Math.ceil((data.init_price - data.discount + data.add_on_price) * temp.purchase_method.admin_fee / 100)
+                                }
+                                const totalPrice = data.init_price - data.discount + data.add_on_price + adminFee
+                                setData({
+                                    ...data,
+                                    purchase_method: temp.purchase_method,
+                                    admin: adminFee,
+                                    total_price: totalPrice
+                                });
                                 setShow(false);
-                                console.log(temp.purchase_method)
                             }
                         }}
                     >
