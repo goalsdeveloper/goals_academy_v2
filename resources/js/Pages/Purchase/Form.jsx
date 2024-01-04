@@ -138,19 +138,19 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
                 if ("data" in response) {
                     let promoDiscount = 0
                     if (response.data.is_price) {
-                        promoDiscount = parseInt(response.data.value)
+                        promoDiscount = parseFloat(response.data.value)
                     } else {
-                        promoDiscount = (parseInt(data.init_price) * parseInt(response.data.value)) / 100
+                        promoDiscount = (parseFloat(data.init_price) * parseFloat(response.data.value)) / 100
                     }
                     let adminFee = 0
-                    if (temp.purchase_method != "") {
+                    if (data.purchase_method != "") {
                         if (data.purchase_method.is_price) {
-                            adminFee = parseInt(data.purchase_method.admin_fee)
+                            adminFee = parseFloat(data.purchase_method.admin_fee)
                         } else {
-                            adminFee = Math.ceil((parseInt(data.init_price) - parseInt(promoDiscount) + parseInt(data.add_on_price)) * parseInt(data.purchase_method.admin_fee) / 100)
+                            adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(promoDiscount) + parseFloat(data.add_on_price)) * parseFloat(data.purchase_method.admin_fee) / 100)
                         }
                     }
-                    const totalPrice = parseInt(data.init_price) - parseInt(promoDiscount) + parseInt(data.add_on_price) + adminFee
+                    const totalPrice = parseFloat(data.init_price) - parseFloat(promoDiscount) + parseFloat(data.add_on_price) + adminFee
                     setData({
                         ...data,
                         promo: temp.promo,
@@ -656,10 +656,10 @@ function SummaryCard({
                                         <td>Add-On</td>
                                         <td className="font-bold text-right">
                                             {currency.format(
-                                                parseInt(data.add_on_price)
+                                                parseFloat(data.add_on_price)
                                             ) > 0
                                                 ? `IDR ${currency.format(
-                                                      parseInt(data.add_on_price)
+                                                      parseFloat(data.add_on_price)
                                                   )}`
                                                 : "-"}
                                         </td>

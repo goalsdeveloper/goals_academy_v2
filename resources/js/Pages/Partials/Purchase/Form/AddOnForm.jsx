@@ -116,20 +116,20 @@ export default function AddOnForm({
                                 let addOnPrice = 0
                                 if (temp.add_on.length) {
                                     addOnPrice = temp.add_on
-                                        .map((i) => parseInt(i.price))
-                                        .reduce((total, i) => parseInt(total) + parseInt(i))
+                                        .map((i) => parseFloat(i.price))
+                                        .reduce((total, i) => parseFloat(total) + parseFloat(i))
                                 } else {
                                     addOnPrice = 0
                                 }
                                 let adminFee = 0
-                                if (temp.purchase_method != "") {
+                                if (data.purchase_method != "") {
                                     if (data.purchase_method.is_price) {
-                                        adminFee = parseInt(data.purchase_method.admin_fee)
+                                        adminFee = parseFloat(data.purchase_method.admin_fee)
                                     } else {
-                                        adminFee = Math.ceil((parseInt(data.init_price) - parseInt(data.discount) + addOnPrice) * parseInt(data.purchase_method.admin_fee) / 100)
+                                        adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(data.discount) + addOnPrice) * parseFloat(data.purchase_method.admin_fee) / 100)
                                     }
                                 }
-                                const totalPrice = parseInt(data.init_price) - parseInt(data.discount) + addOnPrice + adminFee
+                                const totalPrice = parseFloat(data.init_price) - parseFloat(data.discount) + addOnPrice + adminFee
                                 setData({
                                     ...data,
                                     add_on: temp.add_on,
