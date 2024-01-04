@@ -26,11 +26,11 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         promo: "",
         discount: 0,
         purchase_method: "",
-        // admin: 0,
+        admin: 0,
         product_id: dataProduct.id,
         add_on: [],
         add_on_price: 0,
-        total_price: 0,
+        total_price: dataProduct.price,
     });
 
     // Code to input temp form data
@@ -44,7 +44,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         promo: "",
         discount: 0,
         purchase_method: "",
-        // admin: 0,
+        admin: 0,
         product_id: dataProduct.id,
         add_on: [],
         add_on_price: 0,
@@ -137,20 +137,28 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
             .then((response) => {
                 processCallback(false);
                 if ("data" in response) {
+                    let promoDiscount = 0
                     if (response.data.is_price) {
-                        setData({
-                            ...data,
-                            promo: temp.promo,
-                            discount: response.data.value,
-                        });
+                        promoDiscount = response.data.value
                     } else {
-                        setData({
-                            ...data,
-                            promo: temp.promo,
-                            discount:
-                                (data.init_price * response.data.value) / 100,
-                        });
+                        promoDiscount = (data.init_price * response.data.value) / 100
                     }
+                    let adminFee = 0
+                    if (temp.purchase_method != "") {
+                        if (data.purchase_method.is_price) {
+                            adminFee = data.purchase_method.admin_fee
+                        } else {
+                            adminFee = Math.ceil((data.init_price - promoDiscount + data.add_on_price) * data.purchase_method.admin_fee / 100)
+                        }
+                    }
+                    const totalPrice = data.init_price - promoDiscount + data.add_on_price + adminFee
+                    setData({
+                        ...data,
+                        promo: temp.promo,
+                        discount: promoDiscount,
+                        admin: adminFee,
+                        total_price: totalPrice
+                    });
                     alert(response.message);
                     successCallback();
                 } else {
@@ -660,22 +668,7 @@ function SummaryCard({
                                     <tr>
                                         <td>Biaya Admin</td>
                                         <td className="font-bold text-right">
-                                            {data.purchase_method != ""
-                                                ? data.purchase_method
-                                                      .category == "ewallet"
-                                                    ? `IDR ${currency.format(
-                                                          (data.purchase_method
-                                                              .admin_fee *
-                                                              (data.init_price -
-                                                                  data.discount +
-                                                                  data.add_on_price)) /
-                                                              100
-                                                      )}`
-                                                    : `IDR ${currency.format(
-                                                          data.purchase_method
-                                                              .admin_fee
-                                                      )}`
-                                                : "-"}
+                                            {data.admin != 0 ? data.admin : "-"}
                                         </td>
                                     </tr>
                                 </tbody>
