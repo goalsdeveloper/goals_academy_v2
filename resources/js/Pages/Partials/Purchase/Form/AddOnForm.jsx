@@ -124,12 +124,12 @@ export default function AddOnForm({
                                 let adminFee = 0
                                 if (temp.purchase_method != "") {
                                     if (data.purchase_method.is_price) {
-                                        adminFee = data.purchase_method.admin_fee
+                                        adminFee = parseInt(data.purchase_method.admin_fee)
                                     } else {
-                                        adminFee = Math.ceil((data.init_price - data.discount + addOnPrice) * data.purchase_method.admin_fee / 100)
+                                        adminFee = Math.ceil((parseInt(data.init_price) - parseInt(data.discount) + addOnPrice) * parseInt(data.purchase_method.admin_fee) / 100)
                                     }
                                 }
-                                const totalPrice = data.init_price - data.discount + addOnPrice + adminFee
+                                const totalPrice = parseInt(data.init_price) - parseInt(data.discount) + addOnPrice + adminFee
                                 setData({
                                     ...data,
                                     add_on: temp.add_on,

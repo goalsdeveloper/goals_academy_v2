@@ -12,7 +12,6 @@ import PromoForm from "../Partials/Purchase/Form/PromoForm";
 import PurchaseMethodForm from "../Partials/Purchase/Form/PurchaseMethodForm";
 
 export default function Form({ auth, date, dataProduct, paymentMethods }) {
-    console.log(paymentMethods);
     const userId = auth.user.id;
     // console.log(dataProduct);
     // Code to input form data
@@ -139,19 +138,19 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
                 if ("data" in response) {
                     let promoDiscount = 0
                     if (response.data.is_price) {
-                        promoDiscount = response.data.value
+                        promoDiscount = parseInt(response.data.value)
                     } else {
-                        promoDiscount = (data.init_price * response.data.value) / 100
+                        promoDiscount = (parseInt(data.init_price) * parseInt(response.data.value)) / 100
                     }
                     let adminFee = 0
                     if (temp.purchase_method != "") {
                         if (data.purchase_method.is_price) {
-                            adminFee = data.purchase_method.admin_fee
+                            adminFee = parseInt(data.purchase_method.admin_fee)
                         } else {
-                            adminFee = Math.ceil((data.init_price - promoDiscount + data.add_on_price) * data.purchase_method.admin_fee / 100)
+                            adminFee = Math.ceil((parseInt(data.init_price) - parseInt(promoDiscount) + parseInt(data.add_on_price)) * parseInt(data.purchase_method.admin_fee) / 100)
                         }
                     }
-                    const totalPrice = data.init_price - promoDiscount + data.add_on_price + adminFee
+                    const totalPrice = parseInt(data.init_price) - parseInt(promoDiscount) + parseInt(data.add_on_price) + adminFee
                     setData({
                         ...data,
                         promo: temp.promo,
@@ -657,10 +656,10 @@ function SummaryCard({
                                         <td>Add-On</td>
                                         <td className="font-bold text-right">
                                             {currency.format(
-                                                data.add_on_price
+                                                parseInt(data.add_on_price)
                                             ) > 0
                                                 ? `IDR ${currency.format(
-                                                      data.add_on_price
+                                                      parseInt(data.add_on_price)
                                                   )}`
                                                 : "-"}
                                         </td>
