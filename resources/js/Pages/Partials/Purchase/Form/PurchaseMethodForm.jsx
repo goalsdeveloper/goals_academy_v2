@@ -115,7 +115,7 @@ export default function PurchaseMethodForm({
                         onClick={(e) => {
                             if (temp.purchase_method != "") {
                                 let adminFee = 0
-                                if (temp.purchase_method.is_price) {
+                                if (parseInt(temp.purchase_method.is_price)) {
                                     adminFee = parseFloat(temp.purchase_method.admin_fee)
                                 } else {
                                     adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(data.discount) + parseFloat(data.add_on_price)) * parseFloat(temp.purchase_method.admin_fee) / 100)

@@ -137,14 +137,14 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
                 processCallback(false);
                 if ("data" in response) {
                     let promoDiscount = 0
-                    if (response.data.is_price) {
+                    if (parseInt(response.data.is_price)) {
                         promoDiscount = parseFloat(response.data.value)
                     } else {
                         promoDiscount = (parseFloat(data.init_price) * parseFloat(response.data.value)) / 100
                     }
                     let adminFee = 0
                     if (data.purchase_method != "") {
-                        if (data.purchase_method.is_price) {
+                        if (parseInt(data.purchase_method.is_price)) {
                             adminFee = parseFloat(data.purchase_method.admin_fee)
                         } else {
                             adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(promoDiscount) + parseFloat(data.add_on_price)) * parseFloat(data.purchase_method.admin_fee) / 100)

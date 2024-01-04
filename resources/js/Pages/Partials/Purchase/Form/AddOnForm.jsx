@@ -123,7 +123,7 @@ export default function AddOnForm({
                                 }
                                 let adminFee = 0
                                 if (data.purchase_method != "") {
-                                    if (data.purchase_method.is_price) {
+                                    if (parseInt(data.purchase_method.is_price)) {
                                         adminFee = parseFloat(data.purchase_method.admin_fee)
                                     } else {
                                         adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(data.discount) + addOnPrice) * parseFloat(data.purchase_method.admin_fee) / 100)
