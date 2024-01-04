@@ -116,11 +116,11 @@ export default function PurchaseMethodForm({
                             if (temp.purchase_method != "") {
                                 let adminFee = 0
                                 if (temp.purchase_method.is_price) {
-                                    adminFee = parseInt(temp.purchase_method.admin_fee)
+                                    adminFee = parseFloat(temp.purchase_method.admin_fee)
                                 } else {
-                                    adminFee = Math.ceil((parseInt(data.init_price) - parseInt(data.discount) + parseInt(data.add_on_price)) * parseInt(temp.purchase_method.admin_fee) / 100)
+                                    adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(data.discount) + parseFloat(data.add_on_price)) * parseFloat(temp.purchase_method.admin_fee) / 100)
                                 }
-                                const totalPrice = parseInt(data.init_price) - parseInt(data.discount) + parseInt(data.add_on_price) + adminFee
+                                const totalPrice = parseFloat(data.init_price) - parseFloat(data.discount) + parseFloat(data.add_on_price) + adminFee
                                 setData({
                                     ...data,
                                     purchase_method: temp.purchase_method,
