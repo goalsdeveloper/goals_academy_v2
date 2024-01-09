@@ -106,16 +106,16 @@ export default function Produk({
         if (category1 == 'Semua') {
             temp1 = dataBimbingan
                 .slice()
-                .filter((item) => item.name.toLowerCase().includes(keyword));
+                .filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()));
         } else {
             temp1 = dataBimbingan
                 .slice()
-                .filter((item) => item.name.toLowerCase().includes(keyword))
+                .filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()))
                 .filter((item) => item.categories.map(category => category.name).includes(category1))
         }
         const temp2 = dataEbook
             .slice()
-            .filter((item) => item.title.toLowerCase().includes(keyword));
+            .filter((item) => item.name.toLowerCase().includes(keyword));
         const temp3 = dataWebinar
             .slice()
             .filter((item) => item.title.toLowerCase().includes(keyword));

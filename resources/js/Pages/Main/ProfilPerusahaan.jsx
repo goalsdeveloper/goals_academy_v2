@@ -36,14 +36,6 @@ export default function ProfilPerusahaan({ auth }) {
             linkedin: "dewa-oka-prabawa-b37a80213",
             instagram: "okaprabawa",
         },
-        // {
-        //     name: 'Yordhan Ghalis Dewangga',
-        //     title: 'Chief Executive Officer',
-        //     image: tim3,
-        //     description: 'Mas Yordhan adalah seorang pria yang tujuan hidupnya untuk menjadi kaya raya. Dengan membangun Goals Academy, dia mengawali langkahnya dan bergelut dengan dunia pendidikan yang penduh dengan tantangan langsung dari masyarakat.',
-        //     linkedin: 'yordhan-ghalis-dewangga-s-h-4b6144129',
-        //     instagram: 'yordhanmahasa89',
-        // },
     ];
 
     return (

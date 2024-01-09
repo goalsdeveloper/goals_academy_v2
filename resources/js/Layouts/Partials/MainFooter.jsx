@@ -50,16 +50,10 @@ export default function MainFooter() {
                             Produk
                         </h5>
                         <div className="grid gap-2">
-                            <a href="https://lynk.id/goalsacademy/aW2pNBO" target="_blank">
-                                Dibimbing Sekali
-                            </a>
-                            <a href="https://lynk.id/goalsacademy/7q7r96V" target="_blank">
-                                Dibimbing Tuntas
-                            </a>
-                            <a href="https://lynk.id/goalsacademy/DqqGx5x" target="_blank">
-                                Dibimbing Olah Data
-                            </a>
-                            <a href="" target="_blank">E-book</a>
+                            <a href="/produk" target="_blank">Bimbingan Skripsi</a>
+                            <a href="/produk" target="_blank">Webinar Skripsi</a>
+                            <a href="/produk" target="_blank">E-book Skripsi</a>
+                            <a href="" target="">Video Pembelajaran</a>
                         </div>
                     </div>
                     <div>
