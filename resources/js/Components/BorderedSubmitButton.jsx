@@ -3,7 +3,7 @@ export default function SubmitButton({ className, disabled, activeClassName="bor
         <button
             type="submit"
             disabled={disabled}
-            className={`border-1 xl:border-2 font-poppins font-medium p-2 md:p-[.75vw] xl:p-[.75vw] ${disabled ? "border-light-grey text-white bg-light-grey" : activeClassName} ${className}`}
+            className={`border-1 xl:border-2 font-poppins font-medium p-[2vw] md:p-[1.5vw] xl:p-[.75vw] ${disabled ? "border-light-grey text-white bg-light-grey" : activeClassName} ${className}`}
         >
             {children}
         </button>

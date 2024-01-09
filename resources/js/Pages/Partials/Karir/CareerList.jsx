@@ -16,23 +16,27 @@ export default function CareerList ({ data }) {
                         <ButtonSwiper name="career-next" direction="right" />
                     </div>
                 </div>
-                <Swiper
-                modules={[Navigation, Pagination, A11y, FreeMode]}
-                className='swiper-custom'
-                wrapperClass="swiper-wrapper -ms-2"
-                slidesPerView={"auto"}
-                grabCursor={true}
-                freeMode={true}
-                navigation={{ nextEl: ".career-next", prevEl: ".career-prev" }}
-                >
-                    {data.map(({title, image, requirements, link}, index) => {
-                        return (
-                            <SwiperSlide key={index} style={{ width: "fit-content" }} className="p-4 md:p-2 lg:p-3 xl:p-4">
-                                <CareerCard title={title} image={image} requirements={requirements} link={link} />
-                            </SwiperSlide>
-                        )
-                    })}
-                </Swiper>
+                {data.length ? (
+                    <Swiper
+                    modules={[Navigation, Pagination, A11y, FreeMode]}
+                    className='swiper-custom'
+                    wrapperClass="swiper-wrapper -ms-2"
+                    slidesPerView={"auto"}
+                    grabCursor={true}
+                    freeMode={true}
+                    navigation={{ nextEl: ".career-next", prevEl: ".career-prev" }}
+                    >
+                        {data.map(({title, image, requirements, link}, index) => {
+                            return (
+                                <SwiperSlide key={index} style={{ width: "fit-content" }} className="p-4 md:p-2 lg:p-3 xl:p-4">
+                                    <CareerCard title={title} image={image} requirements={requirements} link={link} />
+                                </SwiperSlide>
+                            )
+                        })}
+                    </Swiper>
+                ) : (
+                    <div className="flex justify-center items-center h-[4vw]">Yahh.. masih belum ada lowongan untukmu...</div>
+                )}
             </div>
         </section>
     )

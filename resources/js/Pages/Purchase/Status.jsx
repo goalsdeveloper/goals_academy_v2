@@ -17,13 +17,76 @@ export default function Status({
     bankName,
 }) {
     // console.log(orderHistory.actions[0].url);
-    const [showTutorial, setShowTutorial] = useState(false);
     const [countdown, setCountdown] = useState(
         moment().hours(0).minutes(0).seconds(0)
     );
     const currency = Intl.NumberFormat("id-ID");
     const target = moment(orderHistory.expiry_time);
     const [purchaseStatus, setPurchaseStatus] = useState("pending");
+
+    let paymentSteps = {
+        desktop: [
+            'Buka aplikasi pembayaran pada smartphone Anda',
+            'Klik tombol untuk scan QR Code',
+            'Periksa detail pembayaran lalu tekan tombol bayar',
+            'Masukkan PIN/password Anda',
+            'Pembayaran selesai'
+        ],
+        mobile: [
+            'Catat atau salin nomor Virtual Account yang Anda dapat',
+            `Lakukan pembayaran melalui ATM ${paymentMethod.name}, Internet Banking, atau Mobile Banking`,
+            'Masukkan PIN Anda',
+            'Pilih \'Transfer ke Virtual Account\'',
+            'Masukkan nomor Virtual Account yang Anda dapat',
+            'Saat pembayaran berhasil, Anda akan langsung diarahkan ke halaman Status Pembayaran'
+        ]
+    }
+
+    if (paymentMethod.name.toLowerCase() == "gopay") {
+        paymentSteps = {
+            desktop: [
+                'Buka aplikasi Gojek dan klik “Bayar”',
+                'Scan Kode QR dari layar HP Anda',
+                'Klik “Konfirmasi & Bayar”',
+                'Masukkan PIN Anda',
+                'Pembayaran Anda Berhasil',
+                'Saat pembayaran berhasil, periksa status pembayaran Anda di halaman Status Pembayaran'
+            ],
+            mobile: [
+                'Unduh Kode QR yang diberikan',
+                'Buka aplikasi GoPay',
+                'Klik tombol “Bayar”',
+                'Klik ikon gallery',
+                'Pilih Kode QR yang telah diunduh',
+                'Klik “Konfirmasi & Bayar”',
+                'Masukkan PIN Anda',
+                'Pembayaran Anda Berhasil',
+                'Saat pembayaran berhasil, periksa status pembayaran Anda di halaman Status Pembayaran'
+            ]
+        }
+    } else if (paymentMethod.name.toLowerCase() == 'qris') {
+        paymentSteps = {
+            desktop: [
+                'Buka aplikasi pembayaran lalu klik “Bayar”',
+                'Scan Kode QRIS dari layar HP Anda',
+                'Klik “Konfirmasi & Bayar”',
+                'Masukkan PIN Anda',
+                'Pembayaran Anda Berhasil',
+                'Saat pembayaran berhasil, periksa status pembayaran Anda di halaman Status Pembayaran'
+            ],
+            mobile: [
+                'Unduh Kode QRIS yang diberikan',
+                'Buka aplikasi pembayaran Anda',
+                'Klik tombol “Bayar”',
+                'Klik ikon gallery',
+                'Pilih Kode QRIS yang telah diunduh',
+                'Klik “Konfirmasi & Bayar”',
+                'Masukkan PIN Anda',
+                'Pembayaran Anda Berhasil',
+                'Saat pembayaran berhasil, periksa status pembayaran Anda di halaman Status Pembayaran'
+            ]
+        }
+    }
 
     let countdownInterval = useRef();
 
@@ -39,6 +102,7 @@ export default function Status({
             if (difference <= 1) {
                 clearInterval(countdownInterval.current);
                 setCountdown(moment().hours(0).minutes(0).seconds(0));
+                location.href = "/";
                 alert("Waktu Pembayaran Telah Habis!");
             }
             if (purchaseStatus.toLowerCase() == "success") {
@@ -263,84 +327,7 @@ export default function Status({
                                 </tbody>
                             </table>
                             <hr className="w-full border-light-grey" />
-                            <div className="w-full block my-[2vw] md:my-0">
-                                <ExpandedButton
-                                    borderClassName="border-1 border-dark"
-                                    textClassName="font-medium text-dark"
-                                    icon={`fa-solid fa-chevron-down duration-500 ${
-                                        showTutorial ? "-rotate-180" : ""
-                                    }`}
-                                    className="h-[9vw] md:h-[3vw]"
-                                    onClick={() =>
-                                        setShowTutorial(!showTutorial)
-                                    }
-                                >
-                                    Lihat Langkah Pembayaran
-                                </ExpandedButton>
-                                <TECollapse
-                                    show={showTutorial}
-                                    className="relative w-[110%] -ms-[5%] px-[4%] shadow-none -translate-y-[4vw] md:-translate-y-[1vw]"
-                                >
-                                    <TECollapseItem className="grid gap-[4vw] md:gap-[1.2vw] px-[.3vw]">
-                                        <div className="border-1 border-dark rounded-[1.5vw] md:rounded-[.6vw] p-[4vw] md:p-[1vw] flex flex-col gap-[2vw]">
-                                            <p className="font-bold">
-                                                1. Transaksi melalui Desktop
-                                            </p>
-                                            <p>
-                                                Berikut langkah pembayaran
-                                                menggunakan GoPay melalui
-                                                Desktop:
-                                            </p>
-                                            <ul className="list-disc ms-[6vw] md:ms-[2vw]">
-                                                <li>
-                                                    Buka aplikasi Gojek pada
-                                                    smarhphone Anda
-                                                </li>
-                                                <li>
-                                                    Klik "Pay" dan "Scan" QR
-                                                    Code
-                                                </li>
-                                                <li>
-                                                    Periksa detail pembayaran
-                                                    lalu klik "Confirm & Pay"
-                                                </li>
-                                                <li>
-                                                    Masukkan "PIN" GoPay Anda
-                                                </li>
-                                                <li>Pembayaran selesai</li>
-                                            </ul>
-                                        </div>
-                                        <div className="border-1 border-dark rounded-[1.5vw] md:rounded-[.6vw] p-[4vw] md:p-[1vw] flex flex-col gap-[2vw]">
-                                            <p className="font-bold">
-                                                2. Transaksi melalui Mobile
-                                            </p>
-                                            <p>
-                                                Berikut langkah pembayaran
-                                                menggunakan GoPay melalui
-                                                Mobile:
-                                            </p>
-                                            <ul className="list-disc ms-[6vw] md:ms-[2vw]">
-                                                <li>
-                                                    Buka aplikasi Gojek pada
-                                                    smarhphone Anda
-                                                </li>
-                                                <li>
-                                                    Klik "Pay" dan "Scan" QR
-                                                    Code
-                                                </li>
-                                                <li>
-                                                    Periksa detail pembayaran
-                                                    lalu klik "Confirm & Pay"
-                                                </li>
-                                                <li>
-                                                    Masukkan "PIN" GoPay Anda
-                                                </li>
-                                                <li>Pembayaran selesai</li>
-                                            </ul>
-                                        </div>
-                                    </TECollapseItem>
-                                </TECollapse>
-                            </div>
+                            <PaymentSteps steps={paymentSteps} />
                             <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-1 xl:border-2 border-primary font-poppins rounded-full">
                                 <Link
                                     href="/produk"
@@ -361,4 +348,66 @@ export default function Status({
             </section>
         </MainLayout>
     );
+}
+
+function PaymentSteps ({ steps }) {
+    const [show, setShow] = useState(false);
+    return (
+        <div className="w-full block my-[2vw] md:my-0">
+            <ExpandedButton
+                borderClassName="border-1 border-dark"
+                textClassName="font-medium text-dark"
+                icon={`fa-solid fa-chevron-down duration-500 ${
+                    show ? "-rotate-180" : ""
+                }`}
+                className="h-[9vw] md:h-[3vw]"
+                onClick={() =>
+                    setShow(!show)
+                }
+            >
+                Lihat Langkah Pembayaran
+            </ExpandedButton>
+            <TECollapse
+                show={show}
+                className="relative w-[110%] -ms-[5%] px-[4%] shadow-none -translate-y-[4vw] md:-translate-y-[1vw]"
+            >
+                <TECollapseItem className="grid gap-[4vw] md:gap-[1.2vw] px-[.3vw]">
+                    <div className="border-1 border-dark rounded-[1.5vw] md:rounded-[.6vw] p-[4vw] md:p-[1vw] flex flex-col gap-[1vw]">
+                        <p className="font-bold">
+                            1. Transaksi melalui Desktop
+                        </p>
+                        {/* <p>
+                            Berikut langkah pembayaran
+                            menggunakan GoPay melalui
+                            Desktop:
+                        </p> */}
+                        <ul className="list-disc ms-[6vw] md:ms-[2vw]">
+                            {steps['desktop'].map((item, index) => {
+                                return (
+                                    <li key={index}>{item}</li>
+                                )
+                            })}
+                        </ul>
+                    </div>
+                    <div className="border-1 border-dark rounded-[1.5vw] md:rounded-[.6vw] p-[4vw] md:p-[1vw] flex flex-col gap-[1vw]">
+                        <p className="font-bold">
+                            2. Transaksi melalui Mobile
+                        </p>
+                        {/* <p>
+                            Berikut langkah pembayaran
+                            menggunakan GoPay melalui
+                            Mobile:
+                        </p> */}
+                        <ul className="list-disc ms-[6vw] md:ms-[2vw]">
+                            {steps['mobile'].map((item, index) => {
+                                return (
+                                    <li key={index}>{item}</li>
+                                )
+                            })}
+                        </ul>
+                    </div>
+                </TECollapseItem>
+            </TECollapse>
+        </div>
+    )
 }

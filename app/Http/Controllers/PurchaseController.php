@@ -69,7 +69,7 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request);
         // dd($request->admin);
         $user = User::where('id', Auth::user()->id)->first();
         $validateData = $request->validate([
@@ -97,8 +97,7 @@ class PurchaseController extends Controller
         $responseMidtrans = null;
         $order_code = 'GA' . str(now()->format('YmdHis'));
 
-        $paymentMethod = PaymentMethod::where('name', $validateData['purchase_method'])->first();
-
+        $paymentMethod = PaymentMethod::where('name', $validateData['purchase_method']['name'])->first();
         $getProduct = Products::where('id', $request['product_id'])->with('categories')->first();
 
         // cek date
@@ -148,7 +147,8 @@ class PurchaseController extends Controller
                     return response()->json(['message' => 'pembelian tidak valid!', 'admin' => $adminFee, 'req' => $request->admin]);
                 }
 
-                $grossAmount = $price - $discount + $adminFee;
+                // $grossAmount = $price - $discount + $adminFee;
+                $grossAmount = $request['total_price'];
                 $params = array(
                     'payment_type' => $paymentMethod->payment_type,
                     'transaction_details' => array(
