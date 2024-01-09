@@ -113,21 +113,30 @@ export default function AddOnForm({
                                     )
                                 )
                             ) {
+                                let addOnPrice = 0
                                 if (temp.add_on.length) {
-                                    setData({
-                                        ...data,
-                                        add_on: temp.add_on,
-                                        add_on_price: temp.add_on
-                                            .map((i) => i.price)
-                                            .reduce((total, i) => total + i),
-                                    });
+                                    addOnPrice = temp.add_on
+                                        .map((i) => parseFloat(i.price))
+                                        .reduce((total, i) => parseFloat(total) + parseFloat(i))
                                 } else {
-                                    setData({
-                                        ...data,
-                                        add_on: temp.add_on,
-                                        add_on_price: 0,
-                                    });
+                                    addOnPrice = 0
                                 }
+                                let adminFee = 0
+                                if (data.purchase_method != "") {
+                                    if (parseInt(data.purchase_method.is_price)) {
+                                        adminFee = parseFloat(data.purchase_method.admin_fee)
+                                    } else {
+                                        adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(data.discount) + addOnPrice) * parseFloat(data.purchase_method.admin_fee) / 100)
+                                    }
+                                }
+                                const totalPrice = parseFloat(data.init_price) - parseFloat(data.discount) + addOnPrice + adminFee
+                                setData({
+                                    ...data,
+                                    add_on: temp.add_on,
+                                    add_on_price: addOnPrice,
+                                    admin: adminFee,
+                                    total_price: totalPrice
+                                });
                                 setShow(false);
                             }
                         }}

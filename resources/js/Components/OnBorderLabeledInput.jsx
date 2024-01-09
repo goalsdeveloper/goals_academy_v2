@@ -6,7 +6,7 @@ export default function Input({ type, id, label, value, onChange, className, lab
                 onChange={onChange}
                 id={id}
                 type={type}
-                className={`w-full border-1 xl:border-2 border-secondary placeholder-shown:border-light-grey font-poppins rounded-[1vw] md:rounded-[.4vw] xl:rounded-[.4vw] pt-2 pb-1 px-3 md:pt-[.75vw] md:pb-[.5vw] md:px-[1vw] xl:pt-[.75vw] xl:pb-[.5vw] xl:px-[1vw] focus:outline-none focus:border-secondary peer ${className}`}
+                className={`w-full border-1 xl:border-2 border-secondary placeholder-shown:border-light-grey font-poppins rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] pt-2 pb-1 px-3 md:pt-[1.75vw] md:pb-[1vw] md:px-[2vw] xl:pt-[.75vw] xl:pb-[.5vw] xl:px-[1vw] focus:outline-none focus:border-secondary peer ${className}`}
                 placeholder=" "
             />
             <label

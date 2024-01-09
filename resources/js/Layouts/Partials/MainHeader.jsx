@@ -280,14 +280,20 @@ function NavbarExpand({ auth, title, notificationData, profileImage }) {
                                         Lihat Semua
                                     </Link>
                                 </div>
-                                {notificationData.map((item, index) => {
-                                    return (
-                                        <NotifikasiItem
-                                            key={index}
-                                            item={item}
-                                        />
-                                    );
-                                })}
+                                {notificationData.length ? (
+                                    notificationData.map((item, index) => {
+                                        return (
+                                            <NotifikasiItem
+                                                key={index}
+                                                item={item}
+                                            />
+                                        );
+                                    })
+                                ) : (
+                                    <div className="flex justify-center items-center h-[30vh]">
+                                        Oops.. belum ada notifikasi
+                                    </div>
+                                )}
                             </TECollapseItem>
                         </TECollapse>
                     </div>
@@ -315,7 +321,7 @@ function NavbarExpand({ auth, title, notificationData, profileImage }) {
                                     href="/user"
                                 >
                                     <i className="fa-regular fa-circle-user md:text-12 lg:text-20 3xl:text-24"></i>
-                                    Profil
+                                    Dashboard
                                 </Link>
                                 <Link
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
@@ -326,7 +332,7 @@ function NavbarExpand({ auth, title, notificationData, profileImage }) {
                                 </Link>
                                 <Link
                                     as="button"
-                                    className="flex gap-2 items-center font-poppins hover:text-primary"
+                                    className="flex gap-2 items-center font-poppins text-red-500"
                                     href="/logout"
                                     method="post"
                                 >
@@ -500,7 +506,7 @@ function AuthDropdownMobile({ show, setShow }) {
                             href="/user"
                             className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-[4.25vw]`}
                         >
-                            Profil
+                            Dashboard
                             <CornerWaveVector cornerClassName="w-4/12" />
                             <i className="fa-solid fa-arrow-up rotate-45 text-[6vw]"></i>
                         </Link>
@@ -515,7 +521,7 @@ function AuthDropdownMobile({ show, setShow }) {
                         <Link
                             method="post"
                             href="/logout"
-                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-soft text-secondary p-[4.25vw]`}
+                            className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-soft text-red-500 p-[4.25vw]`}
                         >
                             Keluar
                             <CornerWaveVector2 cornerClassName="w-4/12" />
@@ -562,9 +568,13 @@ function NotifikasiMobile({ data, show, setShow }) {
                                 Lihat Semua
                             </Link>
                         </div>
-                        {data.map((item, index) => {
-                            return <NotifikasiItem key={index} item={item} />;
-                        })}
+                        {data.length ? (
+                            data.map((item, index) => {
+                                return <NotifikasiItem key={index} item={item} />;
+                            })
+                        ) : (
+                            <div className="flex justify-center items-center h-[50vh] font-normal">Oops.. belum ada notifikasi</div>
+                        )}
                     </div>
                 </div>
             </div>

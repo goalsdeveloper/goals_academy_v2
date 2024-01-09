@@ -12,7 +12,6 @@ import PromoForm from "../Partials/Purchase/Form/PromoForm";
 import PurchaseMethodForm from "../Partials/Purchase/Form/PurchaseMethodForm";
 
 export default function Form({ auth, date, dataProduct, paymentMethods }) {
-    console.log(paymentMethods);
     const userId = auth.user.id;
     // console.log(dataProduct);
     // Code to input form data
@@ -26,11 +25,11 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         promo: "",
         discount: 0,
         purchase_method: "",
-        // admin: 0,
+        admin: 0,
         product_id: dataProduct.id,
         add_on: [],
         add_on_price: 0,
-        total_price: 0,
+        total_price: dataProduct.price,
     });
 
     // Code to input temp form data
@@ -44,7 +43,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         promo: "",
         discount: 0,
         purchase_method: "",
-        // admin: 0,
+        admin: 0,
         product_id: dataProduct.id,
         add_on: [],
         add_on_price: 0,
@@ -137,20 +136,28 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
             .then((response) => {
                 processCallback(false);
                 if ("data" in response) {
-                    if (response.data.is_price) {
-                        setData({
-                            ...data,
-                            promo: temp.promo,
-                            discount: response.data.value,
-                        });
+                    let promoDiscount = 0
+                    if (parseInt(response.data.is_price)) {
+                        promoDiscount = parseFloat(response.data.value)
                     } else {
-                        setData({
-                            ...data,
-                            promo: temp.promo,
-                            discount:
-                                (data.init_price * response.data.value) / 100,
-                        });
+                        promoDiscount = (parseFloat(data.init_price) * parseFloat(response.data.value)) / 100
                     }
+                    let adminFee = 0
+                    if (data.purchase_method != "") {
+                        if (parseInt(data.purchase_method.is_price)) {
+                            adminFee = parseFloat(data.purchase_method.admin_fee)
+                        } else {
+                            adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(promoDiscount) + parseFloat(data.add_on_price)) * parseFloat(data.purchase_method.admin_fee) / 100)
+                        }
+                    }
+                    const totalPrice = parseFloat(data.init_price) - parseFloat(promoDiscount) + parseFloat(data.add_on_price) + adminFee
+                    setData({
+                        ...data,
+                        promo: temp.promo,
+                        discount: promoDiscount,
+                        admin: adminFee,
+                        total_price: totalPrice
+                    });
                     alert(response.message);
                     successCallback();
                 } else {
@@ -649,10 +656,10 @@ function SummaryCard({
                                         <td>Add-On</td>
                                         <td className="font-bold text-right">
                                             {currency.format(
-                                                data.add_on_price
+                                                parseFloat(data.add_on_price)
                                             ) > 0
                                                 ? `IDR ${currency.format(
-                                                      data.add_on_price
+                                                      parseFloat(data.add_on_price)
                                                   )}`
                                                 : "-"}
                                         </td>
@@ -660,22 +667,7 @@ function SummaryCard({
                                     <tr>
                                         <td>Biaya Admin</td>
                                         <td className="font-bold text-right">
-                                            {data.purchase_method != ""
-                                                ? data.purchase_method
-                                                      .category == "ewallet"
-                                                    ? `IDR ${currency.format(
-                                                          (data.purchase_method
-                                                              .admin_fee *
-                                                              (data.init_price -
-                                                                  data.discount +
-                                                                  data.add_on_price)) /
-                                                              100
-                                                      )}`
-                                                    : `IDR ${currency.format(
-                                                          data.purchase_method
-                                                              .admin_fee
-                                                      )}`
-                                                : "-"}
+                                            {data.admin != 0 ? data.admin : "-"}
                                         </td>
                                     </tr>
                                 </tbody>

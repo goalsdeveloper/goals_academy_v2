@@ -61,7 +61,7 @@ export default function Form ({ title, message }) {
     return (
         <div
             id="form"
-            className="relative flex flex-wrap min-h-screen xl:h-screen bg-secondary text-[2vw] md:text-[1vw] pb-20 xs:pb-24 xl:p-0 overflow-hidden"
+            className="relative xl:flex flex-wrap min-h-screen xl:h-screen bg-secondary text-[3vw] md:text-[2vw] xl:text-[1vw] pb-20 xs:pb-24 xl:p-0 overflow-hidden"
         >
             <Head title={active == "register" ? "Register" : "Login"} />
             <Header title={title} />
@@ -74,7 +74,7 @@ export default function Form ({ title, message }) {
                     rightCornerClassName="w-6/12"
                     leftCornerClassName="w-10/12"
                 />
-                <div className="w-full flex flex-col justify-center items-center gap-4 3xl:gap-6 z-10 text-white">
+                <div className="w-full flex flex-col justify-center items-center gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw] z-10 text-white">
                     <img className="w-[9vw]" src={logo} alt="Goals Academy" />
                     <div className="text-center mb-[8vh]">
                         <h2 className="text-white">Selamat Datang</h2>
@@ -91,7 +91,7 @@ export default function Form ({ title, message }) {
             </div>
             <div
                 id="form-right"
-                className="container mx-auto xl:w-[30%] h-fit xl:h-screen rounded-lg xl:rounded-none bg-white flex flex-col items-center p-6 xl:p-16 py-20 xl:py-[10vh] relative"
+                className="container mx-auto xl:w-[30%] h-fit xl:h-screen rounded-lg xl:rounded-none bg-white flex flex-col p-6 xl:p-16 py-20 xl:py-[10vh] relative"
             >
                 <div className="grid gap-6 xl:gap-8 w-full">
                     <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-1 xl:border-2 border-secondary font-poppins rounded-[1vw] md:rounded-[.5vw]">
@@ -113,7 +113,7 @@ export default function Form ({ title, message }) {
                     >
                         <form
                             onSubmit={register}
-                            className="w-full grid gap-4 md:gap-6 3xl:gap-8"
+                            className="w-full grid gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw]"
                         >
                             <Input
                                 value={registerData.username}
@@ -154,27 +154,27 @@ export default function Form ({ title, message }) {
                                 id="confirmation_password"
                                 label="Ulangi Password"
                             />
-                            <div className="flex justify-center gap-[1vw]">
-                                <input type="checkbox" className="w-[2vw]" checked={registerData.agreement} onChange={() => setRegisterData("agreement", !registerData.agreement)} />
-                                <p className="text-[.95vw]">Saya setuju dengan <a target="_blank" href="/syarat_dan_ketentuan" className="text-secondary font-medium">Syarat dan Ketentuan</a> yang berlaku di Goals Academy</p>
+                            <div className="flex justify-center items-center gap-[2vw] md:gap-[1vw] xl:gap-[.5vw]">
+                                <input type="checkbox" className="w-[5vw] md:w-[2vw] xl:w-[3vw]" checked={registerData.agreement} onChange={() => setRegisterData("agreement", !registerData.agreement)} />
+                                <p className="text-[3vw] md:text-[1.8vw] xl:text-[.95vw]">Saya setuju dengan <a target="_blank" href="/syarat_dan_ketentuan" className="text-secondary font-medium">Syarat dan Ketentuan</a> yang berlaku di Goals Academy</p>
                             </div>
                             <SubmitButton
-                                className="w-full rounded-[1vw] md:rounded-[.4vw]"
+                                className="w-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw]"
                                 disabled={Object.keys(registerData).map(i => registerData[i]).includes("") || !registerData.agreement || !(registerData.password == registerData.confirmation_password)}
                             >Daftar</SubmitButton>
                         </form>
                         <p className="text-center">atau</p>
-                        <div className="w-full grid gap-4 3xl:gap-6 text-dark">
+                        <div className="w-full grid gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw] text-dark">
                             <a
                                 as="button"
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.4vw] p-2 md:p-3 xl:p-2 3xl:p-3"
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] p-[2vw] md:p-[1.5vw] xl:p-[.75vw]"
                                 href="/auth/google"
                             >
                                 Daftar dengan Google
                             </a>
                             <a
                                 as="button"
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.4vw] p-2 md:p-3 xl:p-2 3xl:p-3"
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] p-[2vw] md:p-[1.5vw] xl:p-[.75vw]"
                                 href="/auth/facebook"
                             >
                                 Daftar dengan Facebook
@@ -188,7 +188,7 @@ export default function Form ({ title, message }) {
                     >
                         <form
                             onSubmit={login}
-                            className="w-full grid gap-4 md:gap-6 3xl:gap-8"
+                            className="w-full grid gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw]"
                         >
                             <Input
                                 value={loginData.email}
@@ -209,27 +209,27 @@ export default function Form ({ title, message }) {
                                     id="login_password"
                                     label="Password"
                                 />
-                                <Link href="/lupa_password" className="absolute -bottom-4 right-0 text-blue-500 text-12 3xl:text-16">
+                                <Link href="/lupa_password" className="absolute text-[3vw] md:text-[1.75vw] xl:text-[.95vw] -bottom-[2.5vw] md:-bottom-[2vw] xl:-bottom-[1vw] right-0 text-blue-500">
                                     Lupa password?
                                 </Link>
                             </div>
                             <SubmitButton
-                                className="w-full rounded-[1vw] md:rounded-[.4vw]"
+                                className="w-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw]"
                                 disabled={Object.keys(loginData).map(i => loginData[i]).includes("")}
                             >Masuk</SubmitButton>
                         </form>
                         <p className="text-center">atau</p>
-                        <div className="w-full grid gap-4 3xl:gap-6 text-dark">
+                        <div className="w-full grid gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw] text-dark">
                             <a
                                 as="button"
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.4vw] p-2 md:p-3 xl:p-2 3xl:p-3"
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] p-[2vw] md:p-[1.5vw] xl:p-[.75vw]"
                                 href="/auth/google"
                             >
                                 Masuk dengan Google
                             </a>
                             <a
                                 as="button"
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.4vw] p-2 md:p-3 xl:p-2 3xl:p-3"
+                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] p-[2vw] md:p-[1.5vw] xl:p-[.75vw]"
                                 href="/auth/facebook"
                             >
                                 Masuk dengan Facebook
@@ -267,7 +267,7 @@ function SwitchButton({ switchForm, target, active }) {
     return (
         <button
             onClick={() => switchForm(target)}
-            className={`p-1.5 md:p-2 xl:p-2 3xl:p-3 font-medium ${
+            className={`p-[2vw] md:p-[1.5vw] xl:p-[.75vw] font-medium ${
                 active == target
                     ? "bg-secondary text-white"
                     : "bg-white text-secondary"
