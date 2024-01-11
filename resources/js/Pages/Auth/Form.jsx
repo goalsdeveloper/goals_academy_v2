@@ -65,7 +65,7 @@ export default function Form ({ title, message }) {
         >
             <Head title={active == "register" ? "Register" : "Login"} />
             <Header title={title} />
-            <CornerWaveVector className="xl:hidden" cornerClassName="w-8/12" />
+            <CornerWaveVector className="xl:hidden z-0" cornerClassName="w-8/12" />
             <div
                 id="form-left"
                 className="w-[70%] relative hidden xl:flex items-end justify-center select-none"
@@ -282,7 +282,7 @@ function Header({ title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false);
 
     return (
-        <header className="xl:hidden w-screen text-dark lg:text-base z-50">
+        <header className="xl:hidden w-screen text-dark lg:text-base relative z-50">
             <div className="hidden xl:h-24 3xl:h-36"></div>{" "}
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 duration-500">
@@ -319,7 +319,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
     return (
         <>
             <div
-                className={`xl:hidden w-full absolute z-50 top-0 bottom-0 right-0 bg-white font-bold text-white py-6 xs:py-8 duration-500 ${
+                className={`xl:hidden w-full absolute h-screen z-50 top-0 bottom-0 right-0 bg-white font-bold text-white py-6 xs:py-8 duration-500 ${
                     mobileNavbar ? "" : "opacity-0 translate-x-[110%]"
                 }`}
             >
