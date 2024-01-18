@@ -26,64 +26,44 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         // dd(auth()->user()->username);
-        // $credential = $request->validate([
-        //     'email' => 'required|email:dns',
-        //     'password' => 'required',
-        // ]);
-        $credential = Validator::make($request->all(), [
-            'email' => 'required|email:dns',
+        $validateData = $request->validate([
+            'email' => 'required|email:dns|exists:users,email',
             'password' => 'required|min:8',
         ]);
 
-        if ($credential->fails()) {
-            return back()
-                ->withErrors($credential)
-                ->withInput();
-        }
-
-        if (Auth::attempt($credential->validate(), true)) {
+        if (Auth::attempt($validateData, true)) {
             $request->session()->regenerate();
             $user = auth()->user();
             Log::info("User {username} has been Log in.", ['username' => $user->username]);
             return redirect(RouteServiceProvider::HOME);
         } else {
-            // return redirect()->back()->with('message', ['login' => $credential->errors()->messages()]);
+            return redirect()->back()->with('message', ['login' => 'Email or password is invalid!']);
         }
     }
 
     public function register(Request $request)
     {
-        dd($request);
-        // $validateData = Validator::make($request->all(), [
-        //     'username' => 'required|min:8|max:15',
-        //     'email' => 'required|email:dns|unique:users,email',
-        //     'password' => 'required',
-        //     'confirmation_password' => 'required'
-        // ]);
+        // dd($request);
+        $validateData = $request->validate([
+            'username' => 'required|min:8|max:15|unique:users,username',
+            'email' => 'required|email:dns|unique:users,email',
+            'password' => 'required|min:8',
+            'confirmation_password' => 'required|min:8|same:password'
+        ]);
 
-        // if ($validateData->fails()) {
-        //     return response()->json(['message' => 'gagal']);
-        // }
+        $request['password'] = Hash::make($request['password']);
 
-        // if ($request['password'] !== $request['confirmation_password']) {
-        //     return response()->json([
-        //         'message' => 'Password tidak cocok'
-        //     ]);
-        // }
+        $user = User::create($validateData);
 
-        // $request['password'] = Hash::make($request['password']);
+        $userProfile = UserProfile::create([
+            'user_id' => $user['id'],
+        ]);
 
-        // $user = User::create($validateData->validate());
+        event(new Registered($user));
 
-        // $userProfile = UserProfile::create([
-        //     'user_id' => $user['id'],
-        // ]);
+        Auth::login($user, true);
 
-        // event(new Registered($user));
-
-        // Auth::login($user, true);
-
-        // return redirect(RouteServiceProvider::HOME);
+        return redirect(RouteServiceProvider::HOME);
     }
 
     public function logout(Request $request)
