@@ -219,7 +219,6 @@ function MainCard({
     places,
     rules,
 }) {
-    const [showScheduleForm, setShowScheduleForm] = useState(false);
     const [showNoteForm, setShowNoteForm] = useState(false);
     const [showAddOnForm, setShowAddOnForm] = useState(false);
     const [showForm, setShowForm] = useState({
@@ -278,47 +277,6 @@ function MainCard({
                 <div className="md:hidden h-[4vw] bg-slate-100"></div>
                 <div className="container md:w-full mx-auto grid grid-cols-2 gap-[4vw] md:gap-[1vw]">
                     <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
-                        {/* <div className={"schedule" in rules ? "" : "hidden"}>
-                            <p className="mb-[2vw] md:mb-[.5vw]">
-                                Jadwal Bimbingan
-                                {"schedule" in rules
-                                    ? rules.schedule
-                                        ? ""
-                                        : " (opsional)"
-                                    : ""}
-                                :
-                            </p>
-                            <ExpandedButton
-                                className="rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw]"
-                                borderClassName={`border-1 outline outline-1 ${
-                                    data.schedule != ""
-                                        ? "border-secondary outline-secondary text-secondary"
-                                        : "outline-light-grey text-light-grey"
-                                }`}
-                                iconClassName={`group-hover:text-white ${
-                                    data.schedule != "" ? "text-grey" : ""
-                                }`}
-                                onClick={() => setShowScheduleForm(true)}
-                            >
-                                <i className="fa-regular fa-calendar"></i>
-                                &nbsp;&nbsp;
-                                {data.schedule != ""
-                                    ? "Jadwal telah dipilih"
-                                    : "Pilih Jadwal"}
-                            </ExpandedButton>
-                            <ScheduleForm
-                                show={showScheduleForm}
-                                setShow={setShowScheduleForm}
-                                data={data}
-                                setData={setData}
-                                temp={temp}
-                                setTemp={setTemp}
-                                unavailableDate={unavailableDate}
-                                cities={cities}
-                                places={places}
-                                rules={rules}
-                            />
-                        </div> */}
                         <GoalsDatePicker
                             show={showForm.schedule}
                             setShow={(i) => showFormHandler("schedule", i)}
@@ -431,17 +389,17 @@ function MainCard({
                             </p>
                             <ExpandedButton
                                 className={`rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw] border-1 outline outline-1 ${
-                                    data.note != ""
+                                    data.topic != ""
                                         ? "border-secondary outline-secondary text-secondary"
                                         : "outline-light-grey text-light-grey"
                                 }`}
                                 iconClassName={`group-hover:text-white ${
-                                    data.note != "" ? "text-grey" : ""
+                                    data.topic != "" ? "text-grey" : ""
                                 }`}
                                 onClick={() => setShowNoteForm(true)}
                             >
                                 <i className="bi bi-pen"></i>&nbsp;&nbsp;
-                                {data.note != ""
+                                {data.topic != ""
                                     ? "Catatan telah diisi"
                                     : "Isi catatan"}
                             </ExpandedButton>
@@ -629,7 +587,7 @@ function SummaryCard({
             </div>
             <div
                 className={`relative border-1 md:rounded-[1vw] md:p-[1.75vw] text-xs h-fit ${
-                    data.note ? "" : "hidden"
+                    data.topic ? "" : "hidden"
                 }`}
             >
                 <div className="container md:w-full mx-auto">
@@ -642,11 +600,11 @@ function SummaryCard({
                         onClick={() => setShowNote(!showNote)}
                     >
                         {showNote
-                            ? data.note.split(" ").length > 15
-                                ? data.note.split(" ").slice(0, 15).join(" ") +
+                            ? data.topic.split(" ").length > 15
+                                ? data.topic.split(" ").slice(0, 15).join(" ") +
                                   "..."
-                                : data.note
-                            : data.note}
+                                : data.topic
+                            : data.topic}
                     </p>
                     <hr className="border-black" />
                 </div>
