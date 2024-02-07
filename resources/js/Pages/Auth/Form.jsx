@@ -14,18 +14,18 @@ import { TECollapse } from "tw-elements-react";
 import icon from "/resources/img/icon/goals-4.svg";
 
 export default function Form ({ title }) {
-    const [active, setActive] = useState(title);
+    const [activeForm, setActiveForm] = useState(title);
 
     return (
         <div
             id="form"
             className="relative xl:flex flex-wrap min-h-screen xl:h-screen bg-secondary text-[3vw] md:text-[2vw] xl:text-[1vw] pb-20 xs:pb-24 xl:p-0 overflow-hidden"
         >
-            <Head title={active == "register" ? "Register" : "Login"} />
+            <Head title={activeForm == "register" ? "Register" : "Login"} />
             <Header title={title} />
             <CornerWaveVector className="xl:hidden z-0" cornerClassName="w-8/12" />
             <FormLeft />
-            <FormRight active={active} setActive={setActive} />
+            <FormRight activeForm={activeForm} setActiveForm={setActiveForm} />
         </div>
     );
 }
@@ -58,7 +58,7 @@ function FormLeft() {
     )
 }
 
-function FormRight({ active, setActive }) {
+function FormRight({ activeForm, setActiveForm }) {
     const [loginMessage, setLoginMessage] = useState("");
     const [loginLoading, setLoginLoading] = useState(false);
     const [registerLoading, setRegisterLoading] = useState(false);
@@ -87,10 +87,10 @@ function FormRight({ active, setActive }) {
 
     const switchForm = (request) => {
         if (request == "login") {
-            setActive("login");
+            setActiveForm("login");
             history.replaceState({}, "", "/login");
         } else {
-            setActive("register");
+            setActiveForm("register");
             history.replaceState({}, "", "/register");
         }
     };
@@ -151,16 +151,16 @@ function FormRight({ active, setActive }) {
                     <SwitchButton
                         switchForm={switchForm}
                         target={"login"}
-                        active={active}
+                        active={activeForm}
                     />
                     <SwitchButton
                         switchForm={switchForm}
                         target={"register"}
-                        active={active}
+                        active={activeForm}
                     />
                 </div>
-                <RegisterForm active={active} registerData={registerData} setRegisterData={setRegisterData} registerErrors={registerErrors} setRegisterError={setRegisterError} registerLoading={registerLoading} onSubmit={registerHandler} />
-                <LoginForm active={active} loginData={loginData} setLoginData={setLoginData} loginMessage={loginMessage} loginLoading={loginLoading} onSubmit={loginHandler} />
+                <RegisterForm active={activeForm} registerData={registerData} setRegisterData={setRegisterData} registerErrors={registerErrors} setRegisterError={setRegisterError} registerLoading={registerLoading} onSubmit={registerHandler} />
+                <LoginForm active={activeForm} loginData={loginData} setLoginData={setLoginData} loginMessage={loginMessage} setLoginMessage={setLoginMessage} loginLoading={loginLoading} onSubmit={loginHandler} />
                 <div className="absolute w-full h-full top-0 left-0 z-0 select-none">
                     <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] top-[2.5vw] left-[2.5vw] md:top-[1.5vw] md:left-[1.5vw] xl:top-[1vw] xl:left-[1vw]"></div>
                     <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] top-[2.5vw] right-[2.5vw] md:top-[1.5vw] md:right-[1.2vw] xl:top-[1vw] xl:right-[.8vw]"></div>
@@ -273,7 +273,7 @@ function RegisterForm({ active, registerData, setRegisterData, registerErrors, s
     )
 }
 
-function LoginForm({ active, loginData, setLoginData, loginMessage, loginLoading, onSubmit }) {
+function LoginForm({ active, loginData, setLoginData, loginMessage, setLoginMessage, loginLoading, onSubmit }) {
     return (
         <div
             className={`${
