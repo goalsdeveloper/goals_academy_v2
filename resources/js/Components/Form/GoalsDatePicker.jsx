@@ -1,4 +1,3 @@
-import { useState } from "react";
 import ExpandedButton from "../ExpandedButton";
 import moment from "moment";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -60,7 +59,7 @@ export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon=
                 </TECollapse>
             </div>
             {error != "" ? (
-                <p className="text-red-500 text-[.9vw] mt-[.25vw]">This field is required!</p>
+                <p className="text-red-500 text-[.9vw] mt-[.25vw]">{error}</p>
             ) : (<></>)}
         </div>
     )

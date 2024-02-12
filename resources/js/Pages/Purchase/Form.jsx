@@ -5,13 +5,13 @@ import ButtonPill from "@/Components/ButtonPill";
 import ExpandedButton from "@/Components/ExpandedButton";
 import { useForm } from "@inertiajs/react";
 import "@/script/momentCustomLocale";
-import NoteForm from "../Partials/Purchase/Form/NoteForm";
 import AddOnForm from "../Partials/Purchase/Form/AddOnForm";
 import PromoForm from "../Partials/Purchase/Form/PromoForm";
 import PurchaseMethodForm from "../Partials/Purchase/Form/PurchaseMethodForm";
-import GoalsDatePicker from "@/Components/Form/GoalsDatePicker";
 import { createTheme } from "@mui/material";
+import GoalsDatePicker from "@/Components/Form/GoalsDatePicker";
 import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/Form/GoalsSelectInput";
+import { GoalsSelectMultipleInput, GoalsSelectMultipleInputItem } from "@/Components/Form/GoalsSelectMultipleInput";
 
 export default function Form({ auth, date, dataProduct, paymentMethods }) {
     const userId = auth.user.id;
@@ -76,7 +76,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
     if (category == "online") {
         rules = {
             schedule: 1,
-            note: 0,
+            topic: 0,
             document: 0,
             add_on: 0,
         };
@@ -85,20 +85,20 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
             schedule: 1,
             city: 1,
             place: 1,
-            note: 0,
+            topic: 0,
             document: 0,
             add_on: 0,
         };
     } else if (category == "tuntas") {
         rules = {
-            note: 0,
+            topic: 0,
             document: 0,
             add_on: 0,
         };
         availableAddOn.pop();
     } else if (category == "review") {
         rules = {
-            note: 1,
+            topic: 1,
             document: 1,
             add_on: 0,
         };
@@ -114,6 +114,9 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         Surabaya: ["Kafe 6", "Kafe 7", "Kafe 8", "Kafe 9", "Kafe 10"],
         Jakarta: ["Kafe 11", "Kafe 12", "Kafe 13", "Kafe 14", "Kafe 15"],
     };
+
+    // Initialize Topics
+    const topics = ["Topic 1", "Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6", "Topic 7", "Topic 8"];
 
     // Initialize purchase methods
     const purchaseMethods = paymentMethods
@@ -187,6 +190,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
                         availableAddOn={availableAddOn}
                         cities={cities}
                         places={places}
+                        topics={topics}
                         rules={rules}
                     />
                     <SummaryCard
@@ -217,9 +221,9 @@ function MainCard({
     availableAddOn,
     cities,
     places,
+    topics,
     rules,
 }) {
-    const [showNoteForm, setShowNoteForm] = useState(false);
     const [showAddOnForm, setShowAddOnForm] = useState(false);
     const [showForm, setShowForm] = useState({
         schedule: false,
@@ -377,41 +381,24 @@ function MainCard({
                                 <GoalsSelectInputItem>Pilih kota terlebih dahulu</GoalsSelectInputItem>
                             )}
                         </GoalsSelectInput>
-                        <div className={"note" in rules ? "" : "hidden"}>
-                            <p className="mb-[2vw] md:mb-[.5vw]">
-                                Catatan untuk Tutor
-                                {"note" in rules
-                                    ? rules.note
-                                        ? ""
-                                        : " (opsional)"
-                                    : ""}
-                                :
-                            </p>
-                            <ExpandedButton
-                                className={`rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw] border-1 outline outline-1 ${
-                                    data.topic != ""
-                                        ? "border-secondary outline-secondary text-secondary"
-                                        : "outline-light-grey text-light-grey"
-                                }`}
-                                iconClassName={`group-hover:text-white ${
-                                    data.topic != "" ? "text-grey" : ""
-                                }`}
-                                onClick={() => setShowNoteForm(true)}
-                            >
-                                <i className="bi bi-pen"></i>&nbsp;&nbsp;
-                                {data.topic != ""
-                                    ? "Catatan telah diisi"
-                                    : "Isi catatan"}
-                            </ExpandedButton>
-                            <NoteForm
-                                show={showNoteForm}
-                                setShow={setShowNoteForm}
-                                data={data}
-                                setData={setData}
-                                temp={temp}
-                                setTemp={setTemp}
-                            />
-                        </div>
+                        <GoalsSelectInput show={showForm.topic} setShow={(i) => showFormHandler("topic", i)} label="Topik Bimbingan" placeholder="Pilih Topik Bimbingan" data={data.topic}>
+                            {topics.map((item, index) => {
+                                return (
+                                    <GoalsSelectInputItem key={index} onClick={() => setData("topic", item)}>
+                                        {item}
+                                    </GoalsSelectInputItem>
+                                )
+                            })}
+                        </GoalsSelectInput>
+                        <GoalsSelectMultipleInput show={showForm.addOn} setShow={(i) => showFormHandler("addOn", i)} label="Add-On" placeholder="Tambah Add-On" data={data.add_on}>
+                            {topics.map((item, index) => {
+                                return (
+                                    <GoalsSelectMultipleInputItem key={index} onClick={() => setData("add_on", item)}>
+                                        {item}
+                                    </GoalsSelectMultipleInputItem>
+                                )
+                            })}
+                        </GoalsSelectMultipleInput>
                         <div className={"add_on" in rules ? "" : "hidden"}>
                             <p className="mb-[2vw] md:mb-[.5vw]">
                                 Add-On
@@ -533,83 +520,10 @@ function SummaryCard({
 }) {
     const [showPromoForm, setShowPromoForm] = useState(false);
     const [showPurchaseMethodForm, setShowPurchaseMethodForm] = useState(false);
-    const [showNote, setShowNote] = useState(true);
     const [showDocument, setShowDocument] = useState(true);
     const currency = Intl.NumberFormat("id-ID");
     return (
         <div className="md:w-[30%] md:ms-[3vw] flex flex-col gap-[4vw] md:gap-[2vw]">
-            <div
-                className={`relative border-1 md:rounded-[1vw] md:p-[1.75vw] text-xs h-fit text-[3.4vw] md:text-[.9vw] ${
-                    data.schedule ? "" : "hidden"
-                }`}
-            >
-                <div className="container md:w-full mx-auto">
-                    <h5 className="font-bold text-secondary mb-[1vw]">
-                        Jadwal Bimbingan
-                    </h5>
-                    <hr className="border-secondary" />
-                    <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                        <tbody>
-                            <tr>
-                                <td>Tanggal</td>
-                                <td className="font-bold text-right">
-                                    {data.schedule != ""
-                                        ? moment(data.schedule).format(
-                                              "dddd, DD MMMM YYYY"
-                                          )
-                                        : "-"}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <hr className="border-black" />
-                    <table
-                        className={`w-full font-poppins border-separate border-spacing-y-3 my-1 ${
-                            data.place != "" ? "" : "hidden"
-                        }`}
-                    >
-                        <tbody>
-                            <tr>
-                                <td>Lokasi</td>
-                                <td className="font-bold text-right">
-                                    {data.place != "" ? data.place : "-"}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <hr
-                        className={`border-black ${
-                            data.place != "" ? "" : "hidden"
-                        }`}
-                    />
-                </div>
-                <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
-            </div>
-            <div
-                className={`relative border-1 md:rounded-[1vw] md:p-[1.75vw] text-xs h-fit ${
-                    data.topic ? "" : "hidden"
-                }`}
-            >
-                <div className="container md:w-full mx-auto">
-                    <h5 className="font-bold text-secondary mb-[1vw]">
-                        Catatan untuk Tutor
-                    </h5>
-                    <hr className="border-secondary" />
-                    <p
-                        className="font-poppins md:font-medium leading-[5vw] md:leading-[1.25vw] my-[4vw] md:my-[1vw] text-[3.4vw] md:text-[.9vw] cursor-pointer"
-                        onClick={() => setShowNote(!showNote)}
-                    >
-                        {showNote
-                            ? data.topic.split(" ").length > 15
-                                ? data.topic.split(" ").slice(0, 15).join(" ") +
-                                  "..."
-                                : data.topic
-                            : data.topic}
-                    </p>
-                    <hr className="border-black" />
-                </div>
-                <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
-            </div>
             <div
                 className={`relative border-1 md:rounded-[1vw] md:p-[1.75vw] text-xs h-fit text-[3.4vw] md:text-[.9vw] ${
                     data.document ? "" : "hidden"

@@ -2,7 +2,7 @@ import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "../TECollapseItem";
 import ExpandedButton from "../ExpandedButton";
 
-function GoalsSelectInput ({ show, setShow, label="", placeholder="Pilih satu", data="", error="", icon="", chevronIcon="", className, children }) {
+function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih satu", data="", error="", icon="", chevronIcon="", className, children }) {
     return (
         <div>
             {label != "" ? (
@@ -41,7 +41,7 @@ function GoalsSelectInput ({ show, setShow, label="", placeholder="Pilih satu", 
     )
 }
 
-function GoalsSelectInputItem ({ className, onClick, children }) {
+function GoalsSelectMultipleInputItem ({ className, onClick, children }) {
     return (
         <div onClick={onClick} className={`hover:bg-skin cursor-pointer p-[1vw] ${className}`}>
             {children}
@@ -49,4 +49,4 @@ function GoalsSelectInputItem ({ className, onClick, children }) {
     )
 }
 
-export {GoalsSelectInput, GoalsSelectInputItem}
+export {GoalsSelectMultipleInput, GoalsSelectMultipleInputItem}
