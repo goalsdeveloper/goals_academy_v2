@@ -5,7 +5,6 @@ import ButtonPill from "@/Components/ButtonPill";
 import ExpandedButton from "@/Components/ExpandedButton";
 import { useForm } from "@inertiajs/react";
 import "@/script/momentCustomLocale";
-import AddOnForm from "../Partials/Purchase/Form/AddOnForm";
 import PromoForm from "../Partials/Purchase/Form/PromoForm";
 import PurchaseMethodForm from "../Partials/Purchase/Form/PurchaseMethodForm";
 import { createTheme } from "@mui/material";
@@ -224,7 +223,6 @@ function MainCard({
     topics,
     rules,
 }) {
-    const [showAddOnForm, setShowAddOnForm] = useState(false);
     const [showForm, setShowForm] = useState({
         schedule: false,
         city: false,
@@ -244,11 +242,11 @@ function MainCard({
     });
 
     const showFormHandler = (key, value) => {
-        temp = {...showForm}
-        Object.keys(temp).forEach(i => {
-            i == key ? temp[i] = value : temp[i] = false}
+        const tempShowForm = {...showForm}
+        Object.keys(tempShowForm).forEach(i => {
+            i == key ? tempShowForm[i] = value : tempShowForm[i] = false}
         )
-        setShowForm(temp)
+        setShowForm(tempShowForm)
     }
 
     return (
@@ -279,7 +277,7 @@ function MainCard({
                 </div>
                 <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" />
                 <div className="md:hidden h-[4vw] bg-slate-100"></div>
-                <div className="container md:w-full mx-auto grid grid-cols-2 gap-[4vw] md:gap-[1vw]">
+                <div className="container md:w-full mx-auto grid grid-cols-2 gap-[4vw] md:gap-[1vw] text-[.9vw]">
                     <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
                         <GoalsDatePicker
                             show={showForm.schedule}
@@ -390,51 +388,110 @@ function MainCard({
                                 )
                             })}
                         </GoalsSelectInput>
-                        <GoalsSelectMultipleInput show={showForm.addOn} setShow={(i) => showFormHandler("addOn", i)} label="Add-On" placeholder="Tambah Add-On" data={data.add_on}>
-                            {topics.map((item, index) => {
+                        <GoalsSelectMultipleInput
+                            show={showForm.addOn}
+                            setShow={(i) => {
+                                if (!(
+                                    data.add_on.every(
+                                        (i) =>
+                                            temp.add_on.filter(
+                                                (j) => j.id == i.id
+                                            ).length
+                                    ) &&
+                                    temp.add_on.every(
+                                        (i) =>
+                                            data.add_on.filter(
+                                                (j) => j.id == i.id
+                                            ).length
+                                    )
+                                )) {
+                                    setTemp("add_on", data.add_on)
+                                }
+                                showFormHandler("addOn", i)
+                            }}
+                            label="Add-On"
+                            placeholder="Tambah Add-On"
+                            data={data.add_on}
+                            onClick={() => {
+                                if (
+                                    !(
+                                        data.add_on.length == 0 &&
+                                        temp.add_on.length == 0
+                                    ) &&
+                                    !(
+                                        data.add_on.every(
+                                            (i) =>
+                                                temp.add_on.filter(
+                                                    (j) => j.id == i.id
+                                                ).length
+                                        ) &&
+                                        temp.add_on.every(
+                                            (i) =>
+                                                data.add_on.filter(
+                                                    (j) => j.id == i.id
+                                                ).length
+                                        )
+                                    )
+                                ) {
+                                    let addOnPrice = 0
+                                    if (temp.add_on.length) {
+                                        addOnPrice = temp.add_on
+                                            .map((i) => parseFloat(i.price))
+                                            .reduce((total, i) => parseFloat(total) + parseFloat(i))
+                                    } else {
+                                        addOnPrice = 0
+                                    }
+                                    let adminFee = 0
+                                    if (data.purchase_method != "") {
+                                        if (parseInt(data.purchase_method.is_price)) {
+                                            adminFee = parseFloat(data.purchase_method.admin_fee)
+                                        } else {
+                                            adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(data.discount) + addOnPrice) * parseFloat(data.purchase_method.admin_fee) / 100)
+                                        }
+                                    }
+                                    const totalPrice = parseFloat(data.init_price) - parseFloat(data.discount) + addOnPrice + adminFee
+                                    setData({
+                                        ...data,
+                                        add_on: temp.add_on,
+                                        add_on_price: addOnPrice,
+                                        admin: adminFee,
+                                        total_price: totalPrice
+                                    });
+                                }
+                            }}
+                        >
+                            {availableAddOn.map((item, index) => {
                                 return (
-                                    <GoalsSelectMultipleInputItem key={index} onClick={() => setData("add_on", item)}>
-                                        {item}
+                                    <GoalsSelectMultipleInputItem
+                                        key={index}
+                                        checked={
+                                            temp.add_on.filter((i) => i.id == item.id).length
+                                        }
+                                        onClick={() => {
+                                            if (
+                                                temp.add_on.filter(
+                                                    (i) => i.id == item.id
+                                                ).length
+                                            ) {
+                                                setTemp(
+                                                    "add_on",
+                                                    temp.add_on.filter(
+                                                        (i) => i.id != item.id
+                                                    )
+                                                );
+                                            } else {
+                                                const tempAddOn = temp.add_on.slice();
+                                                tempAddOn.push(item);
+                                                setTemp("add_on", tempAddOn);
+                                            }
+                                        }
+                                        }
+                                    >
+                                        {item.name}
                                     </GoalsSelectMultipleInputItem>
                                 )
                             })}
                         </GoalsSelectMultipleInput>
-                        <div className={"add_on" in rules ? "" : "hidden"}>
-                            <p className="mb-[2vw] md:mb-[.5vw]">
-                                Add-On
-                                {"add_on" in rules
-                                    ? rules.add_on
-                                        ? ""
-                                        : " (opsional)"
-                                    : ""}
-                                :
-                            </p>
-                            <ExpandedButton
-                                className={`rounded-[1vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw] border-1 outline outline-1 ${
-                                    data.add_on.length
-                                        ? "border-secondary outline-secondary text-secondary"
-                                        : "outline-light-grey text-light-grey"
-                                }`}
-                                iconClassName={`group-hover:text-white ${
-                                    data.add_on.length ? "text-grey" : ""
-                                }`}
-                                onClick={() => setShowAddOnForm(true)}
-                            >
-                                <i className="fa-solid fa-plus"></i>&nbsp;&nbsp;
-                                {data.add_on.length
-                                    ? "Add-On telah dipilih"
-                                    : "Pilih Add-On"}
-                            </ExpandedButton>
-                            <AddOnForm
-                                show={showAddOnForm}
-                                setShow={setShowAddOnForm}
-                                data={data}
-                                setData={setData}
-                                temp={temp}
-                                setTemp={setTemp}
-                                availableAddOn={availableAddOn}
-                            />
-                        </div>
                     </div>
                     <div>
                         <div
@@ -575,41 +632,6 @@ function SummaryCard({
                         </tbody>
                     </table>
                     <hr className="border-black" />
-                </div>
-                <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
-            </div>
-            <div
-                className={`relative border-1 md:rounded-[1vw] md:p-[1.75vw] text-xs h-fit text-[3.4vw] md:text-[.9vw] ${
-                    data.add_on.length ? "" : "hidden"
-                }`}
-            >
-                <div className="container md:w-full mx-auto">
-                    <h5 className="font-bold text-secondary mb-[1vw]">
-                        Add-On
-                    </h5>
-                    <hr className="border-secondary" />
-                    {data.add_on
-                        .sort((x, y) => x.id - y.id)
-                        .map((item, index) => {
-                            return (
-                                <div key={index}>
-                                    <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                                        <tbody>
-                                            <tr>
-                                                <td>{item.name}</td>
-                                                <td className="font-bold text-right">
-                                                    IDR{" "}
-                                                    {currency.format(
-                                                        item.price
-                                                    )}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <hr className="border-black" />
-                                </div>
-                            );
-                        })}
                 </div>
                 <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
             </div>

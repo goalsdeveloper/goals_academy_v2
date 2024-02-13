@@ -4,7 +4,7 @@ import ExpandedButton from "../ExpandedButton";
 
 function GoalsSelectInput ({ show, setShow, label="", placeholder="Pilih satu", data="", error="", icon="", chevronIcon="", className, children }) {
     return (
-        <div>
+        <div className="text-inherit">
             {label != "" ? (
                 <p className="mb-[.5vw]">{label}</p>
             ) : (<></>)}
