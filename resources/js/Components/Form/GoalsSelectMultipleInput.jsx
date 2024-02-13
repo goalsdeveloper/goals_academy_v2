@@ -1,8 +1,9 @@
 import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "../TECollapseItem";
 import ExpandedButton from "../ExpandedButton";
+import GoalsButton from "../GoalsButton";
 
-function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih satu", data="", error="", icon="", chevronIcon="", className, children }) {
+function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih satu", data=[], error="", icon="", chevronIcon="", className, children, onClick }) {
     return (
         <div>
             {label != "" ? (
@@ -10,7 +11,7 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
             ) : (<></>)}
             <ExpandedButton
                 className={`rounded-[1vw] md:rounded-[.4vw] h-[9vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] cursor-pointer ${
-                    data != ""
+                    data.length > 0
                         ? "border-2 border-secondary text-secondary"
                         : "border-1 border-light-grey text-light-grey"
                 } ${className}`}
@@ -23,13 +24,20 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
                         &nbsp;&nbsp;
                     </>
                 ) : (<></>)}
-                {data != "" ? (data) : (placeholder)}
+                {data.length > 0 ? 'Add-On ditambahkan' : (placeholder)}
             </ExpandedButton>
             <div className="relative">
-                <TECollapse show={show} className={`${show ? "" : "hidden"} absolute z-50 w-[120%] shadow-none -translate-x-[8.25%] -translate-y-[2.5vw] px-[10%] py-[1vw]`} onClick={() => setShow(false)}>
+                <TECollapse show={show} className={`${show ? "" : "hidden"} absolute z-50 w-[120%] shadow-none -translate-x-[8.25%] -translate-y-[2.5vw] px-[10%] py-[1vw]`}>
                     <TECollapseItem className="bg-white w-full border-1 rounded-[.5vw] shadow-md">
                         <div className="h-full max-h-[16vw] overflow-y-auto">
                             {children}
+                        </div>
+                        <hr />
+                        <div className="flex justify-center md:justify-end mt-[.5vw] p-[.5vw]">
+                            <GoalsButton className="w-6/12 md:w-[30%] rounded-[.5vw]" onClick={() => {
+                                onClick()
+                                setShow(false)
+                            }}>Simpan</GoalsButton>
                         </div>
                     </TECollapseItem>
                 </TECollapse>
@@ -41,10 +49,13 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
     )
 }
 
-function GoalsSelectMultipleInputItem ({ className, onClick, children }) {
+function GoalsSelectMultipleInputItem ({ className, checked=true, onClick, children }) {
     return (
-        <div onClick={onClick} className={`hover:bg-skin cursor-pointer p-[1vw] ${className}`}>
-            {children}
+        <div onClick={onClick} className={`flex items-center gap-[.5vw] hover:bg-skin cursor-pointer p-[1vw] ${className}`}>
+            <div className={`w-[1.2vw] h-[1.2vw] flex items-center justify-center rounded-[.2vw] border-1 ${checked ? 'border-secondary bg-secondary' : 'border-light-grey bg-white'}`}>
+                <i className="fa-solid fa-check text-[.75vw] text-white"></i>
+            </div>
+            <span>{children}</span>
         </div>
     )
 }
