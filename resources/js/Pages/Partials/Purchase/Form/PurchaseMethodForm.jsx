@@ -49,12 +49,11 @@ export default function PurchaseMethodForm({
                                     return (
                                         <ExpandedButton
                                             key={i}
-                                            className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
+                                            className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] border-transparent ${
                                                 temp.purchase_method == item
                                                     ? "border-secondary"
                                                     : ""
                                             }`}
-                                            borderClassName="border-0"
                                             onClick={() => {
                                                 setTemp('purchase_method', item);
                                             }}
@@ -83,12 +82,11 @@ export default function PurchaseMethodForm({
                                     return (
                                         <ExpandedButton
                                             key={i}
-                                            className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
+                                            className={`spread rounded-sm border-2 border-transparent hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
                                                 temp.purchase_method == item
                                                     ? "border-secondary"
                                                     : ""
                                             }`}
-                                            borderClassName="border-0"
                                             onClick={() => {
                                                 setTemp('purchase_method', item);
                                             }}
