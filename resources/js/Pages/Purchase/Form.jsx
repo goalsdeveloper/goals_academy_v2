@@ -17,7 +17,7 @@ import {
     GoalsSelectMultipleInput,
     GoalsSelectMultipleInputItem,
 } from "@/Components/Form/GoalsSelectMultipleInput";
-import UploadFile from "@/Components/Form/GoalsUploadFile";
+import GoalsUploadFile from "@/Components/Form/GoalsUploadFile";
 
 export default function Form({ auth, date, dataProduct, paymentMethods }) {
     const userId = auth.user.id;
@@ -237,9 +237,6 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
                         submit={submit}
                         rules={rules}
                     />
-                    <div>
-                        
-                    </div>
                 </div>
             </section>
         </MainLayout>
@@ -588,7 +585,7 @@ function MainCard({
                             })}
                         </GoalsSelectMultipleInput>
                     </div>
-                    <UploadFile
+                    <GoalsUploadFile
                         data={data}
                         removeFile={(i) => {
                             setData(

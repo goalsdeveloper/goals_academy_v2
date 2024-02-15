@@ -2,30 +2,50 @@ import { useDropzone } from "react-dropzone";
 import FileIcon from "/resources/img/icon/file.svg";
 import { FiUploadCloud, FiX } from "react-icons/fi";
 
-export default function GoalsUploadFile({ data, setData, removeFile }) {
-    const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
-        useDropzone({
-            accept: {
-                "application/pdf": [],
-                "application/msword": [],
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                    [],
-            },
-            maxFiles: 3,
-            maxSize: 10000000,
-            onDrop: (acceptedFiles) => {
-                setData(acceptedFiles);
-            },
-        });
+export default function GoalsUploadFile({
+    data,
+    setData,
+    removeFile,
+    fileLimit = 3,
+}) {
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        accept: {
+            "application/pdf": [],
+            "application/msword": [],
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                [],
+        },
+        maxFiles: fileLimit,
+        maxSize: 10000000,
+        onDrop: (acceptedFiles) => {
+            console.log(data["document"].length);
+            if (
+                acceptedFiles.length > fileLimit ||
+                data["document"].length > fileLimit - 1
+            ) {
+                alert("Maksimal 3 file");
+                return;
+            }
+
+            const totalSize = acceptedFiles.reduce(
+                (acc, file) => acc + file.size,
+                0
+            );
+
+            if (totalSize > 10000000) {
+                alert("Maksimal ukuran file adalah 10MB");
+                return;
+            }
+
+            setData(acceptedFiles);
+        },
+    });
 
     const acceptedFileItems =
         data["document"] &&
-        data["document"].map((file) => {
+        data["document"].map((file, i) => {
             return (
-                <li
-                    key={file.path}
-                    className="h-[8vw] md:h-[2.5vw] rounded-md flex"
-                >
+                <li key={i} className="h-[8vw] md:h-[2.5vw] rounded-md flex">
                     <img
                         src={FileIcon}
                         alt="file-icon"
@@ -33,7 +53,7 @@ export default function GoalsUploadFile({ data, setData, removeFile }) {
                     />
 
                     <div className="flex items-center justify-between w-full pl-[1vw] py-[1vw] pr-[.5vw] border border-l-0 border-neutral-40 rounded-r">
-                        <p className="flex-1">{file.path}</p>
+                        <p className="flex-1 line-clamp-1">{file.path}</p>
 
                         <button
                             type="button"
