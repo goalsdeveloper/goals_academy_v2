@@ -24,7 +24,13 @@ export default {
         },
         extend: {
             colors: {
+                "neutral": {
+                    "20": "#D9D9D9",
+                    "40": "#A6A6A6",
+                },
                 'primary': '#FF6420',
+                'primary-10': '#FFEDE5',
+                'primary-40': '#FF8854',
                 'secondary': '#FF8854',
                 'skin': '#FFDFD1',
                 'soft': '#FFF6F3',
