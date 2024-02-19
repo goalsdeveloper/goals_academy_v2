@@ -102,35 +102,35 @@ class DatabaseSeeder extends Seeder
             'description' => 'Dibimbing Skripsi Hingga Tuntas',
         ]);
         Category::create([
-            'name' => 'Dibimbing Sekali',
-            'slug' => 'dibimbing-sekali',
-            'is_visible' => true,
-            'description' => 'Dibimbing sekali online/offline',
-        ]);
-        Category::create([
-            'name' => 'Dibimbing Sekali Online',
-            'slug' => 'dibimbing-sekali-online',
-            'is_visible' => true,
-            'description' => 'Dibimbing secara online',
-        ]);
-        Category::create([
-            'name' => 'Dibimbing Sekali Offline',
-            'slug' => 'dibimbing-sekali-offline',
-            'is_visible' => true,
-            'description' => 'Dibimbing secara offline',
-        ]);
-        ProductType::create([
-            'type' => 'Bimbingan',
+            'name' => 'Bimbingan',
             'slug' => 'bimbingan',
+            'is_visible' => true,
+            'description' => 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae, facere.',
         ]);
-        ProductType::create([
-            'type' => 'E-book',
-            'slug' => 'e-book',
-        ]);
-        ProductType::create([
-            'type' => 'Webinar',
+        Category::create([
+            'name' => 'Webinar',
             'slug' => 'webinar',
+            'is_visible' => true,
+            'description' => 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae, facere.',
         ]);
+        Category::create([
+            'name' => 'E-Course',
+            'slug' => 'e-course',
+            'is_visible' => true,
+            'description' => 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae, facere.',
+        ]);
+        // ProductType::create([
+        //     'type' => 'Bimbingan',
+        //     'slug' => 'bimbingan',
+        // ]);
+        // ProductType::create([
+        //     'type' => 'E-book',
+        //     'slug' => 'e-book',
+        // ]);
+        // ProductType::create([
+        //     'type' => 'Webinar',
+        //     'slug' => 'webinar',
+        // ]);
 
         PaymentMethod::create([
             'name' => 'QRIS',
@@ -194,7 +194,6 @@ class DatabaseSeeder extends Seeder
             'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
             'price' => 47000,
             'product_image' => 'resource/img/program/dibimbing-online-30.png',
-            'product_type_id' => 1,
             'duration' => 30,
             'total_meet' => 1,
             'active_period' => 30,
@@ -209,7 +208,6 @@ class DatabaseSeeder extends Seeder
             'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
             'price' => 69000,
             'product_image' => 'resource/img/program/dibimbing-online-45.png',
-            'product_type_id' => 1,
             'duration' => 45,
             'total_meet' => 1,
             'active_period' => 30,
@@ -224,7 +222,6 @@ class DatabaseSeeder extends Seeder
             'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
             'price' => 120000,
             'product_image' => 'resource/img/program/dibimbing-offline-60.png',
-            'product_type_id' => 1,
             'duration' => 60,
             'total_meet' => 1,
             'active_period' => 30,
@@ -239,7 +236,7 @@ class DatabaseSeeder extends Seeder
             'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
             'price' => 15000,
             'product_image' => 'resource/img/ebook/1.png',
-            'product_type_id' => 2,
+            // 'product_type_id' => 2,
             'duration' => 60,
             'total_meet' => 1,
             'active_period' => 30,
@@ -254,7 +251,7 @@ class DatabaseSeeder extends Seeder
             'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
             'price' => 49000,
             'product_image' => 'resource/img/webinar/1.png',
-            'product_type_id' => 3,
+            // 'product_type_id' => 3,
             'duration' => 60,
             'total_meet' => 1,
             'active_period' => 30,

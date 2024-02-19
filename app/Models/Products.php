@@ -20,7 +20,6 @@ class Products extends Model
         'total_meet',
         'active_period',
         'webinar_properties',
-        'product_type_id',
         'category_id',
         'product_image',
         'is_visible',
