@@ -40,7 +40,7 @@ export default function PurchaseMethodForm({
                     show
                         ? "md:top-0 bottom-0 md:scale-100"
                         : "md:top-full -bottom-full md:scale-0"
-                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[.5vw] p-[8vw] md:px-[1.75vw] md:py-[2vw] z-50 md:ms-[35vw] md:mt-[8vh] max-h-[82vh]`}
+                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[.5vw] p-[8vw] md:px-[1.75vw] md:py-[2vw] z-50 md:ms-[35vw] md:mt-[8vh] max-h-[84vh]`}
             >
                 <div>
                     <div className="flex justify-between items-center mb-[3vw] md:mb-[1vw]">
