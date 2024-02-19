@@ -5,14 +5,13 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\AddOn;
-use App\Models\User;
-use App\Models\Order;
 use App\Models\Category;
-use App\Models\Products;
-use App\Models\PromoCode;
-use App\Models\UserProfile;
-use App\Models\CourseSession;
 use App\Models\PaymentMethod;
+use App\Models\Products;
+use App\Models\ProductType;
+use App\Models\PromoCode;
+use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -111,28 +110,26 @@ class DatabaseSeeder extends Seeder
         Category::create([
             'name' => 'Dibimbing Sekali Online',
             'slug' => 'dibimbing-sekali-online',
-            'parent_id' => '1',
             'is_visible' => true,
             'description' => 'Dibimbing secara online',
         ]);
         Category::create([
             'name' => 'Dibimbing Sekali Offline',
             'slug' => 'dibimbing-sekali-offline',
-            'parent_id' => '1',
             'is_visible' => true,
             'description' => 'Dibimbing secara offline',
         ]);
-        Category::create([
-            'name' => 'E-book',
-            'slug' => 'e-book',
-            'is_visible' => true,
-            'description' => 'E-book yang dapat di download',
+        ProductType::create([
+            'type' => 'Bimbingan',
+            'slug' => 'bimbingan',
         ]);
-        Category::create([
-            'name' => 'Webinar',
+        ProductType::create([
+            'type' => 'E-book',
+            'slug' => 'e-book',
+        ]);
+        ProductType::create([
+            'type' => 'Webinar',
             'slug' => 'webinar',
-            'is_visible' => true,
-            'description' => 'Webinar seru dan informatif',
         ]);
 
         PaymentMethod::create([
@@ -184,7 +181,7 @@ class DatabaseSeeder extends Seeder
             'value' => 15000,
             'is_price' => true,
             'date_start' => today()->addDay(),
-            'date_end'  => today()->addWeek()
+            'date_end' => today()->addWeek(),
         ]);
         PromoCode::factory(9)->create();
 
@@ -193,51 +190,70 @@ class DatabaseSeeder extends Seeder
             'slug' => 'dibimbing-online-30-menit',
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.',
-            'features' => array(["times" => "1", "duration" => "30", "category" => "online"]),
+            'facilities' => array(["times" => "1", "duration" => "30", "category" => "online"]),
             'price' => 47000,
             'product_image' => 'resource/img/program/dibimbing-online-30.png',
+            'product_type_id' => 1,
+            'duration' => 30,
+            'total_meet' => 1,
+            'active_period' => 30,
+            'number_list' => 1,
         ]);
         Products::create([
             'name' => 'Dibimbing Online 45 Menit',
             'slug' => 'dibimbing-online-45-menit',
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
-            'features' => array(["times" => "1", "duration" => "45", "category" => "online"]),
+            'facilities' => array(["times" => "1", "duration" => "45", "category" => "online"]),
             'price' => 69000,
             'product_image' => 'resource/img/program/dibimbing-online-45.png',
+            'product_type_id' => 1,
+            'duration' => 45,
+            'total_meet' => 1,
+            'active_period' => 30,
+            'number_list' => 2,
         ]);
         Products::create([
             'name' => 'Dibimbing Offline 60 Menit',
             'slug' => 'dibimbing-offline-60-menit',
             'excerpt' => 'Bimbingan personal 1-on-1 secara tatap',
             'description' => 'Bimbingan personal 1-on-1 secara tatap muka selama 60 Menit, khusus area Kota Malang.',
-            'features' => array(
-                ["times" => "1", "duration" => "60", "category" => "offline"]
-            ),
+            'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
             'price' => 120000,
             'product_image' => 'resource/img/program/dibimbing-offline-60.png',
+            'product_type_id' => 1,
+            'duration' => 60,
+            'total_meet' => 1,
+            'active_period' => 30,
+            'number_list' => 3,
         ]);
         Products::create([
             'name' => 'How To Survive Your Thesis? Start with Theme',
             'slug' => 'how-to-survive-your-thesis-?-start-with-theme',
             'excerpt' => '',
             'description' => ' ',
-            'features' => array(
-                ["times" => " ", "duration" => " ", "category" => " "]
-            ),
+            'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
             'price' => 15000,
             'product_image' => 'resource/img/ebook/1.png',
+            'product_type_id' => 2,
+            'duration' => 60,
+            'total_meet' => 1,
+            'active_period' => 30,
+            'number_list' => 4,
         ]);
         Products::create([
             'name' => 'Webinar A',
             'slug' => 'webinar-a',
             'excerpt' => ' ',
             'description' => ' ',
-            'features' => array(
-                ["times" => " ", "duration" => " ", "category" => " "]
-            ),
+            'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
             'price' => 49000,
             'product_image' => 'resource/img/webinar/1.png',
+            'product_type_id' => 3,
+            'duration' => 60,
+            'total_meet' => 1,
+            'active_period' => 30,
+            'number_list' => 5,
         ]);
 
         AddOn::create([
