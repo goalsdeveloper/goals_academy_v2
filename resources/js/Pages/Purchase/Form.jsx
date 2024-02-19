@@ -1,13 +1,6 @@
-import { useState } from "react";
-import moment from "moment";
-import MainLayout from "@/Layouts/MainLayout";
 import ButtonPill from "@/Components/ButtonPill";
+import GoalsButton from "@/Components/GoalsButton";
 import ExpandedButton from "@/Components/ExpandedButton";
-import { useForm } from "@inertiajs/react";
-import "@/script/momentCustomLocale";
-import PromoForm from "../Partials/Purchase/Form/PromoForm";
-import PurchaseMethodForm from "../Partials/Purchase/Form/PurchaseMethodForm";
-import { createTheme } from "@mui/material";
 import GoalsDatePicker from "@/Components/Form/GoalsDatePicker";
 import {
     GoalsSelectInput,
@@ -18,6 +11,16 @@ import {
     GoalsSelectMultipleInputItem,
 } from "@/Components/Form/GoalsSelectMultipleInput";
 import GoalsUploadFile from "@/Components/Form/GoalsUploadFile";
+import MainLayout from "@/Layouts/MainLayout";
+import "@/script/momentCustomLocale";
+import { useForm } from "@inertiajs/react";
+import { createTheme } from "@mui/material";
+import moment from "moment";
+import { useState } from "react";
+import LengkapiProfilForm from "../Partials/Purchase/Form/LengkapiProfilForm";
+import PromoForm from "../Partials/Purchase/Form/PromoForm";
+import PurchaseMethodForm from "../Partials/Purchase/Form/PurchaseMethodForm";
+import { FiInfo } from "react-icons/fi";
 
 export default function Form({ auth, date, dataProduct, paymentMethods }) {
     const userId = auth.user.id;
@@ -211,32 +214,35 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
                 id="purchase-form"
                 className="mb-[12vw] md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32"
             >
-                <div className="md:container mx-auto pt-[12vw] md:pt-[1vw] flex flex-col md:flex-row justify-between text-[3.5vw] md:text-[1vw] gap-[4vw] md:gap-0">
-                    <MainCard
-                        dataProduct={dataProduct}
-                        data={data}
-                        setData={setData}
-                        temp={temp}
-                        setTemp={setTemp}
-                        unavailableDate={unavailableDate}
-                        availableAddOn={availableAddOn}
-                        cities={cities}
-                        places={places}
-                        topics={topics}
-                        rules={rules}
-                    />
-                    <SummaryCard
-                        dataProduct={dataProduct}
-                        data={data}
-                        setData={setData}
-                        temp={temp}
-                        setTemp={setTemp}
-                        purchaseMethods={purchaseMethods}
-                        totalPrice={data.total_price}
-                        promoHandler={promoHandler}
-                        submit={submit}
-                        rules={rules}
-                    />
+                <div className="md:container mx-auto pt-[12vw] md:pt-[1vw] justify-between text-[3.5vw] md:text-[1vw] space-y-[1vw]">
+                    <div className="flex flex-col md:flex-row gap-[4vw] md:gap-0">
+                        <MainCard
+                            dataProduct={dataProduct}
+                            data={data}
+                            setData={setData}
+                            temp={temp}
+                            setTemp={setTemp}
+                            unavailableDate={unavailableDate}
+                            availableAddOn={availableAddOn}
+                            cities={cities}
+                            places={places}
+                            topics={topics}
+                            rules={rules}
+                        />
+                        <SummaryCard
+                            dataProduct={dataProduct}
+                            data={data}
+                            setData={setData}
+                            temp={temp}
+                            setTemp={setTemp}
+                            purchaseMethods={purchaseMethods}
+                            totalPrice={data.total_price}
+                            promoHandler={promoHandler}
+                            submit={submit}
+                            rules={rules}
+                        />
+                    </div>
+                    <LengkapiProfilAlert data={data} setData={setData} />
                 </div>
             </section>
         </MainLayout>
@@ -797,3 +803,33 @@ function SummaryCard({
         </div>
     );
 }
+
+const LengkapiProfilAlert = ({ data, setData }) => {
+    const [showLengkapiProfilForm, setShowLengkapiProfilForm] = useState(false);
+
+    return (
+        <div>
+            <LengkapiProfilForm
+                show={showLengkapiProfilForm}
+                setShow={setShowLengkapiProfilForm}
+                data={data}
+                setData={setData}
+            />
+
+            <div className="md:w-[67%] border-1 md:rounded-[1vw] md:p-[1.75vw] h-fit bg-info-10 flex justify-between items-center">
+                <div className="flex items-center gap-[1vw]">
+                    <FiInfo className="text-[2vw] text-info-50" />
+                    <span className="font-semibold text-[.83vw]">
+                        Yuk, lengkapin profilnya agar bisa transaksi !
+                    </span>
+                </div>
+                <button
+                    className="flex items-center bg-info-50 hover:bg-info-30 rounded-[0.4vw] px-[1.6vw] py-[0.6vw] text-[.8vw] text-white"
+                    onClick={() => setShowLengkapiProfilForm(true)}
+                >
+                    Lengkapi Profil
+                </button>
+            </div>
+        </div>
+    );
+};
