@@ -186,11 +186,12 @@ class DatabaseSeeder extends Seeder
         PromoCode::factory(9)->create();
 
         Products::create([
+            'category_id' => 1,
             'name' => 'Dibimbing Online 30 Menit',
             'slug' => 'dibimbing-online-30-menit',
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.',
-            'facilities' => array(["times" => "1", "duration" => "30", "category" => "online"]),
+            'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
             'price' => 47000,
             'product_image' => 'resource/img/program/dibimbing-online-30.png',
             'product_type_id' => 1,
@@ -200,11 +201,12 @@ class DatabaseSeeder extends Seeder
             'number_list' => 1,
         ]);
         Products::create([
+            'category_id' => 1,
             'name' => 'Dibimbing Online 45 Menit',
             'slug' => 'dibimbing-online-45-menit',
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
-            'facilities' => array(["times" => "1", "duration" => "45", "category" => "online"]),
+            'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
             'price' => 69000,
             'product_image' => 'resource/img/program/dibimbing-online-45.png',
             'product_type_id' => 1,
@@ -214,6 +216,7 @@ class DatabaseSeeder extends Seeder
             'number_list' => 2,
         ]);
         Products::create([
+            'category_id' => 1,
             'name' => 'Dibimbing Offline 60 Menit',
             'slug' => 'dibimbing-offline-60-menit',
             'excerpt' => 'Bimbingan personal 1-on-1 secara tatap',
@@ -228,6 +231,7 @@ class DatabaseSeeder extends Seeder
             'number_list' => 3,
         ]);
         Products::create([
+            'category_id' => 1,
             'name' => 'How To Survive Your Thesis? Start with Theme',
             'slug' => 'how-to-survive-your-thesis-?-start-with-theme',
             'excerpt' => '',
@@ -242,6 +246,7 @@ class DatabaseSeeder extends Seeder
             'number_list' => 4,
         ]);
         Products::create([
+            'category_id' => 1,
             'name' => 'Webinar A',
             'slug' => 'webinar-a',
             'excerpt' => ' ',
