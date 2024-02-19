@@ -162,7 +162,7 @@ function NavbarExpand({ auth, title, notificationData, profileImage }) {
     const [profileDropdown, setProfileDropdown] = useState(false);
     return (
         <>
-            <div className="hidden md:grid grid-cols-5 md:gap-[3vw] font-medium text-center text-[4vw] md:text-[1vw]">
+            <div className="hidden md:grid grid-cols-5 md:gap-[3vw] font-medium text-center text-[4vw] md:text-[1vw] select-none">
                 <Link
                     href="/produk"
                     className={`font-poppins hover:text-primary flex justify-center ${
@@ -203,7 +203,7 @@ function NavbarExpand({ auth, title, notificationData, profileImage }) {
                     }`}
                     onMouseEnter={() => setProfileDropdown(true)}
                     onMouseLeave={() => setProfileDropdown(false)}
-                    onClick={() => setProfileDropdown(!profileDropdown)}
+                    // onClick={() => setProfileDropdown(!profileDropdown)}
                 >
                     <span className="hover:text-primary">Profil</span>
                     <TECollapse
@@ -247,9 +247,7 @@ function NavbarExpand({ auth, title, notificationData, profileImage }) {
                         className={`font-poppins flex justify-center cursor-pointer`}
                         onMouseEnter={() => setNotificationDropdown(true)}
                         onMouseLeave={() => setNotificationDropdown(false)}
-                        onClick={() =>
-                            setNotificationDropdown(!notificationDropdown)
-                        }
+                        // onClick={() => setNotificationDropdown(!notificationDropdown) }
                     >
                         <div
                             className={`${
@@ -301,7 +299,7 @@ function NavbarExpand({ auth, title, notificationData, profileImage }) {
                         className={`font-poppins flex justify-center cursor-pointer`}
                         onMouseEnter={() => setAuthDropdown(true)}
                         onMouseLeave={() => setAuthDropdown(false)}
-                        onClick={() => setAuthDropdown(!authDropdown)}
+                        // onClick={() => setAuthDropdown(!authDropdown)}
                     >
                         <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
                             <img

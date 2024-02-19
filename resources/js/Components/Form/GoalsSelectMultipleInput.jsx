@@ -1,7 +1,7 @@
 import { TECollapse } from "tw-elements-react";
-import TECollapseItem from "../TECollapseItem";
-import ExpandedButton from "../ExpandedButton";
-import GoalsButton from "../GoalsButton";
+import TECollapseItem from "@/Components/TECollapseItem";
+import GoalsButton from "@/Components/GoalsButton";
+import ExpandedButton from "@/Components/ExpandedButton";
 
 function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih satu", data=[], error="", icon="", chevronIcon="", className, children, onClick }) {
     return (
@@ -27,7 +27,7 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
                 {data.length > 0 ? 'Add-On ditambahkan' : (placeholder)}
             </ExpandedButton>
             <div className="relative">
-                <TECollapse show={show} className={`${show ? "" : "hidden"} absolute z-50 w-[120%] shadow-none -translate-x-[8.25%] -translate-y-[2.5vw] px-[10%] py-[1vw]`}>
+                <TECollapse show={show} className={`${show ? "" : "hidden"} absolute z-50 w-[120%] shadow-none -translate-x-[8.25%] -translate-y-[1.5vw] px-[10%] pb-[.5vw]`}>
                     <TECollapseItem className="bg-white w-full border-1 rounded-[.5vw] shadow-md">
                         <div className="h-full max-h-[16vw] overflow-y-auto">
                             {children}
