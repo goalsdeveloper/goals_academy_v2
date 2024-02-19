@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\AddOn;
 use App\Models\Products;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,9 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('add_on_products', function (Blueprint $table) {
-            $table->foreignIdFor(AddOn::class)->constrained('add_ons')->cascadeOnDelete();
+        Schema::create('topics', function (Blueprint $table) {
+            $table->id();
             $table->foreignIdFor(Products::class)->constrained('products')->cascadeOnDelete();
+            $table->string('topic');
+            $table->timestamps();
         });
     }
 
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('add_on_products');
+        Schema::dropIfExists('topics');
     }
 };
