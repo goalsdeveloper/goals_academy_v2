@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Notifications\CourseNotification;
 use App\Observers\CourseObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Course extends Model
 {
@@ -23,7 +26,10 @@ class Course extends Model
         'time',
         'ongoing',
         'is_tutor',
-        'is_moderator'
+        'is_moderator',
+        'is_user',
+        'parent_id',
+        'duration_per_meet'
     ];
 
     public function user()
@@ -67,5 +73,14 @@ class Course extends Model
     public function addOns()
     {
         return $this->belongsToMany(AddOn::class);
+    }
+        public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Course::class, 'parent_id');
+    }
+
+    public function child(): HasMany
+    {
+        return $this->hasMany(Course::class, 'parent_id');
     }
 }

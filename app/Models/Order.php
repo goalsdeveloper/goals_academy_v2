@@ -18,7 +18,8 @@ class Order extends Model
         'quantity',
         'unit_price',
         'status',
-        'notes',
+        'topic_id',
+        'add_ons'
     ];
 
     protected $hidden = ['id'];
@@ -51,5 +52,9 @@ class Order extends Model
     public function orderHistory()
     {
         return $this->hasMany(OrderHistory::class);
+    }
+    public function productReview()
+    {
+        return $this->hasMany(ProductReview::class);
     }
 }

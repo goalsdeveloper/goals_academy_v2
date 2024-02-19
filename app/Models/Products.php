@@ -14,17 +14,23 @@ class Products extends Model
         'slug',
         'excerpt',
         'description',
-        'features',
+        'facilities',
         'price',
-        'date_start',
-        'date_end',
+        'duration',
+        'total_meet',
+        'active_period',
+        'webinar_properties',
+        'product_type_id',
+        'category_id',
         'product_image',
         'is_visible',
-        'is_featured',
+        'is_facilities',
+        'number_list',
     ];
 
     protected $casts = [
-        'features' => 'array',
+        // 'features' => 'array',
+        'facilities' => 'array',
     ];
 
     public function order()
@@ -41,4 +47,14 @@ class Products extends Model
     {
         return $this->belongsToMany(AddOn::class);
     }
+    public function topic()
+    {
+        return $this->belongsToMany(Topic::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    
 }
