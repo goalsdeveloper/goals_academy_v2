@@ -618,60 +618,6 @@ function SummaryCard({
     const currency = Intl.NumberFormat("id-ID");
     return (
         <div className="md:w-[30%] md:ms-[3vw] flex flex-col gap-[4vw] md:gap-[2vw]">
-            <div
-                className={`relative border-1 md:rounded-[1vw] md:p-[1.75vw] text-xs h-fit text-[3.4vw] md:text-[.9vw] ${
-                    data.document ? "" : "hidden"
-                }`}
-            >
-                <div className="container md:w-full mx-auto">
-                    <h5 className="font-bold text-secondary mb-[1vw]">
-                        Berkas Pendukung
-                    </h5>
-                    <hr className="border-secondary" />
-                    <table className="w-full font-poppins border-separate border-spacing-y-3 my-[2vw] md:my-1 cursor-pointer">
-                        <tbody>
-                            <tr>
-                                <td>Nama Berkas</td>
-                                <td
-                                    className="font-bold text-right"
-                                    onClick={() =>
-                                        setShowDocument(!showDocument)
-                                    }
-                                >
-                                    {data.document != ""
-                                        ? showDocument
-                                            ? data.document.name.split(" ")
-                                                  .length > 5
-                                                ? data.document.name
-                                                      .split(" ")
-                                                      .slice(0, 5)
-                                                      .join(" ") + "..."
-                                                : data.document.name
-                                            : data.document.name
-                                        : ""}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <hr className="border-black" />
-                    <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
-                        <tbody>
-                            <tr>
-                                <td>Ukuran Berkas</td>
-                                <td className="font-bold text-right">
-                                    {data.document != ""
-                                        ? `${Math.ceil(
-                                              data.document.size / 1024
-                                          )} KB`
-                                        : "-"}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <hr className="border-black" />
-                </div>
-                <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
-            </div>
             <div className="relative border-1 md:rounded-[1vw] pt-[2vw] md:p-[1.75vw] h-fit">
                 <div className="container md:w-full mx-auto">
                     <div className="flex flex-col-reverse md:flex-col gap-[4vw] md:gap-0">
@@ -726,7 +672,9 @@ function SummaryCard({
                                                 parseFloat(data.add_on_price)
                                             ) > 0
                                                 ? `IDR ${currency.format(
-                                                      parseFloat(data.add_on_price)
+                                                      parseFloat(
+                                                          data.add_on_price
+                                                      )
                                                   )}`
                                                 : "-"}
                                         </td>
