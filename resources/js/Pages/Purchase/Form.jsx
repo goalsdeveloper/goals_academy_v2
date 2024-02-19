@@ -6,7 +6,7 @@ import ExpandedButton from "@/Components/ExpandedButton";
 import GoalsDatePicker from "@/Components/Form/GoalsDatePicker";
 import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/Form/GoalsSelectInput";
 import { GoalsSelectMultipleInput, GoalsSelectMultipleInputItem } from "@/Components/Form/GoalsSelectMultipleInput";
-import { useForm } from "@inertiajs/react";
+import GoalsUploadFile from "@/Components/Form/GoalsUploadFile";
 import PromoForm from "@/Pages/Partials/Purchase/Form/PromoForm";
 import PurchaseMethodForm from "@/Pages/Partials/Purchase/Form/PurchaseMethodForm";
 import { createTheme } from "@mui/material";
@@ -20,7 +20,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
         schedule: "",
         city: "",
         place: "",
-        document: "",
+        document: [],
         topic: "",
         init_price: dataProduct.price,
         promo: "",
@@ -64,7 +64,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
     //     : categoriesName.includes("review")
     //     ? "review"
     //     : "";
-    const category = 'offline'
+    const category = "offline";
 
     // Initialize form rules
     let rules = {};
@@ -115,10 +115,19 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
     };
 
     // Initialize Topics
-    const topics = ["Topic 1", "Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6", "Topic 7", "Topic 8"];
+    const topics = [
+        "Topic 1",
+        "Topic 2",
+        "Topic 3",
+        "Topic 4",
+        "Topic 5",
+        "Topic 6",
+        "Topic 7",
+        "Topic 8",
+    ];
 
     // Initialize purchase methods
-    const purchaseMethods = paymentMethods
+    const purchaseMethods = paymentMethods;
 
     // Submit function
     const submit = (e) => {
@@ -141,27 +150,44 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
             .then((response) => {
                 processCallback(false);
                 if ("data" in response) {
-                    let promoDiscount = 0
+                    let promoDiscount = 0;
                     if (parseInt(response.data.is_price)) {
-                        promoDiscount = parseFloat(response.data.value)
+                        promoDiscount = parseFloat(response.data.value);
                     } else {
-                        promoDiscount = (parseFloat(data.init_price) * parseFloat(response.data.value)) / 100
+                        promoDiscount =
+                            (parseFloat(data.init_price) *
+                                parseFloat(response.data.value)) /
+                            100;
                     }
-                    let adminFee = 0
+                    let adminFee = 0;
                     if (data.purchase_method != "") {
                         if (parseInt(data.purchase_method.is_price)) {
-                            adminFee = parseFloat(data.purchase_method.admin_fee)
+                            adminFee = parseFloat(
+                                data.purchase_method.admin_fee
+                            );
                         } else {
-                            adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(promoDiscount) + parseFloat(data.add_on_price)) * parseFloat(data.purchase_method.admin_fee) / 100)
+                            adminFee = Math.ceil(
+                                ((parseFloat(data.init_price) -
+                                    parseFloat(promoDiscount) +
+                                    parseFloat(data.add_on_price)) *
+                                    parseFloat(
+                                        data.purchase_method.admin_fee
+                                    )) /
+                                    100
+                            );
                         }
                     }
-                    const totalPrice = parseFloat(data.init_price) - parseFloat(promoDiscount) + parseFloat(data.add_on_price) + adminFee
+                    const totalPrice =
+                        parseFloat(data.init_price) -
+                        parseFloat(promoDiscount) +
+                        parseFloat(data.add_on_price) +
+                        adminFee;
                     setData({
                         ...data,
                         promo: temp.promo,
                         discount: promoDiscount,
                         admin: adminFee,
-                        total_price: totalPrice
+                        total_price: totalPrice,
                     });
                     alert(response.message);
                     successCallback();
@@ -229,8 +255,8 @@ function MainCard({
         place: false,
         topic: false,
         addOn: false,
-        document: false
-    })
+        document: false,
+    });
     const features = dataProduct.features[0];
     const theme = createTheme({
         typography: {
@@ -242,12 +268,12 @@ function MainCard({
     });
 
     const showFormHandler = (key, value) => {
-        const tempShowForm = {...showForm}
-        Object.keys(tempShowForm).forEach(i => {
-            i == key ? tempShowForm[i] = value : tempShowForm[i] = false}
-        )
-        setShowForm(tempShowForm)
-    }
+        const tempShowForm = { ...showForm };
+        Object.keys(tempShowForm).forEach((i) => {
+            i == key ? (tempShowForm[i] = value) : (tempShowForm[i] = false);
+        });
+        setShowForm(tempShowForm);
+    };
 
     return (
         <div className="md:w-[72%] border-1 md:rounded-[.8vw] md:p-[1.75vw] h-fit">
@@ -284,7 +310,7 @@ function MainCard({
                             setShow={(i) => showFormHandler("schedule", i)}
                             label="Pilih Jadwal Bimbinganmu"
                             data={data.schedule}
-                            setData={i => setData("schedule", i)}
+                            setData={(i) => setData("schedule", i)}
                             minDate={moment()}
                             maxDate={moment().add(6, "days")}
                             shouldDisableDate={unavailableDate}
@@ -325,23 +351,20 @@ function MainCard({
                                     height: "fit-content",
                                     maxHeight: "unset",
                                 },
-                                "& .MuiPickersLayout-contentWrapper":
-                                    {
-                                        width: "100%",
-                                        height: "100%",
-                                    },
-                                "& .MuiDayCalendar-monthContainer":
-                                    {
-                                        width: "100%",
-                                        height: "fit-content",
-                                        position: "relative",
-                                    },
-                                "& .MuiPickersSlideTransition-root":
-                                    {
-                                        width: "100%",
-                                        height: "fit-content",
-                                        minHeight: "unset",
-                                    },
+                                "& .MuiPickersLayout-contentWrapper": {
+                                    width: "100%",
+                                    height: "100%",
+                                },
+                                "& .MuiDayCalendar-monthContainer": {
+                                    width: "100%",
+                                    height: "fit-content",
+                                    position: "relative",
+                                },
+                                "& .MuiPickersSlideTransition-root": {
+                                    width: "100%",
+                                    height: "fit-content",
+                                    minHeight: "unset",
+                                },
                                 "& .MuiDayCalendar-weekDayLabel": {
                                     width: "2.5vw",
                                     height: "2.5vw",
@@ -350,64 +373,101 @@ function MainCard({
                                     width: "2.5vw",
                                     height: "2.5vw",
                                 },
-                                "& .MuiPickersDay-root.Mui-selected":
-                                    { backgroundColor: "#FF8854" },
-                                "& .MuiPickersDay-root.Mui-selected:hover":
-                                    { backgroundColor: "#FF6420" },
-                                "& .MuiPickersYear-yearButton.Mui-selected":
-                                    { backgroundColor: "#FF8854" },
+                                "& .MuiPickersDay-root.Mui-selected": {
+                                    backgroundColor: "#FF8854",
+                                },
+                                "& .MuiPickersDay-root.Mui-selected:hover": {
+                                    backgroundColor: "#FF6420",
+                                },
+                                "& .MuiPickersYear-yearButton.Mui-selected": {
+                                    backgroundColor: "#FF8854",
+                                },
                             }}
                         />
-                        <GoalsSelectInput show={showForm.city} setShow={(i) => showFormHandler("city", i)} label="Kota Bimbingan" placeholder="Pilih Kota" data={data.city}>
+                        <GoalsSelectInput
+                            show={showForm.city}
+                            setShow={(i) => showFormHandler("city", i)}
+                            label="Kota Bimbingan"
+                            placeholder="Pilih Kota"
+                            data={data.city}
+                        >
                             {cities.map((item, index) => {
                                 return (
-                                    <GoalsSelectInputItem key={index} onClick={() => setData("city", item)}>
+                                    <GoalsSelectInputItem
+                                        key={index}
+                                        onClick={() => setData("city", item)}
+                                    >
                                         {item}
                                     </GoalsSelectInputItem>
-                                )
+                                );
                             })}
                         </GoalsSelectInput>
-                        <GoalsSelectInput show={showForm.place} setShow={(i) => showFormHandler("place", i)} label="Lokasi Bimbingan" placeholder="Pilih Lokasi Bimbingan" data={data.place}>
+                        <GoalsSelectInput
+                            show={showForm.place}
+                            setShow={(i) => showFormHandler("place", i)}
+                            label="Lokasi Bimbingan"
+                            placeholder="Pilih Lokasi Bimbingan"
+                            data={data.place}
+                        >
                             {data.city != "" ? (
                                 places[data.city].map((item, index) => {
-                                return (
-                                    <GoalsSelectInputItem key={index} onClick={() => setData("place", item)}>
-                                        {item}
-                                    </GoalsSelectInputItem>
-                                )})
+                                    return (
+                                        <GoalsSelectInputItem
+                                            key={index}
+                                            onClick={() =>
+                                                setData("place", item)
+                                            }
+                                        >
+                                            {item}
+                                        </GoalsSelectInputItem>
+                                    );
+                                })
                             ) : (
-                                <GoalsSelectInputItem>Pilih kota terlebih dahulu</GoalsSelectInputItem>
+                                <GoalsSelectInputItem>
+                                    Pilih kota terlebih dahulu
+                                </GoalsSelectInputItem>
                             )}
                         </GoalsSelectInput>
-                        <GoalsSelectInput show={showForm.topic} setShow={(i) => showFormHandler("topic", i)} label="Topik Bimbingan" placeholder="Pilih Topik Bimbingan" data={data.topic}>
+                        <GoalsSelectInput
+                            show={showForm.topic}
+                            setShow={(i) => showFormHandler("topic", i)}
+                            label="Topik Bimbingan"
+                            placeholder="Pilih Topik Bimbingan"
+                            data={data.topic}
+                        >
                             {topics.map((item, index) => {
                                 return (
-                                    <GoalsSelectInputItem key={index} onClick={() => setData("topic", item)}>
+                                    <GoalsSelectInputItem
+                                        key={index}
+                                        onClick={() => setData("topic", item)}
+                                    >
                                         {item}
                                     </GoalsSelectInputItem>
-                                )
+                                );
                             })}
                         </GoalsSelectInput>
                         <GoalsSelectMultipleInput
                             show={showForm.addOn}
                             setShow={(i) => {
-                                if (!(
-                                    data.add_on.every(
-                                        (i) =>
-                                            temp.add_on.filter(
-                                                (j) => j.id == i.id
-                                            ).length
-                                    ) &&
-                                    temp.add_on.every(
-                                        (i) =>
-                                            data.add_on.filter(
-                                                (j) => j.id == i.id
-                                            ).length
+                                if (
+                                    !(
+                                        data.add_on.every(
+                                            (i) =>
+                                                temp.add_on.filter(
+                                                    (j) => j.id == i.id
+                                                ).length
+                                        ) &&
+                                        temp.add_on.every(
+                                            (i) =>
+                                                data.add_on.filter(
+                                                    (j) => j.id == i.id
+                                                ).length
+                                        )
                                     )
-                                )) {
-                                    setTemp("add_on", data.add_on)
+                                ) {
+                                    setTemp("add_on", data.add_on);
                                 }
-                                showFormHandler("addOn", i)
+                                showFormHandler("addOn", i);
                             }}
                             label="Add-On"
                             placeholder="Tambah Add-On"
@@ -433,29 +493,52 @@ function MainCard({
                                         )
                                     )
                                 ) {
-                                    let addOnPrice = 0
+                                    let addOnPrice = 0;
                                     if (temp.add_on.length) {
                                         addOnPrice = temp.add_on
                                             .map((i) => parseFloat(i.price))
-                                            .reduce((total, i) => parseFloat(total) + parseFloat(i))
+                                            .reduce(
+                                                (total, i) =>
+                                                    parseFloat(total) +
+                                                    parseFloat(i)
+                                            );
                                     } else {
-                                        addOnPrice = 0
+                                        addOnPrice = 0;
                                     }
-                                    let adminFee = 0
+                                    let adminFee = 0;
                                     if (data.purchase_method != "") {
-                                        if (parseInt(data.purchase_method.is_price)) {
-                                            adminFee = parseFloat(data.purchase_method.admin_fee)
+                                        if (
+                                            parseInt(
+                                                data.purchase_method.is_price
+                                            )
+                                        ) {
+                                            adminFee = parseFloat(
+                                                data.purchase_method.admin_fee
+                                            );
                                         } else {
-                                            adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(data.discount) + addOnPrice) * parseFloat(data.purchase_method.admin_fee) / 100)
+                                            adminFee = Math.ceil(
+                                                ((parseFloat(data.init_price) -
+                                                    parseFloat(data.discount) +
+                                                    addOnPrice) *
+                                                    parseFloat(
+                                                        data.purchase_method
+                                                            .admin_fee
+                                                    )) /
+                                                    100
+                                            );
                                         }
                                     }
-                                    const totalPrice = parseFloat(data.init_price) - parseFloat(data.discount) + addOnPrice + adminFee
+                                    const totalPrice =
+                                        parseFloat(data.init_price) -
+                                        parseFloat(data.discount) +
+                                        addOnPrice +
+                                        adminFee;
                                     setData({
                                         ...data,
                                         add_on: temp.add_on,
                                         add_on_price: addOnPrice,
                                         admin: adminFee,
-                                        total_price: totalPrice
+                                        total_price: totalPrice,
                                     });
                                 }
                             }}
@@ -465,7 +548,9 @@ function MainCard({
                                     <GoalsSelectMultipleInputItem
                                         key={index}
                                         checked={
-                                            temp.add_on.filter((i) => i.id == item.id).length
+                                            temp.add_on.filter(
+                                                (i) => i.id == item.id
+                                            ).length
                                         }
                                         onClick={() => {
                                             if (
@@ -480,82 +565,34 @@ function MainCard({
                                                     )
                                                 );
                                             } else {
-                                                const tempAddOn = temp.add_on.slice();
+                                                const tempAddOn =
+                                                    temp.add_on.slice();
                                                 tempAddOn.push(item);
                                                 setTemp("add_on", tempAddOn);
                                             }
-                                        }
-                                        }
+                                        }}
                                     >
                                         {item.name}
                                     </GoalsSelectMultipleInputItem>
-                                )
+                                );
                             })}
                         </GoalsSelectMultipleInput>
                     </div>
-                    <div>
-                        <div
-                            className={`${
-                                "document" in rules ? "" : "hidden"
-                            } flex flex-col text-light-grey`}
-                        >
-                            <label htmlFor="file">
-                                <p className="mb-[2vw] md:mb-[.5vw] text-dark">
-                                    Berkas Pendukung
-                                    {"document" in rules
-                                        ? rules.document
-                                            ? ""
-                                            : " (opsional)"
-                                        : ""}
-                                    :
-                                </p>
-                                <div
-                                    className={`w-full border-1 outline outline-1 rounded-[1vw] md:rounded-[.4vw] flex items-center cursor-pointer overflow-hidden h-[9vw] md:h-[2.5vw] ${
-                                        data.document != 0
-                                            ? "border-secondary outline-secondary"
-                                            : "border-light-grey outline-none"
-                                    }`}
-                                >
-                                    <div
-                                        className={`w-3/12 h-full bg-slate-200 flex justify-center items-center ${
-                                            data.document != 0
-                                                ? "border-e-2 border-secondary"
-                                                : "border-e-1 border-light-grey outline-none"
-                                        }`}
-                                    >
-                                        Pilih File
-                                    </div>
-                                    <div className="w-9/12 px-[3vw] md:px-[1vw] flex justify-between items-center">
-                                        <span
-                                            className={
-                                                data.document != 0
-                                                    ? "text-secondary"
-                                                    : ""
-                                            }
-                                        >
-                                            {data.document != 0
-                                                ? "File telah dipilih"
-                                                : "Belum ada file yang dipilih"}
-                                        </span>
-                                        <i className="fa-solid fa-chevron-right"></i>
-                                    </div>
-                                </div>
-                            </label>
-                            <input
-                                type="file"
-                                name="file"
-                                id="file"
-                                accept=".doc, .docx, .pdf"
-                                className="hidden"
-                                onChange={(e) => {
-                                    setData("document", e.target.files[0]);
-                                }}
-                            />
-                            <p className="text-[2.5vw] md:text-[.8vw] text-light-grey mt-[2.25vw] md:mt-[.75vw]">
-                                PDF, DOCS
-                            </p>
-                        </div>
-                    </div>
+                    <GoalsUploadFile
+                        data={data}
+                        removeFile={(i) => {
+                            setData(
+                                "document",
+                                data.document.filter((j) => j != i)
+                            );
+                        }}
+                        setData={(i) =>
+                            setData({
+                                ...data,
+                                document: data.document.concat(i),
+                            })
+                        }
+                    />
                 </div>
                 <div className="md:hidden h-[4vw] bg-slate-100"></div>
             </div>
@@ -580,8 +617,62 @@ function SummaryCard({
     const [showDocument, setShowDocument] = useState(true);
     const currency = Intl.NumberFormat("id-ID");
     return (
-        <div className="md:w-[28%] md:ms-[1vw] flex flex-col gap-[4vw] md:gap-[2vw] text-[.9vw]">
-            <div className="relative border-1 md:rounded-[.8vw] pt-[2vw] md:p-[1.75vw] h-fit">
+        <div className="md:w-[30%] md:ms-[3vw] flex flex-col gap-[4vw] md:gap-[2vw]">
+            <div
+                className={`relative border-1 md:rounded-[1vw] md:p-[1.75vw] text-xs h-fit text-[3.4vw] md:text-[.9vw] ${
+                    data.document ? "" : "hidden"
+                }`}
+            >
+                <div className="container md:w-full mx-auto">
+                    <h5 className="font-bold text-secondary mb-[1vw]">
+                        Berkas Pendukung
+                    </h5>
+                    <hr className="border-secondary" />
+                    <table className="w-full font-poppins border-separate border-spacing-y-3 my-[2vw] md:my-1 cursor-pointer">
+                        <tbody>
+                            <tr>
+                                <td>Nama Berkas</td>
+                                <td
+                                    className="font-bold text-right"
+                                    onClick={() =>
+                                        setShowDocument(!showDocument)
+                                    }
+                                >
+                                    {data.document != ""
+                                        ? showDocument
+                                            ? data.document.name.split(" ")
+                                                  .length > 5
+                                                ? data.document.name
+                                                      .split(" ")
+                                                      .slice(0, 5)
+                                                      .join(" ") + "..."
+                                                : data.document.name
+                                            : data.document.name
+                                        : ""}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr className="border-black" />
+                    <table className="w-full font-poppins border-separate border-spacing-y-3 my-1">
+                        <tbody>
+                            <tr>
+                                <td>Ukuran Berkas</td>
+                                <td className="font-bold text-right">
+                                    {data.document != ""
+                                        ? `${Math.ceil(
+                                              data.document.size / 1024
+                                          )} KB`
+                                        : "-"}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr className="border-black" />
+                </div>
+                <div className="md:hidden h-[4vw] bg-slate-100 mt-[5vw]"></div>
+            </div>
+            <div className="relative border-1 md:rounded-[1vw] pt-[2vw] md:p-[1.75vw] h-fit">
                 <div className="container md:w-full mx-auto">
                     <div className="flex flex-col-reverse md:flex-col gap-[4vw] md:gap-0">
                         <ExpandedButton
@@ -625,7 +716,19 @@ function SummaryCard({
                                                 ? `IDR ${currency.format(
                                                       data.discount
                                                   )}`
-                                                : "IDR 0"}
+                                                : "-"}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Add-On</td>
+                                        <td className="font-bold text-right">
+                                            {currency.format(
+                                                parseFloat(data.add_on_price)
+                                            ) > 0
+                                                ? `IDR ${currency.format(
+                                                      parseFloat(data.add_on_price)
+                                                  )}`
+                                                : "-"}
                                         </td>
                                     </tr>
                                     <tr>
