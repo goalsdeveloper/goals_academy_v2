@@ -13,6 +13,7 @@ import PurchaseMethodForm from "@/Pages/Partials/Purchase/Form/PurchaseMethodFor
 import { createTheme } from "@mui/material";
 import "@/script/momentCustomLocale";
 import { FiChevronLeft } from "react-icons/fi";
+import { FiInfo } from "react-icons/fi";
 
 export default function Form({ auth, date, dataProduct, paymentMethods }) {
     const userId = auth.user.id;
@@ -232,6 +233,7 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
                         submit={submit}
                         rules={rules}
                     />
+                    <LengkapiProfilAlert data={data} setData={setData} />
                 </div>
             </section>
         </MainLayout>
@@ -882,3 +884,33 @@ function SummaryCard({
         </div>
     );
 }
+
+const LengkapiProfilAlert = ({ data, setData }) => {
+    const [showLengkapiProfilForm, setShowLengkapiProfilForm] = useState(false);
+
+    return (
+        <div>
+            <LengkapiProfilForm
+                show={showLengkapiProfilForm}
+                setShow={setShowLengkapiProfilForm}
+                data={data}
+                setData={setData}
+            />
+
+            <div className="md:w-[67%] border-1 md:rounded-[1vw] md:p-[1.75vw] h-fit bg-info-10 flex justify-between items-center">
+                <div className="flex items-center gap-[1vw]">
+                    <FiInfo className="text-[2vw] text-info-50" />
+                    <span className="font-semibold text-[.83vw]">
+                        Yuk, lengkapin profilnya agar bisa transaksi !
+                    </span>
+                </div>
+                <button
+                    className="flex items-center bg-info-50 hover:bg-info-30 rounded-[0.4vw] px-[1.6vw] py-[0.6vw] text-[.8vw] text-white"
+                    onClick={() => setShowLengkapiProfilForm(true)}
+                >
+                    Lengkapi Profil
+                </button>
+            </div>
+        </div>
+    );
+};
