@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // User::factory(50)->create();
+        User::factory(50)->create();
 
         UserProfile::create([
             'user_id' => 1,
@@ -102,35 +102,35 @@ class DatabaseSeeder extends Seeder
             'description' => 'Dibimbing Skripsi Hingga Tuntas',
         ]);
         Category::create([
-            'name' => 'Bimbingan',
+            'name' => 'Dibimbing Sekali',
+            'slug' => 'dibimbing-sekali',
+            'is_visible' => true,
+            'description' => 'Dibimbing sekali online/offline',
+        ]);
+        Category::create([
+            'name' => 'Dibimbing Sekali Online',
+            'slug' => 'dibimbing-sekali-online',
+            'is_visible' => true,
+            'description' => 'Dibimbing secara online',
+        ]);
+        Category::create([
+            'name' => 'Dibimbing Sekali Offline',
+            'slug' => 'dibimbing-sekali-offline',
+            'is_visible' => true,
+            'description' => 'Dibimbing secara offline',
+        ]);
+        ProductType::create([
+            'type' => 'Bimbingan',
             'slug' => 'bimbingan',
-            'is_visible' => true,
-            'description' => 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae, facere.',
         ]);
-        Category::create([
-            'name' => 'Webinar',
+        ProductType::create([
+            'type' => 'E-book',
+            'slug' => 'e-book',
+        ]);
+        ProductType::create([
+            'type' => 'Webinar',
             'slug' => 'webinar',
-            'is_visible' => true,
-            'description' => 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae, facere.',
         ]);
-        Category::create([
-            'name' => 'E-Course',
-            'slug' => 'e-course',
-            'is_visible' => true,
-            'description' => 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae, facere.',
-        ]);
-        // ProductType::create([
-        //     'type' => 'Bimbingan',
-        //     'slug' => 'bimbingan',
-        // ]);
-        // ProductType::create([
-        //     'type' => 'E-book',
-        //     'slug' => 'e-book',
-        // ]);
-        // ProductType::create([
-        //     'type' => 'Webinar',
-        //     'slug' => 'webinar',
-        // ]);
 
         PaymentMethod::create([
             'name' => 'QRIS',
@@ -191,9 +191,10 @@ class DatabaseSeeder extends Seeder
             'slug' => 'dibimbing-online-30-menit',
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.',
-            'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
+            'facilities' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
             'price' => 47000,
             'product_image' => 'resource/img/program/dibimbing-online-30.png',
+            'product_type_id' => 1,
             'duration' => 30,
             'total_meet' => 1,
             'active_period' => 30,
@@ -205,9 +206,10 @@ class DatabaseSeeder extends Seeder
             'slug' => 'dibimbing-online-45-menit',
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
-            'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
+            'facilities' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
             'price' => 69000,
             'product_image' => 'resource/img/program/dibimbing-online-45.png',
+            'product_type_id' => 1,
             'duration' => 45,
             'total_meet' => 1,
             'active_period' => 30,
@@ -219,9 +221,10 @@ class DatabaseSeeder extends Seeder
             'slug' => 'dibimbing-offline-60-menit',
             'excerpt' => 'Bimbingan personal 1-on-1 secara tatap',
             'description' => 'Bimbingan personal 1-on-1 secara tatap muka selama 60 Menit, khusus area Kota Malang.',
-            'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
+            'facilities' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
             'price' => 120000,
             'product_image' => 'resource/img/program/dibimbing-offline-60.png',
+            'product_type_id' => 1,
             'duration' => 60,
             'total_meet' => 1,
             'active_period' => 30,
@@ -233,10 +236,10 @@ class DatabaseSeeder extends Seeder
             'slug' => 'how-to-survive-your-thesis-?-start-with-theme',
             'excerpt' => '',
             'description' => ' ',
-            'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
+            'facilities' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
             'price' => 15000,
             'product_image' => 'resource/img/ebook/1.png',
-            // 'product_type_id' => 2,
+            'product_type_id' => 2,
             'duration' => 60,
             'total_meet' => 1,
             'active_period' => 30,
@@ -248,10 +251,10 @@ class DatabaseSeeder extends Seeder
             'slug' => 'webinar-a',
             'excerpt' => ' ',
             'description' => ' ',
-            'facilities' => json_encode([['icon'=> 'icon-text', 'text'=> 'text-description']]),
+            'facilities' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
             'price' => 49000,
             'product_image' => 'resource/img/webinar/1.png',
-            // 'product_type_id' => 3,
+            'product_type_id' => 3,
             'duration' => 60,
             'total_meet' => 1,
             'active_period' => 30,

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AddOnController;
+use App\Http\Controllers\CategoryController;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\TutorNote;
@@ -12,6 +14,8 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
+use App\Http\Controllers\UserController;
+use App\Models\AddOn;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 
@@ -78,6 +82,12 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
         return response()->json(['error' => 'File not found'], 404);
     }
 });
+
+
+// admin dashboard
+Route::resource('/category', CategoryController::class)->middleware('auth');
+Route::resource('/addon', AddOnController::class)->middleware('auth');
+Route::resource('/users', UserController::class)->middleware('auth')->except(['update', 'create', 'store', 'destroy']);
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/auth.php';
