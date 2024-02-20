@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "@inertiajs/react";
+import { useForm, Link } from "@inertiajs/react";
 import moment from "moment";
 import MainLayout from "@/Layouts/MainLayout";
 import GoalsButton from "@/Components/GoalsButton";
@@ -12,6 +12,7 @@ import PromoForm from "@/Pages/Partials/Purchase/Form/PromoForm";
 import PurchaseMethodForm from "@/Pages/Partials/Purchase/Form/PurchaseMethodForm";
 import { createTheme } from "@mui/material";
 import "@/script/momentCustomLocale";
+import { FiChevronLeft } from "react-icons/fi";
 
 export default function Form({ auth, date, dataProduct, paymentMethods }) {
     const userId = auth.user.id;
@@ -200,12 +201,12 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
     };
 
     return (
-        <MainLayout auth={auth} title="Purchase">
+        <MainLayout auth={auth} title="Purchase" footerClassName="hidden md:block">
             <section
                 id="purchase-form"
-                className="mb-[12vw] md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32"
+                className="md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32"
             >
-                <div className="md:container mx-auto pt-[12vw] md:pt-[1vw] flex flex-col md:flex-row justify-between text-[3.5vw] md:text-[1vw] gap-[4vw] md:gap-0">
+                <div className="md:container mx-auto pt-[9vw] md:pt-[1vw] flex flex-col md:flex-row justify-between text-[4vw] md:text-[1vw] gap-[4vw] md:gap-0">
                     <MainCard
                         dataProduct={dataProduct}
                         data={data}
@@ -276,11 +277,17 @@ function MainCard({
         setShowForm(tempShowForm);
     };
 
+    const currency = Intl.NumberFormat("id-ID");
+
     return (
-        <div className="md:w-[72%] border-1 md:rounded-[.8vw] md:p-[1.75vw] h-fit">
+        <div className="md:w-[72%] border-t-1 md:border-1 md:rounded-[.8vw] md:p-[1.75vw] h-fit">
             <div className="flex flex-col gap-[4vw] md:gap-0">
-                <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[1vw] md:py-0">
-                    <h3 className="w-8/12 md:w-full text-secondary font-semibold text-[5vw] md:text-[1.8vw]">
+                <div className="md:hidden pt-[4vw] flex flex-col gap-[4vw]">
+                    <Link href="/produk" className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins"><FiChevronLeft className="text-[5vw]" /> Kembali</Link>
+                    <img className="w-full h-[60vw]" src={dataProduct.product_image} alt="" />
+                </div>
+                <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw]">
+                    <h3 className="w-full text-secondary font-semibold text-[5.5vw] md:text-[1.8vw]">
                         {dataProduct.name}
                     </h3>
                     <p>{dataProduct.description}</p>
@@ -301,12 +308,13 @@ function MainCard({
                             </p>
                         </div>
                     </div>
+                    <hr className="md:hidden mt-[3vw]" />
                 </div>
                 <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" />
-                <div className="md:hidden h-[4vw] bg-slate-100"></div>
-                <div className="container md:w-full mx-auto grid grid-cols-2 gap-[4vw] md:gap-[1vw] text-[.9vw]">
-                    <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
+                <div className="container md:w-full mx-auto md:grid grid-cols-2 md:gap-[1vw] md:text-[.9vw]">
+                    <div className="w-full md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
                         <GoalsDatePicker
+                            wrapperClassName="hidden md:block"
                             show={showForm.schedule}
                             setShow={(i) => showFormHandler("schedule", i)}
                             label="Pilih Jadwal Bimbinganmu"
@@ -373,6 +381,86 @@ function MainCard({
                                 "& .MuiPickersDay-root": {
                                     width: "2.5vw",
                                     height: "2.5vw",
+                                },
+                                "& .MuiPickersDay-root.Mui-selected": {
+                                    backgroundColor: "#FF8854",
+                                },
+                                "& .MuiPickersDay-root.Mui-selected:hover": {
+                                    backgroundColor: "#FF6420",
+                                },
+                                "& .MuiPickersYear-yearButton.Mui-selected": {
+                                    backgroundColor: "#FF8854",
+                                },
+                            }}
+                        />
+                        <GoalsDatePicker
+                            wrapperClassName="md:hidden"
+                            show={showForm.schedule}
+                            setShow={(i) => showFormHandler("schedule", i)}
+                            label="Pilih Jadwal Bimbinganmu"
+                            data={data.schedule}
+                            setData={(i) => setData("schedule", i)}
+                            minDate={moment()}
+                            maxDate={moment().add(6, "days")}
+                            shouldDisableDate={unavailableDate}
+                            theme={theme}
+                            slotProps={{
+                                toolbar: { hidden: true },
+                                actionBar: {
+                                    sx: { display: "none" },
+                                },
+                                switchViewButton: {
+                                    sx: { display: "none" },
+                                },
+                                nextIconButton: {
+                                    sx: { fontSize: "7vw" },
+                                },
+                                previousIconButton: {
+                                    sx: { fontSize: "7vw" },
+                                },
+                                calendarHeader: {
+                                    sx: {
+                                        fontSize: "4vw",
+                                        height: "16vw",
+                                        maxHeight: "unset",
+                                        margin: 0,
+                                        padding: "0 0 0 4vw",
+                                    },
+                                },
+                            }}
+                            sx={{
+                                fontSize: "fontSize.4",
+                                minWidth: "unset",
+                                width: "100%",
+                                height: "85vw",
+                                padding: "0 3vw 0",
+                                maxHeight: "unset",
+                                "& .MuiDateCalendar-root": {
+                                    width: "100%",
+                                    height: "fit-content",
+                                    maxHeight: "unset",
+                                },
+                                "& .MuiPickersLayout-contentWrapper": {
+                                    width: "100%",
+                                    height: "100%",
+                                },
+                                "& .MuiDayCalendar-monthContainer": {
+                                    width: "100%",
+                                    height: "fit-content",
+                                    position: "relative",
+                                },
+                                "& .MuiPickersSlideTransition-root": {
+                                    width: "100%",
+                                    height: "fit-content",
+                                    minHeight: "unset",
+                                },
+                                "& .MuiDayCalendar-weekDayLabel": {
+                                    width: "10vw",
+                                    height: "10vw",
+                                },
+                                "& .MuiPickersDay-root": {
+                                    width: "10vw",
+                                    height: "10vw",
                                 },
                                 "& .MuiPickersDay-root.Mui-selected": {
                                     backgroundColor: "#FF8854",
@@ -595,7 +683,15 @@ function MainCard({
                         }
                     />
                 </div>
-                <div className="md:hidden h-[4vw] bg-slate-100"></div>
+                <div className="md:hidden rounded-t-[4vw] border-t-1 py-[4vw]">
+                    <div className="container mx-auto flex justify-between">
+                        <div className="flex flex-col justify-center gap-[1vw]">
+                            <p className="text-[3vw] font-medium">Total</p>
+                            <span className="text-[4.5vw] text-secondary font-bold">IDR {currency.format(dataProduct.price)}</span>
+                        </div>
+                        <GoalsButton className="rounded-[2vw] px-[9vw]">Beli</GoalsButton>
+                    </div>
+                </div>
             </div>
         </div>
     );
@@ -618,7 +714,7 @@ function SummaryCard({
     const [showDocument, setShowDocument] = useState(true);
     const currency = Intl.NumberFormat("id-ID");
     return (
-        <div className="md:w-[30%] md:ms-[3vw] flex flex-col gap-[4vw] md:gap-[2vw]">
+        <div className="fixed md:relative w-full h-screen bg-white md:w-[30%] md:ms-[3vw] flex flex-col gap-[4vw] md:gap-[2vw] duration-500 translate-x-full">
             <div className="relative border-1 md:rounded-[1vw] pt-[2vw] md:p-[1.75vw] h-fit">
                 <div className="container md:w-full mx-auto">
                     <div className="flex flex-col-reverse md:flex-col gap-[4vw] md:gap-0">

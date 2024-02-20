@@ -351,7 +351,7 @@ function NavbarMobile({ auth, title, show, setShow }) {
     return (
         <div className="font-medium text-[4vw] md:text-[1vw]">
             <div
-                className={`md:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold text-white min-h-screen py-[6vw] duration-500 ${
+                className={`md:hidden w-full absolute z-[999] top-0 right-0 bg-white font-bold text-white min-h-screen py-[6vw] duration-500 ${
                     show ? "" : "opacity-0 translate-x-[110%]"
                 }`}
             >

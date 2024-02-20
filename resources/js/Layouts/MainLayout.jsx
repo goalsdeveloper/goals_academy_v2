@@ -4,7 +4,7 @@ import MainHeader from "./Partials/MainHeader";
 import MainFooter from "./Partials/MainFooter";
 import "@/script/mainHeader";
 
-export default function MainLayout({ auth, title, children }) {
+export default function MainLayout({ auth, title, children, footerClassName }) {
     return (
         <>
             <Head title={title} />
@@ -12,7 +12,7 @@ export default function MainLayout({ auth, title, children }) {
             <main className="text-dark pt-12 xs:pt-16 md:pt-20 xl:pt-32 3xl:pt-48 overflow-visible">
                 {children}
             </main>
-            <MainFooter />
+            <MainFooter className={footerClassName} />
         </>
     );
 }

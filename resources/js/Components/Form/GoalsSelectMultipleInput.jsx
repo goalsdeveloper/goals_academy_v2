@@ -7,10 +7,10 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
     return (
         <div>
             {label != "" ? (
-                <p className="mb-[.5vw]">{label}</p>
+                <p className="mb-[2vw] md:mb-[.5vw]">{label}</p>
             ) : (<></>)}
             <ExpandedButton
-                className={`rounded-[1vw] md:rounded-[.4vw] h-[9vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] cursor-pointer ${
+                className={`rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] cursor-pointer ${
                     data.length > 0
                         ? "border-2 border-secondary text-secondary"
                         : "border-1 border-light-grey text-light-grey"
@@ -27,14 +27,14 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
                 {data.length > 0 ? 'Add-On ditambahkan' : (placeholder)}
             </ExpandedButton>
             <div className="relative">
-                <TECollapse show={show} className={`${show ? "" : "hidden"} absolute z-50 w-[120%] shadow-none -translate-x-[8.25%] -translate-y-[1.5vw] px-[10%] pb-[.5vw]`}>
-                    <TECollapseItem className="bg-white w-full border-1 rounded-[.5vw] shadow-md">
-                        <div className="h-full max-h-[16vw] overflow-y-auto">
+                <TECollapse show={show} className={`${show ? "" : "md:hidden"} md:absolute z-30 w-full md:w-[120%] md:shadow-none md:-translate-x-[8.25%] pt-0 md:-translate-y-[1.5vw] md:px-[10%] pb-[.5vw]`}>
+                    <TECollapseItem className="bg-white w-full border-1 rounded-[2vw] md:rounded-[.5vw] shadow-md" breakClassName="hidden md:inline">
+                        <div className="h-full max-h-[52vw] md:max-h-[16vw] overflow-y-auto">
                             {children}
                         </div>
                         <hr />
-                        <div className="flex justify-center md:justify-end mt-[.5vw] p-[.5vw]">
-                            <GoalsButton className="w-6/12 md:w-[30%] rounded-[.5vw]" onClick={() => {
+                        <div className="flex justify-end mt-[2vw] p-[2vw] md:mt-[.5vw] md:p-[.5vw]">
+                            <GoalsButton className="w-[30%] rounded-[2vw] md:rounded-[.5vw]" onClick={() => {
                                 onClick()
                                 setShow(false)
                             }}>Simpan</GoalsButton>
@@ -51,8 +51,8 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
 
 function GoalsSelectMultipleInputItem ({ className, checked=true, onClick, children }) {
     return (
-        <div onClick={onClick} className={`flex items-center gap-[.5vw] hover:bg-skin cursor-pointer p-[1vw] ${className}`}>
-            <div className={`w-[1.2vw] h-[1.2vw] flex items-center justify-center rounded-[.2vw] border-1 ${checked ? 'border-secondary bg-secondary' : 'border-light-grey bg-white'}`}>
+        <div onClick={onClick} className={`flex items-center gap-[2.5vw] md:gap-[.5vw] hover:bg-skin cursor-pointer p-[4vw] md:p-[1vw] ${className}`}>
+            <div className={`w-[4.8vw] h-[4.8vw] md:w-[1.2vw] md:h-[1.2vw] flex items-center justify-center rounded-[.2vw] border-1 ${checked ? 'border-secondary bg-secondary' : 'border-light-grey bg-white'}`}>
                 <i className="fa-solid fa-check text-[.75vw] text-white"></i>
             </div>
             <span>{children}</span>
