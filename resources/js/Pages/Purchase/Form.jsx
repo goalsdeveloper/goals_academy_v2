@@ -1,32 +1,24 @@
-import ButtonPill from "@/Components/ButtonPill";
+import { useState } from "react";
+import { useForm } from "@inertiajs/react";
+import moment from "moment";
+import MainLayout from "@/Layouts/MainLayout";
 import GoalsButton from "@/Components/GoalsButton";
 import ExpandedButton from "@/Components/ExpandedButton";
 import GoalsDatePicker from "@/Components/Form/GoalsDatePicker";
-import {
-    GoalsSelectInput,
-    GoalsSelectInputItem,
-} from "@/Components/Form/GoalsSelectInput";
-import {
-    GoalsSelectMultipleInput,
-    GoalsSelectMultipleInputItem,
-} from "@/Components/Form/GoalsSelectMultipleInput";
+import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/Form/GoalsSelectInput";
+import { GoalsSelectMultipleInput, GoalsSelectMultipleInputItem } from "@/Components/Form/GoalsSelectMultipleInput";
 import GoalsUploadFile from "@/Components/Form/GoalsUploadFile";
-import MainLayout from "@/Layouts/MainLayout";
-import "@/script/momentCustomLocale";
-import { useForm } from "@inertiajs/react";
+import PromoForm from "@/Pages/Partials/Purchase/Form/PromoForm";
+import PurchaseMethodForm from "@/Pages/Partials/Purchase/Form/PurchaseMethodForm";
 import { createTheme } from "@mui/material";
-import moment from "moment";
-import { useState } from "react";
-import LengkapiProfilForm from "../Partials/Purchase/Form/LengkapiProfilForm";
-import PromoForm from "../Partials/Purchase/Form/PromoForm";
-import PurchaseMethodForm from "../Partials/Purchase/Form/PurchaseMethodForm";
+import "@/script/momentCustomLocale";
 import { FiInfo } from "react-icons/fi";
 
 export default function Form({ auth, date, dataProduct, paymentMethods }) {
     const userId = auth.user.id;
     // console.log(dataProduct);
     // Code to input form data
-    const { data, setData, post } = useForm({
+    const { data, setData, errors, setError, post } = useForm({
         schedule: "",
         city: "",
         place: "",
@@ -289,7 +281,7 @@ function MainCard({
     };
 
     return (
-        <div className="md:w-[70%] border-1 md:rounded-[1vw] md:p-[1.75vw] h-fit">
+        <div className="md:w-[72%] border-1 md:rounded-[.8vw] md:p-[1.75vw] h-fit">
             <div className="flex flex-col gap-[4vw] md:gap-0">
                 <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[1vw] md:py-0">
                     <h3 className="w-8/12 md:w-full text-secondary font-semibold text-[5vw] md:text-[1.8vw]">
@@ -634,20 +626,28 @@ function SummaryCard({
             <div className="relative border-1 md:rounded-[1vw] pt-[2vw] md:p-[1.75vw] h-fit">
                 <div className="container md:w-full mx-auto">
                     <div className="flex flex-col-reverse md:flex-col gap-[4vw] md:gap-0">
-                        <div className="text-[3.25vw] md:text-[.9vw]">
+                        <ExpandedButton
+                            className={`rounded-[.8vw] md:rounded-[.4vw] bg-green-50 text-green-500 border-1 border-green-500 h-[9vw] md:h-[3.1vw] mb-[1.5vw]`}
+                            textClassName="font-normal"
+                            onClick={() => setShowPromoForm(!showPromoForm)}
+                        >
+                            {data.discount > 0
+                                ? "Promo Terpakai"
+                                : "Masukkan Kode Promo"}
+                        </ExpandedButton>
+                        <div>
                             <div className="hidden md:block">
-                                <h5 className="font-bold text-secondary mb-[2vw] md:mb-[1vw] text-[3vw] md:text-[1.2vw]">
-                                    Total Pesanan
+                                <h5 className="font-semibold mb-[2vw] md:mb-[.5vw] text-[3vw] md:text-[1vw]">
+                                    Deskripsi Pesanan
                                 </h5>
-                                <hr className="border-secondary" />
                             </div>
                             <div className="md:hidden">
-                                <h5 className="md:hidden font-medium my-[2vw] md:mb-[1vw] text-[3vw] md:text-[1.2vw]">
+                                <h5 className="md:hidden font-medium my-[2vw] md:mb-[.5vw] text-[3vw] md:text-[1.2vw]">
                                     Ringkasan Transaksi
                                 </h5>
                                 <hr className="border-dark" />
                             </div>
-                            <table className="w-full font-poppins border-separate border-spacing-y-[3vw] md:border-spacing-y-[1vw] my-1">
+                            <table className="w-full border-separate border-spacing-y-[3vw] md:border-spacing-y-[.5vw] text-gray-500 my-1">
                                 <tbody>
                                     <tr>
                                         <td>Dibimbing Sekali</td>
@@ -657,7 +657,7 @@ function SummaryCard({
                                                 ? `IDR ${currency.format(
                                                       data.init_price
                                                   )}`
-                                                : "-"}
+                                                : "IDR 0"}
                                         </td>
                                     </tr>
                                     <tr>
@@ -687,48 +687,35 @@ function SummaryCard({
                                     <tr>
                                         <td>Biaya Admin</td>
                                         <td className="font-bold text-right">
-                                            {data.admin != 0 ? data.admin : "-"}
+                                            {data.admin != 0 ? data.admin : "IDR 0"}
                                         </td>
                                     </tr>
+                                    {data.add_on.map((item, index) => {
+                                        return (
+                                            <tr>
+                                                <td>{item.name}</td>
+                                                <td className="font-bold text-right">
+                                                    IDR {currency.format(item.price)}
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
                                 </tbody>
                             </table>
-                            <hr className="border-black" />
                         </div>
-                        <div className="hidden md:block text-center font-poppins my-[1.25vw]">
-                            <p className="font-bold mb-[2vw] md:mb-[.5vw]">
-                                Total Pembelian
+                        <hr className="mt-[.5vw] mb-[1vw]" />
+                        <div className="hidden md:flex justify-between items-center font-poppins mb-[1.25vw]">
+                            <p className="font-semibold text-[3vw] md:text-[1vw] text-black">
+                                Total
                             </p>
-                            <h2 className="text-secondary md:text-[2.25vw]">
+                            <h2 className="font-semibold text-secondary md:text-[1.3vw] text-right">
                                 IDR {currency.format(totalPrice)}
                             </h2>
                         </div>
                         <div className="grid gap-[4vw] md:gap-[1.25vw]">
                             <ExpandedButton
-                                className={`rounded-[.8vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw] border-1 outline outline-1 ${
-                                    data.discount > 0
-                                        ? "border-secondary outline-secondary text-secondary"
-                                        : "outline-light-grey text-light-grey"
-                                }`}
-                                iconClassName={`group-hover:text-white ${
-                                    data.discount != "" ? "text-grey" : ""
-                                }`}
-                                onClick={() => setShowPromoForm(!showPromoForm)}
-                            >
-                                {data.discount > 0
-                                    ? "Promo Terpakai"
-                                    : "Pakai Promo"}
-                            </ExpandedButton>
-                            <ExpandedButton
-                                className={`rounded-[.8vw] md:rounded-[.4vw] hover:border-secondary hover:outline-secondary hover:bg-secondary hover:text-white h-[9vw] md:h-[2.5vw] border-1 outline outline-1 ${
-                                    data.purchase_method != ""
-                                        ? "border-secondary outline-secondary text-secondary"
-                                        : "outline-light-grey text-light-grey"
-                                }`}
-                                iconClassName={`group-hover:text-white ${
-                                    data.purchase_method != ""
-                                        ? "text-grey"
-                                        : ""
-                                }`}
+                                className={`rounded-[.8vw] md:rounded-[.4vw] h-[9vw] md:h-[3.1vw] border-1 border-light-grey`}
+                                textClassName="font-normal"
                                 onClick={() =>
                                     setShowPurchaseMethodForm(
                                         !showPurchaseMethodForm
@@ -777,15 +764,15 @@ function SummaryCard({
                                 IDR {currency.format(totalPrice)}
                             </p>
                         </div>
-                        <ButtonPill
-                            className="w-6/12 md:w-full mt-[1.25vw]"
+                        <GoalsButton
+                            className="w-6/12 md:w-full mt-[1.25vw] xl:py-[1vw] rounded-[.5vw]"
                             isActive={
                                 !(
                                     data["purchase_method"] == "" ||
                                     Object.keys(
                                         Object.fromEntries(
                                             Object.entries(rules).filter(
-                                                ([key, value]) => value
+                                                ([, value]) => value
                                             )
                                         )
                                     )
@@ -796,7 +783,7 @@ function SummaryCard({
                             onClick={submit}
                         >
                             Bayar Sekarang
-                        </ButtonPill>
+                        </GoalsButton>
                     </div>
                 </div>
             </div>

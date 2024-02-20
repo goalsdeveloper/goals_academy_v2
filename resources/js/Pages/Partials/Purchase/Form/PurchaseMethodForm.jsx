@@ -1,4 +1,4 @@
-import ExpandedButton from "@/Components/ExpandedButton";
+import GoalsRadio from "@/Components/Form/GoalsRadio";
 import ButtonPill from "@/Components/ButtonPill";
 
 export default function PurchaseMethodForm({
@@ -10,6 +10,23 @@ export default function PurchaseMethodForm({
     setTemp,
     purchaseMethods,
 }) {
+    const clickHandler = (item) => {
+        let adminFee = 0
+        if (parseInt(item.is_price)) {
+            adminFee = parseFloat(item.admin_fee)
+        } else {
+            adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(data.discount) + parseFloat(data.add_on_price)) * parseFloat(item.admin_fee) / 100)
+        }
+        const totalPrice = parseFloat(data.init_price) - parseFloat(data.discount) + parseFloat(data.add_on_price) + adminFee
+        setData({
+            ...data,
+            purchase_method: item,
+            admin: adminFee,
+            total_price: totalPrice
+        });
+        setShow(false);
+    }
+
     return (
         <>
             <div
@@ -23,12 +40,12 @@ export default function PurchaseMethodForm({
                     show
                         ? "md:top-0 bottom-0 md:scale-100"
                         : "md:top-full -bottom-full md:scale-0"
-                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
+                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[.5vw] p-[8vw] md:px-[1.75vw] md:py-[2vw] z-50 md:ms-[35vw] md:mt-[8vh] max-h-[84vh]`}
             >
                 <div>
                     <div className="flex justify-between items-center mb-[3vw] md:mb-[1vw]">
-                        <h5 className="text-secondary font-poppins font-bold text-[4.5vw] md:text-[1.2vw]">
-                            Pilih Metode Pembayaran
+                        <h5 className="text-black font-poppins font-medium text-[4.5vw] md:text-[1.2vw]">
+                            Pilih Metode
                         </h5>
                         <i
                             role="button"
@@ -36,27 +53,21 @@ export default function PurchaseMethodForm({
                             onClick={() => setShow(false)}
                         ></i>
                     </div>
-                    <hr className="border-light-grey" />
                 </div>
                 <div className="h-[40vh] md:h-fit flex flex-col gap-[3vw] md:gap-[1.5vw] overflow-auto scrollbar-hidden">
                     <div>
-                        <h6 className="font-medium mb-[2vw] md:mb-[1vw]">
+                        <h6 className="font-sans font-normal text-[4vw] md:text-[1vw] mb-[2vw] md:mb-[1vw]">
                             Dompet Digital
                         </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
                                 if (item.category == "ewallet") {
                                     return (
-                                        <ExpandedButton
+                                        <GoalsRadio
                                             key={i}
-                                            className={`spread rounded-sm border-2 hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] border-transparent ${
-                                                temp.purchase_method == item
-                                                    ? "border-secondary"
-                                                    : ""
-                                            }`}
-                                            onClick={() => {
-                                                setTemp('purchase_method', item);
-                                            }}
+                                            className="spread rounded-sm border-1 text-dark h-[9vw] md:h-[4vw]"
+                                            checked={data.purchase_method.name == item.name}
+                                            onClick={() => clickHandler(item)}
                                         >
                                             <div className="flex items-center gap-[2vw] md:gap-[1vw]">
                                                 <img
@@ -66,30 +77,25 @@ export default function PurchaseMethodForm({
                                                 />
                                                 {item.name}
                                             </div>
-                                        </ExpandedButton>
+                                        </GoalsRadio>
                                     );
                                 }
                             })}
                         </div>
                     </div>
                     <div>
-                        <h6 className="font-medium mb-[2vw] md:mb-[1vw]">
-                            Bank
+                        <h6 className="font-sans font-normal text-[4vw] md:text-[1vw] mb-[2vw] md:mb-[1vw]">
+                            Transfer Bank
                         </h6>
                         <div className="grid gap-[3vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
                                 if (item.category == "bank_transfer") {
                                     return (
-                                        <ExpandedButton
+                                        <GoalsRadio
                                             key={i}
-                                            className={`spread rounded-sm border-2 border-transparent hover:border-secondary active:text-white active:border-secondary active:bg-secondary text-dark h-[9vw] md:h-[3vw] ${
-                                                temp.purchase_method == item
-                                                    ? "border-secondary"
-                                                    : ""
-                                            }`}
-                                            onClick={() => {
-                                                setTemp('purchase_method', item);
-                                            }}
+                                            className="spread rounded-sm border-1 text-dark h-[9vw] md:h-[4vw]"
+                                            checked={data.purchase_method.name == item.name}
+                                            onClick={() => clickHandler(item)}
                                         >
                                             <div className="flex items-center gap-[2vw] md:gap-[1vw]">
                                                 <img
@@ -99,39 +105,22 @@ export default function PurchaseMethodForm({
                                                 />
                                                 {item.name}
                                             </div>
-                                        </ExpandedButton>
+                                        </GoalsRadio>
                                     );
                                 }
                             })}
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-center md:justify-end mt-[1vw]">
+                {/* <div className="flex justify-center md:justify-end mt-[1vw]">
                     <ButtonPill
                         className="w-6/12 md:w-3/12"
                         isActive={temp.purchase_method != ""}
-                        onClick={(e) => {
-                            if (temp.purchase_method != "") {
-                                let adminFee = 0
-                                if (parseInt(temp.purchase_method.is_price)) {
-                                    adminFee = parseFloat(temp.purchase_method.admin_fee)
-                                } else {
-                                    adminFee = Math.ceil((parseFloat(data.init_price) - parseFloat(data.discount) + parseFloat(data.add_on_price)) * parseFloat(temp.purchase_method.admin_fee) / 100)
-                                }
-                                const totalPrice = parseFloat(data.init_price) - parseFloat(data.discount) + parseFloat(data.add_on_price) + adminFee
-                                setData({
-                                    ...data,
-                                    purchase_method: temp.purchase_method,
-                                    admin: adminFee,
-                                    total_price: totalPrice
-                                });
-                                setShow(false);
-                            }
-                        }}
+                        onClick={}
                     >
                         Simpan
                     </ButtonPill>
-                </div>
+                </div> */}
             </div>
         </>
     );

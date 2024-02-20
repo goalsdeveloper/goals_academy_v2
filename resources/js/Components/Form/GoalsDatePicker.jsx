@@ -1,12 +1,12 @@
-import ExpandedButton from "../ExpandedButton";
 import moment from "moment";
+import { TECollapse } from "tw-elements-react";
+import TECollapseItem from "@/Components/TECollapseItem";
+import ExpandedButton from "@/Components/ExpandedButton";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import "@/script/momentCustomLocale";
-import { TECollapse } from "tw-elements-react";
-import TECollapseItem from "../TECollapseItem";
 
 export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon="", data, setData, error="", minDate, maxDate, shouldDisableDate, theme, slotProps, sx, className }) {
     return (
@@ -30,8 +30,8 @@ export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon=
                 &nbsp;&nbsp;
                 {data != "" ? moment(data).format("dddd, DD MMMM YYYY") : "Pilih Tanggal"}
             </ExpandedButton>
-            <div className="relative">
-                <TECollapse show={show} className="absolute border-1 bg-white w-full shadow-md pb-[2vw] z-50">
+            <div className={`${show ? '' : 'hidden'} relative`}>
+                <TECollapse show={show} className="absolute border-1 bg-white w-full shadow-md pb-[2vw] z-50 -translate-y-[.25vw]">
                     <TECollapseItem>
                         <ThemeProvider theme={theme}>
                             <LocalizationProvider
