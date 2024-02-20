@@ -14,6 +14,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
+use App\Http\Controllers\TutorController;
 use App\Http\Controllers\UserController;
 use App\Models\AddOn;
 use Illuminate\Support\Facades\DB;
@@ -87,7 +88,8 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
 // admin dashboard
 Route::resource('/category', CategoryController::class)->middleware('auth');
 Route::resource('/addon', AddOnController::class)->middleware('auth');
-Route::resource('/users', UserController::class)->middleware('auth')->except(['update', 'create', 'store', 'destroy']);
+Route::resource('/users', UserController::class)->middleware('auth')->except(['update', 'create', 'store', 'destroy', 'edit']);
+Route::resource('/tutorss', TutorController::class)->middleware('auth')->except(['update', 'create', 'store', 'destroy', 'edit']);
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/auth.php';

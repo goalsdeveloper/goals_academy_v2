@@ -18,7 +18,7 @@ class UserController extends Controller
 
         // dd(Auth::user());
         if (Auth::user()->user_role == "admin") {
-            $user = User::where("user_role", "user")->paginate(15);
+            $user = User::where("user_role", "user")->paginate(10);
 
             // dd($user);
             return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $user], 200);
