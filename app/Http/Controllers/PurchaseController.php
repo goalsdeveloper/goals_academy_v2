@@ -69,7 +69,7 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
+        dd($request);
         // dd($request->admin);
         $user = User::where('id', Auth::user()->id)->first();
         $validateData = $request->validate([
