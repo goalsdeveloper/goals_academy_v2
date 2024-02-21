@@ -6,7 +6,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -45,5 +49,42 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Logged out successfully.'
         ]);
+    }
+
+    public function loginValidation(Request $request) {
+        $credential = Validator::make($request->all(), [
+            'email' => 'required|email:dns|exists:users,email',
+            'password' => 'required|min:8',
+        ]);
+
+        if ($credential->fails()) {
+            return response()->json(['message' => 'Email atau password Anda salah!']);
+        } else {
+            $data = array(
+                'email'     => $request->get('email'),
+                'password'  => $request->get('password')
+            );
+        };
+
+        if (Auth::attempt($data, true)) {
+            return response()->json(['success' => 'Validasi berhasil!']);
+        } else {
+            return response()->json(['message' => 'Email atau password Anda salah!']);
+        }
+    }
+
+    public function registerValidation(Request $request) {
+        $credential = Validator::make($request->all(), [
+            'username' => 'required|min:8|max:15|unique:users,username',
+            'email' => 'required|email:dns|unique:users,email',
+            'password' => 'required|min:8',
+            'confirmation_password' => 'required|min:8|same:password'
+        ]);
+
+        if ($credential->fails()) {
+            return response()->json($credential->errors());
+        } else {
+            return response()->json(['success' => 'Validasi berhasil!']);
+        };
     }
 }
