@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Products extends Model
 {
     use HasFactory;
+    // protected $appends = [
+    //     'productType'
+    // ];
 
     protected $fillable = [
         'name',
@@ -23,22 +26,31 @@ class Products extends Model
         'is_featured',
     ];
 
-    protected $casts = [
-        'features' => 'array',
-    ];
+    // protected $casts = [
+    //     'features' => 'array',
+    // ];
 
     public function order()
     {
         return $this->hasMany(Order::class);
     }
 
-    public function categories()
+    public function category()
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function addOns()
     {
         return $this->belongsToMany(AddOn::class);
+    }
+
+    public function productType()
+    {
+        return $this->belongsTo(ProductType::class);
+    }
+
+    public function topics() {
+        return $this->belongsToMany(Topic::class);
     }
 }
