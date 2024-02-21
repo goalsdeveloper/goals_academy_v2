@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
-use Carbon\Carbon;
-use App\Models\User;
-use Inertia\Inertia;
-use Midtrans\Config;
-use App\Models\Order;
-use Midtrans\CoreApi;
-use App\Models\Course;
 use App\Enums\OrderEnum;
 use App\Models\Category;
+use App\Models\City;
+use App\Models\Course;
+use App\Models\FileUpload;
+use App\Models\Order;
+use App\Models\OrderHistory;
+use App\Models\PaymentMethod;
 use App\Models\Products;
 use App\Models\PromoCode;
-use App\Models\FileUpload;
-use Illuminate\Support\Str;
-use App\Models\OrderHistory;
-use Illuminate\Http\Request;
-use App\Models\PaymentMethod;
+use App\Models\User;
 use App\Notifications\InvoiceNotification;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
+use Midtrans\Config;
+use Midtrans\CoreApi;
 
 class PurchaseController extends Controller
 {
@@ -34,34 +35,22 @@ class PurchaseController extends Controller
     public function index(Products $products)
     {
         // $dataDibimbing = Category::where('slug', 'like', 'dibimbing%')->first()->products;
-        $dataDibimbing = Products::whereHas('categories', function ($query) {
+        $dataDibimbing = Products::whereHas('category', function ($query) {
             $query->where('slug', 'LIKE', 'dibimbing%');
         })
             ->where('is_visible', true)
-            ->with('categories')->get();
-        $dataEbook = Category::where('slug', 'e-book')
-            ->where('is_visible', true)
-            ->with('products')->get();
-        $dataWebinar = Category::where('slug', 'webinar')
-            ->where('is_visible', true)
-            ->with('products')
-            ->get();
-
-
-        // dd($dataDibimbing, $dataEbook, $dataWebinar);
+            ->with('category', 'productType')->get();
+        $dataEbook = Products::whereHas('productType', function ($query) {
+            $query->where('slug', 'e-book');
+        })->with('productType', 'category')->get();
+        $dataWebinar = Products::whereHas('productType', function ($query) {
+            $query->where('slug', 'webinar');
+        })->with('productType', 'category')->get();
         return Inertia::render('Main/Produk', [
             'dataDibimbing' => $dataDibimbing,
             'ebookData' => $dataEbook,
             'webinarData' => $dataWebinar,
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -153,7 +142,7 @@ class PurchaseController extends Controller
                     'payment_type' => $paymentMethod->payment_type,
                     'transaction_details' => array(
                         'order_id' => $order_code,
-                        'gross_amount' => $grossAmount
+                        'gross_amount' => $grossAmount,
                     ),
                     'customer_details' => array(
                         'first_name' => $user->name,
@@ -176,7 +165,7 @@ class PurchaseController extends Controller
                     'payment_type' => 'bank_transfer',
                     'transaction_details' => array(
                         'order_id' => $order_code,
-                        'gross_amount' => $grossAmount
+                        'gross_amount' => $grossAmount,
                     ),
                     'customer_details' => array(
                         'first_name' => $user->name,
@@ -218,7 +207,7 @@ class PurchaseController extends Controller
         OrderHistory::create([
             'order_id' => $order->id,
             'status' => 'pending',
-            'payload' => json_encode($responseMidtrans)
+            'payload' => json_encode($responseMidtrans),
         ]);
 
         // jika produk = bimbingan | store -> course
@@ -238,7 +227,7 @@ class PurchaseController extends Controller
                 'date' => $validateData['schedule'],
                 'city' => $city,
                 'location' => $location,
-                'note' => $request['note']
+                'note' => $request['note'],
             ]);
         }
 
@@ -284,11 +273,18 @@ class PurchaseController extends Controller
         $paymentMethods = PaymentMethod::all();
 
         $product = Products::where('slug', $order)
-            ->with('categories', 'addOns')
+            ->with('category')
+            ->with('addOns')
             ->first();
-
+        // dd($product);
+        $addOns = $product->addOns;
+        $cities = City::with('places')->get();
+        $topics = $product->topics;
         return Inertia::render('Purchase/Form', [
             'date' => $counts,
+            'addOns' => $addOns,
+            'cities' => $cities,
+            'topics' => $topics,
             'paymentMethods' => $paymentMethods,
             'dataProduct' => $product,
         ]);
@@ -317,4 +313,13 @@ class PurchaseController extends Controller
     {
         //
     }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
 }
