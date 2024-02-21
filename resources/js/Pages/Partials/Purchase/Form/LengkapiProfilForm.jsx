@@ -17,7 +17,7 @@ const LengkapiProfilForm = ({ show, setShow }) => {
                 className={`${
                     show ? "" : "hidden"
                 } fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`}
-                onClick={() => {}}
+                onClick={() => setShow(false)}
             ></div>
             <div
                 className={`${

@@ -6,10 +6,10 @@ function GoalsSelectInput ({ show, setShow, label="", placeholder="Pilih satu", 
     return (
         <div className="text-inherit">
             {label != "" ? (
-                <p className="mb-[.5vw]">{label}</p>
+                <p className="mb-[2vw] md:mb-[.5vw]">{label}</p>
             ) : (<></>)}
             <ExpandedButton
-                className={`rounded-[1vw] md:rounded-[.4vw] h-[9vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] cursor-pointer ${
+                className={`rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] cursor-pointer ${
                     data != ""
                         ? "border-2 border-secondary text-secondary"
                         : "border-1 border-light-grey text-light-grey"
@@ -26,9 +26,9 @@ function GoalsSelectInput ({ show, setShow, label="", placeholder="Pilih satu", 
                 {data != "" ? (data) : (placeholder)}
             </ExpandedButton>
             <div className="relative">
-                <TECollapse show={show} className={`${show ? "" : "hidden"} absolute z-50 w-[120%] shadow-none -translate-x-[8.25%] -translate-y-[1.5vw] px-[10%] pb-[.5vw]`} onClick={() => setShow(false)}>
-                    <TECollapseItem className="bg-white w-full border-1 rounded-[.5vw] shadow-md">
-                        <div className="h-full max-h-[16vw] overflow-y-auto">
+                <TECollapse show={show} className={`${show ? "" : "md:hidden"} md:absolute z-30 w-full md:w-[120%] md:shadow-none md:-translate-x-[8.25%] pt-0 md:-translate-y-[1.5vw] md:px-[10%] pb-[.5vw]`} onClick={() => setShow(false)}>
+                    <TECollapseItem className="bg-white w-full border-1 rounded-[2vw] md:rounded-[.5vw] shadow-md" breakClassName="hidden md:inline">
+                        <div className="h-full max-h-[52vw] md:max-h-[16vw] overflow-y-auto">
                             {children}
                         </div>
                     </TECollapseItem>
@@ -43,7 +43,7 @@ function GoalsSelectInput ({ show, setShow, label="", placeholder="Pilih satu", 
 
 function GoalsSelectInputItem ({ className, onClick, children }) {
     return (
-        <div onClick={onClick} className={`hover:bg-skin cursor-pointer p-[1vw] ${className}`}>
+        <div onClick={onClick} className={`hover:bg-skin cursor-pointer p-[4vw] md:p-[1vw] ${className}`}>
             {children}
         </div>
     )

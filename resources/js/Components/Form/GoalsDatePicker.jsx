@@ -8,14 +8,14 @@ import { StaticDatePicker } from "@mui/x-date-pickers";
 import { ThemeProvider } from "@mui/material";
 import "@/script/momentCustomLocale";
 
-export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon="", data, setData, error="", minDate, maxDate, shouldDisableDate, theme, slotProps, sx, className }) {
+export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon="", data, setData, error="", minDate, maxDate, shouldDisableDate, theme, slotProps, sx, wrapperClassName, className }) {
     return (
-        <div>
+        <div className={wrapperClassName}>
             {label != "" ? (
-                <p className="mb-[.5vw]">{label}</p>
+                <p className="mb-[2vw] md:mb-[.5vw]">{label}</p>
             ) : (<></>)}
             <ExpandedButton
-                className={`rounded-[1vw] md:rounded-[.4vw] h-[9vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] ${
+                className={`rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] ${
                     data != ""
                         ? "border-2 border-secondary text-secondary"
                         : "border-1 border-light-grey text-light-grey"
@@ -30,9 +30,9 @@ export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon=
                 &nbsp;&nbsp;
                 {data != "" ? moment(data).format("dddd, DD MMMM YYYY") : "Pilih Tanggal"}
             </ExpandedButton>
-            <div className={`${show ? '' : 'hidden'} relative`}>
-                <TECollapse show={show} className="absolute border-1 bg-white w-full shadow-md pb-[2vw] z-50 -translate-y-[.25vw]">
-                    <TECollapseItem>
+            <div className={`${show ? '' : 'md:hidden'} relative`}>
+                <TECollapse show={show} className="md:absolute z-30 w-full md:w-[120%] md:shadow-none md:-translate-x-[8.25%] pt-0 md:-translate-y-[1.5vw] md:px-[10%] pb-[.5vw]">
+                    <TECollapseItem className="bg-white w-full border-1 rounded-[2vw] md:rounded-[.5vw] shadow-md overflow-hidden" breakClassName="hidden md:inline">
                         <ThemeProvider theme={theme}>
                             <LocalizationProvider
                                 dateAdapter={AdapterMoment}

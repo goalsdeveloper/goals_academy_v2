@@ -1,7 +1,7 @@
-export default function TECollapseItem({ className, children }) {
+export default function TECollapseItem({ breakClassName, className, children }) {
     return (
         <>
-            <br />
+            <br className={breakClassName} />
             <div className={`grid ${className}`}>
                 {children}
             </div>
