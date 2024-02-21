@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->foreignIdFor(Topic::class)->constrained('topics')->cascadeOnDelete();
+            $table->foreignIdFor(Topic::class)->constrained('topics')->nullable()->cascadeOnDelete();
             $table->json('add_ons');
             $table->dropColumn('notes');
         });
