@@ -14,14 +14,42 @@ class UserProfileSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::all();
+        UserProfile::create([
+            'user_id' => 1,
+        ]);
+        UserProfile::create([
+            'user_id' => 2,
+            'phone_number' => '087763420873',
+            'university' => 'Politeknik Negeri Malang',
+            'major' => 'Elektronika',
+        ]);
+        UserProfile::create([
+            'user_id' => 3,
+            'phone_number' => '087763420872',
+            'university' => 'Universitas Brawijaya',
+            'major' => 'Hukum',
+        ]);
+        UserProfile::create([
+            'user_id' => 4,
+            'phone_number' => '087763420876',
+            'university' => 'Universitas Brawijaya',
+            'major' => 'Hukum',
+        ]);
+        UserProfile::create([
+            'user_id' => 5,
+            'phone_number' => '087763420871',
+            'university' => 'Universitas Islam Malang',
+            'major' => 'Matematika',
+        ]);
+        
+        // $users = User::all();
 
-        foreach ($users as $user) {
-            UserProfile::factory()->create(
-                [
-                    'user_id' => $user->id
-                ]
-            );
-        }
+        // foreach ($users as $user) {
+        //     UserProfile::factory()->create(
+        //         [
+        //             'user_id' => $user->id
+        //         ]
+        //     );
+        // }
     }
 }

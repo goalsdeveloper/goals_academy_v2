@@ -5,17 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductType extends Model
+class Place extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'type',
-        'slug',
-    ];
+    protected $fillable = ['place', 'city_id'];
     protected $hidden = ['created_at', 'updated_at'];
 
-    public function products()
+    public function city()
     {
-        return $this->hasMany(Products::class);
+        return $this->belongsTo(Place::class);
     }
 }

@@ -8,14 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Topic extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'product__id', 'topic',
+        'topic'
     ];
 
-
-    public function products()
-    {
+    public function products() {
         return $this->belongsToMany(Products::class);
     }
 }

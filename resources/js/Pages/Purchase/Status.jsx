@@ -355,12 +355,11 @@ function PaymentSteps ({ steps }) {
     return (
         <div className="w-full block my-[2vw] md:my-0">
             <ExpandedButton
-                borderClassName="border-1 border-dark"
                 textClassName="font-medium text-dark"
                 icon={`fa-solid fa-chevron-down duration-500 ${
                     show ? "-rotate-180" : ""
                 }`}
-                className="h-[9vw] md:h-[3vw]"
+                className="h-[9vw] md:h-[3vw] border-1 border-dark"
                 onClick={() =>
                     setShow(!show)
                 }
