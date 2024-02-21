@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Products;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -27,6 +26,14 @@ class ProductSeeder extends Seeder
             'total_meet' => 1,
             'active_period' => 30,
             'number_list' => 1,
+            'form_config' => json_encode([
+                'schedule' => 1,
+                'city' => 0,
+                'place' => 0,
+                'topic' => 1,
+                'document' => 1,
+                'add_on' => 1,
+            ]),
         ]);
         Products::create([
             'category_id' => 1,
@@ -42,6 +49,14 @@ class ProductSeeder extends Seeder
             'total_meet' => 1,
             'active_period' => 30,
             'number_list' => 2,
+            'form_config' => json_encode([
+                'schedule' => 1,
+                'city' => 0,
+                'place' => 0,
+                'topic' => 1,
+                'document' => 1,
+                'add_on' => 1,
+            ]),
         ]);
         Products::create([
             'category_id' => 1,
@@ -57,7 +72,16 @@ class ProductSeeder extends Seeder
             'total_meet' => 1,
             'active_period' => 30,
             'number_list' => 3,
+            'form_config' => json_encode([
+                'schedule' => 1,
+                'city' => 1,
+                'place' => 1,
+                'topic' => 1,
+                'document' => 1,
+                'add_on' => 1,
+            ]),
         ]);
+
         Products::create([
             'category_id' => 1,
             'name' => 'How To Survive Your Thesis? Start with Theme',
@@ -72,6 +96,14 @@ class ProductSeeder extends Seeder
             'total_meet' => 1,
             'active_period' => 30,
             'number_list' => 4,
+            'form_config' => json_encode([
+                'schedule' => 0,
+                'city' => 0,
+                'place' => 0,
+                'topic' => 0,
+                'document' => 0,
+                'add_on' => 0,
+            ]),
         ]);
         Products::create([
             'category_id' => 1,
@@ -87,6 +119,14 @@ class ProductSeeder extends Seeder
             'total_meet' => 1,
             'active_period' => 30,
             'number_list' => 5,
+            'form_config' => json_encode([
+                'schedule' => 1,
+                'city' => 0,
+                'place' => 0,
+                'topic' => 1,
+                'document' => 1,
+                'add_on' => 1,
+            ]),
         ]);
     }
 }

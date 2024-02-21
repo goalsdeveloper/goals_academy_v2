@@ -33,38 +33,11 @@ class DatabaseSeeder extends Seeder
             PaymentMethodSeeder::class,
             ProductSeeder::class,
             AddOnSeeder::class,
+            UserProfileSeeder::class,
         ]);
 
 
         // User::factory(50)->create();
-
-        UserProfile::create([
-            'user_id' => 1,
-        ]);
-        UserProfile::create([
-            'user_id' => 2,
-            'phone_number' => '087763420873',
-            'university' => 'Politeknik Negeri Malang',
-            'major' => 'Elektronika',
-        ]);
-        UserProfile::create([
-            'user_id' => 3,
-            'phone_number' => '087763420872',
-            'university' => 'Universitas Brawijaya',
-            'major' => 'Hukum',
-        ]);
-        UserProfile::create([
-            'user_id' => 4,
-            'phone_number' => '087763420876',
-            'university' => 'Universitas Brawijaya',
-            'major' => 'Hukum',
-        ]);
-        UserProfile::create([
-            'user_id' => 5,
-            'phone_number' => '087763420871',
-            'university' => 'Universitas Islam Malang',
-            'major' => 'Matematika',
-        ]);
 
         PromoCode::create([
             'promo_code' => 19283155,
