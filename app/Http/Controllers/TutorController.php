@@ -45,7 +45,6 @@ class TutorController extends Controller
      */
     public function show(User $tutorss)
     {
-        dd($tutorss);
         if (Auth::user()->user_role == "admin") {
 
             $tutorWithProfile = User::with('profile')->where("user_role", "tutor")->find($tutorss->id);
@@ -79,9 +78,31 @@ class TutorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $tutorss)
     {
-        //
+        try {
+            if (Auth::user()->user_role == "admin") {
+                $validatedData = $request->validate([
+                    'name' => 'string',
+                    'username' => 'string',
+                    'phone_number' => 'string',
+                    'university' => 'string',
+                    'major' => 'string',
+                ]);
+
+                $tutorss->update($validatedData);
+
+                $tutorss->profile->update($validatedData);
+
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update success'], 200);
+            } else {
+                abort(403);
+            }
+        } catch (ValidationException $e) {
+            return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->validator->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => $e->getMessage()], 500);
+        }
     }
 
     /**

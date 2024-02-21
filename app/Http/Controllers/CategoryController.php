@@ -15,9 +15,9 @@ class CategoryController extends Controller
     public function index()
     {
         if (Auth::user()->user_role == "admin") {
-            $category = Category::get();
+        $category = Category::get();
 
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $category], 200);
+        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $category], 200);
         } else {
             abort(403);
         }
@@ -37,21 +37,23 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         if (Auth::user()->user_role == "admin") {
-            $validateData = $request->validate([
-                'name' => 'required|string',
-                'slug' => 'required|string',
-                'is_visible' => 'required||boolean',
+        $validateData = $request->validate([
+            'name' => 'required|string',
+            'slug' => 'required|string',
+            'is_visible' => 'required|boolean',
+            'description' => 'required|string',
 
-            ]);
-            $category = new Category();
-            $category->name = $validateData['name'];
-            $category->slug = $validateData['slug'];
-            $category->is_visible = $validateData['is_visible'];
+        ]);
+        $category = new Category();
+        $category->name = $validateData['name'];
+        $category->slug = $validateData['slug'];
+        $category->is_visible = $validateData['is_visible'];
+        $category->description = $validateData['description'];
 
-            $category->save();
-            return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create category success'], 201);
+        $category->save();
+        return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create category success', "data" => $category], 201);
         } else {
-            abort(403);
+        abort(403);
         }
     }
 
@@ -77,15 +79,16 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         if (Auth::user()->user_role == "admin") {
-            $validateData = $request->validate([
-                'name' => 'required|string',
-                'slug' => 'required|string',
-                'is_visible' => 'required',
+        $validateData = $request->validate([
+            'name' => 'required|string',
+            'slug' => 'required|string',
+            'is_visible' => 'required|boolean',
+            'description' => 'required|string',
 
-            ]);
+        ]);
 
-            $category->update($validateData);
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update category success'], 200);
+        $category->update($validateData);
+        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update category success'], 200);
         } else {
             abort(403);
         }

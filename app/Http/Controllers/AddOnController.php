@@ -15,12 +15,12 @@ class AddOnController extends Controller
     public function index()
     {
 
-        if (Auth::user()->user_role == "admin") {
-            $addons = AddOn::get();
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data category success', 'data' => $addons], 200);
-        } else {
-            abort(403);
-        }
+        // if (Auth::user()->user_role == "admin") {
+        $addons = AddOn::get();
+        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data category success', 'data' => $addons], 200);
+        // } else {
+        //     abort(403);
+        // }
     }
 
     /**
@@ -40,7 +40,7 @@ class AddOnController extends Controller
             $validateData = $request->validate([
                 'name' => 'required|string',
                 'slug' => 'required|string',
-                'price' => 'required||biginteger',
+                'price' => 'required|numeric',
 
             ]);
             $addon = new AddOn();
@@ -74,17 +74,17 @@ class AddOnController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AddOn $addOn)
+    public function update(Request $request, AddOn $addon)
     {
         if (Auth::user()->user_role == "admin") {
             $validateData = $request->validate([
                 'name' => 'required|string',
                 'slug' => 'required|string',
-                'price' => 'required|boolean',
+                'price' => 'required|numeric',
 
             ]);
 
-            $category->update($validateData);
+            $addon->update($validateData);
             return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update category success'], 200);
         } else {
             abort(403);
@@ -94,10 +94,10 @@ class AddOnController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AddOn $addOn)
+    public function destroy(AddOn $addon)
     {
         if (Auth::user()->user_role == "admin") {
-            $addOn->delete();
+            $addon->delete();
             return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete addon success'], 200);
         } else {
             abort(403);

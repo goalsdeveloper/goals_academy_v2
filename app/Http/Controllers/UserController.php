@@ -16,11 +16,9 @@ class UserController extends Controller
     public function index()
     {
 
-        // dd(Auth::user());
+
         if (Auth::user()->user_role == "admin") {
             $user = User::where("user_role", "user")->paginate(10);
-
-            // dd($user);
             return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $user], 200);
         } else {
             abort(403);
@@ -49,9 +47,9 @@ class UserController extends Controller
     public function show(User $user)
     {
         if (Auth::user()->user_role == "admin") {
-            
-            $userWithProfile = User::with('profile')->where("user_role","user")->find($user->id);
-            if($userWithProfile == null){
+
+            $userWithProfile = User::with('profile')->where("user_role", "user")->find($user->id);
+            if ($userWithProfile == null) {
                 return response()->json([
                     'status' => false,
                     'statusCode' => 404,
