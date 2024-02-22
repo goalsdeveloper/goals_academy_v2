@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\AddOnController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
@@ -86,6 +89,8 @@ Route::resource('/category', CategoryController::class)->middleware('auth');
 Route::resource('/addon', AddOnController::class)->middleware('auth');
 Route::resource('/users', UserController::class)->middleware('auth')->except(['update', 'create', 'store', 'destroy', 'edit']);
 Route::resource('/tutorss', TutorController::class)->middleware('auth')->except([ 'create', 'store', 'destroy', 'edit']);
+Route::resource('/place', PlaceController::class)->middleware('auth')->except([ 'create', 'store', 'destroy', 'edit']);
+// Route::resource('/tutorss', TutorController::class)->middleware('auth')->except([ 'create', 'store', 'destroy', 'edit']);
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/auth.php';

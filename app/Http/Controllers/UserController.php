@@ -15,13 +15,17 @@ class UserController extends Controller
      */
     public function index()
     {
-
-
-        if (Auth::user()->user_role == "admin") {
-            $user = User::where("user_role", "user")->paginate(10);
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $user], 200);
-        } else {
-            abort(403);
+        try {
+            if (Auth::user()->user_role == "admin") {
+                $user = User::where("user_role", "user")->paginate(10);
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data user success', 'data' => $user], 200);
+            } else {
+                abort(403);
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to retrieve data. Internal Server Error'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
 
@@ -46,24 +50,23 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if (Auth::user()->user_role == "admin") {
+        try {
+            if (Auth::user()->user_role == "admin") {
+                $userWithProfile = User::with('profile')->where("user_role", "user")->findOrFail($user->id);
 
-            $userWithProfile = User::with('profile')->where("user_role", "user")->find($user->id);
-            if ($userWithProfile == null) {
                 return response()->json([
-                    'status' => false,
-                    'statusCode' => 404,
-                    'message' => 'user not found',
-                ], 404);
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data success',
+                    'data' => $userWithProfile,
+                ], 200);
+            } else {
+                abort(403);
             }
-            return response()->json([
-                'status' => true,
-                'statusCode' => 200,
-                'message' => 'get data success',
-                'data' => $userWithProfile,
-            ], 200);
-        } else {
-            abort(403);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'User not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
 

@@ -14,15 +14,21 @@ class TutorController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->user_role == "admin") {
-            $tutor = User::where("user_role", "tutor")->paginate(10);
+        try {
+            if (Auth::user()->user_role == "admin") {
+                $tutor = User::where("user_role", "tutor")->paginate(10);
 
-            // dd($user);
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $tutor], 200);
-        } else {
-            abort(403);
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $tutor], 200);
+            } else {
+                abort(403);
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to retrieve data. Internal Server Error'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -45,25 +51,23 @@ class TutorController extends Controller
      */
     public function show(User $tutorss)
     {
-        if (Auth::user()->user_role == "admin") {
+        try {
+            if (Auth::user()->user_role == "admin") {
+                $tutorWithProfile = User::with('profile')->where("user_role", "tutor")->findOrFail($tutorss->id);
 
-            $tutorWithProfile = User::with('profile')->where("user_role", "tutor")->find($tutorss->id);
-
-            if ($tutorWithProfile == null) {
                 return response()->json([
-                    'status' => false,
-                    'statusCode' => 404,
-                    'message' => 'user not found',
-                ], 404);
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data success',
+                    'data' => $tutorWithProfile,
+                ], 200);
+            } else {
+                abort(403);
             }
-            return response()->json([
-                'status' => true,
-                'statusCode' => 200,
-                'message' => 'get data success',
-                'data' => $tutorWithProfile,
-            ], 200);
-        } else {
-            abort(403);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'User not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
 

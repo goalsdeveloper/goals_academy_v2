@@ -15,12 +15,18 @@ class AddOnController extends Controller
     public function index()
     {
 
-        // if (Auth::user()->user_role == "admin") {
-        $addons = AddOn::get();
-        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data category success', 'data' => $addons], 200);
-        // } else {
-        //     abort(403);
-        // }
+        try {
+            if (Auth::user()->user_role == "admin") {
+                $addons = AddOn::get();
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data category success', 'data' => $addons], 200);
+            } else {
+                abort(403);
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to retrieve data. Internal Server Error'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+        }
     }
 
     /**
@@ -36,24 +42,32 @@ class AddOnController extends Controller
      */
     public function store(Request $request)
     {
-        if (Auth::user()->user_role == "admin") {
-            $validateData = $request->validate([
-                'name' => 'required|string',
-                'slug' => 'required|string',
-                'price' => 'required|numeric',
+        try {
+            if (Auth::user()->user_role == "admin") {
+                $validateData = $request->validate([
+                    'name' => 'required|string',
+                    'slug' => 'required|string',
+                    'price' => 'required|numeric',
+                ]);
 
-            ]);
-            $addon = new AddOn();
-            $addon->name = $validateData['name'];
-            $addon->slug = $validateData['slug'];
-            $addon->price = $validateData['price'];
+                $addon = new AddOn();
+                $addon->name = $validateData['name'];
+                $addon->slug = $validateData['slug'];
+                $addon->price = $validateData['price'];
 
-            $addon->save();
-            return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create addon success'], 201);
-        } else {
-            abort(403);
+                $addon->save();
+
+                return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create addon success'], 201);
+            } else {
+                abort(403);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -76,18 +90,24 @@ class AddOnController extends Controller
      */
     public function update(Request $request, AddOn $addon)
     {
-        if (Auth::user()->user_role == "admin") {
-            $validateData = $request->validate([
-                'name' => 'required|string',
-                'slug' => 'required|string',
-                'price' => 'required|numeric',
+        try {
+            if (Auth::user()->user_role == "admin") {
+                $validateData = $request->validate([
+                    'name' => 'string',
+                    'slug' => 'string',
+                    'price' => 'numeric',
 
-            ]);
+                ]);
 
-            $addon->update($validateData);
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update category success'], 200);
-        } else {
-            abort(403);
+                $addon->update($validateData);
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update category success'], 200);
+            } else {
+                abort(403);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
 
@@ -96,11 +116,19 @@ class AddOnController extends Controller
      */
     public function destroy(AddOn $addon)
     {
-        if (Auth::user()->user_role == "admin") {
-            $addon->delete();
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete addon success'], 200);
-        } else {
-            abort(403);
+        try {
+            if (Auth::user()->user_role == "admin") {
+                $addon->delete();
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete addon success'], 200);
+            } else {
+                abort(403);
+            }
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Addon not found'], 404);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to delete addon. Internal Server Error'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
 }
