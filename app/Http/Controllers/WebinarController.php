@@ -14,6 +14,9 @@ class WebinarController extends Controller
     public function index()
     {
 
+        if ($bimbingan->product_type_id !== 3) {
+            throw new \Exception('Invalid object type');
+        }
         $webinar = Products::with('category', 'productType')
             ->whereHas('productType', function ($query) {
                 $query->where('type', 'webinar');

@@ -231,6 +231,9 @@ class BimbinganController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
+                if ($bimbingan->product_type_id !== 1) {
+                    throw new \Exception('Invalid object type');
+                }
                 if ($bimbingan->product_image) {
                     Storage::delete($bimbingan->product_image);
                 }
