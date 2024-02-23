@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AddOnController;
+use App\Http\Controllers\BimbinganController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\PlaceController;
@@ -10,6 +12,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Http\Controllers\TutorController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WebinarController;
 use App\Models\AddOn;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -90,7 +93,9 @@ Route::resource('/addon', AddOnController::class)->middleware('auth');
 Route::resource('/users', UserController::class)->middleware('auth')->except(['update', 'create', 'store', 'destroy', 'edit']);
 Route::resource('/tutorss', TutorController::class)->middleware('auth')->except([ 'create', 'store', 'destroy', 'edit']);
 Route::resource('/place', PlaceController::class)->middleware('auth')->except([ 'create', 'store', 'destroy', 'edit']);
-// Route::resource('/tutorss', TutorController::class)->middleware('auth')->except([ 'create', 'store', 'destroy', 'edit']);
+Route::resource('/city', CityController::class)->middleware('auth')->except([ 'create', 'store', 'destroy', 'edit']);
+Route::resource('/bimbingan', BimbinganController::class)->except([ 'create', 'edit']);
+Route::resource('/webinar', WebinarController::class)->except([ 'create', 'edit']);
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/auth.php';
