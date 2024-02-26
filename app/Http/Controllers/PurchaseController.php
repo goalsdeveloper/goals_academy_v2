@@ -231,6 +231,8 @@ class PurchaseController extends Controller
             ->first();
         // dd($product);
         $addOns = $product->addOns;
+        $product->form_config = json_decode($product->form_config);
+        $product->facilities = json_decode($product->facilities);
         $cities = City::with('places')->get();
         $topics = $product->topics;
         return Inertia::render('Purchase/Form', [
