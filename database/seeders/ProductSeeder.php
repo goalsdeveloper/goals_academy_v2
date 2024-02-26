@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Products;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
@@ -15,7 +16,7 @@ class ProductSeeder extends Seeder
         Products::create([
             'category_id' => 1,
             'name' => 'Dibimbing Online 30 Menit',
-            'slug' => 'dibimbing-online-30-menit',
+            'slug' => Str::slug('Dibimbing Online 30 Menit'),
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.',
             'facilities' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
@@ -38,7 +39,7 @@ class ProductSeeder extends Seeder
         Products::create([
             'category_id' => 1,
             'name' => 'Dibimbing Online 45 Menit',
-            'slug' => 'dibimbing-online-45-menit',
+            'slug' => Str::slug('Dibimbing Online 45 Menit'),
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'facilities' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
@@ -61,7 +62,7 @@ class ProductSeeder extends Seeder
         Products::create([
             'category_id' => 1,
             'name' => 'Dibimbing Offline 60 Menit',
-            'slug' => 'dibimbing-offline-60-menit',
+            'slug' => Str::slug('Dibimbing Offline 60 Menit'),
             'excerpt' => 'Bimbingan personal 1-on-1 secara tatap',
             'description' => 'Bimbingan personal 1-on-1 secara tatap muka selama 60 Menit, khusus area Kota Malang.',
             'facilities' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
@@ -85,7 +86,7 @@ class ProductSeeder extends Seeder
         Products::create([
             'category_id' => 1,
             'name' => 'How To Survive Your Thesis? Start with Theme',
-            'slug' => 'how-to-survive-your-thesis-?-start-with-theme',
+            'slug' =>Str::slug('How To Survive Your Thesis? Start with Theme'),
             'excerpt' => '',
             'description' => ' ',
             'facilities' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
@@ -108,7 +109,7 @@ class ProductSeeder extends Seeder
         Products::create([
             'category_id' => 1,
             'name' => 'Webinar A',
-            'slug' => 'webinar-a',
+            'slug' => Str::slug('Webinar A'),
             'excerpt' => ' ',
             'description' => ' ',
             'facilities' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
