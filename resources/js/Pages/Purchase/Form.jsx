@@ -17,9 +17,9 @@ import { FiChevronLeft, FiInfo } from "react-icons/fi";
 import { RiCoupon3Fill } from "react-icons/ri";
 import { FaChevronRight } from "react-icons/fa6";
 
-export default function Form({ auth, date, dataProduct, paymentMethods }) {
+export default function Form({ auth, date, addOns, cities, topics, paymentMethods, dataProduct }) {
     const userId = auth.user.id;
-    // console.log(dataProduct);
+    console.log(topics);
     const [showMobileSummaryCard, setShowMobileSummaryCard] = useState(false);
 
     // Code to input form data
@@ -61,64 +61,13 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
     const category = "offline";
 
     // Initialize form rules
-    let rules = {};
+    const rules = dataProduct.form_config;
 
     // Initialize available availableAddOn
-    let availableAddOn = dataProduct.add_ons;
-
-    if (category == "online") {
-        rules = {
-            schedule: 1,
-            topic: 0,
-            document: 0,
-            add_on: 0,
-        };
-    } else if (category == "offline") {
-        rules = {
-            schedule: 1,
-            city: 1,
-            place: 1,
-            topic: 0,
-            document: 0,
-            add_on: 0,
-        };
-    } else if (category == "tuntas") {
-        rules = {
-            topic: 0,
-            document: 0,
-            add_on: 0,
-        };
-        availableAddOn.pop();
-    } else if (category == "review") {
-        rules = {
-            topic: 1,
-            document: 1,
-            add_on: 0,
-        };
-    }
+    let availableAddOn = addOns;
 
     // Code to initialize unavailable dates
     const unavailableDate = date.map((i) => i.date);
-
-    // Initialize Cities and Places option
-    const cities = ["Malang", "Surabaya", "Jakarta"];
-    const places = {
-        Malang: ["Kafe 1", "Kafe 2", "Kafe 3", "Kafe 4", "Kafe 5"],
-        Surabaya: ["Kafe 6", "Kafe 7", "Kafe 8", "Kafe 9", "Kafe 10"],
-        Jakarta: ["Kafe 11", "Kafe 12", "Kafe 13", "Kafe 14", "Kafe 15"],
-    };
-
-    // Initialize Topics
-    const topics = [
-        "Topic 1",
-        "Topic 2",
-        "Topic 3",
-        "Topic 4",
-        "Topic 5",
-        "Topic 6",
-        "Topic 7",
-        "Topic 8",
-    ];
 
     // Initialize purchase methods
     const purchaseMethods = paymentMethods;
@@ -209,7 +158,6 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
                         unavailableDate={unavailableDate}
                         availableAddOn={availableAddOn}
                         cities={cities}
-                        places={places}
                         topics={topics}
                         rules={rules}
                     />
@@ -243,7 +191,6 @@ function MainCard({
     unavailableDate,
     availableAddOn,
     cities,
-    places,
     topics,
     rules,
 }) {
@@ -255,7 +202,6 @@ function MainCard({
         addOn: false,
         document: false,
     });
-    const features = dataProduct.features[0];
     const theme = createTheme({
         typography: {
             fontSize: {
@@ -291,394 +237,422 @@ function MainCard({
                         <div className="flex flex-wrap items-center gap-[3vw] md:gap-[1.5vw]">
                             <div className="flex items-center gap-[3vw] md:gap-[.5vw]">
                                 <i className="fa-regular fa-calendar text-primary"></i>
-                                <p>{features.times}x Pertemuan</p>
+                                {/* <p>{features.times}x Pertemuan</p> */}
                             </div>
                             <div className="flex items-center gap-[3vw] md:gap-[.5vw]">
                                 <i className="fa-solid fa-clock text-[3vw] md:text-[.9vw] text-primary"></i>
-                                <p>{features.duration} Menit</p>
+                                {/* <p>{features.duration} Menit</p> */}
                             </div>
                             <div className="flex items-center gap-[3vw] md:gap-[.5vw]">
                                 <i className="fa-solid fa-location-dot text-primary"></i>
-                                <p>
+                                {/* <p>
                                     {features.category.slice(0, 1).toUpperCase() +
                                         features.category.slice(1)}
-                                </p>
+                                </p> */}
                             </div>
                         </div>
                         <hr className="md:hidden mt-[3vw]" />
                     </div>
                     <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" />
-                    <div className="container md:w-full mx-auto md:grid grid-cols-2 md:gap-[1vw] md:text-[.9vw]">
-                        <div className="w-full md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
-                            <GoalsDatePicker
-                                wrapperClassName="hidden md:block"
-                                show={showForm.schedule}
-                                setShow={(i) => showFormHandler("schedule", i)}
-                                label="Pilih Jadwal Bimbinganmu"
-                                data={data.schedule}
-                                setData={(i) => setData("schedule", i)}
-                                minDate={moment()}
-                                maxDate={moment().add(6, "days")}
-                                shouldDisableDate={unavailableDate}
-                                theme={theme}
-                                slotProps={{
-                                    toolbar: { hidden: true },
-                                    actionBar: {
-                                        sx: { display: "none" },
-                                    },
-                                    switchViewButton: {
-                                        sx: { display: "none" },
-                                    },
-                                    nextIconButton: {
-                                        sx: { fontSize: "1.75vw" },
-                                    },
-                                    previousIconButton: {
-                                        sx: { fontSize: "1.75vw" },
-                                    },
-                                    calendarHeader: {
-                                        sx: {
-                                            fontSize: "1vw",
-                                            height: "4vw",
+                    <div className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw]">
+                        <div className="w-full flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
+                            {"schedule" in rules ? (
+                                <>
+                                    <GoalsDatePicker
+                                        wrapperClassName="hidden md:block"
+                                        show={showForm.schedule}
+                                        setShow={(i) => showFormHandler("schedule", i)}
+                                        label="Pilih Jadwal Bimbinganmu"
+                                        data={data.schedule}
+                                        setData={(i) => setData("schedule", i)}
+                                        minDate={moment()}
+                                        maxDate={moment().add(6, "days")}
+                                        shouldDisableDate={unavailableDate}
+                                        theme={theme}
+                                        slotProps={{
+                                            toolbar: { hidden: true },
+                                            actionBar: {
+                                                sx: { display: "none" },
+                                            },
+                                            switchViewButton: {
+                                                sx: { display: "none" },
+                                            },
+                                            nextIconButton: {
+                                                sx: { fontSize: "1.75vw" },
+                                            },
+                                            previousIconButton: {
+                                                sx: { fontSize: "1.75vw" },
+                                            },
+                                            calendarHeader: {
+                                                sx: {
+                                                    fontSize: "1vw",
+                                                    height: "5vw",
+                                                    maxHeight: "unset",
+                                                    margin: 0,
+                                                    padding: "0 0 1vw 1.25vw",
+                                                },
+                                            },
+                                        }}
+                                        sx={{
+                                            fontSize: "fontSize.1",
+                                            minWidth: "unset",
+                                            width: "100%",
+                                            height: "24vw",
+                                            padding: "0 1vw 0",
                                             maxHeight: "unset",
-                                            margin: 0,
-                                            padding: "0 0 1vw 1.25vw",
-                                        },
-                                    },
-                                }}
-                                sx={{
-                                    fontSize: "fontSize.1",
-                                    minWidth: "unset",
-                                    width: "100%",
-                                    height: "20vw",
-                                    padding: "0 1vw 0",
-                                    maxHeight: "unset",
-                                    "& .MuiDateCalendar-root": {
-                                        width: "100%",
-                                        height: "fit-content",
-                                        maxHeight: "unset",
-                                    },
-                                    "& .MuiPickersLayout-contentWrapper": {
-                                        width: "100%",
-                                        height: "100%",
-                                    },
-                                    "& .MuiDayCalendar-monthContainer": {
-                                        width: "100%",
-                                        height: "fit-content",
-                                        position: "relative",
-                                    },
-                                    "& .MuiPickersSlideTransition-root": {
-                                        width: "100%",
-                                        height: "fit-content",
-                                        minHeight: "unset",
-                                    },
-                                    "& .MuiDayCalendar-weekDayLabel": {
-                                        width: "2.5vw",
-                                        height: "2.5vw",
-                                    },
-                                    "& .MuiPickersDay-root": {
-                                        width: "2.5vw",
-                                        height: "2.5vw",
-                                    },
-                                    "& .MuiPickersDay-root.Mui-selected": {
-                                        backgroundColor: "#FF8854",
-                                    },
-                                    "& .MuiPickersDay-root.Mui-selected:hover": {
-                                        backgroundColor: "#FF6420",
-                                    },
-                                    "& .MuiPickersYear-yearButton.Mui-selected": {
-                                        backgroundColor: "#FF8854",
-                                    },
-                                }}
-                            />
-                            <GoalsDatePicker
-                                wrapperClassName="md:hidden"
-                                show={showForm.schedule}
-                                setShow={(i) => showFormHandler("schedule", i)}
-                                label="Pilih Jadwal Bimbinganmu"
-                                data={data.schedule}
-                                setData={(i) => setData("schedule", i)}
-                                minDate={moment()}
-                                maxDate={moment().add(6, "days")}
-                                shouldDisableDate={unavailableDate}
-                                theme={theme}
-                                slotProps={{
-                                    toolbar: { hidden: true },
-                                    actionBar: {
-                                        sx: { display: "none" },
-                                    },
-                                    switchViewButton: {
-                                        sx: { display: "none" },
-                                    },
-                                    nextIconButton: {
-                                        sx: { fontSize: "7vw" },
-                                    },
-                                    previousIconButton: {
-                                        sx: { fontSize: "7vw" },
-                                    },
-                                    calendarHeader: {
-                                        sx: {
-                                            fontSize: "4vw",
-                                            height: "16vw",
+                                            "& .MuiDateCalendar-root": {
+                                                width: "100%",
+                                                height: "fit-content",
+                                                maxHeight: "unset",
+                                            },
+                                            "& .MuiPickersLayout-contentWrapper": {
+                                                width: "100%",
+                                                height: "100%",
+                                            },
+                                            "& .MuiDayCalendar-monthContainer": {
+                                                width: "100%",
+                                                height: "fit-content",
+                                                position: "relative",
+                                            },
+                                            "& .MuiPickersSlideTransition-root": {
+                                                width: "100%",
+                                                height: "fit-content",
+                                                minHeight: "unset",
+                                            },
+                                            "& .MuiDayCalendar-weekDayLabel": {
+                                                width: "2.5vw",
+                                                height: "2.5vw",
+                                            },
+                                            "& .MuiPickersDay-root": {
+                                                width: "2.5vw",
+                                                height: "2.5vw",
+                                            },
+                                            "& .MuiPickersDay-root.Mui-selected": {
+                                                backgroundColor: "#FF8854",
+                                            },
+                                            "& .MuiPickersDay-root.Mui-selected:hover": {
+                                                backgroundColor: "#FF6420",
+                                            },
+                                            "& .MuiPickersYear-yearButton.Mui-selected": {
+                                                backgroundColor: "#FF8854",
+                                            },
+                                            ".css-sc0lva-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled:not(.Mui-selected)": {
+                                                color: "#DDDDDD",
+                                            },
+                                        }}
+                                    />
+                                    <GoalsDatePicker
+                                        wrapperClassName="md:hidden"
+                                        show={showForm.schedule}
+                                        setShow={(i) => showFormHandler("schedule", i)}
+                                        label="Pilih Jadwal Bimbinganmu"
+                                        data={data.schedule}
+                                        setData={(i) => setData("schedule", i)}
+                                        minDate={moment()}
+                                        maxDate={moment().add(6, "days")}
+                                        shouldDisableDate={unavailableDate}
+                                        theme={theme}
+                                        slotProps={{
+                                            toolbar: { hidden: true },
+                                            actionBar: {
+                                                sx: { display: "none" },
+                                            },
+                                            switchViewButton: {
+                                                sx: { display: "none" },
+                                            },
+                                            nextIconButton: {
+                                                sx: { fontSize: "7vw" },
+                                            },
+                                            previousIconButton: {
+                                                sx: { fontSize: "7vw" },
+                                            },
+                                            calendarHeader: {
+                                                sx: {
+                                                    fontSize: "4vw",
+                                                    height: "16vw",
+                                                    maxHeight: "unset",
+                                                    margin: 0,
+                                                    padding: "0 0 0 4vw",
+                                                },
+                                            },
+                                        }}
+                                        sx={{
+                                            fontSize: "fontSize.4",
+                                            minWidth: "unset",
+                                            width: "100%",
+                                            height: "85vw",
+                                            padding: "0 3vw 0",
                                             maxHeight: "unset",
-                                            margin: 0,
-                                            padding: "0 0 0 4vw",
-                                        },
-                                    },
-                                }}
-                                sx={{
-                                    fontSize: "fontSize.4",
-                                    minWidth: "unset",
-                                    width: "100%",
-                                    height: "85vw",
-                                    padding: "0 3vw 0",
-                                    maxHeight: "unset",
-                                    "& .MuiDateCalendar-root": {
-                                        width: "100%",
-                                        height: "fit-content",
-                                        maxHeight: "unset",
-                                    },
-                                    "& .MuiPickersLayout-contentWrapper": {
-                                        width: "100%",
-                                        height: "100%",
-                                    },
-                                    "& .MuiDayCalendar-monthContainer": {
-                                        width: "100%",
-                                        height: "fit-content",
-                                        position: "relative",
-                                    },
-                                    "& .MuiPickersSlideTransition-root": {
-                                        width: "100%",
-                                        height: "fit-content",
-                                        minHeight: "unset",
-                                    },
-                                    "& .MuiDayCalendar-weekDayLabel": {
-                                        width: "10vw",
-                                        height: "10vw",
-                                    },
-                                    "& .MuiPickersDay-root": {
-                                        width: "10vw",
-                                        height: "10vw",
-                                    },
-                                    "& .MuiPickersDay-root.Mui-selected": {
-                                        backgroundColor: "#FF8854",
-                                    },
-                                    "& .MuiPickersDay-root.Mui-selected:hover": {
-                                        backgroundColor: "#FF6420",
-                                    },
-                                    "& .MuiPickersYear-yearButton.Mui-selected": {
-                                        backgroundColor: "#FF8854",
-                                    },
-                                }}
-                            />
-                            <GoalsSelectInput
-                                show={showForm.city}
-                                setShow={(i) => showFormHandler("city", i)}
-                                label="Kota Bimbingan"
-                                placeholder="Pilih Kota"
-                                data={data.city}
-                            >
-                                {cities.map((item, index) => {
-                                    return (
-                                        <GoalsSelectInputItem
-                                            key={index}
-                                            onClick={() => setData("city", item)}
-                                        >
-                                            {item}
-                                        </GoalsSelectInputItem>
-                                    );
-                                })}
-                            </GoalsSelectInput>
-                            <GoalsSelectInput
-                                show={showForm.place}
-                                setShow={(i) => showFormHandler("place", i)}
-                                label="Lokasi Bimbingan"
-                                placeholder="Pilih Lokasi Bimbingan"
-                                data={data.place}
-                            >
-                                {data.city != "" ? (
-                                    places[data.city].map((item, index) => {
+                                            "& .MuiDateCalendar-root": {
+                                                width: "100%",
+                                                height: "fit-content",
+                                                maxHeight: "unset",
+                                            },
+                                            "& .MuiPickersLayout-contentWrapper": {
+                                                width: "100%",
+                                                height: "100%",
+                                            },
+                                            "& .MuiDayCalendar-monthContainer": {
+                                                width: "100%",
+                                                height: "fit-content",
+                                                position: "relative",
+                                            },
+                                            "& .MuiPickersSlideTransition-root": {
+                                                width: "100%",
+                                                height: "fit-content",
+                                                minHeight: "unset",
+                                            },
+                                            "& .MuiDayCalendar-weekDayLabel": {
+                                                width: "10vw",
+                                                height: "10vw",
+                                            },
+                                            "& .MuiPickersDay-root": {
+                                                width: "10vw",
+                                                height: "10vw",
+                                            },
+                                            "& .MuiPickersDay-root.Mui-selected": {
+                                                backgroundColor: "#FF8854",
+                                            },
+                                            "& .MuiPickersDay-root.Mui-selected:hover": {
+                                                backgroundColor: "#FF6420",
+                                            },
+                                            "& .MuiPickersYear-yearButton.Mui-selected": {
+                                                backgroundColor: "#FF8854",
+                                            },
+                                            ".css-sc0lva-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled:not(.Mui-selected)": {
+                                                color: "#DDDDDD",
+                                            },
+                                        }}
+                                    />
+                                </>
+                            ) : (<></>)}
+                            {"city" in rules ? (
+                                <>
+                                    <GoalsSelectInput
+                                        show={showForm.city}
+                                        setShow={(i) => showFormHandler("city", i)}
+                                        label="Kota Bimbingan"
+                                        placeholder="Pilih Kota"
+                                        data={data.city != "" ? cities.filter(item => item.id == data.city)[0].city : ""}
+                                    >
+                                        {cities.map((item, index) => {
+                                            return (
+                                                <GoalsSelectInputItem
+                                                    key={index}
+                                                    onClick={() => {
+                                                        if (data.place == "") {
+                                                            setData("city", item.id)
+                                                        } else {
+                                                            setData({...data, city: item.id, place: ""})
+                                                        }
+                                                    }}
+                                                >
+                                                    {item.city}
+                                                </GoalsSelectInputItem>
+                                            );
+                                        })}
+                                    </GoalsSelectInput>
+                                    <GoalsSelectInput
+                                        show={showForm.place}
+                                        setShow={(i) => showFormHandler("place", i)}
+                                        label="Lokasi Bimbingan"
+                                        placeholder="Pilih Lokasi Bimbingan"
+                                        data={data.place != "" ? cities.filter(item => item.id == data.city)[0].places.filter(item => item.id == data.place)[0].place : ""}
+                                    >
+                                        {data.city != "" ? (
+                                            cities.filter(item => item.id == data.city)[0].places.map((item, index) => {
+                                                return (
+                                                    <GoalsSelectInputItem
+                                                        key={index}
+                                                        onClick={() =>
+                                                            setData("place", item.id)
+                                                        }
+                                                    >
+                                                        {item.place}
+                                                    </GoalsSelectInputItem>
+                                                );
+                                            })
+                                        ) : (
+                                            <GoalsSelectInputItem>
+                                                Pilih kota terlebih dahulu
+                                            </GoalsSelectInputItem>
+                                        )}
+                                    </GoalsSelectInput>
+                                </>
+                            ) : (<></>)}
+                            {"topic" in rules ? (
+                                <GoalsSelectInput
+                                    show={showForm.topic}
+                                    setShow={(i) => showFormHandler("topic", i)}
+                                    label="Topik Bimbingan"
+                                    placeholder="Pilih Topik Bimbingan"
+                                    data={data.topic != "" ? topics.filter(item => item.id == data.topic)[0].topic : ""}
+                                >
+                                    {topics.map((item, index) => {
                                         return (
                                             <GoalsSelectInputItem
                                                 key={index}
-                                                onClick={() =>
-                                                    setData("place", item)
-                                                }
+                                                onClick={() => setData("topic", item.id)}
                                             >
-                                                {item}
+                                                {item.topic}
                                             </GoalsSelectInputItem>
                                         );
-                                    })
-                                ) : (
-                                    <GoalsSelectInputItem>
-                                        Pilih kota terlebih dahulu
-                                    </GoalsSelectInputItem>
-                                )}
-                            </GoalsSelectInput>
-                            <GoalsSelectInput
-                                show={showForm.topic}
-                                setShow={(i) => showFormHandler("topic", i)}
-                                label="Topik Bimbingan"
-                                placeholder="Pilih Topik Bimbingan"
-                                data={data.topic}
-                            >
-                                {topics.map((item, index) => {
-                                    return (
-                                        <GoalsSelectInputItem
-                                            key={index}
-                                            onClick={() => setData("topic", item)}
-                                        >
-                                            {item}
-                                        </GoalsSelectInputItem>
-                                    );
-                                })}
-                            </GoalsSelectInput>
-                            <GoalsSelectMultipleInput
-                                show={showForm.addOn}
-                                setShow={(i) => {
-                                    if (
-                                        !(
-                                            data.add_on.every(
-                                                (i) =>
-                                                    temp.add_on.filter(
-                                                        (j) => j.id == i.id
-                                                    ).length
-                                            ) &&
-                                            temp.add_on.every(
-                                                (i) =>
-                                                    data.add_on.filter(
-                                                        (j) => j.id == i.id
-                                                    ).length
-                                            )
-                                        )
-                                    ) {
-                                        setTemp("add_on", data.add_on);
-                                    }
-                                    showFormHandler("addOn", i);
-                                }}
-                                label="Add-On"
-                                placeholder="Tambah Add-On"
-                                data={data.add_on}
-                                onClick={() => {
-                                    if (
-                                        !(
-                                            data.add_on.length == 0 &&
-                                            temp.add_on.length == 0
-                                        ) &&
-                                        !(
-                                            data.add_on.every(
-                                                (i) =>
-                                                    temp.add_on.filter(
-                                                        (j) => j.id == i.id
-                                                    ).length
-                                            ) &&
-                                            temp.add_on.every(
-                                                (i) =>
-                                                    data.add_on.filter(
-                                                        (j) => j.id == i.id
-                                                    ).length
-                                            )
-                                        )
-                                    ) {
-                                        let addOnPrice = 0;
-                                        if (temp.add_on.length) {
-                                            addOnPrice = temp.add_on
-                                                .map((i) => parseFloat(i.price))
-                                                .reduce(
-                                                    (total, i) =>
-                                                        parseFloat(total) +
-                                                        parseFloat(i)
-                                                );
-                                        } else {
-                                            addOnPrice = 0;
-                                        }
-                                        let adminFee = 0;
-                                        if (data.purchase_method != "") {
-                                            if (
-                                                parseInt(
-                                                    data.purchase_method.is_price
+                                    })}
+                                </GoalsSelectInput>
+                            ) : (<></>)}
+                            {availableAddOn.length ? (
+                                <GoalsSelectMultipleInput
+                                    show={showForm.addOn}
+                                    setShow={(i) => {
+                                        if (
+                                            !(
+                                                data.add_on.every(
+                                                    (i) =>
+                                                        temp.add_on.filter(
+                                                            (j) => j.id == i.id
+                                                        ).length
+                                                ) &&
+                                                temp.add_on.every(
+                                                    (i) =>
+                                                        data.add_on.filter(
+                                                            (j) => j.id == i.id
+                                                        ).length
                                                 )
-                                            ) {
-                                                adminFee = parseFloat(
-                                                    data.purchase_method.admin_fee
-                                                );
-                                            } else {
-                                                adminFee = Math.ceil(
-                                                    ((parseFloat(data.init_price) -
-                                                        parseFloat(data.discount) +
-                                                        addOnPrice) *
-                                                        parseFloat(
-                                                            data.purchase_method
-                                                                .admin_fee
-                                                        )) /
-                                                        100
-                                                );
-                                            }
+                                            )
+                                        ) {
+                                            setTemp("add_on", data.add_on);
                                         }
-                                        const totalPrice =
-                                            parseFloat(data.init_price) -
-                                            parseFloat(data.discount) +
-                                            addOnPrice +
-                                            adminFee;
-                                        setData({
-                                            ...data,
-                                            add_on: temp.add_on,
-                                            add_on_price: addOnPrice,
-                                            admin: adminFee,
-                                            total_price: totalPrice,
-                                        });
-                                    }
-                                }}
-                            >
-                                {availableAddOn.map((item, index) => {
-                                    return (
-                                        <GoalsSelectMultipleInputItem
-                                            key={index}
-                                            checked={
-                                                temp.add_on.filter(
-                                                    (i) => i.id == item.id
-                                                ).length
+                                        showFormHandler("addOn", i);
+                                    }}
+                                    label="Add-On"
+                                    placeholder="Tambah Add-On"
+                                    data={data.add_on}
+                                    onClick={() => {
+                                        if (
+                                            !(
+                                                data.add_on.length == 0 &&
+                                                temp.add_on.length == 0
+                                            ) &&
+                                            !(
+                                                data.add_on.every(
+                                                    (i) =>
+                                                        temp.add_on.filter(
+                                                            (j) => j.id == i.id
+                                                        ).length
+                                                ) &&
+                                                temp.add_on.every(
+                                                    (i) =>
+                                                        data.add_on.filter(
+                                                            (j) => j.id == i.id
+                                                        ).length
+                                                )
+                                            )
+                                        ) {
+                                            let addOnPrice = 0;
+                                            if (temp.add_on.length) {
+                                                addOnPrice = temp.add_on
+                                                    .map((i) => parseFloat(i.price))
+                                                    .reduce(
+                                                        (total, i) =>
+                                                            parseFloat(total) +
+                                                            parseFloat(i)
+                                                    );
+                                            } else {
+                                                addOnPrice = 0;
                                             }
-                                            onClick={() => {
+                                            let adminFee = 0;
+                                            if (data.purchase_method != "") {
                                                 if (
+                                                    parseInt(
+                                                        data.purchase_method.is_price
+                                                    )
+                                                ) {
+                                                    adminFee = parseFloat(
+                                                        data.purchase_method.admin_fee
+                                                    );
+                                                } else {
+                                                    adminFee = Math.ceil(
+                                                        ((parseFloat(data.init_price) -
+                                                            parseFloat(data.discount) +
+                                                            addOnPrice) *
+                                                            parseFloat(
+                                                                data.purchase_method
+                                                                    .admin_fee
+                                                            )) /
+                                                            100
+                                                    );
+                                                }
+                                            }
+                                            const totalPrice =
+                                                parseFloat(data.init_price) -
+                                                parseFloat(data.discount) +
+                                                addOnPrice +
+                                                adminFee;
+                                            setData({
+                                                ...data,
+                                                add_on: temp.add_on,
+                                                add_on_price: addOnPrice,
+                                                admin: adminFee,
+                                                total_price: totalPrice,
+                                            });
+                                        }
+                                    }}
+                                >
+                                    {availableAddOn.map((item, index) => {
+                                        return (
+                                            <GoalsSelectMultipleInputItem
+                                                key={index}
+                                                checked={
                                                     temp.add_on.filter(
                                                         (i) => i.id == item.id
                                                     ).length
-                                                ) {
-                                                    setTemp(
-                                                        "add_on",
-                                                        temp.add_on.filter(
-                                                            (i) => i.id != item.id
-                                                        )
-                                                    );
-                                                } else {
-                                                    const tempAddOn =
-                                                        temp.add_on.slice();
-                                                    tempAddOn.push(item);
-                                                    setTemp("add_on", tempAddOn);
                                                 }
-                                            }}
-                                        >
-                                            {item.name}
-                                        </GoalsSelectMultipleInputItem>
-                                    );
-                                })}
-                            </GoalsSelectMultipleInput>
+                                                onClick={() => {
+                                                    if (
+                                                        temp.add_on.filter(
+                                                            (i) => i.id == item.id
+                                                        ).length
+                                                    ) {
+                                                        setTemp(
+                                                            "add_on",
+                                                            temp.add_on.filter(
+                                                                (i) => i.id != item.id
+                                                            )
+                                                        );
+                                                    } else {
+                                                        const tempAddOn =
+                                                            temp.add_on.slice();
+                                                        tempAddOn.push(item);
+                                                        setTemp("add_on", tempAddOn);
+                                                    }
+                                                }}
+                                            >
+                                                {item.name}
+                                            </GoalsSelectMultipleInputItem>
+                                        );
+                                    })}
+                                </GoalsSelectMultipleInput>
+                            ) : (<></>)}
                         </div>
-                        <GoalsUploadFile
-                            data={data}
-                            removeFile={(i) => {
-                                setData(
-                                    "document",
-                                    data.document.filter((j) => j != i)
-                                );
-                            }}
-                            setData={(i) =>
-                                setData({
-                                    ...data,
-                                    document: data.document.concat(i),
-                                })
-                            }
-                        />
+                        {"document" in rules ? (
+                            <div className="w-full">
+                                <GoalsUploadFile
+                                    data={data}
+                                    removeFile={(i) => {
+                                        setData(
+                                            "document",
+                                            data.document.filter((j) => j != i)
+                                        );
+                                    }}
+                                    setData={(i) =>
+                                        setData({
+                                            ...data,
+                                            document: data.document.concat(i),
+                                        })
+                                    }
+                                />
+                            </div>
+                        ) : (<></>)}
                     </div>
                     <div className="md:hidden rounded-t-[4vw] border-t-1 border-gray-300 py-[4vw]">
                         <div className="container mx-auto flex justify-between">

@@ -45,6 +45,8 @@ const LengkapiProfilForm = ({ show, setShow }) => {
                             label="Nomor Telepon"
                             placeholder="Masukkan nomor telepon disini"
                             value={data.nomor_telepon}
+                            data={data.nomor_telepon}
+                            setData={i => setData("nomor_telepon", i)}
                             onChange={(e) =>
                                 setData("nomor_telepon", e.target.value)
                             }
@@ -54,6 +56,9 @@ const LengkapiProfilForm = ({ show, setShow }) => {
                             label="Universitas"
                             placeholder="Masukkan universitas disini"
                             value={data.universitas}
+                            cancelButton={data.universitas != ""}
+                            data={data.universitas}
+                            setData={i => setData("universitas", i)}
                             onChange={(e) =>
                                 setData("universitas", e.target.value)
                             }
@@ -63,6 +68,9 @@ const LengkapiProfilForm = ({ show, setShow }) => {
                             label="Fakultas"
                             placeholder="Masukkan fakultas disini"
                             value={data.fakultas}
+                            cancelButton={data.fakultas != ""}
+                            data={data.fakultas}
+                            setData={i => setData("fakultas", i)}
                             onChange={(e) =>
                                 setData("fakultas", e.target.value)
                             }
@@ -72,6 +80,9 @@ const LengkapiProfilForm = ({ show, setShow }) => {
                             label="Jurusan"
                             placeholder="Masukkan jurusan disini"
                             value={data.jurusan}
+                            cancelButton={data.jurusan != ""}
+                            data={data.jurusan}
+                            setData={i => setData("jurusan", i)}
                             onChange={(e) => setData("jurusan", e.target.value)}
                         />
                     </div>

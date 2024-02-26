@@ -10,7 +10,7 @@ const GoalsTextInput = ({
     success = "",
     data,
     setData,
-    cancelButton=true,
+    cancelButton=false,
     ...rest
 }) => {
     return (
