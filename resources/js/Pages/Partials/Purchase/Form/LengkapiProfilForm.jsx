@@ -1,5 +1,5 @@
 import GoalsTextInput from "@/Components/Form/GoalsTextInput";
-import ButtonPill from "@/Components/GoalsButton";
+import GoalsButton from "@/Components/GoalsButton";
 import { useForm } from "@inertiajs/react";
 import { FiX } from "react-icons/fi";
 
@@ -24,22 +24,22 @@ const LengkapiProfilForm = ({ show, setShow }) => {
                     show
                         ? "md:top-0 bottom-0 md:scale-100"
                         : "md:top-full -bottom-full md:scale-0"
-                } fixed left-0 flex flex-col gap-[2vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
+                } fixed left-0 flex flex-col gap-[2vw] w-full md:w-[30vw] h-[55vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[.5vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
             >
                 <div className="flex justify-between">
-                    <p className="text-[1.2vw] font-semibold">Data Diri</p>
+                    <p className="font-poppins font-semibold text-[4.5vw] md:text-[1.2vw]">Data Diri</p>
                     <button onClick={() => setShow(!show)}>
-                        <FiX className="text-[1.8vw]" />
+                        <FiX className="text-[6vw] md:text-[1.8vw]" />
                     </button>
                 </div>
                 <form
-                    className="space-y-[2vw]"
+                    className="space-y-[8vw] md:space-y-[2vw]"
                     onSubmit={(e) => {
                         e.preventDefault();
                         post("/produk");
                     }}
                 >
-                    <div className="space-y-[.8vw]">
+                    <div className="space-y-[3.2vw] md:space-y-[.8vw]">
                         <GoalsTextInput
                             type="number"
                             label="Nomor Telepon"
@@ -75,8 +75,7 @@ const LengkapiProfilForm = ({ show, setShow }) => {
                             onChange={(e) => setData("jurusan", e.target.value)}
                         />
                     </div>
-
-                    <button className="w-full rounded-md h-[2.8vw] flex items-center justify-center bg-primary-40 hover:bg-primary text-white" type="submit">
+                    <button className="w-full rounded-md h-[11.2vw] md:h-[2.8vw] flex items-center justify-center bg-primary-40 hover:bg-primary text-white" type="submit">
                         Simpan
                     </button>
                 </form>

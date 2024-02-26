@@ -1,5 +1,6 @@
 import GoalsRadio from "@/Components/Form/GoalsRadio";
 import ButtonPill from "@/Components/ButtonPill";
+import { FiX } from "react-icons/fi";
 
 export default function PurchaseMethodForm({
     show,
@@ -40,32 +41,28 @@ export default function PurchaseMethodForm({
                     show
                         ? "md:top-0 bottom-0 md:scale-100"
                         : "md:top-full -bottom-full md:scale-0"
-                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[.5vw] p-[8vw] md:px-[1.75vw] md:py-[2vw] z-50 md:ms-[35vw] md:mt-[8vh] max-h-[84vh]`}
+                } fixed left-0 flex flex-col gap-[4vw] md:gap-[1vw] w-full md:w-[30vw] h-[55vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[.5vw] p-[8vw] md:px-[1.75vw] md:py-[2vw] z-50 md:ms-[35vw] md:mt-[8vh] max-h-[84vh]`}
             >
                 <div>
                     <div className="flex justify-between items-center mb-[3vw] md:mb-[1vw]">
                         <h5 className="text-black font-poppins font-medium text-[4.5vw] md:text-[1.2vw]">
                             Pilih Metode
                         </h5>
-                        <i
-                            role="button"
-                            className="fa-solid fa-times text-[5vw] md:text-[1.5vw]"
-                            onClick={() => setShow(false)}
-                        ></i>
+                        <FiX className="text-[6vw] md:text-[1.8vw] cursor-pointer" onClick={() => setShow(false)} />
                     </div>
                 </div>
-                <div className="h-[40vh] md:h-fit flex flex-col gap-[3vw] md:gap-[1.5vw] overflow-auto scrollbar-hidden">
+                <div className="h-[40vh] md:h-fit flex flex-col gap-[6vw] md:gap-[1.5vw] overflow-auto scrollbar-hidden">
                     <div>
-                        <h6 className="font-sans font-normal text-[4vw] md:text-[1vw] mb-[2vw] md:mb-[1vw]">
+                        <h6 className="font-sans font-normal text-[4vw] md:text-[1vw] mb-[4vw] md:mb-[1vw]">
                             Dompet Digital
                         </h6>
-                        <div className="grid gap-[3vw] md:gap-[1vw]">
+                        <div className="grid gap-[4vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
                                 if (item.category == "ewallet") {
                                     return (
                                         <GoalsRadio
                                             key={i}
-                                            className="spread rounded-sm border-1 text-dark h-[9vw] md:h-[4vw]"
+                                            className="spread rounded-[2vw] md:rounded-[.5vw] border-1 text-dark h-[12.5vw] md:h-[4vw]"
                                             checked={data.purchase_method.name == item.name}
                                             onClick={() => clickHandler(item)}
                                         >
@@ -73,7 +70,7 @@ export default function PurchaseMethodForm({
                                                 <img
                                                     src={`/img/purchase/${item.name.toLowerCase()}.png`}
                                                     alt={item.name}
-                                                    className="w-[4vw] md:w-[2vw]"
+                                                    className="w-[6vw] md:w-[2vw]"
                                                 />
                                                 {item.name}
                                             </div>
@@ -84,16 +81,16 @@ export default function PurchaseMethodForm({
                         </div>
                     </div>
                     <div>
-                        <h6 className="font-sans font-normal text-[4vw] md:text-[1vw] mb-[2vw] md:mb-[1vw]">
+                        <h6 className="font-sans font-normal text-[4vw] md:text-[1vw] mb-[4vw] md:mb-[1vw]">
                             Transfer Bank
                         </h6>
-                        <div className="grid gap-[3vw] md:gap-[1vw]">
+                        <div className="grid gap-[4vw] md:gap-[1vw]">
                             {purchaseMethods.map((item, i) => {
                                 if (item.category == "bank_transfer") {
                                     return (
                                         <GoalsRadio
                                             key={i}
-                                            className="spread rounded-sm border-1 text-dark h-[9vw] md:h-[4vw]"
+                                            className="spread rounded-[2vw] md:rounded-[.5vw] border-1 text-dark h-[12.5vw] md:h-[4vw]"
                                             checked={data.purchase_method.name == item.name}
                                             onClick={() => clickHandler(item)}
                                         >
@@ -101,7 +98,7 @@ export default function PurchaseMethodForm({
                                                 <img
                                                     src={`/img/purchase/${item.name.toLowerCase()}.png`}
                                                     alt={item.name}
-                                                    className="w-[4vw] md:w-[2vw]"
+                                                    className="w-[6vw] md:w-[2vw]"
                                                 />
                                                 {item.name}
                                             </div>
