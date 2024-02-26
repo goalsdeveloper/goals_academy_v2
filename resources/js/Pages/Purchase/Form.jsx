@@ -13,8 +13,9 @@ import PurchaseMethodForm from "@/Pages/Partials/Purchase/Form/PurchaseMethodFor
 import LengkapiProfilForm from "@/Pages/Partials/Purchase/Form/LengkapiProfilForm";
 import { createTheme } from "@mui/material";
 import "@/script/momentCustomLocale";
-import { FiChevronLeft } from "react-icons/fi";
-import { FiInfo } from "react-icons/fi";
+import { FiChevronLeft, FiInfo } from "react-icons/fi";
+import { RiCoupon3Fill } from "react-icons/ri";
+import { FaChevronRight } from "react-icons/fa6";
 
 export default function Form({ auth, date, dataProduct, paymentMethods }) {
     const userId = auth.user.id;
@@ -57,19 +58,6 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
     });
 
     // Initialize product's category
-    const categoriesName = dataProduct.categories
-        .map((item) => item.name)
-        .join(" ")
-        .toLowerCase();
-    // const category = categoriesName.includes("online")
-    //     ? "online"
-    //     : categoriesName.includes("offline")
-    //     ? "offline"
-    //     : categoriesName.includes("tuntas")
-    //     ? "tuntas"
-    //     : categoriesName.includes("review")
-    //     ? "review"
-    //     : "";
     const category = "offline";
 
     // Initialize form rules
@@ -205,12 +193,12 @@ export default function Form({ auth, date, dataProduct, paymentMethods }) {
     };
 
     return (
-        <MainLayout auth={auth} title="Purchase" footerClassName="hidden md:block">
+        <MainLayout auth={auth} title="Purchase" headerClassName="shadow-md md:shadow-none" footerClassName="hidden md:block">
             <section
                 id="purchase-form"
                 className="md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32"
             >
-                <div className="relative md:container mx-auto pt-[8.5vw] md:pt-[1vw] flex flex-col justify-between md:flex-row text-[4vw] md:text-[1vw] gap-[4vw] md:gap-0">
+                <div className="relative md:container mx-auto pt-[8.5vw] md:pt-[1vw] flex flex-col justify-between md:flex-row text-[3.7vw] md:text-[1vw] gap-[4vw] md:gap-0">
                     <MainCard
                         setShowMobileSummaryCard={setShowMobileSummaryCard}
                         dataProduct={dataProduct}
@@ -289,9 +277,9 @@ function MainCard({
 
     return (
         <div className="md:w-[72%] flex flex-col gap-[1vw]">
-            <div className="border-t-1 md:border-1 md:rounded-[.8vw] md:p-[1.75vw] h-fit">
+            <div className="md:border-1 md:rounded-[.8vw] md:p-[1.75vw] h-fit">
                 <div className="flex flex-col gap-[4vw] md:gap-0">
-                    <div className="md:hidden pt-[4vw] flex flex-col gap-[4vw]">
+                    <div className="md:hidden pt-[5vw] flex flex-col gap-[4vw]">
                         <Link href="/produk" className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins"><FiChevronLeft className="text-[5vw]" /> Kembali</Link>
                         <img className="w-full h-[60vw]" src={dataProduct.product_image} alt="" />
                     </div>
@@ -696,7 +684,7 @@ function MainCard({
                         <div className="container mx-auto flex justify-between">
                             <div className="flex flex-col justify-center gap-[1vw]">
                                 <p className="text-[3vw] font-medium">Total</p>
-                                <span className="text-[4.5vw] text-secondary font-bold">IDR {currency.format(dataProduct.price)}</span>
+                                <span className="text-[4.5vw] text-secondary font-bold">IDR {currency.format(data.total_price)}</span>
                             </div>
                             <GoalsButton className="rounded-[2vw] px-[9vw]" onClick={() => setShowMobileSummaryCard(true)}>Beli</GoalsButton>
                         </div>
@@ -724,36 +712,78 @@ function SummaryCard({
 }) {
     const [showPromoForm, setShowPromoForm] = useState(false);
     const [showPurchaseMethodForm, setShowPurchaseMethodForm] = useState(false);
+    const [showLengkapiProfilForm, setShowLengkapiProfilForm] = useState(false);
     const [isProcessed, setIsProcessed] = useState(false);
     const currency = Intl.NumberFormat("id-ID");
     return (
         <>
-            <div className={`fixed md:static w-full md:w-[30%] h-screen flex flex-col bg-white md:ms-[2vw] gap-[4vw] md:gap-[2vw] duration-500 ${showMobile ? '' : 'translate-x-full'} md:translate-x-0 md:text-[.9vw]`}>
-                <div className="relative h-screen md:h-fit border-1 md:rounded-[1vw] pt-[2vw] mb-[4vw] md:p-[1.75vw] overflow-auto md:overflow-hidden">
-                    <span className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins pt-[2vw] pb-[4vw]" onClick={() => setShowMobile(false)}><FiChevronLeft className="text-[5vw]" /> Kembali</span>
+            <div className={`fixed top-0 bottom-0 right-0 md:static w-full h-screen md:w-[30%] flex flex-col bg-white md:ms-[2vw] gap-[4vw] md:gap-[2vw] duration-500 ${showMobile ? '' : 'translate-x-full'} md:translate-x-0 md:text-[.9vw]`}>
+                <div className="relative h-full md:h-fit border-1 md:rounded-[1vw] pt-[22vw] md:p-[1.75vw] overflow-auto md:overflow-hidden">
+                    <div className="md:hidden shadow-md">
+                        <span className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins py-[4vw]" onClick={() => setShowMobile(false)}><FiChevronLeft className="text-[5vw]" /> Kembali</span>
+                    </div>
+                    <div className="md:hidden shadow-md py-[4vw]">
+                        <div className="container mx-auto space-y-[4vw]">
+                            <div className="flex items-center gap-[4vw]">
+                                <div className="w-5/12 rounded-[2vw] overflow-hidden">
+                                    <img className="w-full h-full" src={dataProduct.product_image} alt="" />
+                                </div>
+                                <div className="w-full">
+                                    <p className="font-semibold text-secondary text-[3vw]">Bimbingan Skripsi</p>
+                                    <p className="font-semibold pt-[3vw]">{dataProduct.name}</p>
+                                    <p className="font-medium text-gray-400 text-[3.5vw]">IDR {currency.format(dataProduct.price)}</p>
+                                </div>
+                            </div>
+                            <ExpandedButton
+                                className="rounded-[2vw] border-1 border-blue-500 p-[4vw]"
+                                textClassName="text-[3vw]"
+                                iconClassName="text-blue-500"
+                                onClick={() => setShowLengkapiProfilForm(true)}
+                            >Yuk, lengkapin profilnya agar bisa transaksi!</ExpandedButton>
+                        </div>
+                    </div>
                     <div className="container md:w-full mx-auto">
                         <div className="flex flex-col-reverse md:flex-col gap-[4vw] md:gap-0">
                             <ExpandedButton
-                                className={`rounded-[.8vw] md:rounded-[.4vw] bg-green-50 text-green-500 h-[9vw] md:h-[3.1vw] mb-[1.5vw]`}
+                                className={`md:hidden rounded-[2vw] md:rounded-[.4vw] h-[12.5vw] md:h-[3.1vw] border-1 border-light-grey`}
+                                textClassName="font-normal"
+                                onClick={() =>
+                                    setShowPurchaseMethodForm(
+                                        !showPurchaseMethodForm
+                                    )
+                                }
+                            >
+                                {data.purchase_method != "" ? (
+                                    <div className="flex items-center gap-[2vw] md:gap-[.5vw]">
+                                        <img
+                                            src={`/img/purchase/${data.purchase_method.name.toLowerCase()}.png`}
+                                            alt={data.purchase_method.name}
+                                            className="w-[4vw] md:w-[1.5vw]"
+                                        />
+                                        {data.purchase_method.name}
+                                    </div>
+                                ) : (
+                                    "Pilih Metode Pembayaran"
+                                )}
+                            </ExpandedButton>
+                            <GoalsButton
+                                className={`justify-center md:justify-between gap-[4vw] md:gap-0 rounded-[2vw] md:rounded-[.4vw] h-[12.5vw] md:h-[3.1vw] mb-[1.5vw] px-[1vw]`}
+                                activeClassName="bg-green-50 text-green-500"
                                 textClassName="font-normal"
                                 onClick={() => setShowPromoForm(!showPromoForm)}
                             >
-                                {data.discount > 0
-                                    ? "Promo Terpakai"
-                                    : "Masukkan Kode Promo"}
-                            </ExpandedButton>
+                                <RiCoupon3Fill className="text-[4.8vw] md:text-[1.2vw]" />
+                                <span>
+                                    {data.discount > 0
+                                        ? "Promo Terpakai"
+                                        : "Masukkan Kode Promo"}
+                                </span>
+                                <FaChevronRight className="hidden md:inline-block" />
+                            </GoalsButton>
                             <div>
-                                <div className="hidden md:block">
-                                    <h5 className="font-semibold mb-[2vw] md:mb-[.5vw] text-[3vw] md:text-[1vw]">
-                                        Deskripsi Pesanan
-                                    </h5>
-                                </div>
-                                <div className="md:hidden">
-                                    <h5 className="md:hidden font-medium my-[2vw] md:mb-[.5vw] text-[3vw] md:text-[1.2vw]">
-                                        Ringkasan Transaksi
-                                    </h5>
-                                    <hr className="border-dark" />
-                                </div>
+                                <h5 className="font-semibold my-[1.5vw] md:mb-[.5vw] text-[3.7vw] md:text-[1vw]">
+                                    Deskripsi Pesanan
+                                </h5>
                                 <table className="w-full border-separate border-spacing-y-[3vw] md:border-spacing-y-[.5vw] text-gray-500 my-1">
                                     <tbody>
                                         <tr>
@@ -805,7 +835,7 @@ function SummaryCard({
                                     IDR {currency.format(totalPrice)}
                                 </h2>
                             </div>
-                            <div className="grid gap-[4vw] md:gap-[1.25vw]">
+                            <div className="hidden md:grid gap-[4vw] md:gap-[1.25vw]">
                                 <ExpandedButton
                                     className={`rounded-[.8vw] md:rounded-[.4vw] h-[9vw] md:h-[3.1vw] border-1 border-light-grey`}
                                     textClassName="font-normal"
@@ -830,7 +860,7 @@ function SummaryCard({
                                 </ExpandedButton>
                             </div>
                         </div>
-                        <div className="flex justify-between items-center mt-[4vw] md:mt-0">
+                        <div className="hidden md:flex justify-between items-center mt-[4vw] md:mt-0">
                             <div className="md:hidden">
                                 <p className="mb-[1vw]">Total pembelian</p>
                                 <p className="font-poppins text-secondary font-bold text-[5.25vw]">
@@ -860,6 +890,15 @@ function SummaryCard({
                             </GoalsButton>
                         </div>
                     </div>
+                    <div className="absolute w-full bottom-0 md:hidden rounded-t-[4vw] border-t-1 border-gray-300 py-[4vw]">
+                        <div className="container mx-auto flex justify-between">
+                            <div className="flex flex-col justify-center gap-[1vw]">
+                                <p className="text-[3vw] font-medium">Total</p>
+                                <span className="text-[4.5vw] text-secondary font-bold">IDR {currency.format(totalPrice)}</span>
+                            </div>
+                            <GoalsButton className="rounded-[2vw] px-[9vw]" onClick={() => setShowMobile(false)}>Beli</GoalsButton>
+                        </div>
+                    </div>
                 </div>
             </div>
             <PromoForm
@@ -880,6 +919,12 @@ function SummaryCard({
                 setTemp={setTemp}
                 purchaseMethods={purchaseMethods}
             />
+            <LengkapiProfilForm
+                show={showLengkapiProfilForm}
+                setShow={setShowLengkapiProfilForm}
+                data={data}
+                setData={setData}
+            />
         </>
     );
 }
@@ -899,7 +944,7 @@ const LengkapiProfilAlert = ({ data, setData }) => {
             <div className="border-1 md:rounded-[1vw] md:p-[1.75vw] h-fit bg-info-10 flex justify-between items-center">
                 <div className="flex items-center gap-[1vw]">
                     <FiInfo className="text-[2vw] text-info-50" />
-                    <span className="font-semibold text-[.83vw]">
+                    <span className="font-semibold md:text-[.83vw]">
                         Yuk, lengkapin profilnya agar bisa transaksi !
                     </span>
                 </div>
