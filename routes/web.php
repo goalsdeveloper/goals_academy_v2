@@ -1,19 +1,18 @@
 <?php
 
-use App\Models\User;
-use Inertia\Inertia;
-use App\Models\TutorNote;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
-use Illuminate\Support\Facades\DB;
+use App\Models\TutorNote;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+
+Route::get('/token', function () {
+    return csrf_token();
+});
 
 Route::get('/', function () {
     return Inertia::render('Index');
@@ -63,7 +62,6 @@ Route::get('/email/verify/resend-verification', [EmailVerificationController::cl
 Route::get('/unduhfile/{slug}', function (string $slug) {
     $file = TutorNote::where('slug', $slug)->firstOrFail();
     $filePath = $file->file; // Assuming $file->file already contains the relative path
-
 
     // Construct the full path to the file
     $fullPath = storage_path("app/public/{$filePath}");
