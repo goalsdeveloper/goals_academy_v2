@@ -39,7 +39,11 @@ export default {
                 },
                 "success": {
                     "10": "#EBFAF0",
-                    "60": "#2AA24E"
+                    "50": "#35CA61"
+                },
+                "warning": {
+                    "10": "#FFF8E5",
+                    "50": "#FFBD00"
                 },
                 'primary': '#FF6420',
                 'primary-10': '#FFEDE5',

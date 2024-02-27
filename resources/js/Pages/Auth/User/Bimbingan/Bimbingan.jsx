@@ -133,7 +133,7 @@ function BimbinganItem({ data }) {
                 />
                 <GoalsBadge
                     title="Berjalan"
-                    className="bg-success-10 text-success-60"
+                    className="bg-success-10 text-success-50"
                 />
             </ProductItemCardHeader>
             <ProductItemCardContent>
