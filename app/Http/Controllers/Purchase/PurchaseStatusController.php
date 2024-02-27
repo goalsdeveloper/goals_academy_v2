@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Purchase;
 
-use Inertia\Inertia;
+use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Support\Str;
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 
 class PurchaseStatusController extends Controller
 {
@@ -14,13 +14,11 @@ class PurchaseStatusController extends Controller
      */
     public function show(string $order)
     {
-        $order = Order::where('order_code', $order)->with('orderHistory', 'paymentMethod')->first();
+        $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
+            $query->where('status', 'pending');
+        })->with('orderHistory', 'paymentMethod')->first();
         $paymentName = Str::lower($order->paymentMethod->name);
-
-        $orderHistory = $order->orderHistory->where('status', 'pending')->first();
-        $stringToJson = json_decode($orderHistory->payload);
-        // dd($order);
-        // dd($stringToJson, $order->paymentMethod);
+        $stringToJson = json_decode($order->orderHistory->first()->payload);
         return Inertia::render('Purchase/Status', [
             'data' => $order,
             'orderHistory' => $stringToJson,

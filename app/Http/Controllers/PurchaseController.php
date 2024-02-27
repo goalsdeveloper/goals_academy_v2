@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\OrderEnum;
 use App\Models\City;
 use App\Models\Course;
-use App\Models\FileUpload;
 use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Models\PaymentMethod;
@@ -17,6 +16,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Midtrans\Config;
@@ -57,23 +57,16 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request['add_on']);
         $user = Auth::user();
         $order_code = 'GA' . str(now()->format('YmdHis'));
         $orderData = new Order();
-        $orderData->unit_price = $request['init_price'];
+        $orderData->unit_price = $request['total_price'];
         $orderData->quantity = 1;
         $orderData->user_id = $user->id;
         $orderData->status = OrderEnum::PENDING->value;
-        $orderData->add_ons = $request['add_on'];
         $orderData->products_id = $request['product_id'];
         $orderData->payment_method_id = $request['purchase_method']['id'];
         $orderData->order_code = $order_code;
-        $orderData->form_result = [
-            'schedule' => '2024-02-22 21:55:33',
-            'place_id' => 1,
-            'topic_id' => 1,
-        ];
 
         // dd($request->admin);
         $validateData = $request->validate([
@@ -96,6 +89,7 @@ class PurchaseController extends Controller
         }
 
         $quantity = 1;
+        $discount = 0;
         $responseMidtrans = null;
         $order_code = 'GA' . str(now()->format('YmdHis'));
         $orderData->order_code = $order_code;
@@ -125,6 +119,39 @@ class PurchaseController extends Controller
 
         // charge midtrans
         $phoneNumber = $user->profile->phone_number ?? '';
+        $form_result = [];
+        $form_config = (array) json_decode(Products::find($orderData->products_id)->form_config);
+        foreach ($form_config as $key => $value) {
+            if ($key == 'add_on') {
+                $add_on_result = [];
+                foreach ($request->add_on as $idx => $value) {
+                    $add_on_result[$idx] = ['id' => $value['id']];
+                }
+                $form_result['add_on'] = $add_on_result;
+                continue;
+            }
+            if ($value == 1 && $key != 'document') {
+                $form_result[$key] = $request[$key];
+            }
+        }
+        $document = [];
+        if ($request->hasFile('document')) {
+            foreach ($request->file('document') as $idx => $file) {
+                $fileName = Str::random(8) . '-' . time() . '.' . $file->extension();
+                Storage::putFileAs('file_uploads', $file, $fileName);
+                $document[$idx]['file_name'] = $fileName;
+                $document[$idx]['size'] = $file->getSize();
+                $document[$idx]['mime_type'] = $file->getMimeType();
+            }
+            $form_result = array_merge((array) $form_result, ['document' => $document]);
+        }
+        // dd($request->all());
+        try {
+            $orderData->form_result = $form_result;
+            $orderData->save();
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+        }
 
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
@@ -132,9 +159,8 @@ class PurchaseController extends Controller
         Config::$is3ds = config('midtrans.is_3ds');
 
         $midtranPayload = [
-            'payment_type' => $paymentMethod->payment_type,
             'transaction_details' => [
-                'order_id' => $$orderData->order_code,
+                'order_id' => $orderData->order_code,
                 'gross_amount' => $orderData->unit_price,
             ],
             'customer_details' => [
@@ -144,65 +170,27 @@ class PurchaseController extends Controller
                 'phone' => $phoneNumber,
             ],
         ];
+        if ($paymentMethod->category == 'bank_transfer') {
+            $midtranPayload['bank_transfer'] = ['bank' => $paymentMethod->payment_type];
+            $midtranPayload['payment_type'] = $paymentMethod->category;
+        }
+
+        if ($paymentMethod->category == 'ewallet') {
+            $midtranPayload['payment_type'] = $paymentMethod->payment_type;
+        }
+        // dd($midtranPayload);
         try {
             $responseMidtrans = CoreApi::charge($midtranPayload);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
 
-        // $order = Order::create([
-        //     'user_id' => $user->id,
-        //     'products_id' => $getProduct->id,
-        //     'payment_method_id' => $paymentMethod->id,
-        //     'order_code' => $order_code,
-        //     'quantity' => $quantity,
-        //     'unit_price' => $getProduct->price,
-        //     'status' => OrderEnum::PENDING->value,
-        //     'notes' => $request['note'],
-        // ]);
-
-        try {
-            //code...
-            $orderData->save();
-            dd($orderData);
-        } catch (\Throwable $th) {
-            //throw $th;
-            dd($th->getMessage());
-        }
-
         OrderHistory::create([
             'order_id' => $orderData->id,
-            'status' => 'pending',
+            'status' => $orderData->status,
             'payload' => json_encode($responseMidtrans),
         ]);
 
-        $course = Course::create([
-            'user_id' => $user->id,
-            'products_id' => $request->product_id,
-            'order_id' => $orderData->id,
-            'date' => $validateData['schedule'],
-            'note' => $request['note'],
-        ]);
-
-        // foreach ($request->add_on as $addon) {
-        //     $course->addOns()->attach($addon['id']);
-        // }
-
-        if ($request->hasFile('document')) {
-            $file = $request->file('document');
-            $path = $file->store('/public/file_uploads');
-
-            $upload = new FileUpload();
-            $upload->course_id = $course->id;
-            $upload->filename = $file->getClientOriginalName();
-            $upload->slug = Str::slug($file->getClientOriginalName());
-            $upload->mime_type = $file->getMimeType();
-            $upload->path = $path;
-            $upload->size = $file->getSize();
-            $upload->save();
-
-            $course->fileUploads()->attach($upload->id);
-        }
         $user->notify(new InvoiceNotification($orderData));
         return redirect()->route('purchase.status', $orderData->order_code);
     }
@@ -276,5 +264,4 @@ class PurchaseController extends Controller
     {
         //
     }
-
 }
