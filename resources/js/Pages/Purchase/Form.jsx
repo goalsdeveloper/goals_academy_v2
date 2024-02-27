@@ -1,16 +1,16 @@
 import ButtonPill from "@/Components/ButtonPill";
 import GoalsButton from "@/Components/GoalsButton";
 import ExpandedButton from "@/Components/ExpandedButton";
-import GoalsDatePicker from "@/Components/Form/GoalsDatePicker";
+import GoalsDatePicker from "@/Components/elements/GoalsDatePicker";
 import {
     GoalsSelectInput,
     GoalsSelectInputItem,
-} from "@/Components/Form/GoalsSelectInput";
+} from "@/Components/elements/GoalsSelectInput";
 import {
     GoalsSelectMultipleInput,
     GoalsSelectMultipleInputItem,
-} from "@/Components/Form/GoalsSelectMultipleInput";
-import GoalsUploadFile from "@/Components/Form/GoalsUploadFile";
+} from "@/Components/elements/GoalsSelectMultipleInput";
+import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
 import MainLayout from "@/Layouts/MainLayout";
 import "@/script/momentCustomLocale";
 import { useForm } from "@inertiajs/react";

@@ -5,53 +5,54 @@ import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
 import figure from "/resources/img/figure/8.svg";
 import CornerWaveVector from "@/Components/CornerWaveVector";
 import "@/script/momentCustomLocale";
+import { EmptyProductLayout } from "./Bimbingan/Bimbingan";
+import riwayatImg from "/resources/img/produk/riwayat-pesanan-bg.png";
+import {
+    ProductItemCardContent,
+    ProductItemCardHeader,
+    ProductItemCardLayout,
+} from "@/Components/ProductItemCard";
+import GoalsBadge from "@/Components/elements/GoalsBadge";
+import GoalsButton from "@/Components/elements/GoalsButton";
 
 export default function Index({ auth, dataOrder }) {
-    console.log(dataOrder);
-    // const data = [
-    //     {
-    //         id: 1,
-    //         order_id: "GA12345678",
-    //         purchase_method: "Gopay",
-    //         expiry_time: "2023-12-01 17:00:00",
-    //         status: "pending",
-    //     },
-    //     {
-    //         id: 2,
-    //         order_id: "GA19182634",
-    //         purchase_method: "Mandiri",
-    //         expiry_time: "2023-12-23 15:00:00",
-    //         status: "success",
-    //     },
-    //     {
-    //         id: 3,
-    //         order_id: "GA01293494",
-    //         purchase_method: "BRI",
-    //         expiry_time: "2023-11-05 12:00:00",
-    //         status: "failure",
-    //     },
-    // ];
-    const data = dataOrder;
+    // console.log(dataOrder);
+    const data = [
+        {
+            id: 1,
+            status: "Berhasil",
+            payment_time_limit: "24 Agustus 2023",
+            products: {
+                name: "Paket Program 1",
+            },
+        },
+        {
+            id: 2,
+            status: "Menunggu",
+            payment_time_limit: "24 Agustus 2023",
+            products: {
+                name: "Paket Program 2",
+            },
+        },
+        {
+            id: 3,
+            status: "Menunggu",
+            payment_time_limit: "24 Agustus 2023",
+            products: {
+                name: "Paket Program 3",
+            },
+        },
+    ];
+    // const data = dataOrder;
 
     return (
         <UserLayout auth={auth} title="Riwayat Transaksi">
             {data.length == 0 ? (
-                <div className="min-h-[60vh] md:min-h-[22vw] flex flex-col justify-center items-center gap-[4vw] md:gap-[2vw]">
-                    <img
-                        src={figure}
-                        alt=""
-                        className="h-[30vw] w-[30vw] md:h-[14vw] md:w-[14vw]"
-                    />
-                    <p className="text-[3vw] md:text-[1.5vw] md:text-secondary">
-                        Anda Belum Memiliki Transaksi
-                    </p>
-                    <Link
-                        href="/produk"
-                        className={`inline-block font-medium text-center py-[1.5vw] px-[2.5vw] md:py-[.5vw] md:px-[1vw] mt-[3vw] md:mt-0 border-[.2vw] border-secondary text-secondary hover:text-white rounded-full bg-white hover:bg-secondary cursor-pointer`}
-                    >
-                        Pilih Paket Program
-                    </Link>
-                </div>
+                <EmptyProductLayout
+                    description="Anda belum memiliki transaksi"
+                    buttonTxt="Pilih Paket Program"
+                    redirectUrl="/produk"
+                />
             ) : (
                 <div className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[1vw]">
                     {data.map((item, index) => {
@@ -65,67 +66,53 @@ export default function Index({ auth, dataOrder }) {
 
 function RiwayatItem({ data }) {
     return (
-        <div className="relative w-full flex flex-col gap-[2vw] md:gap-[1vw] bg-secondary text-white rounded-[1vw] p-[6vw] md:p-[2vw]">
-            <p className="font-poppins text-[3vw] md:text-[.95vw]">
-                #{data.order_code}
-            </p>
-            <hr className="border-1 border-white" />
-            <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-between items-center gap-[4vw] md:gap-0">
-                <div className="w-full flex items-center md:w-8/12 gap-[2vw] md:gap-[1vw]">
-                    <div className="w-[11vw] h-[11vw] md:w-[5vw] md:h-[5vw] flex justify-center items-center rounded-[1vw] md:rounded-[.75vw] bg-white">
-                        <img
-                            src={`/img/purchase/${data.payment_method.name.toLowerCase()}.png`}
-                            alt={data.payment_method.name}
-                            className="w-9/12"
-                        />
-                    </div>
-                    <div>
-                        <h4 className="text-white font-normal font-sans text-[3.5vw] md:text-[1.5vw]">
-                            Metode Pembayaran {data.payment_method.name}
-                        </h4>
-                        <table className="border-separate border-spacing-y-[.25vw] text-[2.5vw] md:text-[.8vw]">
-                            <tbody>
-                                <tr>
-                                    <td>Bayar Sebelum</td>
-                                    <td className="ps-[1vw] pe-[.5vw]">:</td>
-                                    <td>
-                                        {moment(
-                                            JSON.parse(data.order_history[0].payload).expiry_time
-                                        ).format("DD MMMM YYYY, HH:mm")}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Status Pembayaran</td>
-                                    <td className="ps-[1vw] pe-[.5vw]">:</td>
-                                    <td>
-                                        {data.status == "Pending"
-                                            ? "Menunggu Pembayaran"
-                                            : data.status == "Success"
-                                            ? "Sudah Dibayar"
-                                            : "Pembayaran Gagal"}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+        <ProductItemCardLayout imageUrl={riwayatImg}>
+            <ProductItemCardHeader className="justify-between">
+                <div className="flex gap-[.5vw] items-center">
+                    <p className="text-[.8vw] font-medium text-neutral-50">
+                        #DBO123456789
+                    </p>
+
+                    <GoalsBadge
+                        title={data.status}
+                        className="bg-success-10 text-success-60"
+                    />
                 </div>
-                <Link
-                    href={
-                        data.status == "pending"
-                            ? `/purchase/${data.order_code}`
-                            : `/purchase/detail/${data.order_code}`
-                    }
-                    className="w-4/12 h-[6vw] md:w-[30%] md:h-[3vw] cursor-pointer"
-                >
-                    <ButtonHoverSlide
-                        className={`h-full md:before:p-0.5 lg:before:p-1 xl:before:p-1.5 3xl:before:p-2 before:content-arrow-right-secondary-20 xs:before:content-arrow-right-secondary-32 md:before:content-arrow-right-secondary-20 xl:before:content-arrow-right-secondary-24 3xl:before:content-arrow-right-secondary-32 ${
-                            data.status == "pending"
-                                ? "after:content-pay"
-                                : "after:content-detail"
-                        } after:text-white after:text-[2.5vw] md:after:text-[1vw] medium border-1 xl:border-2 border-white rounded-full before:w-[160%] before:-ms-[160%] before:duration-300 after:w-full after:duration-300 hover:before:-ms-[30%] hover:after:-me-[100%] before:bg-sweep-white`}
-                    ></ButtonHoverSlide>
-                </Link>
-            </div>
-        </div>
+
+                {data.status != "Berhasil" && (
+                    <p className="text-[.8vw] font-medium text-neutral-50">
+                        Bisa dibayar sebelum :{" "}
+                        <span className="text-black">
+                            {data.payment_time_limit}
+                        </span>
+                    </p>
+                )}
+            </ProductItemCardHeader>
+            <ProductItemCardContent>
+                <div className="text-[1vw] space-y-[.2vw]">
+                    <h2 className="h5 font-medium mb-[.4vw]">
+                        {data.products.name}
+                    </h2>
+                    <p className="text-neutral-60">
+                        Dibayar : Selasa, 24 Agustus 2023
+                    </p>
+                    <p className="text-neutral-60">Metode Pembayaran : Gopay</p>
+                </div>
+
+                <div className="space-x-[.5vw]">
+                    <GoalsButton
+                        variant={
+                            data.status == "Berhasil" ? "bordered" : "primary"
+                        }
+                    >
+                        Lihat Detail
+                    </GoalsButton>
+
+                    {data.status == "Berhasil" && (
+                        <GoalsButton>Beli Lagi</GoalsButton>
+                    )}
+                </div>
+            </ProductItemCardContent>
+        </ProductItemCardLayout>
     );
 }

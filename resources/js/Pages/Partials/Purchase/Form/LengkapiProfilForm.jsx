@@ -1,4 +1,4 @@
-import GoalsTextInput from "@/Components/Form/GoalsTextInput";
+import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import ButtonPill from "@/Components/GoalsButton";
 import { useForm } from "@inertiajs/react";
 import { FiX } from "react-icons/fi";
