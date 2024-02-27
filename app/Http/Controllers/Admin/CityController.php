@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\City;
 use App\Http\Controllers\Controller;
@@ -23,11 +23,15 @@ class CityController extends Controller
                 abort(403);
             }
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to retrieve data. Internal Server Error'], 500);
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to retrieve data. Internal Server Error', 'error' => $e->getMessage()], 500);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return response()->json(['status' => false, 'statusCode' => 403, 'message' => 'Access Forbidden', 'error' => $e->getMessage()], 403);
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error', 'error' => $e->getMessage()], 500);
         }
     }
+
+
 
 
     /**

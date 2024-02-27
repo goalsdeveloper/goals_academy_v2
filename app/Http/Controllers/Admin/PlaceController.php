@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Place;
 use App\Http\Controllers\Controller;
@@ -23,11 +23,12 @@ class PlaceController extends Controller
                 abort(403);
             }
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to retrieve data. Internal Server Error'], 500);
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to retrieve data. Internal Server Error', 'error' => $e->getMessage()], 500);
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error', 'error' => $e->getMessage()], 500);
         }
     }
+
 
 
     /**
@@ -55,18 +56,20 @@ class PlaceController extends Controller
                 $place->place = $validateData['place'];
 
                 $place->save();
-                return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create place success', "data" => $place], 201);
+
+                return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create place success', 'data' => $place], 201);
             } else {
                 abort(403);
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->errors()], 422);
+            return response()->json(['status' => false, 'statusCode' => 422, 'message' => 'Validation failed', 'errors' => $e->errors()], 422);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to create place. Internal Server Error'], 500);
         } catch (\Exception $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
+
 
 
     /**

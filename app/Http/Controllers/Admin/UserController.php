@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class TutorController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +17,8 @@ class TutorController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $tutor = User::where("user_role", "tutor")->paginate(10);
-
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $tutor], 200);
+                $user = User::where("user_role", "user")->paginate(10);
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data user success', 'data' => $user], 200);
             } else {
                 abort(403);
             }
@@ -28,7 +28,6 @@ class TutorController extends Controller
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -49,17 +48,17 @@ class TutorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $tutorss)
+    public function show(User $user)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $tutorWithProfile = User::with('profile')->where("user_role", "tutor")->findOrFail($tutorss->id);
+                $userWithProfile = User::with('profile')->where("user_role", "user")->findOrFail($user->id);
 
                 return response()->json([
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
-                    'data' => $tutorWithProfile,
+                    'data' => $userWithProfile,
                 ], 200);
             } else {
                 abort(403);
@@ -82,31 +81,9 @@ class TutorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $tutorss)
+    public function update(Request $request, User $user)
     {
-        try {
-            if (Auth::user()->user_role == "admin") {
-                $validatedData = $request->validate([
-                    'name' => 'string',
-                    'username' => 'string',
-                    'phone_number' => 'string',
-                    'university' => 'string',
-                    'major' => 'string',
-                ]);
-
-                $tutorss->update($validatedData);
-
-                $tutorss->profile->update($validatedData);
-
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update success'], 200);
-            } else {
-                abort(403);
-            }
-        } catch (ValidationException $e) {
-            return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->validator->errors()], 422);
-        } catch (\Exception $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => $e->getMessage()], 500);
-        }
+        //
     }
 
     /**
