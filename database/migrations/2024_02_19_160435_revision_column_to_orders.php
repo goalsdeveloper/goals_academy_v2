@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->foreignIdFor(Topic::class)->constrained('topics')->nullable()->cascadeOnDelete();
-            $table->json('add_ons');
             $table->dropColumn('notes');
         });
     }
@@ -26,7 +25,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign('orders_topic_id_foreign');
-            $table->dropColumn('add_ons');
+            $table->string('notes');
         });
     }
 };

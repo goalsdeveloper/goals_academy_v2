@@ -55,5 +55,13 @@ class UserSeeder extends Seeder
             'user_role' => 'moderator',
             'email_verified_at' => now(),
         ]);
+        User::create([
+            'name' => 'Afan Oktafianto',
+            'username' => 'AfanOkta',
+            'email' => 'afanoktafianto99@gmail.com',
+            'password' => Hash::make('password'),
+            'user_role' => 'user',
+            'email_verified_at' => now(),
+        ]);
     }
 }

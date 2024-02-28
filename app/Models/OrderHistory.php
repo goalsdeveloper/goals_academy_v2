@@ -15,6 +15,10 @@ class OrderHistory extends Model
         'payload',
     ];
 
+    protected $casts = [
+        'payload' => 'json',
+    ];
+
     public function order()
     {
         return $this->belongsTo(Order::class);
