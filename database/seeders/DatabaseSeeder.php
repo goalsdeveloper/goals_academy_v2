@@ -34,7 +34,8 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             AddOnSeeder::class,
             UserProfileSeeder::class,
-            OrderSeeder::class
+            OrderSeeder::class,
+            CourseSeeder::class
         ]);
 
 

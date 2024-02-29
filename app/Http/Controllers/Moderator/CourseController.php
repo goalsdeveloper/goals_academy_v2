@@ -16,8 +16,7 @@ class CourseController extends Controller
     public function index()
     {
         // if (Auth::user()->user_role == "moderator") {
-        $course = Course::get();
-        $product = Order::where("products_id",)->get();
+        $course = Course::with('user', 'products')->get();
         return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data category success', 'data' => $course], 200);
         // } else {
         //     abort(403);
@@ -61,7 +60,34 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+        $validateData = $request->validate([
+            'user_id' => 'numeric',
+            'products_id' => 'numeric',
+            'order_id' => 'numeric',
+            'tutor_id' => 'numeric',
+            'date' => 'date',
+            'time' => 'date_format:H:i',
+            'ongoing' => 'image|mimes:png,jpg,jpeg,svg',
+            'place_id' => 'numeric',
+            'duration_per_meet' => 'numeric',
+            // 'is_facilities' => 'in:0,1',
+            // 'number_list' => 'numeric',
+            // 'total_meet' => 'numeric',
+            // 'active_period' => 'numeric',
+            // 'facilities' => 'array|min:1',
+            // 'facilities.*.icon' => 'string',
+            // 'facilities.*.text' => 'string',
+            // 'form_config.schedule' => 'in:0,1',
+            // 'form_config.city' => 'in:0,1',
+            // 'form_config.place' => 'in:0,1',
+            // 'form_config.topic' => 'in:0,1',
+            // 'form_config.document' => 'in:0,1',
+            // 'form_config.add_on' => 'in:0,1',
+            // 'duration' => 'numeric',
+        ]);
+        $course->update($validateData);
+        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update course success'], 200);
+
     }
 
     /**

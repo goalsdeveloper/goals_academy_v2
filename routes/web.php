@@ -4,17 +4,22 @@ use App\Http\Controllers\Admin\AddOnController;
 use App\Http\Controllers\Admin\BimbinganController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CityController;
-use App\Http\Controllers\Admin\OverviewController;
-use App\Http\Controllers\EmailDiskonController;
-use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\Admin\PlaceController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\Purchase\PurchaseStatusController;
+use App\Http\Controllers\Admin\OverviewController as AdminOverviewController;
 use App\Http\Controllers\Admin\TutorController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WebinarController;
+use App\Http\Controllers\Admin\PlaceController;
+
 use App\Http\Controllers\Moderator\CourseController;
+use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
+
+
+use App\Http\Controllers\EmailDiskonController;
+use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\Moderator\ModeratorOrderController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Models\AddOn;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -89,17 +94,22 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
 });
 
 
-// admin dashboard
-Route::resource('/category', CategoryController::class)->middleware('auth');
-Route::resource('/addon', AddOnController::class)->middleware('auth');
-Route::resource('/users', UserController::class)->middleware('auth')->except(['update', 'create', 'store', 'destroy', 'edit']);
-Route::resource('/tutorss', TutorController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
-Route::resource('/place', PlaceController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
-Route::resource('/city', CityController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
-Route::resource('/bimbingan', BimbinganController::class)->except(['create', 'edit']);
-Route::resource('/webinar', WebinarController::class)->except(['create', 'edit']);
-Route::resource('/course', CourseController::class)->except(['create', 'edit']);
-Route::resource('/overview', OverviewController::class)->except(['create', 'edit']);
+// Admin Dashboard
+Route::resource('admin/category', CategoryController::class)->middleware('auth');
+Route::resource('admin/addon', AddOnController::class)->middleware('auth');
+Route::resource('admin/users', UserController::class)->middleware('auth')->except(['update', 'create', 'store', 'destroy', 'edit']);
+Route::resource('admin/tutorss', TutorController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
+Route::resource('admin/place', PlaceController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
+Route::resource('admin/city', CityController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
+Route::resource('admin/bimbingan', BimbinganController::class)->except(['create', 'edit']);
+Route::resource('admin/webinar', WebinarController::class)->except(['create', 'edit']);
+Route::resource('admin/course', CourseController::class)->except(['create', 'edit']);
+Route::resource('admin/overview', AdminOverviewController::class)->except(['create', 'edit']);
+
+
+// Moderator Dashboard
+Route::resource('moderator/overview', ModeratorOverviewController::class)->except(['create', 'edit']);
+Route::resource('moderator/course', CourseController::class)->except(['create', 'edit']);
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/auth.php';
