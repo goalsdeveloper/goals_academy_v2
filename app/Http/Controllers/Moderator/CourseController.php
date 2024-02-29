@@ -61,15 +61,15 @@ class CourseController extends Controller
     public function update(Request $request, Course $course)
     {
         $validateData = $request->validate([
-            'user_id' => 'numeric',
-            'products_id' => 'numeric',
-            'order_id' => 'numeric',
+            // 'user_id' => 'numeric',
+            // 'products_id' => 'numeric',
+            // 'order_id' => 'numeric',
             'tutor_id' => 'numeric',
             'date' => 'date',
             'time' => 'date_format:H:i',
-            'ongoing' => 'image|mimes:png,jpg,jpeg,svg',
+            // 'ongoing' => 'string',
             'place_id' => 'numeric',
-            'duration_per_meet' => 'numeric',
+            // 'duration_per_meet' => 'numeric',
             // 'is_facilities' => 'in:0,1',
             // 'number_list' => 'numeric',
             // 'total_meet' => 'numeric',
