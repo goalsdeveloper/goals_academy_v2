@@ -85,6 +85,30 @@ class ProductSeeder extends Seeder
 
         Products::create([
             'category_id' => 1,
+            'name' => 'Dibimbing Tuntas Offline 60 Menit',
+            'slug' => Str::slug('Dibimbing Tuntas Offline 60 Menit'),
+            'excerpt' => 'Bimbingan personal 1-on-1 secara tatap',
+            'description' => 'Bimbingan personal 1-on-1 secara tatap muka selama 60 Menit, khusus area Kota Malang.',
+            'facilities' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            'price' => 120000,
+            'product_image' => 'resource/img/program/dibimbing-offline-60.png',
+            'product_type_id' => 1,
+            'duration' => 60,
+            'total_meet' => 5,
+            'active_period' => 30,
+            'number_list' => 6,
+            'form_config' => json_encode([
+                'schedule' => 1,
+                'city' => 1,
+                'place' => 1,
+                'topic' => 1,
+                'document' => 1,
+                'add_on' => 1,
+            ]),
+        ]);
+
+        Products::create([
+            'category_id' => 1,
             'name' => 'How To Survive Your Thesis? Start with Theme',
             'slug' =>Str::slug('How To Survive Your Thesis? Start with Theme'),
             'excerpt' => '',
