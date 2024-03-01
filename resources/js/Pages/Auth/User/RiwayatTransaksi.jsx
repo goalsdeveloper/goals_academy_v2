@@ -11,11 +11,13 @@ import {
     ProductItemCardContent,
     ProductItemCardHeader,
     ProductItemCardLayout,
-} from "@/Components/ProductItemCard";
+} from "@/Components/fragments/ProductItemCard";
 import GoalsBadge from "@/Components/elements/GoalsBadge";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import { useState } from "react";
-import { FiX } from "react-icons/fi";
+import { FiChevronRight, FiX } from "react-icons/fi";
+import GoalsPopup from "@/Components/elements/GoalsPopup";
+import ProductListFilter from "./ProductListFilter";
 
 export default function Index({ auth, dataOrder }) {
     // console.log(dataOrder);
@@ -61,6 +63,14 @@ export default function Index({ auth, dataOrder }) {
 
     return (
         <UserLayout auth={auth} title="Riwayat Transaksi">
+            <div className="flex md:block justify-between items-center">
+                <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-[4vw]">
+                    {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
+                    Riwayat Transaksi
+                </h1>
+                <ProductListFilter />
+            </div>
+
             {data.length == 0 ? (
                 <EmptyProductLayout
                     description="Anda belum memiliki transaksi"
@@ -68,7 +78,7 @@ export default function Index({ auth, dataOrder }) {
                     redirectUrl="/produk"
                 />
             ) : (
-                <div className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[1vw]">
+                <div className="md:min-h-[22vw] flex flex-col gap-[2vw] md:gap-[1vw]">
                     {data.map((item, index) => {
                         return <RiwayatItem key={index} data={item} />;
                     })}
@@ -83,62 +93,73 @@ function RiwayatItem({ data }) {
 
     return (
         <>
-            {isVisible && (
-                <DetailTransaction
-                    data={data}
-                    show={isVisible}
-                    setShow={setIsVisible}
-                />
-            )}
-            <ProductItemCardLayout imageUrl={riwayatImg}>
-                <ProductItemCardHeader className="justify-between">
-                    <div className="flex gap-[.5vw] items-center">
-                        <p className="text-[.8vw] font-medium text-neutral-50">
-                            #DBO123456789
-                        </p>
+            <DetailTransaction
+                data={data}
+                show={isVisible}
+                setShow={setIsVisible}
+            />
 
-                        <TransactionStatusBadge data={data} />
+            <ProductItemCardLayout
+                imageUrl={riwayatImg}
+                onClick={() => setIsVisible(true)}
+                className="cursor-pointer md:cursor-default"
+            >
+                <div className="flex justify-between items-center">
+                    <div className="space-y-[1.8vw] w-full">
+                        <ProductItemCardHeader className="md:justify-between gap-[3.7vw]">
+                            <div className="flex gap-[.5vw] items-center">
+                                <p className="hidden md:block text-[.8vw] font-medium text-neutral-50">
+                                    #DBO123456789
+                                </p>
+
+                                <TransactionStatusBadge data={data} />
+                            </div>
+
+                            {data.status != "Berhasil" && (
+                                <div className="flex gap-[.5vw]">
+                                    <p className="hidden md:block text-[.8vw] font-medium text-neutral-50">
+                                        Bisa dibayar sebelum :{" "}
+                                    </p>
+                                    <span className="text-[2.3vw] md:text-[.8vw] text-black">
+                                        {data.payment_time_limit}
+                                    </span>
+                                </div>
+                            )}
+                        </ProductItemCardHeader>
+                        <ProductItemCardContent>
+                            <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw]">
+                                <h2 className="h5 font-medium mb-[.4vw]">
+                                    {data.products.name}
+                                </h2>
+                                <p className="text-neutral-60">
+                                    Dibayar : Selasa, 24 Agustus 2023
+                                </p>
+                                <p className="text-neutral-60">
+                                    Metode Pembayaran : Gopay
+                                </p>
+                            </div>
+
+                            <div className="hidden md:block space-x-[.5vw]">
+                                <GoalsButton
+                                    onClick={() => setIsVisible(!isVisible)}
+                                    variant={
+                                        data.status == "Berhasil"
+                                            ? "bordered"
+                                            : "primary"
+                                    }
+                                >
+                                    Lihat Detail
+                                </GoalsButton>
+
+                                {data.status == "Berhasil" && (
+                                    <GoalsButton>Beli Lagi</GoalsButton>
+                                )}
+                            </div>
+                        </ProductItemCardContent>
                     </div>
 
-                    {data.status != "Berhasil" && (
-                        <p className="text-[.8vw] font-medium text-neutral-50">
-                            Bisa dibayar sebelum :{" "}
-                            <span className="text-black">
-                                {data.payment_time_limit}
-                            </span>
-                        </p>
-                    )}
-                </ProductItemCardHeader>
-                <ProductItemCardContent>
-                    <div className="text-[1vw] space-y-[.2vw]">
-                        <h2 className="h5 font-medium mb-[.4vw]">
-                            {data.products.name}
-                        </h2>
-                        <p className="text-neutral-60">
-                            Dibayar : Selasa, 24 Agustus 2023
-                        </p>
-                        <p className="text-neutral-60">
-                            Metode Pembayaran : Gopay
-                        </p>
-                    </div>
-
-                    <div className="space-x-[.5vw]">
-                        <GoalsButton
-                            onClick={() => setIsVisible(!isVisible)}
-                            variant={
-                                data.status == "Berhasil"
-                                    ? "bordered"
-                                    : "primary"
-                            }
-                        >
-                            Lihat Detail
-                        </GoalsButton>
-
-                        {data.status == "Berhasil" && (
-                            <GoalsButton>Beli Lagi</GoalsButton>
-                        )}
-                    </div>
-                </ProductItemCardContent>
+                    <FiChevronRight className="md:hidden text-[4.5vw] text-secondary" />
+                </div>
             </ProductItemCardLayout>
         </>
     );
@@ -161,99 +182,81 @@ const DetailTransaction = ({ data, show, setShow }) => {
     console.log(data);
 
     return (
-        <>
-            <div
-                className={`${
-                    show ? "" : "hidden"
-                } fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`}
-                onClick={() => {}}
-            ></div>
-            <div
-                className={`${
-                    show
-                        ? "md:top-0 bottom-0 md:scale-100"
-                        : "md:top-full -bottom-full md:scale-0"
-                } fixed left-0 flex flex-col gap-[2vw] w-full md:w-[30vw] h-[50vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
-            >
-                <div className="flex justify-between">
-                    <p className="text-[1.2vw] font-semibold">Detail Pesanan</p>
-                    <button onClick={() => setShow(!show)}>
-                        <FiX className="text-[1.8vw]" />
-                    </button>
+        <GoalsPopup show={show} setShow={setShow}>
+            <div className="flex justify-between">
+                <p className="text-[1.2vw] font-semibold">Detail Pesanan</p>
+                <button onClick={() => setShow(!show)}>
+                    <FiX className="text-[1.8vw]" />
+                </button>
+            </div>
+            <div className="grid grid-cols-2 gap-[1.25vw]">
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Kode Pesanan
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">
+                        {data.kode_pesanan}
+                    </p>
                 </div>
-                <div className="grid grid-cols-2 gap-[1.25vw]">
-                    <div className="space-y-[.2vw]">
-                        <h3 className="h6 font-normal text-neutral-50">
-                            Kode Pesanan
-                        </h3>
-                        <p className="text-[1vw] text-neutral-80 font-medium">
-                            {data.kode_pesanan}
-                        </p>
-                    </div>
-                    <div className="space-y-[.2vw]">
-                        <h3 className="h6 font-normal text-neutral-50">
-                            Status Pesanan
-                        </h3>
-                        <p
-                            className={`text-[1vw] ${
-                                data.status == "Berhasil"
-                                    ? "text-success-50"
-                                    : "text-warning-50"
-                            } font-medium`}
-                        >
-                            {data.status}
-                        </p>
-                    </div>
-                    <div className="space-y-[.2vw]">
-                        <h3 className="h6 font-normal text-neutral-50">
-                            Waktu Pembayaran
-                        </h3>
-                        <p className="text-[1vw] text-neutral-80 font-medium">
-                            {data.waktu_pembayaran}
-                        </p>
-                    </div>
-                    <div className="space-y-[.2vw]">
-                        <h3 className="h6 font-normal text-neutral-50">
-                            Metode Pembayaran
-                        </h3>
-                        <p className="text-[1vw] text-neutral-80 font-medium">
-                            {data.metode_pembayaran}
-                        </p>
-                    </div>
-                    <div className="space-y-[.2vw]">
-                        <h3 className="h6 font-normal text-neutral-50">
-                            Jenis Produk
-                        </h3>
-                        <p className="text-[1vw] text-neutral-80 font-medium">
-                            {data.products.name}
-                        </p>
-                    </div>
-                    <div className="space-y-[.2vw]">
-                        <h3 className="h6 font-normal text-neutral-50">
-                            Harga Produk
-                        </h3>
-                        <p className="text-[1vw] text-neutral-80 font-medium">
-                            {data.products.harga}
-                        </p>
-                    </div>
-                    <div className="space-y-[.2vw]">
-                        <h3 className="h6 font-normal text-neutral-50">
-                            Add On Produk
-                        </h3>
-                        <p className="text-[1vw] text-neutral-80 font-medium">
-                            -
-                        </p>
-                    </div>
-                    <div className="space-y-[.2vw]">
-                        <h3 className="h6 font-normal text-neutral-50">
-                            Harga Add On
-                        </h3>
-                        <p className="text-[1vw] text-neutral-80 font-medium">
-                            -
-                        </p>
-                    </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Status Pesanan
+                    </h3>
+                    <p
+                        className={`text-[1vw] ${
+                            data.status == "Berhasil"
+                                ? "text-success-50"
+                                : "text-warning-50"
+                        } font-medium`}
+                    >
+                        {data.status}
+                    </p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Waktu Pembayaran
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">
+                        {data.waktu_pembayaran}
+                    </p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Metode Pembayaran
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">
+                        {data.metode_pembayaran}
+                    </p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Jenis Produk
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">
+                        {data.products.name}
+                    </p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Harga Produk
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">
+                        {data.products.harga}
+                    </p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Add On Produk
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">-</p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Harga Add On
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">-</p>
                 </div>
             </div>
-        </>
+        </GoalsPopup>
     );
 };

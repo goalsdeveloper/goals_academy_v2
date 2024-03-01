@@ -10,7 +10,12 @@ import {
     ProductItemCardContent,
     ProductItemCardHeader,
     ProductItemCardLayout,
-} from "@/Components/ProductItemCard";
+} from "@/Components/fragments/ProductItemCard";
+import { FiChevronDown, FiChevronRight } from "react-icons/fi";
+import { useMediaQuery } from "react-responsive";
+import { useState } from "react";
+import GoalsButton from "@/Components/elements/GoalsButton";
+import ProductListFilter from "../ProductListFilter";
 
 export default function Index({ auth, orderBimbingan }) {
     // console.log(orderBimbingan);
@@ -88,12 +93,19 @@ export default function Index({ auth, orderBimbingan }) {
 
     return (
         <UserLayout auth={auth} title="Bimbingan">
+            <div className="flex md:block justify-between items-center">
+                <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-[4vw]">
+                    {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
+                    Bimbingan
+                </h1>
+                <ProductListFilter />
+            </div>
             {data.length == 0 ? (
                 <EmptyProductLayout />
             ) : (
                 <div className="space-y-[1vw]">
-                    <GoalsChip />
-                    <div className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[1vw]">
+                    {/* <ProductListFilter /> */}
+                    <div className="md:min-h-[22vw] flex flex-col gap-[2vw] md:gap-[1vw]">
                         {data.map((item, index) => {
                             if (
                                 item.products.features[0].category ==
@@ -125,37 +137,48 @@ function BimbinganItem({ data }) {
         : "N/A";
 
     return (
-        <ProductItemCardLayout imageUrl={CardImage}>
-            <ProductItemCardHeader>
-                <GoalsBadge
-                    title="Bimbingan Skripsi"
-                    className="text-secondary bg-primary-10"
-                />
-                <GoalsBadge
-                    title="Berjalan"
-                    className="bg-success-10 text-success-50"
-                />
-            </ProductItemCardHeader>
-            <ProductItemCardContent>
-                {/* Content */}
-                <div className="text-[1vw] space-y-[.2vw]">
-                    <h2 className="h5 font-medium mb-[.4vw]">
-                        {data.products.name}
-                    </h2>
-                    <p className="text-neutral-60">Selasa, 24 Agustus 2023</p>
-                    <p className="text-neutral-60">
-                        {data.course.time
-                            ? start_time + "-" + finish_time
-                            : "Waktu Belum Ditentukan"}
-                    </p>
+        <ProductItemCardLayout
+            isLink
+            imageUrl={CardImage}
+            href={`/pembelajaran/${data.id}`}
+        >
+            <div className="flex justify-between items-center">
+                <div className="space-y-[1.8vw] w-full">
+                    <ProductItemCardHeader>
+                        <GoalsBadge
+                            title="Bimbingan Skripsi"
+                            className="text-secondary bg-primary-10"
+                        />
+                        <GoalsBadge
+                            title="Berjalan"
+                            className="hidden md:block bg-success-10 text-success-50"
+                        />
+                    </ProductItemCardHeader>
+                    <ProductItemCardContent>
+                        {/* Content */}
+                        <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw]">
+                            <h2 className="h5 font-medium mb-[.4vw] line-clamp-1">
+                                {data.products.name}
+                            </h2>
+                            <p className="text-neutral-60">
+                                Selasa, 24 Agustus 2023
+                            </p>
+                            <p className="text-neutral-60">
+                                {data.course.time
+                                    ? start_time + "-" + finish_time
+                                    : "Waktu Belum Ditentukan"}
+                            </p>
+                        </div>
+                        <Link
+                            href={`/pembelajaran/${data.id}`}
+                            className="hidden md:block bg-secondary hover:bg-primary text-white font-medium text-[1vw] px-[2vw] py-[.8vw] rounded-[.4vw]"
+                        >
+                            Lihat Detail
+                        </Link>
+                    </ProductItemCardContent>
                 </div>
-                <Link
-                    href={`/pembelajaran/${data.id}`}
-                    className="bg-secondary hover:bg-primary text-white font-medium text-[1vw] px-[2vw] py-[.8vw] rounded-[.4vw]"
-                >
-                    Lihat Detail
-                </Link>
-            </ProductItemCardContent>
+                <FiChevronRight className="md:hidden text-[4.5vw] text-secondary" />
+            </div>
         </ProductItemCardLayout>
     );
 }
@@ -167,7 +190,7 @@ export const EmptyProductLayout = ({
     buttonTxt = "Cari Program",
 }) => {
     return (
-        <div className="flex flex-col justify-center items-center gap-[4vw] md:gap-[2vw] border border-neutral-20 rounded-[.8vw] w-full p-[2vw]">
+        <div className="flex flex-col justify-center items-center gap-[4vw] md:gap-[2vw] md:border border-neutral-20 rounded-[.8vw] w-full p-[2vw]">
             <img
                 src={figure}
                 alt={`image-${imgUrl}`}
@@ -176,12 +199,10 @@ export const EmptyProductLayout = ({
             <p className="text-[3vw] md:text-[1.5vw] h5 font-medium font-poppins">
                 {description}
             </p>
-            <Link
-                href={redirectUrl}
-                className={`bg-secondary text-white px-[2vw] py-[.8vw] rounded-[.4vw] `}
-            >
-                {buttonTxt}
+            <Link href={redirectUrl}>
+                <GoalsButton variant="primary-inverse">{buttonTxt}</GoalsButton>
             </Link>
         </div>
     );
 };
+

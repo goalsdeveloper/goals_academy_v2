@@ -23,7 +23,11 @@ h5, .h5 {
 }
 
 h6, .h6 {
-    @apply text-10 xs:text-12 md:text-6 lg:text-8 xl:text-12 3xl:text-16;
+    @apply text-[3.7vw] md:text-6 lg:text-8 xl:text-12 3xl:text-16;
+}
+
+.p4 {
+    @apply text-[3.25vw];
 }
 
 .swiper-program {

@@ -1,7 +1,7 @@
 import {
     ProductItemCardContent,
     ProductItemCardLayout,
-} from "@/Components/ProductItemCard";
+} from "@/Components/fragments/ProductItemCard";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import MainLayout from "@/Layouts/MainLayout";
 import { Link } from "@inertiajs/react";

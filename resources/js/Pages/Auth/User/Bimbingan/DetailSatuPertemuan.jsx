@@ -7,9 +7,11 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
     const gapSize = 1;
 
     return (
-        <div className={`flex gap-[${gapSize}vw] ${className}`}>
+        <div
+            className={`md:flex space-y-[${gapSize}vw] gap-[${gapSize}vw] ${className}`}
+        >
             {/* Informasi detil pembelajaran */}
-            <div className="border border-neutral-20 w-full rounded-[.8vw] p-[3.3vw] space-y-[1.6vw]">
+            <div className="md:border border-neutral-20 w-full rounded-[.8vw] py-[3.3vw] md:p-[3.3vw] space-y-[1.6vw]">
                 <h2 className="h4 font-medium text-secondary">
                     Pelaksanaan Pembelajaran
                 </h2>
@@ -17,10 +19,10 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                     {data.detailPelaksanaan.map((item, index) => {
                         return (
                             <li key={index} className="space-y-[.2vw]">
-                                <h3 className="h6 font-normal text-neutral-50">
+                                <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
                                     {item.title}
                                 </h3>
-                                <p className="text-[1.25vw] text-neutral-80 font-medium">
+                                <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
                                     {item.value}
                                 </p>
                             </li>
@@ -32,7 +34,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
             <div className="w-full space-y-[1vw]">
                 {/* Informasi Tutor */}
                 <div
-                    className="w-full border border-neutral-20 rounded-[.8vw] p-[3.3vw] space-y-[1.6vw]"
+                    className="w-full md:border border-neutral-20 rounded-[.8vw] py-[3.3vw] md:p-[3.3vw] space-y-[1.6vw]"
                     style={{
                         height: `calc(50% - ${gapSize * 0.5}vw)`,
                     }}
@@ -44,10 +46,10 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                         {data.detailTutor.map((item, index) => {
                             return (
                                 <li key={index} className="space-y-[.2vw]">
-                                    <h3 className="h6 font-normal text-neutral-50">
+                                    <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
                                         {item.title}
                                     </h3>
-                                    <p className="text-[1.25vw] text-neutral-80 font-medium">
+                                    <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
                                         {item.value}
                                     </p>
                                 </li>
@@ -57,7 +59,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                 </div>
                 {/* Lampiran */}
                 <div
-                    className="w-full border border-neutral-20 rounded-[.8vw] p-[3.3vw] space-y-[1.6vw]"
+                    className="w-full dborder border-neutral-20 rounded-[.8vw] py-[3.3vw] md:p-[3.3vw] space-y-[1.6vw]"
                     style={{
                         height: `calc(50% - ${gapSize * 0.5}vw)`,
                     }}
@@ -103,16 +105,18 @@ export const FileMediaItemBackdrop = ({ item }) => {
     };
 
     return (
-        <div className="relative flex items-center gap-[.5vw] bg-white shadow-sm p-[.2vw] rounded-[.4vw] ">
-            <div className="bg-primary-10 w-[2.5vw] h-[2.5vw] flex items-center justify-center rounded-[.3vw]">
-                <RxFileText className="text-[1.3vw]" />
+        <div className="w-full relative flex items-center gap-[1.8vw] md:gap-[.5vw] bg-white shadow-sm p-[.2vw] rounded-[.4vw]">
+            <div className="bg-primary-10 w-[11vw] md:w-[2.5vw] aspect-square flex items-center justify-center rounded-[.3vw]">
+                <RxFileText className="text-[4.8vw] md:text-[1.3vw]" />
             </div>
 
             <div className="flex items-center justify-between w-full">
-                <p className="text-[.8vw] text-neutral-80">{item.title}</p>
+                <p className="text-[2.8vw] md:text-[.8vw] text-neutral-80">
+                    {item.title}
+                </p>
 
                 <button onClick={handleToggle}>
-                    <BsThreeDots className="text-[1vw] text-neutral-40 mr-[.8vw]" />
+                    <BsThreeDots className="text-[2.8vw] md:text-[1vw] text-neutral-40 mr-[.8vw]" />
                 </button>
             </div>
 
@@ -129,7 +133,7 @@ export const FileMediaItemBackdrop = ({ item }) => {
                 <>
                     <button
                         onClick={downloadHandler}
-                        className={`h6 font-medium text-neutral-80 py-[.8vw] px-[1vw] rounded-[.4vw] shadow-centered-spread absolute -bottom-[70%] right-0 z-[60] bg-white transition-all ${
+                        className={`h6 font-medium text-neutral-80 px-[5.5vw] py-[3.7vw] md:py-[.8vw] md:px-[1vw] rounded-[1.8vw] md:rounded-[.4vw] shadow-centered-spread absolute -bottom-[70%] right-0 z-[60] bg-white transition-all ${
                             isVisible ? "translate-x-0" : "translate-x-5"
                         }`}
                     >

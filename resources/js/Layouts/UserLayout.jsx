@@ -10,9 +10,15 @@ import wave7 from "/resources/img/vector/wave-7.svg";
 import wave8 from "/resources/img/vector/wave-8.svg";
 import userIcon from "/resources/img/icon/user.png";
 import { LuGraduationCap } from "react-icons/lu";
-import { FiMonitor } from "react-icons/fi";
-import { PiChatCenteredTextBold, PiClockCounterClockwiseBold } from "react-icons/pi";
+import { FiChevronDown, FiMonitor } from "react-icons/fi";
+import {
+    PiChatCenteredTextBold,
+    PiClockCounterClockwiseBold,
+} from "react-icons/pi";
 import "@/script/mainHeader";
+import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
+import GoalsChip from "@/Components/elements/GoalsChip";
 
 export default function UserLayout({ auth, title, children }) {
     // console.log();
@@ -31,23 +37,18 @@ export default function UserLayout({ auth, title, children }) {
 function DashboardContent({ title, children }) {
     return (
         <div className="container mx-auto flex gap-[1.75vw]">
-            <DashboardNavbar
+            <DashboardSidebar
                 className={`sticky top-24 xs:top-28 md:top-24 xl:top-28 3xl:top-40 z-10 w-full md:w-3/12 h-fit ${
                     title == "Dashboard" ? "" : "hidden md:flex"
                 }`}
                 title={title}
             />
-            <div className={`w-full`}>
-                <h1 className="md:font-medium text-black text-[1.8vw] leading-[12vw] md:leading-[4vw]">
-                    {title == "Dashboard" ? "Pembelajaran Saya" : title}
-                </h1>
-                {children}
-            </div>
+            <div className={`w-full space-y-[1vw]`}>{children}</div>
         </div>
     );
 }
 
-function DashboardNavbar({ title, className }) {
+function DashboardSidebar({ title, className }) {
     return (
         <div
             className={`flex flex-col ${className} border border-neutral-20 py-[1vw] rounded-[.8vw]`}
@@ -69,10 +70,7 @@ function DashboardNavbar({ title, className }) {
                 <LuGraduationCap className="text-[1.2vw]" />
                 <span>Bimbingan</span>
             </DashboardNavbarItem>
-            <DashboardNavbarItem
-                href="/webinar"
-                active={title == "Webinar"}
-            >
+            <DashboardNavbarItem href="/webinar" active={title == "Webinar"}>
                 <div className="relative">
                     <FiMonitor />
                 </div>
@@ -86,7 +84,7 @@ function DashboardNavbar({ title, className }) {
                 <span>Riwayat Transaksi</span>
             </DashboardNavbarItem>
             <DashboardNavbarItem href="/obrolan" active={title == "Obrolan"}>
-                <PiChatCenteredTextBold className="text-[1.2vw]"/>
+                <PiChatCenteredTextBold className="text-[1.2vw]" />
                 <span>
                     Obrolan{" "}
                     <span className="bg-secondary text-white font-normal text-[.8vw] rounded-[.7vw] py-[.1vw] px-[.5vw]">
@@ -101,6 +99,17 @@ function DashboardNavbar({ title, className }) {
                 <i className="bi bi-gear"></i>
                 <span>Pengaturan</span>
             </DashboardNavbarItem> */}
+        </div>
+    );
+}
+
+function UserLayoutTitle({ title }) {
+    return (
+        <div className="flex md:block justify-between items-center">
+            <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-[4vw]">
+                {title == "Dashboard" ? "Pembelajaran Saya" : title}
+            </h1>
+            {children}
         </div>
     );
 }
