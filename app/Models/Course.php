@@ -68,4 +68,12 @@ class Course extends Model
     {
         return $this->belongsToMany(AddOn::class);
     }
+
+    public function parent() {
+        return $this->belongsTo(Course::class, 'parent_id');
+    }
+
+    public function childs(){
+        return $this->hasMany(Course::class, 'parent_id');
+    }
 }
