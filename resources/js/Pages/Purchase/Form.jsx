@@ -844,17 +844,47 @@ function SummaryCard({
                             <GoalsButton
                                 className="w-6/12 md:w-full mt-[1.25vw] xl:py-[1vw] rounded-[.5vw]"
                                 isActive={
-                                    !(
-                                        data["purchase_method"] == "" ||
-                                        Object.keys(
-                                            Object.fromEntries(
-                                                Object.entries(rules).filter(
-                                                    ([, value]) => value
+                                    "document" in rules ? (
+                                        rules["document"] ? (
+                                            !(
+                                                data["purchase_method"] == "" || data["document"].length == 0 ||
+                                                Object.keys(
+                                                    Object.fromEntries(
+                                                        Object.entries(rules).filter(
+                                                            ([, value]) => value
+                                                        )
+                                                    )
                                                 )
+                                                    .map((i) => data[i])
+                                                    .includes("")
+                                            )
+                                        ) : (
+                                            !(
+                                                data["purchase_method"] == "" ||
+                                                Object.keys(
+                                                    Object.fromEntries(
+                                                        Object.entries(rules).filter(
+                                                            ([, value]) => value
+                                                        )
+                                                    )
+                                                )
+                                                    .map((i) => data[i])
+                                                    .includes("")
                                             )
                                         )
-                                            .map((i) => data[i])
-                                            .includes("")
+                                    ) : (
+                                        !(
+                                            data["purchase_method"] == "" ||
+                                            Object.keys(
+                                                Object.fromEntries(
+                                                    Object.entries(rules).filter(
+                                                        ([, value]) => value
+                                                    )
+                                                )
+                                            )
+                                                .map((i) => data[i])
+                                                .includes("")
+                                        )
                                     )
                                 }
                                 isLoading={isProcessed}
