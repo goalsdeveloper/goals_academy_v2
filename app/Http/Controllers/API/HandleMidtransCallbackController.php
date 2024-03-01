@@ -68,18 +68,17 @@ class HandleMidtransCallbackController extends Controller
                         'products_id' => $order->products_id,
                         'order_id' => $order->id,
                     ];
-                    for ($i = 0; $i < $count_course; $i++) {
-                        if ($i == 0) {
-                            $parentCourse = Course::create($dataCourse);
-                        }
-                        if ($i > 0) {
-                            $dataCourse['parent_id'] = $parentCourse->id;
-                            Course::create($dataCourse);
-                        } else {
-
-                        }
-                    }
+                    $parentCourse = Course::create($dataCourse);
+                    $dataCourse['parent_id'] = $parentCourse->id;
                     $form_result = $order->form_result;
+                    for ($i = 1; $i < $count_course; $i++) {
+                        Course::create(
+                            array_merge($dataCourse, [
+                                'date' => $form_result['schedule'] ?? null,
+                                'place_id' => $form_result['place_id'] ?? null,
+                            ])
+                        );
+                    }
                     if (array_key_exists('document', $form_result)) {
                         foreach ($form_result['document'] as $idx => $key) {
                             FileUpload::create([

@@ -13,6 +13,7 @@ class Course extends Model
 
     protected $fillable = [
         'user_id',
+        'parent_id',
         'products_id',
         'order_id',
         'tutor_id',
@@ -23,7 +24,8 @@ class Course extends Model
         'time',
         'ongoing',
         'is_tutor',
-        'is_moderator'
+        'is_moderator',
+        'duration_per_meet'
     ];
 
     public function user()
