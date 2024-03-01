@@ -45,7 +45,7 @@ export default function DetailPesanan({ auth, courseDetail }) {
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     return (
-        <MainLayout auth={auth} title="Detail Pembelajaran">
+        <MainLayout withFooter={false} auth={auth} title="Detail Pembelajaran" className="pb-[16vw] md:pb-0">
             <div className="container mx-auto md:space-y-[2.5vw] text-secondary mb-[5.2vw]">
                 <Link
                     href="/bimbingan"
@@ -101,7 +101,9 @@ export default function DetailPesanan({ auth, courseDetail }) {
                         </h1>
                     )}
 
-                    <div className="hidden md:block space-x-[.5vw]">
+
+                    <div className="fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center pb-[3.7vw] pt-[3.4vw] md:p-0 bg-white z-[40] md:z-0">
+
                         <GoalsButton
                             variant="bordered"
                             onClick={(prev) =>
@@ -110,6 +112,7 @@ export default function DetailPesanan({ auth, courseDetail }) {
                                     ulasanTutor: true,
                                 })
                             }
+                            className=""
                         >
                             Beri Ulasan
                         </GoalsButton>
@@ -121,6 +124,7 @@ export default function DetailPesanan({ auth, courseDetail }) {
                                     selesaiProgram: true,
                                 })
                             }
+                            className=""
                         >
                             Selesaikan Pembelajaran
                         </GoalsButton>
@@ -136,7 +140,7 @@ export default function DetailPesanan({ auth, courseDetail }) {
 
 const SelesaiProgram = ({ show, setShow }) => {
     return (
-        <GoalsPopup show={show} setShow={setShow} className="max-w-[23.5vw]">
+        <GoalsPopup show={show} setShow={setShow} className="md:max-w-[23.5vw]">
             <div className="flex flex-col items-center gap-[2vw]">
                 <h3 className="h4 font-semibold">Selesaikan Bimbingan</h3>
 
@@ -162,7 +166,7 @@ const UlasanTutor = ({ show, setShow }) => {
         <GoalsPopup
             show={show}
             setShow={setShow}
-            className="max-w-[23.5vw]"
+            className="md:max-w-[23.5vw]"
             isBgClickDisabled
         >
             <div className="flex flex-col items-center gap-[2vw]">
@@ -194,7 +198,7 @@ const UlasanProgram = ({ show, setShow }) => {
         <GoalsPopup
             show={show}
             setShow={setShow}
-            className="max-w-[23.5vw]"
+            className="md:max-w-[23.5vw]"
             isBgClickDisabled
         >
             <div className="flex flex-col items-center gap-[2vw]">

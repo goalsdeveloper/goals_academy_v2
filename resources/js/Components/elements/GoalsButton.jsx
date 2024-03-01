@@ -21,7 +21,7 @@ const GoalsButton = ({
 
     return (
         <button
-            className={`font-medium px-[8.3vw] md:px-[2vw] py-[3.2vw] md:py-[.8vw] rounded-[1.8vw] md:rounded-[.4vw] text-[3.7vw] md:text-[1vw] transition-all ${className} ${getVariantClassName()}`}
+            className={`font-medium px-[8.3vw] md:px-[2vw] py-[3.2vw] md:py-[.8vw] rounded-[1.8vw] md:rounded-[.4vw] text-[3.7vw] md:text-[1vw] transition-all ${getVariantClassName()} ${className}`}
             {...rest}
         >
             {children}

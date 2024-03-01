@@ -69,7 +69,7 @@ const DetailBanyakPertemuan = ({ data }) => {
                                 }
                                 className="relative w-full flex md:border border-neutral-20 p-[2vw] md:p-[1.2vw] gap-[2.9vw] rounded-[.8vw] justify-between items-center"
                             >
-                                <h3 className="font-medium h6 md:h4">{item.sesi}</h3>
+                                <h3 className="font-medium text-[3.7vw] md:text-[1.2vw]">{item.sesi}</h3>
 
                                 <span className="flex items-center gap-[.5vw] font-medium text-[3.25vw] md:text-[1vw]">
                                     <FiChevronDown

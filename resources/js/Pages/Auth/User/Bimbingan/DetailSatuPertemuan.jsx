@@ -8,7 +8,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
 
     return (
         <div
-            className={`md:flex space-y-[${gapSize}vw] gap-[${gapSize}vw] ${className}`}
+            className={`md:flex gap-[${gapSize}vw] ${className}`}
         >
             {/* Informasi detil pembelajaran */}
             <div className="md:border border-neutral-20 w-full rounded-[.8vw] py-[3.3vw] md:p-[3.3vw] space-y-[1.6vw]">
@@ -59,7 +59,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                 </div>
                 {/* Lampiran */}
                 <div
-                    className="w-full dborder border-neutral-20 rounded-[.8vw] py-[3.3vw] md:p-[3.3vw] space-y-[1.6vw]"
+                    className="w-full md:border border-neutral-20 rounded-[.8vw] py-[3.3vw] md:p-[3.3vw] space-y-[1.6vw]"
                     style={{
                         height: `calc(50% - ${gapSize * 0.5}vw)`,
                     }}

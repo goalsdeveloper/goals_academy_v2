@@ -4,15 +4,21 @@ import MainHeader from "./Partials/MainHeader";
 import MainFooter from "./Partials/MainFooter";
 import "@/script/mainHeader";
 
-export default function MainLayout({ auth, title, children }) {
+export default function MainLayout({
+    auth,
+    title,
+    children,
+    className,
+    withFooter = true,
+}) {
     return (
         <>
             <Head title={title} />
             <MainHeader auth={auth} title={title} />
-            <main className="text-dark md:pt-12 overflow-visible">
+            <main className={`text-dark md:pt-12 overflow-visible ${className}`}>
                 {children}
             </main>
-            <MainFooter />
+            {withFooter && <MainFooter />}
         </>
     );
 }
