@@ -27,7 +27,9 @@ export default {
                 "neutral": {
                     "20": "#D9D9D9",
                     "40": "#A6A6A6",
-                    "50": "#848484"
+                    "50": "#848484",
+                    "60": "#737373",
+                    "80": "#404040"
                 },
                 "info": {
                     "10": "#E5ECFF",
@@ -35,8 +37,17 @@ export default {
                     "30": "#668CFF",
                     "50": "#0040FF"
                 },
+                "success": {
+                    "10": "#EBFAF0",
+                    "50": "#35CA61"
+                },
+                "warning": {
+                    "10": "#FFF8E5",
+                    "50": "#FFBD00"
+                },
                 'primary': '#FF6420',
                 'primary-10': '#FFEDE5',
+                'primary-20': '#FFCAB2',
                 'primary-40': '#FF8854',
                 'secondary': '#FF8854',
                 'skin': '#FFDFD1',

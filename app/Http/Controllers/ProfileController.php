@@ -38,12 +38,12 @@ class ProfileController extends Controller
             ->with('products.categories')
             ->get();
 
-        return Inertia::render('Auth/User/Index', [
+        return Inertia::render('Auth/User/Bimbingan/Bimbingan', [
             'orderBimbingan' => $orderBimbingan,
         ]);
     }
 
-    public function pembelajaranSaya()
+    public function bimbingan()
     {
         $user = User::where('id', Auth::user()->id)->with('profile')->first();
         $orderBimbingan = Order::where('user_id', $user->id)
@@ -54,7 +54,7 @@ class ProfileController extends Controller
             ->with('products.categories', 'course')
             ->get();
 
-        return Inertia::render('Auth/User/PembelajaranSaya', [
+        return Inertia::render('Auth/User/Bimbingan/Bimbingan', [
             'orderBimbingan' => $orderBimbingan,
         ]);
     }

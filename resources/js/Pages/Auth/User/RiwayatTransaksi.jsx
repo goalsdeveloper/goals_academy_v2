@@ -5,55 +5,80 @@ import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
 import figure from "/resources/img/figure/8.svg";
 import CornerWaveVector from "@/Components/CornerWaveVector";
 import "@/script/momentCustomLocale";
+import { EmptyProductLayout } from "./Bimbingan/Bimbingan";
+import riwayatImg from "/resources/img/produk/riwayat-pesanan-bg.png";
+import {
+    ProductItemCardContent,
+    ProductItemCardHeader,
+    ProductItemCardLayout,
+} from "@/Components/fragments/ProductItemCard";
+import GoalsBadge from "@/Components/elements/GoalsBadge";
+import GoalsButton from "@/Components/elements/GoalsButton";
+import { useState } from "react";
+import { FiChevronRight, FiX } from "react-icons/fi";
+import GoalsPopup from "@/Components/elements/GoalsPopup";
+import ProductListFilter from "./ProductListFilter";
 
 export default function Index({ auth, dataOrder }) {
-    console.log(dataOrder);
-    // const data = [
-    //     {
-    //         id: 1,
-    //         order_id: "GA12345678",
-    //         purchase_method: "Gopay",
-    //         expiry_time: "2023-12-01 17:00:00",
-    //         status: "pending",
-    //     },
-    //     {
-    //         id: 2,
-    //         order_id: "GA19182634",
-    //         purchase_method: "Mandiri",
-    //         expiry_time: "2023-12-23 15:00:00",
-    //         status: "success",
-    //     },
-    //     {
-    //         id: 3,
-    //         order_id: "GA01293494",
-    //         purchase_method: "BRI",
-    //         expiry_time: "2023-11-05 12:00:00",
-    //         status: "failure",
-    //     },
-    // ];
-    const data = dataOrder;
+    // console.log(dataOrder);
+    const data = [
+        {
+            id: 1,
+            status: "Berhasil",
+            kode_pesanan: "DBO123456789",
+            payment_time_limit: "24 Agustus 2023",
+            waktu_pembayaran: "Selasa, 24 Agustus 2023",
+            metode_pembayaran: "Bank Mandiri",
+            products: {
+                name: "Paket Program 1",
+                harga: "Rp 175.000",
+            },
+        },
+        {
+            id: 2,
+            status: "Menunggu",
+            kode_pesanan: "DBO123456789",
+            payment_time_limit: "24 Agustus 2023",
+            waktu_pembayaran: "Selasa, 24 Agustus 2023",
+            metode_pembayaran: "Bank Mandiri",
+            products: {
+                name: "Paket Program 2",
+                harga: "Rp 175.000",
+            },
+        },
+        {
+            id: 3,
+            status: "Menunggu",
+            kode_pesanan: "DBO123456789",
+            payment_time_limit: "24 Agustus 2023",
+            waktu_pembayaran: "Selasa, 24 Agustus 2023",
+            metode_pembayaran: "Bank Mandiri",
+            products: {
+                name: "Paket Program 3",
+                harga: "Rp 175.000",
+            },
+        },
+    ];
+    // const data = dataOrder;
 
     return (
         <UserLayout auth={auth} title="Riwayat Transaksi">
+            <div className="flex md:block justify-between items-center">
+                <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-[4vw]">
+                    {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
+                    Riwayat Transaksi
+                </h1>
+                <ProductListFilter />
+            </div>
+
             {data.length == 0 ? (
-                <div className="min-h-[60vh] md:min-h-[22vw] flex flex-col justify-center items-center gap-[4vw] md:gap-[2vw]">
-                    <img
-                        src={figure}
-                        alt=""
-                        className="h-[30vw] w-[30vw] md:h-[14vw] md:w-[14vw]"
-                    />
-                    <p className="text-[3vw] md:text-[1.5vw] md:text-secondary">
-                        Anda Belum Memiliki Transaksi
-                    </p>
-                    <Link
-                        href="/produk"
-                        className={`inline-block font-medium text-center py-[1.5vw] px-[2.5vw] md:py-[.5vw] md:px-[1vw] mt-[3vw] md:mt-0 border-[.2vw] border-secondary text-secondary hover:text-white rounded-full bg-white hover:bg-secondary cursor-pointer`}
-                    >
-                        Pilih Paket Program
-                    </Link>
-                </div>
+                <EmptyProductLayout
+                    description="Anda belum memiliki transaksi"
+                    buttonTxt="Pilih Paket Program"
+                    redirectUrl="/produk"
+                />
             ) : (
-                <div className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[1vw]">
+                <div className="md:min-h-[22vw] flex flex-col gap-[2vw] md:gap-[1vw]">
                     {data.map((item, index) => {
                         return <RiwayatItem key={index} data={item} />;
                     })}
@@ -64,68 +89,174 @@ export default function Index({ auth, dataOrder }) {
 }
 
 function RiwayatItem({ data }) {
+    const [isVisible, setIsVisible] = useState(false);
+
     return (
-        <div className="relative w-full flex flex-col gap-[2vw] md:gap-[1vw] bg-secondary text-white rounded-[1vw] p-[6vw] md:p-[2vw]">
-            <p className="font-poppins text-[3vw] md:text-[.95vw]">
-                #{data.order_code}
-            </p>
-            <hr className="border-1 border-white" />
-            <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-between items-center gap-[4vw] md:gap-0">
-                <div className="w-full flex items-center md:w-8/12 gap-[2vw] md:gap-[1vw]">
-                    <div className="w-[11vw] h-[11vw] md:w-[5vw] md:h-[5vw] flex justify-center items-center rounded-[1vw] md:rounded-[.75vw] bg-white">
-                        <img
-                            src={`/img/purchase/${data.payment_method.name.toLowerCase()}.png`}
-                            alt={data.payment_method.name}
-                            className="w-9/12"
-                        />
+        <>
+            <DetailTransaction
+                data={data}
+                show={isVisible}
+                setShow={setIsVisible}
+            />
+
+            <ProductItemCardLayout
+                imageUrl={riwayatImg}
+                onClick={() => setIsVisible(true)}
+                className="cursor-pointer md:cursor-default"
+            >
+                <div className="flex justify-between items-center">
+                    <div className="space-y-[1.8vw] w-full">
+                        <ProductItemCardHeader className="md:justify-between gap-[3.7vw]">
+                            <div className="flex gap-[.5vw] items-center">
+                                <p className="hidden md:block text-[.8vw] font-medium text-neutral-50">
+                                    #DBO123456789
+                                </p>
+
+                                <TransactionStatusBadge data={data} />
+                            </div>
+
+                            {data.status != "Berhasil" && (
+                                <div className="flex gap-[.5vw]">
+                                    <p className="hidden md:block text-[.8vw] font-medium text-neutral-50">
+                                        Bisa dibayar sebelum :{" "}
+                                    </p>
+                                    <span className="text-[2.3vw] md:text-[.8vw] text-black">
+                                        {data.payment_time_limit}
+                                    </span>
+                                </div>
+                            )}
+                        </ProductItemCardHeader>
+                        <ProductItemCardContent>
+                            <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw]">
+                                <h2 className="h5 font-medium mb-[.4vw]">
+                                    {data.products.name}
+                                </h2>
+                                <p className="text-neutral-60">
+                                    Dibayar : Selasa, 24 Agustus 2023
+                                </p>
+                                <p className="text-neutral-60">
+                                    Metode Pembayaran : Gopay
+                                </p>
+                            </div>
+
+                            <div className="hidden md:block space-x-[.5vw]">
+                                <GoalsButton
+                                    onClick={() => setIsVisible(!isVisible)}
+                                    variant={
+                                        data.status == "Berhasil"
+                                            ? "bordered"
+                                            : "primary"
+                                    }
+                                >
+                                    Lihat Detail
+                                </GoalsButton>
+
+                                {data.status == "Berhasil" && (
+                                    <GoalsButton>Beli Lagi</GoalsButton>
+                                )}
+                            </div>
+                        </ProductItemCardContent>
                     </div>
-                    <div>
-                        <h4 className="text-white font-normal font-sans text-[3.5vw] md:text-[1.5vw]">
-                            Metode Pembayaran {data.payment_method.name}
-                        </h4>
-                        <table className="border-separate border-spacing-y-[.25vw] text-[2.5vw] md:text-[.8vw]">
-                            <tbody>
-                                <tr>
-                                    <td>Bayar Sebelum</td>
-                                    <td className="ps-[1vw] pe-[.5vw]">:</td>
-                                    <td>
-                                        {moment(
-                                            JSON.parse(data.order_history[0].payload).expiry_time
-                                        ).format("DD MMMM YYYY, HH:mm")}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Status Pembayaran</td>
-                                    <td className="ps-[1vw] pe-[.5vw]">:</td>
-                                    <td>
-                                        {data.status == "Pending"
-                                            ? "Menunggu Pembayaran"
-                                            : data.status == "Success"
-                                            ? "Sudah Dibayar"
-                                            : "Pembayaran Gagal"}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+
+                    <FiChevronRight className="md:hidden text-[4.5vw] text-secondary" />
                 </div>
-                <Link
-                    href={
-                        data.status == "pending"
-                            ? `/purchase/${data.order_code}`
-                            : `/purchase/detail/${data.order_code}`
-                    }
-                    className="w-4/12 h-[6vw] md:w-[30%] md:h-[3vw] cursor-pointer"
-                >
-                    <ButtonHoverSlide
-                        className={`h-full md:before:p-0.5 lg:before:p-1 xl:before:p-1.5 3xl:before:p-2 before:content-arrow-right-secondary-20 xs:before:content-arrow-right-secondary-32 md:before:content-arrow-right-secondary-20 xl:before:content-arrow-right-secondary-24 3xl:before:content-arrow-right-secondary-32 ${
-                            data.status == "pending"
-                                ? "after:content-pay"
-                                : "after:content-detail"
-                        } after:text-white after:text-[2.5vw] md:after:text-[1vw] medium border-1 xl:border-2 border-white rounded-full before:w-[160%] before:-ms-[160%] before:duration-300 after:w-full after:duration-300 hover:before:-ms-[30%] hover:after:-me-[100%] before:bg-sweep-white`}
-                    ></ButtonHoverSlide>
-                </Link>
-            </div>
-        </div>
+            </ProductItemCardLayout>
+        </>
     );
 }
+
+const TransactionStatusBadge = ({ data }) => {
+    return (
+        <GoalsBadge
+            title={data.status}
+            className={`${
+                data.status == "Berhasil"
+                    ? "bg-success-10 text-success-50"
+                    : "bg-warning-10 text-warning-50"
+            }`}
+        />
+    );
+};
+
+const DetailTransaction = ({ data, show, setShow }) => {
+    console.log(data);
+
+    return (
+        <GoalsPopup show={show} setShow={setShow}>
+            <div className="flex justify-between">
+                <p className="text-[1.2vw] font-semibold">Detail Pesanan</p>
+                <button onClick={() => setShow(!show)}>
+                    <FiX className="text-[1.8vw]" />
+                </button>
+            </div>
+            <div className="grid grid-cols-2 gap-[1.25vw]">
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Kode Pesanan
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">
+                        {data.kode_pesanan}
+                    </p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Status Pesanan
+                    </h3>
+                    <p
+                        className={`text-[1vw] ${
+                            data.status == "Berhasil"
+                                ? "text-success-50"
+                                : "text-warning-50"
+                        } font-medium`}
+                    >
+                        {data.status}
+                    </p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Waktu Pembayaran
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">
+                        {data.waktu_pembayaran}
+                    </p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Metode Pembayaran
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">
+                        {data.metode_pembayaran}
+                    </p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Jenis Produk
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">
+                        {data.products.name}
+                    </p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Harga Produk
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">
+                        {data.products.harga}
+                    </p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Add On Produk
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">-</p>
+                </div>
+                <div className="space-y-[.2vw]">
+                    <h3 className="h6 font-normal text-neutral-50">
+                        Harga Add On
+                    </h3>
+                    <p className="text-[1vw] text-neutral-80 font-medium">-</p>
+                </div>
+            </div>
+        </GoalsPopup>
+    );
+};
