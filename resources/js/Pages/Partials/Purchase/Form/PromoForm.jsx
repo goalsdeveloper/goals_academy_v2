@@ -75,6 +75,7 @@ export default function PromoForm({
                             className="md:text-[.9vw]"
                             placeholder="Masukkan kode promo"
                             value={temp.promo}
+                            cancelButton={temp.promo != ""}
                             data={temp.promo}
                             setData={i => setTemp("promo", i)}
                             onChange={(e) => {

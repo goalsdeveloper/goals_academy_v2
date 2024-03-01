@@ -21,7 +21,7 @@ export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon=
                         : "border-1 border-light-grey text-light-grey"
                 } ${className}`}
                 iconClassName={`group-hover:text-inherit ${
-                    data != "" ? "text-grey" : ""
+                    data != "" ? "text-secondary" : ""
                 }`}
                 icon={chevronIcon != "" ? chevronIcon : `fa-solid fa-chevron-down duration-300 ${show != "" ? "-rotate-180" : ""}`}
                 onClick={() => setShow(!show)}

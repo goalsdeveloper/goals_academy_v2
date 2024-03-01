@@ -33,7 +33,7 @@ export default function MainHeader({ auth, title, className }) {
     // }, [])
 
     return (
-        <header className={`fixed w-full top-0 right-0 bg-white text-dark lg:text-base z-50 ${className}`}>
+        <header className="overflow-y-visible overflow-x-clip  sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50">
             <div className="hidden xl:h-24 3xl:h-36"></div>{" "}
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">
