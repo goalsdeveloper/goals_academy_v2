@@ -56,7 +56,7 @@ class ProgressController extends Controller
     {
         $validateData = $request->validate([
             // 'tutor_id' => 'numeric',
-            // 'date' => 'date',
+            // 'location' => 'date',
             // 'time' => 'date_format:H:i',
         ]);
         $progress->update($validateData);
