@@ -17,7 +17,7 @@ class CourseController extends Controller
     {
         // if (Auth::user()->user_role == "moderator") {
         $course = Course::with('user', 'products')->get();
-        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data category success', 'data' => $course], 200);
+        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data course success', 'data' => $course], 200);
         // } else {
         //     abort(403);
         // }
@@ -44,7 +44,13 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        $course_user = Course::with('user.profile', 'products')->findOrFail($course->id);
+        return response()->json([
+            'status' => true,
+            'statusCode' => 200,
+            'message' => 'get data success',
+            'data' => $course_user,
+        ], 200);
     }
 
     /**
@@ -87,7 +93,6 @@ class CourseController extends Controller
         ]);
         $course->update($validateData);
         return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update course success'], 200);
-
     }
 
     /**
