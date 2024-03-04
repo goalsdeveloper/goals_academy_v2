@@ -1,18 +1,15 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
-import useScrollBlock from "@/Hooks/useScrollBlock";
+import GoalsPopup from "@/Components/elements/GoalsPopup";
 import MainLayout from "@/Layouts/MainLayout";
 import "@/script/momentCustomLocale";
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
-import { BsThreeDots } from "react-icons/bs";
 import { FiChevronLeft } from "react-icons/fi";
-import { RxFileText } from "react-icons/rx";
-import DetailBanyakPertemuan from "./DetailBanyakPertemuan";
-import DetailSatuPertemuan from "./DetailSatuPertemuan";
-import { detailData as dataBimbingan } from "./data";
-import GoalsPopup from "@/Components/elements/GoalsPopup";
-import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import { useMediaQuery } from "react-responsive";
+
+import { detailData as dataBimbingan } from "./data";
+import DetailSatuPertemuan from "./layouts/DetailSatuPertemuan";
+import DetailBanyakPertemuan from "./layouts/DetailBanyakPertemuan";
 
 export default function DetailPesanan({ auth, courseDetail }) {
     // console.log(courseDetail[0].time);
@@ -45,7 +42,12 @@ export default function DetailPesanan({ auth, courseDetail }) {
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     return (
-        <MainLayout withFooter={false} auth={auth} title="Detail Pembelajaran" className="pb-[16vw] md:pb-0">
+        <MainLayout
+            withFooter={false}
+            auth={auth}
+            title="Detail Pembelajaran"
+            className="pb-[16vw] md:pb-0"
+        >
             <div className="container mx-auto md:space-y-[2.5vw] text-secondary mb-[5.2vw]">
                 <Link
                     href="/bimbingan"
@@ -101,9 +103,7 @@ export default function DetailPesanan({ auth, courseDetail }) {
                         </h1>
                     )}
 
-
-                    <div className="fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center pb-[3.7vw] pt-[3.4vw] md:p-0 bg-white z-[40] md:z-0">
-
+                    <div className="fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center pb-[3.7vw] pt-[3.4vw] bg-white md:p-0 z-[40] md:z-0">
                         <GoalsButton
                             variant="bordered"
                             onClick={(prev) =>
@@ -112,7 +112,7 @@ export default function DetailPesanan({ auth, courseDetail }) {
                                     ulasanTutor: true,
                                 })
                             }
-                            className=""
+                            className="px-[6vw]"
                         >
                             Beri Ulasan
                         </GoalsButton>
@@ -124,7 +124,7 @@ export default function DetailPesanan({ auth, courseDetail }) {
                                     selesaiProgram: true,
                                 })
                             }
-                            className=""
+                            className="px-[6vw]"
                         >
                             Selesaikan Pembelajaran
                         </GoalsButton>

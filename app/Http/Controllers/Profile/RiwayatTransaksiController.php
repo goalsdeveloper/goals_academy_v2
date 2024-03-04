@@ -14,10 +14,10 @@ class RiwayatTransaksiController extends Controller
     {
         $user = Auth::user();
         $order = Order::where('user_id', $user->id)
-            ->with('orderHistory', 'paymentMethod')
+            ->with('orderHistory', 'paymentMethod','products')
             ->get();
         // dd($order);
-        return Inertia::render('Auth/User/RiwayatTransaksi',[
+        return Inertia::render('Auth/User/RiwayatTransaksi/index',[
             'dataOrder' => $order,
         ]);
     }

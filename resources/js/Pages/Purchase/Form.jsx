@@ -4,10 +4,10 @@ import moment from "moment";
 import MainLayout from "@/Layouts/MainLayout";
 import GoalsButton from "@/Components/GoalsButton";
 import ExpandedButton from "@/Components/ExpandedButton";
-import GoalsDatePicker from "@/Components/Form/GoalsDatePicker";
-import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/Form/GoalsSelectInput";
-import { GoalsSelectMultipleInput, GoalsSelectMultipleInputItem } from "@/Components/Form/GoalsSelectMultipleInput";
-import GoalsUploadFile from "@/Components/Form/GoalsUploadFile";
+// import GoalsDatePicker from "@/Components/Form/GoalsDatePicker";
+// import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/Form/GoalsSelectInput";
+// import { GoalsSelectMultipleInput, GoalsSelectMultipleInputItem } from "@/Components/Form/GoalsSelectMultipleInput";
+// import GoalsUploadFile from "@/Components/Form/GoalsUploadFile";
 import PromoForm from "@/Pages/Partials/Purchase/Form/PromoForm";
 import PurchaseMethodForm from "@/Pages/Partials/Purchase/Form/PurchaseMethodForm";
 import LengkapiProfilForm from "@/Pages/Partials/Purchase/Form/LengkapiProfilForm";
@@ -16,6 +16,10 @@ import "@/script/momentCustomLocale";
 import { FiChevronLeft, FiInfo } from "react-icons/fi";
 import { RiCoupon3Fill } from "react-icons/ri";
 import { FaChevronRight } from "react-icons/fa6";
+import GoalsDatePicker from "@/Components/elements/GoalsDatePicker";
+import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/elements/GoalsSelectInput";
+import { GoalsSelectMultipleInput, GoalsSelectMultipleInputItem } from "@/Components/elements/GoalsSelectMultipleInput";
+import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
 
 export default function Form({ auth, date, addOns, cities, topics, paymentMethods, dataProduct }) {
     const userId = auth.user.id;

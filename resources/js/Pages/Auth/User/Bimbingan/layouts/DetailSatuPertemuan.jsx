@@ -7,18 +7,19 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
     const gapSize = 1;
 
     return (
-        <div
-            className={`md:flex gap-[${gapSize}vw] ${className}`}
-        >
+        <div className={`md:flex gap-[${gapSize}vw] ${className}`}>
             {/* Informasi detil pembelajaran */}
-            <div className="md:border border-neutral-20 w-full rounded-[.8vw] py-[3.3vw] md:p-[3.3vw] space-y-[1.6vw]">
+            <div className="md:border border-neutral-20 w-full rounded-[.8vw] py-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
                 <h2 className="h4 font-medium text-secondary">
                     Pelaksanaan Pembelajaran
                 </h2>
-                <ul className="text-black space-y-[1.25vw]">
+                <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
                     {data.detailPelaksanaan.map((item, index) => {
                         return (
-                            <li key={index} className="space-y-[.2vw]">
+                            <li
+                                key={index}
+                                className="space-y-[.9vw] md:space-y-[.2vw]"
+                            >
                                 <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
                                     {item.title}
                                 </h3>
@@ -31,10 +32,11 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                 </ul>
             </div>
 
+
             <div className="w-full space-y-[1vw]">
                 {/* Informasi Tutor */}
                 <div
-                    className="w-full md:border border-neutral-20 rounded-[.8vw] py-[3.3vw] md:p-[3.3vw] space-y-[1.6vw]"
+                    className="w-full md:border border-neutral-20 rounded-[.8vw] py-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]"
                     style={{
                         height: `calc(50% - ${gapSize * 0.5}vw)`,
                     }}
@@ -42,10 +44,13 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                     <h2 className="h4 font-medium text-secondary">
                         Informasi Tutor
                     </h2>
-                    <ul className="text-black space-y-[1.25vw]">
+                    <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
                         {data.detailTutor.map((item, index) => {
                             return (
-                                <li key={index} className="space-y-[.2vw]">
+                                <li
+                                    key={index}
+                                    className="space-y-[.9vw] md:space-y-[.2vw]"
+                                >
                                     <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
                                         {item.title}
                                     </h3>
@@ -57,9 +62,10 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                         })}
                     </ul>
                 </div>
+
                 {/* Lampiran */}
                 <div
-                    className="w-full md:border border-neutral-20 rounded-[.8vw] py-[3.3vw] md:p-[3.3vw] space-y-[1.6vw]"
+                    className="w-full md:border border-neutral-20 rounded-[.8vw] py-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]"
                     style={{
                         height: `calc(50% - ${gapSize * 0.5}vw)`,
                     }}
@@ -68,7 +74,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                         File dan media
                     </h2>
 
-                    <div className="space-y-[.2vw]">
+                    <div className="space-y-[.8vw] md:space-y-[.2vw]">
                         {data.fileMedia.map((item, index) => {
                             return (
                                 <FileMediaItemBackdrop
@@ -105,13 +111,13 @@ export const FileMediaItemBackdrop = ({ item }) => {
     };
 
     return (
-        <div className="w-full relative flex items-center gap-[1.8vw] md:gap-[.5vw] bg-white shadow-sm p-[.2vw] rounded-[.4vw]">
-            <div className="bg-primary-10 w-[11vw] md:w-[2.5vw] aspect-square flex items-center justify-center rounded-[.3vw]">
+        <div className="w-full relative flex items-center gap-[1.8vw] md:gap-[.5vw] bg-white shadow p-[1vw] md:p-[.2vw] rounded-[.8vw] md:rounded-[.4vw]">
+            <div className="bg-primary-10 w-[11vw] md:w-[2.5vw] aspect-square flex items-center justify-center rounded-[.6vw] md:rounded-[.3vw]">
                 <RxFileText className="text-[4.8vw] md:text-[1.3vw]" />
             </div>
 
             <div className="flex items-center justify-between w-full">
-                <p className="text-[2.8vw] md:text-[.8vw] text-neutral-80">
+                <p className="text-[2.8vw] md:text-[.8vw] text-neutral-80 w-[80%]">
                     {item.title}
                 </p>
 
