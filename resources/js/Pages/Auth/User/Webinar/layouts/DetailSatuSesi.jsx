@@ -10,7 +10,7 @@ const DetailSatuSesi = ({ data, className = "" }) => {
         >
             {/* Informasi */}
             <div
-                className="w-full md:border border-neutral-20 rounded-[.8vw] py-[3.3vw] md:p-[3.3vw] space-y-[1.6vw] "
+                className="w-full md:border border-neutral-20 rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]"
                 style={{
                     height: `calc(50% - ${gapSize * 0.5}vw)`,
                 }}
@@ -33,7 +33,7 @@ const DetailSatuSesi = ({ data, className = "" }) => {
             </div>
             {/* Lampiran */}
             <div
-                className="w-full md:border border-neutral-20 rounded-[.8vw] py-[3.3vw] md:p-[3.3vw] space-y-[1.6vw]"
+                className="w-full md:border border-neutral-20 rounded-[.8vw] py-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]"
                 style={{
                     height: `calc(50% - ${gapSize * 0.5}vw)`,
                 }}

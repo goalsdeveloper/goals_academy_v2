@@ -9,7 +9,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
     return (
         <div className={`md:flex gap-[${gapSize}vw] ${className}`}>
             {/* Informasi detil pembelajaran */}
-            <div className="md:border border-neutral-20 w-full rounded-[.8vw] py-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
+            <div className="md:border border-neutral-20 w-full rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
                 <h2 className="h4 font-medium text-secondary">
                     Pelaksanaan Pembelajaran
                 </h2>

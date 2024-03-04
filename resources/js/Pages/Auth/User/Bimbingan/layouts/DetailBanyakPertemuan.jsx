@@ -72,7 +72,7 @@ const DetailBanyakPertemuan = ({ data }) => {
 
 export default DetailBanyakPertemuan;
 
-const DropdownDetail = ({ isVisible, setIsVisible, item }) => {
+export const DropdownDetail = ({ isVisible, setIsVisible, item }) => {
     return (
         <React.Fragment>
             <button

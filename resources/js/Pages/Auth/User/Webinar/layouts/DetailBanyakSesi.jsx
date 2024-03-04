@@ -6,26 +6,13 @@ import {
 import React from "react";
 import { FiChevronDown } from "react-icons/fi";
 import DetailSatuSesi from "./DetailSatuSesi";
-import CardImage from "/resources/img/karir/academic-internship.png";
 
 const DetailBanyakSesi = ({ data }) => {
     const [showDetail, setShowDetail] = React.useState(null);
 
     return (
         <div className="relative space-y-[2vw]">
-            <ProductItemCardLayout
-                imageUrl={CardImage}
-                className="hidden md:flex"
-            >
-                <ProductItemCardContent>
-                    <div className="text-[1vw] space-y-[.2vw]">
-                        <h2 className="h5 font-medium mb-[.4vw]">Webinar 1</h2>
-                        <p className="text-neutral-60">11 - 29 Februari 2024</p>
-                        <p className="text-neutral-60">19.00 WIB</p>
-                    </div>
-                    <GoalsButton variant="info">Gabung Webinar</GoalsButton>
-                </ProductItemCardContent>
-            </ProductItemCardLayout>
+
 
             <div className="space-y-[.8vw]">
                 {data.map((item, index) => {
@@ -37,7 +24,7 @@ const DetailBanyakSesi = ({ data }) => {
                                         ? setShowDetail(null)
                                         : setShowDetail(item.id)
                                 }
-                                className="relative w-full flex md:border border-neutral-20 p-[2vw] md:p-[1.2vw] gap-[2.9vw] rounded-[.8vw] justify-between items-center"
+                                className="relative w-full flex md:border border-neutral-20 p-[3.7vw] md:p-[1.2vw] gap-[2.9vw] rounded-[.8vw] shadow md:shadow-none justify-between items-center"
                             >
                                 <h3 className="font-medium text-[3.7vw] md:text-[1.2vw]">
                                     {item.sesi}
@@ -57,7 +44,7 @@ const DetailBanyakSesi = ({ data }) => {
 
                             {showDetail === item.id && (
                                 <DetailSatuSesi
-                                    className={`${
+                                    className={`rounded-[.8vw] px-[5.5vw] md:px-0 shadow md:shadow-none ${
                                         showDetail === item.id
                                             ? "scale-y-100"
                                             : "scale-y-0"
