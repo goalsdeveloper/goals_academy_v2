@@ -146,7 +146,7 @@ export const FileMediaItemBackdrop = ({ item }) => {
                         Unduh
                     </button>
                     <div
-                        className="bg-black/20 inset-0 fixed z-[55]"
+                        className=" bg-black/20 inset-0 fixed top-0 left-0 w-auto h-auto z-[55]"
                         onClick={downloadHandler}
                     />
                 </>

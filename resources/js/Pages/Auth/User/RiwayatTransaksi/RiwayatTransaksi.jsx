@@ -3,9 +3,9 @@ import UserLayout from "@/Layouts/UserLayout";
 import "@/script/momentCustomLocale";
 import { EmptyProductLayout } from "../Bimbingan/Bimbingan";
 import ProductListFilter from "../ProductListFilter";
-import RiwayatItem from "./RiwayatItem";
+import RiwayatItem from "./components/RiwayatItem";
 
-export default function Index({ auth, dataOrder }) {
+export default function RiwayatTransaksi({ auth, dataOrder }) {
     const data = dataOrder;
     return (
         <UserLayout auth={auth} title="Riwayat Transaksi">

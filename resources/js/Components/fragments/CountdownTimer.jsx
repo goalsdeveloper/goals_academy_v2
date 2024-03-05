@@ -11,7 +11,7 @@ const CountdownTimer = ({ targetDateTime }) => {
         const difference = targetDate - currentDate;
 
         if (difference <= 0) {
-            return "00:00:00";
+            return `00${" "}:${" "}00${" "}:${" "}00`;
         }
 
         const hours = Math.floor(
@@ -22,9 +22,9 @@ const CountdownTimer = ({ targetDateTime }) => {
         );
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-        return `${formatTwoDigits(hours)}:${formatTwoDigits(
+        return `${formatTwoDigits(hours)}${" "}:${" "}${formatTwoDigits(
             minutes
-        )}:${formatTwoDigits(seconds)}`;
+        )}${" "}:${" "}${formatTwoDigits(seconds)}`;
     }
 
     function formatTwoDigits(value) {
@@ -39,7 +39,11 @@ const CountdownTimer = ({ targetDateTime }) => {
         return () => clearInterval(timerInterval);
     }, [targetDateTime]);
 
-    return <p className="h6 font-semibold">{timeRemaining}</p>;
+    return (
+        // <div className="flex items-center">
+            <p className="text-[2.3vw] md:text-[0.8vw] font-semibold font-work-sans">{timeRemaining}</p>
+        // </div>
+    );
 };
 
 export default CountdownTimer;

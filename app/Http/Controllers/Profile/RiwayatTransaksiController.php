@@ -17,7 +17,7 @@ class RiwayatTransaksiController extends Controller
             ->with('orderHistory', 'paymentMethod','products')
             ->get();
         // dd($order);
-        return Inertia::render('Auth/User/RiwayatTransaksi/index',[
+        return Inertia::render('Auth/User/RiwayatTransaksi/RiwayatTransaksi',[
             'dataOrder' => $order,
         ]);
     }
