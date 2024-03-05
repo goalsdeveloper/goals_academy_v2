@@ -12,12 +12,12 @@ use App\Http\Controllers\Admin\PlaceController;
 
 use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
-
+use App\Http\Controllers\Moderator\ModeratorOrderController;
+use App\Http\Controllers\Moderator\ProgressController;
+use App\Http\Controllers\Moderator\ModeratorHistoryBimbinganController;
 
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\Moderator\ModeratorOrderController;
-use App\Http\Controllers\Moderator\ProgressController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
@@ -112,6 +112,8 @@ Route::resource('admin/overview', AdminOverviewController::class)->except(['crea
 Route::resource('moderator/overview', ModeratorOverviewController::class)->except(['create', 'edit']);
 Route::resource('moderator/course', CourseController::class)->except(['create', 'edit']);
 Route::resource('moderator/progress', ProgressController::class)->except(['create', 'edit']);
+Route::resource('moderator/order', ModeratorOrderController::class)->except(['create', 'edit']);
+Route::resource('moderator/history', ModeratorHistoryBimbinganController::class)->except(['create', 'edit']);
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/auth.php';

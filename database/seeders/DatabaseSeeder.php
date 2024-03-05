@@ -35,7 +35,8 @@ class DatabaseSeeder extends Seeder
             AddOnSeeder::class,
             UserProfileSeeder::class,
             OrderSeeder::class,
-            CourseSeeder::class
+            CourseSeeder::class,
+            OrderHistorySeeder::class
         ]);
 
 
