@@ -5,7 +5,7 @@ const ContentLayout = ({ children, className = "", imageUrl, ...rest }) => {
     return (
         <div
             {...rest}
-            className={`relative w-full flex shadow md:border border-neutral-20 py-[3.7vw] px-[1.2vw] md:p-[1.2vw] gap-[2.9vw] rounded-[1.6vw] md:rounded-[.8vw] ${className}`}
+            className={`relative w-full flex shadow md:shadow-none md:border border-neutral-20 p-[1.2vw] gap-[2.9vw] rounded-[1.6vw] md:rounded-[.8vw] ${className}`}
         >
             <img
                 src={imageUrl}
@@ -30,7 +30,9 @@ const ProductItemCardLayout = ({
 
     return isMobile & isLink ? (
         <Link href={href}>
-            <ContentLayout imageUrl={imageUrl} {...rest}>{children}</ContentLayout>
+            <ContentLayout imageUrl={imageUrl} {...rest}>
+                {children}
+            </ContentLayout>
         </Link>
     ) : (
         <ContentLayout imageUrl={imageUrl} {...rest}>

@@ -15,7 +15,7 @@ export default function MainLayout({
         <>
             <Head title={title} />
             <MainHeader auth={auth} title={title} />
-            <main className={`text-dark md:pt-12 overflow-visible ${className}`}>
+            <main className={`text-dark overflow-visible ${className}`}>
                 {children}
             </main>
             {withFooter && <MainFooter />}

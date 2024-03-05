@@ -68,15 +68,15 @@ const Webinar = ({ auth }) => {
                                     <div className="space-y-[1.8vw] w-full">
                                         <ProductItemCardContent>
                                             <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw]">
-                                                <h2 className="h5 font-medium mb-[.4vw]">
+                                                <h2 className="text-[3.2vw] md:text-[1vw] font-medium mb-[.4vw]">
                                                     {item.webinar.name}
                                                 </h2>
-                                                <p className="text-neutral-60">
+                                                <p className="text-neutral-40">
                                                     {new Date(
                                                         item.webinar.date
                                                     ).toDateString()}
                                                 </p>
-                                                <p className="text-neutral-60">
+                                                <p className="text-neutral-40">
                                                     {item.webinar.time
                                                         ? item.webinar.time +
                                                           " WIB"

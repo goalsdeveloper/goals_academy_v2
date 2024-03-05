@@ -29,7 +29,7 @@ class PembeljaranSayaController extends Controller
             ->with('order', 'tutor', 'tutorNote', 'fileUploads', 'products')
             ->get();
         // dd($course);
-        return Inertia::render('Auth/User/Bimbingan/DetailBimbinganLayout', [
+        return Inertia::render('Auth/User/Bimbingan/DetailBimbingan', [
             'courseDetail' => $course,
         ]);
     }

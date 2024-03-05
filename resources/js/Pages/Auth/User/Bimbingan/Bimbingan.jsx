@@ -157,13 +157,13 @@ function BimbinganItem({ data }) {
                     <ProductItemCardContent>
                         {/* Content */}
                         <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw]">
-                            <h2 className="h5 font-medium mb-[.4vw] line-clamp-1">
+                            <h2 className="text-[3.2vw] md:text-[1vw] font-medium mb-[.4vw] line-clamp-1">
                                 {data.products.name}
                             </h2>
-                            <p className="text-neutral-60">
+                            <p className="text-neutral-40 md:text-neutral-60">
                                 Selasa, 24 Agustus 2023
                             </p>
-                            <p className="text-neutral-60">
+                            <p className="hidden md:block text-neutral-60">
                                 {data.course.time
                                     ? start_time + "-" + finish_time
                                     : "Waktu Belum Ditentukan"}
