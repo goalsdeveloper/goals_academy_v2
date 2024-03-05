@@ -23,11 +23,17 @@ export default function GoalsButton({
             >
                 {isLoading ? (
                     <div className="h-full top-0 right-0 flex items-center px-[3vw] md:px-[1vw]">
-                        <span className="text-light-grey">.</span>
+                        <span className="text-transparent">.</span>
                         <i className="fa-solid fa-circle-notch fa-spin text-inherit"></i>
-                        <span className="text-light-grey">.</span>
+                        <span className="text-transparent">.</span>
                     </div>
-                ) : (children)}
+                ) : (
+                    <>
+                        <span className="text-transparent">.</span>
+                        {children}
+                        <span className="text-transparent">.</span>
+                    </>
+                )}
             </Link>
         );
     } else {
@@ -40,11 +46,17 @@ export default function GoalsButton({
             >
                 {isLoading ? (
                     <div className="h-full top-0 right-0 flex items-center px-[3vw] md:px-[1vw]">
-                        <span className="text-light-grey">.</span>
+                        <span className="text-transparent">.</span>
                         <i className="fa-solid fa-circle-notch fa-spin text-inherit"></i>
-                        <span className="text-light-grey">.</span>
+                        <span className="text-transparent">.</span>
                     </div>
-                ) : (children)}
+                ) : (
+                    <>
+                        <span className="text-transparent">.</span>
+                        {children}
+                        <span className="text-transparent">.</span>
+                    </>
+                )}
             </a>
         );
     }
