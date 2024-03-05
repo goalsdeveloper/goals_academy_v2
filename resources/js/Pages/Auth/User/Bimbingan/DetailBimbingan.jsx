@@ -112,7 +112,7 @@ export default function DetailPesanan({ auth, courseDetail }) {
                                     ulasanTutor: true,
                                 })
                             }
-                            className="px-[6vw]"
+                            className="px-[6.1vw]"
                         >
                             Beri Ulasan
                         </GoalsButton>
@@ -124,7 +124,7 @@ export default function DetailPesanan({ auth, courseDetail }) {
                                     selesaiProgram: true,
                                 })
                             }
-                            className="px-[6vw]"
+                            className="px-[6.1vw]"
                         >
                             Selesaikan Pembelajaran
                         </GoalsButton>
@@ -140,15 +140,15 @@ export default function DetailPesanan({ auth, courseDetail }) {
 
 const SelesaiProgram = ({ show, setShow }) => {
     return (
-        <GoalsPopup show={show} setShow={setShow} className="md:max-w-[23.5vw]">
-            <div className="flex flex-col items-center gap-[2vw]">
+        <GoalsPopup show={show} setShow={setShow} className="h-fit md:h-auto md:max-w-[23.5vw]">
+            <div className="flex flex-col items-center gap-[7.4vw] md:gap-[2vw]">
                 <h3 className="h4 font-semibold">Selesaikan Bimbingan</h3>
 
-                <p className="text-[1vw] text-black text-center">
+                <p className="text-[3.7vw] md:text-[1vw] text-black text-center">
                     Apakah kamu ingin menyelesaikan bimbingan?
                 </p>
 
-                <div className="grid space-y-[.8vw] w-full">
+                <div className="grid space-y-[2vw] md:space-y-[.8vw] w-full">
                     <GoalsButton onClick={() => setShow()}>
                         Selesaikan
                     </GoalsButton>
@@ -169,19 +169,19 @@ const UlasanTutor = ({ show, setShow }) => {
             className="md:max-w-[23.5vw]"
             isBgClickDisabled
         >
-            <div className="flex flex-col items-center gap-[2vw]">
-                <h3 className="h4 font-semibold">Beri Ulasan Tutor</h3>
+            <div className="flex flex-col items-center gap-[7.4vw] md:gap-[2vw]">
+                <h3 className="h4 font-medium md:font-semibold">Beri Ulasan Tutor</h3>
 
-                <p className="text-[1vw] text-black text-center">
+                <p className="text-[3.7vw] md:text-[1vw] text-black text-center">
                     Bagaimana kepuasan kamu setelah
                     <br />
                     melakukan bimbingan bersama tutor?
                 </p>
 
-                <div className="grid space-y-[.8vw] w-full">
+                <div className="grid space-y-[7.4vw] md:space-y-[.8vw] w-full">
                     <textarea
                         placeholder="Ketik ulasan kamu disini"
-                        className="h-[8.3vw] px-[.8vw] rounded-md border border-neutral-50 focus:outline-0 text-dark py-[.5vw]"
+                        className="h-[37vw] md:h-[8.3vw] px-[4vw] py-[2.5vw] md:px-[.8vw] md:py-[.5vw]  rounded-md border border-neutral-50 focus:outline-0 text-dark text-[4.6vw]"
                         style={{ resize: "none" }}
                     />
                     <GoalsButton onClick={setShow}>
@@ -201,17 +201,17 @@ const UlasanProgram = ({ show, setShow }) => {
             className="md:max-w-[23.5vw]"
             isBgClickDisabled
         >
-            <div className="flex flex-col items-center gap-[2vw]">
+            <div className="flex flex-col items-center gap-[7.4vw] md:gap-[2vw]">
                 <h3 className="h4 font-semibold">Beri Ulasan Program</h3>
 
-                <p className="text-[1vw] text-black text-center">
+                <p className="text-[3.7vw] md:text-[1vw] text-black text-center">
                     Bagaimana perasaan kamu setelah <br />
                     melakukan bimbingan?
                 </p>
 
-                <div className="grid space-y-[.8vw] w-full">
+                <div className="grid space-y-[7.4vw] md:space-y-[.8vw] w-full">
                     <textarea
-                        className="h-[8.3vw] px-[.8vw] rounded-md border border-neutral-50 focus:outline-0 text-dark py-[.5vw]"
+                        className="h-[37vw] md:h-[8.3vw] px-[4vw] py-[2.5vw] md:px-[.8vw] md:py-[.5vw]  rounded-md border border-neutral-50 focus:outline-0 text-dark text-[4.6vw]"
                         placeholder="Ketik ulasan kamu disini"
                         style={{ resize: "none" }}
                     />
