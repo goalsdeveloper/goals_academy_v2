@@ -17,6 +17,7 @@ class CourseSeeder extends Seeder
         $parentCourse1 = Course::create([
             'user_id' => 2,
             'products_id' => 1,
+            'tutor_id' => 3,
             'order_id' => 1,
             'date' => now()->format('Y-m-d H:i:s'),
             'ongoing' => "berjalan",
