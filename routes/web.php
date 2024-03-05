@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ProfileController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Models\TutorNote;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
+
 use Inertia\Inertia;
 
 Route::get('/token', function () {
@@ -18,9 +20,10 @@ Route::get('/', function () {
     return Inertia::render('Index');
 });
 
-// Route::get('/produk', function () {
-//     return Inertia::render('Main/Produk');
-// });
+Route::get('/dashboard/user/webinar', [DashboardUserController::class, 'webinar']);
+Route::get('/dashboard/user/webinar/{id}', [DashboardUserController::class, 'detailWebinar']);
+Route::get('/dashboard/user/bimbingan', [DashboardUserController::class, 'bimbingan']);
+Route::get('/dashboard/user/bimbingan/{id}', [DashboardUserController::class, 'detailBimbingan']);
 
 // Route::get('/artikel', function () {
 //     return Inertia::render('Main/Artikel');
