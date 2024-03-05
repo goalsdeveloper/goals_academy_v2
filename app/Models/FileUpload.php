@@ -15,6 +15,6 @@ class FileUpload extends Model
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class);
+        return $this->belongsTo(Course::class);
     }
 }
