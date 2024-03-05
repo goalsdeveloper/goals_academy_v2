@@ -19,8 +19,16 @@ import { FaChevronRight } from "react-icons/fa6";
 
 export default function Form({ auth, date, addOns, cities, topics, paymentMethods, dataProduct }) {
     const userId = auth.user.id;
-    console.log(topics);
+
+    const [isProcessed, setIsProcessed] = useState(false)
     const [showMobileSummaryCard, setShowMobileSummaryCard] = useState(false);
+
+    const requiredProfile = ['phone_number', 'university', 'faculty', 'major'].reduce((out, i) => {
+        out[i] = auth.user.profile[i]
+        return out
+    }, {})
+
+    const [userProfile, setUserProfile] = useState({...requiredProfile, id: auth.user.id});
 
     // Code to input form data
     const { data, setData, errors, setError, post } = useForm({
@@ -75,7 +83,12 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
     // Submit function
     const submit = (e) => {
         e.preventDefault();
-        post("/produk");
+        if (Object.keys(userProfile).map(i => userProfile[i]).includes("") || Object.keys(userProfile).map(i => userProfile[i]).includes(null)) {
+            location.href = `/produk/${dataProduct.slug}#lengkapi_profil`;
+        } else {
+            setIsProcessed(true);
+            post("/produk");
+        }
     };
 
     // Code to check and input promo
@@ -149,6 +162,8 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
             >
                 <div className="relative md:container mx-auto pt-[8.5vw] md:pt-[1vw] flex flex-col justify-between md:flex-row text-[3.7vw] md:text-[1vw] gap-[4vw] md:gap-0">
                     <MainCard
+                        userProfile={userProfile}
+                        setUserProfile={setUserProfile}
                         setShowMobileSummaryCard={setShowMobileSummaryCard}
                         dataProduct={dataProduct}
                         data={data}
@@ -162,6 +177,8 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
                         rules={rules}
                     />
                     <SummaryCard
+                        userProfile={userProfile}
+                        setUserProfile={setUserProfile}
                         showMobile={showMobileSummaryCard}
                         setShowMobile={setShowMobileSummaryCard}
                         dataProduct={dataProduct}
@@ -173,6 +190,7 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
                         totalPrice={data.total_price}
                         promoHandler={promoHandler}
                         submit={submit}
+                        isProcessed={isProcessed}
                         rules={rules}
                     />
                 </div>
@@ -182,6 +200,8 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
 }
 
 function MainCard({
+    userProfile,
+    setUserProfile,
     setShowMobileSummaryCard,
     dataProduct,
     data,
@@ -225,7 +245,7 @@ function MainCard({
         <div className="md:w-[72%] flex flex-col gap-[1vw]">
             <div className="md:border-1 md:rounded-[.8vw] md:p-[1.75vw] h-fit">
                 <div className="flex flex-col gap-[4vw] md:gap-0">
-                    <div className="md:hidden pt-[5vw] flex flex-col gap-[4vw]">
+                    <div className="md:hidden pt-[6vw] flex flex-col gap-[4vw]">
                         <Link href="/produk" className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins"><FiChevronLeft className="text-[5vw]" /> Kembali</Link>
                         <img className="w-full h-[60vw]" src={dataProduct.product_image} alt="" />
                     </div>
@@ -235,33 +255,27 @@ function MainCard({
                         </h3>
                         <p>{dataProduct.description}</p>
                         <div className="flex flex-wrap items-center gap-[3vw] md:gap-[1.5vw]">
-                            <div className="flex items-center gap-[3vw] md:gap-[.5vw]">
-                                <i className="fa-regular fa-calendar text-primary"></i>
-                                {/* <p>{features.times}x Pertemuan</p> */}
-                            </div>
-                            <div className="flex items-center gap-[3vw] md:gap-[.5vw]">
-                                <i className="fa-solid fa-clock text-[3vw] md:text-[.9vw] text-primary"></i>
-                                {/* <p>{features.duration} Menit</p> */}
-                            </div>
-                            <div className="flex items-center gap-[3vw] md:gap-[.5vw]">
-                                <i className="fa-solid fa-location-dot text-primary"></i>
-                                {/* <p>
-                                    {features.category.slice(0, 1).toUpperCase() +
-                                        features.category.slice(1)}
-                                </p> */}
-                            </div>
+                            {dataProduct.facilities.map((item, index) => {
+                                return (
+                                    <div key={index} className="flex items-center gap-[3vw] md:gap-[.5vw]">
+                                        <i className={`${item.icon} fa-regular fa-calendar text-primary`}></i>
+                                        <p>{item.text}</p>
+                                    </div>
+                                )
+                            })}
                         </div>
                         <hr className="md:hidden mt-[3vw]" />
                     </div>
                     <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" />
-                    <div className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw]">
+                    <div className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw]" id="lengkapi_profil">
                         <div className="w-full flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
                             {"schedule" in rules ? (
                                 <>
                                     <GoalsDatePicker
-                                        wrapperClassName="hidden md:block"
+                                        required={rules["schedule"]}
                                         show={showForm.schedule}
                                         setShow={(i) => showFormHandler("schedule", i)}
+                                        wrapperClassName="hidden md:block"
                                         label="Pilih Jadwal Bimbinganmu"
                                         data={data.schedule}
                                         setData={(i) => setData("schedule", i)}
@@ -342,9 +356,10 @@ function MainCard({
                                         }}
                                     />
                                     <GoalsDatePicker
-                                        wrapperClassName="md:hidden"
+                                        required={rules["schedule"]}
                                         show={showForm.schedule}
                                         setShow={(i) => showFormHandler("schedule", i)}
+                                        wrapperClassName="md:hidden"
                                         label="Pilih Jadwal Bimbinganmu"
                                         data={data.schedule}
                                         setData={(i) => setData("schedule", i)}
@@ -429,6 +444,7 @@ function MainCard({
                             {"city" in rules ? (
                                 <>
                                     <GoalsSelectInput
+                                        required={rules["city"]}
                                         show={showForm.city}
                                         setShow={(i) => showFormHandler("city", i)}
                                         label="Kota Bimbingan"
@@ -453,6 +469,7 @@ function MainCard({
                                         })}
                                     </GoalsSelectInput>
                                     <GoalsSelectInput
+                                        required={rules["place"]}
                                         show={showForm.place}
                                         setShow={(i) => showFormHandler("place", i)}
                                         label="Lokasi Bimbingan"
@@ -481,24 +498,27 @@ function MainCard({
                                 </>
                             ) : (<></>)}
                             {"topic" in rules ? (
-                                <GoalsSelectInput
-                                    show={showForm.topic}
-                                    setShow={(i) => showFormHandler("topic", i)}
-                                    label="Topik Bimbingan"
-                                    placeholder="Pilih Topik Bimbingan"
-                                    data={data.topic != "" ? topics.filter(item => item.id == data.topic)[0].topic : ""}
-                                >
-                                    {topics.map((item, index) => {
-                                        return (
-                                            <GoalsSelectInputItem
-                                                key={index}
-                                                onClick={() => setData("topic", item.id)}
-                                            >
-                                                {item.topic}
-                                            </GoalsSelectInputItem>
-                                        );
-                                    })}
-                                </GoalsSelectInput>
+                                topics.length ? (
+                                    <GoalsSelectInput
+                                        required={rules["topic"]}
+                                        show={showForm.topic}
+                                        setShow={(i) => showFormHandler("topic", i)}
+                                        label="Topik Bimbingan"
+                                        placeholder="Pilih Topik Bimbingan"
+                                        data={data.topic != "" ? topics.filter(item => item.id == data.topic)[0].topic : ""}
+                                    >
+                                        {topics.map((item, index) => {
+                                            return (
+                                                <GoalsSelectInputItem
+                                                    key={index}
+                                                    onClick={() => setData("topic", item.id)}
+                                                >
+                                                    {item.topic}
+                                                </GoalsSelectInputItem>
+                                            );
+                                        })}
+                                    </GoalsSelectInput>
+                                ) : (<></>)
                             ) : (<></>)}
                             {availableAddOn.length ? (
                                 <GoalsSelectMultipleInput
@@ -637,6 +657,7 @@ function MainCard({
                         {"document" in rules ? (
                             <div className="w-full">
                                 <GoalsUploadFile
+                                    required={rules["document"]}
                                     data={data}
                                     removeFile={(i) => {
                                         setData(
@@ -660,17 +681,68 @@ function MainCard({
                                 <p className="text-[3vw] font-medium">Total</p>
                                 <span className="text-[4.5vw] text-secondary font-bold">IDR {currency.format(data.total_price)}</span>
                             </div>
-                            <GoalsButton className="rounded-[2vw] px-[9vw]" onClick={() => setShowMobileSummaryCard(true)}>Beli</GoalsButton>
+                            <GoalsButton
+                                className="rounded-[2vw] w-4/12"
+                                isActive={
+                                    "document" in rules ? (
+                                        rules["document"] ? (
+                                            !(
+                                                data["document"].length == 0 ||
+                                                Object.keys(
+                                                    Object.fromEntries(
+                                                        Object.entries(rules).filter(
+                                                            ([, value]) => value
+                                                        )
+                                                    )
+                                                )
+                                                    .map((i) => data[i])
+                                                    .includes("")
+                                            )
+                                        ) : (
+                                            !(
+                                                Object.keys(
+                                                    Object.fromEntries(
+                                                        Object.entries(rules).filter(
+                                                            ([, value]) => value
+                                                        )
+                                                    )
+                                                )
+                                                    .map((i) => data[i])
+                                                    .includes("")
+                                            )
+                                        )
+                                    ) : (
+                                        !(
+                                            Object.keys(
+                                                Object.fromEntries(
+                                                    Object.entries(rules).filter(
+                                                        ([, value]) => value
+                                                    )
+                                                )
+                                            )
+                                                .map((i) => data[i])
+                                                .includes("")
+                                        )
+                                    )
+                                }
+                                onClick={() => setShowMobileSummaryCard(true)}
+                            >
+                                Beli
+                            </GoalsButton>
                         </div>
                     </div>
                 </div>
             </div>
-            <LengkapiProfilAlert data={data} setData={setData} />
+            {Object.keys(userProfile).map(i => userProfile[i]).includes("") || Object.keys(userProfile).map(i => userProfile[i]).includes(null) ? (
+                <LengkapiProfilAlert userProfile={userProfile} setUserProfile={setUserProfile} data={data} setData={setData} />
+            ) : (<></>)}
         </div>
     );
 }
 
 function SummaryCard({
+    userProfile,
+    setUserProfile,
     showMobile,
     setShowMobile,
     dataProduct,
@@ -682,17 +754,17 @@ function SummaryCard({
     promoHandler,
     totalPrice,
     submit,
+    isProcessed,
     rules,
 }) {
     const [showPromoForm, setShowPromoForm] = useState(false);
     const [showPurchaseMethodForm, setShowPurchaseMethodForm] = useState(false);
     const [showLengkapiProfilForm, setShowLengkapiProfilForm] = useState(false);
-    const [isProcessed, setIsProcessed] = useState(false);
     const currency = Intl.NumberFormat("id-ID");
     return (
         <>
             <div className={`fixed top-0 bottom-0 right-0 md:static w-full h-screen md:w-[30%] flex flex-col bg-white md:ms-[2vw] gap-[4vw] md:gap-[2vw] duration-500 ${showMobile ? '' : 'translate-x-full'} md:translate-x-0 md:text-[.9vw]`}>
-                <div className="relative h-full md:h-fit border-1 md:rounded-[1vw] pt-[22vw] md:p-[1.75vw] overflow-auto md:overflow-hidden">
+                <div className="relative h-full md:h-fit border-1 md:rounded-[1vw] pt-[26vw] md:p-[1.75vw] overflow-auto md:overflow-hidden">
                     <div className="md:hidden shadow-md">
                         <span className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins py-[4vw]" onClick={() => setShowMobile(false)}><FiChevronLeft className="text-[5vw]" /> Kembali</span>
                     </div>
@@ -708,12 +780,14 @@ function SummaryCard({
                                     <p className="font-medium text-gray-400 text-[3.5vw]">IDR {currency.format(dataProduct.price)}</p>
                                 </div>
                             </div>
-                            <ExpandedButton
-                                className="rounded-[2vw] border-1 border-blue-500 p-[4vw]"
-                                textClassName="text-[3vw]"
-                                iconClassName="text-blue-500"
-                                onClick={() => setShowLengkapiProfilForm(true)}
-                            >Yuk, lengkapin profilnya agar bisa transaksi!</ExpandedButton>
+                            {Object.keys(userProfile).map(i => userProfile[i]).includes("") || Object.keys(userProfile).map(i => userProfile[i]).includes(null) ? (
+                                <ExpandedButton
+                                    className="rounded-[2vw] border-1 border-blue-500 p-[4vw]"
+                                    textClassName="text-[3vw]"
+                                    iconClassName="text-blue-500"
+                                    onClick={() => setShowLengkapiProfilForm(true)}
+                                >Yuk, lengkapin profilnya agar bisa transaksi!</ExpandedButton>
+                            ) : (<></>)}
                         </div>
                     </div>
                     <div className="container md:w-full mx-auto">
@@ -775,7 +849,7 @@ function SummaryCard({
                                             <td>Promo</td>
                                             <td className="font-bold text-right">
                                                 {currency.format(data.discount) > 0
-                                                    ? `IDR ${currency.format(
+                                                    ? `IDR -${currency.format(
                                                         data.discount
                                                     )}`
                                                     : "IDR 0"}
@@ -784,12 +858,16 @@ function SummaryCard({
                                         <tr>
                                             <td>Biaya Admin</td>
                                             <td className="font-bold text-right">
-                                                {data.admin != 0 ? data.admin : "IDR 0"}
+                                                {currency.format(data.admin) > 0
+                                                    ? `IDR ${currency.format(
+                                                        data.admin
+                                                    )}`
+                                                    : "IDR 0"}
                                             </td>
                                         </tr>
                                         {data.add_on.map((item, index) => {
                                             return (
-                                                <tr>
+                                                <tr key={index}>
                                                     <td>{item.name}</td>
                                                     <td className="font-bold text-right">
                                                         IDR {currency.format(item.price)}
@@ -900,7 +978,14 @@ function SummaryCard({
                                 <p className="text-[3vw] font-medium">Total</p>
                                 <span className="text-[4.5vw] text-secondary font-bold">IDR {currency.format(totalPrice)}</span>
                             </div>
-                            <GoalsButton className="rounded-[2vw] px-[9vw]" onClick={() => setShowMobile(false)}>Beli</GoalsButton>
+                            <GoalsButton
+                                className="rounded-[2vw] w-4/12"
+                                isActive={data.purchase_method != ""}
+                                isLoading={isProcessed}
+                                onClick={submit}
+                            >
+                                Beli
+                            </GoalsButton>
                         </div>
                     </div>
                 </div>
@@ -923,29 +1008,35 @@ function SummaryCard({
                 setTemp={setTemp}
                 purchaseMethods={purchaseMethods}
             />
-            <LengkapiProfilForm
-                show={showLengkapiProfilForm}
-                setShow={setShowLengkapiProfilForm}
-                data={data}
-                setData={setData}
-            />
+            {Object.keys(userProfile).map(i => userProfile[i]).includes("") || Object.keys(userProfile).map(i => userProfile[i]).includes(null) ? (
+                <LengkapiProfilForm
+                    userProfile={userProfile}
+                    setUserProfile={setUserProfile}
+                    show={showLengkapiProfilForm}
+                    setShow={setShowLengkapiProfilForm}
+                    data={data}
+                    setData={setData}
+                />
+            ) : (<></>)}
         </>
     );
 }
 
-const LengkapiProfilAlert = ({ data, setData }) => {
+const LengkapiProfilAlert = ({ userProfile, setUserProfile, data, setData }) => {
     const [showLengkapiProfilForm, setShowLengkapiProfilForm] = useState(false);
 
     return (
         <div className="hidden md:block">
             <LengkapiProfilForm
+                userProfile={userProfile}
+                setUserProfile={setUserProfile}
                 show={showLengkapiProfilForm}
                 setShow={setShowLengkapiProfilForm}
                 data={data}
                 setData={setData}
             />
 
-            <div className="border-1 md:rounded-[1vw] md:p-[1.75vw] h-fit bg-info-10 flex justify-between items-center">
+            <div className="border-1 md:rounded-[1vw] md:p-[1.75vw] h-fit bg-info-10 flex justify-between items-center animate-bounce-sm">
                 <div className="flex items-center gap-[1vw]">
                     <FiInfo className="text-[2vw] text-info-50" />
                     <span className="font-semibold md:text-[.83vw]">

@@ -1,23 +1,61 @@
+import { useState } from "react";
+import { useForm } from "@inertiajs/react";
 import GoalsTextInput from "@/Components/Form/GoalsTextInput";
 import GoalsButton from "@/Components/GoalsButton";
-import { useForm } from "@inertiajs/react";
 import { FiX } from "react-icons/fi";
 
-const LengkapiProfilForm = ({ show, setShow }) => {
-    const { data, setData, post } = useForm({
-        nomor_telepon: "",
-        universitas: "",
-        fakultas: "",
-        jurusan: "",
+const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow }) => {
+    const { data, setData, errors, setError, post } = useForm({
+        id: userProfile.id,
+        phone_number: userProfile.phone_number ? userProfile.phone_number : "",
+        university: userProfile.university ? userProfile.university : "",
+        faculty: userProfile.faculty ? userProfile.faculty : "",
+        major: userProfile.major ? userProfile.major : "",
     });
 
+    const [isLoading, setIsLoading] = useState(false);
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        const keys = Object.keys(data)
+        const values = keys.map(i => data[i])
+
+        keys.map(i => {
+            if (data[i] == '' || data[i] == null) {
+                setError(i, `This field is required!`)
+            } else if (String(data[i])[0] == ' ') {
+                setError(i, `This field can't started with space!`)
+            } else {
+                setError(i, '')
+            }
+        })
+
+        if (!(values.includes('') || values.includes(null) || values.map(i => String(i)[0] == ' ').includes(true))) {
+            setIsLoading(true)
+            fetch("/api/lengkapi_profil", {
+                method: "post",
+                headers: {
+                    accept: "application.json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(response => {
+                    if (response.message == 'success') {
+                        setUserProfile(data)
+                        setIsLoading(false)
+                    }
+                })
+        }
+    }
     return (
         <div>
             <div
                 className={`${
                     show ? "" : "hidden"
                 } fixed top-0 bottom-0 left-0 right-0 overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`}
-                onClick={() => setShow(false)}
+                onClick={() => isLoading ? () => {} : setShow(false)}
             ></div>
             <div
                 className={`${
@@ -28,67 +66,74 @@ const LengkapiProfilForm = ({ show, setShow }) => {
             >
                 <div className="flex justify-between">
                     <p className="font-poppins font-semibold text-[4.5vw] md:text-[1.2vw]">Data Diri</p>
-                    <button onClick={() => setShow(!show)}>
+                    <button onClick={() => isLoading ? () => {} : setShow(false)}>
                         <FiX className="text-[6vw] md:text-[1.8vw]" />
                     </button>
                 </div>
                 <form
                     className="space-y-[8vw] md:space-y-[2vw]"
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        post("/produk");
-                    }}
+                    onSubmit={submitHandler}
                 >
                     <div className="space-y-[3.2vw] md:space-y-[.8vw]">
                         <GoalsTextInput
+                            className="capitalize"
                             type="number"
                             label="Nomor Telepon"
                             placeholder="Masukkan nomor telepon disini"
-                            value={data.nomor_telepon}
-                            data={data.nomor_telepon}
-                            setData={i => setData("nomor_telepon", i)}
+                            value={data.phone_number}
+                            error={errors.phone_number}
+                            cancelButton={data.phone_number != ""}
+                            data={data.phone_number}
+                            setData={i => setData("phone_number", i)}
                             onChange={(e) =>
-                                setData("nomor_telepon", e.target.value)
+                                setData("phone_number", e.target.value.split(' ').map(i => i[0].toUpperCase()+i.slice(1,)).join(' '))
                             }
                         />
                         <GoalsTextInput
+                            className="capitalize"
                             type="text"
                             label="Universitas"
                             placeholder="Masukkan universitas disini"
-                            value={data.universitas}
-                            cancelButton={data.universitas != ""}
-                            data={data.universitas}
-                            setData={i => setData("universitas", i)}
+                            value={data.university}
+                            error={errors.university}
+                            cancelButton={data.university != ""}
+                            data={data.university}
+                            setData={i => setData("university", i)}
                             onChange={(e) =>
-                                setData("universitas", e.target.value)
+                                setData("university", e.target.value.split(' ').map(i => i[0].toUpperCase()+i.slice(1,)).join(' '))
                             }
                         />
                         <GoalsTextInput
+                            className="capitalize"
                             type="text"
                             label="Fakultas"
                             placeholder="Masukkan fakultas disini"
-                            value={data.fakultas}
-                            cancelButton={data.fakultas != ""}
-                            data={data.fakultas}
-                            setData={i => setData("fakultas", i)}
+                            value={data.faculty}
+                            error={errors.faculty}
+                            cancelButton={data.faculty != ""}
+                            data={data.faculty}
+                            setData={i => setData("faculty", i)}
                             onChange={(e) =>
-                                setData("fakultas", e.target.value)
+                                setData("faculty", e.target.value.split(' ').map(i => i[0].toUpperCase()+i.slice(1,)).join(' '))
                             }
                         />
                         <GoalsTextInput
+                            className="capitalize"
                             type="text"
                             label="Jurusan"
                             placeholder="Masukkan jurusan disini"
-                            value={data.jurusan}
-                            cancelButton={data.jurusan != ""}
-                            data={data.jurusan}
-                            setData={i => setData("jurusan", i)}
-                            onChange={(e) => setData("jurusan", e.target.value)}
+                            value={data.major}
+                            error={errors.major}
+                            cancelButton={data.major != ""}
+                            data={data.major}
+                            setData={i => setData("major", i)}
+                            onChange={(e) => setData("major", e.target.value.split(' ').map(i => i[0].toUpperCase()+i.slice(1,)).join(' '))}
                         />
                     </div>
-                    <button className="w-full rounded-md h-[11.2vw] md:h-[2.8vw] flex items-center justify-center bg-primary-40 hover:bg-primary text-white" type="submit">
+                    <GoalsButton className="rounded-md" onClick={submitHandler} isLoading={isLoading}>
                         Simpan
-                    </button>
+                    </GoalsButton>
+                    <button type="submit" className="hidden"></button>
                 </form>
             </div>
         </div>
