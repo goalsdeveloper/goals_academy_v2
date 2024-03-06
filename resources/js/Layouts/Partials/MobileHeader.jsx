@@ -156,12 +156,12 @@ const MobileSidebar = ({ isOpen, setIsOpen }) => {
             icon: <LiaDropbox className="text-[4.5vw] -ml-[.6vw]" />,
             sublinks: [
                 {
-                    href: "/bimbingan",
+                    href: "/produk",
                     icon: <LuGraduationCap className="text-[4vw] -ml-[.8vw]" />,
                     text: "Bimbingan",
                 },
-                { href: "/webinar", icon: <FiMonitor />, text: "Webinar" },
-                { href: "/e-course", icon: <FiAirplay />, text: "E-Course" },
+                { href: "/produk", icon: <FiMonitor />, text: "Webinar" },
+                { href: "/produk", icon: <FiAirplay />, text: "E-Course" },
             ],
         },
         {
