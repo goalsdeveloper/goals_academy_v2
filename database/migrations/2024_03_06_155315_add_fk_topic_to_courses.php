@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Course;
+use App\Models\Topic;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->boolean('is_user')->default(false);
-            $table->foreignIdFor(Course::class, 'parent_id')->nullable()->constrained('courses')->cascadeOnDelete();
-            $table->integer('duration_per_meet')->nullable();
+            $table->foreignIdFor(Topic::class)->nullable()->constrained('topics');
         });
     }
 
@@ -25,10 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->dropColumn('is_user');
-            $table->dropForeign('courses_parent_id_foreign');
-            $table->dropColumn('parent_id');
-            $table->dropColumn('duration_per_meet');
+            $table->dropForeign('courses_topic_id_foreign');
+            $table->dropColumn('topic_id');
         });
     }
 };
