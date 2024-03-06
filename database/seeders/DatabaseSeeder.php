@@ -36,10 +36,11 @@ class DatabaseSeeder extends Seeder
             UserProfileSeeder::class,
             OrderSeeder::class,
             CourseSeeder::class,
+            OrderHistorySeeder::class
         ]);
 
 
-        // User::factory(50)->create();
+        User::factory(50)->create();
 
         PromoCode::create([
             'promo_code' => 19283155,

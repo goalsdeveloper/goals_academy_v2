@@ -17,13 +17,17 @@ class Products extends Model
         'slug',
         'excerpt',
         'description',
-        'features',
+        'facilities',
         'price',
-        'date_start',
-        'date_end',
+        'duration',
+        'total_meet',
+        'active_period',
+        'webinar_properties',
+        'category_id',
         'product_image',
         'is_visible',
-        'is_featured',
+        'is_facilities',
+        'number_list',
     ];
 
     protected $casts = [

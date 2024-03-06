@@ -63,4 +63,9 @@ class Order extends Model
     {
         return 'GA' . str(now()->format('YmdHis')) . strtoupper(Str::random(4));
     }
+    
+    public function productReview()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
 }
