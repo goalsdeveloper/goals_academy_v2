@@ -1,13 +1,34 @@
 <?php
 
+use App\Http\Controllers\DashboardUserController;
+use App\Http\Controllers\Admin\AddOnController;
+use App\Http\Controllers\Admin\BimbinganController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\OverviewController as AdminOverviewController;
+use App\Http\Controllers\Admin\TutorController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WebinarController;
+use App\Http\Controllers\Admin\PlaceController;
+
+use App\Http\Controllers\Moderator\CourseController;
+use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
+use App\Http\Controllers\Moderator\ModeratorOrderController;
+use App\Http\Controllers\Moderator\ProgressController;
+use App\Http\Controllers\Moderator\ModeratorHistoryBimbinganController;
+use App\Http\Controllers\Moderator\ModeratorTutorController;
+
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
+use App\Models\AddOn;
 use App\Models\TutorNote;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
+
 use Inertia\Inertia;
 
 Route::get('/token', function () {
@@ -18,9 +39,10 @@ Route::get('/', function () {
     return Inertia::render('Index');
 });
 
-// Route::get('/produk', function () {
-//     return Inertia::render('Main/Produk');
-// });
+Route::get('/dashboard/user/webinar', [DashboardUserController::class, 'webinar']);
+Route::get('/dashboard/user/webinar/{id}', [DashboardUserController::class, 'detailWebinar']);
+Route::get('/dashboard/user/bimbingan', [DashboardUserController::class, 'bimbingan']);
+Route::get('/dashboard/user/bimbingan/{id}', [DashboardUserController::class, 'detailBimbingan']);
 
 // Route::get('/artikel', function () {
 //     return Inertia::render('Main/Artikel');
@@ -76,6 +98,27 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
         return response()->json(['error' => 'File not found'], 404);
     }
 });
+
+// Admin Dashboard
+Route::resource('admin/category', CategoryController::class)->middleware('auth');
+Route::resource('admin/addon', AddOnController::class)->middleware('auth');
+Route::resource('admin/users', UserController::class)->middleware('auth')->except(['update', 'create', 'store', 'destroy', 'edit']);
+Route::resource('admin/tutorss', TutorController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
+Route::resource('admin/place', PlaceController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
+Route::resource('admin/city', CityController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
+Route::resource('admin/bimbingan', BimbinganController::class)->middleware('auth')->except(['create', 'edit']);
+Route::resource('admin/webinar', WebinarController::class)->middleware('auth')->except(['create', 'edit']);
+Route::resource('admin/course', CourseController::class)->middleware('auth')->except(['create', 'edit']);
+Route::resource('admin/overview', AdminOverviewController::class)->middleware('auth')->except(['create', 'edit']);
+
+
+// Moderator Dashboard
+Route::resource('moderator/overview', ModeratorOverviewController::class)->except(['create', 'edit']);
+Route::resource('moderator/course', CourseController::class)->except(['create', 'edit']);
+Route::resource('moderator/progress', ProgressController::class)->except(['create', 'edit']);
+Route::resource('moderator/order', ModeratorOrderController::class)->except(['create', 'edit']);
+Route::resource('moderator/history', ModeratorHistoryBimbinganController::class)->except(['create', 'edit']);
+Route::resource('moderator/tutor', ModeratorTutorController::class)->except(['create', 'edit']);
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/auth.php';
