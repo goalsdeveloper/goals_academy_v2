@@ -1,5 +1,6 @@
-import GoalsRadio from "@/Components/Form/GoalsRadio";
+
 import ButtonPill from "@/Components/ButtonPill";
+import GoalsRadio from "@/Components/elements/GoalsRadio";
 import { FiX } from "react-icons/fi";
 
 export default function PurchaseMethodForm({

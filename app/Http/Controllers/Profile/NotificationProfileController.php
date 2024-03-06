@@ -11,7 +11,7 @@ class NotificationProfileController extends Controller
 {
     public function index()
     {
-        //retrieve notification 
+        //retrieve notification
         $notifications = Auth::user()->notifications;
         return Inertia::render('Auth/User/Notifikasi', [
             'notifications' => $notifications,

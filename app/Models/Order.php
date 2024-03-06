@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class Order extends Model
@@ -18,10 +19,15 @@ class Order extends Model
         'quantity',
         'unit_price',
         'status',
-        'notes',
+        'form_result',
+        'add_ons',
     ];
 
     protected $hidden = ['id'];
+
+    protected $casts = [
+        'form_result' => 'array',
+    ];
 
     public function user()
     {
@@ -51,5 +57,15 @@ class Order extends Model
     public function orderHistory()
     {
         return $this->hasMany(OrderHistory::class);
+    }
+
+    public static function generateOrderCode()
+    {
+        return 'GA' . str(now()->format('YmdHis')) . strtoupper(Str::random(4));
+    }
+    
+    public function productReview()
+    {
+        return $this->hasMany(ProductReview::class);
     }
 }

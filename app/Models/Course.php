@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Notifications\CourseNotification;
 use App\Observers\CourseObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Course extends Model
 {
@@ -13,6 +16,7 @@ class Course extends Model
 
     protected $fillable = [
         'user_id',
+        'parent_id',
         'products_id',
         'order_id',
         'tutor_id',
@@ -67,5 +71,14 @@ class Course extends Model
     public function addOns()
     {
         return $this->belongsToMany(AddOn::class);
+    }
+        public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Course::class, 'parent_id');
+    }
+
+    public function child(): HasMany
+    {
+        return $this->hasMany(Course::class, 'parent_id');
     }
 }
