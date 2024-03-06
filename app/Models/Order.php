@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Symfony\Component\HttpKernel\Profiler\Profile;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class Order extends Model
 {
@@ -26,8 +26,7 @@ class Order extends Model
     protected $hidden = ['id'];
 
     protected $casts = [
-        'add_ons' => 'json',
-        'form_result' => 'json',
+        'form_result' => 'array',
     ];
 
     public function user()
@@ -60,7 +59,7 @@ class Order extends Model
         return $this->hasMany(OrderHistory::class);
     }
 
-    static function generateOrderCode()
+    public static function generateOrderCode()
     {
         return 'GA' . str(now()->format('YmdHis')) . strtoupper(Str::random(4));
     }
