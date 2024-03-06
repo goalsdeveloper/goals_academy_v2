@@ -41,7 +41,13 @@ class UserProfileSeeder extends Seeder
             'university' => 'Universitas Islam Malang',
             'major' => 'Matematika',
         ]);
-        
+        UserProfile::create([
+            'user_id' => 6,
+            'phone_number' => '0877634208769',
+            'university' => 'Universitas Brawijaya',
+            'major' => 'TI',
+        ]);
+
         // $users = User::all();
 
         // foreach ($users as $user) {
