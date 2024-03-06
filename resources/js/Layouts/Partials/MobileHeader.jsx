@@ -22,6 +22,7 @@ import {
 } from "react-icons/pi";
 import { HiOutlineBuildingOffice } from "react-icons/hi2";
 import { BsPerson } from "react-icons/bs";
+import GoalsButton from "@/Components/elements/GoalsButton";
 
 const MobileHeader = ({ auth }) => {
     const [authDropdown, setAuthDropdown] = useState(false);
@@ -68,45 +69,47 @@ const MobileHeader = ({ auth }) => {
                         />
                     </Link>
                 </div>
-                <div
-                    className={`relative font-poppins flex justify-center cursor-pointer`}
-                    onMouseEnter={() => setAuthDropdown(true)}
-                    onMouseLeave={() => setAuthDropdown(false)}
-                    // onClick={() => setAuthDropdown(!authDropdown)}
-                >
-                    <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
-                        <img
-                            className="w-full h-full"
-                            src={profileImage}
-                            alt="User Profile"
-                        />
-                    </div>
-                    <TECollapse
-                        show={authDropdown}
-                        className="absolute z-10 shadow-none translate-y-2 right-0"
+                {auth.user && (
+                    <div
+                        className={`relative font-poppins flex justify-center cursor-pointer`}
+                        onMouseEnter={() => setAuthDropdown(true)}
+                        onMouseLeave={() => setAuthDropdown(false)}
+                        // onClick={() => setAuthDropdown(!authDropdown)}
                     >
-                        {/* profile navbar */}
-                        <TECollapseItem className="border-2 w-fit py-[1vw] text-start bg-white  rounded-xl">
-                            {links.map(({ href, icon, text }, index) => (
-                                <Link
-                                    key={index}
-                                    className={`flex gap-2 py-[3.7vw] px-[7.4vw] items-center font-poppins hover:text-primary  ${
-                                        text == "Riwayat Transaksi"
-                                            ? "w-max"
-                                            : "w-full"
-                                    }`}
-                                    href={href}
-                                >
-                                    {icon}
-                                    {text}
-                                </Link>
-                            ))}
-                        </TECollapseItem>
-                    </TECollapse>
-                </div>
+                        <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
+                            <img
+                                className="w-full h-full"
+                                src={profileImage}
+                                alt="User Profile"
+                            />
+                        </div>
+                        <TECollapse
+                            show={authDropdown}
+                            className="absolute z-10 shadow-none translate-y-2 right-0"
+                        >
+                            {/* profile navbar */}
+                            <TECollapseItem className="border-2 w-fit py-[1vw] text-start bg-white  rounded-xl">
+                                {links.map(({ href, icon, text }, index) => (
+                                    <Link
+                                        key={index}
+                                        className={`flex gap-2 py-[3.7vw] px-[7.4vw] items-center font-poppins hover:text-primary  ${
+                                            text == "Riwayat Transaksi"
+                                                ? "w-max"
+                                                : "w-full"
+                                        }`}
+                                        href={href}
+                                    >
+                                        {icon}
+                                        {text}
+                                    </Link>
+                                ))}
+                            </TECollapseItem>
+                        </TECollapse>
+                    </div>
+                )}
             </div>
 
-            <MobileSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+            <MobileSidebar isOpen={isOpen} setIsOpen={setIsOpen} auth={auth} />
         </>
     );
 };
@@ -139,7 +142,7 @@ const NavigationBurgerButton = ({ isOpen, setIsOpen }) => {
     );
 };
 
-const MobileSidebar = ({ isOpen, setIsOpen }) => {
+const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
     const [openSublinks, setOpenSublinks] = useState({});
 
     const toggleSublinks = (index) => {
@@ -194,63 +197,79 @@ const MobileSidebar = ({ isOpen, setIsOpen }) => {
 
     return (
         <div
-            className={`absolute w-[74vw] z-[500] top-0 left-0 bg-white min-h-screen duration-300 border-2 text-neutral-80 ${
+            className={`absolute w-[74vw] h-full flex flex-col justify-between z-[500] top-0 left-0 bg-white min-h-screen duration-300 border-2 text-neutral-80 text-[3.7vw] ${
                 isOpen ? "translate-x-[0%]" : "opacity-0 -translate-x-[100%]"
             }`}
         >
-            <div className="flex items-center gap-[5.5vw] w-full p-[7.4vw] border-b border-neutral-20">
-                <Link href="/">
-                    <img
-                        className="md:h-[2vw] mb-1 md:mb-2 w-10/12"
-                        src={logo}
-                        alt="Goals Academy"
+            <div>
+                <div className="flex items-center gap-[5.5vw] w-full p-[7.4vw] border-b border-neutral-20">
+                    <Link href="/">
+                        <img
+                            className="md:h-[2vw] mb-1 md:mb-2 w-10/12"
+                            src={logo}
+                            alt="Goals Academy"
+                        />
+                    </Link>
+                    <NavigationBurgerButton
+                        isOpen={isOpen}
+                        setIsOpen={setIsOpen}
                     />
-                </Link>
-                <NavigationBurgerButton isOpen={isOpen} setIsOpen={setIsOpen} />
-            </div>
+                </div>
 
-            {links.map(({ href, text, sublinks, icon }, index) => (
-                <div
-                    key={href}
-                    className="w-full py-[1vw] text-start bg-white border-b border-neutral-20"
-                >
-                    {sublinks ? (
-                        <button
-                            className="flex gap-2 py-[3.7vw] px-[7.4vw] justify-between items-center hover:text-primary w-full"
-                            onClick={() => toggleSublinks(index)}
+                <div className="flex flex-col justify-between">
+                    {links.map(({ href, text, sublinks, icon }, index) => (
+                        <div
+                            key={href}
+                            className="w-full py-[1vw] text-start bg-white border-b border-neutral-20 h-fit"
                         >
-                            <span className="flex gap-2">
-                                {icon}
-                                {text}
-                            </span>
-                            {sublinks && <FiChevronDown />}
-                        </button>
-                    ) : (
-                        <Link
-                            className="flex gap-2 py-[3.7vw] px-[7.4vw] items-center hover:text-primary w-full"
-                            href={href}
-                        >
-                            {icon}
-                            {text}
-                        </Link>
-                    )}
-
-                    {openSublinks[index] && sublinks && (
-                        <div className="ml-[5vw]">
-                            {sublinks.map(({ href, icon, text }) => (
+                            {sublinks ? (
+                                <button
+                                    className="flex gap-2 py-[3.7vw] px-[7.4vw] justify-between items-center hover:text-primary w-full "
+                                    onClick={() => toggleSublinks(index)}
+                                >
+                                    <span className="flex gap-2">
+                                        {icon}
+                                        {text}
+                                    </span>
+                                    {sublinks && <FiChevronDown />}
+                                </button>
+                            ) : (
                                 <Link
-                                    key={href}
                                     className="flex gap-2 py-[3.7vw] px-[7.4vw] items-center hover:text-primary w-full"
                                     href={href}
                                 >
                                     {icon}
                                     {text}
                                 </Link>
-                            ))}
+                            )}
+
+                            {openSublinks[index] && sublinks && (
+                                <div className="ml-[5vw]">
+                                    {sublinks.map(({ href, icon, text }) => (
+                                        <Link
+                                            key={href}
+                                            className="flex gap-2 py-[3.7vw] px-[7.4vw] items-center hover:text-primary w-full"
+                                            href={href}
+                                        >
+                                            {icon}
+                                            {text}
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
                         </div>
-                    )}
+                    ))}
                 </div>
-            ))}
+            </div>
+
+            {!auth.user && (
+                <div className="flex flex-col px-[7.4vw] w-full gap-[2vw] py-[3.7vw]">
+                    <GoalsButton variant="bordered" className="text-[1vw]">
+                        Masuk
+                    </GoalsButton>
+                    <GoalsButton className="text-[1vw]">Daftar</GoalsButton>
+                </div>
+            )}
         </div>
     );
 };
