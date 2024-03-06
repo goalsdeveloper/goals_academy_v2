@@ -53,9 +53,16 @@ class ModeratorTutorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $tutor)
     {
-        //
+        $tutorWithProfile = User::with('profile')->where("user_role", "tutor")->findOrFail($tutor->id);
+
+        return response()->json([
+            'status' => true,
+            'statusCode' => 200,
+            'message' => 'get data success',
+            'data' => $tutorWithProfile,
+        ], 200);
     }
 
     /**

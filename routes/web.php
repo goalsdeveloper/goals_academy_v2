@@ -103,10 +103,10 @@ Route::resource('admin/users', UserController::class)->middleware('auth')->excep
 Route::resource('admin/tutorss', TutorController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
 Route::resource('admin/place', PlaceController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
 Route::resource('admin/city', CityController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
-Route::resource('admin/bimbingan', BimbinganController::class)->except(['create', 'edit']);
-Route::resource('admin/webinar', WebinarController::class)->except(['create', 'edit']);
-Route::resource('admin/course', CourseController::class)->except(['create', 'edit']);
-Route::resource('admin/overview', AdminOverviewController::class)->except(['create', 'edit']);
+Route::resource('admin/bimbingan', BimbinganController::class)->middleware('auth')->except(['create', 'edit']);
+Route::resource('admin/webinar', WebinarController::class)->middleware('auth')->except(['create', 'edit']);
+Route::resource('admin/course', CourseController::class)->middleware('auth')->except(['create', 'edit']);
+Route::resource('admin/overview', AdminOverviewController::class)->middleware('auth')->except(['create', 'edit']);
 
 
 // Moderator Dashboard
