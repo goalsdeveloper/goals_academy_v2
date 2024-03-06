@@ -91,7 +91,7 @@ class PurchaseController extends Controller
         $quantity = 1;
         $discount = 0;
         $responseMidtrans = null;
-        $order_code = 'GA' . str(now()->format('YmdHis'));
+        $order_code = Order::generateOrderCode();
         $orderData->order_code = $order_code;
 
         $paymentMethod = PaymentMethod::where('name', $validateData['purchase_method']['name'])->first();
@@ -120,9 +120,9 @@ class PurchaseController extends Controller
         // charge midtrans
         $phoneNumber = $user->profile->phone_number ?? '';
         $form_result = [];
-        $form_config = (array) json_decode(Products::find($orderData->products_id)->form_config);
+        $form_config = (array) Products::find($orderData->products_id)->form_config;
         foreach ($form_config as $key => $value) {
-            if ($key == 'add_on') {
+            if ($key == 'add_on' && $key == 1 && $request->exists('add_on')) {
                 $add_on_result = [];
                 foreach ($request->add_on as $idx => $value) {
                     $add_on_result[$idx] = ['id' => $value['id']];
@@ -219,8 +219,6 @@ class PurchaseController extends Controller
             ->first();
         // dd($product);
         $addOns = $product->addOns;
-        $product->form_config = json_decode($product->form_config);
-        $product->facilities = json_decode($product->facilities);
         $cities = City::with('places')->get();
         $topics = $product->topics;
         return Inertia::render('Purchase/Form', [
