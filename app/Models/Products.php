@@ -30,9 +30,10 @@ class Products extends Model
         'number_list',
     ];
 
-    // protected $casts = [
-    //     'features' => 'array',
-    // ];
+    protected $casts = [
+        'facilities' => 'json',
+        'form_config' => 'json',
+    ];
 
     public function order()
     {
@@ -54,7 +55,8 @@ class Products extends Model
         return $this->belongsTo(ProductType::class);
     }
 
-    public function topics() {
+    public function topics()
+    {
         return $this->belongsToMany(Topic::class);
     }
 }

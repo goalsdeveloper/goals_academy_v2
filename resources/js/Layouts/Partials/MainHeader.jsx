@@ -11,7 +11,7 @@ import CornerWaveVector2 from "@/Components/CornerWaveVector2";
 import user from "/resources/img/icon/user.png";
 import { useEffect } from "react";
 
-export default function MainHeader({ auth, title }) {
+export default function MainHeader({ auth, title, className }) {
     // console.log(auth);
     const [mobileNavbar, setMobileNavbar] = useState(false);
     const [mobileAuthDropdown, setMobileAuthDropdown] = useState(false);
@@ -33,7 +33,7 @@ export default function MainHeader({ auth, title }) {
     // }, [])
 
     return (
-        <header className="fixed w-full top-0 right-0 bg-white text-dark lg:text-base z-50">
+        <header className="overflow-y-visible overflow-x-clip  sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50">
             <div className="hidden xl:h-24 3xl:h-36"></div>{" "}
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">

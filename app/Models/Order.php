@@ -18,11 +18,16 @@ class Order extends Model
         'quantity',
         'unit_price',
         'status',
-        'topic_id',
+        'form_result',
         'add_ons'
     ];
 
     protected $hidden = ['id'];
+
+    protected $casts =[
+        'add_ons' => 'json',
+        'form_result' => 'json',
+    ];
 
     public function user()
     {

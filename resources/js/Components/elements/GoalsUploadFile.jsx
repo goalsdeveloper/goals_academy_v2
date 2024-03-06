@@ -69,6 +69,7 @@ export default function GoalsUploadFile({
 
     return (
         <form
+            className="cursor-pointer"
         // onSubmit={(e) => {
         //     e.preventDefault();
         //     alert("Lamaran anda telah terkirim!!");

@@ -35,7 +35,7 @@ Route::get('/token', function () {
 Route::get('/', function () {
     return Inertia::render('Index');
 });
-//
+
 // Route::get('/produk', function () {
 //     return Inertia::render('Main/Produk');
 // });
