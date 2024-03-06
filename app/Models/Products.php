@@ -17,18 +17,23 @@ class Products extends Model
         'slug',
         'excerpt',
         'description',
-        'features',
+        'facilities',
         'price',
-        'date_start',
-        'date_end',
+        'duration',
+        'total_meet',
+        'active_period',
+        'webinar_properties',
+        'category_id',
         'product_image',
         'is_visible',
-        'is_featured',
+        'is_facilities',
+        'number_list',
     ];
 
-    // protected $casts = [
-    //     'features' => 'array',
-    // ];
+    protected $casts = [
+        'facilities' => 'array',
+        'form_config' => 'array',
+    ];
 
     public function order()
     {
@@ -50,7 +55,8 @@ class Products extends Model
         return $this->belongsTo(ProductType::class);
     }
 
-    public function topics() {
+    public function topics()
+    {
         return $this->belongsToMany(Topic::class);
     }
 }
