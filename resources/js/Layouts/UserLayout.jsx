@@ -1,24 +1,15 @@
-import "/resources/css/main.css";
-import { Head, Link } from "@inertiajs/react";
-import { CircularProgressbar } from "react-circular-progressbar";
-import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
 import DashboardNavbarItem from "@/Components/DashboardNavbarItem";
-import MainHeader from "./Partials/MainHeader";
-import wave5 from "/resources/img/vector/wave-5.svg";
-import wave6 from "/resources/img/vector/wave-6.svg";
-import wave7 from "/resources/img/vector/wave-7.svg";
-import wave8 from "/resources/img/vector/wave-8.svg";
-import userIcon from "/resources/img/icon/user.png";
+import "@/script/mainHeader";
+import { Head } from "@inertiajs/react";
+import { FiMonitor } from "react-icons/fi";
 import { LuGraduationCap } from "react-icons/lu";
-import { FiChevronDown, FiMonitor } from "react-icons/fi";
 import {
     PiChatCenteredTextBold,
     PiClockCounterClockwiseBold,
 } from "react-icons/pi";
-import "@/script/mainHeader";
+import MainHeader from "./Partials/MainHeader";
+import "/resources/css/main.css";
 import { useState } from "react";
-import { useMediaQuery } from "react-responsive";
-import GoalsChip from "@/Components/elements/GoalsChip";
 
 export default function UserLayout({ auth, title, children }) {
     // console.log();

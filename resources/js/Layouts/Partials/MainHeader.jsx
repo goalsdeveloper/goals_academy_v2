@@ -4,12 +4,13 @@ import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import moment from "moment";
 import logo from "/resources/img/icon/goals-1.svg";
-import logo2 from "/resources/img/icon/goals-2.svg";
 import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
 import CornerWaveVector from "@/Components/CornerWaveVector";
 import CornerWaveVector2 from "@/Components/CornerWaveVector2";
 import user from "/resources/img/icon/user.png";
 import { useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
+import MobileHeader from "./MobileHeader";
 
 export default function MainHeader({ auth, title, className }) {
     // console.log(auth);
@@ -32,12 +33,20 @@ export default function MainHeader({ auth, title, className }) {
     //     }, 5000)
     // }, [])
 
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
     return (
         <header className="overflow-y-visible overflow-x-clip  sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50">
-            <div className="hidden xl:h-24 3xl:h-36"></div>{" "}
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">
-                {!auth.user ? (
+                {isMobile ? (
+                    <MobileHeader
+                        auth={auth}
+                        title={title}
+                        notificationData={notificationData}
+                        profileImage={profileImage}
+                    />
+                ) : (
                     <div className="w-6/12 md:w-2/12">
                         <Link href="/">
                             <img
@@ -47,6 +56,9 @@ export default function MainHeader({ auth, title, className }) {
                             />
                         </Link>
                     </div>
+                )}
+
+                {/* {!auth.user ? (
                 ) : (
                     <>
                         <div className="md:hidden flex items-center gap-2">
@@ -78,14 +90,14 @@ export default function MainHeader({ auth, title, className }) {
                             </Link>
                         </div>
                     </>
-                )}
+                )} */}
                 <NavbarExpand
                     auth={auth}
                     title={title}
                     notificationData={notificationData}
                     profileImage={profileImage}
                 />
-                <div className="md:hidden">
+                {/* <div className="md:hidden">
                     {!auth.user ? (
                         <button onClick={() => setMobileNavbar(true)}>
                             <i
@@ -135,23 +147,23 @@ export default function MainHeader({ auth, title, className }) {
                             </div>
                         </div>
                     )}
-                </div>
+                </div> */}
             </nav>
-            <NavbarMobile
+            {/* <NavbarMobile
                 auth={auth}
                 title={title}
                 show={mobileNavbar}
                 setShow={setMobileNavbar}
-            />
-            <NotifikasiMobile
+            /> */}
+            {/* <NotifikasiMobile
                 data={notificationData}
                 show={mobileNotification}
                 setShow={setMobileNotification}
-            />
-            <AuthDropdownMobile
+            /> */}
+            {/* <AuthDropdownMobile
                 show={mobileAuthDropdown}
                 setShow={setMobileAuthDropdown}
-            />
+            /> */}
         </header>
     );
 }
@@ -538,53 +550,57 @@ function AuthDropdownMobile({ show, setShow }) {
     );
 }
 
-function NotifikasiMobile({ data, show, setShow }) {
-    return (
-        <div className="font-medium text-[4vw] md:text-[1vw]">
-            <div
-                className={`md:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold min-h-screen py-[6vw] duration-500 ${
-                    show ? "" : "opacity-0 translate-x-[110%]"
-                }`}
-            >
-                <div className="container mx-auto">
-                    <div className="w-full flex justify-end mb-[6vw] text-dark">
-                        <button onClick={() => setShow(false)}>
-                            <i
-                                className={`fa-solid fa-xmark text-dark text-[8vw]`}
-                            ></i>
-                        </button>
-                    </div>
-                    <div className="grid gap-[8vw]">
-                        <div className="flex justify-between items-center">
-                            <span className="font-poppins text-[4vw] md:text-[1.25vw]">
-                                Notifikasi
-                            </span>
-                            <Link
-                                href="/notifikasi"
-                                className="font-normal text-[4vw] md:text-[1vw] hover:text-secondary"
-                            >
-                                Lihat Semua
-                            </Link>
-                        </div>
-                        {data.length ? (
-                            data.map((item, index) => {
-                                return <NotifikasiItem key={index} item={item} />;
-                            })
-                        ) : (
-                            <div className="flex justify-center items-center h-[50vh] font-normal">Oops.. belum ada notifikasi</div>
-                        )}
-                    </div>
-                </div>
-            </div>
-            <div
-                className={`absolute z-30 top-0 left-0 h-screen w-screen bg-dark bg-opacity-50 md:hidden ${
-                    show ? "" : "hidden"
-                }`}
-                onClick={() => setShow(false)}
-            ></div>
-        </div>
-    );
-}
+// function NotifikasiMobile({ data, show, setShow }) {
+//     return (
+//         <div className="font-medium text-[4vw] md:text-[1vw]">
+//             <div
+//                 className={`md:hidden w-full absolute z-50 top-0 right-0 bg-white font-bold min-h-screen py-[6vw] duration-500 ${
+//                     show ? "" : "opacity-0 translate-x-[110%]"
+//                 }`}
+//             >
+//                 <div className="container mx-auto">
+//                     <div className="w-full flex justify-end mb-[6vw] text-dark">
+//                         <button onClick={() => setShow(false)}>
+//                             <i
+//                                 className={`fa-solid fa-xmark text-dark text-[8vw]`}
+//                             ></i>
+//                         </button>
+//                     </div>
+//                     <div className="grid gap-[8vw]">
+//                         <div className="flex justify-between items-center">
+//                             <span className="font-poppins text-[4vw] md:text-[1.25vw]">
+//                                 Notifikasi
+//                             </span>
+//                             <Link
+//                                 href="/notifikasi"
+//                                 className="font-normal text-[4vw] md:text-[1vw] hover:text-secondary"
+//                             >
+//                                 Lihat Semua
+//                             </Link>
+//                         </div>
+//                         {data.length ? (
+//                             data.map((item, index) => {
+//                                 return (
+//                                     <NotifikasiItem key={index} item={item} />
+//                                 );
+//                             })
+//                         ) : (
+//                             <div className="flex justify-center items-center h-[50vh] font-normal">
+//                                 Oops.. belum ada notifikasi
+//                             </div>
+//                         )}
+//                     </div>
+//                 </div>
+//             </div>
+//             <div
+//                 className={`absolute z-30 top-0 left-0 h-screen w-screen bg-dark bg-opacity-50 md:hidden ${
+//                     show ? "" : "hidden"
+//                 }`}
+//                 onClick={() => setShow(false)}
+//             ></div>
+//         </div>
+//     );
+// }
 
 function NotifikasiItem({ item }) {
     if (item.data.category == "Transaksi") {
