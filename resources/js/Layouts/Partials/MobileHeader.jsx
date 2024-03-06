@@ -264,10 +264,14 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
 
             {!auth.user && (
                 <div className="flex flex-col px-[7.4vw] w-full gap-[2vw] py-[3.7vw]">
-                    <GoalsButton variant="bordered" className="text-[1vw]">
-                        Masuk
-                    </GoalsButton>
-                    <GoalsButton className="text-[1vw]">Daftar</GoalsButton>
+                    <Link href="/login">
+                        <GoalsButton variant="bordered" className="w-full">
+                            Masuk
+                        </GoalsButton>
+                    </Link>
+                    <Link href="/register">
+                        <GoalsButton className="w-full">Daftar</GoalsButton>
+                    </Link>
                 </div>
             )}
         </div>

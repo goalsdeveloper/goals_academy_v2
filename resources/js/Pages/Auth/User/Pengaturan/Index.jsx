@@ -77,6 +77,7 @@ export default function Index({ auth, userData, profileData }) {
                         </Link>
                         <Link
                             href="/logout"
+                            method="post"
                             className="flex gap-[7vw] border py-[3.7vw] px-[7.4vw] rounded-[3.7vw] text-danger"
                         >
                             <i className="bi bi-box-arrow-right"></i>
