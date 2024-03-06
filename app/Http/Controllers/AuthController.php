@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Inertia\Inertia;
-use App\Models\UserProfile;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\UserProfile;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 
 class AuthController extends Controller
 {
@@ -27,7 +25,7 @@ class AuthController extends Controller
     {
         // dd(auth()->user()->username);
         $validateData = $request->validate([
-            'email' => 'required|email:dns|exists:users,email',
+            'email' => 'required|email',
             'password' => 'required|min:8',
         ]);
 
@@ -48,7 +46,7 @@ class AuthController extends Controller
             'username' => 'required|min:8|max:15|unique:users,username',
             'email' => 'required|email:dns|unique:users,email',
             'password' => 'required|min:8',
-            'confirmation_password' => 'required|min:8|same:password'
+            'confirmation_password' => 'required|min:8|same:password',
         ]);
 
         $request['password'] = Hash::make($request['password']);
