@@ -24,7 +24,9 @@ export default {
         },
         extend: {
             colors: {
+                "divider": "#F5F5F5",
                 "neutral": {
+                    "10": "A6A6A6",
                     "20": "#D9D9D9",
                     "40": "#A6A6A6",
                     "50": "#848484",
