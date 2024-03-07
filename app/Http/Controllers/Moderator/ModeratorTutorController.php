@@ -17,7 +17,7 @@ class ModeratorTutorController extends Controller
     {
         $tutors = User::with('profile')
             ->where("user_role", "tutor")
-            ->get();
+            ->paginate(5);
 
         $tutors->each(function ($tutor) {
             $onprogress = Course::where('tutor_id', $tutor->id)->where('ongoing', 'berjalan')->count();
@@ -57,11 +57,55 @@ class ModeratorTutorController extends Controller
     {
         $tutorWithProfile = User::with('profile')->where("user_role", "tutor")->findOrFail($tutor->id);
 
+        $total_bimbingan_tuntas_onprogress = Course::where('tutor_id', $tutor->id)
+            ->where('ongoing', 'berjalan')
+            ->whereHas('products', function ($query) {
+                $query->where('ongoing', 'berjalan');
+                $query->whereHas('category', function ($categoryQuery) {
+                    $categoryQuery->where('name', 'LIKE', '%Dibimbing Tuntas%');
+                });
+            })
+            ->count();
+
+        $total_bimbingan_sekali_onprogress = Course::where('tutor_id', $tutor->id)
+            ->where('ongoing', 'berjalan')
+            ->whereHas('products', function ($query) {
+                $query->where('ongoing', 'berjalan');
+                $query->whereHas('category', function ($categoryQuery) {
+                    $categoryQuery->where('name', 'LIKE', '%Dibimbing Sekali%');
+                });
+            })
+            ->count();
+
+        $total_bimbingan_tuntas_selesai = Course::where('tutor_id', $tutor->id)
+            ->where('ongoing', 'selesai')
+            ->whereHas('products', function ($query) {
+                $query->where('ongoing', 'selesai');
+                $query->whereHas('category', function ($categoryQuery) {
+                    $categoryQuery->where('name', 'LIKE', '%Dibimbing Tuntas%');
+                });
+            })
+            ->count();
+
+        $total_bimbingan_sekali_selesai = Course::where('tutor_id', $tutor->id)
+            ->where('ongoing', 'selesai')
+            ->whereHas('products', function ($query) {
+                $query->where('ongoing', 'selesai');
+                $query->whereHas('category', function ($categoryQuery) {
+                    $categoryQuery->where('name', 'LIKE', '%Dibimbing Sekali%');
+                });
+            })
+            ->count();
+
         return response()->json([
             'status' => true,
             'statusCode' => 200,
             'message' => 'get data success',
-            'data' => $tutorWithProfile,
+            'tutor' => $tutorWithProfile,
+            'total_bimbingan_tuntas_onprogress' => $total_bimbingan_tuntas_onprogress,
+            'total_bimbingan_sekali_onprogress' => $total_bimbingan_sekali_onprogress,
+            'total_bimbingan_tuntas_selesai' => $total_bimbingan_tuntas_selesai,
+            'total_bimbingan_sekali_selesai' => $total_bimbingan_sekali_selesai,
         ], 200);
     }
 

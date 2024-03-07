@@ -23,8 +23,9 @@ class OrderSeeder extends Seeder
             'quantity' => 1,
             'unit_price' => 10000,
             'status' => "Success",
-            'topic_id' => 1,
-            'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            // 'topic_id' => 1,
+            // 'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            'form_result'=> json_encode(['icon'=> 'icon-text'])
         ]);
         Order::create([
             'user_id' => 2,
@@ -34,78 +35,10 @@ class OrderSeeder extends Seeder
             'quantity' => 1,
             'unit_price' => 10000,
             'status' => "Success",
-            'topic_id' => 1,
-            'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            // 'topic_id' => 1,
+            // 'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            'form_result'=> json_encode(['icon'=> 'icon-text'])
         ]);
-        Order::create([
-            'user_id' => 2,
-            'products_id' => 1,
-            'payment_method_id' => 1,
-            'order_code' =>  Str::random(20),
-            'quantity' => 1,
-            'unit_price' => 10000,
-            'status' => "Pending",
-            'topic_id' => 1,
-            'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
-        ]);
-        Order::create([
-            'user_id' => 2,
-            'products_id' => 2,
-            'payment_method_id' => 1,
-            'order_code' =>  Str::random(20),
-            'quantity' => 1,
-            'unit_price' => 10000,
-            'status' => "Success",
-            'topic_id' => 1,
-            'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
-        ]);
-        Order::create([
-            'user_id' => 2,
-            'products_id' => 2,
-            'payment_method_id' => 1,
-            'order_code' =>  Str::random(20),
-            'quantity' => 1,
-            'unit_price' => 10000,
-            'status' => "Success",
-            'topic_id' => 1,
-            'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
-        ]);
-        Order::create([
-            'user_id' => 2,
-            'products_id' => 2,
-            'payment_method_id' => 1,
-            'order_code' =>  Str::random(20),
-            'quantity' => 1,
-            'unit_price' => 10000,
-            'status' => "Pending",
-            'topic_id' => 1,
-            'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
-        ]);
-
-        Order::create([
-            'user_id' => 2,
-            'products_id' => 2,
-            'payment_method_id' => 1,
-            'order_code' =>  Str::random(20),
-            'quantity' => 1,
-            'unit_price' => 10000,
-            'status' => "Success",
-            'topic_id' => 1,
-            'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
-        ]);
-
-        Order::create([
-            'user_id' => 2,
-            'products_id' => 2,
-            'payment_method_id' => 1,
-            'order_code' =>  Str::random(20),
-            'quantity' => 1,
-            'unit_price' => 10000,
-            'status' => "Success",
-            'topic_id' => 1,
-            'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
-        ]);
-
         Order::create([
             'user_id' => 2,
             'products_id' => 1,
@@ -114,8 +47,84 @@ class OrderSeeder extends Seeder
             'quantity' => 1,
             'unit_price' => 10000,
             'status' => "Pending",
-            'topic_id' => 1,
-            'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            // 'topic_id' => 1,
+            // 'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            'form_result'=> json_encode(['icon'=> 'icon-text'])
+        ]);
+        Order::create([
+            'user_id' => 2,
+            'products_id' => 2,
+            'payment_method_id' => 1,
+            'order_code' =>  Str::random(20),
+            'quantity' => 1,
+            'unit_price' => 10000,
+            'status' => "Success",
+            // 'topic_id' => 1,
+            // 'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            'form_result'=> json_encode(['icon'=> 'icon-text'])
+        ]);
+        Order::create([
+            'user_id' => 2,
+            'products_id' => 2,
+            'payment_method_id' => 1,
+            'order_code' =>  Str::random(20),
+            'quantity' => 1,
+            'unit_price' => 10000,
+            'status' => "Success",
+            // 'topic_id' => 1,
+            // 'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            'form_result'=> json_encode(['icon'=> 'icon-text'])
+        ]);
+        Order::create([
+            'user_id' => 2,
+            'products_id' => 2,
+            'payment_method_id' => 1,
+            'order_code' =>  Str::random(20),
+            'quantity' => 1,
+            'unit_price' => 10000,
+            'status' => "Pending",
+            // 'topic_id' => 1,
+            // 'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            'form_result'=> json_encode(['icon'=> 'icon-text'])
+        ]);
+
+        Order::create([
+            'user_id' => 2,
+            'products_id' => 2,
+            'payment_method_id' => 1,
+            'order_code' =>  Str::random(20),
+            'quantity' => 1,
+            'unit_price' => 10000,
+            'status' => "Success",
+            // 'topic_id' => 1,
+            // 'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            'form_result'=> json_encode(['icon'=> 'icon-text'])
+        ]);
+
+        Order::create([
+            'user_id' => 2,
+            'products_id' => 2,
+            'payment_method_id' => 1,
+            'order_code' =>  Str::random(20),
+            'quantity' => 1,
+            'unit_price' => 10000,
+            'status' => "Success",
+            // 'topic_id' => 1,
+            // 'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            'form_result'=> json_encode(['icon'=> 'icon-text'])
+        ]);
+
+        Order::create([
+            'user_id' => 2,
+            'products_id' => 1,
+            'payment_method_id' => 1,
+            'order_code' =>  Str::random(20),
+            'quantity' => 1,
+            'unit_price' => 10000,
+            'status' => "Pending",
+            // 'topic_id' => 1,
+            // 'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            'form_result'=> json_encode(['icon'=> 'icon-text'])
         ]);
 
         Order::create([
@@ -126,8 +135,9 @@ class OrderSeeder extends Seeder
             'quantity' => 1,
             'unit_price' => 10000,
             'status' => "Success",
-            'topic_id' => 1,
-            'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            // 'topic_id' => 1,
+            // 'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            'form_result'=> json_encode(['icon'=> 'icon-text'])
         ]);
 
         Order::create([
@@ -138,8 +148,9 @@ class OrderSeeder extends Seeder
             'quantity' => 1,
             'unit_price' => 10000,
             'status' => "Success",
-            'topic_id' => 1,
-            'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            // 'topic_id' => 1,
+            // 'add_ons' => json_encode([['icon' => 'icon-text', 'text' => 'text-description']]),
+            'form_result'=> json_encode(['icon'=> 'icon-text'])
         ]);
 
 

@@ -12,7 +12,6 @@ use App\Http\Controllers\Admin\PlaceController;
 
 use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
-use App\Http\Controllers\Moderator\ModeratorOrderController;
 use App\Http\Controllers\Moderator\ProgressController;
 use App\Http\Controllers\Moderator\ModeratorHistoryBimbinganController;
 use App\Http\Controllers\Moderator\ModeratorTutorController;
@@ -112,8 +111,9 @@ Route::resource('admin/overview', AdminOverviewController::class)->middleware('a
 // Moderator Dashboard
 Route::resource('moderator/overview', ModeratorOverviewController::class)->except(['create', 'edit']);
 Route::resource('moderator/course', CourseController::class)->except(['create', 'edit']);
+Route::patch('moderator/course/{course}/update-bimbingan-online', [CourseController::class, 'updateBimbinganOnline'])->name('courses.updateBimbinganOnline');
 Route::resource('moderator/progress', ProgressController::class)->except(['create', 'edit']);
-Route::resource('moderator/order', ModeratorOrderController::class)->except(['create', 'edit']);
+// Route::resource('moderator/order', ModeratorOrderController::class)->except(['create', 'edit']);
 Route::resource('moderator/history', ModeratorHistoryBimbinganController::class)->except(['create', 'edit']);
 Route::resource('moderator/tutor', ModeratorTutorController::class)->except(['create', 'edit']);
 
