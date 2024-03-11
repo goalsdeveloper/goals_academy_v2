@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Moderator;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -77,6 +78,12 @@ class ModeratorTutorController extends Controller
             })
             ->count();
 
+        $desk_review_onprogress = Order::whereHas('course', function ($courseQuery) use ($tutor) {
+            $courseQuery->where('tutor_id', $tutor->id)
+                ->where('ongoing', 'berjalan');
+        })->count();
+
+
         $total_bimbingan_tuntas_selesai = Course::where('tutor_id', $tutor->id)
             ->where('ongoing', 'selesai')
             ->whereHas('products', function ($query) {
@@ -97,6 +104,12 @@ class ModeratorTutorController extends Controller
             })
             ->count();
 
+        $desk_review_selesai = Order::whereHas('course', function ($courseQuery) use ($tutor) {
+            $courseQuery->where('tutor_id', $tutor->id)
+                ->where('ongoing', 'selesai');
+        })->count();
+
+
         return response()->json([
             'status' => true,
             'statusCode' => 200,
@@ -104,8 +117,10 @@ class ModeratorTutorController extends Controller
             'tutor' => $tutorWithProfile,
             'total_bimbingan_tuntas_onprogress' => $total_bimbingan_tuntas_onprogress,
             'total_bimbingan_sekali_onprogress' => $total_bimbingan_sekali_onprogress,
+            'desk_review_onprogress' => $desk_review_onprogress,
             'total_bimbingan_tuntas_selesai' => $total_bimbingan_tuntas_selesai,
             'total_bimbingan_sekali_selesai' => $total_bimbingan_sekali_selesai,
+            'desk_review_selesai' => $desk_review_selesai
         ], 200);
     }
 

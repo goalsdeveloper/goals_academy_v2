@@ -13,8 +13,35 @@ class ModeratorHistoryBimbinganController extends Controller
      */
     public function index()
     {
-        $order_history = OrderHistory::with('order.course', 'order.products')->get();
-        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data history success', 'data' => $order_history], 200);
+        $order_history = OrderHistory::with([
+            'order.course' => function ($query) {
+                $query->select(['id', 'location', 'date', 'time', 'tutor_id']);
+            },
+            'order.products'
+        ])->get();
+
+        $total_order_history_with_course = OrderHistory::has('order.course')->count();
+
+        $total_completed_order_history = OrderHistory::has('order.course')
+            ->whereHas('order.course', function ($query) {
+                $query->whereNotNull('location')
+                    ->whereNotNull('date')
+                    ->whereNotNull('time')
+                    ->whereNotNull('tutor_id');
+            })
+            ->count();
+
+        $percentage_completion = ($total_completed_order_history / $total_order_history_with_course) * 100;
+
+        return response()->json([
+            'status' => true,
+            'statusCode' => 200,
+            'message' => 'get data history success',
+            'data' => [
+                'order_history' => $order_history,
+                'percentage_completion' => $percentage_completion,
+            ],
+        ], 200);
     }
 
     /**
