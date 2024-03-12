@@ -3,28 +3,28 @@
 namespace App\Http\Controllers\Moderator;
 
 use App\Http\Controllers\Controller;
-use App\Models\OrderHistory;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
-class ModeratorHistoryBimbinganController extends Controller
+class ModeratorOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $order_history = OrderHistory::with(
-            ['order.products']
-        )->where('status', 'selesai')->get();
+
+        $order = Order::with(['products.category', 'course'])->get();
 
         return response()->json([
             'status' => true,
             'statusCode' => 200,
             'message' => 'get data history success',
             'data' => [
-                'order_history' => $order_history,
+                'recent_order' => $order,
             ],
         ], 200);
+
     }
 
     /**
