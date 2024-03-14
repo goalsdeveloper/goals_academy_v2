@@ -41,7 +41,7 @@ class ProgressController extends Controller
      */
     public function show(Course $progress)
     {
-        $progress_user = Course::with('user.profile', 'products', 'fileUploads','productReview')->findOrFail($progress->id);
+        $progress_user = Course::with('user.profile', 'products', 'fileUploads', 'productReview')->findOrFail($progress->id);
         return response()->json([
             'status' => true,
             'statusCode' => 200,
@@ -63,6 +63,10 @@ class ProgressController extends Controller
      */
     public function update(Request $request, Course $progress)
     {
+
+        if ($progress->ongoing == "selesai") {
+        }
+
         $validateData = $request->validate([
             'tutor_id' => 'required|numeric',
             'location' => 'required|string',
@@ -90,6 +94,55 @@ class ProgressController extends Controller
 
 
         return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress berhasil'], 200);
+
+
+
+
+
+
+        // if ($progress->ongoing == "selesai") {
+        //     return response()->json(['status' => false, 'statusCode' => 400, 'message' => 'Tidak dapat memperbarui kursus yang sudah selesai'], 400);
+        // }
+
+        // $validateData = $request->validate([
+        //     'tutor_id' => 'required|numeric',
+        //     'location' => 'required|string',
+        //     'date' => 'required|date',
+        //     'time' => 'required|date_format:H:i',
+        //     'record' => 'mimes:pdf'
+        // ]);
+
+        // $progress->update($validateData);
+        // $childCourses = Course::where('parent_id', $progress->id)->get();
+        // foreach ($childCourses as $childCourse) {
+        //     if ($childCourse->ongoing == "selesai") {
+        //     } else {
+        //         $childCourse->update([
+        //             'tutor_id' => $validateData['tutor_id'],
+        //             'location' => $validateData['location'],
+        //             'date' => $validateData['date'],
+        //             'time' => $validateData['time'],
+        //         ]);
+        //     }
+        // }
+
+        // if ($request->hasFile('record')) {
+        //     $file = $request->file('record');
+
+        //     $filePath = $file->store('resource/file/moderator');
+
+        //     $fileUpload = new FileUpload();
+        //     $fileUpload->filename = $file->getClientOriginalName();
+        //     $fileUpload->slug  = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        //     $fileUpload->mime_type  = $file->getClientMimeType();
+        //     $fileUpload->file_path  = $filePath;
+        //     $fileUpload->size = $file->getSize();
+        //     $fileUpload->user_id = Auth::user()->id;
+
+        //     $fileUpload->save();
+        // }
+
+        // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress berhasil'], 200);
     }
 
     /**

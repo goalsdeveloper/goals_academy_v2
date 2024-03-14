@@ -14,7 +14,7 @@ class ModeratorHistoryBimbinganController extends Controller
     public function index()
     {
         $order_history = OrderHistory::with(
-            ['order.products']
+            ['order.products', 'order.course']
         )->where('status', 'selesai')->get();
 
         return response()->json([
