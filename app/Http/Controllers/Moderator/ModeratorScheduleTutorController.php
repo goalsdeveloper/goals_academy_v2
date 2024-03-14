@@ -61,8 +61,10 @@ class ModeratorScheduleTutorController extends Controller
                 'message' => 'Tutor not found',
             ], 404);
         }
+
         $schedules = Course::with(['tutor:id,name'])
-            ->where('tutor_id', $schedule)
+        ->select('date', 'time', 'session', 'tutor_id')
+        ->where('tutor_id', $schedule)
             ->whereNotNull('date')
             ->whereNotNull('time')
             ->get();
