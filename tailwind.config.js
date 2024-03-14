@@ -57,6 +57,7 @@ export default {
                 'light-grey': '#848484',
                 'grey': 'color-mix(in lch, black 40%, #848484)',
                 'dark': '#404040',
+                'dark-indigo': '#3A3F51',
             },
             width: {
                 'xl': '160%',
