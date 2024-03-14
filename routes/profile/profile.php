@@ -20,7 +20,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/purchase/detail/{order_code}', [PembeljaranSayaController::class, 'index'])->name('user.profile.detailPesanan');
 
-    Route::get('/riwayat_transaksi', [RiwayatTransaksiController::class, 'index'])->name('user.profile.riwayatTransaksi');
+    Route::get('/riwayat_transaksi', [ProfileController::class, 'riwayatTransaksi'])->name('user.profile.riwayatTransaksi');
 
     Route::get('/notifikasi', [NotificationProfileController::class, 'index'])->name('user.profile.notifikasi');
 

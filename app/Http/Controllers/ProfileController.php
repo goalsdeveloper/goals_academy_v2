@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CourseStatusEnum;
 use App\Enums\OrderEnum;
 use App\Models\Course;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Support\Benchmark;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -33,16 +34,26 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function bimbingan()
+    public function bimbingan(Request $request)
     {
         $user = Auth::user();
         $orderBimbingan = Order::where('user_id', $user->id)
             ->where('status', OrderEnum::SUCCESS->value)
             ->whereHas('products.category', function ($query) {
                 $query->where('name', 'like', '%dibimbing%');
-            })
-            ->with('products.category', 'course', 'products')
+            })->whereHas('course', function ($query) use ($request) {
+            $query->where('ongoing', CourseStatusEnum::ONGOING->value);
+            switch ($request['status']) {
+                case 'selesai':
+                    $query->where('ongoing', CourseStatusEnum::SUCCESS->value);
+                    break;
+                case 'berjalan':
+                    $query->where('ongoing', CourseStatusEnum::ONGOING->value);
+                    break;
+            }
+        })->with('products.category', 'course', 'products')
             ->get();
+        // dd($orderBimbingan);
         return Inertia::render('Auth/User/Bimbingan/Bimbingan', [
             'orderBimbingan' => $orderBimbingan,
         ]);
@@ -92,9 +103,39 @@ class ProfileController extends Controller
         if ($course->isEmpty()) {
             return abort(404);
         }
-        dd($course);
         return Inertia::render('Auth/User/Bimbingan/DetailBimbingan', [
             'courseDetail' => $course,
         ]);
+    }
+
+    public function riwayatTransaksi(Request $request)
+    {
+        $user = Auth::user();
+        $order = Order::where('user_id', $user->id);
+        switch ($request['status']) {
+            case 'pending':
+                $order = $order->where('status', OrderEnum::PENDING->value);
+                break;
+            case 'selesai':
+                $order = $order->where('status', OrderEnum::SUCCESS->value);
+                break;
+            case 'gagal':
+                $order = $order->where('status', OrderEnum::FAILED->value);
+                break;
+            case 'cancel':
+                $order = $order->where('status', OrderEnum::CANCEL->value);
+                break;
+        }
+        $order = $order->with('orderHistory', 'paymentMethod', 'products')->get();
+        // dd($order);
+        return Inertia::render('Auth/User/RiwayatTransaksi/RiwayatTransaksi', [
+            'dataOrder' => $order,
+        ]);
+    }
+
+    public function aturJadwal(Request $request)
+    {
+        $course = Course::find($request['course_id']);
+        $form_result = $course->order->form_result;
     }
 }
