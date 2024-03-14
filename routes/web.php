@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\Admin\AddOnController;
 use App\Http\Controllers\Admin\BimbinganController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -27,6 +28,7 @@ use App\Models\AddOn;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
+
 use Inertia\Inertia;
 
 Route::get('/token', function () {
@@ -37,9 +39,10 @@ Route::get('/', function () {
     return Inertia::render('Index');
 });
 
-// Route::get('/produk', function () {
-//     return Inertia::render('Main/Produk');
-// });
+Route::get('/dashboard/user/webinar', [DashboardUserController::class, 'webinar']);
+Route::get('/dashboard/user/webinar/{id}', [DashboardUserController::class, 'detailWebinar']);
+Route::get('/dashboard/user/bimbingan', [DashboardUserController::class, 'bimbingan']);
+Route::get('/dashboard/user/bimbingan/{id}', [DashboardUserController::class, 'detailBimbingan']);
 
 // Route::get('/artikel', function () {
 //     return Inertia::render('Main/Artikel');

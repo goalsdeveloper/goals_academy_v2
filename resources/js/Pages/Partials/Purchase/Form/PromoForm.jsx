@@ -1,8 +1,8 @@
 import { useState } from "react";
 import ButtonPill from "@/Components/ButtonPill";
 import { FiX } from "react-icons/fi";
-import GoalsTextInput from "@/Components/Form/GoalsTextInput";
 import GoalsButton from "@/Components/GoalsButton";
+import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 
 export default function PromoForm({
     show,

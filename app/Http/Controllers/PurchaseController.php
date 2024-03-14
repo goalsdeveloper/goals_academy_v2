@@ -9,7 +9,6 @@ use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Models\PaymentMethod;
 use App\Models\Products;
-use App\Models\PromoCode;
 use App\Models\User;
 use App\Notifications\InvoiceNotification;
 use Carbon\Carbon;
@@ -68,33 +67,20 @@ class PurchaseController extends Controller
         $orderData->payment_method_id = $request['purchase_method']['id'];
         $orderData->order_code = $order_code;
 
-        // dd($request->admin);
+        // dd($request->all());
         $validateData = $request->validate([
             'schedule' => 'required|date',
             'init_price' => 'required',
             'purchase_method' => 'required',
         ]);
 
-        // jika user menggunakan promo code
-        if ($request->promo) {
-            $cekPromo = PromoCode::where('promo_code', $request->promo)->first();
-            if (!$cekPromo) {
-                return response()->json(['message' => 'promo tidak ditemukan!']);
-            }
-            if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
-                return response()->json(['message' => 'promo sudah anda gunakan, cari promo lain!']);
-            } else {
-                $user->kodePromo()->attach($cekPromo->id);
-            }
-        }
-
         $quantity = 1;
         $discount = 0;
         $responseMidtrans = null;
-        $order_code = 'GA' . str(now()->format('YmdHis'));
+        $order_code = Order::generateOrderCode();
         $orderData->order_code = $order_code;
 
-        $paymentMethod = PaymentMethod::where('name', $validateData['purchase_method']['name'])->first();
+        $paymentMethod = PaymentMethod::where('name', $request['purchase_method']['name'])->first();
         $getProduct = Products::where('id', $request['product_id'])->first();
 
         // cek date <NANTI>
@@ -103,32 +89,21 @@ class PurchaseController extends Controller
         //     return response()->json(['kuota telah habis']);
         // }
 
-        // cek user menggunakan kode promo
-        if ($request->promo) {
-            $cekPromo = PromoCode::where('promo_code', $request->promo)->first();
-            if (!$cekPromo) {
-                return response()->json(['message' => 'Promo tidak ditemukan!']);
-            }
-
-            if ($cekPromo->is_price == 1) {
-                $discount = $cekPromo->value;
-            } else {
-                $discount = ($cekPromo->value / 100) * $getProduct->price;
-            }
-        }
-
         // charge midtrans
         $phoneNumber = $user->profile->phone_number ?? '';
         $form_result = [];
-        $form_config = (array) json_decode(Products::find($orderData->products_id)->form_config);
+        $form_config = (array) Products::find($orderData->products_id)->form_config;
         foreach ($form_config as $key => $value) {
-            if ($key == 'add_on') {
+            if ($key == 'add_on' && $key == 1 && $request->exists('add_on')) {
                 $add_on_result = [];
                 foreach ($request->add_on as $idx => $value) {
                     $add_on_result[$idx] = ['id' => $value['id']];
                 }
                 $form_result['add_on'] = $add_on_result;
                 continue;
+            }
+            if ($key == 'place') {
+                $form_result['place_id'] = $request[$key];
             }
             if ($value == 1 && $key != 'document') {
                 $form_result[$key] = $request[$key];
@@ -219,8 +194,6 @@ class PurchaseController extends Controller
             ->first();
         // dd($product);
         $addOns = $product->addOns;
-        $product->form_config = json_decode($product->form_config);
-        $product->facilities = json_decode($product->facilities);
         $cities = City::with('places')->get();
         $topics = $product->topics;
         return Inertia::render('Purchase/Form', [

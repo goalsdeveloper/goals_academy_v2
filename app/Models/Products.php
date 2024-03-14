@@ -31,8 +31,8 @@ class Products extends Model
     ];
 
     protected $casts = [
-        'facilities' => 'json',
-        'form_config' => 'json',
+        'facilities' => 'array',
+        'form_config' => 'array',
     ];
 
     public function order()

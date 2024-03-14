@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Notifications\CourseNotification;
-use App\Observers\CourseObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -27,7 +25,8 @@ class Course extends Model
         'time',
         'ongoing',
         'is_tutor',
-        'is_moderator'
+        'topic_id',
+        'is_moderator',
     ];
 
     public function user()
@@ -76,7 +75,7 @@ class Course extends Model
     {
         return $this->belongsToMany(AddOn::class);
     }
-        public function parent(): BelongsTo
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(Course::class, 'parent_id');
     }
@@ -84,5 +83,9 @@ class Course extends Model
     public function child(): HasMany
     {
         return $this->hasMany(Course::class, 'parent_id');
+    }
+    public function topic()
+    {
+        return $this->belongsTo(Topic::class);
     }
 }
