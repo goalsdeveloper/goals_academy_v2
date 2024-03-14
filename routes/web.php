@@ -19,6 +19,7 @@ use App\Http\Controllers\Moderator\ModeratorTutorController;
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\Moderator\ModeratorOrderController;
+use App\Http\Controllers\Moderator\ModeratorScheduleTutorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
@@ -118,6 +119,7 @@ Route::resource('moderator/progress', ProgressController::class)->except(['creat
 Route::resource('moderator/history', ModeratorHistoryBimbinganController::class)->except(['create', 'edit']);
 Route::resource('moderator/order', ModeratorOrderController::class)->except(['create', 'edit']);
 Route::resource('moderator/tutor', ModeratorTutorController::class)->except(['create', 'edit']);
+Route::resource('moderator/schedule', ModeratorScheduleTutorController::class)->except(['create', 'edit']);
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/auth.php';
