@@ -13,8 +13,18 @@ class ModeratorOrderController extends Controller
      */
     public function index()
     {
-        $order = Order::with('user.profile', 'products')->get();
-        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data category success', 'order' => $order], 200);
+
+        $order = Order::with(['products.category', 'course'])->get();
+
+        return response()->json([
+            'status' => true,
+            'statusCode' => 200,
+            'message' => 'get data history success',
+            'data' => [
+                'recent_order' => $order,
+            ],
+        ], 200);
+
     }
 
     /**

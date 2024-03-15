@@ -16,7 +16,7 @@ class CourseController extends Controller
     public function index()
     {
         // if (Auth::user()->user_role == "moderator") {
-        $course = Course::with('user', 'products')->get();
+        $course = Course::with('user', 'products','order')->get();
         return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data course success', 'data' => $course], 200);
         // } else {
         //     abort(403);
@@ -44,7 +44,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        $course_user = Course::with('user.profile', 'products')->findOrFail($course->id);
+        $course_user = Course::with('user.profile','products', 'fileUploads')->findOrFail($course->id);
         return response()->json([
             'status' => true,
             'statusCode' => 200,
@@ -67,29 +67,10 @@ class CourseController extends Controller
     public function update(Request $request, Course $course)
     {
         $validateData = $request->validate([
-            // 'user_id' => 'numeric',
-            // 'products_id' => 'numeric',
-            // 'order_id' => 'numeric',
             'tutor_id' => 'numeric',
             'date' => 'date',
             'time' => 'date_format:H:i',
-            // 'ongoing' => 'string',
             'place_id' => 'numeric',
-            // 'duration_per_meet' => 'numeric',
-            // 'is_facilities' => 'in:0,1',
-            // 'number_list' => 'numeric',
-            // 'total_meet' => 'numeric',
-            // 'active_period' => 'numeric',
-            // 'facilities' => 'array|min:1',
-            // 'facilities.*.icon' => 'string',
-            // 'facilities.*.text' => 'string',
-            // 'form_config.schedule' => 'in:0,1',
-            // 'form_config.city' => 'in:0,1',
-            // 'form_config.place' => 'in:0,1',
-            // 'form_config.topic' => 'in:0,1',
-            // 'form_config.document' => 'in:0,1',
-            // 'form_config.add_on' => 'in:0,1',
-            // 'duration' => 'numeric',
         ]);
         $course->update($validateData);
         return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update course success'], 200);
@@ -101,5 +82,17 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         //
+    }
+
+    public function updateBimbinganOnline(Request $request, Course $course)
+    {
+        $validateData = $request->validate([
+            'tutor_id' => 'numeric',
+            'date' => 'date',
+            'time' => 'date_format:H:i',
+            'location' => 'string',
+        ]);
+        $course->update($validateData);
+        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update data success'], 200);
     }
 }

@@ -13,8 +13,18 @@ class ModeratorHistoryBimbinganController extends Controller
      */
     public function index()
     {
-        $order_history = OrderHistory::with('order.course', 'order.products')->get();
-        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data history success', 'data' => $order_history], 200);
+        $order_history = OrderHistory::with(
+            ['order.products', 'order.course']
+        )->where('status', 'selesai')->get();
+
+        return response()->json([
+            'status' => true,
+            'statusCode' => 200,
+            'message' => 'get data history success',
+            'data' => [
+                'order_history' => $order_history,
+            ],
+        ], 200);
     }
 
     /**
