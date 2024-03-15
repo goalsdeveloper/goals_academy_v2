@@ -83,8 +83,11 @@ const DetailWebinar = ({ auth }) => {
                     </GoalsButton>
                 </div>
 
-                <DetailSatuSesi data={dataWebinar[0].detail} />
-                <DetailBanyakSesi data={dataWebinar} />
+                {dataWebinar.length > 1 ? (
+                    <DetailSatuSesi data={dataWebinar[0].detail} />
+                ) : (
+                    <DetailBanyakSesi data={dataWebinar} />
+                )}
             </div>
         </MainLayout>
     );

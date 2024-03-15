@@ -16,80 +16,11 @@ import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import ProductListFilter from "../ProductListFilter";
+import "@/script/momentCustomLocale";
 
 export default function Index({ auth, orderBimbingan }) {
-    // console.log(orderBimbingan);
-    // const data = orderBimbingan;
-    const data = [
-        {
-            id: 1,
-            products: {
-                name: "Bimbingan Sekali Offline 60 Menit",
-                features: [
-                    {
-                        category: "offline",
-                        duration: 120,
-                    },
-                ],
-            },
-            course: {
-                date: "2022-08-12",
-                time: "08:00",
-                ongoing: true,
-            },
-        },
-        {
-            id: 2,
-            products: {
-                name: "Bimbingan Skripsi",
-                features: [
-                    {
-                        category: "offline",
-                        duration: 120,
-                    },
-                ],
-            },
-            course: {
-                date: "2022-08-12",
-                time: "08:00",
-                ongoing: false,
-            },
-        },
-        {
-            id: 3,
-            products: {
-                name: "Bimbingan Skripsi",
-                features: [
-                    {
-                        category: "offline",
-                        duration: 120,
-                    },
-                ],
-            },
-            course: {
-                date: "2022-08-12",
-                time: "08:00",
-                ongoing: true,
-            },
-        },
-        {
-            id: 4,
-            products: {
-                name: "Bimbingan Skripsi",
-                features: [
-                    {
-                        category: "offline",
-                        duration: 120,
-                    },
-                ],
-            },
-            course: {
-                date: "2022-08-12",
-                time: "08:00",
-                ongoing: false,
-            },
-        },
-    ];
+    console.log(orderBimbingan);
+    const data = orderBimbingan;
 
     return (
         <UserLayout auth={auth} title="Bimbingan">
@@ -107,15 +38,15 @@ export default function Index({ auth, orderBimbingan }) {
                     {/* <ProductListFilter /> */}
                     <div className="md:min-h-[22vw] flex flex-col gap-[2vw] md:gap-[1vw]">
                         {data.map((item, index) => {
-                            if (
-                                item.products.features[0].category ==
-                                    "online" ||
-                                item.products.features[0].category == "offline"
-                            ) {
-                                return (
-                                    <BimbinganItem key={index} data={item} />
-                                );
-                            }
+                            // if (
+                            //     item.products.features[0].category ==
+                            //         "online" ||
+                            //     item.products.features[0].category == "offline"
+                            // ) {
+                            //     return (
+                            //     );
+                            // }
+                            return <BimbinganItem key={index} data={item} />;
                         })}
                     </div>
                 </div>
@@ -139,18 +70,21 @@ function BimbinganItem({ data }) {
     return (
         <ProductItemCardLayout
             isLink
-            imageUrl={CardImage}
-            href={`/pembelajaran/${data.id}`}
+            imageUrl={data.products.product_image}
+            href={`/bimbingan/${data.order_code}`}
         >
             <div className="flex justify-between items-center">
                 <div className="space-y-[1.8vw] w-full">
                     <ProductItemCardHeader>
                         <GoalsBadge
-                            title="Bimbingan Skripsi"
+                            title={data.products.category.name}
                             className="text-secondary bg-primary-10"
                         />
                         <GoalsBadge
-                            title="Berjalan"
+                            title={
+                                data.course.ongoing.charAt(0).toUpperCase() +
+                                data.course.ongoing.slice(1)
+                            }
                             className="hidden md:block bg-success-10 text-success-50"
                         />
                     </ProductItemCardHeader>
@@ -161,7 +95,9 @@ function BimbinganItem({ data }) {
                                 {data.products.name}
                             </h2>
                             <p className="text-neutral-40 md:text-neutral-60">
-                                Selasa, 24 Agustus 2023
+                                {moment(data.form_result.schedule).format(
+                                    "dddd, DD MMMM YYYY"
+                                )}
                             </p>
                             <p className="hidden md:block text-neutral-60">
                                 {data.course.time
@@ -170,7 +106,7 @@ function BimbinganItem({ data }) {
                             </p>
                         </div>
                         <Link
-                            href={`/pembelajaran/${data.id}`}
+                            href={`/bimbingan/${data.order_code}`}
                             className="hidden md:block bg-secondary hover:bg-primary text-white font-medium text-[1vw] px-[2vw] py-[.8vw] rounded-[.4vw]"
                         >
                             Lihat Detail
@@ -205,4 +141,3 @@ export const EmptyProductLayout = ({
         </div>
     );
 };
-

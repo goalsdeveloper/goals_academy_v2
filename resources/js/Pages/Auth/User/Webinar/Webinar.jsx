@@ -12,33 +12,9 @@ import GoalsButton from "@/Components/elements/GoalsButton";
 import { FiChevronRight } from "react-icons/fi";
 import ProductListFilter from "../ProductListFilter";
 
-const Webinar = ({ auth }) => {
-    const data = [
-        {
-            id: 1,
-            webinar: {
-                name: "Webinar 1",
-                date: "2022-08-12",
-                time: "08:00",
-            },
-        },
-        {
-            id: 2,
-            webinar: {
-                name: "Webinar 2",
-                date: "2022-08-12",
-                time: "08:00",
-            },
-        },
-        {
-            id: 3,
-            webinar: {
-                name: "Webinar 3",
-                date: "2022-08-12",
-                time: "08:00",
-            },
-        },
-    ];
+const Webinar = ({ auth, orderWebinar }) => {
+    const data = orderWebinar;
+
     return (
         <UserLayout auth={auth} title="Webinar">
             <div className="flex md:block justify-between items-center space-y-[1.2vw]">
@@ -60,25 +36,25 @@ const Webinar = ({ auth }) => {
                         return (
                             <ProductItemCardLayout
                                 isLink
-                                href="/webinar/1"
+                                href={`webinar/${item.products.slug}`}
                                 key={index}
-                                imageUrl={WebinarBgCard}
+                                imageUrl={item.products.product_image}
                             >
                                 <div className="flex justify-between items-center">
                                     <div className="space-y-[1.8vw] w-full">
                                         <ProductItemCardContent>
                                             <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw]">
                                                 <h2 className="text-[3.2vw] md:text-[1vw] font-medium mb-[.4vw]">
-                                                    {item.webinar.name}
+                                                    {item.products.name}
                                                 </h2>
                                                 <p className="text-neutral-40">
                                                     {new Date(
-                                                        item.webinar.date
+                                                        item.products.date
                                                     ).toDateString()}
                                                 </p>
                                                 <p className="text-neutral-40">
-                                                    {item.webinar.time
-                                                        ? item.webinar.time +
+                                                    {item.products.time
+                                                        ? item.products.time +
                                                           " WIB"
                                                         : "Waktu Belum Ditentukan"}
                                                 </p>

@@ -6,7 +6,7 @@ import { Link } from "@inertiajs/react";
 
 const DetailTransaksi = ({ data, show, setShow }) => {
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
-    console.log(data)
+    console.log(data);
     return (
         <>
             {isMobile && show ? (
@@ -61,8 +61,8 @@ const TransactionDetailContent = ({ data }) => {
                 <h3 className="text-[2.8vw] md:text-[0.8vw]  font-normal text-neutral-50">
                     Kode Pesanan
                 </h3>
-                <p className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium">
-                    #{data.order_code}
+                <p className="text-[3.5vw] md:text-[1vw] text-neutral-80 font-medium ">
+                    {data.order_code}
                 </p>
             </div>
             <div className="space-y-[.2vw]">
@@ -115,12 +115,16 @@ const TransactionDetailContent = ({ data }) => {
                         Add On Produk
                     </h3>
                     {data.form_result.add_on.map((item, index) => {
-                        <p className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium">
-                            {item}
-                        </p>;
+                        return (
+                            <p className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium">
+                                {item || "-"}
+                            </p>
+                        );
                     }) || "-"}
                 </div>
-            ) : (<></>)}
+            ) : (
+                <></>
+            )}
             <div className="space-y-[.2vw]">
                 <h3 className="text-[2.8vw] md:text-[0.8vw]  font-normal text-neutral-50">
                     Harga Add On
