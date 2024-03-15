@@ -16,7 +16,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/webinar/{id}', [ProfileController::class, 'detailWebinar'])->name('user.profile.detailWebinar');
 
-    Route::get('/pembelajaran/{id}', [ProfileController::class, 'detailPembelajaran'])->name('user.profile.detailPembelajaran');
+    Route::get('/bimbingan/{id}', [ProfileController::class, 'detailPembelajaran'])->name('user.profile.detailPembelajaran');
 
     Route::get('/purchase/detail/{order_code}', [PembeljaranSayaController::class, 'index'])->name('user.profile.detailPesanan');
 

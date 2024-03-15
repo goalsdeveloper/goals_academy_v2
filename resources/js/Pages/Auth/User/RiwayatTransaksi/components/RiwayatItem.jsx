@@ -16,7 +16,9 @@ import TransactionStatusBadge from "./TransactionStatusBadge";
 function RiwayatItem({ data }) {
     const [isVisible, setIsVisible] = useState(false);
 
-    const { expiry_time } = JSON.parse(data.order_history[0]?.payload || 0);
+    const { expiry_time } = JSON.parse(
+        Number(data.order_history[0]?.payload) || 0
+    );
     const target = moment(expiry_time);
 
     return (
@@ -28,7 +30,7 @@ function RiwayatItem({ data }) {
             />
 
             <ProductItemCardLayout
-                imageUrl={riwayatImg}
+                imageUrl={data.products.product_image}
                 onClick={() => setIsVisible(true)}
                 className="cursor-pointer md:cursor-default"
             >
@@ -36,24 +38,25 @@ function RiwayatItem({ data }) {
                     <div className="space-y-[1.8vw] w-full">
                         <ProductItemCardHeader className="md:justify-between gap-[3.7vw]">
                             <div className="flex gap-[.5vw] items-center">
-                                <p className="hidden md:block text-[.8vw] font-medium text-neutral-50">
+                                <p className="hidden md:block text-[.8vw] font-medium text-neutral-50 ">
                                     #{data.order_code}
                                 </p>
 
                                 <TransactionStatusBadge data={data} />
                             </div>
-                            {data.status != "Berhasil" && (
-                                <div className="flex gap-[.5vw] items-center">
-                                    <p className="hidden md:block text-[.8vw] font-medium text-neutral-50">
-                                        Bisa dibayar sebelum :
-                                    </p>
-                                    <CountdownTimer
-                                        targetDateTime={target.format(
-                                            "YYYY-MM-DD HH:mm:ss"
-                                        )}
-                                    />
-                                </div>
-                            )}
+                            {data.status != "Berhasil" ||
+                                ("Success" && (
+                                    <div className="flex gap-[.5vw] items-center">
+                                        <p className="hidden md:block text-[.8vw] font-medium text-neutral-50">
+                                            Bisa dibayar sebelum :
+                                        </p>
+                                        <CountdownTimer
+                                            targetDateTime={target.format(
+                                                "YYYY-MM-DD HH:mm:ss"
+                                            )}
+                                        />
+                                    </div>
+                                ))}
                         </ProductItemCardHeader>
                         <ProductItemCardContent>
                             <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw]">
@@ -73,7 +76,7 @@ function RiwayatItem({ data }) {
                                 <GoalsButton
                                     onClick={() => setIsVisible(!isVisible)}
                                     variant={
-                                        data.status == "Berhasil"
+                                        data.status == "Berhasil" || "Success"
                                             ? "bordered"
                                             : "primary"
                                     }
@@ -81,9 +84,10 @@ function RiwayatItem({ data }) {
                                     Lihat Detail
                                 </GoalsButton>
 
-                                {data.status == "Berhasil" && (
-                                    <GoalsButton>Beli Lagi</GoalsButton>
-                                )}
+                                {data.status == "Berhasil" ||
+                                    ("Success" && (
+                                        <GoalsButton>Beli Lagi</GoalsButton>
+                                    ))}
                             </div>
                         </ProductItemCardContent>
                     </div>

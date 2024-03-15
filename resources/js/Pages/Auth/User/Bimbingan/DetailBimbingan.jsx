@@ -7,12 +7,12 @@ import { useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 
-import { detailData as dataBimbingan } from "./data";
+// import { detailData as dataBimbingan } from "./data";
 import DetailSatuPertemuan from "./layouts/DetailSatuPertemuan";
 import DetailBanyakPertemuan from "./layouts/DetailBanyakPertemuan";
 
-export default function DetailPesanan({ auth, courseDetail }) {
-
+export default function DetailPesanan({ auth, courseDetail, cities, date }) {
+    const dataBimbingan = courseDetail;
     const data = {
         status: "Selesai",
     };
@@ -22,6 +22,10 @@ export default function DetailPesanan({ auth, courseDetail }) {
         ulasanProgram: false,
         selesaiProgram: false,
     });
+
+    const dataAturJadwalComp = { cities, date };
+
+    console.log(dataAturJadwalComp)
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
@@ -115,8 +119,14 @@ export default function DetailPesanan({ auth, courseDetail }) {
                     </div>
                 </div>
 
-                <DetailSatuPertemuan data={dataBimbingan[0].detail} />
-                <DetailBanyakPertemuan data={dataBimbingan} />
+                {dataBimbingan.length > 1 ? (
+                    <DetailBanyakPertemuan
+                        data={dataBimbingan}
+                        dataAturJadwalComp={dataAturJadwalComp}
+                    />
+                ) : (
+                    <DetailSatuPertemuan data={dataBimbingan[0]} />
+                )}
             </div>
         </MainLayout>
     );
@@ -124,7 +134,11 @@ export default function DetailPesanan({ auth, courseDetail }) {
 
 const SelesaiProgram = ({ show, setShow }) => {
     return (
-        <GoalsPopup show={show} setShow={setShow} className="h-fit md:max-w-[23.5vw]">
+        <GoalsPopup
+            show={show}
+            setShow={setShow}
+            className="h-fit md:max-w-[23.5vw]"
+        >
             <div className="flex flex-col items-center gap-[7.4vw] md:gap-[2vw]">
                 <h3 className="h4 font-semibold">Selesaikan Bimbingan</h3>
 
@@ -154,7 +168,9 @@ const UlasanTutor = ({ show, setShow }) => {
             isBgClickDisabled
         >
             <div className="flex flex-col items-center gap-[7.4vw] md:gap-[2vw]">
-                <h3 className="h4 font-medium md:font-semibold">Beri Ulasan Tutor</h3>
+                <h3 className="h4 font-medium md:font-semibold">
+                    Beri Ulasan Tutor
+                </h3>
 
                 <p className="text-[3.7vw] md:text-[1vw] text-black text-center">
                     Bagaimana kepuasan kamu setelah

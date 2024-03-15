@@ -70,8 +70,8 @@ function BimbinganItem({ data }) {
     return (
         <ProductItemCardLayout
             isLink
-            imageUrl={CardImage}
-            href={ data.products.product_image || `/pembelajaran/${data.id}`}
+            imageUrl={data.products.product_image}
+            href={`/bimbingan/${data.order_code}`}
         >
             <div className="flex justify-between items-center">
                 <div className="space-y-[1.8vw] w-full">
@@ -106,7 +106,7 @@ function BimbinganItem({ data }) {
                             </p>
                         </div>
                         <Link
-                            href={`/pembelajaran/${data.id}`}
+                            href={`/bimbingan/${data.order_code}`}
                             className="hidden md:block bg-secondary hover:bg-primary text-white font-medium text-[1vw] px-[2vw] py-[.8vw] rounded-[.4vw]"
                         >
                             Lihat Detail

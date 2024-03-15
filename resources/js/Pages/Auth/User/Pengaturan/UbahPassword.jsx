@@ -48,6 +48,7 @@ export default function Index({ auth }) {
                         onChange={(e) =>
                             setData("old_password", e.target.value)
                         }
+                        placeholder="Masukkan Password Lama"
                         type="password"
                         id="old_password"
                         label="Password Lama"
@@ -57,6 +58,7 @@ export default function Index({ auth }) {
                         onChange={(e) =>
                             setData("new_password", e.target.value)
                         }
+                        placeholder="Masukkan Password Baru"
                         type="password"
                         id="new_password"
                         label="Password Baru"
@@ -66,6 +68,7 @@ export default function Index({ auth }) {
                         onChange={(e) =>
                             setData("validation_password", e.target.value)
                         }
+                        placeholder="Masukkan Ulang Password Baru"
                         type="password"
                         id="validation_password"
                         label="Ulangi Password Baru"

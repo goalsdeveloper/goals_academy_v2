@@ -58,6 +58,7 @@ export default function Index({ auth, userData, profileData }) {
                                 onChange={(e) =>
                                     setData("username", e.target.value)
                                 }
+                                placeholder="Masukkan Username Anda"
                                 type="text"
                                 id="username"
                                 label="Username"
@@ -67,6 +68,7 @@ export default function Index({ auth, userData, profileData }) {
                                 onChange={(e) =>
                                     setData("name", e.target.value)
                                 }
+                                placeholder="Masukkan Nama Lengkap Anda"
                                 type="text"
                                 id="name"
                                 label="Nama Lengkap"
@@ -76,6 +78,7 @@ export default function Index({ auth, userData, profileData }) {
                                 onChange={(e) =>
                                     setData("phone_number", e.target.value)
                                 }
+                                placeholder="Masukkan Nomor Telepon Anda"
                                 type="text"
                                 id="phone_number"
                                 label="Nomor Telepon"
@@ -85,6 +88,7 @@ export default function Index({ auth, userData, profileData }) {
                                 onChange={(e) =>
                                     setData("university", e.target.value)
                                 }
+                                placeholder="Masukkan Universitas Anda"
                                 type="text"
                                 id="university"
                                 label="Universitas"
@@ -94,6 +98,7 @@ export default function Index({ auth, userData, profileData }) {
                                 onChange={(e) =>
                                     setData("faculty", e.target.value)
                                 }
+                                placeholder="Masukkan Fakultas Anda"
                                 type="text"
                                 id="faculty"
                                 label="Fakultas"
@@ -103,6 +108,7 @@ export default function Index({ auth, userData, profileData }) {
                                 onChange={(e) =>
                                     setData("major", e.target.value)
                                 }
+                                placeholder="Masukkan Jurusan Anda"
                                 type="text"
                                 id="major"
                                 label="Jurusan"
@@ -113,6 +119,7 @@ export default function Index({ auth, userData, profileData }) {
                             onChange={(e) =>
                                 setData("referral", e.target.value)
                             }
+                            placeholder="Masukkan Kode Referral Anda"
                             type="text"
                             id="referral"
                             label="Kode Referral"
