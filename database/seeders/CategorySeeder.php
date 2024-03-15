@@ -37,5 +37,11 @@ class CategorySeeder extends Seeder
             'is_visible' => true,
             'description' => 'Dibimbing secara offline',
         ]);
+        Category::create([
+            'name' => 'Webinar',
+            'slug' => 'webinar',
+            'is_visible' => true,
+            'description' => 'Pelaksanaan Webinar',
+        ]);
     }
 }
