@@ -71,11 +71,17 @@ class HandleMidtransCallbackController extends Controller
                     $parentCourse = Course::create($dataCourse);
                     $dataCourse['parent_id'] = $parentCourse->id;
                     $form_result = $order->form_result;
+                    if (array_key_exists('add_on', $form_result) && $form_result['add_on'] != null) {
+                        foreach ($form_result['add_on'] as $key => $value) {
+                            $parentCourse->addOns()->attach($value['id']);
+                        }
+                    }
                     for ($i = 1; $i < $count_course; $i++) {
                         Course::create(
                             array_merge($dataCourse, [
                                 'date' => $form_result['schedule'] ?? null,
                                 'place_id' => $form_result['place_id'] ?? null,
+                                'topic_id' => $form_result['topic'] ?? null,
                             ])
                         );
                     }
