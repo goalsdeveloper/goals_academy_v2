@@ -110,7 +110,7 @@ class ProductSeeder extends Seeder
         Products::create([
             'category_id' => 1,
             'name' => 'How To Survive Your Thesis? Start with Theme',
-            'slug' =>Str::slug('How To Survive Your Thesis? Start with Theme'),
+            'slug' => Str::slug('How To Survive Your Thesis? Start with Theme'),
             'excerpt' => '',
             'description' => ' ',
             'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
@@ -131,7 +131,7 @@ class ProductSeeder extends Seeder
             ],
         ]);
         Products::create([
-            'category_id' => 1,
+            'category_id' => 5,
             'name' => 'Webinar A',
             'slug' => Str::slug('Webinar A'),
             'excerpt' => ' ',

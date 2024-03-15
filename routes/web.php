@@ -125,5 +125,6 @@ Route::resource('moderator/tutor', ModeratorTutorController::class)->except(['cr
 Route::resource('moderator/schedule', ModeratorScheduleTutorController::class)->except(['create', 'edit']);
 
 require __DIR__ . '/profile/profile.php';
+require __DIR__ . '/tutor/tutor.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/socialite.php';
