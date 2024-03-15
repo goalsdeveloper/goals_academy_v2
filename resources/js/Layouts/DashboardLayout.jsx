@@ -30,7 +30,7 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                 },
                 {
                     name: "Statistic",
-                    href: "#",
+                    href: "/admin/statistic",
                     icon: <RiBarChart2Line className="text-[1vw]" />,
                     isActive: title == "Statistic",
                 },
@@ -42,37 +42,37 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                     branches: [
                         {
                             name: "Category",
-                            href: "#",
+                            href: "/admin/bimbingan/category",
                             icon: <GrTag className="text-[1vw]" />,
                             isActive: title == "Bimbingan" && subtitle == "Category",
                         },
                         {
                             name: "Add-On",
-                            href: "#",
+                            href: "/admin/bimbingan/addon",
                             icon: <TbLayoutGridAdd className="text-[1vw]" />,
                             isActive: title == "Bimbingan" && subtitle == "Add-On",
                         },
                         {
                             name: "Place",
-                            href: "#",
+                            href: "/admin/bimbingan/place",
                             icon: <GrLocation className="text-[1vw]" />,
                             isActive: title == "Bimbingan" && subtitle == "Place",
                         },
                         {
                             name: "Topic",
-                            href: "#",
+                            href: "/admin/bimbingan/topic",
                             icon: <MdOutlineEventNote className="text-[1vw]" />,
                             isActive: title == "Bimbingan" && subtitle == "Topic",
                         },
                         {
                             name: "Product",
-                            href: "#",
+                            href: "/admin/bimbingan/product",
                             icon: <TfiDropbox className="text-[1vw]" />,
                             isActive: title == "Bimbingan" && subtitle == "Product",
                         },
                         {
                             name: "Order",
-                            href: "#",
+                            href: "/admin/bimbingan/order",
                             icon: <FiShoppingCart className="text-[1vw]" />,
                             isActive: title == "Bimbingan" && subtitle == "Order",
                         },
@@ -87,13 +87,13 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                     branches: [
                         {
                             name: "Product",
-                            href: "#",
+                            href: "/admin/webinar/product",
                             icon: <TfiDropbox className="text-[1vw]" />,
                             isActive: title == "Webinar" && subtitle == "Product",
                         },
                         {
                             name: "Order",
-                            href: "#",
+                            href: "/admin/webinar/order",
                             icon: <FiShoppingCart className="text-[1vw]" />,
                             isActive: title == "Webinar" && subtitle == "Order",
                         },
@@ -108,19 +108,19 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                     branches: [
                         {
                             name: "Category",
-                            href: "#",
+                            href: "/admin/ecourse/category",
                             icon: <GrTag className="text-[1vw]" />,
                             isActive: title == "E-course" && subtitle == "Category",
                         },
                         {
                             name: "Product",
-                            href: "#",
+                            href: "/admin/ecourse/product",
                             icon: <TfiDropbox className="text-[1vw]" />,
                             isActive: title == "E-course" && subtitle == "Product",
                         },
                         {
                             name: "Order",
-                            href: "#",
+                            href: "/admin/ecourse/order",
                             icon: <FiShoppingCart className="text-[1vw]" />,
                             isActive: title == "E-course" && subtitle == "Order",
                         },
@@ -135,19 +135,19 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                     branches: [
                         {
                             name: "User",
-                            href: "#",
+                            href: "/admin/manajemen_user/user",
                             icon: <FiUser className="text-[1vw]" />,
                             isActive: title == "Manajemen User" && subtitle == "User",
                         },
                         {
                             name: "Tutor",
-                            href: "#",
+                            href: "/admin/manajemen_user/tutor",
                             icon: <FiUser className="text-[1vw]" />,
                             isActive: title == "Manajemen User" && subtitle == "Tutor",
                         },
                         {
                             name: "Moderator",
-                            href: "#",
+                            href: "/admin/manajemen_user/moderator",
                             icon: <FiUser className="text-[1vw]" />,
                             isActive: title == "Manajemen User" && subtitle == "Moderator",
                         },
@@ -162,19 +162,19 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                     branches: [
                         {
                             name: "Category",
-                            href: "#",
+                            href: "/admin/ebook/category",
                             icon: <GrTag className="text-[1vw]" />,
                             isActive: title == "E-book" && subtitle == "Category",
                         },
                         {
                             name: "Product",
-                            href: "#",
+                            href: "/admin/ebook/product",
                             icon: <TfiDropbox className="text-[1vw]" />,
                             isActive: title == "E-book" && subtitle == "Product",
                         },
                         {
                             name: "Order",
-                            href: "#",
+                            href: "/admin/ebook/order",
                             icon: <FiShoppingCart className="text-[1vw]" />,
                             isActive: title == "E-book" && subtitle == "Order",
                         },
@@ -189,13 +189,13 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                     branches: [
                         {
                             name: "Affiliate",
-                            href: "#",
+                            href: "/admin/marketing/affiliate",
                             icon: <TbLayoutGridAdd className="text-[1vw]" />,
                             isActive: title == "Marketing" && subtitle == "Affiliate",
                         },
                         {
                             name: "Vouchers",
-                            href: "#",
+                            href: "/admin/marketing/vouchers",
                             icon: <BiSolidDiscount className="text-[1vw]" />,
                             isActive: title == "Marketing" && subtitle == "Vouchers",
                         },
@@ -210,13 +210,13 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                     branches: [
                         {
                             name: "Job",
-                            href: "#",
+                            href: "/admin/career/job",
                             icon: <FiBriefcase className="text-[1vw]" />,
                             isActive: title == "Career" && subtitle == "Job",
                         },
                         {
                             name: "Participant",
-                            href: "#",
+                            href: "/admin/career/participant",
                             icon: <FiUser className="text-[1vw]" />,
                             isActive: title == "Career" && subtitle == "Participant",
                         },
@@ -247,7 +247,7 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
     }, [])
 
     return (
-        <main className="relative flex">
+        <main className="relative flex bg-gray-50 text-dark">
             <Head title={title} />
             <aside className="w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer">
                 <div className="flex justify-center items-center pt-[2.5vw] pb-[1.75vw]">
@@ -319,7 +319,7 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                 </div>
             </aside>
             <div className="relative w-full h-screen overflow-hidden">
-                <header className="absolute z-50 top-0 w-full h-[5.8vw] flex justify-between items-center bg-white px-[4.2vw] pt-[2.5vw] pb-[1.75vw] border-b-1">
+                <header className="absolute z-50 top-0 w-full h-[5.8vw] flex justify-between items-center bg-gray-50 px-[4.2vw] pt-[2.5vw] pb-[1.75vw] border-b-1">
                     <h1 className="font-poppins font-semibold text-[1.2vw]">{title}</h1>
                     <div id="tools" className="flex gap-[.5vw] text-[1.5vw] text-gray-400">
                         <FaRegBell />
@@ -327,7 +327,7 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                         <ImExit />
                     </div>
                 </header>
-                <div className="w-full h-screen pt-[7.5vw] pb-[1vw] px-[4.2vw] overflow-y-auto scrollbar-hidden">
+                <div className="w-full h-screen pt-[7.5vw] pb-[2vw] px-[4.2vw] overflow-y-auto scrollbar-hidden">
                     {children}
                 </div>
             </div>
