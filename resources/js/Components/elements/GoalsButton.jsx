@@ -16,6 +16,8 @@ const GoalsButton = ({
                 return "bg-info-40 hover:bg-info-50 text-white";
             case "primary-inverse":
                 return "bg-primary-10 text-secondary hover:bg-primary-20";
+            default:
+                return "border-1 border-neutral-20";
         }
     }
 
