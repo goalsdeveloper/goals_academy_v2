@@ -100,17 +100,90 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
 });
 
 // Admin Dashboard
-Route::resource('admin/category', CategoryController::class)->middleware('auth');
-Route::resource('admin/addon', AddOnController::class)->middleware('auth');
-Route::resource('admin/users', UserController::class)->middleware('auth')->except(['update', 'create', 'store', 'destroy', 'edit']);
-Route::resource('admin/tutorss', TutorController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
-Route::resource('admin/place', PlaceController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
-Route::resource('admin/city', CityController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
-Route::resource('admin/bimbingan', BimbinganController::class)->middleware('auth')->except(['create', 'edit']);
-Route::resource('admin/webinar', WebinarController::class)->middleware('auth')->except(['create', 'edit']);
-Route::resource('admin/course', CourseController::class)->middleware('auth')->except(['create', 'edit']);
+// Route::resource('admin/category', CategoryController::class)->middleware('auth');
+// Route::resource('admin/addon', AddOnController::class)->middleware('auth');
+// Route::resource('admin/users', UserController::class)->middleware('auth')->except(['update', 'create', 'store', 'destroy', 'edit']);
+// Route::resource('admin/tutorss', TutorController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
+// Route::resource('admin/place', PlaceController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
+// Route::resource('admin/city', CityController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
+// Route::resource('admin/bimbingan', BimbinganController::class)->middleware('auth')->except(['create', 'edit']);
+// Route::resource('admin/webinar', WebinarController::class)->middleware('auth')->except(['create', 'edit']);
+// Route::resource('admin/course', CourseController::class)->middleware('auth')->except(['create', 'edit']);
 Route::resource('admin/overview', AdminOverviewController::class)->middleware('auth')->except(['create', 'edit']);
 
+Route::get('admin/statistic', function () {
+    return Inertia::render('Auth/Admin/Statistic/Statistic');
+});
+
+Route::get('admin/bimbingan/category', function () {
+    return Inertia::render('Auth/Admin/Bimbingan/Category');
+});
+Route::get('admin/bimbingan/addon', function () {
+    return Inertia::render('Auth/Admin/Bimbingan/AddOn');
+});
+Route::get('admin/bimbingan/place', function () {
+    return Inertia::render('Auth/Admin/Bimbingan/Place');
+});
+Route::get('admin/bimbingan/topic', function () {
+    return Inertia::render('Auth/Admin/Bimbingan/Topic');
+});
+Route::get('admin/bimbingan/product', function () {
+    return Inertia::render('Auth/Admin/Bimbingan/Product');
+});
+Route::get('admin/bimbingan/order', function () {
+    return Inertia::render('Auth/Admin/Bimbingan/Order');
+});
+
+Route::get('admin/webinar/product', function () {
+    return Inertia::render('Auth/Admin/Webinar/Product');
+});
+Route::get('admin/webinar/order', function () {
+    return Inertia::render('Auth/Admin/Webinar/Order');
+});
+
+Route::get('admin/ecourse/category', function () {
+    return Inertia::render('Auth/Admin/Ecourse/Category');
+});
+Route::get('admin/ecourse/product', function () {
+    return Inertia::render('Auth/Admin/Ecourse/Product');
+});
+Route::get('admin/ecourse/order', function () {
+    return Inertia::render('Auth/Admin/Ecourse/Order');
+});
+
+Route::get('admin/manajemen_user/user', function () {
+    return Inertia::render('Auth/Admin/ManajemenUser/User');
+});
+Route::get('admin/manajemen_user/tutor', function () {
+    return Inertia::render('Auth/Admin/ManajemenUser/Tutor');
+});
+Route::get('admin/manajemen_user/moderator', function () {
+    return Inertia::render('Auth/Admin/ManajemenUser/Moderator');
+});
+
+Route::get('admin/ebook/category', function () {
+    return Inertia::render('Auth/Admin/Ebook/Category');
+});
+Route::get('admin/ebook/product', function () {
+    return Inertia::render('Auth/Admin/Ebook/Product');
+});
+Route::get('admin/ebook/order', function () {
+    return Inertia::render('Auth/Admin/Ebook/Order');
+});
+
+Route::get('admin/marketing/affiliate', function () {
+    return Inertia::render('Auth/Admin/Marketing/Affiliate');
+});
+Route::get('admin/marketing/vouchers', function () {
+    return Inertia::render('Auth/Admin/Marketing/Vouchers');
+});
+
+Route::get('admin/career/job', function () {
+    return Inertia::render('Auth/Admin/Career/Job');
+});
+Route::get('admin/career/participant', function () {
+    return Inertia::render('Auth/Admin/Career/Participant');
+});
 
 // Moderator Dashboard
 Route::resource('moderator/overview', ModeratorOverviewController::class)->except(['create', 'edit']);
