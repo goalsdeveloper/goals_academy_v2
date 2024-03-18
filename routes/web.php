@@ -13,13 +13,14 @@ use App\Http\Controllers\Admin\PlaceController;
 
 use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
-use App\Http\Controllers\Moderator\ModeratorOrderController;
 use App\Http\Controllers\Moderator\ProgressController;
 use App\Http\Controllers\Moderator\ModeratorHistoryBimbinganController;
 use App\Http\Controllers\Moderator\ModeratorTutorController;
 
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\Moderator\ModeratorOrderController;
+use App\Http\Controllers\Moderator\ModeratorScheduleTutorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
@@ -115,11 +116,15 @@ Route::resource('admin/overview', AdminOverviewController::class)->middleware('a
 // Moderator Dashboard
 Route::resource('moderator/overview', ModeratorOverviewController::class)->except(['create', 'edit']);
 Route::resource('moderator/course', CourseController::class)->except(['create', 'edit']);
+Route::patch('moderator/course/{course}/update-bimbingan-online', [CourseController::class, 'updateBimbinganOnline'])->name('courses.updateBimbinganOnline');
 Route::resource('moderator/progress', ProgressController::class)->except(['create', 'edit']);
-Route::resource('moderator/order', ModeratorOrderController::class)->except(['create', 'edit']);
+// Route::resource('moderator/order', ModeratorOrderController::class)->except(['create', 'edit']);
 Route::resource('moderator/history', ModeratorHistoryBimbinganController::class)->except(['create', 'edit']);
+Route::resource('moderator/order', ModeratorOrderController::class)->except(['create', 'edit']);
 Route::resource('moderator/tutor', ModeratorTutorController::class)->except(['create', 'edit']);
+Route::resource('moderator/schedule', ModeratorScheduleTutorController::class)->except(['create', 'edit']);
 
 require __DIR__ . '/profile/profile.php';
+require __DIR__ . '/tutor/tutor.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/socialite.php';

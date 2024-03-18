@@ -103,4 +103,8 @@ class User extends Authenticatable implements HasName, FilamentUser, MustVerifyE
     {
         return $this->user_role;
     }
+
+    public function skills() {
+        return $this->belongsToMany(Skill::class, 'user_skills');
+    }
 }

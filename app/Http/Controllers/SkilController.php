@@ -1,30 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Moderator;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Order;
+use App\Models\Skill;
 use Illuminate\Http\Request;
 
-class ModeratorOrderController extends Controller
+class SkilController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-        $order = Order::with(['products.category', 'course'])->get();
-
-        return response()->json([
-            'status' => true,
-            'statusCode' => 200,
-            'message' => 'get data history success',
-            'data' => [
-                'recent_order' => $order,
-            ],
-        ], 200);
-
+        //
     }
 
     /**
@@ -46,7 +34,7 @@ class ModeratorOrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Skill $skill)
     {
         //
     }
@@ -54,7 +42,7 @@ class ModeratorOrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Skill $skill)
     {
         //
     }
@@ -62,7 +50,7 @@ class ModeratorOrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Skill $skill)
     {
         //
     }
@@ -70,7 +58,7 @@ class ModeratorOrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Skill $skill)
     {
         //
     }
