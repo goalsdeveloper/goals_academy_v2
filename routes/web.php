@@ -114,16 +114,14 @@ Route::resource('admin/overview', AdminOverviewController::class)->middleware('a
 
 
 // Moderator Dashboard
-Route::resource('moderator/overview', ModeratorOverviewController::class)->except(['create', 'edit']);
-Route::resource('moderator/course', CourseController::class)->except(['create', 'edit']);
-Route::patch('moderator/course/{course}/update-bimbingan-online', [CourseController::class, 'updateBimbinganOnline'])->name('courses.updateBimbinganOnline');
-Route::resource('moderator/progress', ProgressController::class)->except(['create', 'edit']);
-// Route::resource('moderator/order', ModeratorOrderController::class)->except(['create', 'edit']);
-Route::resource('moderator/history', ModeratorHistoryBimbinganController::class)->except(['create', 'edit']);
-Route::resource('moderator/order', ModeratorOrderController::class)->middleware('auth')->except(['create', 'edit']);
-Route::get('moderator/order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('moderator.order.showOnline');
-Route::resource('moderator/tutor', ModeratorTutorController::class)->except(['create', 'edit']);
-Route::resource('moderator/schedule', ModeratorScheduleTutorController::class)->except(['create', 'edit']);
+Route::resource('moderator/overview', ModeratorOverviewController::class)->middleware('auth')->except(['create', 'edit']);
+Route::patch('moderator/course/{course}/update-bimbingan-online', [CourseController::class, 'updateBimbinganOnline'])->middleware('auth')->name('courses.updateBimbinganOnline');
+Route::resource('moderator/progress', ProgressController::class)->middleware('auth')->except(['create', 'edit']);
+Route::resource('moderator/history', ModeratorHistoryBimbinganController::class)->middleware('auth')->except(['create', 'edit']);
+Route::resource('moderator/order', ModeratorOrderController::class)->middleware('auth')->middleware('auth')->except(['create', 'edit']);
+Route::get('moderator/order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->middleware('auth')->name('moderator.order.showOnline');
+Route::resource('moderator/tutor', ModeratorTutorController::class)->middleware('auth')->except(['create', 'edit']);
+Route::resource('moderator/schedule', ModeratorScheduleTutorController::class)->middleware('auth')->except(['create', 'edit']);
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/auth.php';
