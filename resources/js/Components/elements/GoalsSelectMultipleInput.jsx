@@ -3,11 +3,11 @@ import TECollapseItem from "@/Components/TECollapseItem";
 import GoalsButton from "@/Components/GoalsButton";
 import ExpandedButton from "@/Components/ExpandedButton";
 
-function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih satu", data=[], error="", icon="", chevronIcon="", className, children, onClick }) {
+function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih satu", data=[], error="", icon="", chevronIcon="", required=false, className, children, onClick }) {
     return (
         <div>
             {label != "" ? (
-                <p className="mb-[2vw] md:mb-[.5vw]">{label}</p>
+                <p className="mb-[2vw] md:mb-[.5vw]">{label}<sup className={`${required ? "" : "hidden"} text-red-600`}>*</sup></p>
             ) : (<></>)}
             <ExpandedButton
                 className={`rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] cursor-pointer ${
@@ -43,7 +43,7 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
                 </TECollapse>
             </div>
             {error != "" ? (
-                <p className="text-red-500 text-[.9vw] mt-[.25vw]">{error}</p>
+                <p className="text-red-500 text-[3.6vw] md:text-[.9vw] mt-[.25vw]">{error}</p>
             ) : (<></>)}
         </div>
     )

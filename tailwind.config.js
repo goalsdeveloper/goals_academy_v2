@@ -150,11 +150,22 @@ export default {
                 'autoplayY': {
                     'from': { 'transform': 'translateY(0)' },
                     'to': { 'transform': 'translateY(-100%)' }
+                },
+                'smallBounce': {
+                    '0%, 100%': {
+                        'transform': 'translateY(-5%)',
+                        'animation-timing-function': 'cubic-bezier(0.8,0,1,1)'
+                    },
+                    '50%': {
+                        'transform': 'none',
+                        'animation-timing-function': 'cubic-bezier(0,0,0.2,1)'
+                    }
                 }
             },
             animation: {
                 fadeIn: 'fadeIn 3s',
                 autoplayY: 'autoplayY 20s infinite linear',
+                'bounce-sm': 'smallBounce 1s infinite',
             }
         },
     },
