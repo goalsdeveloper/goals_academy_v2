@@ -26,7 +26,7 @@ jobs:
         run: composer install --prefer-dist --no-dev --no-interaction
 
       - name: Migrating Database and Seed
-        run: php artisan migrate:fresh --seed
+        run: php artisan migrate:fresh --seed --force
 
       - name: Create deployment artifact
         env:
