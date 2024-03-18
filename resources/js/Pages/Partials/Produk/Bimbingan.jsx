@@ -26,6 +26,8 @@ export default function Bimbingan ({ data, active, status, categories, category,
 }
 
 function BimbinganMobile ({ data, categories, category, setCategory, filterHandler }) {
+    console.log(data)
+
     return (
         <div className="container mx-auto md:hidden">
             <div className="flex justify-between mb-6 xs:mb-8">

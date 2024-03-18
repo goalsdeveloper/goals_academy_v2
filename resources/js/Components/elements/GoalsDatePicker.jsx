@@ -1,27 +1,27 @@
-import ExpandedButton from "../ExpandedButton";
 import moment from "moment";
+import { TECollapse } from "tw-elements-react";
+import TECollapseItem from "@/Components/TECollapseItem";
+import ExpandedButton from "@/Components/ExpandedButton";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import "@/script/momentCustomLocale";
-import { TECollapse } from "tw-elements-react";
-import TECollapseItem from "../TECollapseItem";
 
-export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon="", data, setData, error="", minDate, maxDate, shouldDisableDate, theme, slotProps, sx, className }) {
+export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon="", data, setData, error="", minDate, maxDate, shouldDisableDate, theme, slotProps, sx, required=false, wrapperClassName, className }) {
     return (
-        <div>
+        <div className={wrapperClassName}>
             {label != "" ? (
-                <p className="mb-[.5vw]">{label}</p>
+                <p className="mb-[2vw] md:mb-[.5vw]">{label}<sup className={`${required ? "" : "hidden"} text-red-600`}>*</sup></p>
             ) : (<></>)}
             <ExpandedButton
-                className={`rounded-[1vw] md:rounded-[.4vw] h-[9vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] ${
+                className={`rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] ${
                     data != ""
                         ? "border-2 border-secondary text-secondary"
                         : "border-1 border-light-grey text-light-grey"
                 } ${className}`}
                 iconClassName={`group-hover:text-inherit ${
-                    data != "" ? "text-grey" : ""
+                    data != "" ? "text-secondary" : ""
                 }`}
                 icon={chevronIcon != "" ? chevronIcon : `fa-solid fa-chevron-down duration-300 ${show != "" ? "-rotate-180" : ""}`}
                 onClick={() => setShow(!show)}
@@ -30,9 +30,9 @@ export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon=
                 &nbsp;&nbsp;
                 {data != "" ? moment(data).format("dddd, DD MMMM YYYY") : "Pilih Tanggal"}
             </ExpandedButton>
-            <div className="relative">
-                <TECollapse show={show} className="absolute border-1 bg-white w-full shadow-md pb-[2vw] z-50">
-                    <TECollapseItem>
+            <div className={`${show ? '' : 'md:hidden'} relative`}>
+                <TECollapse show={show} className="md:absolute z-30 w-full md:w-[120%] md:shadow-none md:-translate-x-[8.25%] pt-0 md:-translate-y-[1.5vw] md:px-[10%] pb-[.5vw]">
+                    <TECollapseItem className="bg-white w-full border-1 rounded-[2vw] md:rounded-[.5vw] shadow-md overflow-hidden" breakClassName="hidden md:inline">
                         <ThemeProvider theme={theme}>
                             <LocalizationProvider
                                 dateAdapter={AdapterMoment}
@@ -59,7 +59,7 @@ export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon=
                 </TECollapse>
             </div>
             {error != "" ? (
-                <p className="text-red-500 text-[.9vw] mt-[.25vw]">{error}</p>
+                <p className="text-red-500 text-[3.6vw] md:text-[.9vw] mt-[.25vw]">{error}</p>
             ) : (<></>)}
         </div>
     )

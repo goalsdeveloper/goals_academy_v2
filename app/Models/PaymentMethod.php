@@ -10,7 +10,7 @@ class PaymentMethod extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'category', 'payment_type', 'admin_fee', 'is_price'
+        'name', 'category', 'payment_type', 'admin_fee', 'is_price', 'image'
     ];
 
     public function order()
