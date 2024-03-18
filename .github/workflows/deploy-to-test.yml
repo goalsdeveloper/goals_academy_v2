@@ -25,8 +25,11 @@ jobs:
       - name: Install composer dependencies
         run: composer install --prefer-dist --no-dev --no-interaction
 
+      - name: Copy ENV Laravel Configuration for CI
+        run: php -r "file_exists('.env') || copy('.env.test', '.env');"
+
       - name: Migrating Database and Seed
-        run: php artisan migrate:fresh --seed
+        run: php artisan migrate:fresh --seed --force
 
       - name: Create deployment artifact
         env:
@@ -153,6 +156,7 @@ jobs:
           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
           script: |
             echo ${GITHUB_SHA}
+
 
   clean-up:
     name: "Clean Up"
