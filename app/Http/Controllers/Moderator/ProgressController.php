@@ -5,9 +5,15 @@ namespace App\Http\Controllers\Moderator;
 use App\Models\Course;
 use App\Http\Controllers\Controller;
 use App\Models\FileUpload;
+use App\Models\Order;
+use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class ProgressController extends Controller
 {
@@ -16,8 +22,41 @@ class ProgressController extends Controller
      */
     public function index()
     {
-        $course = Course::whereNull('parent_id')->with('child')->orderBy('id')->get();
-        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data course success', 'data' => $course], 200);
+        try {
+            if (Auth::user()->user_role == "moderator") {
+                $orders = Order::with(['products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session', 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session'])
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('productType', function ($subQuery) {
+                            $subQuery->where('type', 'LIKE', '%bimbingan%');
+                        });
+                    })
+                    ->where('status', 'Success')
+                    ->paginate(10);
+
+                return response()->json([
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'Get data history success',
+                    'data' => [
+                        'recent_order' => $orders,
+                    ],
+                ], 200);
+            } else {
+                abort(403);
+            }
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'An error occurred while fetching data: ' . $e->getMessage(),
+            ], 500);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -39,15 +78,41 @@ class ProgressController extends Controller
     /**
      * Display the specified resource.
      */
+
+    // $progress diambil dari course id bukan order id
     public function show(Course $progress)
     {
-        $progress_user = Course::with('user.profile', 'products', 'fileUploads', 'productReview')->findOrFail($progress->id);
-        return response()->json([
-            'status' => true,
-            'statusCode' => 200,
-            'message' => 'get data success',
-            'data' => $progress_user,
-        ], 200);
+        try {
+            if (Auth::user()->user_role == "moderator") {
+                $progress_user = Course::with('user:id,username', 'user.profile:id,user_id,university,major,phone_number,faculty', 'tutor:id,name', 'topic:id,topic', 'place.city', 'order:id,order_code', 'products:id,name', 'fileUploads', 'productReview')->findOrFail($progress->id);
+                return response()->json([
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'Get data success',
+                    'data' => $progress_user,
+                ], 200);
+            } else {
+                abort(403);
+            }
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 404,
+                'message' => 'Course not found.',
+            ], 404);
+        } catch (AuthorizationException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 403,
+                'message' => $e->getMessage(),
+            ], 403);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -63,86 +128,68 @@ class ProgressController extends Controller
      */
     public function update(Request $request, Course $progress)
     {
+        try {
+            if (Auth::user()->user_role == "moderator") {
+                if ($progress->ongoing == "selesai") {
+                    // Handle case when ongoing is "selesai"
+                }
 
-        if ($progress->ongoing == "selesai") {
+                $validateData = $request->validate([
+                    'tutor_id' => 'required|numeric',
+                    'location' => 'required|string',
+                    'date' => 'required|date',
+                    'time' => 'required|date_format:H:i',
+                    'record' => 'mimes:pdf',
+                    'is_moderator' => 'in:0,1',
+                ]);
+                $progress->update($validateData);
+
+                if ($request->hasFile('record')) {
+                    $file = $request->file('record');
+
+                    $filePath = $file->store('resource/file/moderator');
+
+                    $fileUpload = new FileUpload();
+                    $fileUpload->filename = $file->getClientOriginalName();
+                    $fileUpload->slug  = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $fileUpload->mime_type  = $file->getClientMimeType();
+                    $fileUpload->file_path  = $filePath;
+                    $fileUpload->size = $file->getSize();
+                    $fileUpload->user_id = Auth::user()->id;
+
+                    $fileUpload->save();
+                }
+
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress berhasil'], 200);
+            } else {
+                abort(403);
+            }
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 422,
+                'message' => 'Validation error: ' . $e->getMessage(),
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (AuthorizationException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 403,
+                'message' => $e->getMessage(),
+            ], 403);
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'An error occurred while updating progress: ' . $e->getMessage(),
+            ], 500);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+            ], 500);
         }
-
-        $validateData = $request->validate([
-            'tutor_id' => 'required|numeric',
-            'location' => 'required|string',
-            'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
-            'record' => 'mimes:pdf'
-        ]);
-        $progress->update($validateData);
-
-        if ($request->hasFile('record')) {
-            $file = $request->file('record');
-
-            $filePath = $file->store('resource/file/moderator');
-
-            $fileUpload = new FileUpload();
-            $fileUpload->filename = $file->getClientOriginalName();
-            $fileUpload->slug  = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $fileUpload->mime_type  = $file->getClientMimeType();
-            $fileUpload->file_path  = $filePath;
-            $fileUpload->size = $file->getSize();
-            $fileUpload->user_id = Auth::user()->id;
-
-            $fileUpload->save();
-        }
-
-
-        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress berhasil'], 200);
-
-
-
-
-
-
-        // if ($progress->ongoing == "selesai") {
-        //     return response()->json(['status' => false, 'statusCode' => 400, 'message' => 'Tidak dapat memperbarui kursus yang sudah selesai'], 400);
-        // }
-
-        // $validateData = $request->validate([
-        //     'tutor_id' => 'required|numeric',
-        //     'location' => 'required|string',
-        //     'date' => 'required|date',
-        //     'time' => 'required|date_format:H:i',
-        //     'record' => 'mimes:pdf'
-        // ]);
-
-        // $progress->update($validateData);
-        // $childCourses = Course::where('parent_id', $progress->id)->get();
-        // foreach ($childCourses as $childCourse) {
-        //     if ($childCourse->ongoing == "selesai") {
-        //     } else {
-        //         $childCourse->update([
-        //             'tutor_id' => $validateData['tutor_id'],
-        //             'location' => $validateData['location'],
-        //             'date' => $validateData['date'],
-        //             'time' => $validateData['time'],
-        //         ]);
-        //     }
-        // }
-
-        // if ($request->hasFile('record')) {
-        //     $file = $request->file('record');
-
-        //     $filePath = $file->store('resource/file/moderator');
-
-        //     $fileUpload = new FileUpload();
-        //     $fileUpload->filename = $file->getClientOriginalName();
-        //     $fileUpload->slug  = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        //     $fileUpload->mime_type  = $file->getClientMimeType();
-        //     $fileUpload->file_path  = $filePath;
-        //     $fileUpload->size = $file->getSize();
-        //     $fileUpload->user_id = Auth::user()->id;
-
-        //     $fileUpload->save();
-        // }
-
-        // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress berhasil'], 200);
     }
 
     /**

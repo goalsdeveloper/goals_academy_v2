@@ -120,7 +120,8 @@ Route::patch('moderator/course/{course}/update-bimbingan-online', [CourseControl
 Route::resource('moderator/progress', ProgressController::class)->except(['create', 'edit']);
 // Route::resource('moderator/order', ModeratorOrderController::class)->except(['create', 'edit']);
 Route::resource('moderator/history', ModeratorHistoryBimbinganController::class)->except(['create', 'edit']);
-Route::resource('moderator/order', ModeratorOrderController::class)->except(['create', 'edit']);
+Route::resource('moderator/order', ModeratorOrderController::class)->middleware('auth')->except(['create', 'edit']);
+Route::get('moderator/order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('moderator.order.showOnline');
 Route::resource('moderator/tutor', ModeratorTutorController::class)->except(['create', 'edit']);
 Route::resource('moderator/schedule', ModeratorScheduleTutorController::class)->except(['create', 'edit']);
 

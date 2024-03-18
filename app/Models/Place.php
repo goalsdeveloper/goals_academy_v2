@@ -13,6 +13,9 @@ class Place extends Model
 
     public function city()
     {
-        return $this->belongsTo(Place::class);
+        return $this->belongsTo(City::class);
+    }
+    public function course(){
+        return $this->hasMany(Course::class);
     }
 }

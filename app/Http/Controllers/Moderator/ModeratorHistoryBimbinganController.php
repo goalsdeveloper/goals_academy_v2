@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Moderator;
 use App\Http\Controllers\Controller;
 use App\Models\OrderHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ModeratorHistoryBimbinganController extends Controller
 {
@@ -14,8 +15,8 @@ class ModeratorHistoryBimbinganController extends Controller
     public function index()
     {
         $order_history = OrderHistory::with(
-            ['order.products', 'order.course']
-        )->where('status', 'selesai')->get();
+            ['order.products:id,name', 'order.course:id,parent_id,location,date,time','order.course.child']
+        )->where('status', 'selesai')->paginate(10);
 
         return response()->json([
             'status' => true,
