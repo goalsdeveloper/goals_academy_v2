@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "@inertiajs/react";
 import GoalsTextInput from "@/Components/Form/element/GoalsTextInput";
+
 import GoalsButton from "@/Components/GoalsButton";
 import { FiX } from "react-icons/fi";
 
