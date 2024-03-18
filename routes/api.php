@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\UserProfile;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,4 +52,18 @@ Route::get('/check-payment-status/{order:order_code}', function (Order $order) {
 Route::get('/profile_image/{id}', function ($id) {
     $profile_image = User::where('id', $id)->with('profile')->first()->profile->profile_image;
     return response()->json(['profile_image' => $profile_image]);
+});
+
+Route::post('/lengkapi_profil', function (Request $request) {
+    try {
+        UserProfile::where('user_id', $request->id)->update([
+            'phone_number' => $request->phone_number,
+            'university' => $request->university,
+            'faculty' => $request->faculty,
+            'major' => $request->major
+        ]);
+        return response()->json(['message' => 'success']);
+    } catch (\Exception $e) {
+        return response()->json(['message' => $e->getMessage()]);
+    }
 });

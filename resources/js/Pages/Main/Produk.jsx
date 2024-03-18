@@ -32,6 +32,7 @@ export default function Produk({
     webinarData,
 }) {
     const dataBimbingan = dataDibimbing;
+    console.log('halo')
     const bimbinganCategories = ['Semua', 'Dibimbing Sekali', 'Dibimbing Sekali Online', 'Dibimbing Tuntas']
     const dataEbook = ebookData;
     // const dataEbook = [
@@ -111,7 +112,7 @@ export default function Produk({
             temp1 = dataBimbingan
                 .slice()
                 .filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()))
-                .filter((item) => item.categories.map(category => category.name).includes(category1))
+                .filter((item) => item.category.name == category1)
         }
         const temp2 = dataEbook
             .slice()
@@ -138,7 +139,7 @@ export default function Produk({
                 temp1 = dataBimbingan
                     .slice()
                     .filter((item) => item.name.toLowerCase().includes(searchKeyword.keyword))
-                    .filter((item) => item.categories.map(category => category.name).includes(category))
+                    .filter((item) => item.category.name == category1)
             }
             setData1(temp1)
             setCategory1(category)

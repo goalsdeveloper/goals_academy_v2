@@ -24,7 +24,33 @@ export default {
         },
         extend: {
             colors: {
+                "divider": "#F5F5F5",
+                "neutral": {
+                    "10": "A6A6A6",
+                    "20": "#D9D9D9",
+                    "40": "#A6A6A6",
+                    "50": "#848484",
+                    "60": "#737373",
+                    "80": "#404040"
+                },
+                "info": {
+                    "10": "#E5ECFF",
+                    "40": "#3366FF",
+                    "30": "#668CFF",
+                    "50": "#0040FF"
+                },
+                "success": {
+                    "10": "#EBFAF0",
+                    "50": "#35CA61"
+                },
+                "warning": {
+                    "10": "#FFF8E5",
+                    "50": "#FFBD00"
+                },
                 'primary': '#FF6420',
+                'primary-10': '#FFEDE5',
+                'primary-20': '#FFCAB2',
+                'primary-40': '#FF8854',
                 'secondary': '#FF8854',
                 'skin': '#FFDFD1',
                 'soft': '#FFF6F3',
@@ -124,11 +150,22 @@ export default {
                 'autoplayY': {
                     'from': { 'transform': 'translateY(0)' },
                     'to': { 'transform': 'translateY(-100%)' }
+                },
+                'smallBounce': {
+                    '0%, 100%': {
+                        'transform': 'translateY(-5%)',
+                        'animation-timing-function': 'cubic-bezier(0.8,0,1,1)'
+                    },
+                    '50%': {
+                        'transform': 'none',
+                        'animation-timing-function': 'cubic-bezier(0,0,0.2,1)'
+                    }
                 }
             },
             animation: {
                 fadeIn: 'fadeIn 3s',
                 autoplayY: 'autoplayY 20s infinite linear',
+                'bounce-sm': 'smallBounce 1s infinite',
             }
         },
     },
