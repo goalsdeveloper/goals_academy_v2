@@ -172,5 +172,6 @@ Route::prefix('moderator')->group(function () {
 
 
 require __DIR__ . '/profile/profile.php';
+require __DIR__ . '/tutor/tutor.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/socialite.php';
