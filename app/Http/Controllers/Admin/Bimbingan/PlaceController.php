@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Bimbingan;
 
 use App\Models\Place;
 use App\Http\Controllers\Controller;

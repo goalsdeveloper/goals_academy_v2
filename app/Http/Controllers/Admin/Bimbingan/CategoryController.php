@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Bimbingan;
 
 use App\Models\Category;
 use App\Http\Controllers\Controller;
@@ -16,15 +16,31 @@ class CategoryController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $category = Category::get();
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $category], 200);
+            $categories = Category::whereHas('productType', function ($query) {
+                $query->where('type', 'LIKE', '%bimbingan%');
+            })->with('productType:id,type')->get();
+
+            return response()->json([
+                'status' => true,
+                'statusCode' => 200,
+                'message' => 'get data success',
+                'data' => $categories,
+            ], 200);
             } else {
                 abort(403);
             }
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to retrieve data. Internal Server Error'], 500);
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'Failed to retrieve data. Internal Server Error'
+            ], 500);
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'Internal Server Error' . $e->getMessage()
+            ], 500);
         }
     }
 
@@ -51,6 +67,7 @@ class CategoryController extends Controller
                 ]);
 
                 $category = new Category();
+                $category->product_type_id = 1; // 1 karena bimbingan
                 $category->name = $validateData['name'];
                 $category->slug = $validateData['slug'];
                 $category->is_visible = $validateData['is_visible'];
@@ -94,12 +111,14 @@ class CategoryController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
+                $category->product_type_id = 1;
                 $validateData = $request->validate([
                     'name' => 'string',
                     'slug' => 'string',
                     'is_visible' => 'boolean',
                     'description' => 'string',
                 ]);
+
 
                 $category = Category::findOrFail($id);
 

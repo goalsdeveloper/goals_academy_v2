@@ -88,4 +88,8 @@ class Course extends Model
     {
         return $this->belongsTo(Topic::class);
     }
+    public function place()
+    {
+        return $this->belongsTo(Place::class);
+    }
 }
