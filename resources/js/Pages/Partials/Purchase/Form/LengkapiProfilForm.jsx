@@ -85,9 +85,7 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow }) => {
                             cancelButton={data.phone_number != ""}
                             data={data.phone_number}
                             setData={i => setData("phone_number", i)}
-                            onChange={(e) =>
-                                setData("phone_number", e.target.value.split(' ').map(i => i[0].toUpperCase()+i.slice(1,)).join(' '))
-                            }
+                            onChange={(e) => setData("phone_number", e.target.value)}
                         />
                         <GoalsTextInput
                             className="capitalize"
@@ -99,9 +97,7 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow }) => {
                             cancelButton={data.university != ""}
                             data={data.university}
                             setData={i => setData("university", i)}
-                            onChange={(e) =>
-                                setData("university", e.target.value.split(' ').map(i => i[0].toUpperCase()+i.slice(1,)).join(' '))
-                            }
+                            onChange={(e) => setData("university", e.target.value)}
                         />
                         <GoalsTextInput
                             className="capitalize"
@@ -113,9 +109,7 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow }) => {
                             cancelButton={data.faculty != ""}
                             data={data.faculty}
                             setData={i => setData("faculty", i)}
-                            onChange={(e) =>
-                                setData("faculty", e.target.value.split(' ').map(i => i[0].toUpperCase()+i.slice(1,)).join(' '))
-                            }
+                            onChange={(e) => setData("faculty", e.target.value)}
                         />
                         <GoalsTextInput
                             className="capitalize"
@@ -127,7 +121,7 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow }) => {
                             cancelButton={data.major != ""}
                             data={data.major}
                             setData={i => setData("major", i)}
-                            onChange={(e) => setData("major", e.target.value.split(' ').map(i => i[0].toUpperCase()+i.slice(1,)).join(' '))}
+                            onChange={(e) => setData("major", e.target.value)}
                         />
                     </div>
                     <GoalsButton className="rounded-md" onClick={submitHandler} isLoading={isLoading}>

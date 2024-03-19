@@ -1,4 +1,4 @@
-import PengaturanLayout from "@/Layouts/PengaturanLayout";
+import PengaturanLayout, { ImageUploader } from "@/Layouts/PengaturanLayout";
 import { Link, useForm } from "@inertiajs/react";
 import "@/script/momentCustomLocale";
 import GoalsButton from "@/Components/elements/GoalsButton";
@@ -160,6 +160,7 @@ function Input({ type, id, label, value, onChange }) {
 }
 
 export const ProfileImage = ({ auth }) => {
+    const [showImageUploader, setShowImageUploader] = useState(false);
     const [profileImage, setProfileImage] = useState(
         auth.user.profile.profile_image
             ? `/storage/${auth.user.profile.profile_image}`
@@ -194,6 +195,13 @@ export const ProfileImage = ({ auth }) => {
                     <PiPencilSimpleLight />
                 </button>
             )}
+
+            <ImageUploader
+                show={showImageUploader}
+                setShow={setShowImageUploader}
+                profileImage={profileImage}
+                setProfileImage={setProfileImage}
+            />
         </div>
     );
 };

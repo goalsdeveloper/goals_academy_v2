@@ -8,7 +8,7 @@ import { StaticDatePicker } from "@mui/x-date-pickers";
 import { ThemeProvider } from "@mui/material";
 import "@/script/momentCustomLocale";
 
-export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon="", data, setData, error="", minDate, maxDate, shouldDisableDate, theme, slotProps, sx, required=false, wrapperClassName, className }) {
+export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon="", data, setData, error="", minDate, maxDate, shouldDisableDate=[], theme, slotProps, sx, required=false, wrapperClassName, className }) {
     return (
         <div className={wrapperClassName}>
             {label != "" ? (
