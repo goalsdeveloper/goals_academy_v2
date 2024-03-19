@@ -14,18 +14,30 @@ class ModeratorHistoryBimbinganController extends Controller
      */
     public function index()
     {
-        $order_history = OrderHistory::with(
-            ['order.products:id,name', 'order.course:id,parent_id,location,date,time', 'order.course.child']
-        )->where('status', 'selesai')->paginate(10);
+        try {
+            if (Auth::user()->user_role == "moderator") {
+                $order_history = OrderHistory::with(
+                    ['order.products:id,name', 'order.course:id,parent_id,location,date,time', 'order.course.child']
+                )->where('status', 'selesai')->paginate(10);
 
-        return response()->json([
-            'status' => true,
-            'statusCode' => 200,
-            'message' => 'get data history success',
-            'data' => [
-                'order_history' => $order_history,
-            ],
-        ], 200);
+                return response()->json([
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data history success',
+                    'data' => [
+                        'order_history' => $order_history,
+                    ],
+                ], 200);
+            } else {
+                abort(403);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
