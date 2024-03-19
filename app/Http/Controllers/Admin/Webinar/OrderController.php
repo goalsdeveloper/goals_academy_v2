@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Moderator;
+namespace App\Http\Controllers\Admin\Webinar;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use Exception;
-use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class OverviewController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,24 +16,36 @@ class OverviewController extends Controller
     public function index()
     {
         try {
-            if (Auth::user()->user_role == "moderator") {
-                $totalOrder = Order::where('status', '=', 'Success')->count();
-                $totalChekout = Order::count();
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Get data category success', 'total_order' => $totalOrder, 'total_checkout' => $totalChekout], 200);
+            if (Auth::user()->user_role == "admin") {
+                $orders = Order::with(['products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type'])
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('productType', function ($subQuery) {
+                            $subQuery->where('type', 'LIKE', '%webinar%');
+                        });
+                    })
+                    ->paginate(10);
+
+                return response()->json([
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data history success',
+                    'data' => $orders
+                ], 200);
             } else {
                 abort(403);
             }
-        } catch (QueryException $e) {
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 404,
+                'message' => 'Data not found.',
+            ], 404);
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
                 'statusCode' => 500,
-                'message' => 'An error occurred while fetching data: ' . $e->getMessage(),
-            ], 500);
-        } catch (Exception $e) {
-            return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+                'message' => 'An error occurred while processing your request.',
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
