@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import GoalsButton from "@/Components/GoalsButton";
+import logo from "/resources/img/icon/goals-5.svg";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import moment from "moment/moment";
 import {
@@ -20,10 +21,12 @@ import { faker } from '@faker-js/faker';
 import { FaRegCalendar, FaCartShopping, FaGlobe } from "react-icons/fa6";
 import { FiTrendingUp, FiLoader } from "react-icons/fi";
 import { IoRocketSharp } from "react-icons/io5";
-import "@/script/momentCustomLocale";
 import Datepicker from "react-tailwindcss-datepicker";
+import "@/script/momentCustomLocale";
 
 export default function Overview ({ auth }) {
+    const [isLoading, setIsLoading] = useState(false);
+
     // Data's Date Range
     const [dateRange, setDateRange] = useState({
         startDate: null,
@@ -31,10 +34,18 @@ export default function Overview ({ auth }) {
     });
 
     const dateRangePickerHandler = (range) => {
-        console.log("range:", range);
+        setIsLoading(true);
+        setTimeout(() => setIsLoading(false), 3000);
         setDateRange(range);
+        const x = moment(range.startDate);
+        const y = moment(range.endDate);
+        const diff = x.diff(y, 'days');
+        if (diff >= -30) {
+            console.log(diff);
+        } else {
+            alert('Range tanggal maksimum 1 bulan!')
+        }
     }
-
 
     // Click & Views
     const barLabels = ['29', '30', '31', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', ];
@@ -100,7 +111,6 @@ export default function Overview ({ auth }) {
                     drawBorder: false,
                     drawTicks: false,
                     color: (context) => {
-                        console.log(context);
                         if (context.index === 0) {
                             return '';
                         } else {
@@ -249,116 +259,127 @@ export default function Overview ({ auth }) {
 
     return (
         <DashboardLayout title="Overview" role="admin" auth={auth}>
-            <Datepicker
-                value={dateRange}
-                onChange={dateRangePickerHandler}
-                showShortcuts={true}
-            />
-            <div className="flex justify-end mb-[2vw]">
-                <GoalsButton variant="default" className="relative w-[8.35vw] h-[2.1vw] md:px-[.1vw] md:py-[0vw] flex justify-center items-center gap-[.4vw] md:text-[.7vw] border-1 rounded-[.4vw]" activeClassName="">
-                    <FaRegCalendar className="text-[1vw]" /> Select Date
-                </GoalsButton>
-            </div>
-            <div className="flex flex-col gap-[.73vw]">
-                <div className="flex justify-between">
-                    {/* h-[15.53vw] */}
-                    <Card className="relative w-[50vw] h-[15.53vw]">
-                        <h4 className="absolute font-sans font-medium text-[1vw] mt-[.3vw]">Total Views & Clicks</h4>
-                        <Bar options={barOptions} data={clickViewsData} className="cursor-pointer" />
-                    </Card>
-                    <div className="w-[25.1vw] grid grid-cols-2 gap-[.94vw] text-[.83vw]">
-                        <Card className="flex justify-between">
-                            <div className="h-full flex flex-col justify-between">
-                                <p className="font-sans">Earnings (IDR)</p>
-                                <div>
-                                    <p className="font-poppins font-bold text-[1.25vw]">123</p>
-                                    <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
-                                        <FiTrendingUp className="text-[1vw]" />
-                                        <span>5,6%</span>
-                                        <span className="text-light-grey">+12 Today</span>
-                                    </div>
-                                </div>
-                            </div>
+            <div className="relative">
+                {isLoading &&
+                    <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+                        <img src={logo} alt="Goals Academy" className="w-[6vw] h-[6vw] animate-bounce" />
+                    </div>
+                }
+                <div className="flex justify-end mb-[2vw]">
+                    <GoalsButton variant="default" className="relative w-[8.35vw] h-[2.1vw] md:px-[.1vw] md:py-[0vw] flex justify-center items-center gap-[.4vw] md:text-[.7vw] border-1 rounded-[.4vw]" activeClassName="">
+                        <Datepicker
+                            value={dateRange}
+                            onChange={dateRangePickerHandler}
+                            showShortcuts={true}
+                            primaryColor="indigo"
+                            inputClassName="w-full bg-transparent border-transparent text-transparent placeholder:text-transparent focus:ring-0 focus:border-0 rounded-[.4vw] text-[.83vw] p-[.5vw] leading-tight cursor-pointer"
+                            containerClassName="absolute"
+                            toggleClassName="hidden"
+                            popoverDirection="left"
+                        />
+                        <FaRegCalendar className="text-[1vw]" /> Select Date
+                    </GoalsButton>
+                </div>
+                <div className="relative flex flex-col gap-[.73vw]">
+                    <div className="flex justify-between">
+                        <Card className="relative w-[50vw] h-[15.53vw]">
+                            <h4 className="absolute font-sans font-medium text-[1vw] mt-[.3vw]">Total Views & Clicks</h4>
+                            <Bar options={barOptions} data={clickViewsData} className="cursor-pointer" />
                         </Card>
-                        <Card className="flex justify-between">
-                            <div className="h-full flex flex-col justify-between">
-                                <p className="font-sans">Visitor</p>
-                                <div>
-                                    <p className="font-poppins font-bold text-[1.25vw]">123</p>
-                                    <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
-                                        <FiTrendingUp className="text-[1vw]" />
-                                        <span>5,6%</span>
-                                        <span className="text-light-grey">+12 Today</span>
+                        <div className="w-[25.1vw] grid grid-cols-2 gap-[.94vw] text-[.83vw]">
+                            <Card className="flex justify-between">
+                                <div className="h-full flex flex-col justify-between">
+                                    <p className="font-sans">Earnings (IDR)</p>
+                                    <div>
+                                        <p className="font-poppins font-bold text-[1.25vw]">123</p>
+                                        <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
+                                            <FiTrendingUp className="text-[1vw]" />
+                                            <span>5,6%</span>
+                                            <span className="text-light-grey">+12 Today</span>
+                                        </div>
                                     </div>
                                 </div>
+                            </Card>
+                            <Card className="flex justify-between">
+                                <div className="h-full flex flex-col justify-between">
+                                    <p className="font-sans">Visitor</p>
+                                    <div>
+                                        <p className="font-poppins font-bold text-[1.25vw]">123</p>
+                                        <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
+                                            <FiTrendingUp className="text-[1vw]" />
+                                            <span>5,6%</span>
+                                            <span className="text-light-grey">+12 Today</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-[2.6vw] h-[2.6vw] rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
+                                    <IoRocketSharp className="text-[1vw]" />
+                                </div>
+                            </Card>
+                            <Card className="flex justify-between">
+                                <div className="h-full flex flex-col justify-between">
+                                    <p className="font-sans">Total Order</p>
+                                    <div>
+                                        <p className="font-poppins font-bold text-[1.25vw]">123</p>
+                                        <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
+                                            <FiTrendingUp className="text-[1vw]" />
+                                            <span>5,6%</span>
+                                            <span className="text-light-grey">+12 Today</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-[2.6vw] h-[2.6vw] rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
+                                    <FaCartShopping className="text-[1vw]" />
+                                </div>
+                            </Card>
+                            <Card className="flex justify-between">
+                                <div className="h-full flex flex-col justify-between">
+                                    <p className="font-sans">Checkout User</p>
+                                    <div>
+                                        <p className="font-poppins font-bold text-[1.25vw]">123</p>
+                                        <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
+                                            <FiTrendingUp className="text-[1vw]" />
+                                            <span>5,6%</span>
+                                            <span className="text-light-grey">+12 Today</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-[2.6vw] h-[2.6vw] rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
+                                    <FaGlobe className="text-[1vw]" />
+                                </div>
+                            </Card>
+                        </div>
+                    </div>
+                    <div className="flex justify-between text-[.83vw]">
+                        <Card className="w-[52.4vw] space-y-[1.5vw]">
+                            <div className="flex items-center justify-between">
+                                <h4 className="font-sans font-medium text-[1vw]">Recent Payment</h4>
+                                <div><FiLoader className="text-[1.25vw]" /></div>
                             </div>
-                            <div className="w-[2.6vw] h-[2.6vw] rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
-                                <IoRocketSharp className="text-[1vw]" />
-                            </div>
+                            <MaterialReactTable table={table} />
                         </Card>
-                        <Card className="flex justify-between">
-                            <div className="h-full flex flex-col justify-between">
-                                <p className="font-sans">Total Order</p>
-                                <div>
-                                    <p className="font-poppins font-bold text-[1.25vw]">123</p>
-                                    <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
-                                        <FiTrendingUp className="text-[1vw]" />
-                                        <span>5,6%</span>
-                                        <span className="text-light-grey">+12 Today</span>
-                                    </div>
-                                </div>
+                        <Card className="w-[23vw] space-y-[1.5vw]">
+                            <div className="flex items-center justify-between">
+                                <h4 className="font-sans font-medium text-[1vw]">Top Selling</h4>
                             </div>
-                            <div className="w-[2.6vw] h-[2.6vw] rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
-                                <FaCartShopping className="text-[1vw]" />
-                            </div>
-                        </Card>
-                        <Card className="flex justify-between">
-                            <div className="h-full flex flex-col justify-between">
-                                <p className="font-sans">Checkout User</p>
-                                <div>
-                                    <p className="font-poppins font-bold text-[1.25vw]">123</p>
-                                    <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
-                                        <FiTrendingUp className="text-[1vw]" />
-                                        <span>5,6%</span>
-                                        <span className="text-light-grey">+12 Today</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="w-[2.6vw] h-[2.6vw] rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
-                                <FaGlobe className="text-[1vw]" />
+                            <div className="grid gap-[1.5vw]">
+                                {topSellingData.map(({name, amount}, index) => {
+                                    const highestAmount = Math.max(...topSellingData.map(i => i.amount));
+                                    return (
+                                        <div key={index} className="space-y-[.5vw]">
+                                            <div className="flex items-center justify-between">
+                                                <span>{name}</span>
+                                                <span>{amount}</span>
+                                            </div>
+                                            <div className="w-full h-[.6vw] bg-green-100 rounded-full overflow-hidden">
+                                                <div style={{ width: amount/highestAmount*100+'%' }} className="h-full bg-green-500 animate-slideRight duration-300"></div>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </Card>
                     </div>
-                </div>
-                <div className="flex justify-between text-[.83vw]">
-                    <Card className="w-[52.4vw] space-y-[1.5vw]">
-                        <div className="flex items-center justify-between">
-                            <h4 className="font-sans font-medium text-[1vw]">Recent Payment</h4>
-                            <div><FiLoader className="text-[1.25vw]" /></div>
-                        </div>
-                        <MaterialReactTable table={table} />
-                    </Card>
-                    <Card className="w-[23vw] space-y-[1.5vw]">
-                        <div className="flex items-center justify-between">
-                            <h4 className="font-sans font-medium text-[1vw]">Top Selling</h4>
-                        </div>
-                        <div className="grid gap-[1.5vw]">
-                            {topSellingData.map(({name, amount}, index) => {
-                                const highestAmount = Math.max(...topSellingData.map(i => i.amount));
-                                return (
-                                    <div key={index} className="space-y-[.5vw]">
-                                        <div className="flex items-center justify-between">
-                                            <span>{name}</span>
-                                            <span>{amount}</span>
-                                        </div>
-                                        <div className="w-full h-[.6vw] bg-green-100 rounded-full overflow-hidden">
-                                            <div style={{ width: amount/highestAmount*100+'%' }} className="h-full bg-green-500 animate-slideRight duration-300"></div>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </Card>
                 </div>
             </div>
         </DashboardLayout>
