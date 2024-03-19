@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Moderator;
+namespace App\Http\Controllers\Moderator\Bimbingan;
 
 use App\Models\Course;
 use App\Http\Controllers\Controller;
@@ -24,23 +24,23 @@ class ProgressController extends Controller
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $orders = Order::with(['products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session', 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session'])
-                    ->whereHas('products', function ($query) {
-                        $query->whereHas('productType', function ($subQuery) {
-                            $subQuery->where('type', 'LIKE', '%bimbingan%');
-                        });
-                    })
-                    ->where('status', 'Success')
-                    ->paginate(10);
+            $orders = Order::with(['user:id,name', 'products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session', 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session'])
+                ->whereHas('products', function ($query) {
+                    $query->whereHas('productType', function ($subQuery) {
+                        $subQuery->where('type', 'LIKE', '%bimbingan%');
+                    });
+                })
+                ->where('status', 'Success')
+                ->paginate(10);
 
-                return response()->json([
-                    'status' => true,
-                    'statusCode' => 200,
-                    'message' => 'Get data history success',
-                    'data' => [
-                        'recent_order' => $orders,
-                    ],
-                ], 200);
+            return response()->json([
+                'status' => true,
+                'statusCode' => 200,
+                'message' => 'Get data history success',
+                'data' => [
+                    'recent_order' => $orders,
+                ],
+            ], 200);
             } else {
                 abort(403);
             }
@@ -131,7 +131,7 @@ class ProgressController extends Controller
         try {
             if (Auth::user()->user_role == "moderator") {
                 if ($progress->ongoing == "selesai") {
-                    // Handle case when ongoing is "selesai"
+                    return response()->json(['status' => false, 'statusCode' => 403, 'message' => 'Progress sudah selesai dan tidak dapat diubah'], 403);
                 }
 
                 $validateData = $request->validate([

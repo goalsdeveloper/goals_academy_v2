@@ -15,14 +15,14 @@ use App\Http\Controllers\Admin\OverviewController as AdminOverviewController;
 
 // use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
-use App\Http\Controllers\Moderator\ProgressController;
-use App\Http\Controllers\Moderator\ModeratorHistoryBimbinganController;
-use App\Http\Controllers\Moderator\ModeratorTutorController;
+use App\Http\Controllers\Moderator\Bimbingan\ProgressController;
+use App\Http\Controllers\Moderator\Bimbingan\ModeratorHistoryBimbinganController;
+use App\Http\Controllers\Moderator\Bimbingan\ModeratorOrderController;
+use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
+use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
 
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\Moderator\ModeratorOrderController;
-use App\Http\Controllers\Moderator\ModeratorScheduleTutorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
@@ -115,7 +115,7 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
 // Route::resource('admin/overview', AdminOverviewController::class)->middleware('auth')->except(['create', 'edit']);
 
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware('auth')->group(function () {
     Route::prefix('bimbingan')->group(function () {
         Route::resource('category', CategoryController::class);
         Route::resource('addon', AddOnController::class);
@@ -127,7 +127,6 @@ Route::prefix('admin')->group(function () {
     Route::prefix('webinar')->group(function () {
         Route::resource('product', WebinarController::class)->except(['create', 'edit']);
         Route::resource('order', AdminOrderWebinarController::class)->except(['create', 'edit']);
-
     });
     Route::prefix('manajemen_user')->group(function () {
         Route::resource('users', UserController::class)->except(['update', 'create', 'store', 'destroy', 'edit']);
@@ -137,21 +136,37 @@ Route::prefix('admin')->group(function () {
 });
 
 
+Route::prefix('moderator')->group(function () {
+    Route::prefix('bimbingan')->group(function () {
+        Route::resource('order', ModeratorOrderController::class)->except(['create', 'edit']);
+        Route::get('order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('moderator.order.showOnline');
+        Route::patch('order/{order}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('moderator.order.updateOnline');
+        Route::resource('progress', ProgressController::class)->except(['create', 'edit']);
+        Route::resource('history', ModeratorHistoryBimbinganController::class)->except(['create', 'edit']);
+    });
+    Route::prefix('tutor')->group(function () {
+        Route::resource('tutorlist', ModeratorTutorController::class)->except(['create', 'edit']);
+        Route::resource('schedule', ModeratorScheduleTutorController::class)->except(['create', 'edit']);
+    });
+    Route::resource('overview', ModeratorOverviewController::class)->except(['create', 'edit']);
+});
 
 
 
 
 
 
-// Moderator Dashboard
-Route::resource('moderator/overview', ModeratorOverviewController::class)->middleware('auth')->except(['create', 'edit']);
-// Route::patch('moderator/course/{course}/update-bimbingan-online', [CourseController::class, 'updateBimbinganOnline'])->middleware('auth')->name('courses.updateBimbinganOnline');
-Route::resource('moderator/progress', ProgressController::class)->middleware('auth')->except(['create', 'edit']);
-Route::resource('moderator/history', ModeratorHistoryBimbinganController::class)->middleware('auth')->except(['create', 'edit']);
-Route::resource('moderator/order', ModeratorOrderController::class)->middleware('auth')->middleware('auth')->except(['create', 'edit']);
-Route::get('moderator/order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->middleware('auth')->name('moderator.order.showOnline');
-Route::resource('moderator/tutor', ModeratorTutorController::class)->middleware('auth')->except(['create', 'edit']);
-Route::resource('moderator/schedule', ModeratorScheduleTutorController::class)->middleware('auth')->except(['create', 'edit']);
+
+
+// // Moderator Dashboard
+// Route::resource('moderator/overview', ModeratorOverviewController::class)->middleware('auth')->except(['create', 'edit']);
+// // Route::patch('moderator/course/{course}/update-bimbingan-online', [CourseController::class, 'updateBimbinganOnline'])->middleware('auth')->name('courses.updateBimbinganOnline');
+// Route::resource('moderator/progress', ProgressController::class)->middleware('auth')->except(['create', 'edit']);
+// Route::resource('moderator/history', ModeratorHistoryBimbinganController::class)->middleware('auth')->except(['create', 'edit']);
+// Route::resource('moderator/order', ModeratorOrderController::class)->middleware('auth')->middleware('auth')->except(['create', 'edit']);
+// Route::get('moderator/order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->middleware('auth')->name('moderator.order.showOnline');
+// Route::resource('moderator/tutor', ModeratorTutorController::class)->middleware('auth')->except(['create', 'edit']);
+// Route::resource('moderator/schedule', ModeratorScheduleTutorController::class)->middleware('auth')->except(['create', 'edit']);
 
 
 

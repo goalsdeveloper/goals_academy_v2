@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Moderator;
+namespace App\Http\Controllers\Moderator\Bimbingan;
 
 use App\Http\Controllers\Controller;
 use App\Models\OrderHistory;
@@ -15,7 +15,7 @@ class ModeratorHistoryBimbinganController extends Controller
     public function index()
     {
         $order_history = OrderHistory::with(
-            ['order.products:id,name', 'order.course:id,parent_id,location,date,time','order.course.child']
+            ['order.products:id,name', 'order.course:id,parent_id,location,date,time', 'order.course.child']
         )->where('status', 'selesai')->paginate(10);
 
         return response()->json([

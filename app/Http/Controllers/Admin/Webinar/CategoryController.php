@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Bimbingan;
+namespace App\Http\Controllers\Admin\Webinar;
 
 use App\Models\Category;
 use App\Http\Controllers\Controller;
@@ -16,16 +16,16 @@ class CategoryController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-            $categories = Category::whereHas('productType', function ($query) {
-                $query->where('type', 'LIKE', '%bimbingan%');
-            })->with('productType:id,type')->get();
+                $categories = Category::whereHas('productType', function ($query) {
+                    $query->where('type', 'LIKE', '%webinar%');
+                })->with('productType:id,type')->get();
 
-            return response()->json([
-                'status' => true,
-                'statusCode' => 200,
-                'message' => 'get data success',
-                'data' => $categories,
-            ], 200);
+                return response()->json([
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data success',
+                    'data' => $categories,
+                ], 200);
             } else {
                 abort(403);
             }
@@ -67,7 +67,7 @@ class CategoryController extends Controller
                 ]);
 
                 $category = new Category();
-                $category->product_type_id = 1; // 1 karena bimbingan
+                $category->product_type_id = 3; // 3 karena webinar
                 $category->name = $validateData['name'];
                 $category->slug = $validateData['slug'];
                 $category->is_visible = $validateData['is_visible'];
@@ -111,7 +111,7 @@ class CategoryController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $category->product_type_id = 1;
+                $category->product_type_id = 3; //3 karena webinar
                 $validateData = $request->validate([
                     'name' => 'string',
                     'slug' => 'string',

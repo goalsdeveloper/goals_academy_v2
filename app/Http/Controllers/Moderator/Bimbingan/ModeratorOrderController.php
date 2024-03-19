@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Moderator;
+namespace App\Http\Controllers\Moderator\Bimbingan;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
@@ -19,18 +19,19 @@ class ModeratorOrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $orders = Order::with(['products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,products_id,order_id,tutor_id,place_id,topic_id,date,time,location', 'course.place.city'])
+            $perPage = $request->input('perPage', 10);
+                $orders = Order::with(['user:id,name','products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,products_id,order_id,tutor_id,place_id,topic_id,date,time,location', 'course.place.city'])
                     ->whereHas('products', function ($query) {
                         $query->whereHas('productType', function ($subQuery) {
                             $subQuery->where('type', 'LIKE', '%bimbingan%');
                         });
                     })
                     ->where('status', 'Success')
-                    ->paginate(10);
+                    ->paginate($perPage);
 
                 return response()->json([
                     'status' => true,
