@@ -29,12 +29,31 @@ class ProgressController extends Controller
                 })->orWhereHas('topic', function ($q) use ($search) {
                 $q->where('topic', 'LIKE', '%' . $search . '%');
             });
-        }else{
+        } else {
             $tutor = $user->tutor()->whereHas('tutor', function ($query) {
                 $query->where('ongoing', CourseStatusEnum::ONGOING->value);
             });
         }
-        $tutor = $tutor->with('topic', 'products', 'user')->paginate(15);
+        $topic = $request->topic;
+        $username = $request->username;
+        $tutor = $tutor->with(['topic' => function ($query) use ($topic) {
+            if ($topic) {
+                $query->orderBy('topic', $topic ?? 'desc');
+            }
+        }, 'user' => function ($query) use ($username) {
+            $query->orderBy('username', $username ?? 'desc');
+
+        }], 'products');
+        if ($request->date) {
+            $tutor = $tutor->orderBy('date', $request->date ?? 'desc');
+        }
+        if ($request->time) {
+            $tutor = $tutor->orderBy('time', $request->time ?? 'desc');
+        }
+        if ($request->ongoing) {
+            $tutor = $tutor->orderBy('ongoing', $request->ongoing ?? 'desc');
+        }
+        $tutor = $tutor->paginate(15);
         return response()->json([
             'bimbingan' => $tutor,
         ]);
