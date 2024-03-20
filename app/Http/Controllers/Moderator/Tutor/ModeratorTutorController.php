@@ -15,13 +15,22 @@ class ModeratorTutorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $tutors = User::with('profile')
-                    ->where("user_role", "tutor")
-                    ->paginate(5);
+                $search = $request->input('search');
+                $perPage = $request->input('perPage', 10);
+
+                $query = User::with('profile')->where("user_role", "tutor");
+
+                if ($search) {
+                    $query->whereHas('profile', function ($profileQuery) use ($search) {
+                        $profileQuery->where('name', 'LIKE', "%$search%");
+                    });
+                }
+
+                $tutors = $query->paginate($perPage);
 
                 $tutors->each(function ($tutor) {
                     $onprogress = Course::where('tutor_id', $tutor->id)->where('ongoing', 'berjalan')->count();

@@ -23,15 +23,24 @@ class ModeratorOrderController extends Controller
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-            $perPage = $request->input('perPage', 10);
-                $orders = Order::with(['user:id,name','products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,products_id,order_id,tutor_id,place_id,topic_id,date,time,location', 'course.place.city'])
+                $perPage = $request->input('perPage', 10);
+                $search = $request->input('search');
+
+                $query = Order::with(['user:id,name', 'products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,products_id,order_id,tutor_id,place_id,topic_id,date,time,location', 'course.place.city'])
                     ->whereHas('products', function ($query) {
                         $query->whereHas('productType', function ($subQuery) {
                             $subQuery->where('type', 'LIKE', '%bimbingan%');
                         });
                     })
-                    ->where('status', 'Success')
-                    ->paginate($perPage);
+                    ->where('status', 'Success');
+
+                if ($search) {
+                    $query->whereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'LIKE', "%$search%");
+                    });
+                }
+
+                $orders = $query->paginate($perPage);
 
                 return response()->json([
                     'status' => true,
@@ -58,6 +67,7 @@ class ModeratorOrderController extends Controller
             ], 500);
         }
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -39,6 +39,12 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             OrderHistorySeeder::class,
             TutorSkillSeeder::class,
+            DivisionSeeder::class,
+            EducationSeeder::class,
+            ExperienceSeeder::class,
+            LocationSeeder::class,
+            TypeJobSeeder::class,
+            WorkSystemSeeder::class,
         ]);
 
 

@@ -20,27 +20,37 @@ class ProgressController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-            $orders = Order::with(['user:id,name', 'products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session', 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session'])
+                $perPage = $request->input('perPage', 10);
+                $search = $request->input('search');
+
+                $query = Order::with(['user:id,name', 'products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session', 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session'])
                 ->whereHas('products', function ($query) {
                     $query->whereHas('productType', function ($subQuery) {
                         $subQuery->where('type', 'LIKE', '%bimbingan%');
                     });
                 })
-                ->where('status', 'Success')
-                ->paginate(10);
+                    ->where('status', 'Success');
 
-            return response()->json([
-                'status' => true,
-                'statusCode' => 200,
-                'message' => 'Get data history success',
-                'data' => [
-                    'recent_order' => $orders,
-                ],
-            ], 200);
+                if ($search) {
+                    $query->whereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'LIKE', "%$search%");
+                    });
+                }
+
+                $orders = $query->paginate($perPage);
+
+                return response()->json([
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'Get data history success',
+                    'data' => [
+                        'recent_order' => $orders,
+                    ],
+                ], 200);
             } else {
                 abort(403);
             }
