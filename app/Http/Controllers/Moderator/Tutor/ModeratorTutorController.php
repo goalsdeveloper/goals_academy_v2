@@ -21,12 +21,19 @@ class ModeratorTutorController extends Controller
             if (Auth::user()->user_role == "moderator") {
                 $search = $request->input('search');
                 $perPage = $request->input('perPage', 10);
+                $major = $request->input('major');
 
                 $query = User::with('profile', 'skills')->where("user_role", "tutor");
 
                 if ($search) {
                     $query->whereHas('profile', function ($profileQuery) use ($search) {
                         $profileQuery->where('name', 'LIKE', "%$search%");
+                    });
+                }
+
+                if ($major) {
+                    $query->whereHas('profile', function ($profileQuery) use ($major) {
+                        $profileQuery->where('major', $major);
                     });
                 }
 
