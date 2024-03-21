@@ -1,12 +1,14 @@
 import { useDropzone } from "react-dropzone";
 import FileIcon from "/resources/img/icon/file.svg";
 import { FiUploadCloud, FiX } from "react-icons/fi";
+import GoalsButton from "../GoalsButton";
 
 export default function GoalsUploadFile({
     data,
     setData,
     removeFile,
     fileLimit = 3,
+    required=false,
 }) {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: {
@@ -45,14 +47,14 @@ export default function GoalsUploadFile({
         data["document"] &&
         data["document"].map((file, i) => {
             return (
-                <li key={i} className="h-[8vw] md:h-[2.5vw] rounded-md flex">
+                <li key={i} className="h-[10vw] md:h-[2.5vw] rounded-md flex">
                     <img
                         src={FileIcon}
                         alt="file-icon"
-                        className="bg-primary-40 rounded-l p-1 aspect-square"
+                        className="bg-primary-40 rounded-l p-[.8vw] md:p-[.2vw] aspect-square"
                     />
 
-                    <div className="flex items-center justify-between w-full pl-[1vw] py-[1vw] pr-[.5vw] border border-l-0 border-neutral-40 rounded-r">
+                    <div className="flex items-center justify-between w-full pl-[4vw] py-[4vw] pr-[4vw] md:pl-[1vw] md:py-[1vw] md:pr-[.5vw] border border-l-0 border-neutral-40 rounded-r">
                         <p className="flex-1 line-clamp-1">{file.path}</p>
 
                         <button
@@ -60,7 +62,7 @@ export default function GoalsUploadFile({
                             onClick={() => removeFile(file)}
                             className="flex items-center justify-center aspect-square text-neutral-40"
                         >
-                            <FiX className="text-[1.3vw]" />
+                            <FiX className="text-[5.2vw] md:text-[1.3vw]" />
                         </button>
                     </div>
                 </li>
@@ -77,10 +79,17 @@ export default function GoalsUploadFile({
         // }}
         >
             <div className="flex flex-col w-full gap-2">
-                <p>Berkas Pendukung (Opsional)</p>
+                <p>Berkas Pendukung<sup className={`${required ? "" : "hidden"} text-red-600`}>*</sup></p>
+                <GoalsButton
+                    {...getRootProps()}
+                    className="md:hidden w-6/12 rounded-[2vw]"
+                    activeClassName="bg-skin hover:bg-skin text-secondary"
+                >
+                    Pilih File
+                </GoalsButton>
                 <div
                     {...getRootProps()}
-                    className="rounded-xl border border-dashed border-neutral-40 p-4 text-black/40 w-full"
+                    className="hidden md:block rounded-xl border border-dashed border-neutral-40 p-4 text-black/40 w-full"
                 >
                     <input {...getInputProps()} required />
                     {isDragActive ? (
@@ -108,7 +117,7 @@ export default function GoalsUploadFile({
                 </div>
 
                 <div>
-                    <ul className="space-y-[.4vw]">{acceptedFileItems}</ul>
+                    <ul className="space-y-[1.6vw] md:space-y-[.4vw]">{acceptedFileItems}</ul>
                 </div>
             </div>
         </form>

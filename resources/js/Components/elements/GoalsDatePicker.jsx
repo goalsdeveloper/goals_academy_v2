@@ -8,11 +8,11 @@ import { StaticDatePicker } from "@mui/x-date-pickers";
 import { ThemeProvider } from "@mui/material";
 import "@/script/momentCustomLocale";
 
-export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon="", data, setData, error="", minDate, maxDate, shouldDisableDate, theme, slotProps, sx, wrapperClassName, className }) {
+export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon="", data, setData, error="", minDate, maxDate, shouldDisableDate, theme, slotProps, sx, required=false, wrapperClassName, className }) {
     return (
         <div className={wrapperClassName}>
             {label != "" ? (
-                <p className="mb-[2vw] md:mb-[.5vw]">{label}</p>
+                <p className="mb-[2vw] md:mb-[.5vw]">{label}<sup className={`${required ? "" : "hidden"} text-red-600`}>*</sup></p>
             ) : (<></>)}
             <ExpandedButton
                 className={`rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] ${
@@ -59,7 +59,7 @@ export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon=
                 </TECollapse>
             </div>
             {error != "" ? (
-                <p className="text-red-500 text-[.9vw] mt-[.25vw]">{error}</p>
+                <p className="text-red-500 text-[3.6vw] md:text-[.9vw] mt-[.25vw]">{error}</p>
             ) : (<></>)}
         </div>
     )

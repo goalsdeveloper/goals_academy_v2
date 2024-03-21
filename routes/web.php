@@ -31,6 +31,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Models\AddOn;
+use App\Models\TutorNote;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
@@ -104,7 +105,6 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
         return response()->json(['error' => 'File not found'], 404);
     }
 });
-
 
 // Admin Dashboard
 // Route::resource('admin/category', CategoryController::class)->middleware('auth');
