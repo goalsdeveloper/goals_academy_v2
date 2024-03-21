@@ -41,7 +41,8 @@ export default {
                 },
                 "success": {
                     "10": "#EBFAF0",
-                    "50": "#35CA61"
+                    "50": "#35CA61",
+                    "60": "#2AA24E"
                 },
                 "warning": {
                     "10": "#FFF8E5",
