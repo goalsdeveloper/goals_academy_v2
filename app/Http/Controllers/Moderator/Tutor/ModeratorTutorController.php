@@ -22,6 +22,7 @@ class ModeratorTutorController extends Controller
                 $search = $request->input('search');
                 $perPage = $request->input('perPage', 10);
                 $major = $request->input('major');
+                $skill = $request->input('skill');
 
                 $query = User::with('profile', 'skills')->where("user_role", "tutor");
 
@@ -34,6 +35,11 @@ class ModeratorTutorController extends Controller
                 if ($major) {
                     $query->whereHas('profile', function ($profileQuery) use ($major) {
                         $profileQuery->where('major', $major);
+                    });
+                }
+                if ($skill) {
+                    $query->whereHas('skills', function ($skillQuery) use ($skill) {
+                        $skillQuery->where('name', $skill);
                     });
                 }
 

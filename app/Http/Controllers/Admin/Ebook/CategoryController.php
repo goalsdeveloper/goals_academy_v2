@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Webinar;
+namespace App\Http\Controllers\Admin\Ebook;
 
-use App\Models\Category;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -16,18 +16,17 @@ class CategoryController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $perPage = $request->input('perPage', 10);
                 $search = $request->input('search');
-
-                $query = Category::whereHas('productType', function ($query) {
-                    $query->where('type', 'LIKE', '%webinar%');
-                })->with('productType:id,type');
+                $perPage = $request->input('perPage', 10);
+                $categories = Category::whereHas('productType', function ($query) {
+                    $query->where('type', 'LIKE', '%e-book%');
+                });
 
                 if ($search) {
-                    $query->where('name', 'LIKE', "%$search%");
+                    $categories->where('name', 'LIKE', "%$search%");
                 }
 
-                $categories = $query->paginate($perPage);
+                $categories = $categories->with('productType:id,type')->paginate($perPage);;
 
                 return response()->json([
                     'status' => true,
@@ -53,6 +52,7 @@ class CategoryController extends Controller
         }
     }
 
+
     /**
      * Show the form for creating a new resource.
      */
@@ -76,7 +76,7 @@ class CategoryController extends Controller
                 ]);
 
                 $category = new Category();
-                $category->product_type_id = 3; // 3 karena webinar
+                $category->product_type_id = 2; // 2 karena e-book
                 $category->name = $validateData['name'];
                 $category->slug = $validateData['slug'];
                 $category->is_visible = $validateData['is_visible'];
@@ -100,7 +100,7 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show(string $id)
     {
         //
     }
@@ -108,7 +108,7 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit(string $id)
     {
         //
     }
@@ -120,7 +120,7 @@ class CategoryController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $category->product_type_id = 3; //3 karena webinar
+                $category->product_type_id = 2;
                 $validateData = $request->validate([
                     'name' => 'string',
                     'slug' => 'string',
@@ -147,6 +147,7 @@ class CategoryController extends Controller
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
