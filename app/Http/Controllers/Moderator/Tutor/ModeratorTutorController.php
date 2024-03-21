@@ -15,13 +15,35 @@ class ModeratorTutorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $tutors = User::with('profile')
-                    ->where("user_role", "tutor")
-                    ->paginate(5);
+                $search = $request->input('search');
+                $perPage = $request->input('perPage', 10);
+                $major = $request->input('major');
+                $skill = $request->input('skill');
+
+                $query = User::with('profile', 'skills')->where("user_role", "tutor");
+
+                if ($search) {
+                    $query->whereHas('profile', function ($profileQuery) use ($search) {
+                        $profileQuery->where('name', 'LIKE', "%$search%");
+                    });
+                }
+
+                if ($major) {
+                    $query->whereHas('profile', function ($profileQuery) use ($major) {
+                        $profileQuery->where('major', $major);
+                    });
+                }
+                if ($skill) {
+                    $query->whereHas('skills', function ($skillQuery) use ($skill) {
+                        $skillQuery->where('name', $skill);
+                    });
+                }
+
+                $tutors = $query->paginate($perPage);
 
                 $tutors->each(function ($tutor) {
                     $onprogress = Course::where('tutor_id', $tutor->id)->where('ongoing', 'berjalan')->count();
@@ -67,13 +89,12 @@ class ModeratorTutorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $tutor)
+    public function show(User $tutorlist)
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $tutorWithProfile = User::with('profile')->where("user_role", "tutor")->findOrFail($tutor->id);
-
-                $total_bimbingan_tuntas_onprogress = Course::where('tutor_id', $tutor->id)
+                $tutorWithProfile = User::with(['profile', 'skills'])->where("user_role", "tutor")->findOrFail($tutorlist->id);
+                $total_bimbingan_tuntas_onprogress = Course::where('tutor_id', $tutorlist->id)
                     ->where('ongoing', 'berjalan')
                     ->whereHas('products', function ($query) {
                         $query->where('ongoing', 'berjalan');
@@ -83,7 +104,7 @@ class ModeratorTutorController extends Controller
                     })
                     ->count();
 
-                $total_bimbingan_sekali_onprogress = Course::where('tutor_id', $tutor->id)
+                $total_bimbingan_sekali_onprogress = Course::where('tutor_id', $tutorlist->id)
                     ->where('ongoing', 'berjalan')
                     ->whereHas('products', function ($query) {
                         $query->where('ongoing', 'berjalan');
@@ -93,13 +114,13 @@ class ModeratorTutorController extends Controller
                     })
                     ->count();
 
-                $desk_review_onprogress = Order::whereHas('course', function ($courseQuery) use ($tutor) {
-                    $courseQuery->where('tutor_id', $tutor->id)
+                $desk_review_onprogress = Order::whereHas('course', function ($courseQuery) use ($tutorlist) {
+                    $courseQuery->where('tutor_id', $tutorlist->id)
                         ->where('ongoing', 'berjalan');
                 })->count();
 
 
-                $total_bimbingan_tuntas_selesai = Course::where('tutor_id', $tutor->id)
+                $total_bimbingan_tuntas_selesai = Course::where('tutor_id', $tutorlist->id)
                     ->where('ongoing', 'selesai')
                     ->whereHas('products', function ($query) {
                         $query->where('ongoing', 'selesai');
@@ -109,7 +130,7 @@ class ModeratorTutorController extends Controller
                     })
                     ->count();
 
-                $total_bimbingan_sekali_selesai = Course::where('tutor_id', $tutor->id)
+                $total_bimbingan_sekali_selesai = Course::where('tutor_id', $tutorlist->id)
                     ->where('ongoing', 'selesai')
                     ->whereHas('products', function ($query) {
                         $query->where('ongoing', 'selesai');
@@ -119,8 +140,8 @@ class ModeratorTutorController extends Controller
                     })
                     ->count();
 
-                $desk_review_selesai = Order::whereHas('course', function ($courseQuery) use ($tutor) {
-                    $courseQuery->where('tutor_id', $tutor->id)
+                $desk_review_selesai = Order::whereHas('course', function ($courseQuery) use ($tutorlist) {
+                    $courseQuery->where('tutor_id', $tutorlist->id)
                         ->where('ongoing', 'selesai');
                 })->count();
 

@@ -12,13 +12,27 @@ class PlaceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $places = Place::with('city')->paginate(3);
+                $search = $request->input('search');
+                $perPage = $request->input('perPage', 10);
 
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $places], 200);
+                $query = Place::query()->with('city');
+
+                if ($search) {
+                    $query->where('place', 'LIKE', "%$search%");
+                }
+
+                $places = $query->paginate($perPage);
+
+                return response()->json([
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data success',
+                    'data' => $places,
+                ], 200);
             } else {
                 abort(403);
             }

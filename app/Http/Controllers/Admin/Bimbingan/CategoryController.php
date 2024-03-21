@@ -12,20 +12,28 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-            $categories = Category::whereHas('productType', function ($query) {
-                $query->where('type', 'LIKE', '%bimbingan%');
-            })->with('productType:id,type')->get();
+                $search = $request->input('search');
+                $perPage = $request->input('perPage', 10);
+                $categories = Category::whereHas('productType', function ($query) {
+                    $query->where('type', 'LIKE', '%bimbingan%');
+                });
 
-            return response()->json([
-                'status' => true,
-                'statusCode' => 200,
-                'message' => 'get data success',
-                'data' => $categories,
-            ], 200);
+                if ($search) {
+                    $categories->where('name', 'LIKE', "%$search%");
+                }
+
+                $categories = $categories->with('productType:id,type')->paginate($perPage);;
+
+                return response()->json([
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data success',
+                    'data' => $categories,
+                ], 200);
             } else {
                 abort(403);
             }
