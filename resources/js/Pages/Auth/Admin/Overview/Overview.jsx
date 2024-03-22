@@ -26,32 +26,18 @@ import "@/script/momentCustomLocale";
 
 export default function Overview ({ auth }) {
     const [isLoading, setIsLoading] = useState(false);
+    const currency = Intl.NumberFormat("id-ID");
 
-    // Data's Date Range
-    const [dateRange, setDateRange] = useState({
-        startDate: null,
-        endDate: null
-    });
-
-    const dateRangePickerHandler = (range) => {
-        setIsLoading(true);
-        setTimeout(() => setIsLoading(false), 3000);
-        setDateRange(range);
-        const x = moment(range.startDate);
-        const y = moment(range.endDate);
-        const diff = x.diff(y, 'days');
-        if (diff >= -30) {
-            console.log(diff);
-        } else {
-            alert('Range tanggal maksimum 1 bulan!')
-        }
-    }
+    const [totalEarning, setTotalEarning] = useState(23516400);
+    const [totalVisitor, setTotalVisitor] = useState(312);
+    const [totalOrder, setTotalOrder] = useState(211);
+    const [totalCheckout, setTotalCheckout] = useState(187);
 
     // Click & Views
-    const barLabels = ['29', '30', '31', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', ];
+    const [barLabels, setBarLabels] = useState(['29', '30', '31', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', ]);
 
-    const [clickData, setClickData] = useState(barLabels.map(i => faker.datatype.number({ min: 50, max: 200 })))
-    const [viewsData, setViewsData] = useState(barLabels.map(i => faker.datatype.number({ min: 50, max: 200 })))
+    const [clickData, setClickData] = useState(barLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
+    const [viewsData, setViewsData] = useState(barLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
 
     ChartJS.register(
         Title,
@@ -142,24 +128,24 @@ export default function Overview ({ auth }) {
     };
 
     // Top Selling
-    const topSellingData = [
+    const [topSellingData, setTopSellingData] = useState([
         {
             name: "Dibimbing Sekali Online 30 Menit",
-            amount: 50,
+            amount: Math.round(Math.random()*100),
         },
         {
             name: "Dibimbing Sekali Offline 45 Menit",
-            amount: 41,
+            amount: Math.round(Math.random()*100),
         },
         {
             name: "Desk Review",
-            amount: 24
+            amount: Math.round(Math.random()*100)
         },
         {
             name: "Dibimbing Tuntas",
-            amount: 2,
+            amount: Math.round(Math.random()*100),
         },
-    ];
+    ].sort((x, y) => x.amount > y.amount ? -1 : 1));
 
     // Recent Payment
     const [recentPaymentData, setRecentPaymentData] = useState([
@@ -223,11 +209,12 @@ export default function Overview ({ auth }) {
         []
     );
 
-    const table = useMaterialReactTable({
+    const tableOptions = useMaterialReactTable({
         columns,
         data: recentPaymentData, //must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
         enableTopToolbar: false,
         enableBottomToolbar: false,
+        enableColumnActions: false,
         muiTablePaperProps: {
             elevation: 0,
             sx: {
@@ -257,128 +244,81 @@ export default function Overview ({ auth }) {
         },
     });
 
+    // Data's Date Range
+    const [dateRange, setDateRange] = useState({
+        startDate: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+        endDate: moment().format('YYYY-MM-DD')
+    });
+
+    const dateRangeHandler = (range) => {
+        const x = moment(range.startDate);
+        const y = moment(range.endDate);
+        const diff = x.diff(y, 'days');
+
+        if (diff >= -30) {
+            setIsLoading(true);
+
+            setTimeout(() => {
+                let tempBarLabels = [];
+                tempBarLabels.push(x.format('DD'));
+                if (diff) {
+                    for (let i = 1; i <= -diff; i++) {
+                        tempBarLabels.push(x.add(1, 'day').format('DD'));
+                    }
+                }
+                console.log(tempBarLabels);
+
+                let tempTopSellingData = [
+                    {
+                        name: "Dibimbing Sekali Online 30 Menit",
+                        amount: Math.round(Math.random()*100),
+                    },
+                    {
+                        name: "Dibimbing Sekali Offline 45 Menit",
+                        amount: Math.round(Math.random()*100),
+                    },
+                    {
+                        name: "Desk Review",
+                        amount: Math.round(Math.random()*100)
+                    },
+                    {
+                        name: "Dibimbing Tuntas",
+                        amount: Math.round(Math.random()*100),
+                    },
+                ].sort((x, y) => x.amount > y.amount ? -1 : 1)
+
+                setDateRange(range);
+                setBarLabels(tempBarLabels);
+                setClickData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
+                setViewsData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
+                setTopSellingData(tempTopSellingData);
+                setIsLoading(false);
+            }, 3000);
+        } else {
+            alert('Range tanggal maksimum 1 bulan!');
+        }
+    }
+
     return (
         <DashboardLayout title="Overview" role="admin" auth={auth}>
             <div className="relative">
-                {isLoading &&
-                    <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
-                        <img src={logo} alt="Goals Academy" className="w-[6vw] h-[6vw] animate-bounce" />
-                    </div>
-                }
+                {isLoading && <LoadingUI />}
                 <div className="flex justify-end mb-[2vw]">
-                    <GoalsButton variant="default" className="relative w-[8.35vw] h-[2.1vw] md:px-[.1vw] md:py-[0vw] flex justify-center items-center gap-[.4vw] md:text-[.7vw] border-1 rounded-[.4vw]" activeClassName="">
-                        <Datepicker
-                            value={dateRange}
-                            onChange={dateRangePickerHandler}
-                            showShortcuts={true}
-                            primaryColor="indigo"
-                            inputClassName="w-full bg-transparent border-transparent text-transparent placeholder:text-transparent focus:ring-0 focus:border-0 rounded-[.4vw] text-[.83vw] p-[.5vw] leading-tight cursor-pointer"
-                            containerClassName="absolute"
-                            toggleClassName="hidden"
-                            popoverDirection="left"
-                        />
-                        <FaRegCalendar className="text-[1vw]" /> Select Date
-                    </GoalsButton>
+                    <DateRangePicker value={dateRange} onChange={dateRangeHandler} />
                 </div>
                 <div className="relative flex flex-col gap-[.73vw]">
                     <div className="flex justify-between">
-                        <Card className="relative w-[50vw] h-[15.53vw]">
-                            <h4 className="absolute font-sans font-medium text-[1vw] mt-[.3vw]">Total Views & Clicks</h4>
-                            <Bar options={barOptions} data={clickViewsData} className="cursor-pointer" />
-                        </Card>
+                        <ClickViewsChart options={barOptions} data={clickViewsData} />
                         <div className="w-[25.1vw] grid grid-cols-2 gap-[.94vw] text-[.83vw]">
-                            <Card className="flex justify-between">
-                                <div className="h-full flex flex-col justify-between">
-                                    <p className="font-sans">Earnings (IDR)</p>
-                                    <div>
-                                        <p className="font-poppins font-bold text-[1.25vw]">123</p>
-                                        <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
-                                            <FiTrendingUp className="text-[1vw]" />
-                                            <span>5,6%</span>
-                                            <span className="text-light-grey">+12 Today</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Card>
-                            <Card className="flex justify-between">
-                                <div className="h-full flex flex-col justify-between">
-                                    <p className="font-sans">Visitor</p>
-                                    <div>
-                                        <p className="font-poppins font-bold text-[1.25vw]">123</p>
-                                        <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
-                                            <FiTrendingUp className="text-[1vw]" />
-                                            <span>5,6%</span>
-                                            <span className="text-light-grey">+12 Today</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="w-[2.6vw] h-[2.6vw] rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
-                                    <IoRocketSharp className="text-[1vw]" />
-                                </div>
-                            </Card>
-                            <Card className="flex justify-between">
-                                <div className="h-full flex flex-col justify-between">
-                                    <p className="font-sans">Total Order</p>
-                                    <div>
-                                        <p className="font-poppins font-bold text-[1.25vw]">123</p>
-                                        <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
-                                            <FiTrendingUp className="text-[1vw]" />
-                                            <span>5,6%</span>
-                                            <span className="text-light-grey">+12 Today</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="w-[2.6vw] h-[2.6vw] rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
-                                    <FaCartShopping className="text-[1vw]" />
-                                </div>
-                            </Card>
-                            <Card className="flex justify-between">
-                                <div className="h-full flex flex-col justify-between">
-                                    <p className="font-sans">Checkout User</p>
-                                    <div>
-                                        <p className="font-poppins font-bold text-[1.25vw]">123</p>
-                                        <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
-                                            <FiTrendingUp className="text-[1vw]" />
-                                            <span>5,6%</span>
-                                            <span className="text-light-grey">+12 Today</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="w-[2.6vw] h-[2.6vw] rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
-                                    <FaGlobe className="text-[1vw]" />
-                                </div>
-                            </Card>
+                            <InfoCard title="Earning (IDR)" data={currency.format(totalEarning)} percentage={5.6} grow={12} />
+                            <InfoCard title="Visitor" data={totalVisitor} percentage={5.6} grow={12} icon={<IoRocketSharp className="text-[1vw]" />} />
+                            <InfoCard title="Total Order" data={totalOrder} percentage={5.6} grow={12} icon={<FaCartShopping className="text-[1vw]" />} />
+                            <InfoCard title="Checkout User" data={totalCheckout} percentage={5.6} grow={12} icon={<FaGlobe className="text-[1vw]" />} />
                         </div>
                     </div>
                     <div className="flex justify-between text-[.83vw]">
-                        <Card className="w-[52.4vw] space-y-[1.5vw]">
-                            <div className="flex items-center justify-between">
-                                <h4 className="font-sans font-medium text-[1vw]">Recent Payment</h4>
-                                <div><FiLoader className="text-[1.25vw]" /></div>
-                            </div>
-                            <MaterialReactTable table={table} />
-                        </Card>
-                        <Card className="w-[23vw] space-y-[1.5vw]">
-                            <div className="flex items-center justify-between">
-                                <h4 className="font-sans font-medium text-[1vw]">Top Selling</h4>
-                            </div>
-                            <div className="grid gap-[1.5vw]">
-                                {topSellingData.map(({name, amount}, index) => {
-                                    const highestAmount = Math.max(...topSellingData.map(i => i.amount));
-                                    return (
-                                        <div key={index} className="space-y-[.5vw]">
-                                            <div className="flex items-center justify-between">
-                                                <span>{name}</span>
-                                                <span>{amount}</span>
-                                            </div>
-                                            <div className="w-full h-[.6vw] bg-green-100 rounded-full overflow-hidden">
-                                                <div style={{ width: amount/highestAmount*100+'%' }} className="h-full bg-green-500 animate-slideRight duration-300"></div>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        </Card>
+                        <RecentPaymentTable options={tableOptions} />
+                        <TopSellingInfo data={topSellingData} />
                     </div>
                 </div>
             </div>
@@ -386,8 +326,104 @@ export default function Overview ({ auth }) {
     )
 }
 
+function ClickViewsChart ({ options, data }) {
+    return (
+        <Card className="relative w-[50vw] h-[15.53vw]">
+            <h4 className="absolute font-sans font-medium text-[1vw] mt-[.3vw]">Total Views & Clicks</h4>
+            <Bar options={options} data={data} className="cursor-pointer" />
+        </Card>
+    )
+}
+
+function RecentPaymentTable ({ options }) {
+    return (
+        <Card className="w-[52.4vw] space-y-[1.5vw]">
+            <div className="flex items-center justify-between">
+                <h4 className="font-sans font-medium text-[1vw]">Recent Payment</h4>
+                <div><FiLoader className="text-[1.25vw]" /></div>
+            </div>
+            <MaterialReactTable table={options} />
+        </Card>
+    )
+}
+
+function TopSellingInfo ({ data }) {
+    return (
+        <Card className="w-[23vw] space-y-[1.5vw]">
+            <div className="flex items-center justify-between">
+                <h4 className="font-sans font-medium text-[1vw]">Top Selling</h4>
+            </div>
+            <div className="grid gap-[1.5vw]">
+                {data.map(({name, amount}, index) => {
+                    const highestAmount = Math.max(...data.map(i => i.amount));
+                    return (
+                        <div key={index} className="space-y-[.5vw]">
+                            <div className="flex items-center justify-between">
+                                <span>{name}</span>
+                                <span>{amount}</span>
+                            </div>
+                            <div className="w-full h-[.6vw] bg-green-100 rounded-full overflow-hidden">
+                                <div style={{ width: amount/highestAmount*100+'%' }} className="h-full bg-green-500 animate-slideRight duration-300"></div>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+        </Card>
+    )
+}
+
+function InfoCard ({ title, data, percentage, grow, icon }) {
+    return (
+        <Card className="flex justify-between">
+            <div className="h-full flex flex-col justify-between">
+                <p className="font-sans">{title}</p>
+                <div>
+                    <p className="font-poppins font-bold text-[1.25vw]">{data}</p>
+                    <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
+                        <FiTrendingUp className="text-[1vw]" />
+                        <span>{percentage}%</span>
+                        <span className="text-light-grey">{grow >= 0 ? '+' : '-'}{grow} Today</span>
+                    </div>
+                </div>
+            </div>
+            {icon &&
+                <div className="w-[2.6vw] h-[2.6vw] rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
+                    {icon}
+                </div>
+            }
+        </Card>
+    )
+}
+
+function DateRangePicker ({ value, onChange }) {
+    return (
+        <GoalsButton variant="default" className="relative w-[8.35vw] h-[2.1vw] md:px-[.1vw] md:py-[0vw] flex justify-center items-center gap-[.4vw] md:text-[.7vw] border-1 rounded-[.4vw]" activeClassName="">
+            <Datepicker
+                value={value}
+                onChange={onChange}
+                showShortcuts={true}
+                primaryColor="indigo"
+                inputClassName="w-full bg-transparent border-transparent text-transparent placeholder:text-transparent focus:ring-0 focus:border-0 rounded-[.4vw] text-[.83vw] p-[.5vw] leading-tight cursor-pointer"
+                containerClassName="absolute"
+                toggleClassName="hidden"
+                popoverDirection="down"
+            />
+            <FaRegCalendar className="text-[1vw]" /> Select Date
+        </GoalsButton>
+    )
+}
+
 function Card ({ className, ...props }) {
     return (
         <div {...props} className={`bg-white shadow-bottom-right rounded-[.625vw] py-[1.25vw] px-[1.67vw] ${className}`}></div>
+    )
+}
+
+function LoadingUI () {
+    return (
+        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+            <img src={logo} alt="Goals Academy" className="w-[6vw] h-[6vw] animate-bounce" />
+        </div>
     )
 }
