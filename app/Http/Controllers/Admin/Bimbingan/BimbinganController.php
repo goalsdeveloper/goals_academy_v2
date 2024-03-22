@@ -6,6 +6,7 @@ use App\Models\Products;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class BimbinganController extends Controller
 {
@@ -64,7 +65,7 @@ class BimbinganController extends Controller
                     return $product;
                 });
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/Bimbingan/Product', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',

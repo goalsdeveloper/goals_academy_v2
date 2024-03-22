@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
@@ -28,7 +29,7 @@ class CategoryController extends Controller
 
                 $categories = $categories->with('productType:id,type')->paginate($perPage);;
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/Bimbingan/Category', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',

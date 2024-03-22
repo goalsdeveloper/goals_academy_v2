@@ -31,7 +31,7 @@ class OverviewController extends Controller
                     $totalOrder = Order::where('status', '=', 'Success')->count();
                     $totalCheckout = Order::count();
                     $totalEarning = (int)Order::where('status', '=', 'Success')->sum('unit_price');
-                    return response()->json([
+                    return Inertia::render('Auth/Admin/Overview/Overview', [
                         'status' => true,
                         'statusCode' => 200,
                         'message' => 'get data category success',
@@ -53,7 +53,7 @@ class OverviewController extends Controller
                     $totalOrder = Order::whereDate('created_at', $date)->where('status', '=', 'Success')->count();
                     $totalCheckout = Order::whereDate('created_at', $date)->count();
                     $totalEarning = (int)Order::whereDate('created_at', $date)->where('status', '=', 'Success')->sum('unit_price');
-                    return response()->json([
+                    return Inertia::render('Auth/Admin/Overview/Overview', [
                         'status' => true,
                         'statusCode' => 200,
                         'message' => 'get data category success',

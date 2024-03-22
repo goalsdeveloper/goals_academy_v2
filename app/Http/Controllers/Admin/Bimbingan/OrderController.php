@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class OrderController extends Controller
 {
@@ -34,7 +36,7 @@ class OrderController extends Controller
 
                 $orders = $query->paginate($perPage);
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/Bimbingan/Order', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data history success',
