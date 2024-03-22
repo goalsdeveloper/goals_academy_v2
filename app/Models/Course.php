@@ -61,6 +61,10 @@ class Course extends Model
     {
         return $this->belongsToMany(FileUpload::class);
     }
+    public function productReview()
+    {
+        return $this->hasOne(ProductReview::class);
+    }
 
     public function routeNotificationForMail($notification)
     {
@@ -83,5 +87,9 @@ class Course extends Model
     public function topic()
     {
         return $this->belongsTo(Topic::class);
+    }
+    public function place()
+    {
+        return $this->belongsTo(Place::class);
     }
 }

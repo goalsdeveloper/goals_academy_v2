@@ -94,6 +94,7 @@ class HandleMidtransCallbackController extends Controller
                                 'mime_type' => $key['mime_type'],
                                 'size' => $key['size'],
                                 'path' => '/file_uploads/' . $key['file_name'],
+                                'user_id' => $parentCourse->user_id,
                             ]);
                         }
                     }

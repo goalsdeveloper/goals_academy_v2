@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Webinar;
 
 use App\Models\Products;
 use App\Http\Controllers\Controller;
@@ -13,23 +13,38 @@ class WebinarController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            if (Auth::user()->user_role == "admin") {  
-                if ($bimbingan->product_type_id !== 3) {
-                    throw new \Exception('Invalid object type');
-                }
+            if (Auth::user()->user_role == "admin") {
 
-                $webinar = Products::with('category', 'productType')
+                $perPage = $request->input('perPage', 10);
+                $search = $request->input('search');
+
+                $query = Products::with('category', 'productType')
                     ->whereHas('productType', function ($query) {
                         $query->where('type', 'webinar');
-                    })
-                    ->get();
+                    });
 
-                $webinar->transform(function ($product) {
-                    $product->facilities = json_decode($product->facilities, true);
-                    $product->form_config = json_decode($product->form_config, true);
+                if ($search) {
+                    $query->where(function ($query) use ($search) {
+                        $query->where('name', 'LIKE', "%$search%")
+                            ->orWhereHas('category', function ($query) use ($search) {
+                                $query->where('name', 'LIKE', "%$search%");
+                            });
+                    });
+                }
+
+                $webinar = $query->paginate($perPage);
+
+                $webinar->getCollection()->transform(function ($product) {
+
+                    if (is_string($product->facilities)) {
+                        $product->facilities = json_decode($product->facilities, true);
+                    }
+                    if (is_string($product->form_config)) {
+                        $product->form_config = json_decode($product->form_config, true);
+                    }
                     return $product;
                 });
 
@@ -37,7 +52,7 @@ class WebinarController extends Controller
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
-                    'data' => $webinar->values()->toArray(),
+                    'data' => $webinar,
                 ], 200);
             } else {
                 abort(403);
@@ -143,21 +158,28 @@ class WebinarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Products $webinar)
+    public function show(Products $product)
     {
         try {
             if (Auth::user()->user_role == "admin") {
 
-                if (strcasecmp($webinar->productType->type, "webinar") !== 0) {
+                if (strcasecmp($product->productType->type, "webinar") !== 0) {
                     return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Product not found'], 404);
                 }
 
-                $webinar->load('category', 'productType');
-                $webinar->facilities = json_decode($webinar->facilities, true);
-                $webinar->form_config = json_decode($webinar->form_config, true);
-                $webinar->webinar_properties = json_decode($webinar->webinar_properties, true);
+                $product->load('category', 'productType');
+                if (is_string($product->facilities)) {
+                    $product->facilities = json_decode($product->facilities);
+                }
 
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $webinar], 200);
+                if (is_string($product->form_config)) {
+                    $product->form_config = json_decode($product->form_config);
+                }
+
+                if (is_string($product->webinar_properties)) {
+                    $product->webinar_properties = json_decode($product->webinar_properties);
+                }
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $product], 200);
             } else {
                 abort(403);
             }
@@ -175,7 +197,7 @@ class WebinarController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Products $products)
+    public function edit(Products $product)
     {
         //
     }
@@ -183,11 +205,11 @@ class WebinarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Products $webinar)
+    public function update(Request $request, Products $product)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                if ($webinar->product_type_id !== 3) {
+                if ($product->product_type_id !== 3) {
                     throw new \Exception('Invalid object type');
                 }
 
@@ -222,13 +244,13 @@ class WebinarController extends Controller
 
                 if ($request->hasFile('product_image')) {
                     // Hapus foto lama jika ada
-                    if ($webinar->product_image) {
-                        Storage::delete($webinar->product_image);
+                    if ($product->product_image) {
+                        Storage::delete($product->product_image);
                     }
                     $validateData['product_image'] = $request->file('product_image')->store('resource/img/program/');
                 }
 
-                $webinar->update($validateData);
+                $product->update($validateData);
 
                 return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update webinar success'], 200);
             } else {
@@ -248,19 +270,19 @@ class WebinarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Products $webinar)
+    public function destroy(Products $product)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                if ($webinar->product_type_id !== 3) {
+                if ($product->product_type_id !== 3) {
                     throw new \Exception('Invalid object type');
                 }
 
-                if ($webinar->product_image) {
-                    Storage::delete($webinar->product_image);
+                if ($product->product_image) {
+                    Storage::delete($product->product_image);
                 }
 
-                $webinar->delete();
+                $product->delete();
 
                 return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete webinar success'], 200);
             } else {

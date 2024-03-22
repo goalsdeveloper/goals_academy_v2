@@ -38,4 +38,8 @@ class Category extends Model
     {
         return $this->hasMany(Products::class);
     }
+    public function productType(): BelongsTo
+    {
+        return $this->belongsTo(ProductType::class);
+    }
 }

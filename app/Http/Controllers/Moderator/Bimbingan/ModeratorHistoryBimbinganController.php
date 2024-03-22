@@ -1,43 +1,55 @@
 <?php
 
-namespace App\Http\Controllers\Moderator;
+namespace App\Http\Controllers\Moderator\Bimbingan;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
-use Exception;
-use Illuminate\Database\QueryException;
+use App\Models\OrderHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class OverviewController extends Controller
+class ModeratorHistoryBimbinganController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $totalOrder = Order::where('status', '=', 'Success')->count();
-                $totalChekout = Order::count();
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Get data category success', 'total_order' => $totalOrder, 'total_checkout' => $totalChekout], 200);
+                $perPage = $request->input('perPage', 10);
+                $search = $request->input('search');
+
+                $query = OrderHistory::with(['order.products:id,name', 'order.user:id,name', 'order.course:id,parent_id,location,date,time', 'order.course.child'])
+                ->where('status', 'selesai');
+
+                if ($search) {
+                    $query->whereHas('order.user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'LIKE', "%$search%");
+                    });
+                }
+
+                $order_history = $query->paginate($perPage);
+
+                return response()->json([
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data history success',
+                    'data' => [
+                        'order_history' => $order_history,
+                    ],
+                ], 200);
             } else {
                 abort(403);
             }
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
                 'statusCode' => 500,
-                'message' => 'An error occurred while fetching data: ' . $e->getMessage(),
-            ], 500);
-        } catch (Exception $e) {
-            return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+                'message' => 'Error: ' . $e->getMessage(),
             ], 500);
         }
     }
+
 
     /**
      * Show the form for creating a new resource.

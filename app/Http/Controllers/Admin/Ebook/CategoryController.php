@@ -1,32 +1,57 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Ebook;
 
-use App\Models\Category;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $category = Category::get();
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $category], 200);
+                $search = $request->input('search');
+                $perPage = $request->input('perPage', 10);
+                $categories = Category::whereHas('productType', function ($query) {
+                    $query->where('type', 'LIKE', '%e-book%');
+                });
+
+                if ($search) {
+                    $categories->where('name', 'LIKE', "%$search%");
+                }
+
+                $categories = $categories->with('productType:id,type')->paginate($perPage);;
+
+                return response()->json([
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data success',
+                    'data' => $categories,
+                ], 200);
             } else {
                 abort(403);
             }
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to retrieve data. Internal Server Error'], 500);
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'Failed to retrieve data. Internal Server Error'
+            ], 500);
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'Internal Server Error' . $e->getMessage()
+            ], 500);
         }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -51,6 +76,7 @@ class CategoryController extends Controller
                 ]);
 
                 $category = new Category();
+                $category->product_type_id = 2; // 2 karena e-book
                 $category->name = $validateData['name'];
                 $category->slug = $validateData['slug'];
                 $category->is_visible = $validateData['is_visible'];
@@ -74,7 +100,7 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show(string $id)
     {
         //
     }
@@ -82,7 +108,7 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit(string $id)
     {
         //
     }
@@ -94,12 +120,14 @@ class CategoryController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
+                $category->product_type_id = 2;
                 $validateData = $request->validate([
                     'name' => 'string',
                     'slug' => 'string',
                     'is_visible' => 'boolean',
                     'description' => 'string',
                 ]);
+
 
                 $category = Category::findOrFail($id);
 
@@ -119,6 +147,7 @@ class CategoryController extends Controller
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
