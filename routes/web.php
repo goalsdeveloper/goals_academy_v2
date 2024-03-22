@@ -166,7 +166,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::resource('affiliate', AffiliateController::class)->except(['create', 'store', 'destroy', 'edit']);
     });
     Route::prefix('career')->group(function () {
-        Route::resource('job', JobController::class)->except(['update', 'create', 'store', 'destroy', 'edit']);
+        Route::resource('job', JobController::class)->except(['create', 'edit']);
         Route::resource('participant', ParticipantController::class)->except(['create', 'store', 'destroy', 'edit']);
     });
     Route::resource('overview', AdminOverviewController::class)->except(['create', 'edit']);
