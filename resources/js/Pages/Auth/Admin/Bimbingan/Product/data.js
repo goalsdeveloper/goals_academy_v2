@@ -1,0 +1,72 @@
+export const data = [
+    {
+        id: 1,
+        gambar: "https://via.placeholder.com/150",
+        nama: "Product 1",
+        visibilitas: true,
+        harga: "Rp 100.000",
+    },
+    {
+        id: 2,
+        gambar: "https://via.placeholder.com/150",
+        nama: "Product 2",
+        visibilitas: true,
+        harga: "Rp 200.000",
+    },
+    {
+        id: 3,
+        gambar: "https://via.placeholder.com/150",
+        nama: "Product 3",
+        visibilitas: true,
+        harga: "Rp 300.000",
+    },
+    {
+        id: 4,
+        gambar: "https://via.placeholder.com/150",
+        nama: "Product 4",
+        visibilitas: true,
+        harga: "Rp 400.000",
+    },
+    {
+        id: 5,
+        gambar: "https://via.placeholder.com/150",
+        nama: "Product 5",
+        visibilitas: true,
+        harga: "Rp 500.000",
+    },
+    {
+        id: 6,
+        gambar: "https://via.placeholder.com/150",
+        nama: "Product 6",
+        visibilitas: true,
+        harga: "Rp 600.000",
+    },
+    {
+        id: 7,
+        gambar: "https://via.placeholder.com/150",
+        nama: "Product 7",
+        visibilitas: true,
+        harga: "Rp 700.000",
+    },
+    {
+        id: 8,
+        gambar: "https://via.placeholder.com/150",
+        nama: "Product 8",
+        visibilitas: true,
+        harga: "Rp 800.000",
+    },
+    {
+        id: 9,
+        gambar: "https://via.placeholder.com/150",
+        nama: "Product 9",
+        visibilitas: true,
+        harga: "Rp 900.000",
+    },
+    {
+        id: 10,
+        gambar: "https://via.placeholder.com/150",
+        nama: "Product 10",
+        visibilitas: true,
+        harga: "Rp 1.000.000",
+    }
+]

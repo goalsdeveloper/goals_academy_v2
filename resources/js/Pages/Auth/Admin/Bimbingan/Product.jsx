@@ -1,3 +1,4 @@
+import GoalsAdminTable from "@/Components/elements/GoalsAdminTable";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Link } from "@inertiajs/react";
@@ -12,8 +13,12 @@ export default function Product({ auth }) {
             role="admin"
             auth={auth}
         >
-            <SubHeading />
-            {/* <Breadcrumb /> */}
+            <div className="space-y-[1.6vw]">
+                <SubHeading />
+                {/* <Breadcrumb /> */}
+
+                <GoalsAdminTable />
+            </div>
         </DashboardLayout>
     );
     ``;

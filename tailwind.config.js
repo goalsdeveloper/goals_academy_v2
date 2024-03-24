@@ -48,6 +48,9 @@ export default {
                     "10": "#FFF8E5",
                     "50": "#FFBD00"
                 },
+                "danger": {
+                    "40": "#FF3334"
+                },
                 'primary': '#FF6420',
                 'primary-10': '#FFEDE5',
                 'primary-20': '#FFCAB2',

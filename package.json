@@ -27,6 +27,7 @@
         "@mui/material": "^5.14.13",
         "@mui/styled-engine-sc": "^6.0.0-alpha.1",
         "@mui/x-date-pickers": "^6.16.1",
+        "@tanstack/react-table": "^8.15.0",
         "chart.js": "^4.4.2",
         "moment": "^2.29.4",
         "react-chartjs-2": "^5.2.0",
