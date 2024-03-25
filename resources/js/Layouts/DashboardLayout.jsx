@@ -5,7 +5,7 @@ import logo from "/resources/img/icon/goals-6.svg";
 import GoalsButton from "@/Components/GoalsButton";
 import TECollapseItem from "@/Components/TECollapseItem";
 import { TECollapse } from "tw-elements-react";
-import { FaChevronDown, FaRegBell } from "react-icons/fa6";
+import { FaChevronDown, FaRegBell,FaRegCalendar } from "react-icons/fa6";
 import { FiGrid, FiShoppingCart, FiUser, FiBriefcase } from "react-icons/fi";
 import { TbLayoutGridAdd } from "react-icons/tb";
 import { TfiDropbox } from "react-icons/tfi";
@@ -14,9 +14,9 @@ import { RiBarChart2Line } from "react-icons/ri";
 import { GrTag, GrLocation } from "react-icons/gr";
 import { IoSettingsOutline } from "react-icons/io5";
 import { ImExit } from "react-icons/im";
-import { MdOutlineEventNote } from "react-icons/md";
+import { MdOutlineEventNote, MdHistory } from "react-icons/md";
 
-export default function DashboardLayout ({ title, subtitle, role, auth, children }) {
+export default function DashboardLayout ({ auth, title, subtitle, role, children }) {
     let navConfig;
 
     switch (role) {
@@ -225,6 +225,64 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                 },
             ];
             break;
+        case "moderator":
+            navConfig = [
+                {
+                    name: "Overview",
+                    href: "/moderator/overview",
+                    icon: <FiGrid className="text-[1vw]" />,
+                    isActive: title == "Overview",
+                },
+                {
+                    name: "Bimbingan",
+                    href: "",
+                    icon: "",
+                    isActive: false,
+                    branches: [
+                        {
+                            name: "Recent Order",
+                            href: "/moderator/bimbingan/order",
+                            icon: <FiShoppingCart className="text-[1vw]" />,
+                            isActive: title == "Bimbingan" && subtitle == "Recent Order",
+                        },
+                        {
+                            name: "Progress",
+                            href: "/moderator/bimbingan/progress",
+                            icon: <MdHistory className="text-[1vw]" />,
+                            isActive: title == "Bimbingan" && subtitle == "Progress",
+                        },
+                        {
+                            name: "History",
+                            href: "/moderator/bimbingan/history",
+                            icon: <MdOutlineEventNote className="text-[1vw]" />,
+                            isActive: title == "Bimbingan" && subtitle == "History",
+                        },
+                    ],
+                    collapsed: true,
+                },
+                {
+                    name: "Tutor",
+                    href: "",
+                    icon: "",
+                    isActive: false,
+                    branches: [
+                        {
+                            name: "Tutor List",
+                            href: "/moderator/tutor/tutor_list",
+                            icon: <FiUser className="text-[1vw]" />,
+                            isActive: title == "Tutor" && subtitle == "Tutor List",
+                        },
+                        {
+                            name: "Schedule",
+                            href: "/moderator/tutor/schedule",
+                            icon: <FaRegCalendar className="text-[1vw]" />,
+                            isActive: title == "Tutor" && subtitle == "Schedule",
+                        },
+                    ],
+                    collapsed: true,
+                },
+            ];
+            break;
 
         default:
             break;
@@ -244,7 +302,7 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
             const x = navConfig.findIndex(i => i.name == title);
             navToggleHandler(x);
         }
-    }, [])
+    }, []);
 
     return (
         <main className="relative flex bg-gray-50 text-dark">
@@ -259,7 +317,7 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                         />
                     </Link>
                 </div>
-                <div className="flex flex-col gap-[1.25vw] py-[1.25vw] ps-[1.67vw] pe-[2.1vw]">
+                <nav className="flex flex-col gap-[1.25vw] py-[1.25vw] ps-[1.67vw] pe-[2.1vw]">
                     {navConfig.map(({ name, href, icon, isActive, branches, collapsed }, index) => {
                         return (
                             <div key={index}>
@@ -278,13 +336,7 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                                                 <TECollapseItem className="gap-[.75vw]" breakClassName="hidden">
                                                     {branches.map(({ name, href, icon, isActive }, index) => {
                                                         return (
-                                                            <GoalsButton
-                                                                key={index}
-                                                                className="rounded-[.5vw] p-[1vw] gap-[.75vw] md:justify-start"
-                                                                activeClassName={isActive && "bg-white text-dark-indigo"}
-                                                                isLink={true}
-                                                                href={href}
-                                                            >{icon} {name}</GoalsButton>
+                                                            <NavItem key={index} name={name} href={href} icon={icon} isActive={isActive} />
                                                         )
                                                     })}
                                                 </TECollapseItem>
@@ -293,30 +345,19 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                                             <div className="grid gap-[.75vw] mt-[.85vw]">
                                                 {branches.map(({ name, href, icon, isActive }, index) => {
                                                     return (
-                                                        <GoalsButton
-                                                            key={index}
-                                                            className="rounded-[.5vw] p-[1vw] gap-[.75vw] md:justify-start"
-                                                            activeClassName={isActive && "bg-white text-dark-indigo"}
-                                                            isLink={true}
-                                                            href={href}
-                                                        >{icon} {name}</GoalsButton>
+                                                        <NavItem key={index} name={name} href={href} icon={icon} isActive={isActive} />
                                                     )
                                                 })}
                                             </div>
                                         )}
                                     </>
                                 ) : (
-                                    <GoalsButton
-                                        className="rounded-[.5vw] p-[1vw] gap-[.75vw] md:justify-start"
-                                        activeClassName={isActive && "bg-white text-dark-indigo"}
-                                        isLink={true}
-                                        href={href}
-                                    >{icon} {name}</GoalsButton>
+                                    <NavItem name={name} href={href} icon={icon} isActive={isActive} />
                                 )}
                             </div>
                         )
                     })}
-                </div>
+                </nav>
             </aside>
             <div className="relative w-full h-screen overflow-hidden">
                 <header className="absolute z-50 top-0 w-full h-[5.8vw] flex justify-between items-center bg-gray-50 px-[4.2vw] pt-[2.5vw] pb-[1.75vw] border-b-1">
@@ -332,5 +373,16 @@ export default function DashboardLayout ({ title, subtitle, role, auth, children
                 </div>
             </div>
         </main>
+    )
+}
+
+function NavItem ({ name, href, icon, isActive }) {
+    return (
+        <GoalsButton
+            className="rounded-[.5vw] p-[1vw] gap-[.75vw] md:justify-start"
+            activeClassName={isActive && "bg-white text-dark-indigo"}
+            isLink={true}
+            href={href}
+        >{icon} {name}</GoalsButton>
     )
 }

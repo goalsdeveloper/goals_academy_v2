@@ -12,7 +12,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-
+use Inertia\Inertia;
 
 class ModeratorOrderController extends Controller
 {
@@ -60,7 +60,7 @@ class ModeratorOrderController extends Controller
                     return $order;
                 });
 
-                return response()->json([
+                return Inertia::render('Auth/Moderator/Bimbingan/RecentOrder', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data history success',

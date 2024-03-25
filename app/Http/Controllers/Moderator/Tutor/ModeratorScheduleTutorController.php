@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Moderator\Tutor;
 
-use App\Http\Controllers\Controller;
-use App\Models\Course;
-use App\Models\User;
 use Exception;
-use Illuminate\Database\QueryException;
+use App\Models\User;
+use Inertia\Inertia;
+use App\Models\Course;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\QueryException;
 
 class ModeratorScheduleTutorController extends Controller
 {
@@ -27,7 +28,7 @@ class ModeratorScheduleTutorController extends Controller
                     ->whereNotNull('time')
                     ->get();
 
-                return response()->json([
+                return Inertia::render('Auth/Moderator/Tutor/Schedule', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'Get data schedule success',

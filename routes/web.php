@@ -154,7 +154,7 @@ Route::prefix('moderator')->middleware('auth')->group(function () {
         Route::resource('history', ModeratorHistoryBimbinganController::class)->except(['create', 'edit']);
     });
     Route::prefix('tutor')->group(function () {
-        Route::resource('tutorlist', ModeratorTutorController::class)->except(['create', 'edit']);
+        Route::resource('tutor_list', ModeratorTutorController::class)->except(['create', 'edit']);
         Route::resource('schedule', ModeratorScheduleTutorController::class)->except(['create', 'edit']);
     });
     Route::resource('overview', ModeratorOverviewController::class)->except(['create', 'edit']);
