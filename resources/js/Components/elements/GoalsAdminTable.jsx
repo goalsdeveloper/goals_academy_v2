@@ -3,25 +3,27 @@ import {
     createColumnHelper,
     flexRender,
     getCoreRowModel,
+    getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import {
-    FiCheckCircle,
-    FiEdit2,
-    FiEye,
-    FiTrash2
-} from "react-icons/fi";
+import { useState } from "react";
+import { FiCheckCircle, FiEdit2, FiEye, FiTrash2 } from "react-icons/fi";
+import { RxCaretDown, RxCaretSort, RxCaretUp } from "react-icons/rx";
 import GoalsTextInput from "./GoalsTextInput";
 
 const GoalsAdminTable = () => {
     const columnHelper = createColumnHelper();
 
+    const [sorting, setSorting] = useState([]);
+
     const columns = [
         columnHelper.accessor("checkbox", {
+            enableSorting: false,
             header: () => <input type="checkbox" name="" id="" />,
             cell: (info) => <input type="checkbox" name="" id="" />,
         }),
         columnHelper.accessor("gambar", {
+            enableSorting: false,
             header: () => "Gambar",
             cell: (info) => (
                 <img
@@ -36,17 +38,18 @@ const GoalsAdminTable = () => {
             cell: (info) => info.getValue(),
         }),
         columnHelper.accessor("visibilitas", {
+            enableSorting: false,
             header: () => "Visibilitas",
             cell: (info) => (
                 <FiCheckCircle className="text-success-50 text-[1.2vw]" />
             ),
-
         }),
         columnHelper.accessor("harga", {
             header: () => "Harga",
             cell: (info) => info.getValue(),
         }),
         columnHelper.accessor("action", {
+            enableSorting: false,
             header: () => "",
             cell: (info) => (
                 <ul className="flex gap-[.8vw]">
@@ -73,8 +76,13 @@ const GoalsAdminTable = () => {
     const table = useReactTable({
         data,
         columns,
+        state: {
+            sorting,
+        },
         debugTable: true,
         getCoreRowModel: getCoreRowModel(),
+        onSortingChange: setSorting,
+        getSortedRowModel: getSortedRowModel(),
     });
     return (
         <div className="bg-white border w-full rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
@@ -82,21 +90,6 @@ const GoalsAdminTable = () => {
 
             <table className="w-full">
                 <thead>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                        <tr key={headerGroup.id}>
-                            {headerGroup.headers.map((column) => (
-                                <th
-                                    key={column.id}
-                                    className="text-start px-[1.2vw] py-[.5vw]"
-                                >
-                                    {flexRender(
-                                        column.column.columnDef.header,
-                                        column.getContext()
-                                    )}
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
                     {/* <tr className="bg-[#F8F8FC]">
                         <th className="w-fit p-[.8vw]">
                         <input type="checkbox" name="" id="" />
@@ -117,22 +110,84 @@ const GoalsAdminTable = () => {
                             Nama Kategori
                         </th>
                     </tr> */}
+
+                    {table.getHeaderGroups().map((headerGroup) => (
+                        <tr key={headerGroup.id}>
+                            {headerGroup.headers.map((header) => {
+                                return (
+                                    <th
+                                        key={header.id}
+                                        colSpan={header.colSpan}
+                                        className="text-start px-[1.2vw] py-[.5vw] bg-[#F8F8FC]"
+                                    >
+                                        {header.isPlaceholder ? null : (
+                                            <div
+                                                className={`${
+                                                    header.column.getCanSort()
+                                                        ? "cursor-pointer select-none"
+                                                        : ""
+                                                } flex items-center justify-between`}
+                                                onClick={header.column.getToggleSortingHandler()}
+                                                title={
+                                                    header.column.getCanSort()
+                                                        ? header.column.getNextSortingOrder() ===
+                                                          "asc"
+                                                            ? "Sort ascending"
+                                                            : header.column.getNextSortingOrder() ===
+                                                              "desc"
+                                                            ? "Sort descending"
+                                                            : "Clear sort"
+                                                        : undefined
+                                                }
+                                            >
+                                                {flexRender(
+                                                    header.column.columnDef
+                                                        .header,
+                                                    header.getContext()
+                                                )}
+                                                {!header.column.getIsSorted() && header.column.getCanSort() && (
+                                                    <RxCaretSort />
+                                                )}
+                                                {{
+                                                    asc: <RxCaretUp />,
+                                                    desc: <RxCaretDown />,
+                                                }[
+                                                    header.column.getIsSorted()
+                                                ] ?? null}
+                                            </div>
+                                        )}
+                                    </th>
+                                );
+                            })}
+                        </tr>
+                    ))}
                 </thead>
                 <tbody>
                     {table.getRowModel().rows.map((row) => (
-                        <tr key={row.id}>
-                            {row.getVisibleCells().map((cell) => (
+                        <>
+                            {row.id == 0 && (
                                 <td
-                                    key={cell.id}
-                                    className="border-b px-[1.2vw] py-[.5vw]"
+                                    colSpan={99}
+                                    className="w-full py-[.5vw] px-[.8vw] bg-primary-10 h6 font-medium"
                                 >
-                                    {flexRender(
-                                        cell.column.columnDef.cell,
-                                        cell.getContext()
-                                    )}
+                                    Sekali Pertemuan
                                 </td>
-                            ))}
-                        </tr>
+                            )}
+
+                            <tr key={row.id}>
+                                {row.getVisibleCells().map((cell) => (
+                                    <td
+                                        key={cell.id}
+                                        className="border-b px-[1.2vw] py-[.5vw]"
+                                    >
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                        )}
+                                    </td>
+                                ))}
+                            </tr>
+                        </>
                     ))}
                     {/* <tr>
                         <td className="w-fit border-b text-center p-[.8vw]">
@@ -179,69 +234,69 @@ export const data = [
         gambar: "https://via.placeholder.com/150",
         nama: "Product 1",
         visibilitas: true,
-        harga: "Rp 100.000",
+        harga: 100000,
     },
     {
         id: 2,
         gambar: "https://via.placeholder.com/150",
         nama: "Product 2",
         visibilitas: true,
-        harga: "Rp 200.000",
+        harga: 200000,
     },
     {
         id: 3,
         gambar: "https://via.placeholder.com/150",
         nama: "Product 3",
         visibilitas: true,
-        harga: "Rp 300.000",
+        harga: 300000,
     },
     {
         id: 4,
         gambar: "https://via.placeholder.com/150",
         nama: "Product 4",
         visibilitas: true,
-        harga: "Rp 400.000",
+        harga: 400000,
     },
     {
         id: 5,
         gambar: "https://via.placeholder.com/150",
         nama: "Product 5",
         visibilitas: true,
-        harga: "Rp 500.000",
+        harga: 500000,
     },
     {
         id: 6,
         gambar: "https://via.placeholder.com/150",
         nama: "Product 6",
         visibilitas: true,
-        harga: "Rp 600.000",
+        harga: 600000,
     },
     {
         id: 7,
         gambar: "https://via.placeholder.com/150",
         nama: "Product 7",
         visibilitas: true,
-        harga: "Rp 700.000",
+        harga: 700000,
     },
     {
         id: 8,
         gambar: "https://via.placeholder.com/150",
         nama: "Product 8",
         visibilitas: true,
-        harga: "Rp 800.000",
+        harga: 800000,
     },
     {
         id: 9,
         gambar: "https://via.placeholder.com/150",
         nama: "Product 9",
         visibilitas: true,
-        harga: "Rp 900.000",
+        harga: 900000,
     },
     {
         id: 10,
         gambar: "https://via.placeholder.com/150",
         nama: "Product 10",
         visibilitas: true,
-        harga: "Rp 1.000.000",
+        harga: 1000000,
     },
 ];
