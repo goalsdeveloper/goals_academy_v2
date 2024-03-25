@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Marketing;
 
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class VoucherController extends Controller
 {
@@ -12,7 +13,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Auth/Admin/Marketing/Vouchers');
     }
 
     /**

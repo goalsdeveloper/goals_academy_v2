@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class TopicController extends Controller
 {
@@ -27,7 +28,7 @@ class TopicController extends Controller
 
                 $topics = $query->paginate($perPage);
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/Bimbingan/Topic', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data topic success',

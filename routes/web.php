@@ -117,18 +117,6 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
     }
 });
 
-// Admin Dashboard
-// Route::resource('admin/category', CategoryController::class)->middleware('auth');
-// Route::resource('admin/addon', AddOnController::class)->middleware('auth');
-// Route::resource('admin/users', UserController::class)->middleware('auth')->except(['update', 'create', 'store', 'destroy', 'edit']);
-// Route::resource('admin/tutorss', TutorController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
-// Route::resource('admin/place', PlaceController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
-// Route::resource('admin/city', CityController::class)->middleware('auth')->except(['create', 'store', 'destroy', 'edit']);
-// Route::resource('admin/bimbingan', BimbinganController::class)->middleware('auth')->except(['create', 'edit']);
-// Route::resource('admin/webinar', WebinarController::class)->middleware('auth')->except(['create', 'edit']);
-// Route::resource('admin/course', CourseController::class)->middleware('auth')->except(['create', 'edit']);
-// Route::resource('admin/overview', AdminOverviewController::class)->middleware('auth')->except(['create', 'edit']);
-
 Route::prefix('admin')->middleware('auth')->group(function () {
     Route::prefix('bimbingan')->group(function () {
         Route::resource('category', CategoryController::class);
@@ -159,9 +147,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::resource('tutor', TutorController::class)->except(['create', 'store', 'destroy', 'edit']);
         Route::resource('moderator', ModeratorController::class)->except(['create', 'store', 'destroy', 'edit']);
     });
-
     Route::prefix('marketing')->group(function () {
-        Route::resource('voucher', VoucherController::class)->except(['update', 'create', 'store', 'destroy', 'edit']);
+        Route::resource('vouchers', VoucherController::class)->except(['update', 'create', 'store', 'destroy', 'edit']);
         Route::resource('affiliate', AffiliateController::class)->except(['create', 'store', 'destroy', 'edit']);
     });
     Route::prefix('career')->group(function () {
@@ -187,62 +174,10 @@ Route::prefix('moderator')->middleware('auth')->group(function () {
     Route::resource('overview', ModeratorOverviewController::class)->except(['create', 'edit']);
 });
 
-// -----------------------------------------------------
-// Route List yang harus disiapkan untuk DASHBOARD ADMIN
-// -----------------------------------------------------
-
-Route::get('admin/statistic', function () {
-    return Inertia::render('Auth/Admin/Statistic/Statistic');
-});
 Route::get('/coba', function () {
     $analyticsData = Analytics::fetchVisitorsAndPageViews(Period::days(7));
     dd($analyticsData);
 });
-
-Route::get('admin/bimbingan/topic', function () {
-    return Inertia::render('Auth/Admin/Bimbingan/Topic');
-});
-
-Route::get('admin/ecourse/category', function () {
-    return Inertia::render('Auth/Admin/Ecourse/Category');
-});
-Route::get('admin/ecourse/product', function () {
-    return Inertia::render('Auth/Admin/Ecourse/Product');
-});
-Route::get('admin/ecourse/order', function () {
-    return Inertia::render('Auth/Admin/Ecourse/Order');
-});
-
-Route::get('admin/ebook/order', function () {
-    return Inertia::render('Auth/Admin/Ebook/Order');
-});
-
-Route::get('admin/marketing/affiliate', function () {
-    return Inertia::render('Auth/Admin/Marketing/Affiliate');
-});
-Route::get('admin/marketing/vouchers', function () {
-    return Inertia::render('Auth/Admin/Marketing/Vouchers');
-});
-
-Route::get('admin/career/job', function () {
-    return Inertia::render('Auth/Admin/Career/Job');
-});
-Route::get('admin/career/participant', function () {
-    return Inertia::render('Auth/Admin/Career/Participant');
-});
-
-// -----------------------------------------------------
-// -----------------------------------------------------
-
-// Moderator Dashboard
-// Route::resource('moderator/overview', ModeratorOverviewController::class)->middleware('auth')->except(['create', 'edit']);
-// Route::patch('moderator/course/{course}/update-bimbingan-online', [CourseController::class, 'updateBimbinganOnline'])->middleware('auth')->name('courses.updateBimbinganOnline');
-// Route::resource('moderator/progress', ProgressController::class)->middleware('auth')->except(['create', 'edit']);
-// Route::resource('moderator/history', ModeratorHistoryBimbinganController::class)->middleware('auth')->except(['create', 'edit']);
-// Route::resource('moderator/order', ModeratorOrderController::class)->middleware('auth')->middleware('auth')->except(['create', 'edit']);
-// Route::get('moderator/order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->middleware('auth')->name('moderator.order.showOnline');
-// Route::resource('moderator/tutor', ModeratorTutorController::class)->middleware('auth')->except(['create', 'edit']);
-// Route::resource('moderator/schedule', ModeratorScheduleTutorController::class)->middleware('auth')->except(['create', 'edit']);
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';
