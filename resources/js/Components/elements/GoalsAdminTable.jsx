@@ -10,17 +10,57 @@ import { useState } from "react";
 import { FiCheckCircle, FiEdit2, FiEye, FiTrash2 } from "react-icons/fi";
 import { RxCaretDown, RxCaretSort, RxCaretUp } from "react-icons/rx";
 import GoalsTextInput from "./GoalsTextInput";
+import { useEffect } from "react";
+import { useRef } from "react";
+
+const TableCheckbox = ({ indeterminate, className = "", ...rest }) => {
+    const ref = useRef(null);
+
+    useEffect(() => {
+        if (typeof indeterminate === "boolean") {
+            ref.current.indeterminate = !rest.checked && indeterminate;
+        }
+    }, [ref, indeterminate]);
+
+    return (
+        <input
+            type="checkbox"
+            ref={ref}
+            className={className + " cursor-pointer"}
+            {...rest}
+        />
+    );
+};
 
 const GoalsAdminTable = () => {
     const columnHelper = createColumnHelper();
 
     const [sorting, setSorting] = useState([]);
+    const [rowSelection, setRowSelection] = useState({});
 
     const columns = [
         columnHelper.accessor("checkbox", {
             enableSorting: false,
-            header: () => <input type="checkbox" name="" id="" />,
-            cell: (info) => <input type="checkbox" name="" id="" />,
+
+            header: ({ table }) => (
+                <TableCheckbox
+                    {...{
+                        checked: table.getIsAllRowsSelected(),
+                        indeterminate: table.getIsSomeRowsSelected(),
+                        onChange: table.getToggleAllRowsSelectedHandler(),
+                    }}
+                />
+            ),
+            cell: ({ row }) => (
+                <TableCheckbox
+                    {...{
+                        checked: row.getIsSelected(),
+                        disabled: !row.getCanSelect(),
+                        indeterminate: row.getIsSomeSelected(),
+                        onChange: row.getToggleSelectedHandler(),
+                    }}
+                />
+            ),
         }),
         columnHelper.accessor("gambar", {
             enableSorting: false,
@@ -78,7 +118,10 @@ const GoalsAdminTable = () => {
         columns,
         state: {
             sorting,
+            rowSelection,
         },
+        enableRowSelection: true,
+        onRowSelectionChange: setRowSelection,
         debugTable: true,
         getCoreRowModel: getCoreRowModel(),
         onSortingChange: setSorting,
@@ -118,7 +161,7 @@ const GoalsAdminTable = () => {
                                     <th
                                         key={header.id}
                                         colSpan={header.colSpan}
-                                        className="text-start px-[1.2vw] py-[.5vw] bg-[#F8F8FC]"
+                                        className="text-start px-[1.2vw] py-[.6vw] bg-[#F8F8FC]"
                                     >
                                         {header.isPlaceholder ? null : (
                                             <div
@@ -145,9 +188,10 @@ const GoalsAdminTable = () => {
                                                         .header,
                                                     header.getContext()
                                                 )}
-                                                {!header.column.getIsSorted() && header.column.getCanSort() && (
-                                                    <RxCaretSort />
-                                                )}
+                                                {!header.column.getIsSorted() &&
+                                                    header.column.getCanSort() && (
+                                                        <RxCaretSort />
+                                                    )}
                                                 {{
                                                     asc: <RxCaretUp />,
                                                     desc: <RxCaretDown />,
@@ -163,32 +207,36 @@ const GoalsAdminTable = () => {
                     ))}
                 </thead>
                 <tbody>
-                    {table.getRowModel().rows.map((row) => (
-                        <>
-                            {row.id == 0 && (
-                                <td
-                                    colSpan={99}
-                                    className="w-full py-[.5vw] px-[.8vw] bg-primary-10 h6 font-medium"
-                                >
-                                    Sekali Pertemuan
-                                </td>
-                            )}
+                    {table.getRowModel().rows.map((row) => {
+                        const firstRow = table.getRowModel().rows[0];
 
-                            <tr key={row.id}>
-                                {row.getVisibleCells().map((cell) => (
+                        return (
+                            <>
+                                {row.id == firstRow.id && (
                                     <td
-                                        key={cell.id}
-                                        className="border-b px-[1.2vw] py-[.5vw]"
+                                        colSpan={99}
+                                        className="w-full py-[.5vw] px-[.8vw] bg-primary-10 h6 font-medium"
                                     >
-                                        {flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext()
-                                        )}
+                                        Sekali Pertemuan
                                     </td>
-                                ))}
-                            </tr>
-                        </>
-                    ))}
+                                )}
+
+                                <tr key={row.id}>
+                                    {row.getVisibleCells().map((cell) => (
+                                        <td
+                                            key={cell.id}
+                                            className="border-b px-[1.2vw] py-[.5vw]"
+                                        >
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )}
+                                        </td>
+                                    ))}
+                                </tr>
+                            </>
+                        );
+                    })}
                     {/* <tr>
                         <td className="w-fit border-b text-center p-[.8vw]">
                         <input type="checkbox" name="" id="" />
