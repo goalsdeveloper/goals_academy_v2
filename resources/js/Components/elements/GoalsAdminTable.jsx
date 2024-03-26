@@ -13,26 +13,7 @@ import GoalsTextInput from "./GoalsTextInput";
 import { useEffect } from "react";
 import { useRef } from "react";
 
-const TableCheckbox = ({ indeterminate, className = "", ...rest }) => {
-    const ref = useRef(null);
-
-    useEffect(() => {
-        if (typeof indeterminate === "boolean") {
-            ref.current.indeterminate = !rest.checked && indeterminate;
-        }
-    }, [ref, indeterminate]);
-
-    return (
-        <input
-            type="checkbox"
-            ref={ref}
-            className={className + " cursor-pointer"}
-            {...rest}
-        />
-    );
-};
-
-const GoalsAdminTable = () => {
+const GoalsAdminTable = ({ isSelectable = false }) => {
     const columnHelper = createColumnHelper();
 
     const [sorting, setSorting] = useState([]);
@@ -41,7 +22,7 @@ const GoalsAdminTable = () => {
     const columns = [
         columnHelper.accessor("checkbox", {
             enableSorting: false,
-
+            meta: "w-full",
             header: ({ table }) => (
                 <TableCheckbox
                     {...{
@@ -75,12 +56,14 @@ const GoalsAdminTable = () => {
         }),
         columnHelper.accessor("nama", {
             header: () => "Nama",
-            cell: (info) => info.getValue(),
+            cell: (info) => (
+                <span className="font-medium">{info.getValue()}</span>
+            ),
         }),
         columnHelper.accessor("visibilitas", {
             enableSorting: false,
             header: () => "Visibilitas",
-            cell: (info) => (
+            cell: () => (
                 <FiCheckCircle className="text-success-50 text-[1.2vw]" />
             ),
         }),
@@ -91,25 +74,28 @@ const GoalsAdminTable = () => {
         columnHelper.accessor("action", {
             enableSorting: false,
             header: () => "",
-            cell: (info) => (
-                <ul className="flex gap-[.8vw]">
-                    <li>
-                        <Link href="/admin/product/edit">
-                            <FiEdit2 className="text-[1.2vw] text-secondary" />
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/admin/product/delete">
-                            <FiTrash2 className="text-[1.2vw] text-danger-40" />
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/admin/product/view">
-                            <FiEye className="text-[1.2vw] text-neutral-60" />
-                        </Link>
-                    </li>
-                </ul>
-            ),
+            cell: (info) => {
+                console.log(info);
+                return (
+                    <ul className="flex gap-[.8vw] w-fit">
+                        <li>
+                            <Link href="/admin/product/edit">
+                                <FiEdit2 className="text-[1.2vw] text-secondary" />
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/admin/product/delete">
+                                <FiTrash2 className="text-[1.2vw] text-danger-40" />
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/admin/product/view">
+                                <FiEye className="text-[1.2vw] text-neutral-60" />
+                            </Link>
+                        </li>
+                    </ul>
+                );
+            },
         }),
     ];
 
@@ -128,30 +114,28 @@ const GoalsAdminTable = () => {
         getSortedRowModel: getSortedRowModel(),
     });
     return (
-        <div className="bg-white border w-full rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
-            <GoalsTextInput placeholder="🔍 Search" />
+        <div className="bg-white border min-w-max rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
+            <GoalsTextInput placeholder="🔍 Search" className="max-w-[10.4vw] max-h-[2.4vw]"/>
 
-            <table className="w-full">
+            <table className="w-full text-[.8vw]">
                 <thead>
                     {/* <tr className="bg-[#F8F8FC]">
                         <th className="w-fit p-[.8vw]">
-                        <input type="checkbox" name="" id="" />
-                    </th>
-                    <th className=" text-start px-[1.2vw] py-[.5vw]">
-                        Nama Kategori
-                    </th>
-                    <th className=" text-start px-[1.2vw] py-[.5vw]">Parent</th>
-                    <th className=" text-start px-[1.2vw] py-[.5vw]">
-                        Visibilitas
-                    </th>
-                    <th className=" text-start px-[1.2vw] py-[.5vw]">
-                        Tanggal Update
-                    </th>
-                    <th className=" text-start px-[1.2vw] py-[.5vw]"></th>
-
-                        <th className="text-start px-[1.2vw] py-[.5vw]">
+                            <input type="checkbox" name="" id="" />
+                        </th>
+                        <th className=" text-start px-[1.2vw] py-[.5vw]">
                             Nama Kategori
                         </th>
+                        <th className=" text-start px-[1.2vw] py-[.5vw]">
+                            Parent
+                        </th>
+                        <th className=" text-start px-[1.2vw] py-[.5vw]">
+                            Visibilitas
+                        </th>
+                        <th className=" text-start px-[1.2vw] py-[.5vw]">
+                            Tanggal Update
+                        </th>
+                        <th className="text-start px-[1.2vw] py-[.5vw] w-16"></th>
                     </tr> */}
 
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -161,7 +145,7 @@ const GoalsAdminTable = () => {
                                     <th
                                         key={header.id}
                                         colSpan={header.colSpan}
-                                        className="text-start px-[1.2vw] py-[.6vw] bg-[#F8F8FC]"
+                                        className="font-medium text-start px-[1.2vw] py-[.6vw] bg-[#F8F8FC] rounded-t-[.4vw]"
                                     >
                                         {header.isPlaceholder ? null : (
                                             <div
@@ -190,11 +174,15 @@ const GoalsAdminTable = () => {
                                                 )}
                                                 {!header.column.getIsSorted() &&
                                                     header.column.getCanSort() && (
-                                                        <RxCaretSort />
+                                                        <RxCaretSort className="text-[1.2vw]" />
                                                     )}
                                                 {{
-                                                    asc: <RxCaretUp />,
-                                                    desc: <RxCaretDown />,
+                                                    asc: (
+                                                        <RxCaretUp className="text-[1.2vw]" />
+                                                    ),
+                                                    desc: (
+                                                        <RxCaretDown className="text-[1.2vw]" />
+                                                    ),
                                                 }[
                                                     header.column.getIsSorted()
                                                 ] ?? null}
@@ -239,34 +227,34 @@ const GoalsAdminTable = () => {
                     })}
                     {/* <tr>
                         <td className="w-fit border-b text-center p-[.8vw]">
-                        <input type="checkbox" name="" id="" />
-                    </td>
+                            <input type="checkbox" name="" id="" />
+                        </td>
 
-                    <td className="border-b px-[1.2vw] py-[.5vw]">
-                        Dibimbing Tuntas Offline
-                    </td>
-                    <td className="border-b px-[1.2vw] py-[.5vw]">
-                        Dibimbing Tuntas
-                    </td>
-                    <td className="border-b px-[1.2vw] py-[.5vw]">
-                        <FiCheckCircle className="text-success-50 text-[1.2vw]" />
-                    </td>
-                    <td className="border-b px-[1.2vw] py-[.5vw]">
-                        08/12/2024
-                    </td>
-                    <td className="border-b px-[1.2vw] py-[.5vw]">
-                        <ul className="flex gap-[.8vw]">
-                            <li>
-                                <FiEdit2 className="text-[1.2vw] text-secondary" />
-                            </li>
-                            <li>
-                                <FiTrash2 className="text-[1.2vw] text-danger-40" />
-                            </li>
-                            <li>
-                                <FiEye className="text-[1.2vw] text-neutral-60" />
-                            </li>
-                        </ul>
-                    </td>
+                        <td className="border-b px-[1.2vw] py-[.5vw]">
+                            Dibimbing Tuntas Offline
+                        </td>
+                        <td className="border-b px-[1.2vw] py-[.5vw]">
+                            Dibimbing Tuntas
+                        </td>
+                        <td className="border-b px-[1.2vw] py-[.5vw]">
+                            <FiCheckCircle className="text-success-50 text-[1.2vw]" />
+                        </td>
+                        <td className="border-b px-[1.2vw] py-[.5vw]">
+                            08/12/2024
+                        </td>
+                        <td className="border-b px-[1.2vw] py-[.5vw]">
+                            <ul className="flex gap-[.8vw]">
+                                <li>
+                                    <FiEdit2 className="text-[1.2vw] text-secondary" />
+                                </li>
+                                <li>
+                                    <FiTrash2 className="text-[1.2vw] text-danger-40" />
+                                </li>
+                                <li>
+                                    <FiEye className="text-[1.2vw] text-neutral-60" />
+                                </li>
+                            </ul>
+                        </td>
                     </tr> */}
                 </tbody>
             </table>
@@ -275,6 +263,25 @@ const GoalsAdminTable = () => {
 };
 
 export default GoalsAdminTable;
+
+const TableCheckbox = ({ indeterminate, className = "", ...rest }) => {
+    const ref = useRef(null);
+
+    useEffect(() => {
+        if (typeof indeterminate === "boolean") {
+            ref.current.indeterminate = !rest.checked && indeterminate;
+        }
+    }, [ref, indeterminate]);
+
+    return (
+        <input
+            type="checkbox"
+            ref={ref}
+            className={className + " cursor-pointer border-2"}
+            {...rest}
+        />
+    );
+};
 
 export const data = [
     {

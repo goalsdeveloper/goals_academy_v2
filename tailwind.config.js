@@ -178,6 +178,7 @@ export default {
         container: false,
     },
     plugins: [
+        require("@tailwindcss/forms"),
         require('tw-elements/dist/plugin.cjs'),
         function ({addComponents}) {
             addComponents({

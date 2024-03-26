@@ -1,11 +1,81 @@
 import GoalsAdminTable from "@/Components/elements/GoalsAdminTable";
-import GoalsButton from "@/Components/elements/GoalsButton";
+import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { Link } from "@inertiajs/react";
 import React from "react";
-import { FiChevronRight, FiPlus } from "react-icons/fi";
+import { useMemo } from "react";
+import { productTableData as data } from "./Product/data";
+import {
+    FiCheckCircle,
+    FiEdit2,
+    FiEye,
+    FiTrash2,
+    FiPlus,
+} from "react-icons/fi";
+import { Link } from "@inertiajs/react";
 
 export default function Product({ auth }) {
+    const columns = useMemo(
+        () => [
+            {
+                accessorKey: "gambar", //access nested data with dot notation
+                header: "Gambar",
+
+                Cell: ({ cell }) => {
+                    return (
+                        <img
+                            src={cell.row.original.gambar}
+                            alt="thumbnail-product"
+                            className="w-[3.6vw] h-[2.6vw] rounded-[.3vw]"
+                        />
+                    );
+                },
+            },
+            {
+                accessorKey: "nama",
+                header: "Nama",
+            },
+            {
+                accessorKey: "visibilitas", //normal accessorKey
+                header: "Visibilitas",
+
+                Cell: ({ cell }) => (
+                    <span>
+                        <FiCheckCircle className="text-success-50 text-[1.2vw]" />
+                    </span>
+                ),
+            },
+            {
+                accessorKey: "harga",
+                header: "Harga",
+            },
+            {
+                accessorKey: "action",
+                header: "Action",
+
+                Cell: ({ cell }) => (
+                    <ul className="flex gap-[.8vw] w-fit">
+                        <li>
+                            <Link href="/admin/product/edit">
+                                <FiEdit2 className="text-[1.2vw] text-secondary" />
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/admin/product/delete">
+                                <FiTrash2 className="text-[1.2vw] text-danger-40" />
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/admin/product/view">
+                                <FiEye className="text-[1.2vw] text-neutral-60" />
+                            </Link>
+                        </li>
+                    </ul>
+                ),
+            },
+        ],
+        []
+    );
+
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -15,9 +85,13 @@ export default function Product({ auth }) {
         >
             <div className="space-y-[1.6vw]">
                 <SubHeading />
-                {/* <Breadcrumb /> */}
-
-                <GoalsAdminTable />
+                {/* <GoalsAdminTable /> */}
+                <GoalsDashboardTable
+                    columns={columns}
+                    data={data}
+                    isDraggable
+                    isSplitByCategory
+                />
             </div>
         </DashboardLayout>
     );
@@ -28,14 +102,14 @@ const SubHeading = () => {
     return (
         <div className="flex w-full justify-between items-center">
             <span className="text-[1.2vw] font-medium">Produk</span>
-            <GoalsButton
+            <Link
                 isLink
                 href="/admin/bimbingan/product/add"
-                className="flex items-center gap-[.5vw]"
+                className="flex items-center gap-[.5vw] bg-secondary hover:bg-primary text-white py-[.6vw] px-[1.2vw] rounded-[.4vw] text-[.7vw]"
             >
-                <FiPlus className="text-[1.5vw]" />
+                <FiPlus className="text-[1vw]" />
                 Tambah Produk
-            </GoalsButton>
+            </Link>
         </div>
     );
 };

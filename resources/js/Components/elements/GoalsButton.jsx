@@ -14,7 +14,7 @@ const GoalsButton = ({
     function getVariantClassName() {
         switch (variant) {
             case "primary":
-                return "bg-secondary hover:bg-primary text-white";
+                return "bg-secondary hover:bg-primary text-white ";
             case "bordered":
                 return "border-2 border-secondary text-secondary hover:border-primary hover:text-primary";
             case "info":
