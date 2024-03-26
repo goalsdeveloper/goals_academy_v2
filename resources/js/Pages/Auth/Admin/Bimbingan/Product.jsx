@@ -54,17 +54,17 @@ export default function Product({ auth }) {
                 Cell: ({ cell }) => (
                     <ul className="flex gap-[.8vw] w-fit">
                         <li>
-                            <Link href="/admin/bimbingan/product/edit">
+                            <Link method="GET" href={route('admin.bimbingan.product.edit', { product: cell.getValue() })}>
                                 <FiEdit2 className="text-[1.2vw] text-secondary" />
                             </Link>
                         </li>
                         <li>
-                            <Link method="DELETE" href={`/admin/bimbingan/product/${cell.getValue()}`}>
+                            <Link method="DELETE" href={route('admin.bimbingan.product.destroy', { product: cell.getValue() })}>
                                 <FiTrash2 className="text-[1.2vw] text-danger-40" />
                             </Link>
                         </li>
                         <li>
-                            <Link href="/admin/bimbingan/product/view">
+                            <Link method="GET" href={route('admin.bimbingan.product.show', { product: cell.getValue() })}>
                                 <FiEye className="text-[1.2vw] text-neutral-60" />
                             </Link>
                         </li>
@@ -103,7 +103,8 @@ const SubHeading = () => {
             <span className="text-[1.2vw] font-medium">Produk</span>
             <Link
                 isLink
-                href="/admin/bimbingan/product/add"
+                method="GET"
+                href={route('admin.bimbingan.product.create')}
                 className="flex items-center gap-[.5vw] bg-secondary hover:bg-primary text-white py-[.6vw] px-[1.2vw] rounded-[.4vw] text-[.7vw]"
             >
                 <FiPlus className="text-[1vw]" />
