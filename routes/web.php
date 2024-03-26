@@ -117,67 +117,61 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
     }
 });
 
-Route::prefix('admin')->middleware('auth')->group(function () {
-    Route::prefix('bimbingan')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
         Route::resource('category', CategoryController::class);
         Route::resource('addon', AddOnController::class);
-        Route::resource('place', PlaceController::class)->except(['create',  'edit']);
-        Route::resource('city', CityController::class)->except(['create',  'edit']);
-        Route::resource('topic', TopicController::class)->except(['create', 'edit']);
-        Route::get('product/add', function () {
-            return Inertia::render('Auth/Admin/Bimbingan/Product/Create');
-        });
-        Route::get('product/edit', function () {
-            return Inertia::render('Auth/Admin/Bimbingan/Product/Update');
-        });
-        Route::resource('product', BimbinganController::class)->except(['create', 'edit']);
-        Route::resource('order', AdminOrderBimbinganController::class)->except(['create', 'edit']);
+        Route::resource('place', PlaceController::class);
+        Route::resource('city', CityController::class);
+        Route::resource('topic', TopicController::class);
+        Route::resource('product', BimbinganController::class);
+        Route::resource('order', AdminOrderBimbinganController::class);
     });
-    Route::prefix('webinar')->group(function () {
-        Route::resource('category', AdminCategoryWebinarController::class)->except(['create', 'edit']);
-        Route::resource('product', WebinarController::class)->except(['create', 'edit']);
-        Route::resource('order', AdminOrderWebinarController::class)->except(['create', 'edit']);
+    Route::prefix('webinar')->name('webinar.')->group(function () {
+        Route::resource('category', AdminCategoryWebinarController::class);
+        Route::resource('product', WebinarController::class);
+        Route::resource('order', AdminOrderWebinarController::class);
     });
-    Route::prefix('ebook')->group(function () {
-        Route::resource('category', AdminCategoryEbookController::class)->except(['create', 'edit']);
-        Route::resource('product', EbookController::class)->except(['create', 'edit']);
-        Route::resource('order', AdminOrderEbookController::class)->except(['create', 'edit']);
+    Route::prefix('ebook')->name('ebook.')->group(function () {
+        Route::resource('category', AdminCategoryEbookController::class);
+        Route::resource('product', EbookController::class);
+        Route::resource('order', AdminOrderEbookController::class);
     });
-    Route::prefix('ecourse')->group(function () {
-        Route::resource('category', AdminCategoryEcourseController::class)->except(['create', 'edit']);
-        Route::resource('product', EcourseController::class)->except(['create', 'edit']);
-        Route::resource('order', AdminOrderEcourseController::class)->except(['create', 'edit']);
+    Route::prefix('ecourse')->name('ecourse.')->group(function () {
+        Route::resource('category', AdminCategoryEcourseController::class);
+        Route::resource('product', EcourseController::class);
+        Route::resource('order', AdminOrderEcourseController::class);
     });
-    Route::prefix('manajemen_user')->group(function () {
+    Route::prefix('manajemen_user')->name('manajemen_user.')->group(function () {
         Route::resource('user', UserController::class)->except(['update', 'create', 'store', 'destroy', 'edit']);
-        Route::resource('tutor', TutorController::class)->except(['create', 'store', 'destroy', 'edit']);
-        Route::resource('moderator', ModeratorController::class)->except(['create', 'store', 'destroy', 'edit']);
+        Route::resource('tutor', TutorController::class);
+        Route::resource('moderator', ModeratorController::class);
     });
-    Route::prefix('marketing')->group(function () {
-        Route::resource('vouchers', VoucherController::class)->except(['update', 'create', 'store', 'destroy', 'edit']);
-        Route::resource('affiliate', AffiliateController::class)->except(['create', 'store', 'destroy', 'edit']);
+    Route::prefix('marketing')->name('marketing.')->group(function () {
+        Route::resource('vouchers', VoucherController::class);
+        Route::resource('affiliate', AffiliateController::class);
     });
-    Route::prefix('career')->group(function () {
-        Route::resource('job', JobController::class)->except(['create', 'edit']);
+    Route::prefix('career')->name('career.')->group(function () {
+        Route::resource('job', JobController::class);
         Route::resource('participant', ParticipantController::class)->except(['create', 'store', 'destroy', 'edit']);
     });
-    Route::resource('overview', AdminOverviewController::class)->except(['create', 'edit']);
-    Route::resource('statistic', StatisticController::class)->except(['create', 'edit']);
+    Route::resource('overview', AdminOverviewController::class);
+    Route::resource('statistic', StatisticController::class);
 });
 
-Route::prefix('moderator')->middleware('auth')->group(function () {
-    Route::prefix('bimbingan')->group(function () {
-        Route::resource('order', ModeratorOrderController::class)->except(['create', 'edit']);
-        Route::get('order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('moderator.order.showOnline');
-        Route::patch('order/{order}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('moderator.order.updateOnline');
-        Route::resource('progress', ProgressController::class)->except(['create', 'edit']);
-        Route::resource('history', ModeratorHistoryBimbinganController::class)->except(['create', 'edit']);
+Route::prefix('moderator')->name('moderator.')->middleware('auth')->group(function () {
+    Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
+        Route::resource('order', ModeratorOrderController::class);
+        Route::get('order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('order.showOnline');
+        Route::patch('order/{order}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('order.updateOnline');
+        Route::resource('progress', ProgressController::class);
+        Route::resource('history', ModeratorHistoryBimbinganController::class);
     });
-    Route::prefix('tutor')->group(function () {
-        Route::resource('tutor_list', ModeratorTutorController::class)->except(['create', 'edit']);
-        Route::resource('schedule', ModeratorScheduleTutorController::class)->except(['create', 'edit']);
+    Route::prefix('tutor')->name('tutor.')->group(function () {
+        Route::resource('tutor_list', ModeratorTutorController::class);
+        Route::resource('schedule', ModeratorScheduleTutorController::class);
     });
-    Route::resource('overview', ModeratorOverviewController::class)->except(['create', 'edit']);
+    Route::resource('overview', ModeratorOverviewController::class);
 });
 
 Route::get('/coba', function () {
