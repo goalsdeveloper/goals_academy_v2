@@ -124,12 +124,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         Route::resource('place', PlaceController::class);
         Route::resource('city', CityController::class);
         Route::resource('topic', TopicController::class);
-        // Route::get('product/add', function () {
-        //     return Inertia::render('Auth/Admin/Bimbingan/Product/Create');
-        // });
-        // Route::get('product/edit', function () {
-        //     return Inertia::render('Auth/Admin/Bimbingan/Product/Update');
-        // });
         Route::resource('product', BimbinganController::class);
         Route::resource('order', AdminOrderBimbinganController::class);
     });
