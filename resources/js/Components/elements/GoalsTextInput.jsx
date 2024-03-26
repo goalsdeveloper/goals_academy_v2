@@ -12,10 +12,11 @@ const GoalsTextInput = ({
     setData,
     cancelButton=false,
     required=false,
+    grow=false,
     ...rest
 }) => {
     return (
-        <div className="flex flex-col gap-[2vw] md:gap-[.4vw]">
+        <div className={`flex flex-col ${grow && "w-full"} gap-[2vw] md:gap-[.4vw]`}>
             {label != "" ? (
                 <label>{label}<sup className={`${required ? "" : "hidden"} text-red-600`}>*</sup></label>
             ) : (<></>)}

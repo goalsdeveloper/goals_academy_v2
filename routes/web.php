@@ -168,8 +168,46 @@ Route::get('admin/statistic', function () {
     return Inertia::render('Auth/Admin/Statistic/Statistic');
 });
 
-Route::get('admin/bimbingan/topic', function () {
-    return Inertia::render('Auth/Admin/Bimbingan/Topic');
+Route::prefix('admin/bimbingan')->group(function () {
+    Route::get('category', function () {
+        return Inertia::render('Auth/Admin/Bimbingan/Category');
+    });
+
+    Route::get('addon', function () {
+        return Inertia::render('Auth/Admin/Bimbingan/AddOn');
+    });
+
+    Route::get('place', function () {
+        return Inertia::render('Auth/Admin/Bimbingan/Place');
+    });
+
+    Route::get('topic', function () {
+        return Inertia::render('Auth/Admin/Bimbingan/Topic');
+    });
+
+    Route::get('product', function () {
+        return Inertia::render('Auth/Admin/Bimbingan/Product');
+    });
+
+    Route::get('product/add', function () {
+        return Inertia::render('Auth/Admin/Bimbingan/Product/Create');
+    });
+
+    Route::get('product/edit', function () {
+        return Inertia::render('Auth/Admin/Bimbingan/Product/Update');
+    });
+
+    Route::get('order', function () {
+        return Inertia::render('Auth/Admin/Bimbingan/Order');
+    });
+});
+
+
+Route::get('admin/webinar/product', function () {
+    return Inertia::render('Auth/Admin/Webinar/Product');
+});
+Route::get('admin/webinar/order', function () {
+    return Inertia::render('Auth/Admin/Webinar/Order');
 });
 
 Route::get('admin/ecourse/category', function () {
