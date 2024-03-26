@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Moderator\Bimbingan;
 
-use App\Models\Course;
-use App\Http\Controllers\Controller;
-use App\Models\FileUpload;
-use App\Models\Order;
 use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
+use Inertia\Inertia;
+use App\Models\Order;
+use App\Models\Course;
+use App\Models\FileUpload;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProgressController extends Controller
 {
@@ -43,7 +44,7 @@ class ProgressController extends Controller
 
                 $orders = $query->paginate($perPage);
 
-                return response()->json([
+                return Inertia::render('Auth/Moderator/Bimbingan/Progress', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'Get data history success',

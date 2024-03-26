@@ -1,19 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Ecourse;
+namespace App\Http\Controllers\Admin\Career;
 
+use App\Models\Job;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class EcourseController extends Controller
+class JobController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Auth/Admin/Ecourse/Product');
+        $jobs = Job::with('division', 'location')->paginate(10);
+        return Inertia::render('Auth/Admin/Career/Job', ['status' => true, 'statusCode' => 200, 'message' => 'get data job success', 'data' => $jobs], 200);
     }
 
     /**

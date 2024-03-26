@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Ecourse;
+namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class EcourseController extends Controller
+class StatisticController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Auth/Admin/Ecourse/Product');
+        return Inertia::render('Auth/Admin/Statistic/Statistic');
     }
 
     /**

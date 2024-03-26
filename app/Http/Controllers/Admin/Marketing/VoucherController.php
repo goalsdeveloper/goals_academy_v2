@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Ecourse;
+namespace App\Http\Controllers\Admin\Marketing;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class EcourseController extends Controller
+class VoucherController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('Auth/Admin/Ecourse/Product');
+        return Inertia::render('Auth/Admin/Marketing/Vouchers');
     }
 
     /**

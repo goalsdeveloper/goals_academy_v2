@@ -6,14 +6,14 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class EcourseController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('Auth/Admin/Ecourse/Product');
+        return Inertia::render('Auth/Admin/Ecourse/Category');
     }
 
     /**

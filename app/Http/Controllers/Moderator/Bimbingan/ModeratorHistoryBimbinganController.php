@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Moderator\Bimbingan;
 
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use App\Models\OrderHistory;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class ModeratorHistoryBimbinganController extends Controller
@@ -30,7 +31,7 @@ class ModeratorHistoryBimbinganController extends Controller
 
                 $order_history = $query->paginate($perPage);
 
-                return response()->json([
+                return Inertia::render('Auth/Moderator/Bimbingan/History', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data history success',

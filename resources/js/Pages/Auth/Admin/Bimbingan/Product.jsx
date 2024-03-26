@@ -8,6 +8,7 @@ import {
     FiEye,
     FiPlus,
     FiTrash2,
+    FiChevronRight,
 } from "react-icons/fi";
 import { productTableData as data } from "./Product/data";
 
@@ -47,23 +48,23 @@ export default function Product({ auth }) {
                 header: "Harga",
             },
             {
-                accessorKey: "action",
+                accessorKey: "id",
                 header: "Action",
 
                 Cell: ({ cell }) => (
                     <ul className="flex gap-[.8vw] w-fit">
                         <li>
-                            <Link href="/admin/product/edit">
+                            <Link href="/admin/bimbingan/product/edit">
                                 <FiEdit2 className="text-[1.2vw] text-secondary" />
                             </Link>
                         </li>
                         <li>
-                            <Link href="/admin/product/delete">
+                            <Link method="DELETE" href={`/admin/bimbingan/product/${cell.getValue()}`}>
                                 <FiTrash2 className="text-[1.2vw] text-danger-40" />
                             </Link>
                         </li>
                         <li>
-                            <Link href="/admin/product/view">
+                            <Link href="/admin/bimbingan/product/view">
                                 <FiEye className="text-[1.2vw] text-neutral-60" />
                             </Link>
                         </li>

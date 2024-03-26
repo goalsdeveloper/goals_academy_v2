@@ -1,6 +1,6 @@
 export const productTableData = [
     {
-        id: 1,
+        id: 100,
         gambar: "https://via.placeholder.com/150",
         nama: "Product 1",
         visibilitas: true,
