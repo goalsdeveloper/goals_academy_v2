@@ -1,43 +1,76 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Bimbingan;
 
 use App\Models\Products;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
-class WebinarController extends Controller
+class BimbinganController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            if (Auth::user()->user_role == "admin") {  
-                if ($bimbingan->product_type_id !== 3) {
-                    throw new \Exception('Invalid object type');
+            if (Auth::user()->user_role == "admin") {
+                $search = $request->input('search');
+                $bimbingan = Products::with('category', 'productType')
+                    ->whereHas('productType', function ($query) {
+                        $query->where('type', 'bimbingan');
+                    });
+
+                if ($search) {
+                    $bimbingan->where(function ($query) use ($search) {
+                        $query->where('name', 'LIKE', "%$search%")
+                            ->orWhereHas('category', function ($query) use ($search) {
+                                $query->where('name', 'LIKE', "%$search%");
+                            });
+                    });
                 }
 
-                $webinar = Products::with('category', 'productType')
-                    ->whereHas('productType', function ($query) {
-                        $query->where('type', 'webinar');
-                    })
-                    ->get();
+                $bimbingan = $bimbingan->get();
 
-                $webinar->transform(function ($product) {
-                    $product->facilities = json_decode($product->facilities, true);
-                    $product->form_config = json_decode($product->form_config, true);
+                $bimbingan_tuntas = $bimbingan->filter(function ($product) {
+                    return str_contains($product->category->name, 'Dibimbing Tuntas');
+                });
+
+                $bimbingan_sekali = $bimbingan->filter(function ($product) {
+                    return str_contains($product->category->name, 'Dibimbing Sekali');
+                });
+
+
+                $bimbingan_tuntas->transform(function ($product) {
+
+                    if (is_string($product->facilities)) {
+                        $product->facilities = json_decode($product->facilities, true);
+                    }
+                    if (is_string($product->form_config)) {
+                        $product->form_config = json_decode($product->form_config, true);
+                    }
                     return $product;
                 });
 
-                return response()->json([
+                $bimbingan_sekali->transform(function ($product) {
+
+                    if (is_string($product->facilities)) {
+                        $product->facilities = json_decode($product->facilities, true);
+                    }
+                    if (is_string($product->form_config)) {
+                        $product->form_config = json_decode($product->form_config, true);
+                    }
+                    return $product;
+                });
+
+                return Inertia::render('Auth/Admin/Bimbingan/Product', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
-                    'data' => $webinar->values()->toArray(),
+                    'bimbingan_sekali' => $bimbingan_sekali->values()->toArray(),
+                    'bimbingan_tuntas' => $bimbingan_tuntas->values()->toArray(),
                 ], 200);
             } else {
                 abort(403);
@@ -46,8 +79,8 @@ class WebinarController extends Controller
             return response()->json([
                 'status' => false,
                 'statusCode' => 500,
-                'message' => 'Error: ' . $e->getMessage(),
-                'data' => null,
+                'message' => 'An error occurred while processing request',
+                'error' => $e->getMessage()
             ], 500);
         }
     }
@@ -66,8 +99,6 @@ class WebinarController extends Controller
      */
     public function store(Request $request)
     {
-
-        // CATATAN UNTUK FORM CONFIG DI WEBINAR HARUSNYA NULL BISA
         try {
             if (Auth::user()->user_role == "admin") {
                 $validateData = $request->validate([
@@ -87,21 +118,17 @@ class WebinarController extends Controller
                     'facilities' => 'required|array|min:1',
                     'facilities.*.icon' => 'required|string',
                     'facilities.*.text' => 'required|string',
-                    'webinar_properties' => 'required|array|min:1',
-                    'webinar_properties.*.date' => 'required|date_format:Y-m-d',
-                    'webinar_properties.*.time' => 'required|date_format:H:i:s',
-                    'webinar_properties.*.via' => 'required|string',
-                    'webinar_properties.*.speaker' => 'required|string',
                     'form_config.schedule' => 'required|in:0,1',
                     'form_config.city' => 'required|in:0,1',
                     'form_config.place' => 'required|in:0,1',
                     'form_config.topic' => 'required|in:0,1',
                     'form_config.document' => 'required|in:0,1',
                     'form_config.add_on' => 'required|in:0,1',
+                    'duration' => 'numeric',
                 ]);
 
                 $product = new Products();
-                $product->product_type_id = 3; // Kenapa 3, karena ini product untuk webinar aja
+                $product->product_type_id = 1; // Kenapa 1, karena ini product untuk bimbingan aja
                 $product->category_id = $validateData['category_id'];
                 $product->name = $validateData['name'];
                 $product->slug = $validateData['slug'];
@@ -114,14 +141,15 @@ class WebinarController extends Controller
                 $product->number_list = $validateData['number_list'];
                 $product->total_meet = $validateData['total_meet'];
                 $product->active_period = $validateData['active_period'];
+                $product->duration = $validateData['duration'];
 
                 $facilities = json_encode($validateData['facilities']);
+
                 $product->facilities = $facilities;
 
-                $webinar_properties = json_encode($validateData['webinar_properties']);
-                $product->webinar_properties = $webinar_properties;
-
                 $form_config = json_encode($validateData['form_config']);
+
+
                 $product->form_config = $form_config;
 
                 if ($request->File('product_image')) {
@@ -135,39 +163,38 @@ class WebinarController extends Controller
                 abort(403);
             }
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while creating product', 'error' => $e->getMessage()], 500);
+
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
         }
     }
-
 
     /**
      * Display the specified resource.
      */
-    public function show(Products $webinar)
+    public function show(Products $product)
     {
         try {
             if (Auth::user()->user_role == "admin") {
 
-                if (strcasecmp($webinar->productType->type, "webinar") !== 0) {
+
+                if (strcasecmp($product->productType->type, "bimbingan") !== 0) {
                     return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Product not found'], 404);
                 }
 
-                $webinar->load('category', 'productType');
-                $webinar->facilities = json_decode($webinar->facilities, true);
-                $webinar->form_config = json_decode($webinar->form_config, true);
-                $webinar->webinar_properties = json_decode($webinar->webinar_properties, true);
+                $product->load('category', 'productType');
+                if (is_string($product->facilities)) {
+                    $product->facilities = json_decode($product->facilities);
+                }
 
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $webinar], 200);
+                if (is_string($product->form_config)) {
+                    $product->form_config = json_decode($product->form_config);
+                }
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $product], 200);
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'Error: ' . $e->getMessage(),
-                'data' => null,
-            ], 500);
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while processing request', 'error' => $e->getMessage()], 500);
         }
     }
 
@@ -175,7 +202,7 @@ class WebinarController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Products $products)
+    public function edit(Products $product)
     {
         //
     }
@@ -183,11 +210,12 @@ class WebinarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Products $webinar)
+    public function update(Request $request, Products $product)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                if ($webinar->product_type_id !== 3) {
+                // Jika product tidak bertipe bimbingan
+                if ($product->product_type_id !== 1) {
                     throw new \Exception('Invalid object type');
                 }
 
@@ -207,40 +235,29 @@ class WebinarController extends Controller
                     'facilities' => 'array|min:1',
                     'facilities.*.icon' => 'string',
                     'facilities.*.text' => 'string',
-                    'webinar_properties' => 'array|min:1',
-                    'webinar_properties.*.date' => 'date_format:Y-m-d',
-                    'webinar_properties.*.time' => 'date_format:H:i:s',
-                    'webinar_properties.*.via' => 'string',
-                    'webinar_properties.*.speaker' => 'string',
                     'form_config.schedule' => 'in:0,1',
                     'form_config.city' => 'in:0,1',
                     'form_config.place' => 'in:0,1',
                     'form_config.topic' => 'in:0,1',
                     'form_config.document' => 'in:0,1',
                     'form_config.add_on' => 'in:0,1',
+                    'duration' => 'numeric',
                 ]);
-
                 if ($request->hasFile('product_image')) {
                     // Hapus foto lama jika ada
-                    if ($webinar->product_image) {
-                        Storage::delete($webinar->product_image);
+                    if ($product->product_image) {
+                        Storage::delete($product->product_image);
                     }
                     $validateData['product_image'] = $request->file('product_image')->store('resource/img/program/');
                 }
 
-                $webinar->update($validateData);
-
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update webinar success'], 200);
+                $product->update($validateData);
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update product success'], 200);
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'Error: ' . $e->getMessage(),
-                'data' => null,
-            ], 500);
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while updating category', 'error' => $e->getMessage()], 500);
         }
     }
 
@@ -248,31 +265,25 @@ class WebinarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Products $webinar)
+    public function destroy(Products $product)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                if ($webinar->product_type_id !== 3) {
+                if ($product->product_type_id !== 1) {
                     throw new \Exception('Invalid object type');
                 }
-
-                if ($webinar->product_image) {
-                    Storage::delete($webinar->product_image);
+                if ($product->product_image) {
+                    Storage::delete($product->product_image);
                 }
-
-                $webinar->delete();
-
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete webinar success'], 200);
+                $product->delete();
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete product success'], 200);
             } else {
                 abort(403);
             }
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to delete product. Internal Server Error'], 500);
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'Error: ' . $e->getMessage(),
-                'data' => null,
-            ], 500);
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
 }

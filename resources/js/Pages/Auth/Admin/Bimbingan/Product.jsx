@@ -1,17 +1,15 @@
-import GoalsAdminTable from "@/Components/elements/GoalsAdminTable";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import React from "react";
-import { useMemo } from "react";
-import { productTableData as data } from "./Product/data";
+import { Link } from "@inertiajs/react";
+import React, { useMemo } from "react";
 import {
     FiCheckCircle,
     FiEdit2,
     FiEye,
-    FiTrash2,
     FiPlus,
+    FiTrash2,
 } from "react-icons/fi";
-import { Link } from "@inertiajs/react";
+import { productTableData as data } from "./Product/data";
 
 export default function Product({ auth }) {
     const columns = useMemo(

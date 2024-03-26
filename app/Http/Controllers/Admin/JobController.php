@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Moderator;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\OrderHistory;
+use App\Models\Job;
 use Illuminate\Http\Request;
 
-class ModeratorHistoryBimbinganController extends Controller
+class JobController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $order_history = OrderHistory::with('order.course', 'order.products')->get();
-        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data history success', 'data' => $order_history], 200);
+        $jobs = Job::with('division', 'location')->paginate(10);
+        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data job success', 'data' => $jobs], 200);
     }
 
     /**

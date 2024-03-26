@@ -1,24 +1,39 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Bimbingan;
 
 use App\Models\Place;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class PlaceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $places = Place::with('city')->paginate(3);
+                $search = $request->input('search');
+                $perPage = $request->input('perPage', 10);
 
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $places], 200);
+                $query = Place::query()->with('city');
+
+                if ($search) {
+                    $query->where('place', 'LIKE', "%$search%");
+                }
+
+                $places = $query->paginate($perPage);
+
+                return Inertia::render('Auth/Admin/Bimbingan/Place', [
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data success',
+                    'data' => $places,
+                ], 200);
             } else {
                 abort(403);
             }

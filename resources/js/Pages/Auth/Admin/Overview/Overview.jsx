@@ -1,6 +1,12 @@
-import { useState } from "react";
-import GoalsButton from "@/Components/elements/GoalsButton";
+import { useState, useMemo } from "react";
+import GoalsButton from "@/Components/GoalsButton";
+import logo from "/resources/img/icon/goals-5.svg";
 import DashboardLayout from "@/Layouts/DashboardLayout";
+import moment from "moment/moment";
+import {
+    MaterialReactTable,
+    useMaterialReactTable,
+} from 'material-react-table';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,13 +18,26 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
-import { FaRegCalendar } from "react-icons/fa6";
+import { FaRegCalendar, FaCartShopping, FaGlobe } from "react-icons/fa6";
+import { FiTrendingUp, FiLoader } from "react-icons/fi";
+import { IoRocketSharp } from "react-icons/io5";
+import Datepicker from "react-tailwindcss-datepicker";
+import "@/script/momentCustomLocale";
 
 export default function Overview ({ auth }) {
-    const labels = ['29', '30', '31', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', ];
+    const [isLoading, setIsLoading] = useState(false);
+    const currency = Intl.NumberFormat("id-ID");
 
-    const [dataset1, setDataset1] = useState(labels.map(i => faker.datatype.number({ min: 0, max: 10000000 })))
-    const [dataset2, setDataset2] = useState(labels.map(i => faker.datatype.number({ min: 0, max: 10000000 })))
+    const [totalEarning, setTotalEarning] = useState(23516400);
+    const [totalVisitor, setTotalVisitor] = useState(312);
+    const [totalOrder, setTotalOrder] = useState(211);
+    const [totalCheckout, setTotalCheckout] = useState(187);
+
+    // Click & Views
+    const [barLabels, setBarLabels] = useState(['29', '30', '31', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', ]);
+
+    const [clickData, setClickData] = useState(barLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
+    const [viewsData, setViewsData] = useState(barLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
 
     ChartJS.register(
         Title,
@@ -29,91 +48,382 @@ export default function Overview ({ auth }) {
         Legend,
     );
 
-    const options = {
+    const barOptions = {
         plugins: {
-          title: {
-            display: true,
-            text: 'Chart.js Bar Chart - Stacked',
-            position: 'left'
-          },
-          legend: {
-            align: 'end',
-            reverse: true,
-            boxWidth: 20,
-            boxHeight: 20,
-          }
+            title: {
+                display: false,
+                text: 'Total Views & Click',
+                position: 'top'
+            },
+            legend: {
+                align: 'end',
+                reverse: true,
+                boxWidth: 20,
+                boxHeight: 20,
+            },
         },
         aspectRatio: 3.58,
         responsive: true,
         borderRadius: 1000,
-        barThickness: 6,
+        barThickness: 4,
         scales: {
-          x: {
-            stacked: true,
-            ticks: {
-                color: "#A6A6A6",
-                maxRotation: 0,
+            x: {
+                beginAtZero: true,
+                stacked: true,
+                ticks: {
+                    color: '#A6A6A6',
+                    maxRotation: 0,
+                },
+                grid: {
+                    display: true,
+                    drawBorder: false,
+                    drawTicks: true,
+                    color: context => {
+                        if (context.index === 0) {
+                            return '';
+                        } else {
+                            return '';
+                        }
+                    }
+                },
             },
-            grid: {
-                display: false,
+            y: {
+                beginAtZero: true,
+                stacked: true,
+                ticks: {
+                    display: false,
+                },
+                grid: {
+                    drawBorder: false,
+                    drawTicks: false,
+                    color: (context) => {
+                        if (context.index === 0) {
+                            return '';
+                        } else {
+                            return 'rgba(160, 160, 160, 0.2)';
+                        }
+                    }
+                },
+                border: {
+                    dash: [6,4],
+                },
             },
-          },
-          y: {
-            stacked: true,
-            ticks: {
-                display: false,
-            },
-          },
         },
     };
 
-    const data = {
-        labels,
+    const clickViewsData = {
+        labels: barLabels,
         datasets: [
             {
                 label: 'Clicks',
-                data: dataset1,
+                data: clickData,
                 backgroundColor: '#5A6ACF',
             },
             {
                 label: 'Views',
-                data: dataset2,
+                data: viewsData,
                 backgroundColor: '#FF8854',
             },
         ],
     };
 
+    // Top Selling
+    const [topSellingData, setTopSellingData] = useState([
+        {
+            name: "Dibimbing Sekali Online 30 Menit",
+            amount: Math.round(Math.random()*100),
+        },
+        {
+            name: "Dibimbing Sekali Offline 45 Menit",
+            amount: Math.round(Math.random()*100),
+        },
+        {
+            name: "Desk Review",
+            amount: Math.round(Math.random()*100)
+        },
+        {
+            name: "Dibimbing Tuntas",
+            amount: Math.round(Math.random()*100),
+        },
+    ].sort((x, y) => x.amount > y.amount ? -1 : 1));
+
+    // Recent Payment
+    const [recentPaymentData, setRecentPaymentData] = useState([
+        {
+            id: 'GA12345678',
+            name: 'John Doe',
+            product: 'Dibimbing Sekali Online 30 Menit',
+            date: '2024-03-18',
+        },
+        {
+            id: 'GA12345678',
+            name: 'John Doe',
+            product: 'Dibimbing Sekali Online 30 Menit',
+            date: '2024-03-18',
+        },
+        {
+            id: 'GA12345678',
+            name: 'John Doe',
+            product: 'Dibimbing Sekali Online 30 Menit',
+            date: '2024-03-18',
+        },
+        {
+            id: 'GA12345678',
+            name: 'John Doe',
+            product: 'Dibimbing Sekali Online 30 Menit',
+            date: '2024-03-18',
+        },
+        {
+            id: 'GA12345678',
+            name: 'John Doe',
+            product: 'Dibimbing Sekali Online 30 Menit',
+            date: '2024-03-18',
+        },
+    ]);
+
+    const columns = useMemo(
+        () => [
+            {
+                accessorKey: "id", //simple recommended way to define a column
+                header: "ID Pesanan",
+                size: 50,
+                grow: false,
+            },
+            {
+                accessorKey: "name", //simple recommended way to define a column
+                header: "Name",
+                size: 150,
+            },
+            {
+                accessorKey: "product",
+                header: "Product",
+                size: 250,
+            },
+            {
+                accessorFn: (row) => moment(row.date).format('DD/MM/YYYY'),
+                id: "date",
+                header: "Date",
+                size: 50,
+            },
+        ],
+        []
+    );
+
+    const tableOptions = useMaterialReactTable({
+        columns,
+        data: recentPaymentData, //must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+        enableTopToolbar: false,
+        enableBottomToolbar: false,
+        enableColumnActions: false,
+        muiTablePaperProps: {
+            elevation: 0,
+            sx: {
+                borderRadius: '.625vw',
+                border: 'none',
+            },
+        },
+        muiTableHeadCellProps: {
+            sx: {
+                fontFamily: 'Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+                fontSize: '.83vw',
+                fontWeight: 'medium',
+                color: '#404040',
+                backgroundColor: '#F8F8FC',
+                border: 'none',
+            },
+        },
+        muiTableBodyCellProps: {
+            sx: {
+                fontFamily: 'Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+                fontSize: '.83vw',
+                fontWeight: 'medium',
+                color: '#404040',
+                padding: '.5vw 1.2vw',
+                border: 'none',
+            },
+        },
+    });
+
+    // Data's Date Range
+    const [dateRange, setDateRange] = useState({
+        startDate: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+        endDate: moment().format('YYYY-MM-DD')
+    });
+
+    const dateRangeHandler = (range) => {
+        const x = moment(range.startDate);
+        const y = moment(range.endDate);
+        const diff = x.diff(y, 'days');
+
+        if (diff >= -30) {
+            setIsLoading(true);
+
+            setTimeout(() => {
+                let tempBarLabels = [];
+                tempBarLabels.push(x.format('DD'));
+                if (diff) {
+                    for (let i = 1; i <= -diff; i++) {
+                        tempBarLabels.push(x.add(1, 'day').format('DD'));
+                    }
+                }
+                console.log(tempBarLabels);
+
+                let tempTopSellingData = [
+                    {
+                        name: "Dibimbing Sekali Online 30 Menit",
+                        amount: Math.round(Math.random()*100),
+                    },
+                    {
+                        name: "Dibimbing Sekali Offline 45 Menit",
+                        amount: Math.round(Math.random()*100),
+                    },
+                    {
+                        name: "Desk Review",
+                        amount: Math.round(Math.random()*100)
+                    },
+                    {
+                        name: "Dibimbing Tuntas",
+                        amount: Math.round(Math.random()*100),
+                    },
+                ].sort((x, y) => x.amount > y.amount ? -1 : 1)
+
+                setDateRange(range);
+                setBarLabels(tempBarLabels);
+                setClickData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
+                setViewsData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
+                setTopSellingData(tempTopSellingData);
+                setIsLoading(false);
+            }, 3000);
+        } else {
+            alert('Range tanggal maksimum 1 bulan!');
+        }
+    }
+
     return (
         <DashboardLayout title="Overview" role="admin" auth={auth}>
-            <div className="flex justify-end mb-[2vw]">
-                <GoalsButton variant="default" className="relative md:px-[1.25vw] md:py-[.625vw] flex items-center gap-[.5vw] md:text-[.73vw]">
-                    <FaRegCalendar className="text-[1vw]" /> Select Date
-                </GoalsButton>
-            </div>
-            <div className="flex flex-col gap-[.73vw]">
-                <div className="flex justify-between">
-                    {/* h-[15.53vw] */}
-                    <Card className="w-[50vw] h-[15.53vw]">
-                        <Bar options={options} data={data} />
-                    </Card>
-                    <div className="w-[25.1vw] grid grid-cols-2 gap-[.94vw]">
-                        <Card></Card>
-                        <Card></Card>
-                        <Card></Card>
-                        <Card></Card>
-                    </div>
+            <div className="relative">
+                {isLoading && <LoadingUI />}
+                <div className="flex justify-end mb-[2vw]">
+                    <DateRangePicker value={dateRange} onChange={dateRangeHandler} />
                 </div>
-                <div className="flex justify-between">
-                    <Card className="w-[52.4vw] h-[20.16vw]"></Card>
-                    <Card className="w-[23vw]"></Card>
+                <div className="relative flex flex-col gap-[.73vw]">
+                    <div className="flex justify-between">
+                        <ClickViewsChart options={barOptions} data={clickViewsData} />
+                        <div className="w-[25.1vw] grid grid-cols-2 gap-[.94vw] text-[.83vw]">
+                            <InfoCard title="Earning (IDR)" data={currency.format(totalEarning)} percentage={5.6} grow={12} />
+                            <InfoCard title="Visitor" data={totalVisitor} percentage={5.6} grow={12} icon={<IoRocketSharp className="text-[1vw]" />} />
+                            <InfoCard title="Total Order" data={totalOrder} percentage={5.6} grow={12} icon={<FaCartShopping className="text-[1vw]" />} />
+                            <InfoCard title="Checkout User" data={totalCheckout} percentage={5.6} grow={12} icon={<FaGlobe className="text-[1vw]" />} />
+                        </div>
+                    </div>
+                    <div className="flex justify-between text-[.83vw]">
+                        <RecentPaymentTable options={tableOptions} />
+                        <TopSellingInfo data={topSellingData} />
+                    </div>
                 </div>
             </div>
         </DashboardLayout>
     )
 }
 
+function ClickViewsChart ({ options, data }) {
+    return (
+        <Card className="relative w-[50vw] h-[15.53vw]">
+            <h4 className="absolute font-sans font-medium text-[1vw] mt-[.3vw]">Total Views & Clicks</h4>
+            <Bar options={options} data={data} className="cursor-pointer" />
+        </Card>
+    )
+}
+
+function RecentPaymentTable ({ options }) {
+    return (
+        <Card className="w-[52.4vw] space-y-[1.5vw]">
+            <div className="flex items-center justify-between">
+                <h4 className="font-sans font-medium text-[1vw]">Recent Payment</h4>
+                <div><FiLoader className="text-[1.25vw]" /></div>
+            </div>
+            <MaterialReactTable table={options} />
+        </Card>
+    )
+}
+
+function TopSellingInfo ({ data }) {
+    return (
+        <Card className="w-[23vw] space-y-[1.5vw]">
+            <div className="flex items-center justify-between">
+                <h4 className="font-sans font-medium text-[1vw]">Top Selling</h4>
+            </div>
+            <div className="grid gap-[1.5vw]">
+                {data.map(({name, amount}, index) => {
+                    const highestAmount = Math.max(...data.map(i => i.amount));
+                    return (
+                        <div key={index} className="space-y-[.5vw]">
+                            <div className="flex items-center justify-between">
+                                <span>{name}</span>
+                                <span>{amount}</span>
+                            </div>
+                            <div className="w-full h-[.6vw] bg-green-100 rounded-full overflow-hidden">
+                                <div style={{ width: amount/highestAmount*100+'%' }} className="h-full bg-green-500 animate-slideRight duration-300"></div>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+        </Card>
+    )
+}
+
+function InfoCard ({ title, data, percentage, grow, icon }) {
+    return (
+        <Card className="flex justify-between">
+            <div className="h-full flex flex-col justify-between">
+                <p className="font-sans">{title}</p>
+                <div>
+                    <p className="font-poppins font-bold text-[1.25vw]">{data}</p>
+                    <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
+                        <FiTrendingUp className="text-[1vw]" />
+                        <span>{percentage}%</span>
+                        <span className="text-light-grey">{grow >= 0 ? '+' : '-'}{grow} Today</span>
+                    </div>
+                </div>
+            </div>
+            {icon &&
+                <div className="w-[2.6vw] h-[2.6vw] rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
+                    {icon}
+                </div>
+            }
+        </Card>
+    )
+}
+
+function DateRangePicker ({ value, onChange }) {
+    return (
+        <GoalsButton variant="default" className="relative w-[8.35vw] h-[2.1vw] md:px-[.1vw] md:py-[0vw] flex justify-center items-center gap-[.4vw] md:text-[.7vw] border-1 rounded-[.4vw]" activeClassName="">
+            <Datepicker
+                value={value}
+                onChange={onChange}
+                showShortcuts={true}
+                primaryColor="indigo"
+                inputClassName="w-full bg-transparent border-transparent text-transparent placeholder:text-transparent focus:ring-0 focus:border-0 rounded-[.4vw] text-[.83vw] p-[.5vw] leading-tight cursor-pointer"
+                containerClassName="absolute"
+                toggleClassName="hidden"
+                popoverDirection="down"
+            />
+            <FaRegCalendar className="text-[1vw]" /> Select Date
+        </GoalsButton>
+    )
+}
+
 function Card ({ className, ...props }) {
     return (
         <div {...props} className={`bg-white shadow-bottom-right rounded-[.625vw] py-[1.25vw] px-[1.67vw] ${className}`}></div>
+    )
+}
+
+function LoadingUI () {
+    return (
+        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+            <img src={logo} alt="Goals Academy" className="w-[6vw] h-[6vw] animate-bounce" />
+        </div>
     )
 }

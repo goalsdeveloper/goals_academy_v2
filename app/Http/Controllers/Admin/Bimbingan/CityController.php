@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Bimbingan;
 
 use App\Models\City;
 use App\Http\Controllers\Controller;
@@ -12,13 +12,27 @@ class CityController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $cities = City::paginate(3);
+                $search = $request->input('search');
+                $perPage = $request->input('perPage', 10);
 
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $cities], 200);
+                $query = City::query();
+
+                if ($search) {
+                    $query->where('city', 'LIKE', "%$search%");
+                }
+
+                $cities = $query->paginate($perPage);
+
+                return response()->json([
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data success',
+                    'data' => $cities,
+                ], 200);
             } else {
                 abort(403);
             }

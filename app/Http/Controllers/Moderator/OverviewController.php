@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Moderator;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OverviewController extends Controller
 {
@@ -13,9 +16,27 @@ class OverviewController extends Controller
      */
     public function index()
     {
-        $totalOrder = Order::where('status', '=', 'Success')->count();
-        $totalChekout = Order::count();
-        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data category success', 'total_order' => $totalOrder, 'total_checkout' => $totalChekout], 200);
+        try {
+            if (Auth::user()->user_role == "moderator") {
+                $totalOrder = Order::where('status', '=', 'Success')->count();
+                $totalChekout = Order::count();
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Get data category success', 'total_order' => $totalOrder, 'total_checkout' => $totalChekout], 200);
+            } else {
+                abort(403);
+            }
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'An error occurred while fetching data: ' . $e->getMessage(),
+            ], 500);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Moderator;
+namespace App\Http\Controllers\Admin\Ecourse;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
 use Illuminate\Http\Request;
 
-class ModeratorOrderController extends Controller
+class EcourseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $order = Order::with('user.profile', 'products')->get();
-        return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data category success', 'order' => $order], 200);
+        //
     }
 
     /**

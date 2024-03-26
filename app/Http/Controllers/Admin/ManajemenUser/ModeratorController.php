@@ -1,24 +1,41 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\ManajemenUser;
 
 use App\Models\User;
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class TutorController extends Controller
+class ModeratorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $tutor = User::where("user_role", "tutor")->paginate(10);
+                $search = $request->input('search');
+                $perPage = $request->input('perPage', 10);
 
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $tutor], 200);
+                $query = User::where("user_role", "moderator");
+
+                if ($search) {
+                    $query->where(function ($subquery) use ($search) {
+                        $subquery->where('name', 'LIKE', "%$search%")
+                        ->orWhere('username', 'LIKE', "%$search%");
+                    });
+                }
+                $moderators = $query->paginate($perPage);
+
+                return Inertia::render('Auth/Admin/ManajemenUser/Moderator', [
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data success',
+                    'data' => $moderators,
+                ], 200);
             } else {
                 abort(403);
             }
@@ -28,7 +45,6 @@ class TutorController extends Controller
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -49,17 +65,17 @@ class TutorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $tutorss)
+    public function show(User $moderator)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $tutorWithProfile = User::with('profile')->where("user_role", "tutor")->findOrFail($tutorss->id);
+                $moderatorWithProfile = User::with('profile')->where("user_role", "moderator")->findOrFail($moderator->id);
 
                 return response()->json([
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
-                    'data' => $tutorWithProfile,
+                    'data' => $moderatorWithProfile,
                 ], 200);
             } else {
                 abort(403);
@@ -74,7 +90,7 @@ class TutorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(string $id)
     {
         //
     }
@@ -82,7 +98,7 @@ class TutorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $tutorss)
+    public function update(Request $request, User $moderator)
     {
         try {
             if (Auth::user()->user_role == "admin") {
@@ -94,9 +110,9 @@ class TutorController extends Controller
                     'major' => 'string',
                 ]);
 
-                $tutorss->update($validatedData);
+                $moderator->update($validatedData);
 
-                $tutorss->profile->update($validatedData);
+                $moderator->profile->update($validatedData);
 
                 return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update success'], 200);
             } else {
@@ -112,7 +128,7 @@ class TutorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(string $id)
     {
         //
     }
