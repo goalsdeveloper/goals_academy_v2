@@ -359,7 +359,7 @@ export default function DashboardLayout ({ auth, title, subtitle, role, children
                     })}
                 </nav>
             </aside>
-            <div className="relative w-full h-screen overflow-hidden">
+            <div className="relative w-full h-screen overflow-hidden bg-[#F8F8FC]">
                 <header className="absolute z-50 top-0 w-full h-[5.8vw] flex justify-between items-center bg-gray-50 px-[4.2vw] pt-[2.5vw] pb-[1.75vw] border-b-1">
                     <h1 className="font-poppins font-semibold text-[1.2vw]">{title}</h1>
                     <div id="tools" className="flex gap-[.5vw] text-[1.5vw] text-gray-400">

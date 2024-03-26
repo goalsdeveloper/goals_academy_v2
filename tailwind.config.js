@@ -43,11 +43,15 @@ export default {
                 },
                 "success": {
                     "10": "#EBFAF0",
-                    "50": "#35CA61"
+                    "50": "#35CA61",
+                    "60": "#2AA24E"
                 },
                 "warning": {
                     "10": "#FFF8E5",
                     "50": "#FFBD00"
+                },
+                "danger": {
+                    "40": "#FF3334"
                 },
                 'primary': '#FF6420',
                 'primary-10': '#FFEDE5',
@@ -181,7 +185,7 @@ export default {
         container: false,
     },
     plugins: [
-        require('@tailwindcss/forms'),
+        require("@tailwindcss/forms"),
         require('tw-elements/dist/plugin.cjs'),
         function ({addComponents}) {
             addComponents({
