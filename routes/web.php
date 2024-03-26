@@ -124,6 +124,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::resource('place', PlaceController::class)->except(['create',  'edit']);
         Route::resource('city', CityController::class)->except(['create',  'edit']);
         Route::resource('topic', TopicController::class)->except(['create', 'edit']);
+        Route::get('product/add', function () {
+            return Inertia::render('Auth/Admin/Bimbingan/Product/Create');
+        });
+        Route::get('product/edit', function () {
+            return Inertia::render('Auth/Admin/Bimbingan/Product/Update');
+        });
         Route::resource('product', BimbinganController::class)->except(['create', 'edit']);
         Route::resource('order', AdminOrderBimbinganController::class)->except(['create', 'edit']);
     });
@@ -178,6 +184,12 @@ Route::get('/coba', function () {
     $analyticsData = Analytics::fetchVisitorsAndPageViews(Period::days(7));
     dd($analyticsData);
 });
+
+// Route::prefix('admin/bimbingan')->group(function () {
+//     Route::get('order', function () {
+//         return Inertia::render('Auth/Admin/Bimbingan/Order');
+//     });
+// });
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';
