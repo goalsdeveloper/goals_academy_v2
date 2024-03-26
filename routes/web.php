@@ -185,12 +185,6 @@ Route::get('/coba', function () {
     dd($analyticsData);
 });
 
-// Route::prefix('admin/bimbingan')->group(function () {
-//     Route::get('order', function () {
-//         return Inertia::render('Auth/Admin/Bimbingan/Order');
-//     });
-// });
-
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';
 require __DIR__ . '/auth.php';
