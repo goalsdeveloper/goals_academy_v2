@@ -17,8 +17,26 @@ class UserController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $user = User::where("user_role", "user")->paginate(10);
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data user success', 'data' => $user], 200);
+                $perPage = $request->input('perPage', 10);
+                $search = $request->input('search');
+
+                $query = User::where("user_role", "user");
+
+                if ($search) {
+                    $query->where(function ($subquery) use ($search) {
+                        $subquery->where('name', 'LIKE', "%$search%")
+                            ->orWhere('username', 'LIKE', "%$search%");
+                    });
+                }
+
+                $users = $query->paginate($perPage);
+
+                return response()->json([
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data user success',
+                    'data' => $users,
+                ], 200);
             } else {
                 abort(403);
             }

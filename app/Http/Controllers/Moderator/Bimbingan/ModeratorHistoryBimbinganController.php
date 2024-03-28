@@ -12,13 +12,23 @@ class ModeratorHistoryBimbinganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $order_history = OrderHistory::with(
-                    ['order.products:id,name', 'order.course:id,parent_id,location,date,time', 'order.course.child']
-                )->where('status', 'selesai')->paginate(10);
+                $perPage = $request->input('perPage', 10);
+                $search = $request->input('search');
+
+                $query = OrderHistory::with(['order.products:id,name', 'order.user:id,name', 'order.course:id,parent_id,location,date,time', 'order.course.child'])
+                ->where('status', 'selesai');
+
+                if ($search) {
+                    $query->whereHas('order.user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'LIKE', "%$search%");
+                    });
+                }
+
+                $order_history = $query->paginate($perPage);
 
                 return response()->json([
                     'status' => true,
@@ -39,6 +49,7 @@ class ModeratorHistoryBimbinganController extends Controller
             ], 500);
         }
     }
+
 
     /**
      * Show the form for creating a new resource.

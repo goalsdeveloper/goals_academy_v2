@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Webinar;
+namespace App\Http\Controllers\Admin\Ebook;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
@@ -23,7 +23,7 @@ class OrderController extends Controller
                 $query = Order::with(['user:id,username', 'products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type'])
                     ->whereHas('products', function ($query) {
                         $query->whereHas('productType', function ($subQuery) {
-                            $subQuery->where('type', 'LIKE', '%webinar%');
+                            $subQuery->where('type', 'LIKE', '%e-book%');
                         });
                     });
 
@@ -36,11 +36,11 @@ class OrderController extends Controller
                 $orders = $query->paginate($perPage);
 
                 return response()->json([
-                        'status' => true,
-                        'statusCode' => 200,
-                        'message' => 'get data history success',
-                        'data' => $orders,
-                    ], 200);
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data history success',
+                    'data' => $orders,
+                ], 200);
             } else {
                 abort(403);
             }

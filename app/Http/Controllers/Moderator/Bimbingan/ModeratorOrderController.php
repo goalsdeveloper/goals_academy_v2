@@ -23,15 +23,42 @@ class ModeratorOrderController extends Controller
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-            $perPage = $request->input('perPage', 10);
-                $orders = Order::with(['user:id,name','products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,products_id,order_id,tutor_id,place_id,topic_id,date,time,location', 'course.place.city'])
-                    ->whereHas('products', function ($query) {
-                        $query->whereHas('productType', function ($subQuery) {
-                            $subQuery->where('type', 'LIKE', '%bimbingan%');
-                        });
-                    })
-                    ->where('status', 'Success')
-                    ->paginate($perPage);
+                $perPage = $request->input('perPage', 10);
+                $search = $request->input('search');
+
+                $query = Order::with([
+                    'user:id,name',
+                    'products:id,product_type_id,category_id',
+                    'products.category:id,name',
+                    'products.productType:id,type',
+                    'course:id,products_id,order_id,tutor_id,place_id,topic_id,date,time,location',
+                    'course.place.city'
+                ])->whereHas('products', function ($query) {
+                    $query->whereHas('productType', function ($subQuery) {
+                        $subQuery->where('type', 'LIKE', '%bimbingan%');
+                    });
+                })->where('status', 'Success');
+
+                if ($search) {
+                    $query->whereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'LIKE', "%$search%");
+                    });
+                }
+
+                $orders = $query->paginate($perPage);
+
+                $orders->getCollection()->transform(function ($order) {
+                    $totalFields = 4;
+                    $completeFields = 0;
+                    $course = $order->course;
+                    if ($course->place_id) $completeFields++;
+                    if ($course->date) $completeFields++;
+                    if ($course->time) $completeFields++;
+                    if ($course->tutor_id) $completeFields++;
+
+                    $order->completeness_percentage = ($completeFields / $totalFields) * 100;
+                    return $order;
+                });
 
                 return response()->json([
                     'status' => true,
@@ -58,6 +85,7 @@ class ModeratorOrderController extends Controller
             ], 500);
         }
     }
+
 
     /**
      * Show the form for creating a new resource.
