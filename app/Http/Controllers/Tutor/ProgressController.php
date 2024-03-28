@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Tutor;
 
-use App\Enums\CourseStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\FileUpload;
@@ -19,9 +18,15 @@ class ProgressController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
+        $topic = $request->topic;
+        $username = $request->username;
+        $date = $request->date;
+        $time = $request->time;
+        $ongoing = $request->ongoing;
+        $tutor = $user->tutor();
         if ($request->search) {
             $search = $request->search;
-            $tutor = $user->tutor()->Where('time', 'LIKE', '%' . $search . '%')
+            $tutor = $tutor->Where('time', 'LIKE', '%' . $search . '%')
                 ->orWhere('ongoing', 'LIKE', '%' . $search . '%')
                 ->orWhere('date', 'LIKE', '%' . $search . '%')
                 ->orWhereHas('user', function ($q) use ($search) {
@@ -29,29 +34,30 @@ class ProgressController extends Controller
                 })->orWhereHas('topic', function ($q) use ($search) {
                 $q->where('topic', 'LIKE', '%' . $search . '%');
             });
-        } else {
-            $tutor = $user->tutor()->whereHas('tutor', function ($query) {
-                $query->where('ongoing', CourseStatusEnum::ONGOING->value);
-            });
         }
-        $topic = $request->topic;
-        $username = $request->username;
         $tutor = $tutor->with(['topic' => function ($query) use ($topic) {
-            if ($topic) {
-                $query->orderBy('topic', $topic ?? 'desc');
+            $query->select(['topic', 'id']);
+            if (!is_null($topic)) {
+                $query->orderBy('topic', $topic);
             }
+            return $query;
         }, 'user' => function ($query) use ($username) {
-            $query->orderBy('username', $username ?? 'desc');
+            $query->select(['username', 'id']);
+            if (!is_null($username)) {
+                $query->orderBy('username', $username);
+            }
+            return $query;
+        }, 'products:id,name']);
+        if (!is_null($date)) {
+            $tutor = $tutor->orderBy('date', $date);
+        }
 
-        }], 'products');
-        if ($request->date) {
-            $tutor = $tutor->orderBy('date', $request->date ?? 'desc');
-        }
         if ($request->time) {
-            $tutor = $tutor->orderBy('time', $request->time ?? 'desc');
+            $tutor = $tutor->orderBy('time', $time);
         }
+
         if ($request->ongoing) {
-            $tutor = $tutor->orderBy('ongoing', $request->ongoing ?? 'desc');
+            $tutor = $tutor->orderBy('ongoing', $ongoing);
         }
         $tutor = $tutor->paginate(15);
         return response()->json([

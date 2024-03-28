@@ -30,10 +30,6 @@ class ProfileController extends Controller
             })
             ->with('products.category', 'course')
             ->get();
-        // // dd($orderBimbingan);
-        // return response()->json([
-        //     'data' => $orderBimbingan,
-        // ]);
         return Inertia::render('Auth/User/Bimbingan/Bimbingan', [
             'orderBimbingan' => $orderBimbingan,
         ]);

@@ -52,17 +52,17 @@ class SuccessNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        $paymentMethod = json_decode($this->order->orderHistory()->where('status', 'pending')->first()->payload);
-        if ($paymentMethod->payment_type == 'bank_transfer') {
-            $paymentType = $paymentMethod->va_numbers[0]->bank;
+        $paymentMethod = $this->order->orderHistory()->where('status', 'pending')->first()->payload;
+        if ($paymentMethod['payment_type'] == 'bank_transfer') {
+            $paymentType = $paymentMethod['va_numbers'][0]['bank'];
         } else {
-            $paymentType = $paymentMethod->payment_type;
+            $paymentType = $paymentMethod['payment_type'];
         }
 
         return [
             'category' => 'Transaksi',
             'title' => 'Transaksi Berhasil!',
-            'expiry_time' => $paymentMethod->expiry_time,
+            'expiry_time' => $paymentMethod['expiry_time'],
             'order_id' => $this->order->order_code,
             'payment_method' => $paymentType,
         ];
