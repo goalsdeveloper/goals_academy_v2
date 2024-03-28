@@ -43,13 +43,12 @@ const GoalsDashboardTable = ({
         return {
             enableSorting: isSortable,
             enablePagination: isPaginated,
+            enableBottomToolbar: isPaginated,
             enableRowDragging: isDraggable,
             enableRowOrdering: isDraggable,
             enableTableHead: isHeadVisible,
         };
     }
-
-
 
     const dummyTOptions = useMaterialReactTable(
         dummyTOptionsConfig({ columns, getOptionalConfig })
@@ -115,8 +114,8 @@ const GoalsDashboardTable = ({
                         table={useMaterialReactTable(
                             dataTableOptionsConfig({
                                 columns,
-                                data,
-                                setData: setTableData,
+                                data: tableData,
+                                setData: (x) => setTableData([...x]),
                                 getOptionalConfig,
                             })
                         )}
@@ -169,10 +168,15 @@ const dataTableOptionsConfig = ({
         ...getOptionalConfig(),
         enableTopToolbar: false,
         enableColumnActions: false,
-        enableBottomToolbar: false,
         muiTablePaperProps: {
             sx: {
                 boxShadow: "none",
+            },
+        },
+        muiTableHeadRowProps: {
+            sx: {
+                background: "#F8F8FC",
+                borderRadius: ".4vw",
             },
         },
         muiRowDragHandleProps: ({ table }) => ({
@@ -184,7 +188,7 @@ const dataTableOptionsConfig = ({
                         0,
                         data.splice(draggingRow.index, 1)[0]
                     );
-                    // console.log(...data);
+                    console.log(...data);
                     setData([...data]);
                 }
             },
