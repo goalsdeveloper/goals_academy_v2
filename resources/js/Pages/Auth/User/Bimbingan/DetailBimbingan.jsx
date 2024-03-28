@@ -91,7 +91,7 @@ export default function DetailPesanan({ auth, courseDetail, cities, date }) {
                         </h1>
                     )}
 
-                    <div className="fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center pb-[3.7vw] pt-[3.4vw] bg-white md:p-0 z-[40] md:z-0">
+                    <div className="fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center items-center pb-[3.7vw] pt-[3.4vw] bg-white md:p-0 z-[40] md:z-0">
                         <GoalsButton
                             variant="bordered"
                             onClick={(prev) =>
@@ -100,7 +100,7 @@ export default function DetailPesanan({ auth, courseDetail, cities, date }) {
                                     ulasanTutor: true,
                                 })
                             }
-                            className="px-[6.1vw]"
+                            className="w-full scale-y-95"
                         >
                             Beri Ulasan
                         </GoalsButton>
@@ -112,7 +112,7 @@ export default function DetailPesanan({ auth, courseDetail, cities, date }) {
                                     selesaiProgram: true,
                                 })
                             }
-                            className="px-[6.1vw]"
+                            className="w-full"
                         >
                             Selesaikan Pembelajaran
                         </GoalsButton>
@@ -147,10 +147,10 @@ const SelesaiProgram = ({ show, setShow }) => {
                 </p>
 
                 <div className="grid space-y-[2vw] md:space-y-[.8vw] w-full">
-                    <GoalsButton onClick={() => setShow()}>
+                    <GoalsButton onClick={() => setShow()} className="w-full">
                         Selesaikan
                     </GoalsButton>
-                    <GoalsButton variant="bordered" onClick={() => setShow()}>
+                    <GoalsButton variant="bordered" onClick={() => setShow()} className="w-full">
                         Kembali
                     </GoalsButton>
                 </div>
@@ -184,7 +184,7 @@ const UlasanTutor = ({ show, setShow }) => {
                         className="h-[37vw] md:h-[8.3vw] px-[4vw] py-[2.5vw] md:px-[.8vw] md:py-[.5vw]  rounded-md border border-neutral-50 focus:outline-0 text-dark text-[4.6vw] md:text-[1vw]"
                         style={{ resize: "none" }}
                     />
-                    <GoalsButton onClick={setShow}>
+                    <GoalsButton onClick={setShow} className="w-full">
                         Lanjutkan Ulasan
                     </GoalsButton>
                 </div>
@@ -215,7 +215,7 @@ const UlasanProgram = ({ show, setShow }) => {
                         placeholder="Ketik ulasan kamu disini"
                         style={{ resize: "none" }}
                     />
-                    <GoalsButton onClick={setShow}>Simpan</GoalsButton>
+                    <GoalsButton onClick={setShow} className="w-full">Simpan</GoalsButton>
                 </div>
             </div>
         </GoalsPopup>
