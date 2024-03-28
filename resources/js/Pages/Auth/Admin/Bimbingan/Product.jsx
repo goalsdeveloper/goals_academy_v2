@@ -12,11 +12,11 @@ import {
 } from "react-icons/fi";
 import { productTableData as data } from "./Product/data";
 
-export default function Product({ auth }) {
+export default function Product({ auth, bimbingan_tuntas }) {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "gambar", //access nested data with dot notation
+                accessorKey: "product_image", //access nested data with dot notation
                 header: "Gambar",
 
                 Cell: ({ cell }) => {
@@ -30,11 +30,11 @@ export default function Product({ auth }) {
                 },
             },
             {
-                accessorKey: "nama",
+                accessorKey: "name",
                 header: "Nama",
             },
             {
-                accessorKey: "visibilitas", //normal accessorKey
+                accessorKey: "is_visible", //normal accessorKey
                 header: "Visibilitas",
 
                 Cell: ({ cell }) => (
@@ -44,32 +44,51 @@ export default function Product({ auth }) {
                 ),
             },
             {
-                accessorKey: "harga",
+                accessorKey: "price",
                 header: "Harga",
             },
             {
-                accessorKey: "id",
                 header: "Action",
 
-                Cell: ({ cell }) => (
-                    <ul className="flex gap-[.8vw] w-fit">
-                        <li>
-                            <Link method="GET" href={route('admin.bimbingan.product.edit', { product: cell.getValue() })}>
-                                <FiEdit2 className="text-[1.2vw] text-secondary" />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link method="DELETE" href={route('admin.bimbingan.product.destroy', { product: cell.getValue() })}>
-                                <FiTrash2 className="text-[1.2vw] text-danger-40" />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link method="GET" href={route('admin.bimbingan.product.show', { product: cell.getValue() })}>
-                                <FiEye className="text-[1.2vw] text-neutral-60" />
-                            </Link>
-                        </li>
-                    </ul>
-                ),
+                Cell: ({ cell }) => {
+                    return (
+                        <ul className="flex gap-[.8vw] w-fit">
+                            <li>
+                                <Link
+                                    method="GET"
+                                    href={route(
+                                        "admin.bimbingan.product.edit",
+                                        { product: cell.row.original }
+                                    )}
+                                >
+                                    <FiEdit2 className="text-[1.2vw] text-secondary" />
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    method="DELETE"
+                                    href={route(
+                                        "admin.bimbingan.product.destroy",
+                                        { product: cell.row.original }
+                                    )}
+                                >
+                                    <FiTrash2 className="text-[1.2vw] text-danger-40" />
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    method="GET"
+                                    href={route(
+                                        "admin.bimbingan.product.show",
+                                        { product: cell.row.original }
+                                    )}
+                                >
+                                    <FiEye className="text-[1.2vw] text-neutral-60" />
+                                </Link>
+                            </li>
+                        </ul>
+                    );
+                },
             },
         ],
         []
@@ -83,13 +102,22 @@ export default function Product({ auth }) {
             auth={auth}
         >
             <div className="space-y-[1.6vw]">
-                <SubHeading />
+                <SubHeading title="Produk">
+                    <Link
+                        isLink
+                        method="GET"
+                        href={route("admin.bimbingan.product.create")}
+                        className="flex items-center gap-[.5vw] bg-secondary hover:bg-primary text-white py-[.6vw] px-[1.2vw] rounded-[.4vw] text-[.7vw]"
+                    >
+                        <FiPlus className="text-[1vw]" />
+                        Tambah Produk
+                    </Link>
+                </SubHeading>
                 {/* <GoalsAdminTable /> */}
                 <GoalsDashboardTable
                     columns={columns}
-                    data={data}
+                    data={bimbingan_tuntas}
                     isDraggable
-                    isSplitByCategory
                 />
             </div>
         </DashboardLayout>
@@ -97,19 +125,11 @@ export default function Product({ auth }) {
     ``;
 }
 
-const SubHeading = () => {
+export const SubHeading = ({ title, children }) => {
     return (
         <div className="flex w-full justify-between items-center">
-            <span className="text-[1.2vw] font-medium">Produk</span>
-            <Link
-                isLink
-                method="GET"
-                href={route('admin.bimbingan.product.create')}
-                className="flex items-center gap-[.5vw] bg-secondary hover:bg-primary text-white py-[.6vw] px-[1.2vw] rounded-[.4vw] text-[.7vw]"
-            >
-                <FiPlus className="text-[1vw]" />
-                Tambah Produk
-            </Link>
+            <span className="text-[1.2vw] font-medium">{title}</span>
+            {children}
         </div>
     );
 };
