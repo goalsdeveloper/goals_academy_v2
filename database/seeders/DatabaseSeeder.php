@@ -39,6 +39,12 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             OrderHistorySeeder::class,
             TutorSkillSeeder::class,
+            DivisionSeeder::class,
+            EducationSeeder::class,
+            ExperienceSeeder::class,
+            LocationSeeder::class,
+            TypeJobSeeder::class,
+            WorkSystemSeeder::class,
         ]);
 
 
@@ -53,19 +59,5 @@ class DatabaseSeeder extends Seeder
             'date_end' => today()->addWeek(),
         ]);
         PromoCode::factory(9)->create();
-
-        DB::insert('insert into category_products (category_id, products_id) values (2, 1)');
-        DB::insert('insert into category_products (category_id, products_id) values (3, 1)');
-
-        DB::insert('insert into add_on_products (add_on_id, products_id) values (1, 1)');
-        DB::insert('insert into add_on_products (add_on_id, products_id) values (2, 1)');
-        DB::insert('insert into add_on_products (add_on_id, products_id) values (3, 1)');
-
-        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 1]);
-        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 2]);
-        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 3]);
-        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 1]);
-        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 2]);
-        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 3]);
     }
 }

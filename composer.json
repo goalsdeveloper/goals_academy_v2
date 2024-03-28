@@ -20,6 +20,7 @@
         "laravel/tinker": "^2.8",
         "midtrans/midtrans-php": "^2.5",
         "nesbot/carbon": "^2.72",
+        "spatie/laravel-analytics": "^5.3",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

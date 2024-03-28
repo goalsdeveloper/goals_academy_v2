@@ -63,11 +63,20 @@ class UserSeeder extends Seeder
             'user_role' => 'user',
             'email_verified_at' => now(),
         ]);
+        User::create([
+            'name' => 'Naufal Romero',
+            'username' => 'rmvs',
+            'email' => 'naufalromero@gmail.com',
+            'password' => Hash::make('password'),
+            'user_role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
         User::factory()
-            ->count(10)
+            ->count(20)
             ->state(new Sequence(
                 ['user_role' => 'tutor'],
                 ['user_role' => 'moderator'],
+                ['user_role' => 'user'],
             ))
             ->create();
     }

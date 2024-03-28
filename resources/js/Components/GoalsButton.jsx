@@ -27,13 +27,7 @@ export default function GoalsButton({
                         <i className="fa-solid fa-circle-notch fa-spin text-inherit"></i>
                         <span className="text-transparent">.</span>
                     </div>
-                ) : (
-                    <>
-                        <span className="text-transparent">.</span>
-                        {children}
-                        <span className="text-transparent">.</span>
-                    </>
-                )}
+                ) : (children)}
             </Link>
         );
     } else {
@@ -50,13 +44,7 @@ export default function GoalsButton({
                         <i className="fa-solid fa-circle-notch fa-spin text-inherit"></i>
                         <span className="text-transparent">.</span>
                     </div>
-                ) : (
-                    <>
-                        <span className="text-transparent">.</span>
-                        {children}
-                        <span className="text-transparent">.</span>
-                    </>
-                )}
+                ) : (children)}
             </a>
         );
     }

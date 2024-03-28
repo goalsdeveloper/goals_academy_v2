@@ -3,7 +3,7 @@ import TECollapseItem from "@/Components/TECollapseItem";
 import GoalsButton from "@/Components/GoalsButton";
 import ExpandedButton from "@/Components/ExpandedButton";
 
-function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih satu", data=[], error="", icon="", chevronIcon="", required=false, className, children, onClick }) {
+function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih satu", data=[], error="", icon="", chevronIcon="", required=false, className, filledClassName="border-2 border-secondary text-secondary", emptyClassName="border-1 border-light-grey text-light-grey", children, onClick }) {
     return (
         <div>
             {label != "" ? (
@@ -11,9 +11,7 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
             ) : (<></>)}
             <ExpandedButton
                 className={`rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] cursor-pointer ${
-                    data.length > 0
-                        ? "border-2 border-secondary text-secondary"
-                        : "border-1 border-light-grey text-light-grey"
+                    data.length > 0 ? filledClassName : emptyClassName
                 } ${className}`}
                 icon={chevronIcon != "" ? chevronIcon : `fa-solid fa-chevron-down duration-300 ${show != "" ? "-rotate-180" : ""}`}
                 onClick={() => setShow(!show)}

@@ -2,12 +2,14 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode: 'false',
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.jsx',
-        './node_modules/tw-elements/dist/js/**/*.js'
+        './node_modules/tw-elements/dist/js/**/*.js',
+        './node_modules/react-tailwindcss-datepicker/dist/index.esm.js'
     ],
     theme: {
         screens: {
@@ -41,11 +43,15 @@ export default {
                 },
                 "success": {
                     "10": "#EBFAF0",
-                    "50": "#35CA61"
+                    "50": "#35CA61",
+                    "60": "#2AA24E"
                 },
                 "warning": {
                     "10": "#FFF8E5",
                     "50": "#FFBD00"
+                },
+                "danger": {
+                    "40": "#FF3334"
                 },
                 'primary': '#FF6420',
                 'primary-10': '#FFEDE5',
@@ -57,6 +63,7 @@ export default {
                 'light-grey': '#848484',
                 'grey': 'color-mix(in lch, black 40%, #848484)',
                 'dark': '#404040',
+                'dark-indigo': '#3A3F51',
             },
             width: {
                 'xl': '160%',
@@ -143,6 +150,10 @@ export default {
                 '1': '1',
             },
             keyframes: {
+                'slideRight': {
+                    'from': { 'transform': 'translateX(-100%)' },
+                    'to': { 'transform': 'translateX(0)' }
+                },
                 'fadeIn': {
                     'from': { 'opacity': '0' },
                     'to': { 'opacity': '1' }
@@ -163,6 +174,7 @@ export default {
                 }
             },
             animation: {
+                slideRight: 'slideRight 3s',
                 fadeIn: 'fadeIn 3s',
                 autoplayY: 'autoplayY 20s infinite linear',
                 'bounce-sm': 'smallBounce 1s infinite',
@@ -173,6 +185,7 @@ export default {
         container: false,
     },
     plugins: [
+        require("@tailwindcss/forms"),
         require('tw-elements/dist/plugin.cjs'),
         function ({addComponents}) {
             addComponents({

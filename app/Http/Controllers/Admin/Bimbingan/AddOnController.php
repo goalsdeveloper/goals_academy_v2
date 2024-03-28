@@ -6,19 +6,35 @@ use App\Models\AddOn;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class AddOnController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
 
         try {
             if (Auth::user()->user_role == "admin") {
-                $addons = AddOn::get();
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data category success', 'data' => $addons], 200);
+                $search = $request->input('search');
+                $perPage = $request->input('perPage', 10);
+
+                $query = AddOn::query();
+
+                if ($search) {
+                    $query->where('name', 'LIKE', "%$search%");
+                }
+
+                $addons = $query->paginate($perPage);
+
+                return Inertia::render('Auth/Admin/Bimbingan/AddOn', [
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data category success',
+                    'data' => $addons,
+                ], 200);
             } else {
                 abort(403);
             }

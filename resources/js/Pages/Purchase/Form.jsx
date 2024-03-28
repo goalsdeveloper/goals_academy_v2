@@ -4,17 +4,13 @@ import moment from "moment";
 import MainLayout from "@/Layouts/MainLayout";
 import GoalsButton from "@/Components/GoalsButton";
 import ExpandedButton from "@/Components/ExpandedButton";
-// import GoalsDatePicker from "@/Components/Form/GoalsDatePicker";
-// import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/Form/GoalsSelectInput";
-// import { GoalsSelectMultipleInput, GoalsSelectMultipleInputItem } from "@/Components/Form/GoalsSelectMultipleInput";
-// import GoalsUploadFile from "@/Components/Form/GoalsUploadFile";
 import PromoForm from "@/Pages/Partials/Purchase/Form/PromoForm";
 import PurchaseMethodForm from "@/Pages/Partials/Purchase/Form/PurchaseMethodForm";
 import LengkapiProfilForm from "@/Pages/Partials/Purchase/Form/LengkapiProfilForm";
 import { createTheme } from "@mui/material";
 import "@/script/momentCustomLocale";
 import { FiChevronLeft, FiInfo } from "react-icons/fi";
-import { RiCoupon3Fill } from "react-icons/ri";
+import { BiSolidDiscount } from "react-icons/bi";
 import { FaChevronRight } from "react-icons/fa6";
 import GoalsDatePicker from "@/Components/elements/GoalsDatePicker";
 import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/elements/GoalsSelectInput";
@@ -824,7 +820,7 @@ function SummaryCard({
                                 textClassName="font-normal"
                                 onClick={() => setShowPromoForm(!showPromoForm)}
                             >
-                                <RiCoupon3Fill className="text-[4.8vw] md:text-[1.2vw]" />
+                                <BiSolidDiscount className="text-[4.8vw] md:text-[1.2vw]" />
                                 <span>
                                     {data.discount > 0
                                         ? "Promo Terpakai"

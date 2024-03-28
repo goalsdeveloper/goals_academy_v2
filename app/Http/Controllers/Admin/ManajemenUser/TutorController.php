@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin\ManajemenUser;
 
 use App\Models\User;
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class TutorController extends Controller
@@ -12,13 +13,29 @@ class TutorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $tutor = User::where("user_role", "tutor")->paginate(10);
+                $search = $request->input('search');
+                $perPage = $request->input('perPage', 10);
 
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $tutor], 200);
+                $query = User::where("user_role", "tutor");
+
+                if ($search) {
+                    $query->where(function ($subquery) use ($search) {
+                        $subquery->where('name', 'LIKE', "%$search%")
+                            ->orWhere('username', 'LIKE', "%$search%");
+                    });
+                }
+                $tutors = $query->paginate($perPage);
+
+                return Inertia::render('Auth/Admin/ManajemenUser/Tutor', [
+                    'status' => true,
+                    'statusCode' => 200,
+                    'message' => 'get data success',
+                    'data' => $tutors,
+                ], 200);
             } else {
                 abort(403);
             }
@@ -49,11 +66,11 @@ class TutorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $tutorss)
+    public function show(User $tutor)
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $tutorWithProfile = User::with('profile')->where("user_role", "tutor")->findOrFail($tutorss->id);
+                $tutorWithProfile = User::with('profile')->where("user_role", "tutor")->findOrFail($tutor->id);
 
                 return response()->json([
                     'status' => true,
@@ -82,7 +99,7 @@ class TutorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $tutorss)
+    public function update(Request $request, User $tutor)
     {
         try {
             if (Auth::user()->user_role == "admin") {
@@ -94,9 +111,9 @@ class TutorController extends Controller
                     'major' => 'string',
                 ]);
 
-                $tutorss->update($validatedData);
+                $tutor->update($validatedData);
 
-                $tutorss->profile->update($validatedData);
+                $tutor->profile->update($validatedData);
 
                 return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update success'], 200);
             } else {
@@ -112,7 +129,7 @@ class TutorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $tutor)
     {
         //
     }

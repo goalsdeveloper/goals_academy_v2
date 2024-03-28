@@ -2,9 +2,13 @@ import useScrollBlock from "@/Hooks/useScrollBlock";
 import { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { RxFileText } from "react-icons/rx";
+import { templateDataDetail } from "../data";
 
 const DetailSatuPertemuan = ({ data, className = "" }) => {
     const gapSize = 1;
+    const template  = templateDataDetail[0].detail;
+
+    console.log(template)
 
     return (
         <div className={`md:flex gap-[${gapSize}vw] ${className}`}>
@@ -14,7 +18,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                     Pelaksanaan Pembelajaran
                 </h2>
                 <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
-                    {data.detailPelaksanaan.map((item, index) => {
+                    {template.detailPelaksanaan.map((item, index) => {
                         return (
                             <li
                                 key={index}
@@ -45,7 +49,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                         Informasi Tutor
                     </h2>
                     <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
-                        {data.detailTutor.map((item, index) => {
+                        {template.detailTutor.map((item, index) => {
                             return (
                                 <li
                                     key={index}
@@ -75,7 +79,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                     </h2>
 
                     <div className="space-y-[.8vw] md:space-y-[.2vw]">
-                        {data.fileMedia.map((item, index) => {
+                        {data.file_uploads?.map((item, index) => {
                             return (
                                 <FileMediaItemBackdrop
                                     key={index}

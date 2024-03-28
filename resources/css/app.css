@@ -32,6 +32,10 @@
     display: none;
 }
 
+input {
+    @apply ring-0;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Moderator\Bimbingan;
 
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use App\Models\OrderHistory;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class ModeratorHistoryBimbinganController extends Controller
@@ -12,15 +13,25 @@ class ModeratorHistoryBimbinganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $order_history = OrderHistory::with(
-                    ['order.products:id,name', 'order.course:id,parent_id,location,date,time', 'order.course.child']
-                )->where('status', 'selesai')->paginate(10);
+                $perPage = $request->input('perPage', 10);
+                $search = $request->input('search');
 
-                return response()->json([
+                $query = OrderHistory::with(['order.products:id,name', 'order.user:id,name', 'order.course:id,parent_id,location,date,time', 'order.course.child'])
+                ->where('status', 'selesai');
+
+                if ($search) {
+                    $query->whereHas('order.user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'LIKE', "%$search%");
+                    });
+                }
+
+                $order_history = $query->paginate($perPage);
+
+                return Inertia::render('Auth/Moderator/Bimbingan/History', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data history success',
@@ -39,6 +50,7 @@ class ModeratorHistoryBimbinganController extends Controller
             ], 500);
         }
     }
+
 
     /**
      * Show the form for creating a new resource.
