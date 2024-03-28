@@ -5,7 +5,7 @@ use App\Http\Controllers\Tutor\ProfileController;
 use App\Http\Controllers\Tutor\ProgressController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'tutor'])->group(function () {
     Route::prefix('tutor')->group(function () {
         Route::patch('progress/tutor-approve/{course}', [ProgressController::class, 'tutorApprove'])->name('tutor.tutorApprove');
         Route::resource('progress', ProgressController::class, ['as' => 'tutor']);

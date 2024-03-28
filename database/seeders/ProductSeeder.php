@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Products;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
@@ -153,5 +154,15 @@ class ProductSeeder extends Seeder
                 'add_on' => 1,
             ],
         ]);
+
+        DB::insert('insert into category_products (category_id, products_id) values (2, 1)');
+        DB::insert('insert into category_products (category_id, products_id) values (3, 1)');
+
+        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 1]);
+        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 2]);
+        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 3]);
+        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 1]);
+        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 2]);
+        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 3]);
     }
 }

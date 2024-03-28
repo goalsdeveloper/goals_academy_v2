@@ -72,10 +72,11 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
         User::factory()
-            ->count(10)
+            ->count(20)
             ->state(new Sequence(
                 ['user_role' => 'tutor'],
                 ['user_role' => 'moderator'],
+                ['user_role' => 'user'],
             ))
             ->create();
     }
