@@ -18,7 +18,7 @@ class PurchaseStatusController extends Controller
             $query->where('status', 'pending');
         })->with('orderHistory', 'paymentMethod')->first();
         $paymentName = Str::lower($order->paymentMethod->name);
-        $stringToJson = json_decode($order->orderHistory->first()->payload);
+        $stringToJson = $order->orderHistory->first()->payload;
         return Inertia::render('Purchase/Status', [
             'data' => $order,
             'orderHistory' => $stringToJson,

@@ -68,7 +68,8 @@ class HandleMidtransCallbackController extends Controller
                         'products_id' => $order->products_id,
                         'order_id' => $order->id,
                     ];
-                    $parentCourse = Course::create($dataCourse);
+                    $session = 1;
+                    $parentCourse = Course::create(array_merge($dataCourse, ['session' => $session]));
                     $dataCourse['parent_id'] = $parentCourse->id;
                     $form_result = $order->form_result;
                     if (array_key_exists('add_on', $form_result) && $form_result['add_on'] != null) {
@@ -82,6 +83,7 @@ class HandleMidtransCallbackController extends Controller
                                 'date' => $form_result['schedule'] ?? null,
                                 'place_id' => $form_result['place_id'] ?? null,
                                 'topic_id' => $form_result['topic'] ?? null,
+                                'session' => ++$session,
                             ])
                         );
                     }

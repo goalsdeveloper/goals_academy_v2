@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\AddOn;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class AddOnSeeder extends Seeder
 {
@@ -28,5 +29,9 @@ class AddOnSeeder extends Seeder
             'slug' => 'desk-review',
             'price' => 25000,
         ]);
+
+        DB::insert('insert into add_on_products (add_on_id, products_id) values (1, 1)');
+        DB::insert('insert into add_on_products (add_on_id, products_id) values (2, 1)');
+        DB::insert('insert into add_on_products (add_on_id, products_id) values (3, 1)');
     }
 }
