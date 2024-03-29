@@ -11,7 +11,19 @@ const GoalsButton = ({
     href = "/",
     ...rest
 }) => {
-    const Wrapper = isLink ? Link : "React.Fragment";
+    const Wrapper = isLink ? Link : React.Fragment;
+
+    function getProps() {
+        switch (isLink) {
+            case true:
+                return {
+                    href: href,
+                    method: method,
+                };
+            default:
+                return {};
+        }
+    }
 
     function getSizeClassName() {
         switch (size) {
@@ -44,7 +56,7 @@ const GoalsButton = ({
     }
 
     return (
-        <Wrapper href={href} method={method}>
+        <Wrapper {...getProps()}>
             <button
                 className={`font-medium transition-all ${getVariantClassName()} ${getSizeClassName()} ${className}`}
                 {...rest}
