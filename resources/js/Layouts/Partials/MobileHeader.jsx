@@ -72,9 +72,9 @@ const MobileHeader = ({ auth }) => {
                 {auth.user && (
                     <div
                         className={`relative font-poppins flex justify-center cursor-pointer`}
-                        onMouseEnter={() => setAuthDropdown(true)}
-                        onMouseLeave={() => setAuthDropdown(false)}
-                        // onClick={() => setAuthDropdown(!authDropdown)}
+                        // onMouseEnter={() => setAuthDropdown(true)}
+                        // onMouseLeave={() => setAuthDropdown(false)}
+                        onClick={() => setAuthDropdown(!authDropdown)}
                     >
                         <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
                             <img
