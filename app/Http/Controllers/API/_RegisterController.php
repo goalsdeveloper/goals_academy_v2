@@ -23,7 +23,7 @@ class RegisterController extends Controller
     {
         $rule = [
             'username' => 'required|max:15',
-            'email' => 'required|email:dns',
+            'email' => 'required',
             'password' => 'required',
             're-password' => 'required'
         ];
@@ -48,7 +48,8 @@ class RegisterController extends Controller
             abort(409, 'Your password is not match!');
         }
 
-        User::create($validateData);
+        $newUser = User::create($validateData);
+        $newUser->profile()->create();
 
         return response()->json([
             'message' => 'Your account is created successfully! Please login.',
