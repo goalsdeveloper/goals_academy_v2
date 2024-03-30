@@ -27,6 +27,8 @@ class Course extends Model
         'is_tutor',
         'topic_id',
         'is_moderator',
+        'session',
+        'place_id'
     ];
 
     public function user()
