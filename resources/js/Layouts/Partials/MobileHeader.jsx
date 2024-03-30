@@ -219,7 +219,7 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
                 <div className="flex flex-col justify-between">
                     {links.map(({ href, text, sublinks, icon }, index) => (
                         <div
-                            key={href}
+                            key={index}
                             className="w-full py-[1vw] text-start bg-white border-b border-neutral-20 h-fit"
                         >
                             {sublinks ? (

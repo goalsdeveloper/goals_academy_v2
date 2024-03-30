@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -75,7 +76,13 @@ class EbookController extends Controller
      */
     public function create()
     {
-        //
+        if (Auth::user()->user_role == "admin") {
+            $categories = Category::get();
+            // return response()->json(['status' => true, 'statusCode' => 200, "data" => $categories], 201);
+            return Inertia::render('Auth/Admin/Bimbingan/Product/Create');
+        } else {
+            abort(403);
+        }
     }
 
     /**

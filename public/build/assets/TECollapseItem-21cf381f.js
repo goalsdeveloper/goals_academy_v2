@@ -1,0 +1,1 @@
+import{j as s}from"./app-4d736824.js";function m({breakClassName:r,className:e,children:a}){return s.jsxs(s.Fragment,{children:[s.jsx("br",{className:r}),s.jsx("div",{className:`grid ${e}`,children:a})]})}export{m as T};

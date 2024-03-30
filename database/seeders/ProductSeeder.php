@@ -34,7 +34,7 @@ class ProductSeeder extends Seeder
                 'place' => 0,
                 'topic' => 1,
                 'document' => 1,
-                'add_on' => 1,
+                // 'add_on' => 1,
             ],
         ]);
         Products::create([
@@ -57,7 +57,7 @@ class ProductSeeder extends Seeder
                 'place' => 0,
                 'topic' => 1,
                 'document' => 1,
-                'add_on' => 1,
+                // 'add_on' => 1,
             ],
         ]);
         Products::create([
@@ -80,7 +80,7 @@ class ProductSeeder extends Seeder
                 'place' => 1,
                 'topic' => 1,
                 'document' => 1,
-                'add_on' => 1,
+                // 'add_on' => 1,
             ],
         ]);
 
@@ -104,7 +104,7 @@ class ProductSeeder extends Seeder
                 'place' => 1,
                 'topic' => 1,
                 'document' => 1,
-                'add_on' => 1,
+                // 'add_on' => 1,
             ],
         ]);
 
@@ -128,7 +128,7 @@ class ProductSeeder extends Seeder
                 'place' => 0,
                 'topic' => 0,
                 'document' => 0,
-                'add_on' => 0,
+                // 'add_on' => 0,
             ],
         ]);
         Products::create([
@@ -151,7 +151,7 @@ class ProductSeeder extends Seeder
                 'place' => 0,
                 'topic' => 1,
                 'document' => 1,
-                'add_on' => 1,
+                // 'add_on' => 1,
             ],
         ]);
 

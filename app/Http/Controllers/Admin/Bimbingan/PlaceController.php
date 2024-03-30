@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Bimbingan;
 
 use App\Models\Place;
 use App\Http\Controllers\Controller;
+use App\Models\City;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -51,7 +52,8 @@ class PlaceController extends Controller
      */
     public function create()
     {
-        //
+        $city = City::get();
+        return response()->json(['status' => true, 'statusCode' => 200, 'data' => $city], 200);
     }
 
     /**
@@ -100,7 +102,17 @@ class PlaceController extends Controller
      */
     public function edit(Place $place)
     {
-        //
+        if (Auth::user()->user_role == "admin") {
+            $cities = City::get();
+            $place->load('city');
+            //  return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
+            //     'cities' => $cities,
+            //     'place' => $place
+            // ]], 200);
+            return Inertia::render('Auth/Admin/Bimbingan/Product/Update');
+        } else {
+            abort(403);
+        }
     }
 
     /**

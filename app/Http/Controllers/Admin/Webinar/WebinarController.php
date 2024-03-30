@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Webinar;
 
 use App\Models\Products;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -74,7 +75,13 @@ class WebinarController extends Controller
      */
     public function create()
     {
-        //
+        if (Auth::user()->user_role == "admin") {
+            $categories = Category::get();
+            // return response()->json(['status' => true, 'statusCode' => 200, "data" => $categories], 201);
+            return Inertia::render('Auth/Admin/Bimbingan/Product/Create');
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -200,7 +207,16 @@ class WebinarController extends Controller
      */
     public function edit(Products $product)
     {
-        //
+        if (Auth::user()->user_role == "admin") {
+            $categories = Category::get();
+            //  return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
+            //     'categories' => $categories,
+            //     'products' => $product
+            // ]], 200);
+            return Inertia::render('Auth/Admin/Bimbingan/Product/Update');
+        } else {
+            abort(403);
+        }
     }
 
     /**
