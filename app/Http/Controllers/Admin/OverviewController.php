@@ -20,7 +20,7 @@ class OverviewController extends Controller
             if (Auth::user()->user_role == "admin") {
                 $date = $request->input('date');
                 if (!$date) {
-                    $order =  Order::orderBy('created_at', 'desc')->with(['user:id,username', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])->get();
+                    $order =  Order::orderBy('created_at', 'desc')->with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])->get();
                     $topSellingProducts = Products::select('products.id', 'products.name', \DB::raw('COUNT(CASE WHEN orders.status = "Success" THEN orders.id END) as order_count'))
                         ->leftJoin('orders', 'products.id', '=', 'orders.products_id')
                         ->groupBy('products.id', 'products.name')
@@ -42,7 +42,7 @@ class OverviewController extends Controller
                         "top_selling" => $topSellingProducts
                     ], 200);
                 } else {
-                    $order =  Order::whereDate('created_at', $date)->orderBy('created_at', 'desc')->get();
+                    $order =  Order::whereDate('created_at', $date)->orderBy('created_at', 'desc')->with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])->get();
                     $topSellingProducts = Products::select('products.id', 'products.name', \DB::raw('COUNT(CASE WHEN orders.status = "Success" THEN orders.id END) as order_count'))
                         ->leftJoin('orders', 'products.id', '=', 'orders.products_id')
                         ->whereDate('orders.created_at', $date)
