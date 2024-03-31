@@ -101,7 +101,7 @@ class WebinarController extends Controller
                     'excerpt' => 'required|string',
                     'description' => 'required|string',
                     'price' => 'required|numeric',
-                    'product_image' => 'required|image|mimes:png,jpg,jpeg,svg',
+                    'product_image' => 'required|image',
                     'is_visible' => 'required|in:0,1',
                     'is_facilities' => 'required|in:0,1',
                     'number_list' => 'numeric',
@@ -115,12 +115,12 @@ class WebinarController extends Controller
                     'webinar_properties.*.time' => 'required|date_format:H:i:s',
                     'webinar_properties.*.via' => 'required|string',
                     'webinar_properties.*.speaker' => 'required|string',
-                    'form_config.schedule' => 'required|in:0,1',
-                    'form_config.city' => 'required|in:0,1',
-                    'form_config.place' => 'required|in:0,1',
-                    'form_config.topic' => 'required|in:0,1',
-                    'form_config.document' => 'required|in:0,1',
-                    'form_config.add_on' => 'required|in:0,1',
+                    // 'form_config.schedule' => 'required|in:0,1',
+                    // 'form_config.city' => 'required|in:0,1',
+                    // 'form_config.place' => 'required|in:0,1',
+                    // 'form_config.topic' => 'required|in:0,1',
+                    // 'form_config.document' => 'required|in:0,1',
+                    // 'form_config.add_on' => 'required|in:0,1',
                 ]);
 
                 $product = new Products();
@@ -144,11 +144,11 @@ class WebinarController extends Controller
                 $webinar_properties = json_encode($validateData['webinar_properties']);
                 $product->webinar_properties = $webinar_properties;
 
-                $form_config = json_encode($validateData['form_config']);
-                $product->form_config = $form_config;
+                // $form_config = json_encode($validateData['form_config']);
+                // $product->form_config = $form_config;
 
                 if ($request->File('product_image')) {
-                    $product->product_image = $request->file('product_image')->store('resource/img/program/');
+                    $product->product_image = $request->file('product_image')->store('resource/img/program/webinar/');
                 }
 
                 $product->save();
@@ -237,7 +237,7 @@ class WebinarController extends Controller
                     'excerpt' => 'string',
                     'description' => 'string',
                     'price' => 'numeric',
-                    'product_image' => 'image|mimes:png,jpg,jpeg,svg',
+                    'product_image' => 'image',
                     'is_visible' => 'in:0,1',
                     'is_facilities' => 'in:0,1',
                     'number_list' => 'numeric',
@@ -251,12 +251,12 @@ class WebinarController extends Controller
                     'webinar_properties.*.time' => 'date_format:H:i:s',
                     'webinar_properties.*.via' => 'string',
                     'webinar_properties.*.speaker' => 'string',
-                    'form_config.schedule' => 'in:0,1',
-                    'form_config.city' => 'in:0,1',
-                    'form_config.place' => 'in:0,1',
-                    'form_config.topic' => 'in:0,1',
-                    'form_config.document' => 'in:0,1',
-                    'form_config.add_on' => 'in:0,1',
+                    // 'form_config.schedule' => 'in:0,1',
+                    // 'form_config.city' => 'in:0,1',
+                    // 'form_config.place' => 'in:0,1',
+                    // 'form_config.topic' => 'in:0,1',
+                    // 'form_config.document' => 'in:0,1',
+                    // 'form_config.add_on' => 'in:0,1',
                 ]);
 
                 if ($request->hasFile('product_image')) {
@@ -264,7 +264,7 @@ class WebinarController extends Controller
                     if ($product->product_image) {
                         Storage::delete($product->product_image);
                     }
-                    $validateData['product_image'] = $request->file('product_image')->store('resource/img/program/');
+                    $validateData['product_image'] = $request->file('product_image')->store('resource/img/program/webinar/');
                 }
 
                 $product->update($validateData);
