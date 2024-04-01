@@ -25,7 +25,7 @@ export default function DetailPesanan({ auth, courseDetail, cities, date }) {
 
     const dataAturJadwalComp = { cities, date };
 
-    console.log(dataAturJadwalComp)
+    console.log(dataAturJadwalComp);
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
@@ -91,31 +91,31 @@ export default function DetailPesanan({ auth, courseDetail, cities, date }) {
                         </h1>
                     )}
 
-                    <div className="fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center items-center pb-[3.7vw] pt-[3.4vw] bg-white md:p-0 z-[40] md:z-0">
-                        <GoalsButton
-                            variant="bordered"
-                            onClick={(prev) =>
-                                setShowPopUp({
-                                    ...prev,
-                                    ulasanTutor: true,
-                                })
-                            }
-                            className="w-full scale-y-95"
-                        >
-                            Beri Ulasan
-                        </GoalsButton>
+                    <div className="fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center items-center pb-[3.7vw] pt-[3.4vw] bg-white md:p-0 z-[40] md:z-0 px-[6vw]">
+                            <GoalsButton
+                                variant="bordered"
+                                onClick={(prev) =>
+                                    setShowPopUp({
+                                        ...prev,
+                                        ulasanTutor: true,
+                                    })
+                                }
+                                className="w-full whitespace-nowrap scale-95"
+                            >
+                                Beri Ulasan
+                            </GoalsButton>
 
-                        <GoalsButton
-                            onClick={(prev) =>
-                                setShowPopUp({
-                                    ...prev,
-                                    selesaiProgram: true,
-                                })
-                            }
-                            className="w-full"
-                        >
-                            Selesaikan Pembelajaran
-                        </GoalsButton>
+                            <GoalsButton
+                                onClick={(prev) =>
+                                    setShowPopUp({
+                                        ...prev,
+                                        selesaiProgram: true,
+                                    })
+                                }
+                                className="w-full whitespace-nowrap "
+                            >
+                                Selesaikan
+                            </GoalsButton>
                     </div>
                 </div>
 
@@ -150,7 +150,11 @@ const SelesaiProgram = ({ show, setShow }) => {
                     <GoalsButton onClick={() => setShow()} className="w-full">
                         Selesaikan
                     </GoalsButton>
-                    <GoalsButton variant="bordered" onClick={() => setShow()} className="w-full">
+                    <GoalsButton
+                        variant="bordered"
+                        onClick={() => setShow()}
+                        className="w-full"
+                    >
                         Kembali
                     </GoalsButton>
                 </div>
@@ -215,7 +219,9 @@ const UlasanProgram = ({ show, setShow }) => {
                         placeholder="Ketik ulasan kamu disini"
                         style={{ resize: "none" }}
                     />
-                    <GoalsButton onClick={setShow} className="w-full">Simpan</GoalsButton>
+                    <GoalsButton onClick={setShow} className="w-full">
+                        Simpan
+                    </GoalsButton>
                 </div>
             </div>
         </GoalsPopup>

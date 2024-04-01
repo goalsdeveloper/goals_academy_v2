@@ -18,12 +18,12 @@ export default function RiwayatTransaksi({ auth, dataOrder }) {
                     {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
                     Riwayat Transaksi
                 </h1>
-                <ProductListFilter
+                {/* <ProductListFilter
                     data={data}
                     setData={setData}
                     type="transaction"
                     filterList={TransactionFilter}
-                />
+                /> */}
             </div>
 
             {data.length == 0 ? (

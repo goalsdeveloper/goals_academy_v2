@@ -36,7 +36,6 @@ export default function Index({ auth, orderBimbingan }) {
                 <EmptyProductLayout />
             ) : (
                 <div className="space-y-[1vw]">
-                    {/* <ProductListFilter /> */}
                     <div className="md:min-h-[22vw] flex flex-col gap-[2vw] md:gap-[1vw]">
                         {data.map((item, index) => {
                             // if (
