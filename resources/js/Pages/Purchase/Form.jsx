@@ -160,7 +160,7 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
     };
 
     return (
-        <MainLayout auth={auth} title="Purchase" headerClassName="shadow-md md:shadow-none" footerClassName="hidden md:block">
+        <MainLayout auth={auth} title={dataProduct.name} headerClassName="shadow-md md:shadow-none" footerClassName="hidden md:block">
             <Toaster />
             <section
                 id="purchase-form"
