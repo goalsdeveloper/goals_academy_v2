@@ -48,6 +48,12 @@ class UserProfileSeeder extends Seeder
             'major' => 'TI',
         ]);
 
+        $users = User::where('id', '>', 6)->get();
+        // $users->profile()->create();
+        foreach ($users as $key => $value) {
+            $value->profile()->create();
+        }
+
         // $users = User::all();
 
         // foreach ($users as $user) {

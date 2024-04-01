@@ -14,17 +14,22 @@ class OrderSeeder extends Seeder
     public function run(): void
     {
         Order::factory(100)->state([
-            'status' => OrderEnum::SUCCESS->value
+            'status' => OrderEnum::SUCCESS->value,
         ])->create();
         Order::factory(5)->state([
-            'status' => OrderEnum::FAILED->value
+            'status' => OrderEnum::FAILED->value,
         ])->create();
         Order::factory(3)->state([
-            'status' => OrderEnum::CANCEL->value
+            'status' => OrderEnum::CANCEL->value,
         ])->create();
         Order::factory(2)->state([
-            'status' => OrderEnum::PENDING->value
+            'status' => OrderEnum::PENDING->value,
         ])->create();
+
+        Order::factory(3)->sequence(
+            ['products_id' => 6, 'status' => OrderEnum::SUCCESS->value],
+            ['products_id' => 7, 'status' => OrderEnum::SUCCESS->value],
+        )->create();
 
         // Order::create([
         //     'user_id' => 6,

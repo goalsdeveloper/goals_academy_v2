@@ -6,10 +6,35 @@ const GoalsButton = ({
     children,
     variant = "primary",
     isLink = false,
+    method = "GET",
+    size = "default",
     href = "/",
     ...rest
 }) => {
-    const Wrapper = isLink ? Link : "React.Fragment";
+    const Wrapper = isLink ? Link : React.Fragment;
+
+    function getProps() {
+        switch (isLink) {
+            case true:
+                return {
+                    href: href,
+                    method: method,
+                };
+            default:
+                return {};
+        }
+    }
+
+    function getSizeClassName() {
+        switch (size) {
+            case "sm":
+                return "py-[.6vw] px-[1.2vw] rounded-[.4vw] text-[.7vw]";
+            case "lg":
+                return "px-4 py-2 text-lg";
+            default:
+                return "px-[8.3vw] md:px-[2vw] py-[3.2vw] md:py-[.8vw] rounded-[1.8vw] md:rounded-[.4vw] text-[3.7vw] md:text-[1vw]";
+        }
+    }
 
     function getVariantClassName() {
         switch (variant) {
@@ -31,9 +56,9 @@ const GoalsButton = ({
     }
 
     return (
-        <Wrapper href={href}>
+        <Wrapper {...getProps()}>
             <button
-                className={`font-medium px-[8.3vw] md:px-[2vw] py-[3.2vw] md:py-[.8vw] rounded-[1.8vw] md:rounded-[.4vw] text-[3.7vw] md:text-[1vw] transition-all ${getVariantClassName()} ${className}`}
+                className={`font-medium transition-all ${getVariantClassName()} ${getSizeClassName()} ${className}`}
                 {...rest}
             >
                 {children}

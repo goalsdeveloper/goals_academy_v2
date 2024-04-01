@@ -1,15 +1,13 @@
-import React from "react";
+import GoalsButton from "@/Components/elements/GoalsButton";
+import CountdownTimer from "@/Components/fragments/CountdownTimer";
 import {
+    ProductItemCardContent,
     ProductItemCardHeader,
     ProductItemCardLayout,
-    ProductItemCardContent,
 } from "@/Components/fragments/ProductItemCard";
-import { useState } from "react";
 import moment from "moment";
-import riwayatImg from "/resources/img/produk/riwayat-pesanan-bg.png";
-import GoalsButton from "@/Components/elements/GoalsButton";
+import { useState } from "react";
 import { FiChevronRight } from "react-icons/fi";
-import CountdownTimer from "@/Components/fragments/CountdownTimer";
 import DetailTransaksi from "../layouts/DetailTransaksi";
 import TransactionStatusBadge from "./TransactionStatusBadge";
 

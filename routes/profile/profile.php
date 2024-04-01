@@ -1,28 +1,30 @@
 <?php
 
+use App\Http\Controllers\Profile\BimbinganController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Profile\NotificationProfileController;
-use App\Http\Controllers\Profile\PembeljaranSayaController;
 use App\Http\Controllers\Profile\RiwayatTransaksiController;
+use App\Http\Controllers\Profile\WebinarController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/user', [ProfileController::class, 'index'])->name('user.profile');
+Route::middleware(['auth'])->name('user.profile.')->group(function () {
+    Route::get('/user', function() {
+        return redirect()->route('user.profile.bimbingan');
+    })->name('user.profile');
 
-    Route::get('/bimbingan', [ProfileController::class, 'bimbingan'])->name('user.profile.bimbingan');
+    Route::get('/bimbingan', [BimbinganController::class, 'index'])->name('bimbingan');
+    Route::get('/bimbingan/{order_id}', [BimbinganController::class, 'detailPembelajaran'])->name('detailPembelajaran');
+    Route::post('/bimbingan/{order}/atur-jadwal', [BimbinganController::class, 'aturJadwal'])->name('aturJadwal');
 
-    Route::get('/webinar', [ProfileController::class, 'webinar'])->name('user.profile.webinar');
+    Route::get('/webinar', [WebinarController::class, 'webinar'])->name('webinar');
+    Route::get('/webinar/{id}', [WebinarController::class, 'detailWebinar'])->name('detailWebinar');
 
-    Route::get('/webinar/{id}', [ProfileController::class, 'detailWebinar'])->name('user.profile.detailWebinar');
+    // Route::get('/purchase/detail/{order_code}', [BimbinganController::class, 'index'])->name('detailPesanan');
 
-    Route::get('/bimbingan/{id}', [ProfileController::class, 'detailPembelajaran'])->name('user.profile.detailPembelajaran');
+    Route::get('/riwayat_transaksi', [RiwayatTransaksiController::class, 'riwayatTransaksi'])->name('riwayatTransaksi');
 
-    Route::get('/purchase/detail/{order_code}', [PembeljaranSayaController::class, 'index'])->name('user.profile.detailPesanan');
-
-    Route::get('/riwayat_transaksi', [ProfileController::class, 'riwayatTransaksi'])->name('user.profile.riwayatTransaksi');
-
-    Route::get('/notifikasi', [NotificationProfileController::class, 'index'])->name('user.profile.notifikasi');
+    Route::get('/notifikasi', [NotificationProfileController::class, 'index'])->name('notifikasi');
 
     Route::get('/obrolan', function () {
         return Inertia::render('Auth/User/Obrolan');

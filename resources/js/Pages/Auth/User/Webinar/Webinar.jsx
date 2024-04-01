@@ -11,9 +11,11 @@ import {
 import GoalsButton from "@/Components/elements/GoalsButton";
 import { FiChevronRight } from "react-icons/fi";
 import ProductListFilter from "../ProductListFilter";
+import { useState } from "react";
+import { ProductFilter } from "../constants";
 
 const Webinar = ({ auth, orderWebinar }) => {
-    const data = orderWebinar;
+    const [data, setData] = useState(orderWebinar);
 
     return (
         <UserLayout auth={auth} title="Webinar">
@@ -22,7 +24,11 @@ const Webinar = ({ auth, orderWebinar }) => {
                     {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
                     Webinar
                 </h1>
-                <ProductListFilter />
+                <ProductListFilter
+                    setData={setData}
+                    data={data}
+                    filterList={ProductFilter}
+                />
             </div>
             {data.length == 0 ? (
                 <EmptyProductLayout
@@ -48,19 +54,32 @@ const Webinar = ({ auth, orderWebinar }) => {
                                                     {item.products.name}
                                                 </h2>
                                                 <p className="text-neutral-40">
-                                                    {new Date(
-                                                        item.products.date
-                                                    ).toDateString()}
+                                                    {item.products
+                                                        .webinar_properties
+                                                        .date !== undefined
+                                                        ? new Date(
+                                                              item.products.webinar_properties.date
+                                                          ).toDateString()
+                                                        : new Date(
+                                                              item.products.webinar_properties.start_date
+                                                          ).toDateString() +
+                                                          " - " +
+                                                          new Date(
+                                                              item.products.webinar_properties.end_date
+                                                          ).toDateString()}
                                                 </p>
                                                 <p className="text-neutral-40">
-                                                    {item.products.time
-                                                        ? item.products.time +
-                                                          " WIB"
+                                                    {item.products
+                                                        .webinar_properties
+                                                        ?.time
+                                                        ? item.products
+                                                              .webinar_properties
+                                                              .time + " WIB"
                                                         : "Waktu Belum Ditentukan"}
                                                 </p>
                                             </div>
                                             <Link
-                                                href="/webinar/1"
+                                                href={`/webinar/${item.order_code}`}
                                                 className="hidden md:block"
                                             >
                                                 <GoalsButton>

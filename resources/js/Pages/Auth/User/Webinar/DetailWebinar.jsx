@@ -77,7 +77,7 @@ const DetailWebinar = ({ auth }) => {
                     </ProductItemCardContent>
                 </ProductItemCardLayout>
 
-                <div className="fixed md:hidden w-full  bottom-0 left-0 flex gap-[1vw] justify-center px-[8vw] pb-[3.7vw] pt-[3.4vw] bg-white  z-[40] ">
+                <div className="fixed md:hidden w-full bottom-0 left-0 flex flex-col gap-[1vw] justify-center px-[8vw] pb-[3.7vw] pt-[3.4vw] bg-white z-[40] ">
                     <GoalsButton variant="info" className="w-full">
                         Gabung Webinar
                     </GoalsButton>
