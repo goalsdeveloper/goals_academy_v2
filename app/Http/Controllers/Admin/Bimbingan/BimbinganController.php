@@ -140,6 +140,7 @@ class BimbinganController extends Controller
                     'facilities.*.text' => 'required|string',
                     'form_config.*' => '', // Allow seluruh key form_config
                     'duration' => 'numeric',
+                    'promo_price' => 'numeric',
                 ]);
 
                 if ($validateData['form_config']['topic'] == 1) {
@@ -163,6 +164,7 @@ class BimbinganController extends Controller
                 $product->total_meet = $validateData['total_meet'];
                 $product->active_period = $validateData['active_period'];
                 $product->duration = $validateData['duration'];
+                $product->promo_price = $validateData['promo_price'];
 
                 $facilities = json_encode($validateData['facilities']);
                 $product->facilities = $facilities;
@@ -281,6 +283,7 @@ class BimbinganController extends Controller
                     'facilities.*.text' => 'string',
                     'form_config.*' => '',
                     'duration' => 'numeric',
+                    'promo_price' => 'numeric',
                 ]);
 
 

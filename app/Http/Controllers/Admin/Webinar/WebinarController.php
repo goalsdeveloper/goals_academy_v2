@@ -115,6 +115,7 @@ class WebinarController extends Controller
                     'webinar_properties.*.time' => 'required|date_format:H:i:s',
                     'webinar_properties.*.via' => 'required|string',
                     'webinar_properties.*.speaker' => 'required|string',
+                    'promo_price' => 'numeric',
                     // 'form_config.schedule' => 'required|in:0,1',
                     // 'form_config.city' => 'required|in:0,1',
                     // 'form_config.place' => 'required|in:0,1',
@@ -137,6 +138,7 @@ class WebinarController extends Controller
                 $product->number_list = $validateData['number_list'];
                 $product->total_meet = $validateData['total_meet'];
                 $product->active_period = $validateData['active_period'];
+                $product->promo_price = $validateData['promo_price'];
 
                 $facilities = json_encode($validateData['facilities']);
                 $product->facilities = $facilities;
@@ -251,6 +253,7 @@ class WebinarController extends Controller
                     'webinar_properties.*.time' => 'date_format:H:i:s',
                     'webinar_properties.*.via' => 'string',
                     'webinar_properties.*.speaker' => 'string',
+                    'promo_price' => 'numeric',
                     // 'form_config.schedule' => 'in:0,1',
                     // 'form_config.city' => 'in:0,1',
                     // 'form_config.place' => 'in:0,1',
