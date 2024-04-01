@@ -163,7 +163,7 @@ class PurchaseController extends Controller
         OrderHistory::create([
             'order_id' => $orderData->id,
             'status' => $orderData->status,
-            'payload' => json_encode($responseMidtrans),
+            'payload' => $responseMidtrans,
         ]);
 
         $user->notify(new InvoiceNotification($orderData));

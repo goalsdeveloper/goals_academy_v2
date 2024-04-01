@@ -24,14 +24,14 @@ import { IoRocketSharp } from "react-icons/io5";
 import Datepicker from "react-tailwindcss-datepicker";
 import "@/script/momentCustomLocale";
 
-export default function Overview ({ auth }) {
+export default function Overview ({ auth, total_earning, total_order, total_checkout, list_orders, top_selling }) {
     const [isLoading, setIsLoading] = useState(false);
     const currency = Intl.NumberFormat("id-ID");
 
-    const [totalEarning, setTotalEarning] = useState(23516400);
+    const [totalEarning, setTotalEarning] = useState(total_earning);
     const [totalVisitor, setTotalVisitor] = useState(312);
-    const [totalOrder, setTotalOrder] = useState(211);
-    const [totalCheckout, setTotalCheckout] = useState(187);
+    const [totalOrder, setTotalOrder] = useState(total_order);
+    const [totalCheckout, setTotalCheckout] = useState(total_checkout);
 
     // Click & Views
     const [barLabels, setBarLabels] = useState(['29', '30', '31', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', ]);
@@ -128,82 +128,30 @@ export default function Overview ({ auth }) {
     };
 
     // Top Selling
-    const [topSellingData, setTopSellingData] = useState([
-        {
-            name: "Dibimbing Sekali Online 30 Menit",
-            amount: Math.round(Math.random()*100),
-        },
-        {
-            name: "Dibimbing Sekali Offline 45 Menit",
-            amount: Math.round(Math.random()*100),
-        },
-        {
-            name: "Desk Review",
-            amount: Math.round(Math.random()*100)
-        },
-        {
-            name: "Dibimbing Tuntas",
-            amount: Math.round(Math.random()*100),
-        },
-    ].sort((x, y) => x.amount > y.amount ? -1 : 1));
+    const [topSellingData, setTopSellingData] = useState(top_selling.sort((x, y) => x.order_count > y.order_count ? -1 : 1));
 
     // Recent Payment
-    const [recentPaymentData, setRecentPaymentData] = useState([
-        {
-            id: 'GA12345678',
-            name: 'John Doe',
-            product: 'Dibimbing Sekali Online 30 Menit',
-            date: '2024-03-18',
-        },
-        {
-            id: 'GA12345678',
-            name: 'John Doe',
-            product: 'Dibimbing Sekali Online 30 Menit',
-            date: '2024-03-18',
-        },
-        {
-            id: 'GA12345678',
-            name: 'John Doe',
-            product: 'Dibimbing Sekali Online 30 Menit',
-            date: '2024-03-18',
-        },
-        {
-            id: 'GA12345678',
-            name: 'John Doe',
-            product: 'Dibimbing Sekali Online 30 Menit',
-            date: '2024-03-18',
-        },
-        {
-            id: 'GA12345678',
-            name: 'John Doe',
-            product: 'Dibimbing Sekali Online 30 Menit',
-            date: '2024-03-18',
-        },
-    ]);
+    const [recentPaymentData, setRecentPaymentData] = useState(list_orders.slice(0, 5));
 
     const columns = useMemo(
         () => [
             {
-                accessorKey: "id", //simple recommended way to define a column
+                accessorKey: "order_code", //simple recommended way to define a column
                 header: "ID Pesanan",
-                size: 50,
                 grow: false,
             },
             {
-                accessorKey: "name", //simple recommended way to define a column
+                accessorKey: "user_id", //simple recommended way to define a column
                 header: "Name",
-                size: 150,
             },
             {
-                accessorKey: "product",
+                accessorKey: "products_id",
                 header: "Product",
-                size: 250,
             },
             {
-                accessorFn: (row) => moment(row.date).format('DD/MM/YYYY'),
+                accessorFn: (row) => moment(row.created_at).format('DD/MM/YYYY'),
                 id: "date",
                 header: "Date",
-                size: 50,
             },
         ],
         []
@@ -242,6 +190,9 @@ export default function Overview ({ auth }) {
                 border: 'none',
             },
         },
+        muiTableContainerProps: {
+            className: "scrollbar-hidden"
+        }
     });
 
     // Data's Date Range
@@ -271,21 +222,21 @@ export default function Overview ({ auth }) {
                 let tempTopSellingData = [
                     {
                         name: "Dibimbing Sekali Online 30 Menit",
-                        amount: Math.round(Math.random()*100),
+                        order_count: Math.round(Math.random()*100),
                     },
                     {
                         name: "Dibimbing Sekali Offline 45 Menit",
-                        amount: Math.round(Math.random()*100),
+                        order_count: Math.round(Math.random()*100),
                     },
                     {
                         name: "Desk Review",
-                        amount: Math.round(Math.random()*100)
+                        order_count: Math.round(Math.random()*100)
                     },
                     {
                         name: "Dibimbing Tuntas",
-                        amount: Math.round(Math.random()*100),
+                        order_count: Math.round(Math.random()*100),
                     },
-                ].sort((x, y) => x.amount > y.amount ? -1 : 1)
+                ].sort((x, y) => x.order_count > y.order_count ? -1 : 1)
 
                 setDateRange(range);
                 setBarLabels(tempBarLabels);
@@ -354,16 +305,16 @@ function TopSellingInfo ({ data }) {
                 <h4 className="font-sans font-medium text-[1vw]">Top Selling</h4>
             </div>
             <div className="grid gap-[1.5vw]">
-                {data.map(({name, amount}, index) => {
-                    const highestAmount = Math.max(...data.map(i => i.amount));
+                {data.map(({name, order_count}, index) => {
+                    const highestCount = Math.max(...data.map(i => i.order_count));
                     return (
                         <div key={index} className="space-y-[.5vw]">
                             <div className="flex items-center justify-between">
                                 <span>{name}</span>
-                                <span>{amount}</span>
+                                <span>{order_count}</span>
                             </div>
                             <div className="w-full h-[.6vw] bg-green-100 rounded-full overflow-hidden">
-                                <div style={{ width: amount/highestAmount*100+'%' }} className="h-full bg-green-500 animate-slideRight duration-300"></div>
+                                <div style={{ width: order_count/highestCount*100+'%' }} className="h-full bg-green-500 animate-slideRight duration-300"></div>
                             </div>
                         </div>
                     )

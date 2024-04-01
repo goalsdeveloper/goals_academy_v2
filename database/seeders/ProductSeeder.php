@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Products;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
@@ -21,7 +22,7 @@ class ProductSeeder extends Seeder
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.',
             'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
             'price' => 47000,
-            'product_image' => 'resource/img/program/dibimbing-online-30.png',
+            'product_image' => 'resources/img/program/dibimbing-online-30.png',
             'product_type_id' => 1,
             'duration' => 30,
             'total_meet' => 1,
@@ -44,7 +45,7 @@ class ProductSeeder extends Seeder
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
             'price' => 69000,
-            'product_image' => 'resource/img/program/dibimbing-online-45.png',
+            'product_image' => 'resources/img/program/dibimbing-online-45.png',
             'product_type_id' => 1,
             'duration' => 45,
             'total_meet' => 1,
@@ -67,7 +68,7 @@ class ProductSeeder extends Seeder
             'description' => 'Bimbingan personal 1-on-1 secara tatap muka selama 60 Menit, khusus area Kota Malang.',
             'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
             'price' => 120000,
-            'product_image' => 'resource/img/program/dibimbing-offline-60.png',
+            'product_image' => 'resources/img/program/dibimbing-offline-60.png',
             'product_type_id' => 1,
             'duration' => 60,
             'total_meet' => 1,
@@ -91,7 +92,7 @@ class ProductSeeder extends Seeder
             'description' => 'Bimbingan personal 1-on-1 secara tatap muka selama 60 Menit, khusus area Kota Malang.',
             'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
             'price' => 120000,
-            'product_image' => 'resource/img/program/dibimbing-offline-60.png',
+            'product_image' => 'resources/img/program/dibimbing-offline-60.png',
             'product_type_id' => 1,
             'duration' => 60,
             'total_meet' => 5,
@@ -115,7 +116,7 @@ class ProductSeeder extends Seeder
             'description' => ' ',
             'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
             'price' => 15000,
-            'product_image' => 'resource/img/ebook/1.png',
+            'product_image' => 'resources/img/ebook/1.png',
             'product_type_id' => 2,
             'duration' => 60,
             'total_meet' => 1,
@@ -132,26 +133,75 @@ class ProductSeeder extends Seeder
         ]);
         Products::create([
             'category_id' => 5,
-            'name' => 'Webinar A',
-            'slug' => Str::slug('Webinar A'),
+            'name' => 'Proposal Biar Diterima',
+            'slug' => Str::slug('Proposal Biar Diterima'),
             'excerpt' => ' ',
             'description' => ' ',
             'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
             'price' => 49000,
-            'product_image' => 'resource/img/webinar/1.png',
+            'product_image' => 'resources/img/webinar/1.png',
             'product_type_id' => 3,
             'duration' => 60,
             'total_meet' => 1,
             'active_period' => 30,
             'number_list' => 5,
-            'form_config' => [
-                'schedule' => 1,
-                'city' => 0,
-                'place' => 0,
-                'topic' => 1,
-                'document' => 1,
-                'add_on' => 1,
+            'webinar_properties' => [
+                'date' => '2024-04-20',
+                'time' => '18:00',
+                'pemateri' => 'Mas Rian',
+                'files' => [
+                    ['title' => 'Analisis Kualitatif.pdf', 'path' => 'path-to-storage'],
+                    ['title' => 'Analisis Kuantitatif.pdf', 'path' => 'path-to-storage'],
+                ],
             ],
         ]);
+
+        Products::create([
+            'category_id' => 6,
+            'name' => 'Proposal biar diterima (Series)',
+            'slug' => Str::slug('Proposal biar diterima (Series)'),
+            'excerpt' => ' ',
+            'description' => ' ',
+            'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
+            'price' => 49000,
+            'product_image' => 'resources/img/webinar/1.png',
+            'product_type_id' => 3,
+            'duration' => 60,
+            'total_meet' => 1,
+            'active_period' => 30,
+            'number_list' => 5,
+            'webinar_properties' => [
+                'start_date' => '2024-04-20',
+                'end_date' => '2024-04-24',
+                'session' => [
+                    [
+                        'title' => 'Cara melakukan penelitian',
+                        'date' => '2024-04-20',
+                        'files' => [
+                            ['title' => 'Analisis Kualitatif.pdf', 'path' => 'path-to-storage'],
+                            ['title' => 'Analisis Kuantitatif.pdf', 'path' => 'path-to-storage'],
+                        ],
+                    ],
+                    [
+                        'title' => 'Cara untuk Mengolah Data',
+                        'date' => '2024-04-21',
+                        'files' => [
+                            ['title' => 'Analisis Kualitatif.pdf', 'path' => 'path-to-storage'],
+                            ['title' => 'Analisis Kuantitatif.pdf', 'path' => 'path-to-storage'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        DB::insert('insert into category_products (category_id, products_id) values (2, 1)');
+        DB::insert('insert into category_products (category_id, products_id) values (3, 1)');
+
+        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 1]);
+        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 2]);
+        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 3]);
+        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 1]);
+        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 2]);
+        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 3]);
     }
 }

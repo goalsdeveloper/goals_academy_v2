@@ -49,6 +49,11 @@ class Order extends Model
         return $this->hasOne(Course::class);
     }
 
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
     public function paymentMethod()
     {
         return $this->belongsTo(PaymentMethod::class);
@@ -63,7 +68,7 @@ class Order extends Model
     {
         return 'GA' . str(now()->format('YmdHis')) . strtoupper(Str::random(4));
     }
-    
+
     public function productReview()
     {
         return $this->hasMany(ProductReview::class);
