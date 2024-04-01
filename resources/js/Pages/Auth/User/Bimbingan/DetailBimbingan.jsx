@@ -100,7 +100,7 @@ export default function DetailPesanan({ auth, courseDetail, cities, date }) {
                                         ulasanTutor: true,
                                     })
                                 }
-                                className="w-full whitespace-nowrap scale-95"
+                                className="w-full whitespace-nowrap scale-y-95"
                             >
                                 Beri Ulasan
                             </GoalsButton>
