@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Webinar;
 
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use App\Models\Order;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OrderController extends Controller
 {
@@ -35,7 +36,7 @@ class OrderController extends Controller
 
                 $orders = $query->paginate($perPage);
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/Webinar/Order', [
                         'status' => true,
                         'statusCode' => 200,
                         'message' => 'get data history success',

@@ -9,8 +9,8 @@ export default function RiwayatTransaksi({ auth, dataOrder }) {
     const data = dataOrder;
     return (
         <UserLayout auth={auth} title="Riwayat Transaksi">
-            <div className="flex md:block justify-between items-center">
-                <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-[4vw]">
+            <div className="flex md:block justify-between items-center space-y-[1.2vw]">
+                <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-normal">
                     {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
                     Riwayat Transaksi
                 </h1>

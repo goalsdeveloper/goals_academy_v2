@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin\ManajemenUser;
 
 use App\Models\User;
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -13,7 +14,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             if (Auth::user()->user_role == "admin") {
@@ -31,7 +32,7 @@ class UserController extends Controller
 
                 $users = $query->paginate($perPage);
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/ManajemenUser/User', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data user success',

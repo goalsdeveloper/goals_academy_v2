@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Ebook;
 
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use App\Models\Category;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CategoryController extends Controller
 {
@@ -28,7 +30,7 @@ class CategoryController extends Controller
 
                 $categories = $categories->with('productType:id,type')->paginate($perPage);;
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/Ebook/Category', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',

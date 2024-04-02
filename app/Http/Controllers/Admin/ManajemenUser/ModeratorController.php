@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin\ManajemenUser;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class ModeratorController extends Controller
@@ -29,7 +30,7 @@ class ModeratorController extends Controller
                 }
                 $moderators = $query->paginate($perPage);
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/ManajemenUser/Moderator', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Ebook;
 
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -48,7 +49,7 @@ class EbookController extends Controller
                     return $product;
                 });
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/Ebook/Product', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',

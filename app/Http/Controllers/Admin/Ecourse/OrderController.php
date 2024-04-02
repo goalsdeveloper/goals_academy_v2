@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Ecourse;
 
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
@@ -12,7 +13,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Auth/Admin/Ecourse/Order');
     }
 
     /**

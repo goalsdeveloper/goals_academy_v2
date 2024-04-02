@@ -6,6 +6,7 @@ use App\Models\Place;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class PlaceController extends Controller
 {
@@ -27,7 +28,7 @@ class PlaceController extends Controller
 
                 $places = $query->paginate($perPage);
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/Bimbingan/Place', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class WebinarController extends Controller
 {
@@ -48,7 +49,7 @@ class WebinarController extends Controller
                     return $product;
                 });
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/Webinar/Product', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',

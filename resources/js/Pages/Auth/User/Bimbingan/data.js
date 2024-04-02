@@ -1,4 +1,4 @@
-export const detailData = [
+export const templateDataDetail = [
     {
         id: 1,
         sesi: "Sesi 1",

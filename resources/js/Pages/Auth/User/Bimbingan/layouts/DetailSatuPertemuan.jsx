@@ -2,9 +2,33 @@ import useScrollBlock from "@/Hooks/useScrollBlock";
 import { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { RxFileText } from "react-icons/rx";
+import { templateDataDetail } from "../data";
 
 const DetailSatuPertemuan = ({ data, className = "" }) => {
     const gapSize = 1;
+    const template = templateDataDetail[0].detail;
+    const form_config = data.products.form_config;
+    // console.log("data satu = ",data)
+    const form_field = {
+        city: "Kota Pelaksanaan",
+        place: "Lokasi Pelaksanaan",
+        topic: "Topik Bimbingan",
+        add_on: "Add On",
+        document: "Lampiran Dokumen",
+        schedule: "Jadwal Pelaksanaan",
+        time: "Jam Pelaksanaan"
+    };
+    const form_result = {
+        city: data?.location?.city?.city,
+        place: data?.location,
+        topic: data?.topic,
+        add_on: data?.add_ons?.map(item => item["name"]).join(', ') != "" ? data?.add_ons?.map(item => item["name"]).join(', ') : "Tidak Ada Add Ons",
+        document: "Lampiran Dokumen",
+        schedule: data?.date,
+        time: data?.time
+    };
+
+    console.log(form_result);
 
     return (
         <div className={`md:flex gap-[${gapSize}vw] ${className}`}>
@@ -14,24 +38,26 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                     Pelaksanaan Pembelajaran
                 </h2>
                 <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
-                    {data.detailPelaksanaan.map((item, index) => {
+                    {Object.keys(form_config).filter(function(item) {
+                        return form_config[item] != 0;
+                    }).map((item, index) => {
+                        {/* console.log("item", item) */}
                         return (
                             <li
                                 key={index}
                                 className="space-y-[.9vw] md:space-y-[.2vw]"
                             >
                                 <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
-                                    {item.title}
+                                    {form_field[item]}
                                 </h3>
                                 <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
-                                    {item.value}
+                                    {form_result[item] ?? "Belum Diatur" }
                                 </p>
                             </li>
                         );
                     })}
                 </ul>
             </div>
-
 
             <div className="w-full space-y-[1vw]">
                 {/* Informasi Tutor */}
@@ -45,7 +71,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                         Informasi Tutor
                     </h2>
                     <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
-                        {data.detailTutor.map((item, index) => {
+                        {template.detailTutor.map((item, index) => {
                             return (
                                 <li
                                     key={index}
@@ -75,7 +101,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                     </h2>
 
                     <div className="space-y-[.8vw] md:space-y-[.2vw]">
-                        {data.fileMedia.map((item, index) => {
+                        {data.file_uploads?.map((item, index) => {
                             return (
                                 <FileMediaItemBackdrop
                                     key={index}

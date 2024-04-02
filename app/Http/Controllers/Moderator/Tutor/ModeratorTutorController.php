@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Moderator\Tutor;
 
-use App\Http\Controllers\Controller;
-use App\Models\Course;
-use App\Models\Order;
-use App\Models\OrderHistory;
 use App\Models\User;
+use Inertia\Inertia;
+use App\Models\Order;
+use App\Models\Course;
+use App\Models\OrderHistory;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class ModeratorTutorController extends Controller
@@ -52,7 +53,7 @@ class ModeratorTutorController extends Controller
                     $tutor->total_course_done = $done;
                 });
 
-                return response()->json([
+                return Inertia::render('Auth/Moderator/Tutor/TutorList', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data tutor success',

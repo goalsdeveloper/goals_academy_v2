@@ -12,10 +12,11 @@ const GoalsTextInput = ({
     setData,
     cancelButton=false,
     required=false,
+    grow=false,
     ...rest
 }) => {
     return (
-        <div className="flex flex-col gap-[2vw] md:gap-[.4vw]">
+        <div className={`flex flex-col ${grow && "w-full"} gap-[2vw] md:gap-[.4vw]`}>
             {label != "" ? (
                 <label>{label}<sup className={`${required ? "" : "hidden"} text-red-600`}>*</sup></label>
             ) : (<></>)}
@@ -25,7 +26,7 @@ const GoalsTextInput = ({
                         {...rest}
                         type={type}
                         placeholder={placeholder}
-                        className={`w-full flex justify-between items-center px-[3vw] md:px-[1vw] rounded-md border border-neutral-50 focus:outline-0 text-dark h-[12vw] md:h-[3vw] placeholder:text-light-grey ${cancelButton ? 'pe-[9vw] md:pe-[2.6vw]' : ''} ${className}`}
+                        className={`w-full flex justify-between items-center focus:ring-0 focus:border-neutral-50 px-[3vw] md:px-[1vw] rounded-md border border-neutral-50 text-dark h-[12vw] md:h-[3vw] placeholder:text-light-grey ${cancelButton ? 'pe-[9vw] md:pe-[2.6vw]' : ''} ${className}`}
                     />
                     {cancelButton ? (
                         data != "" ? (

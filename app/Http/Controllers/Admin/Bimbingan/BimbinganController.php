@@ -6,6 +6,7 @@ use App\Models\Products;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class BimbinganController extends Controller
 {
@@ -64,7 +65,7 @@ class BimbinganController extends Controller
                     return $product;
                 });
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/Bimbingan/Product', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
@@ -90,7 +91,7 @@ class BimbinganController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Auth/Admin/Bimbingan/Product/Create');
     }
 
     /**
@@ -203,7 +204,7 @@ class BimbinganController extends Controller
      */
     public function edit(Products $product)
     {
-        //
+        return Inertia::render('Auth/Admin/Bimbingan/Product/Update');
     }
 
     /**
@@ -266,23 +267,23 @@ class BimbinganController extends Controller
      */
     public function destroy(Products $product)
     {
-        try {
-            if (Auth::user()->user_role == "admin") {
-                if ($product->product_type_id !== 1) {
-                    throw new \Exception('Invalid object type');
-                }
-                if ($product->product_image) {
-                    Storage::delete($product->product_image);
-                }
-                $product->delete();
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete product success'], 200);
-            } else {
-                abort(403);
-            }
-        } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to delete product. Internal Server Error'], 500);
-        } catch (\Exception $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
-        }
+        // try {
+        //     if (Auth::user()->user_role == "admin") {
+        //         if ($product->product_type_id !== 1) {
+        //             throw new \Exception('Invalid object type');
+        //         }
+        //         if ($product->product_image) {
+        //             Storage::delete($product->product_image);
+        //         }
+        //         $product->delete();
+        //         return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete product success'], 200);
+        //     } else {
+        //         abort(403);
+        //     }
+        // } catch (\Illuminate\Database\QueryException $e) {
+        //     return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to delete product. Internal Server Error'], 500);
+        // } catch (\Exception $e) {
+        //     return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+        // }
     }
 }
