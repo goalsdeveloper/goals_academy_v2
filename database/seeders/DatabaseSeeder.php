@@ -42,9 +42,9 @@ class DatabaseSeeder extends Seeder
             DivisionSeeder::class,
             EducationSeeder::class,
             ExperienceSeeder::class,
-            LocationSeeder::class,
             TypeJobSeeder::class,
             WorkSystemSeeder::class,
+            JobSeeder::class,
         ]);
 
 
