@@ -1,1 +1,0 @@
-import{j as e}from"./app-7c3879b2.js";import{G as a}from"./GoalsBadge-c9545fec.js";const n=({data:s})=>{const t={Success:"bg-success-10 text-success-50",Berhasil:"bg-success-10 text-success-50",Pending:"bg-warning-10 text-warning-50",Failed:"bg-red-100 text-red-400",Gagal:"bg-red-100 text-red-400"};return e.jsx(a,{title:s.status,className:`${t[s.status]}`})};export{n as default};
