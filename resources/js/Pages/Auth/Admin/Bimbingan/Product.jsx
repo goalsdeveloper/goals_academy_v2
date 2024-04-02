@@ -1,7 +1,7 @@
-import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
-import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Link } from "@inertiajs/react";
 import React, { useMemo } from "react";
+import DashboardLayout from "@/Layouts/DashboardLayout";
+import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import {
     FiCheckCircle,
     FiEdit2,
@@ -10,7 +10,6 @@ import {
     FiTrash2,
     FiChevronRight,
 } from "react-icons/fi";
-import { productTableData as data } from "./Product/data";
 
 export default function Product({ auth, bimbingan_tuntas }) {
     const columns = useMemo(

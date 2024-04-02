@@ -1,1 +1,0 @@
-import{j as n}from"./app-7c3879b2.js";const r=({className:e,title:t,...d})=>n.jsx("div",{className:`flex w-fit justify-center items-center text-[2.8vw] md:text-[0.8vw] leading-none px-[3.7vw] md:px-[.8vw] py-[1.1vw] md:py-[.3vw] rounded-[1.4vw] md:rounded-[.3vw] font-medium ${e}`,...d,children:t});export{r as G};

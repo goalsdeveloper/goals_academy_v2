@@ -10,15 +10,17 @@ export default function MainLayout({
     children,
     className,
     withFooter = true,
+    headerClassName,
+    footerClassName
 }) {
     return (
         <>
             <Head title={title} />
-            <MainHeader auth={auth} title={title} />
+            <MainHeader auth={auth} title={title} className={headerClassName} />
             <main className={`text-dark overflow-visible ${className}`}>
                 {children}
             </main>
-            {withFooter && <MainFooter />}
+            {withFooter && <MainFooter className={footerClassName} />}
         </>
     );
 }
