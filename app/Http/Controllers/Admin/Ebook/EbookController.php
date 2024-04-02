@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,16 +24,16 @@ class EbookController extends Controller
                 $search = $request->input('search');
 
                 $query = Products::with('category', 'productType')
-                ->whereHas('productType', function ($query) {
-                    $query->where('type', 'e-book');
-                });
+                    ->whereHas('productType', function ($query) {
+                        $query->where('type', 'e-book');
+                    });
 
                 if ($search) {
                     $query->where(function ($query) use ($search) {
                         $query->where('name', 'LIKE', "%$search%")
-                        ->orWhereHas('category', function ($query) use ($search) {
-                            $query->where('name', 'LIKE', "%$search%");
-                        });
+                            ->orWhereHas('category', function ($query) use ($search) {
+                                $query->where('name', 'LIKE', "%$search%");
+                            });
                     });
                 }
 
@@ -75,7 +76,13 @@ class EbookController extends Controller
      */
     public function create()
     {
-        //
+        if (Auth::user()->user_role == "admin") {
+            $categories = Category::get();
+            // return response()->json(['status' => true, 'statusCode' => 200, "data" => $categories], 201);
+            return Inertia::render('Auth/Admin/Bimbingan/Product/Create');
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -103,6 +110,7 @@ class EbookController extends Controller
                     'facilities.*.icon' => 'required|string',
                     'facilities.*.text' => 'required|string',
                     'duration' => 'numeric',
+                    'promo_price' => 'numeric',
                 ]);
 
                 $product = new Products();
@@ -120,6 +128,7 @@ class EbookController extends Controller
                 $product->total_meet = $validateData['total_meet'];
                 $product->active_period = $validateData['active_period'];
                 $product->duration = $validateData['duration'];
+                $product->promo_price = $validateData['promo_price'];
 
                 $facilities = json_encode($validateData['facilities']);
 
@@ -177,9 +186,13 @@ class EbookController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Products $product)
     {
-        //
+        $categories = Category::get();
+        //  return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
+        //     'categories' => $categories,
+        //     'products' => $product
+        // ]], 200);
     }
 
     /**
@@ -209,6 +222,7 @@ class EbookController extends Controller
                     'facilities' => 'array|min:1',
                     'facilities.*.icon' => 'string',
                     'facilities.*.text' => 'string',
+                    'promo_price' => 'numeric',
                 ]);
 
                 if ($request->hasFile('product_image')) {
