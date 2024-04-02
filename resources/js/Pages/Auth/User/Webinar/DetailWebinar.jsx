@@ -11,9 +11,11 @@ import {
     ProductItemCardLayout,
 } from "@/Components/fragments/ProductItemCard";
 import CardImage from "/resources/img/karir/academic-internship.png";
+import { detailWebinar } from "./data";
 
 const DetailWebinar = ({ auth }) => {
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const orderWebinar = detailWebinar[1];
 
     return (
         <MainLayout
@@ -66,27 +68,48 @@ const DetailWebinar = ({ auth }) => {
                     <ProductItemCardContent>
                         <div className="text-[1vw] space-y-[.2vw]">
                             <h2 className="h5 font-medium mb-[.4vw]">
-                                Webinar 1
+                                {orderWebinar.name}
                             </h2>
-                            <p className="text-neutral-60">
-                                Selasa, 29 Februari 2024
-                            </p>
-                            <p className="text-neutral-60">19.00 WIB</p>
+                            <ul className="text-neutral-60 space-y-[.3vw]">
+                                <li>
+                                    {orderWebinar.webinar_properties.date !==
+                                    undefined
+                                        ? new Date(
+                                              orderWebinar.webinar_properties.date
+                                          ).toDateString()
+                                        : new Date(
+                                              orderWebinar.webinar_properties.start_date
+                                          ).toDateString() +
+                                          " - " +
+                                          new Date(
+                                              orderWebinar.webinar_properties.end_date
+                                          ).toDateString()}
+                                </li>
+                                <li>
+                                    {orderWebinar.webinar_properties?.time
+                                        ? orderWebinar.webinar_properties.time + " WIB"
+                                        : "Waktu Belum Ditentukan"}
+                                </li>
+                            </ul>
                         </div>
                         <GoalsButton variant="info">Gabung Webinar</GoalsButton>
                     </ProductItemCardContent>
                 </ProductItemCardLayout>
 
-                <div className="fixed md:hidden w-full  bottom-0 left-0 flex gap-[1vw] justify-center px-[8vw] pb-[3.7vw] pt-[3.4vw] bg-white  z-[40] ">
+                <div className="fixed md:hidden w-full bottom-0 left-0 flex flex-col gap-[1vw] justify-center px-[8vw] pb-[3.7vw] pt-[3.4vw] bg-white z-[40] ">
                     <GoalsButton variant="info" className="w-full">
                         Gabung Webinar
                     </GoalsButton>
                 </div>
 
-                {dataWebinar.length > 1 ? (
-                    <DetailSatuSesi data={dataWebinar[0].detail} />
+                {orderWebinar.webinar_properties.session ? (
+                    <DetailBanyakSesi data={orderWebinar} />
                 ) : (
-                    <DetailBanyakSesi data={dataWebinar} />
+                    <DetailSatuSesi
+                        data={orderWebinar}
+                        lampiran={orderWebinar.webinar_properties.files}
+                        properties={orderWebinar.webinar_properties}
+                    />
                 )}
             </div>
         </MainLayout>

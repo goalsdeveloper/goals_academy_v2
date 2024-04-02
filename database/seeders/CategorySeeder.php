@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
@@ -40,6 +41,12 @@ class CategorySeeder extends Seeder
         Category::create([
             'name' => 'Webinar',
             'slug' => 'webinar',
+            'is_visible' => true,
+            'description' => 'Pelaksanaan Webinar',
+        ]);
+        Category::create([
+            'name' => 'Webinar Series',
+            'slug' => Str::slug('Webinar Series'),
             'is_visible' => true,
             'description' => 'Pelaksanaan Webinar',
         ]);

@@ -52,19 +52,19 @@ class AuthController extends Controller
     }
 
     public function loginValidation(Request $request) {
-        $credential = Validator::make($request->all(), [
-            'email' => 'required|email:dns|exists:users,email',
-            'password' => 'required|min:8',
-        ]);
+        // $credential = Validator::make($request->all(), [
+        //     'email' => 'required|email:dns|exists:users,email',
+        //     'password' => 'required|min:8',
+        // ]);
 
-        if ($credential->fails()) {
-            return response()->json(['message' => 'Email atau password Anda salah!']);
-        } else {
+        // if ($credential->fails()) {
+        //     return response()->json(['message' => 'Email atau password Anda salah!']);
+        // } else {
             $data = array(
                 'email'     => $request->get('email'),
                 'password'  => $request->get('password')
             );
-        };
+        // };
 
         if (Auth::attempt($data, true)) {
             return response()->json(['success' => 'Validasi berhasil!']);

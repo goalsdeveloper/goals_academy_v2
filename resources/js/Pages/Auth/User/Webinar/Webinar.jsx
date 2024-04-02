@@ -1,19 +1,21 @@
-import figure from "/resources/img/figure/8.svg";
-import UserLayout from "@/Layouts/UserLayout";
-import { Link } from "@inertiajs/react";
-import React from "react";
-import { EmptyProductLayout } from "../Bimbingan/Bimbingan";
-import WebinarBgCard from "/resources/img/produk/webinar-card-bg.png";
+import GoalsButton from "@/Components/elements/GoalsButton";
 import {
     ProductItemCardContent,
     ProductItemCardLayout,
 } from "@/Components/fragments/ProductItemCard";
-import GoalsButton from "@/Components/elements/GoalsButton";
+import UserLayout from "@/Layouts/UserLayout";
+import { Link } from "@inertiajs/react";
+import { useState } from "react";
 import { FiChevronRight } from "react-icons/fi";
+import { EmptyProductLayout } from "../Bimbingan/Bimbingan";
 import ProductListFilter from "../ProductListFilter";
+import { ProductFilter } from "../constants";
+import { detailWebinar } from "./data";
 
 const Webinar = ({ auth, orderWebinar }) => {
-    const data = orderWebinar;
+    const [data, setData] = useState(detailWebinar);
+
+    console.log(data);
 
     return (
         <UserLayout auth={auth} title="Webinar">
@@ -22,7 +24,11 @@ const Webinar = ({ auth, orderWebinar }) => {
                     {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
                     Webinar
                 </h1>
-                <ProductListFilter />
+                {/* <ProductListFilter
+                    setData={setData}
+                    data={data}
+                    filterList={ProductFilter}
+                /> */}
             </div>
             {data.length == 0 ? (
                 <EmptyProductLayout
@@ -36,31 +42,42 @@ const Webinar = ({ auth, orderWebinar }) => {
                         return (
                             <ProductItemCardLayout
                                 isLink
-                                href={`webinar/${item.products.slug}`}
+                                href={`webinar/${item.slug}`}
                                 key={index}
-                                imageUrl={item.products.product_image}
+                                imageUrl={item.product_image}
                             >
                                 <div className="flex justify-between items-center">
                                     <div className="space-y-[1.8vw] w-full">
                                         <ProductItemCardContent>
                                             <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw]">
                                                 <h2 className="text-[3.2vw] md:text-[1vw] font-medium mb-[.4vw]">
-                                                    {item.products.name}
+                                                    {item.name}
                                                 </h2>
                                                 <p className="text-neutral-40">
-                                                    {new Date(
-                                                        item.products.date
-                                                    ).toDateString()}
+                                                    {item.webinar_properties
+                                                        .date !== undefined
+                                                        ? new Date(
+                                                              item.webinar_properties.date
+                                                          ).toDateString()
+                                                        : new Date(
+                                                              item.webinar_properties.start_date
+                                                          ).toDateString() +
+                                                          " - " +
+                                                          new Date(
+                                                              item.webinar_properties.end_date
+                                                          ).toDateString()}
                                                 </p>
                                                 <p className="text-neutral-40">
-                                                    {item.products.time
-                                                        ? item.products.time +
-                                                          " WIB"
+                                                    {item.webinar_properties
+                                                        ?.time
+                                                        ? item
+                                                              .webinar_properties
+                                                              .time + " WIB"
                                                         : "Waktu Belum Ditentukan"}
                                                 </p>
                                             </div>
                                             <Link
-                                                href="/webinar/1"
+                                                href={`/webinar/${item.order_code}`}
                                                 className="hidden md:block"
                                             >
                                                 <GoalsButton>

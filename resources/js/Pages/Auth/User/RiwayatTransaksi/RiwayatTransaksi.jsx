@@ -1,12 +1,16 @@
-import GoalsBadge from "@/Components/elements/GoalsBadge";
 import UserLayout from "@/Layouts/UserLayout";
 import "@/script/momentCustomLocale";
+import { useState } from "react";
 import { EmptyProductLayout } from "../Bimbingan/Bimbingan";
 import ProductListFilter from "../ProductListFilter";
+import { TransactionFilter } from "../constants";
 import RiwayatItem from "./components/RiwayatItem";
 
 export default function RiwayatTransaksi({ auth, dataOrder }) {
-    const data = dataOrder;
+    const [data, setData] = useState(dataOrder);
+
+    console.log(dataOrder);
+
     return (
         <UserLayout auth={auth} title="Riwayat Transaksi">
             <div className="flex md:block justify-between items-center space-y-[1.2vw]">
@@ -14,7 +18,12 @@ export default function RiwayatTransaksi({ auth, dataOrder }) {
                     {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
                     Riwayat Transaksi
                 </h1>
-                <ProductListFilter />
+                {/* <ProductListFilter
+                    data={data}
+                    setData={setData}
+                    type="transaction"
+                    filterList={TransactionFilter}
+                /> */}
             </div>
 
             {data.length == 0 ? (
