@@ -46,4 +46,8 @@ class Job extends Model
     {
         return $this->belongsTo(Education::class);
     }
+    public function participants()
+    {
+        return $this->belongsTo(Participant::class);
+    }
 }

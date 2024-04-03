@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder
             SkillSeeder::class,
             PlaceSeeder::class,
             TopicSeeder::class,
-            CategorySeeder::class,
             ProductTypeSeeder::class,
+            CategorySeeder::class,
             UserSeeder::class,
             PaymentMethodSeeder::class,
             ProductSeeder::class,
@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
             TypeJobSeeder::class,
             WorkSystemSeeder::class,
             JobSeeder::class,
+            ParticipantSeeder::class,
         ]);
 
 
