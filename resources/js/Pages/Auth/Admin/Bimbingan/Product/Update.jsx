@@ -1,9 +1,9 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import React from "react";
-import { Breadcrumb } from "../Product";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
-import { FormSection } from "./Create";
+import Breadcrumb from "../../components/Breadcrumb";
+import FormSection from "../../components/layouts/FormSection";
 
 const Update = ({ auth }) => {
     return (
