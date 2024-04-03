@@ -132,7 +132,6 @@ class CategoryController extends Controller
                     'description' => 'string',
                 ]);
 
-
                 $category = Category::findOrFail($id);
 
                 $category->update($validateData);

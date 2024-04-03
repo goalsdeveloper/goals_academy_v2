@@ -1,35 +1,48 @@
-import { useMemo } from "react";
-import { Link } from "@inertiajs/react";
+import { useMemo, useState } from "react";
+import { Link, useForm } from "@inertiajs/react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { FiEdit2, FiTrash2, FiPlus } from "react-icons/fi";
 import SubHeading from "../components/SubHeading";
+import Dialog from "./Category/Dialog";
+import moment from "moment";
 
-export default function Category({ auth }) {
+export default function Category({ auth, data }) {
+    const [showDialog, setShowDialog] = useState({
+        create: false,
+        edit: false,
+        delete: false,
+    });
+    const {
+        data: formData,
+        setData: setFormData,
+        post,
+        put,
+    } = useForm({
+        id: "",
+        name: "",
+        slug: "",
+    });
+
     const columns = useMemo(
         () => [
             {
-                accessorKey: "nama_kategori",
+                accessorKey: "name",
                 header: "Nama Kategori",
                 size: 200,
             },
             {
-                accessorKey: "parent",
-                header: "Parent",
-                size: 200,
-            },
-            {
-                accessorKey: "visibility",
+                accessorKey: "is_visible",
                 header: "Visibilitas",
                 size: 200,
             },
+            // {
+            //     accessorFn: (row) => moment(row.updated_at).format('DD/MM/YYYY'),
+            //     header: "Tangal Update",
+            //     size: 200,
+            // },
             {
-                accessorKey: "date",
-                header: "Tangal Update",
-                size: 200,
-            },
-            {
-                accessorKey: "action",
+                accessorKey: "id",
                 header: "Action",
                 size: 50,
 
@@ -55,15 +68,7 @@ export default function Category({ auth }) {
         []
     );
 
-    const data = [
-        {
-            id: 1,
-            nama_kategori: "Dibimbing Tuntas Offline",
-            parent: "Dibimbing Tuntas",
-            Visibilitas: true,
-            tanggal_update: "08/12/2024",
-        },
-    ];
+    const categories = data.data;
 
     return (
         <DashboardLayout
@@ -84,12 +89,23 @@ export default function Category({ auth }) {
                     </Link>
                 </SubHeading>
 
+                <Dialog
+                    {...{
+                        showDialog,
+                        setShowDialog,
+                        formData,
+                        setFormData,
+                        post,
+                        put,
+                    }}
+                />
+
                 <GoalsDashboardTable
                     isHeadVisible
                     isPaginated
                     isSortable
                     columns={columns}
-                    data={data}
+                    data={categories}
                 />
             </div>
         </DashboardLayout>
