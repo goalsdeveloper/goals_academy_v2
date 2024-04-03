@@ -34,7 +34,7 @@ const GoalsTextInput = ({
                         placeholder={placeholder}
                         value={data}
                         onChange={(e) => setData(e.target.value)}
-                        className={`w-full flex justify-between items-center text-[3.7vw] md:text-[1.2vw] focus:ring-0 focus:border-neutral-50 px-[3vw] md:px-[1vw] rounded-md border border-neutral-50 text-dark h-[12vw] md:h-[3vw] placeholder:text-light-grey ${
+                        className={`w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 focus:border-neutral-50 px-[3vw] md:px-[1vw] rounded-md border border-neutral-50 text-dark h-[12vw] md:h-[3vw] placeholder:text-light-grey ${
                             cancelButton ? "pe-[9vw] md:pe-[2.6vw]" : ""
                         } ${className}`}
                         {...rest}
