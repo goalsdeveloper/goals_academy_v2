@@ -34,7 +34,7 @@ class ProductSeeder extends Seeder
                 'place' => 0,
                 'topic' => 1,
                 'document' => 1,
-                // 'add_on' => 1,
+                'add_on' => 1,
             ],
         ]);
         Products::create([
@@ -57,7 +57,7 @@ class ProductSeeder extends Seeder
                 'place' => 0,
                 'topic' => 1,
                 'document' => 1,
-                // 'add_on' => 1,
+                'add_on' => 1,
             ],
         ]);
         Products::create([
@@ -80,7 +80,7 @@ class ProductSeeder extends Seeder
                 'place' => 1,
                 'topic' => 1,
                 'document' => 1,
-                // 'add_on' => 1,
+                'add_on' => 1,
             ],
         ]);
 
@@ -104,7 +104,7 @@ class ProductSeeder extends Seeder
                 'place' => 1,
                 'topic' => 1,
                 'document' => 1,
-                // 'add_on' => 1,
+                'add_on' => 1,
             ],
         ]);
 
@@ -128,7 +128,7 @@ class ProductSeeder extends Seeder
                 'place' => 0,
                 'topic' => 0,
                 'document' => 0,
-                // 'add_on' => 0,
+                'add_on' => 0,
             ],
         ]);
         Products::create([
@@ -145,13 +145,52 @@ class ProductSeeder extends Seeder
             'total_meet' => 1,
             'active_period' => 30,
             'number_list' => 5,
-            'form_config' => [
-                'schedule' => 1,
-                'city' => 0,
-                'place' => 0,
-                'topic' => 1,
-                'document' => 1,
-                // 'add_on' => 1,
+            'webinar_properties' => [
+                'date' => '2024-04-20',
+                'time' => '18:00',
+                'pemateri' => 'Mas Rian',
+                'files' => [
+                    ['title' => 'Analisis Kualitatif.pdf', 'path' => 'path-to-storage'],
+                    ['title' => 'Analisis Kuantitatif.pdf', 'path' => 'path-to-storage'],
+                ],
+            ],
+        ]);
+
+        Products::create([
+            'category_id' => 6,
+            'name' => 'Proposal biar diterima (Series)',
+            'slug' => Str::slug('Proposal biar diterima (Series)'),
+            'excerpt' => ' ',
+            'description' => ' ',
+            'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
+            'price' => 49000,
+            'product_image' => 'resources/img/webinar/1.png',
+            'product_type_id' => 3,
+            'duration' => 60,
+            'total_meet' => 1,
+            'active_period' => 30,
+            'number_list' => 5,
+            'webinar_properties' => [
+                'start_date' => '2024-04-20',
+                'end_date' => '2024-04-24',
+                'session' => [
+                    [
+                        'title' => 'Cara melakukan penelitian',
+                        'date' => '2024-04-20',
+                        'files' => [
+                            ['title' => 'Analisis Kualitatif.pdf', 'path' => 'path-to-storage'],
+                            ['title' => 'Analisis Kuantitatif.pdf', 'path' => 'path-to-storage'],
+                        ],
+                    ],
+                    [
+                        'title' => 'Cara untuk Mengolah Data',
+                        'date' => '2024-04-21',
+                        'files' => [
+                            ['title' => 'Analisis Kualitatif.pdf', 'path' => 'path-to-storage'],
+                            ['title' => 'Analisis Kuantitatif.pdf', 'path' => 'path-to-storage'],
+                        ],
+                    ],
+                ],
             ],
         ]);
 
