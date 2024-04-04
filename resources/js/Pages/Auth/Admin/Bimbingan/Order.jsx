@@ -1,5 +1,5 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { SubHeading } from "./Product";
+import SubHeading from "../components/SubHeading";
 import { Link } from "@inertiajs/react";
 import { FiPlus } from "react-icons/fi";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";

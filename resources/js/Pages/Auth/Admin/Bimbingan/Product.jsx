@@ -12,7 +12,7 @@ import {
 } from "react-icons/fi";
 import SubHeading from "../components/Subheading";
 
-export default function Product({ auth, bimbingan_tuntas }) {
+export default function Product({ auth, bimbingan_sekali, bimbingan_tuntas }) {
     const columns = useMemo(
         () => [
             {
@@ -117,7 +117,7 @@ export default function Product({ auth, bimbingan_tuntas }) {
                 {/* <GoalsAdminTable /> */}
                 <GoalsDashboardTable
                     columns={columns}
-                    data={bimbingan_tuntas}
+                    data={bimbingan_sekali}
                     isDraggable
                 />
             </div>
