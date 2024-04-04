@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Course;
 use App\Models\Order;
+use App\Models\ProductReview;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,15 +17,6 @@ use Inertia\Inertia;
 
 class BimbinganController extends Controller
 {
-    // public function index(string $order_code)
-    // {
-    //     $data = Order::where('order_code', $order_code)
-    //         ->with('user.profile', 'products', 'course.fileUploads', 'paymentMethod', 'orderHistory')
-    //         ->first();
-    //     return Inertia::render('Auth/User/DetailPesanan', [
-    //         'dataDetail' => $data,
-    //     ]);
-    // }
     public function index()
     {
         $user = User::where('id', Auth::user()->id)->with('profile')->first();
@@ -36,10 +28,10 @@ class BimbinganController extends Controller
             })
             ->with('products.category', 'course')
             ->get();
-            return Inertia::render('Auth/User/Bimbingan/Bimbingan', [
-                'orderBimbingan' => $orderBimbingan,
-            ]);
-        }
+        return Inertia::render('Auth/User/Bimbingan/Bimbingan', [
+            'orderBimbingan' => $orderBimbingan,
+        ]);
+    }
 
     public function detailPembelajaran(string $order_id)
     {
@@ -49,8 +41,8 @@ class BimbinganController extends Controller
         })->whereHas('products.productType', function (Builder $query) {
             $query->where('type', 'like', '%bimbingan%');
         })
-        ->with('order', 'tutor', 'tutorNote', 'fileUploads', 'products', 'place', 'place.city', 'addOns')
-        ->get();
+            ->with('order', 'tutor', 'tutorNote', 'fileUploads', 'products', 'place', 'place.city', 'addOns')
+            ->get();
         if ($course->isEmpty()) {
             return abort(404);
         }
@@ -64,24 +56,55 @@ class BimbinganController extends Controller
             ->groupBy('date')
             ->havingRaw('COUNT(*) > 5')
             ->get();
-            // end cek kondisi tanggal
+        // end cek kondisi tanggal
 
-            $cities = City::with('places')->get();
+        $cities = City::with('places')->get();
+        return Inertia::render('Auth/User/Bimbingan/DetailBimbingan', [
+            'courseDetail' => $course,
+            'cities' => $cities,
+            'date' => $counts,
+        ]);
+    }
 
-            return Inertia::render('Auth/User/Bimbingan/DetailBimbingan', [
-                'courseDetail' => $course,
-                'cities' => $cities,
-                'date' => $counts,
-            ]);
+    public function review(Request $request, Order $order)
+    {
+        $course = $order->courses()->where('session', 1)->first();
+        $validate = $request->validate([
+            'rate_tutor' => 'required|integer|min:1|max:5',
+            'rate_product' => 'required|integer|min:1|max:5',
+            'note_tutor' => 'required|string',
+            'note_product' => 'required|string',
+        ]);
+        try {
+            $data = ProductReview::create(array_merge($validate, ['course_id' => $course->id]));
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+            ], 500);
         }
+        return response()->json([
+            'message' => 'Berhasil Mengirim Review',
+        ]);
+    }
 
-    public function aturJadwal(String $order, Request $request)
+    public function complete(Order $order)
     {
         try {
-            //code...
-            $course = Course::whereHas('order', function ($q) use ($order) {
-                $q->where('order_code', $order);
-            })->whereNull('date')->orderBy('session', 'asc')->first();
+            $courses = $order->courses()->update(['is_user' => true]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+        return response()->json([
+            'message' => 'success',
+        ]);
+    }
+
+    public function aturJadwal(Order $order, Request $request)
+    {
+        try {
+            $course = $order->courses()->whereNull('date')->orderBy('session', 'asc')->first();
             $data = [
                 'place_id' => $request['place_id'],
                 'date' => $request['date'],
@@ -90,12 +113,11 @@ class BimbinganController extends Controller
             $course->update($data);
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => 'error',
                 'message' => $th->getMessage(),
-            ]);
-            return redirect()->back()->with('errors', 'Atur Jadwal Gagal, Silahkan Coba Lagi');
+            ], 500);
         }
-        return redirect()->back()->with('success', 'Atur Jadwal Berhasil');
-
+        return response()->json([
+            'message' => 'Berhasil Mengatur Jadwal',
+        ]);
     }
 }
