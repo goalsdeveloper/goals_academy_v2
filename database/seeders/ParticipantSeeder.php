@@ -2,19 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Location;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Participant;
 use Illuminate\Database\Seeder;
 
-class LocationSeeder extends Seeder
+class ParticipantSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Location::create([
-            'location' => 'Malang',
-        ]);
+        Participant::factory()->count(20)->create();
     }
 }
