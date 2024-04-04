@@ -1,34 +1,11 @@
-import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { Link, useForm } from "@inertiajs/react";
-import { useMemo } from "react";
+import { SubHeading } from "./Product";
 import { FiEdit2, FiPlus, FiTrash2 } from "react-icons/fi";
-import SubHeading from "../components/SubHeading";
-import Dialog from "./AddOn/Dialog";
-import { useState } from "react";
-import GoalsButton from "@/Components/elements/GoalsButton";
+import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
+import { Link } from "@inertiajs/react";
+import { useMemo } from "react";
 
-export default function AddOn({ auth, data }) {
-    const addons = data.data;
-    const [showDialog, setShowDialog] = useState({
-        create: false,
-        edit: false,
-        delete: false,
-    });
-    const {
-        data: formData,
-        setData: setFormData,
-        post,
-        put,
-    } = useForm({
-        id: "",
-        name: "",
-        slug: "",
-        price: "",
-    });
-
-    console.log(addons);
-
+export default function AddOn({ auth }) {
     const columns = useMemo(
         () => [
             {
@@ -42,7 +19,7 @@ export default function AddOn({ auth, data }) {
                 size: 200,
             },
             {
-                accessorKey: "price",
+                accessorKey: "harga",
                 header: "Harga",
                 size: 200,
             },
@@ -54,24 +31,14 @@ export default function AddOn({ auth, data }) {
                 Cell: ({ cell }) => (
                     <ul className="flex gap-[.8vw] w-fit">
                         <li>
-                            <button
-                                onClick={() => {
-                                    setShowDialog({ edit: true });
-                                    setFormData({
-                                        id: cell.row.original.id,
-                                        name: cell.row.original.name,
-                                        slug: cell.row.original.slug,
-                                        price: cell.row.original.price,
-                                    });
-                                }}
-                            >
+                            <Link href="/admin/bimbingan/product/edit">
                                 <FiEdit2 className="text-[1.2vw] text-secondary" />
-                            </button>
+                            </Link>
                         </li>
                         <li>
                             <Link
                                 method="DELETE"
-                                href={`/admin/bimbingan/addon/${cell.row.original.id}`}
+                                href={`/admin/bimbingan/product/${cell.getValue()}`}
                             >
                                 <FiTrash2 className="text-[1.2vw] text-danger-40" />
                             </Link>
@@ -92,43 +59,33 @@ export default function AddOn({ auth, data }) {
         >
             <div className="space-y-[1.6vw]">
                 <SubHeading title="Add-On">
-                    <GoalsButton
-                        size="sm"
-                        onClick={() => {
-                            setShowDialog({ create: true });
-                            setFormData({
-                                id: "",
-                                name: "",
-                                slug: "",
-                                price: "",
-                            });
-                        }}
-                        className="flex items-center gap-[.8vw]"
+                    <Link
+                        isLink
+                        href="/admin/bimbingan/product/add"
+                        className="flex items-center gap-[.5vw] bg-secondary hover:bg-primary text-white py-[.6vw] px-[1.2vw] rounded-[.4vw] text-[.7vw]"
                     >
                         <FiPlus className="text-[1vw]" />
                         Add-On
-                    </GoalsButton>
+                    </Link>
                 </SubHeading>
-
-                <Dialog
-                    {...{
-                        showDialog,
-                        setShowDialog,
-                        formData,
-                        setFormData,
-                        post,
-                        put,
-                    }}
-                />
 
                 <GoalsDashboardTable
                     isHeadVisible
                     isPaginated
                     isSortable
                     columns={columns}
-                    data={addons}
+                    data={data}
                 />
             </div>
         </DashboardLayout>
     );
 }
+
+const data = [
+    {
+        id: 1,
+        name: "Record",
+        slug: "record",
+        harga: 15000,
+    },
+];

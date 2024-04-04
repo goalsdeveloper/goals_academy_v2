@@ -12,13 +12,3 @@ export function getValue(obj, propertyString) {
 
     return value;
 }
-
-export function toSlug(x) {
-    return x
-        .replace(/^[^\w\s]+/, "")
-        .replace(/^[\s-]+/, "")
-        .trim()
-        .split(" ")
-        .join("-")
-        .toLowerCase();
-}
