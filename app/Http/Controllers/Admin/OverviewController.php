@@ -24,9 +24,9 @@ class OverviewController extends Controller
             if (Auth::user()->user_role == "admin") {
                 $startDateString = $request->input('startDate');
                 $endDateString = $request->input('endDate');
+                $productNames = Products::pluck('name')->toArray();
                 if (!$startDateString && !$endDateString) {
                     $oneMonthAgo = now()->subMonth();
-
                     $order =  Order::where('created_at', '>=', $oneMonthAgo)
                         ->orderBy('created_at', 'desc')
                         ->with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])
@@ -51,38 +51,18 @@ class OverviewController extends Controller
                         ->where('created_at', '>=', $oneMonthAgo)
                         ->sum('unit_price');
 
-
                     $limit = 1000;
                     $period = Period::months(1);
                     $visitorsAndPageViews = Analytics::fetchVisitorsAndPageViewsByDate($period, $limit);
 
-
                     $totalClicks = 0;
-                    foreach ($visitorsAndPageViews as $visitorData) {
-                        $screenPageViews = $visitorData['screenPageViews'];
-                        $totalClicks += $screenPageViews;
-                    }
-
-
                     $totalViews = 0;
-                    foreach ($visitorsAndPageViews as $visitorData) {
-                        $pageTitle = $visitorData['pageTitle'];
-                        $screenPageViews = $visitorData['screenPageViews'];
-
-
-                        if (stripos($pageTitle, 'Goals Academy') !== false) {
-                            $totalViews += $screenPageViews;
-                        }
-                    }
-
-
-                    // Inisialisasi array untuk menyimpan total klik dan total tampilan per tanggal
                     $totalsByDate = [];
-
 
                     foreach ($visitorsAndPageViews as $visitorData) {
                         $date = $visitorData['date']->format('Y-m-d');
-
+                        $screenPageViews = $visitorData['screenPageViews'];
+                        $pageTitle = $visitorData['pageTitle'];
 
                         if (!isset($totalsByDate[$date])) {
                             $totalsByDate[$date] = [
@@ -91,17 +71,21 @@ class OverviewController extends Controller
                             ];
                         }
 
-                        // Hitung total click dan total view untuk setiap data
-                        $screenPageViews = $visitorData['screenPageViews'];
-                        $totalsByDate[$date]['totalClicks'] += $screenPageViews;
-
-                        $pageTitle = $visitorData['pageTitle'];
-                        if (stripos($pageTitle, 'Goals Academy') !== false) {
+                        // Hitung total views untuk setiap data dengan pageTitle yang mengandung kata "Produk"
+                        if (stripos($pageTitle, 'Produk') !== false) {
+                            $totalViews += $screenPageViews;
                             $totalsByDate[$date]['totalViews'] += $screenPageViews;
                         }
+
+                        // Hitung total klik untuk setiap data dengan pageTitle yang mengandung nama produk
+                        foreach ($productNames as $productName) {
+                            if (stripos($pageTitle, $productName) !== false) {
+                                $totalsByDate[$date]['totalClicks'] += $screenPageViews;
+                                $totalClicks += $screenPageViews;
+                                break;
+                            }
+                        }
                     }
-
-
 
                     return response()->json([
                         'status' => true,
@@ -141,9 +125,6 @@ class OverviewController extends Controller
                         ->where('status', '=', 'Success')
                         ->sum('unit_price');
 
-
-
-
                     $limit = 1000;
                     try {
                         $startDate = DateTime::createFromFormat('Y-m-d', $startDateString);
@@ -156,33 +137,14 @@ class OverviewController extends Controller
                         $period = Period::create($startDate, $endDate);
                         $visitorsAndPageViews = Analytics::fetchVisitorsAndPageViewsByDate($period, $limit);
 
-
                         $totalClicks = 0;
-                        foreach ($visitorsAndPageViews as $visitorData) {
-                            $screenPageViews = $visitorData['screenPageViews'];
-                            $totalClicks += $screenPageViews;
-                        }
-
-
                         $totalViews = 0;
-                        foreach ($visitorsAndPageViews as $visitorData) {
-                            $pageTitle = $visitorData['pageTitle'];
-                            $screenPageViews = $visitorData['screenPageViews'];
-
-
-                            if (stripos($pageTitle, 'Goals Academy') !== false) {
-                                $totalViews += $screenPageViews;
-                            }
-                        }
-
-
-                        // Inisialisasi array untuk menyimpan total klik dan total tampilan per tanggal
                         $totalsByDate = [];
-
 
                         foreach ($visitorsAndPageViews as $visitorData) {
                             $date = $visitorData['date']->format('Y-m-d');
-
+                            $screenPageViews = $visitorData['screenPageViews'];
+                            $pageTitle = $visitorData['pageTitle'];
 
                             if (!isset($totalsByDate[$date])) {
                                 $totalsByDate[$date] = [
@@ -191,13 +153,19 @@ class OverviewController extends Controller
                                 ];
                             }
 
-                            // Hitung total click dan total view untuk setiap data
-                            $screenPageViews = $visitorData['screenPageViews'];
-                            $totalsByDate[$date]['totalClicks'] += $screenPageViews;
-
-                            $pageTitle = $visitorData['pageTitle'];
-                            if (stripos($pageTitle, 'Goals Academy') !== false) {
+                            // Hitung total views untuk setiap data dengan pageTitle yang mengandung kata "Produk"
+                            if (stripos($pageTitle, 'Produk') !== false) {
+                                $totalViews += $screenPageViews;
                                 $totalsByDate[$date]['totalViews'] += $screenPageViews;
+                            }
+
+                            // Hitung total klik untuk setiap data dengan pageTitle yang mengandung nama produk
+                            foreach ($productNames as $productName) {
+                                if (stripos($pageTitle, $productName) !== false) {
+                                    $totalsByDate[$date]['totalClicks'] += $screenPageViews;
+                                    $totalClicks += $screenPageViews;
+                                    break;
+                                }
                             }
                         }
                     } catch (Exception $e) {
