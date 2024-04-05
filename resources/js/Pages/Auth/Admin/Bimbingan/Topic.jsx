@@ -5,7 +5,6 @@ import { FiEdit2, FiPlus, FiTrash2 } from "react-icons/fi";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import SubHeading from "../components/SubHeading";
 import GoalsButton from "@/Components/GoalsButton";
-import moment from "moment";
 import Dialog from "./Topic/Dialog";
 import toast, { Toaster } from "react-hot-toast";
 
