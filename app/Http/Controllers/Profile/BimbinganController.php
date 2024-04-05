@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Profile;
 
+use App\Enums\CourseStatusEnum;
 use App\Enums\OrderEnum;
 use App\Http\Controllers\Controller;
 use App\Models\City;
@@ -17,7 +18,7 @@ use Inertia\Inertia;
 
 class BimbinganController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = User::where('id', Auth::user()->id)->with('profile')->first();
         // dd($user);
@@ -25,6 +26,14 @@ class BimbinganController extends Controller
             ->where('status', OrderEnum::SUCCESS->value)
             ->whereHas('products.category', function ($query) {
                 $query->where('name', 'like', '%dibimbing%');
+            })
+            ->whereHas('course', function ($q) use ($request) {
+                $q->when($request['status'] == 'berjalan', function ($q) {
+                    return $q->where('ongoing', CourseStatusEnum::ONGOING->value);
+                });
+                $q->when($request['status'] == 'selesai', function ($q) {
+                    return $q->where('ongoing', CourseStatusEnum::SUCCESS->value);
+                });
             })
             ->with('products.category', 'course')
             ->get();
@@ -108,6 +117,7 @@ class BimbinganController extends Controller
             $data = [
                 'place_id' => $request['place_id'],
                 'date' => $request['date'],
+                'topic_id' => $request['topic_id'],
             ];
 
             $course->update($data);
