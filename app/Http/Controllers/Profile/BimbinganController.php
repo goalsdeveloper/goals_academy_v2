@@ -9,6 +9,7 @@ use App\Models\City;
 use App\Models\Course;
 use App\Models\Order;
 use App\Models\ProductReview;
+use App\Models\Topic;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -67,11 +68,13 @@ class BimbinganController extends Controller
             ->get();
         // end cek kondisi tanggal
 
+        $topics = Topic::all();
         $cities = City::with('places')->get();
         return Inertia::render('Auth/User/Bimbingan/DetailBimbingan', [
             'courseDetail' => $course,
             'cities' => $cities,
             'date' => $counts,
+            'topics' => $topics,
         ]);
     }
 
@@ -99,7 +102,7 @@ class BimbinganController extends Controller
     public function complete(Order $order)
     {
         try {
-            $courses = $order->courses()->update(['is_user' => true]);
+            $courses = $order->courses()->update(['is_user' => true, 'ongoing' => CourseStatusEnum::SUCCESS->value]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage(),
@@ -122,12 +125,17 @@ class BimbinganController extends Controller
 
             $course->update($data);
         } catch (\Throwable $th) {
-            return response()->json([
-                'message' => $th->getMessage(),
-            ], 500);
+            // return response()->json([
+            //     'message' => $th->getMessage(),
+            // ], 500);
+
+            return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', $th->getMessage());
         }
-        return response()->json([
-            'message' => 'Berhasil Mengatur Jadwal',
-        ]);
+
+        // return response()->json([
+        //     'message' => 'Berhasil Mengatur Jadwal',
+        // ]);
+
+        return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', 'Berhasil Mengatur Jadwal');
     }
 }
