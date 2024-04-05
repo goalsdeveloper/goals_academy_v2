@@ -135,8 +135,8 @@ class ProductSeeder extends Seeder
             'category_id' => 5,
             'name' => 'Proposal Biar Diterima',
             'slug' => Str::slug('Proposal Biar Diterima'),
-            'excerpt' => ' ',
-            'description' => ' ',
+            'excerpt' => '',
+            'description' => '',
             'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
             'price' => 49000,
             'product_image' => 'resources/img/webinar/1.png',
@@ -146,9 +146,11 @@ class ProductSeeder extends Seeder
             'active_period' => 30,
             'number_list' => 5,
             'webinar_properties' => [
-                'date' => '2024-04-20',
+                'start_date' => '2024-04-20',
+                'end_date' => '2024-04-20',
                 'time' => '18:00',
                 'pemateri' => 'Mas Rian',
+                'link' => 'https://www.google.com/',
                 'files' => [
                     ['title' => 'Analisis Kualitatif.pdf', 'path' => 'path-to-storage'],
                     ['title' => 'Analisis Kuantitatif.pdf', 'path' => 'path-to-storage'],
@@ -160,8 +162,8 @@ class ProductSeeder extends Seeder
             'category_id' => 6,
             'name' => 'Proposal biar diterima (Series)',
             'slug' => Str::slug('Proposal biar diterima (Series)'),
-            'excerpt' => ' ',
-            'description' => ' ',
+            'excerpt' => '',
+            'description' => '',
             'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
             'price' => 49000,
             'product_image' => 'resources/img/webinar/1.png',
@@ -173,10 +175,13 @@ class ProductSeeder extends Seeder
             'webinar_properties' => [
                 'start_date' => '2024-04-20',
                 'end_date' => '2024-04-24',
+                'pemateri' => 'Mas Rian',
                 'session' => [
                     [
                         'title' => 'Cara melakukan penelitian',
                         'date' => '2024-04-20',
+                        'time' => '18:00',
+                        'link' => 'https://www.google.com/',
                         'files' => [
                             ['title' => 'Analisis Kualitatif.pdf', 'path' => 'path-to-storage'],
                             ['title' => 'Analisis Kuantitatif.pdf', 'path' => 'path-to-storage'],
@@ -185,6 +190,8 @@ class ProductSeeder extends Seeder
                     [
                         'title' => 'Cara untuk Mengolah Data',
                         'date' => '2024-04-21',
+                        'time' => '18:00',
+                        'link' => 'https://www.google.com/',
                         'files' => [
                             ['title' => 'Analisis Kualitatif.pdf', 'path' => 'path-to-storage'],
                             ['title' => 'Analisis Kuantitatif.pdf', 'path' => 'path-to-storage'],
