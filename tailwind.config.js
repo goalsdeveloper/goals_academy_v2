@@ -195,11 +195,11 @@ export default {
                         width: '75%'
                     },
                     '@screen 3xl': {
-                        width: '70%',
+                        width: '80%',
                         maxWidth: '1536px'
                     },
                     '@screen 4xl': {
-                        width: '70%',
+                        width: '80%',
                         maxWidth: '1728px'
                     }
                 },
@@ -209,11 +209,11 @@ export default {
                         width: '80%'
                     },
                     '@screen 3xl': {
-                        width: '75%',
+                        width: '80%',
                         maxWidth: '1728px'
                     },
                     '@screen 4xl': {
-                        width: '75%',
+                        width: '80%',
                         maxWidth: '1920px'
                     }
                 }

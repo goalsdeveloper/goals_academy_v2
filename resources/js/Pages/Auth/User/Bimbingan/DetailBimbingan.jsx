@@ -2,30 +2,50 @@ import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
 import MainLayout from "@/Layouts/MainLayout";
 import "@/script/momentCustomLocale";
-import { Link } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 
 // import { detailData as dataBimbingan } from "./data";
 import DetailSatuPertemuan from "./layouts/DetailSatuPertemuan";
-import DetailBanyakPertemuan from "./layouts/DetailBanyakPertemuan";
+import DetailBanyakPertemuan, {
+    AturJadwalPopup,
+} from "./layouts/DetailBanyakPertemuan";
+import { createPortal } from "react-dom";
 
-export default function DetailPesanan({ auth, courseDetail, cities, date }) {
-    const dataBimbingan = courseDetail;
-    const data = {
-        status: "Selesai",
-    };
-
+export default function DetailPesanan({
+    auth,
+    courseDetail: dataBimbingan,
+    cities,
+    date,
+    topics,
+}) {
     const [showPopUp, setShowPopUp] = useState({
         ulasanTutor: false,
         ulasanProgram: false,
         selesaiProgram: false,
+        aturJadwalPopup: false,
     });
 
-    const dataAturJadwalComp = { cities, date };
+    const {
+        data: dataRating,
+        setData: setDataRating,
+        post,
+    } = useForm({
+        rate_tutor: 0,
+        rate_product: 0,
+        note_product: "",
+        note_tutor: "",
+    });
 
-    console.log(dataAturJadwalComp);
+    function handleSubmit() {
+        post(`/bimbingan/${dataBimbingan[0].order.order_code}/review`);
+    }
+
+    console.log(dataBimbingan)
+
+    const dataAturJadwalComp = { cities, date, topics };
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
@@ -46,35 +66,54 @@ export default function DetailPesanan({ auth, courseDetail, cities, date }) {
                 </Link>
 
                 <div className="flex justify-between items-center">
-                    <SelesaiProgram
-                        show={showPopUp.selesaiProgram}
-                        setShow={(prev) =>
-                            setShowPopUp({
-                                ...prev,
-                                selesaiProgram: false,
-                            })
-                        }
-                    />
-                    <UlasanTutor
-                        show={showPopUp.ulasanTutor}
-                        setShow={(prev) =>
-                            setShowPopUp({
-                                ...prev,
-                                ulasanTutor: false,
-                                ulasanProgram: true,
-                            })
-                        }
-                    />
-                    <UlasanProgram
-                        show={showPopUp.ulasanProgram}
-                        setShow={(prev) =>
-                            setShowPopUp({
-                                ...prev,
-                                ulasanProgram: false,
-                            })
-                        }
-                    />
+                    {createPortal(
+                        <>
+                            <SelesaiProgram
+                                show={showPopUp.selesaiProgram}
+                                order_code={dataBimbingan[0].order.order_code}
+                                setShow={() =>
+                                    setShowPopUp({
+                                        selesaiProgram: false,
+                                    })
+                                }
+                            />
+                            <UlasanTutor
+                                data={dataRating}
+                                setData={setDataRating}
+                                show={showPopUp.ulasanTutor}
+                                setShow={() =>
+                                    setShowPopUp({
+                                        ulasanTutor: false,
+                                        ulasanProgram: true,
+                                    })
+                                }
+                            />
+                            <UlasanProgram
+                                data={dataRating}
+                                setData={setDataRating}
+                                handleSubmit={handleSubmit}
+                                show={showPopUp.ulasanProgram}
+                                setShow={() =>
+                                    setShowPopUp({
+                                        ulasanProgram: false,
+                                    })
+                                }
+                            />
+                            <AturJadwalPopup
+                                order_code={dataBimbingan[0].order.order_code}
+                                {...dataAturJadwalComp}
+                                show={showPopUp.aturJadwalPopup}
+                                setShow={() =>
+                                    setShowPopUp({
+                                        AturJadwalPopup: false,
+                                    })
+                                }
+                            />
+                        </>,
+                        document.body
+                    )}
 
+                    {/* Header */}
                     {isMobile ? (
                         <Link
                             href="/bimbingan"
@@ -91,12 +130,39 @@ export default function DetailPesanan({ auth, courseDetail, cities, date }) {
                         </h1>
                     )}
 
-                    <div className="fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center items-center pb-[3.7vw] pt-[3.4vw] bg-white md:p-0 z-[40] md:z-0 px-[6vw]">
+                    {/* Action Button */}
+                    {isMobile &&
+                    !!dataBimbingan.find((item) => item.date == null) &&
+                    dataBimbingan.length > 1 ? (
+                        <div
+                            className={`
+                    fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center items-center pb-[3.7vw] pt-[3.4vw] bg-white md:p-0 z-[40] md:z-0 px-[6vw]`}
+                        >
                             <GoalsButton
+                                variant="info"
+                                onClick={() =>
+                                    setShowPopUp({ aturJadwalPopup: true })
+                                }
+                                className="w-full whitespace-nowrap "
+                            >
+                                Atur jadwal sesi berikutnya
+                            </GoalsButton>
+                        </div>
+                    ) : (
+                        <div
+                            className={`
+                    fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center items-center pb-[3.7vw] pt-[3.4vw] bg-white md:p-0 z-[40] md:z-0 px-[6vw]`}
+                        >
+                            <GoalsButton
+                                disabled={
+                                    dataBimbingan.length > 1 &&
+                                    !!dataBimbingan.find(
+                                        (item) => item.date == null
+                                    )
+                                }
                                 variant="bordered"
-                                onClick={(prev) =>
+                                onClick={() =>
                                     setShowPopUp({
-                                        ...prev,
                                         ulasanTutor: true,
                                     })
                                 }
@@ -104,11 +170,16 @@ export default function DetailPesanan({ auth, courseDetail, cities, date }) {
                             >
                                 Beri Ulasan
                             </GoalsButton>
-
                             <GoalsButton
-                                onClick={(prev) =>
+                                disabled={
+                                    (dataBimbingan.length > 1 &&
+                                        !!dataBimbingan.find(
+                                            (item) => item.date == null
+                                        )) ||
+                                    dataBimbingan[0].ongoing != "berjalan"
+                                }
+                                onClick={() =>
                                     setShowPopUp({
-                                        ...prev,
                                         selesaiProgram: true,
                                     })
                                 }
@@ -116,13 +187,20 @@ export default function DetailPesanan({ auth, courseDetail, cities, date }) {
                             >
                                 Selesaikan
                             </GoalsButton>
-                    </div>
+                        </div>
+                    )}
                 </div>
 
+                {/* Detail */}
                 {dataBimbingan.length > 1 ? (
                     <DetailBanyakPertemuan
                         data={dataBimbingan}
-                        dataAturJadwalComp={dataAturJadwalComp}
+                        setIsAturJadwalShow={(prev) => {
+                            setShowPopUp({
+                                ...prev,
+                                aturJadwalPopup: !prev,
+                            });
+                        }}
                     />
                 ) : (
                     <DetailSatuPertemuan data={dataBimbingan[0]} />
@@ -132,7 +210,7 @@ export default function DetailPesanan({ auth, courseDetail, cities, date }) {
     );
 }
 
-const SelesaiProgram = ({ show, setShow }) => {
+const SelesaiProgram = ({ show, setShow, order_code }) => {
     return (
         <GoalsPopup
             show={show}
@@ -147,7 +225,15 @@ const SelesaiProgram = ({ show, setShow }) => {
                 </p>
 
                 <div className="grid space-y-[2vw] md:space-y-[.8vw] w-full">
-                    <GoalsButton onClick={() => setShow()} className="w-full">
+                    <GoalsButton
+                        isLink
+                        method="PUT"
+                        href={`/bimbingan/${order_code}/selesai-bimbingan`}
+                        onClick={() => {
+                            setShow();
+                        }}
+                        className="w-full"
+                    >
                         Selesaikan
                     </GoalsButton>
                     <GoalsButton
@@ -163,14 +249,9 @@ const SelesaiProgram = ({ show, setShow }) => {
     );
 };
 
-const UlasanTutor = ({ show, setShow }) => {
+const UlasanTutor = ({ show, setShow, data, setData }) => {
     return (
-        <GoalsPopup
-            show={show}
-            setShow={setShow}
-            className="md:max-w-[23.5vw]"
-            isBgClickDisabled
-        >
+        <GoalsPopup show={show} setShow={setShow} className="md:max-w-[23.5vw]">
             <div className="flex flex-col items-center gap-[7.4vw] md:gap-[2vw]">
                 <h3 className="h4 font-medium md:font-semibold">
                     Beri Ulasan Tutor
@@ -183,10 +264,17 @@ const UlasanTutor = ({ show, setShow }) => {
                 </p>
 
                 <div className="grid space-y-[7.4vw] md:space-y-[.8vw] w-full">
+                    <StarRating
+                        totalStars={5}
+                        rating={data.rate_tutor}
+                        setRating={(x) => setData({ ...data, rate_tutor: x })}
+                    />
                     <textarea
                         placeholder="Ketik ulasan kamu disini"
                         className="h-[37vw] md:h-[8.3vw] px-[4vw] py-[2.5vw] md:px-[.8vw] md:py-[.5vw]  rounded-md border border-neutral-50 focus:outline-0 text-dark text-[4.6vw] md:text-[1vw]"
                         style={{ resize: "none" }}
+                        value={data.note_tutor}
+                        onChange={(e) => setData("note_tutor", e.target.value)}
                     />
                     <GoalsButton onClick={setShow} className="w-full">
                         Lanjutkan Ulasan
@@ -197,15 +285,32 @@ const UlasanTutor = ({ show, setShow }) => {
     );
 };
 
-const UlasanProgram = ({ show, setShow }) => {
+const UlasanProgram = ({ show, setShow, data, setData, handleSubmit }) => {
+    function checkFieldRequired() {
+        if (
+            data.rate_tutor == 0 ||
+            data.note_tutor == "" ||
+            data.note_tutor == null ||
+            data.note_tutor == undefined
+        ) {
+            return true;
+        }
+
+        if (
+            data.rate_product == 0 ||
+            data.note_product == "" ||
+            data.note_product == null ||
+            data.note_product == undefined
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
     return (
-        <GoalsPopup
-            show={show}
-            setShow={setShow}
-            className="md:max-w-[23.5vw]"
-            isBgClickDisabled
-        >
-            <div className="flex flex-col items-center gap-[7.4vw] md:gap-[2vw]">
+        <GoalsPopup show={show} setShow={setShow} className="md:max-w-[23.5vw]">
+            <div className="flex flex-col items-center gap-[4vw] md:gap-[2vw]">
                 <h3 className="h4 font-semibold">Beri Ulasan Program</h3>
 
                 <p className="text-[3.7vw] md:text-[1vw] text-black text-center">
@@ -213,17 +318,56 @@ const UlasanProgram = ({ show, setShow }) => {
                     melakukan bimbingan?
                 </p>
 
-                <div className="grid space-y-[7.4vw] md:space-y-[.8vw] w-full">
+                <div className="grid space-y-[4vw] md:space-y-[.8vw] w-full">
+                    <StarRating
+                        totalStars={5}
+                        rating={data.rate_product}
+                        setRating={(x) => setData({ ...data, rate_product: x })}
+                    />
                     <textarea
                         className="h-[37vw] md:h-[8.3vw] px-[4vw] py-[2.5vw] md:px-[.8vw] md:py-[.5vw]  rounded-md border border-neutral-50 focus:outline-0 text-dark text-[4.6vw] md:text-[1vw]"
                         placeholder="Ketik ulasan kamu disini"
                         style={{ resize: "none" }}
+                        value={data.note_product}
+                        onChange={(e) =>
+                            setData("note_product", e.target.value)
+                        }
                     />
-                    <GoalsButton onClick={setShow} className="w-full">
+                    <GoalsButton
+                        disabled={checkFieldRequired()}
+                        onClick={() => {
+                            handleSubmit();
+                            setShow();
+                        }}
+                        className="w-full"
+                    >
                         Simpan
                     </GoalsButton>
                 </div>
             </div>
         </GoalsPopup>
+    );
+};
+
+const StarRating = ({ totalStars, rating, setRating }) => {
+    const handleStarClick = (starIndex) => {
+        setRating(starIndex + 1);
+    };
+
+    return (
+        <div className="w-full text-center">
+            {[...Array(totalStars)].map((_, index) => (
+                <span
+                    key={index}
+                    onClick={() => handleStarClick(index)}
+                    className="leading-none text-[10vw] md:text-[3.5vw] cursor-pointer"
+                    style={{
+                        color: index < rating ? "gold" : "gray",
+                    }}
+                >
+                    &#9733;
+                </span>
+            ))}
+        </div>
     );
 };

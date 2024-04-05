@@ -123,5 +123,4 @@ export default function Product({ auth, bimbingan_tuntas }) {
             </div>
         </DashboardLayout>
     );
-    ``;
 }

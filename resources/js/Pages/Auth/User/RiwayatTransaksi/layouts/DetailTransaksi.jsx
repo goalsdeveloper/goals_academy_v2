@@ -6,7 +6,7 @@ import { Link } from "@inertiajs/react";
 
 const DetailTransaksi = ({ data, show, setShow }) => {
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
-    console.log(data);
+
     return (
         <>
             {isMobile && show ? (
