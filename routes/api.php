@@ -69,3 +69,4 @@ Route::post('/lengkapi_profil', function (Request $request) {
     }
 });
 Route::get('iya', [ViewsClickAndSalesAmountController::class, 'index']);
+Route::get('user_growth', [ViewsClickAndSalesAmountController::class, 'userGrowth']);

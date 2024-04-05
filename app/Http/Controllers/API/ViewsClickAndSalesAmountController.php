@@ -9,7 +9,8 @@ use DateTimeInterface;
 use Exception;
 use Spatie\Analytics\Period;
 use Analytics;
-
+use App\Models\User;
+use Carbon\Carbon;
 
 class ViewsClickAndSalesAmountController extends Controller
 {
@@ -97,32 +98,45 @@ class ViewsClickAndSalesAmountController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function userGrowth(Request $request)
     {
-        //
+        $startDateString = $request->input('startDate');
+        $endDateString = $request->input('endDate');
+
+        if ($startDateString && $endDateString) {
+            $startDate = Carbon::createFromFormat('Y-m-d', $startDateString)->startOfDay();
+            $endDate = Carbon::createFromFormat('Y-m-d', $endDateString)->endOfDay();
+        } else {
+            $endDate = Carbon::now()->endOfDay();
+            $startDate = Carbon::now()->subMonth()->startOfDay();
+        }
+
+        $totalPerDay = [];
+
+        $currentDate = $startDate->copy();
+        while ($currentDate <= $endDate) {
+            $totalPerDay[$currentDate->toDateString()] = 0;
+            $currentDate->addDay();
+        }
+
+        $newUsers = User::whereBetween('created_at', [$startDate, $endDate])->get();
+
+        foreach ($newUsers as $user) {
+            $date = $user->created_at->toDateString();
+            $totalPerDay[$date]++;
+        }
+
+        $totalNewUsers = count($newUsers);
+
+        return response()->json([
+            'status' => true,
+            'statusCode' => 200,
+            'totalNewUsers' => $totalNewUsers,
+            'totalPerDay' => $totalPerDay,
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
