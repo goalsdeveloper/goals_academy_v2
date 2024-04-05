@@ -36,7 +36,7 @@ class BimbinganController extends Controller
                 });
             })
             ->with('products.category', 'course')
-            ->count();
+            ->get();
         return Inertia::render('Auth/User/Bimbingan/Bimbingan', [
             'orderBimbingan' => $orderBimbingan,
         ]);
