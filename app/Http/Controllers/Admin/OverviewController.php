@@ -25,17 +25,31 @@ class OverviewController extends Controller
                 $startDateString = $request->input('startDate');
                 $endDateString = $request->input('endDate');
                 if (!$startDateString && !$endDateString) {
-                    $order =  Order::orderBy('created_at', 'desc')->with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])->get();
+                    $oneMonthAgo = now()->subMonth();
+
+                    $order =  Order::where('created_at', '>=', $oneMonthAgo)
+                        ->orderBy('created_at', 'desc')
+                        ->with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])
+                        ->get();
+
                     $topSellingProducts = Products::select('products.id', 'products.name', \DB::raw('COUNT(CASE WHEN orders.status = "Success" THEN orders.id END) as order_count'))
                         ->leftJoin('orders', 'products.id', '=', 'orders.products_id')
+                        ->where('orders.created_at', '>=', $oneMonthAgo)
                         ->groupBy('products.id', 'products.name')
                         ->orderByDesc('order_count')
                         ->take(5)
                         ->get();
 
-                    $totalOrder = Order::where('status', '=', 'Success')->count();
-                    $totalCheckout = Order::count();
-                    $totalEarning = (int)Order::where('status', '=', 'Success')->sum('unit_price');
+                    $totalOrder = Order::where('status', '=', 'Success')
+                        ->where('created_at', '>=', $oneMonthAgo)
+                        ->count();
+
+                    $totalCheckout = Order::where('created_at', '>=', $oneMonthAgo)
+                        ->count();
+
+                    $totalEarning = (int)Order::where('status', '=', 'Success')
+                        ->where('created_at', '>=', $oneMonthAgo)
+                        ->sum('unit_price');
 
 
                     $limit = 1000;
