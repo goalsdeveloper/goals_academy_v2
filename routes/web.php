@@ -171,32 +171,6 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth')->group(functi
     Route::resource('overview', ModeratorOverviewController::class);
 });
 
-Route::get('/coba', function () {
-    $analyticsData = Analytics::fetchVisitorsAndPageViews(Period::days(7));
-    dd($analyticsData);
-});
-Route::get('/xendit', function () {
-    Configuration::setXenditKey("xnd_development_LTVMUsctCia6RA3wuc2Bscfgv3XOEjpNodCpelK3cWoaQn25nkitYnujW76");
-    $apiInstance = new InvoiceApi();
-    $create_invoice_request = new Xendit\Invoice\CreateInvoiceRequest([
-        'external_id' => 'test1234',
-        'description' => 'Test Invoice',
-        'amount' => 10000,
-        'invoice_duration' => 172800,
-        'currency' => 'IDR',
-        'reminder_time' => 1,
-    ]); // \Xendit\Invoice\CreateInvoiceRequest
-    $for_user_id = "62efe4c33e45694d63f585f0"; // string | Business ID of the sub-account merchant (XP feature)
-
-    try {
-        $result = $apiInstance->createInvoice($create_invoice_request, $for_user_id);
-        print_r($result);
-    } catch (\Xendit\XenditSdkException $e) {
-        echo 'Exception when calling InvoiceApi->createInvoice: ', $e->getMessage(), PHP_EOL;
-        echo 'Full Error: ', json_encode($e->getFullError()), PHP_EOL;
-    }
-});
-
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';
 require __DIR__ . '/auth.php';

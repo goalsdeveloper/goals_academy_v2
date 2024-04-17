@@ -10,13 +10,13 @@ const GoalsChip = ({ dataList, className, setSelected, selected, ...rest }) => {
                     key={index}
                     onClick={() => setSelected(item)}
                     className={`flex items-center border border-neutral-20 px-[1vw] py-[.8vw] rounded-[.8vw] text-[1vw] ${
-                        selected === item
+                        selected.value === item.value
                             ? "bg-secondary text-white"
                             : "bg-white"
                     } ${className}`}
                     {...rest}
                 >
-                    {item}
+                    {item.label}
                 </button>
             ))}
         </div>

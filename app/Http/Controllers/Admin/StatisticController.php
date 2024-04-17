@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Products;
+use App\Models\ProductType;
+use Illuminate\Support\Facades\Auth;
 
 class StatisticController extends Controller
 {
@@ -13,7 +16,17 @@ class StatisticController extends Controller
      */
     public function index(Request $request)
     {
-        return Inertia::render('Auth/Admin/Statistic/Statistic');
+        if (Auth::user()->user_role == "admin") {
+            // $productType = ProductType::with('products')->get();
+            // return response()->json([
+            //     'status' => true,
+            //     'statusCode' => 200,
+            //     'productType' => $productType,
+            // ], 200);
+            return Inertia::render('Auth/Admin/Statistic/Statistic');
+        } else {
+            abort(403);
+        }
     }
 
     /**

@@ -6,7 +6,7 @@ import { Link } from "@inertiajs/react";
 
 const DetailTransaksi = ({ data, show, setShow }) => {
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
-    console.log(data);
+
     return (
         <>
             {isMobile && show ? (
@@ -48,11 +48,14 @@ const DetailTransaksi = ({ data, show, setShow }) => {
 
 const TransactionDetailContent = ({ data }) => {
     const currency = Intl.NumberFormat("id-ID");
+    const add_on = data.form_result.add_on;
 
     const statusClassMap = {
         Berhasil: "text-success-50",
+        Success: "text-success-50",
         Pending: "text-warning-50",
         Gagal: "text-red-400",
+        Failed: "text-red-400",
     };
 
     return (
@@ -114,13 +117,24 @@ const TransactionDetailContent = ({ data }) => {
                     <h3 className="text-[2.8vw] md:text-[0.8vw]  font-normal text-neutral-50">
                         Add On Produk
                     </h3>
-                    {data.form_result.add_on.map((item, index) => {
-                        return (
-                            <p className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium">
-                                {item || "-"}
-                            </p>
-                        );
-                    }) || "-"}
+                    <div className="grid">
+                        {console.log(data.form_result.add_on)}
+                        {add_on.length != 0
+                            ? add_on.map((item, index) => {
+                                  if (item == "") {
+                                      return "-";
+                                  } else
+                                      return (
+                                          <p
+                                              key={index}
+                                              className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium"
+                                          >
+                                              {item.name}
+                                          </p>
+                                      );
+                              })
+                            : "-"}
+                    </div>
                 </div>
             ) : (
                 <></>
@@ -130,7 +144,14 @@ const TransactionDetailContent = ({ data }) => {
                     Harga Add On
                 </h3>
                 <p className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium">
-                    -
+                    {add_on != ""
+                        ? `Rp. ${currency.format(
+                              add_on.reduce(
+                                  (total, addon) => total + addon.price,
+                                  0
+                              )
+                          )}`
+                        : "-"}
                 </p>
             </div>
         </>

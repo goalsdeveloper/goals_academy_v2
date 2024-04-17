@@ -4,11 +4,32 @@ import { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 
-const ProductListFilter = () => {
+const ProductListFilter = ({ data, setData, filterList, type = "product" }) => {
+    const [initialData] = useState(data);
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
-    const [selected, setSelected] = useState("Semua");
+    const [selected, setSelected] = useState(filterList[0]);
     const [isShow, setIsShow] = useState(false);
-    const dataList = ["Semua", "Dalam Proses", "Selesai"];
+
+    function getFilterVars(item) {
+        switch (type) {
+            case "product":
+                return item.course.ongoing;
+            case "transaction":
+                return item.status.toLowerCase();
+        }
+    }
+
+    const handleFilterChange = (filter) => {
+        setSelected(filter);
+        if (filter.value === filterList[0].value) {
+            setData(initialData);
+        } else {
+            const filteredData = initialData.filter((item) => {
+                return getFilterVars(item) === filter.value;
+            });
+            setData(filteredData);
+        }
+    };
 
     return (
         <>
@@ -18,24 +39,25 @@ const ProductListFilter = () => {
                         onClick={() => setIsShow(true)}
                         className="flex h6 font-normal items-center gap-[.8vw] text-neutral-60"
                     >
-                        {selected} <FiChevronDown className="text-[4.2vw]" />
+                        {selected.label}{" "}
+                        <FiChevronDown className="text-[4.2vw]" />
                     </button>
                     {isShow && (
                         <div className="absolute right-0 flex flex-col w-max border shadow-centered-spread rounded-[2.7vw] bg-white h6 font-normal overflow-hidden z-[50]">
-                            {dataList.map((item, index) => (
+                            {filterList.map((item, index) => (
                                 <button
                                     key={index}
                                     className={`text-start py-[3.7vw] px-[7.4vw] ${
-                                        selected == item
+                                        selected.value == item.value
                                             ? "bg-secondary text-white"
                                             : "bg-white hover:bg-primary-10"
                                     }`}
                                     onClick={() => {
-                                        setSelected(item);
+                                        handleFilterChange(item);
                                         setIsShow(false);
                                     }}
                                 >
-                                    {item}
+                                    {item.label}
                                 </button>
                             ))}
                         </div>
@@ -43,9 +65,9 @@ const ProductListFilter = () => {
                 </div>
             ) : (
                 <GoalsChip
-                    dataList={dataList}
+                    dataList={filterList}
                     selected={selected}
-                    setSelected={(p) => setSelected(p)}
+                    setSelected={(p) => handleFilterChange(p)}
                 />
             )}
         </>

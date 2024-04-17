@@ -1,20 +1,18 @@
-import figure from "/resources/img/figure/8.svg";
-import UserLayout from "@/Layouts/UserLayout";
-import { Link } from "@inertiajs/react";
-import React from "react";
-import { EmptyProductLayout } from "../Bimbingan/Bimbingan";
-import WebinarBgCard from "/resources/img/produk/webinar-card-bg.png";
+import GoalsButton from "@/Components/elements/GoalsButton";
 import {
     ProductItemCardContent,
     ProductItemCardLayout,
 } from "@/Components/fragments/ProductItemCard";
-import GoalsButton from "@/Components/elements/GoalsButton";
+import UserLayout from "@/Layouts/UserLayout";
+import { Link } from "@inertiajs/react";
+import { useState } from "react";
 import { FiChevronRight } from "react-icons/fi";
+import { EmptyProductLayout } from "../Bimbingan/Bimbingan";
 import ProductListFilter from "../ProductListFilter";
+import { ProductFilter } from "../constants";
+import { detailWebinar } from "./data";
 
 const Webinar = ({ auth, orderWebinar }) => {
-    const data = orderWebinar;
-    console.log(data);
 
     return (
         <UserLayout auth={auth} title="Webinar">
@@ -23,9 +21,13 @@ const Webinar = ({ auth, orderWebinar }) => {
                     {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
                     Webinar
                 </h1>
-                <ProductListFilter />
+                {/* <ProductListFilter
+                    setData={setData}
+                    data={data}
+                    filterList={ProductFilter}
+                /> */}
             </div>
-            {data.length == 0 ? (
+            {orderWebinar.length == 0 ? (
                 <EmptyProductLayout
                     description="Event belum tersedia"
                     buttonTxt="Kembali Ke Beranda"
@@ -33,11 +35,11 @@ const Webinar = ({ auth, orderWebinar }) => {
                 />
             ) : (
                 <div className="md:min-h-[22vw] flex flex-col gap-[2vw] md:gap-[1vw]">
-                    {data.map((item, index) => {
+                    {orderWebinar.map((item, index) => {
                         return (
                             <ProductItemCardLayout
                                 isLink
-                                href={`webinar/${item.products.slug}`}
+                                href={`webinar/${item.order_code}`}
                                 key={index}
                                 imageUrl={item.products.product_image}
                             >
@@ -51,7 +53,7 @@ const Webinar = ({ auth, orderWebinar }) => {
                                                 <p className="text-neutral-40">
                                                     {item.products
                                                         .webinar_properties
-                                                        .date !== undefined
+                                                        ?.date !== undefined
                                                         ? new Date(
                                                               item.products.webinar_properties.date
                                                           ).toDateString()

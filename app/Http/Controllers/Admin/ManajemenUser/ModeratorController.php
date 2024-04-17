@@ -25,7 +25,7 @@ class ModeratorController extends Controller
                 if ($search) {
                     $query->where(function ($subquery) use ($search) {
                         $subquery->where('name', 'LIKE', "%$search%")
-                        ->orWhere('username', 'LIKE', "%$search%");
+                            ->orWhere('username', 'LIKE', "%$search%");
                     });
                 }
                 $moderators = $query->paginate($perPage);
@@ -90,9 +90,16 @@ class ModeratorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $moderator)
     {
-        //
+        if (Auth::user()->user_role == "admin") {
+            $moderator->load('profile');
+            // return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
+            //     'moderator' => $profile,
+            // ]], 200);
+        } else {
+            abort(403);
+        }
     }
 
     /**

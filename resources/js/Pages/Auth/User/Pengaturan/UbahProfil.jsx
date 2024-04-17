@@ -20,6 +20,7 @@ export default function Index({ auth, userData, profileData }) {
         referral: "",
     });
 
+    console.log(data);
     const submit = (e) => {
         e.preventDefault();
         post("/pengaturan");
@@ -54,7 +55,7 @@ export default function Index({ auth, userData, profileData }) {
                     >
                         <div className="grid md:grid-cols-2 gap-[1.8vw] md:gap-[1.2vw]">
                             <GoalsTextInput
-                                value={data.username}
+                                data={data.username}
                                 onChange={(e) =>
                                     setData("username", e.target.value)
                                 }
@@ -64,7 +65,7 @@ export default function Index({ auth, userData, profileData }) {
                                 label="Username"
                             />
                             <GoalsTextInput
-                                value={data.name}
+                                data={data.name}
                                 onChange={(e) =>
                                     setData("name", e.target.value)
                                 }
@@ -74,17 +75,17 @@ export default function Index({ auth, userData, profileData }) {
                                 label="Nama Lengkap"
                             />
                             <GoalsTextInput
-                                value={data.phone_number}
+                                data={data.phone_number}
                                 onChange={(e) =>
                                     setData("phone_number", e.target.value)
                                 }
                                 placeholder="Masukkan Nomor Telepon Anda"
-                                type="text"
+                                type="number"
                                 id="phone_number"
                                 label="Nomor Telepon"
                             />
                             <GoalsTextInput
-                                value={data.university}
+                                data={data.university}
                                 onChange={(e) =>
                                     setData("university", e.target.value)
                                 }
@@ -94,7 +95,7 @@ export default function Index({ auth, userData, profileData }) {
                                 label="Universitas"
                             />
                             <GoalsTextInput
-                                value={data.faculty}
+                                data={data.faculty}
                                 onChange={(e) =>
                                     setData("faculty", e.target.value)
                                 }
@@ -104,7 +105,7 @@ export default function Index({ auth, userData, profileData }) {
                                 label="Fakultas"
                             />
                             <GoalsTextInput
-                                value={data.major}
+                                data={data.major}
                                 onChange={(e) =>
                                     setData("major", e.target.value)
                                 }
@@ -115,7 +116,7 @@ export default function Index({ auth, userData, profileData }) {
                             />
                         </div>
                         <GoalsTextInput
-                            value={data.referral}
+                            data={data.referral}
                             onChange={(e) =>
                                 setData("referral", e.target.value)
                             }
@@ -176,7 +177,7 @@ export const ProfileImage = ({ auth }) => {
                 src={profileImage ? profileImage : userIcon}
                 alt="User"
             />
-            <div className="hidden md:block text-center space-y-[1vw]">
+            <div className="hidden md:flex flex-col text-center gap-[1vw]">
                 <p className="font-medium">{auth.user.username}</p>
                 <GoalsButton
                     variant="bordered"
