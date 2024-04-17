@@ -16,6 +16,7 @@ import GoalsDatePicker from "@/Components/elements/GoalsDatePicker";
 import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/elements/GoalsSelectInput";
 import { GoalsSelectMultipleInput, GoalsSelectMultipleInputItem } from "@/Components/elements/GoalsSelectMultipleInput";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Form({ auth, date, addOns, cities, topics, paymentMethods, dataProduct }) {
     const userId = auth.user.id;
@@ -84,6 +85,10 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
     const submit = (e) => {
         e.preventDefault();
         if (Object.keys(userProfile).map(i => userProfile[i]).includes("") || Object.keys(userProfile).map(i => userProfile[i]).includes(null)) {
+            toast('Lengkapi profil terlebih dahulu!', {
+                position: 'top-center',
+                icon: '⚠️',
+            });
             location.href = `/produk/${dataProduct.slug}#lengkapi_profil`;
         } else {
             setIsProcessed(true);
@@ -155,12 +160,13 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
     };
 
     return (
-        <MainLayout auth={auth} title="Purchase" headerClassName="shadow-md md:shadow-none" footerClassName="hidden md:block">
+        <MainLayout auth={auth} title={dataProduct.name} headerClassName="shadow-md md:shadow-none" footerClassName="hidden md:block">
+            <Toaster />
             <section
                 id="purchase-form"
                 className="md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32"
             >
-                <div className="relative md:container mx-auto pt-[8.5vw] md:pt-[1vw] flex flex-col justify-between md:flex-row text-[3.7vw] md:text-[1vw] gap-[4vw] md:gap-0">
+                <div className="relative md:container mx-auto pt-[4.5vw] md:pt-[1vw] flex flex-col justify-between md:flex-row text-[3.7vw] md:text-[1vw] gap-[4vw] md:gap-0">
                     <MainCard
                         userProfile={userProfile}
                         setUserProfile={setUserProfile}
@@ -245,7 +251,7 @@ function MainCard({
         <div className="md:w-[72%] flex flex-col gap-[1vw]">
             <div className="md:border-1 md:rounded-[.8vw] md:p-[1.75vw] h-fit">
                 <div className="flex flex-col gap-[4vw] md:gap-0">
-                    <div className="md:hidden pt-[6vw] flex flex-col gap-[4vw]">
+                    <div className="md:hidden flex flex-col gap-[4vw]">
                         <Link href="/produk" className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins"><FiChevronLeft className="text-[5vw]" /> Kembali</Link>
                         <img className="w-full h-[60vw]" src={dataProduct.product_image} alt="" />
                     </div>
@@ -763,8 +769,8 @@ function SummaryCard({
     const currency = Intl.NumberFormat("id-ID");
     return (
         <>
-            <div className={`fixed top-0 bottom-0 right-0 md:static w-full h-screen md:w-[30%] flex flex-col bg-white md:ms-[2vw] gap-[4vw] md:gap-[2vw] duration-500 ${showMobile ? '' : 'translate-x-full'} md:translate-x-0 md:text-[.9vw]`}>
-                <div className="relative h-full md:h-fit border-1 md:rounded-[1vw] pt-[26vw] md:p-[1.75vw] overflow-auto md:overflow-hidden">
+            <div className={`fixed top-0 bottom-0 right-0 md:static w-full h-screen md:h-fit md:w-[30%] flex flex-col bg-white md:ms-[2vw] gap-[4vw] md:gap-[2vw] duration-500 ${showMobile ? '' : 'translate-x-full'} md:translate-x-0 md:text-[.9vw] overflow-auto`}>
+                <div className="relative h-screen md:h-fit border-1 md:rounded-[1vw] pt-[22vw] md:p-[1.75vw] overflow-auto md:overflow-hidden">
                     <div className="md:hidden shadow-md">
                         <span className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins py-[4vw]" onClick={() => setShowMobile(false)}><FiChevronLeft className="text-[5vw]" /> Kembali</span>
                     </div>
@@ -790,7 +796,7 @@ function SummaryCard({
                             ) : (<></>)}
                         </div>
                     </div>
-                    <div className="container md:w-full mx-auto">
+                    <div className="container md:w-full mx-auto overflow-auto pb-[24vw] md:pb-0">
                         <div className="flex flex-col-reverse md:flex-col gap-[4vw] md:gap-0">
                             <ExpandedButton
                                 className={`md:hidden rounded-[2vw] md:rounded-[.4vw] h-[12.5vw] md:h-[3.1vw] border-1 border-light-grey`}
@@ -972,7 +978,7 @@ function SummaryCard({
                             </GoalsButton>
                         </div>
                     </div>
-                    <div className="absolute w-full bottom-0 md:hidden rounded-t-[4vw] border-t-1 border-gray-300 py-[4vw]">
+                    <div className="fixed w-full bottom-0 md:hidden rounded-t-[4vw] border-t-1 bg-white border-gray-300 py-[4vw]">
                         <div className="container mx-auto flex justify-between">
                             <div className="flex flex-col justify-center gap-[1vw]">
                                 <p className="text-[3vw] font-medium">Total</p>
@@ -1016,6 +1022,7 @@ function SummaryCard({
                     setShow={setShowLengkapiProfilForm}
                     data={data}
                     setData={setData}
+                    toast={toast}
                 />
             ) : (<></>)}
         </>
@@ -1034,6 +1041,7 @@ const LengkapiProfilAlert = ({ userProfile, setUserProfile, data, setData }) => 
                 setShow={setShowLengkapiProfilForm}
                 data={data}
                 setData={setData}
+                toast={toast}
             />
 
             <div className="border-1 md:rounded-[1vw] md:p-[1.75vw] h-fit bg-info-10 flex justify-between items-center animate-bounce-sm">

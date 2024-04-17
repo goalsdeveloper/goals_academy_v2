@@ -24,9 +24,18 @@ class Course extends Model
         'date',
         'time',
         'ongoing',
-        'is_tutor',
         'topic_id',
+        'session',
+        'place_id',
+        'is_tutor',
         'is_moderator',
+        'is_user',
+    ];
+
+    protected $casts = [
+        'is_user' => 'bool',
+        'is_moderator' => 'bool',
+        'is_tutor' => 'bool',
     ];
 
     public function user()

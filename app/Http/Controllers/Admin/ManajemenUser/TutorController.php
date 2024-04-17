@@ -6,6 +6,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Skill;
 use Illuminate\Support\Facades\Auth;
 
 class TutorController extends Controller
@@ -52,7 +53,14 @@ class TutorController extends Controller
      */
     public function create()
     {
-        //
+        if (Auth::user()->user_role == "admin") {
+            $skill = Skill::get();
+            return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
+                'skill' => $skill
+            ]], 200);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -91,9 +99,18 @@ class TutorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(User $tutor)
     {
-        //
+        if (Auth::user()->user_role == "admin") {
+            $skill = Skill::get();
+            $tutor->load('profile', 'skills');
+            // return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
+            //     'tutor' => $tutor,
+            // 'skill'=>$skill
+            // ]], 200);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -109,6 +126,7 @@ class TutorController extends Controller
                     'phone_number' => 'string',
                     'university' => 'string',
                     'major' => 'string',
+                    'linkedin_url' => 'string',
                 ]);
 
                 $tutor->update($validatedData);

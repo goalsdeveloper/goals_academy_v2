@@ -2,13 +2,32 @@ import useScrollBlock from "@/Hooks/useScrollBlock";
 import { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { RxFileText } from "react-icons/rx";
-import { templateDataDetail } from "../data";
+import { createPortal } from "react-dom";
 
 const DetailSatuPertemuan = ({ data, className = "" }) => {
     const gapSize = 1;
-    const template  = templateDataDetail[0].detail;
 
-    console.log(template)
+    const form_field = {
+        schedule: "Jadwal Pelaksanaan",
+        time: "Jam Pelaksanaan",
+        city: "Kota Pelaksanaan",
+        place: "Lokasi Pelaksanaan",
+        // add_on: "Add On",
+        document: "Lampiran Dokumen",
+        topic: "Topik Bimbingan",
+    };
+    const form_result = {
+        city: data?.location?.city?.city ?? "Kota Belum Diatur",
+        place: data?.location ?? "Lokasi Belum Diatur",
+        topic: data?.topic ?? "Topik Belum Diatur",
+        // add_on:
+        //     data?.add_ons?.map((item) => item["name"]).join(", ") != ""
+        //         ? data?.add_ons?.map((item) => item["name"]).join(", ")
+        //         : "Tidak Ada Add Ons",
+        document: "Lampiran Dokumen",
+        schedule: data?.date ?? "Jadwal Belum Diatur",
+        time: data?.time ?? "Jam Belum Diatur",
+    };
 
     return (
         <div className={`md:flex gap-[${gapSize}vw] ${className}`}>
@@ -18,24 +37,21 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                     Pelaksanaan Pembelajaran
                 </h2>
                 <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
-                    {template.detailPelaksanaan.map((item, index) => {
-                        return (
-                            <li
-                                key={index}
-                                className="space-y-[.9vw] md:space-y-[.2vw]"
-                            >
-                                <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
-                                    {item.title}
-                                </h3>
-                                <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
-                                    {item.value}
-                                </p>
-                            </li>
-                        );
-                    })}
+                    {Object.keys(form_field).map((key) => (
+                        <li
+                            key={key}
+                            className="space-y-[.9vw] md:space-y-[.2vw]"
+                        >
+                            <label className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
+                                {form_field[key]}
+                            </label>
+                            <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
+                                {form_result[key]}
+                            </p>
+                        </li>
+                    ))}
                 </ul>
             </div>
-
 
             <div className="w-full space-y-[1vw]">
                 {/* Informasi Tutor */}
@@ -49,21 +65,22 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                         Informasi Tutor
                     </h2>
                     <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
-                        {template.detailTutor.map((item, index) => {
-                            return (
-                                <li
-                                    key={index}
-                                    className="space-y-[.9vw] md:space-y-[.2vw]"
-                                >
-                                    <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
-                                        {item.title}
-                                    </h3>
-                                    <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
-                                        {item.value}
-                                    </p>
-                                </li>
-                            );
-                        })}
+                        <li className="space-y-[.9vw] md:space-y-[.2vw]">
+                            <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
+                                Lampiran Dokumen Hasil
+                            </h3>
+                            <button className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
+                                Ludi-Revisi.pdf
+                            </button>
+                        </li>
+                        <li className="space-y-[.9vw] md:space-y-[.2vw]">
+                            <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
+                                Catatan Dari Tutor
+                            </h3>
+                            <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
+                                mengganti poin a menjadi b
+                            </p>
+                        </li>
                     </ul>
                 </div>
 
@@ -79,14 +96,20 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                     </h2>
 
                     <div className="space-y-[.8vw] md:space-y-[.2vw]">
-                        {data.file_uploads?.map((item, index) => {
-                            return (
-                                <FileMediaItemBackdrop
-                                    key={index}
-                                    item={item}
-                                />
-                            );
-                        })}
+                        {data.file_uploads.length != 0 ? (
+                            data.file_uploads.map((item, index) => {
+                                return (
+                                    <FileMediaItemBackdrop
+                                        key={index}
+                                        item={item}
+                                    />
+                                );
+                            })
+                        ) : (
+                            <div className="w-full text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50 h-full">
+                                Tidak ada file yang diupload
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -115,46 +138,37 @@ export const FileMediaItemBackdrop = ({ item }) => {
     };
 
     return (
-        <div className="w-full relative flex items-center gap-[1.8vw] md:gap-[.5vw] bg-white shadow p-[1vw] md:p-[.2vw] rounded-[.8vw] md:rounded-[.4vw]">
-            <div className="bg-primary-10 w-[11vw] md:w-[2.5vw] aspect-square flex items-center justify-center rounded-[.6vw] md:rounded-[.3vw]">
-                <RxFileText className="text-[4.8vw] md:text-[1.3vw]" />
-            </div>
+            <div className="w-full relative flex items-center gap-[1.8vw] md:gap-[.5vw] bg-white shadow p-[1vw] md:p-[.2vw] rounded-[.8vw] md:rounded-[.4vw]">
+                <div className="bg-primary-10 w-[11vw] md:w-[2.5vw] aspect-square flex items-center justify-center rounded-[.6vw] md:rounded-[.3vw]">
+                    <RxFileText className="text-[4.8vw] md:text-[1.3vw]" />
+                </div>
 
-            <div className="flex items-center justify-between w-full">
-                <p className="text-[2.8vw] md:text-[.8vw] text-neutral-80 w-[80%]">
-                    {item.title}
-                </p>
+                <div className="flex items-center justify-between w-full">
+                    <p className="text-[2.8vw] md:text-[.8vw] text-neutral-80 w-[80%]">
+                        {item.title}
+                    </p>
 
-                <button onClick={handleToggle}>
-                    <BsThreeDots className="text-[2.8vw] md:text-[1vw] text-neutral-40 mr-[.8vw]" />
-                </button>
-            </div>
-
-            {/* {isVisible &&
-                ReactDOM.createPortal(
-                    <div
-                        className="bg-black/20 inset-0 fixed -z-[55]"
-                        onClick={downloadHandler}
-                    />,
-                    document.body
-                )} */}
-
-            {isVisible && (
-                <>
-                    <button
-                        onClick={downloadHandler}
-                        className={`h6 font-medium text-neutral-80 px-[5.5vw] py-[3.7vw] md:py-[.8vw] md:px-[1vw] rounded-[1.8vw] md:rounded-[.4vw] shadow-centered-spread absolute -bottom-[70%] right-0 z-[60] bg-white transition-all ${
-                            isVisible ? "translate-x-0" : "translate-x-5"
-                        }`}
-                    >
-                        Unduh
+                    <button onClick={handleToggle}>
+                        <BsThreeDots className="text-[2.8vw] md:text-[1vw] text-neutral-40 mr-[.8vw]" />
                     </button>
-                    <div
-                        className=" bg-black/20 inset-0 fixed top-0 left-0 w-auto h-auto z-[55]"
-                        onClick={downloadHandler}
-                    />
-                </>
-            )}
-        </div>
+                </div>
+
+                {isVisible && (
+                    <>
+                        <button
+                            onClick={downloadHandler}
+                            className={`h6 font-medium text-neutral-80 px-[5.5vw] py-[3.7vw] md:py-[.8vw] md:px-[1vw] rounded-[1.8vw] md:rounded-[.4vw] shadow-centered-spread absolute -bottom-[70%] right-0 z-[60] bg-white transition-all ${
+                                isVisible ? "translate-x-0" : "translate-x-5"
+                            }`}
+                        >
+                            Unduh
+                        </button>
+                        <div
+                            className=" bg-black/20 inset-0 fixed top-0 left-0 w-auto h-auto z-[55]"
+                            onClick={downloadHandler}
+                        />
+                    </>
+                )}
+            </div>
     );
 };

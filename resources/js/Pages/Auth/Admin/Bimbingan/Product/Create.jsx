@@ -1,8 +1,9 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import React from "react";
-import { Breadcrumb } from "../Product";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
+import Breadcrumb from "../../components/Breadcrumb";
+import FormSection from "../../components/layouts/FormSection";
 
 const Create = ({ auth }) => {
     return (
@@ -125,16 +126,3 @@ const Create = ({ auth }) => {
 
 export default Create;
 
-export const FormSection = ({ title, children = <></>, titleAction = <></> }) => {
-    return (
-        <div className="bg-white w-full rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
-            <div className="flex items-center justify-between">
-                <h2 className="text-[1vw] font-medium">{title}</h2>
-
-                {titleAction}
-            </div>
-
-            <div className="space-y-[1.2vw]">{children}</div>
-        </div>
-    );
-};

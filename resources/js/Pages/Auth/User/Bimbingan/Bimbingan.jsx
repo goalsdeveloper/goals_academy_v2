@@ -1,26 +1,23 @@
 import GoalsBadge from "@/Components/elements/GoalsBadge";
-import GoalsChip from "@/Components/elements/GoalsChip";
-import UserLayout from "@/Layouts/UserLayout";
-import "@/script/momentCustomLocale";
-import { Link } from "@inertiajs/react";
-import moment from "moment";
-import figure from "/resources/img/figure/8.svg";
-import CardImage from "/resources/img/karir/academic-internship.png";
+import GoalsButton from "@/Components/elements/GoalsButton";
 import {
     ProductItemCardContent,
     ProductItemCardHeader,
     ProductItemCardLayout,
 } from "@/Components/fragments/ProductItemCard";
-import { FiChevronDown, FiChevronRight } from "react-icons/fi";
-import { useMediaQuery } from "react-responsive";
-import { useState } from "react";
-import GoalsButton from "@/Components/elements/GoalsButton";
-import ProductListFilter from "../ProductListFilter";
+import UserLayout from "@/Layouts/UserLayout";
 import "@/script/momentCustomLocale";
+import { Link } from "@inertiajs/react";
+import moment from "moment";
+import { useState } from "react";
+import { FiChevronRight } from "react-icons/fi";
+import ProductListFilter from "../ProductListFilter";
+import figure from "/resources/img/figure/8.svg";
+import { ProductFilter } from "../constants";
+import { statusClassMap } from "../RiwayatTransaksi/components/TransactionStatusBadge";
 
 export default function Index({ auth, orderBimbingan }) {
-    console.log(orderBimbingan);
-    const data = orderBimbingan;
+    const [data, setData] = useState(orderBimbingan);
 
     return (
         <UserLayout auth={auth} title="Bimbingan">
@@ -29,23 +26,18 @@ export default function Index({ auth, orderBimbingan }) {
                     {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
                     Bimbingan
                 </h1>
-                <ProductListFilter />
+                <ProductListFilter
+                    data={data}
+                    setData={setData}
+                    filterList={ProductFilter}
+                />
             </div>
             {data.length == 0 ? (
                 <EmptyProductLayout />
             ) : (
                 <div className="space-y-[1vw]">
-                    {/* <ProductListFilter /> */}
                     <div className="md:min-h-[22vw] flex flex-col gap-[2vw] md:gap-[1vw]">
                         {data.map((item, index) => {
-                            // if (
-                            //     item.products.features[0].category ==
-                            //         "online" ||
-                            //     item.products.features[0].category == "offline"
-                            // ) {
-                            //     return (
-                            //     );
-                            // }
                             return <BimbinganItem key={index} data={item} />;
                         })}
                     </div>
@@ -66,6 +58,9 @@ function BimbinganItem({ data }) {
               .add(data.products.features[0].duration, "minutes")
               .format("HH:mm")
         : "N/A";
+    const courseStatus =
+        data.course.ongoing.charAt(0).toUpperCase() +
+        data.course.ongoing.slice(1);
 
     return (
         <ProductItemCardLayout
@@ -81,11 +76,8 @@ function BimbinganItem({ data }) {
                             className="text-secondary bg-primary-10"
                         />
                         <GoalsBadge
-                            title={
-                                data.course.ongoing.charAt(0).toUpperCase() +
-                                data.course.ongoing.slice(1)
-                            }
-                            className="hidden md:block bg-success-10 text-success-50"
+                            title={courseStatus}
+                            className={`hidden md:block ${statusClassMap[courseStatus]}`}
                         />
                     </ProductItemCardHeader>
                     <ProductItemCardContent>
@@ -126,7 +118,7 @@ export const EmptyProductLayout = ({
     buttonTxt = "Cari Program",
 }) => {
     return (
-        <div className="flex flex-col justify-center items-center gap-[4vw] md:gap-[2vw] md:border border-neutral-20 rounded-[.8vw] w-full p-[2vw]">
+        <div className="text-center flex flex-col justify-center items-center gap-[4vw] md:gap-[2vw] md:border border-neutral-20 rounded-[.8vw] w-full p-[2vw]">
             <img
                 src={figure}
                 alt={`image-${imgUrl}`}

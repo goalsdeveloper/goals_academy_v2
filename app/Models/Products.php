@@ -33,6 +33,7 @@ class Products extends Model
     protected $casts = [
         'facilities' => 'array',
         'form_config' => 'array',
+        'webinar_properties' => 'array',
     ];
 
     public function order()

@@ -23,16 +23,18 @@ class CourseSeeder extends Seeder
                 'products_id' => $value->products_id,
                 'order_id' => $value->id,
             ];
-            $parent = Course::create(array_merge($dataCourse, ['tutor_id' => $tutor->id]));
+            $session = 1;
+            $parent = Course::create(array_merge($dataCourse, ['tutor_id' => $tutor->id, 'session' => $session]));
             $add_ons = $value->form_result['add_on'];
-                foreach ($add_ons as $key => $addon) {
-                    if($addon != "") {
-                        $parent->addOns()->attach($addon['id']);
-                    }
+            foreach ($add_ons as $key => $addon) {
+                if ($addon != "") {
+                    $parent->addOns()->attach($addon['id']);
                 }
+            }
             for ($i = 0; $i < $value->products->total_meet - 1; $i++) {
                 $dataCourse['parent_id'] = $parent->id;
-                Course::create($dataCourse);
+                $dataCourse['session'] = ++$session;
+                $course = Course::create($dataCourse);
             }
         }
     }

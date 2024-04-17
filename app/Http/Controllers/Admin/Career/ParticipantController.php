@@ -5,15 +5,34 @@ namespace App\Http\Controllers\Admin\Career;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Participant;
+use Illuminate\Support\Facades\Auth;
 
 class ParticipantController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Auth/Admin/Career/Participant');
+        if (Auth::user()->user_role == "admin") {
+            $search = $request->input('search');
+            $perPage = $request->input('perPage', 10);
+
+            $query = Participant::with('job:id,city_id,education_id', 'job.city', 'job.education');
+
+
+            if ($search) {
+                $query->where('name', 'LIKE', "%$search%");
+            }
+
+            $participants = $query->paginate($perPage);
+            // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data participants success', 'data' => $participants], 200);
+
+            return Inertia::render('Auth/Admin/Career/Participant');
+        } else {
+            abort(403);
+        }
     }
 
     /**

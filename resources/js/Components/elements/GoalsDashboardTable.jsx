@@ -3,9 +3,6 @@ import {
     MaterialReactTable,
     useMaterialReactTable,
 } from "material-react-table";
-import { useMemo } from "react";
-import { FiCheckCircle, FiEdit2, FiEye, FiTrash2 } from "react-icons/fi";
-import { Link } from "@inertiajs/react";
 import GoalsTextInput from "./GoalsTextInput";
 import { useState } from "react";
 
@@ -17,6 +14,7 @@ const GoalsDashboardTable = ({
     isPaginated = false,
     isHeadVisible = false,
     isSplitByCategory = false,
+    className,
 }) => {
     const [tableData, setTableData] = useState(
         isSplitByCategory ? splitTableByCategory(data) : data
@@ -55,7 +53,7 @@ const GoalsDashboardTable = ({
     );
 
     return (
-        <div className="bg-white border min-w-max rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
+        <div className={`bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw] ${className}`}>
             <GoalsTextInput
                 placeholder="🔍 Search"
                 className="max-w-[10.4vw] max-h-[2.4vw]"

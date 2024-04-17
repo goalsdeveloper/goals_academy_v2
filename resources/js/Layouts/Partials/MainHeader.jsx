@@ -36,7 +36,7 @@ export default function MainHeader({ auth, title, className }) {
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     return (
-        <header className="overflow-y-visible overflow-x-clip  sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50">
+        <header className={`overflow-y-visible overflow-x-clip sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50 ${className}`}>
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">
                 {isMobile ? (
