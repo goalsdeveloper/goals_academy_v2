@@ -1,53 +1,50 @@
 <?php
 
-use App\Http\Controllers\DashboardUserController;
-use App\Http\Controllers\Admin\OverviewController as AdminOverviewController;
-use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\Bimbingan\AddOnController;
 use App\Http\Controllers\Admin\Bimbingan\BimbinganController;
 use App\Http\Controllers\Admin\Bimbingan\CategoryController;
 use App\Http\Controllers\Admin\Bimbingan\CityController;
-use App\Http\Controllers\Admin\Bimbingan\PlaceController;
 use App\Http\Controllers\Admin\Bimbingan\OrderController as AdminOrderBimbinganController;
+use App\Http\Controllers\Admin\Bimbingan\PlaceController;
 use App\Http\Controllers\Admin\Bimbingan\TopicController;
 use App\Http\Controllers\Admin\Career\JobController;
 use App\Http\Controllers\Admin\Career\ParticipantController;
-use App\Http\Controllers\Admin\Ebook\EbookController;
 use App\Http\Controllers\Admin\Ebook\CategoryController as AdminCategoryEbookController;
+use App\Http\Controllers\Admin\Ebook\EbookController;
 use App\Http\Controllers\Admin\Ebook\OrderController as AdminOrderEbookController;
+use App\Http\Controllers\Admin\Ecourse\CategoryController as AdminCategoryEcourseController;
 use App\Http\Controllers\Admin\Ecourse\EcourseController;
 use App\Http\Controllers\Admin\Ecourse\OrderController as AdminOrderEcourseController;
-use App\Http\Controllers\Admin\Ecourse\CategoryController as AdminCategoryEcourseController;
-use App\Http\Controllers\Admin\Webinar\WebinarController;
-use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
-use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
+use App\Http\Controllers\Admin\ManajemenUser\ModeratorController;
 use App\Http\Controllers\Admin\ManajemenUser\TutorController;
 use App\Http\Controllers\Admin\ManajemenUser\UserController;
-use App\Http\Controllers\Admin\ManajemenUser\ModeratorController;
 use App\Http\Controllers\Admin\Marketing\AffiliateController;
 use App\Http\Controllers\Admin\Marketing\VoucherController;
+use App\Http\Controllers\Admin\OverviewController as AdminOverviewController;
+use App\Http\Controllers\Admin\StatisticController;
+use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
+use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
+use App\Http\Controllers\Admin\Webinar\WebinarController;
+use App\Http\Controllers\DashboardUserController;
 // use App\Http\Controllers\Moderator\CourseController;
-use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
-use App\Http\Controllers\Moderator\Bimbingan\ProgressController;
-use App\Http\Controllers\Moderator\Bimbingan\ModeratorHistoryBimbinganController;
-use App\Http\Controllers\Moderator\Bimbingan\ModeratorOrderController;
-use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
-use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
-
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\Moderator\Bimbingan\ModeratorHistoryBimbinganController;
+use App\Http\Controllers\Moderator\Bimbingan\ModeratorOrderController;
+use App\Http\Controllers\Moderator\Bimbingan\ProgressController;
+use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
+use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
+use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
-use App\Models\AddOn;
 use App\Models\TutorNote;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
-
 use Inertia\Inertia;
 use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period;
+use Xendit\Configuration;
 
 Route::get('/token', function () {
     return csrf_token();
@@ -177,6 +174,27 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth')->group(functi
 Route::get('/coba', function () {
     $analyticsData = Analytics::fetchVisitorsAndPageViews(Period::days(7));
     dd($analyticsData);
+});
+Route::get('/xendit', function () {
+    Configuration::setXenditKey("xnd_development_LTVMUsctCia6RA3wuc2Bscfgv3XOEjpNodCpelK3cWoaQn25nkitYnujW76");
+    $apiInstance = new InvoiceApi();
+    $create_invoice_request = new Xendit\Invoice\CreateInvoiceRequest([
+        'external_id' => 'test1234',
+        'description' => 'Test Invoice',
+        'amount' => 10000,
+        'invoice_duration' => 172800,
+        'currency' => 'IDR',
+        'reminder_time' => 1,
+    ]); // \Xendit\Invoice\CreateInvoiceRequest
+    $for_user_id = "62efe4c33e45694d63f585f0"; // string | Business ID of the sub-account merchant (XP feature)
+
+    try {
+        $result = $apiInstance->createInvoice($create_invoice_request, $for_user_id);
+        print_r($result);
+    } catch (\Xendit\XenditSdkException $e) {
+        echo 'Exception when calling InvoiceApi->createInvoice: ', $e->getMessage(), PHP_EOL;
+        echo 'Full Error: ', json_encode($e->getFullError()), PHP_EOL;
+    }
 });
 
 require __DIR__ . '/profile/profile.php';
