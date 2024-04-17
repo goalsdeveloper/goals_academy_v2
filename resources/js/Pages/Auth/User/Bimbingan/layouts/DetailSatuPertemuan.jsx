@@ -16,16 +16,19 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
         add_on: "Add On",
         document: "Lampiran Dokumen",
         schedule: "Jadwal Pelaksanaan",
-        time: "Jam Pelaksanaan"
+        time: "Jam Pelaksanaan",
     };
     const form_result = {
         city: data?.location?.city?.city,
         place: data?.location,
         topic: data?.topic,
-        add_on: data?.add_ons?.map(item => item["name"]).join(', ') != "" ? data?.add_ons?.map(item => item["name"]).join(', ') : "Tidak Ada Add Ons",
+        add_on:
+            data?.add_ons?.map((item) => item["name"]).join(", ") != ""
+                ? data?.add_ons?.map((item) => item["name"]).join(", ")
+                : "Tidak Ada Add Ons",
         document: "Lampiran Dokumen",
         schedule: data?.date,
-        time: data?.time
+        time: data?.time,
     };
 
     console.log(form_result);
@@ -38,24 +41,28 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                     Pelaksanaan Pembelajaran
                 </h2>
                 <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
-                    {Object.keys(form_config).filter(function(item) {
-                        return form_config[item] != 0;
-                    }).map((item, index) => {
-                        {/* console.log("item", item) */}
-                        return (
-                            <li
-                                key={index}
-                                className="space-y-[.9vw] md:space-y-[.2vw]"
-                            >
-                                <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
-                                    {form_field[item]}
-                                </h3>
-                                <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
-                                    {form_result[item] ?? "Belum Diatur" }
-                                </p>
-                            </li>
-                        );
-                    })}
+                    {Object.keys(form_config)
+                        .filter(function (item) {
+                            return form_config[item] != 0;
+                        })
+                        .map((item, index) => {
+                            {
+                                /* console.log("item", item) */
+                            }
+                            return (
+                                <li
+                                    key={index}
+                                    className="space-y-[.9vw] md:space-y-[.2vw]"
+                                >
+                                    <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
+                                        {form_field[item]}
+                                    </h3>
+                                    <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
+                                        {form_result[item] ?? "Belum Diatur"}
+                                    </p>
+                                </li>
+                            );
+                        })}
                 </ul>
             </div>
 
@@ -100,15 +107,23 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                         File dan media
                     </h2>
 
+                    {console.log(data.file_uploads)}
+
                     <div className="space-y-[.8vw] md:space-y-[.2vw]">
-                        {data.file_uploads?.map((item, index) => {
-                            return (
-                                <FileMediaItemBackdrop
-                                    key={index}
-                                    item={item}
-                                />
-                            );
-                        })}
+                        {data.file_uploads.length != 0 ? (
+                            data.file_uploads.map((item, index) => {
+                                return (
+                                    <FileMediaItemBackdrop
+                                        key={index}
+                                        item={item}
+                                    />
+                                );
+                            })
+                        ) : (
+                            <div className="w-full text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50 h-full">
+                                Tidak ada file yang diupload
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

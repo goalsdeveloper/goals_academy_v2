@@ -11,10 +11,11 @@ import {
 import GoalsButton from "@/Components/elements/GoalsButton";
 import { FiChevronRight } from "react-icons/fi";
 import ProductListFilter from "../ProductListFilter";
+import { useState } from "react";
+import { ProductFilter } from "../constants";
 
 const Webinar = ({ auth, orderWebinar }) => {
-    const data = orderWebinar;
-    console.log(data);
+    const [data, setData] = useState(orderWebinar);
 
     return (
         <UserLayout auth={auth} title="Webinar">
@@ -23,7 +24,11 @@ const Webinar = ({ auth, orderWebinar }) => {
                     {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
                     Webinar
                 </h1>
-                <ProductListFilter />
+                <ProductListFilter
+                    setData={setData}
+                    data={data}
+                    filterList={ProductFilter}
+                />
             </div>
             {data.length == 0 ? (
                 <EmptyProductLayout

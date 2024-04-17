@@ -171,12 +171,13 @@ export const ProfileImage = ({ auth }) => {
 
     return (
         <div className="relative flex flex-shrink-0 flex-col justify-center items-center gap-[1vw] px-[1.6vw] self-center mb-[6vw] h-fit">
+
             <img
                 className="bg-white w-[22vw] h-[22vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread"
                 src={profileImage ? profileImage : userIcon}
                 alt="User"
             />
-            <div className="hidden md:block text-center space-y-[1vw]">
+            <div className="hidden md:flex flex-col text-center gap-[1vw]">
                 <p className="font-medium">{auth.user.username}</p>
                 <GoalsButton
                     variant="bordered"

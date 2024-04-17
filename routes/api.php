@@ -13,6 +13,7 @@ use App\Http\Controllers\API\PurchaseController;
 use App\Http\Controllers\API\DateCheckController;
 use App\Http\Controllers\API\CouponCheckController;
 use App\Http\Controllers\API\HandleMidtransCallbackController;
+use App\Http\Controllers\API\ViewsClickAndSalesAmountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,3 +68,5 @@ Route::post('/lengkapi_profil', function (Request $request) {
         return response()->json(['message' => $e->getMessage()]);
     }
 });
+Route::get('views_sales', [ViewsClickAndSalesAmountController::class, 'index']);
+Route::get('user_growth', [ViewsClickAndSalesAmountController::class, 'userGrowth']);

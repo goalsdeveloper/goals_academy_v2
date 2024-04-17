@@ -4,7 +4,7 @@ import { FiX } from "react-icons/fi";
 import GoalsButton from "@/Components/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 
-const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow }) => {
+const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast }) => {
     const { data, setData, errors, setError, post } = useForm({
         id: userProfile.id,
         phone_number: userProfile.phone_number ? userProfile.phone_number : "",
@@ -43,6 +43,10 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow }) => {
                 .then(response => response.json())
                 .then(response => {
                     if (response.message == 'success') {
+                        toast('Profil berhasil dilengkapi!', {
+                            position: 'top-center',
+                            icon: '✅'
+                        })
                         setUserProfile(data)
                         setIsLoading(false)
                     }
@@ -62,7 +66,7 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow }) => {
                     show
                         ? "md:top-0 bottom-0 md:scale-100"
                         : "md:top-full -bottom-full md:scale-0"
-                } fixed left-0 flex flex-col gap-[2vw] w-full md:w-[30vw] h-[55vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[.5vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
+                } fixed left-0 flex flex-col gap-[2vw] w-full md:w-[30vw] h-[55vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[.5vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh] overflow-auto`}
             >
                 <div className="flex justify-between">
                     <p className="font-poppins font-semibold text-[4.5vw] md:text-[1.2vw]">Data Diri</p>

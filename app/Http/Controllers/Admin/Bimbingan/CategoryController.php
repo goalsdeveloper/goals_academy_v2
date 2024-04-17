@@ -110,7 +110,11 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        if (Auth::user()->user_role == "admin") {
+            return response()->json(['status' => true, 'statusCode' => 200,  "data" => $category], 200);
+        } else {
+            abort(403);
+        }
     }
 
     /**

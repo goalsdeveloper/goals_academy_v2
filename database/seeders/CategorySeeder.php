@@ -19,36 +19,42 @@ class CategorySeeder extends Seeder
             'slug' => 'dibimbing-tuntas',
             'is_visible' => true,
             'description' => 'Dibimbing Skripsi Hingga Tuntas',
+            'product_type_id' => 1,
         ]);
         Category::create([
             'name' => 'Dibimbing Sekali',
             'slug' => 'dibimbing-sekali',
             'is_visible' => true,
             'description' => 'Dibimbing sekali online/offline',
+            'product_type_id' => 1,
         ]);
         Category::create([
             'name' => 'Dibimbing Sekali Online',
             'slug' => 'dibimbing-sekali-online',
             'is_visible' => true,
             'description' => 'Dibimbing secara online',
+            'product_type_id' => 1,
         ]);
         Category::create([
             'name' => 'Dibimbing Sekali Offline',
             'slug' => 'dibimbing-sekali-offline',
             'is_visible' => true,
             'description' => 'Dibimbing secara offline',
+            'product_type_id' => 1,
         ]);
         Category::create([
             'name' => 'Webinar',
             'slug' => 'webinar',
             'is_visible' => true,
             'description' => 'Pelaksanaan Webinar',
+            'product_type_id' => 3,
         ]);
         Category::create([
             'name' => 'Webinar Series',
             'slug' => Str::slug('Webinar Series'),
             'is_visible' => true,
             'description' => 'Pelaksanaan Webinar',
+            'product_type_id' => 3,
         ]);
     }
 }

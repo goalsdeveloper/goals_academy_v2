@@ -51,7 +51,7 @@ function GoalsSelectMultipleInputItem ({ className, checked=true, onClick, child
     return (
         <div onClick={onClick} className={`flex items-center gap-[2.5vw] md:gap-[.5vw] hover:bg-skin cursor-pointer p-[4vw] md:p-[1vw] ${className}`}>
             <div className={`w-[4.8vw] h-[4.8vw] md:w-[1.2vw] md:h-[1.2vw] flex items-center justify-center rounded-[.2vw] border-1 ${checked ? 'border-secondary bg-secondary' : 'border-light-grey bg-white'}`}>
-                <i className="fa-solid fa-check text-[.75vw] text-white"></i>
+                <i className="fa-solid fa-check text-[3vw] md:text-[.75vw] text-white"></i>
             </div>
             <span>{children}</span>
         </div>

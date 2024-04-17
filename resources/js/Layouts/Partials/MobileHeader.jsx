@@ -72,9 +72,9 @@ const MobileHeader = ({ auth }) => {
                 {auth.user && (
                     <div
                         className={`relative font-poppins flex justify-center cursor-pointer`}
-                        onMouseEnter={() => setAuthDropdown(true)}
-                        onMouseLeave={() => setAuthDropdown(false)}
-                        // onClick={() => setAuthDropdown(!authDropdown)}
+                        // onMouseEnter={() => setAuthDropdown(true)}
+                        // onMouseLeave={() => setAuthDropdown(false)}
+                        onClick={() => setAuthDropdown(!authDropdown)}
                     >
                         <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
                             <img
@@ -219,7 +219,7 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
                 <div className="flex flex-col justify-between">
                     {links.map(({ href, text, sublinks, icon }, index) => (
                         <div
-                            key={href}
+                            key={index}
                             className="w-full py-[1vw] text-start bg-white border-b border-neutral-20 h-fit"
                         >
                             {sublinks ? (
