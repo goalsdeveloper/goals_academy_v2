@@ -95,7 +95,7 @@ const CreateDialog = ({
                     <GoalsButton
                         size="sm"
                         variant="success-bordered"
-                        className=" w-full h-full"
+                        className="w-full h-full text-[1vw]"
                         onClick={() =>
                             setShowDialog({ ...showDialog, create: false })
                         }
@@ -106,7 +106,7 @@ const CreateDialog = ({
                         size="sm"
                         variant="success"
                         type="submit"
-                        className="w-full h-full"
+                        className="w-full h-full text-[1vw]"
                     >
                         Tambah
                     </GoalsButton>
@@ -171,7 +171,7 @@ const EditDialog = ({
                         onClick={() =>
                             setShowDialog({ ...showDialog, edit: false })
                         }
-                        className=" w-full h-full"
+                        className="w-full h-full text-[1vw]"
                     >
                         Batal
                     </GoalsButton>
@@ -179,7 +179,7 @@ const EditDialog = ({
                         size="sm"
                         variant="success"
                         type="submit"
-                        className=" w-full h-full"
+                        className="w-full h-full text-[1vw]"
                     >
                         Edit
                     </GoalsButton>

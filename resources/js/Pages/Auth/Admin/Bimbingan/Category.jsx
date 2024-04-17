@@ -5,11 +5,10 @@ import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { FiEdit2, FiTrash2, FiPlus, FiEye } from "react-icons/fi";
 import { FaRegCircleCheck, FaRegCircleXmark } from "react-icons/fa6";
 import SubHeading from "../components/SubHeading";
-import Dialog from "./Category/Dialog";
-import moment from "moment";
 import GoalsButton from "@/Components/GoalsButton";
+import moment from "moment";
+import Dialog from "./Category/Dialog";
 import toast, { Toaster } from "react-hot-toast";
-import { createPortal } from "react-dom";
 
 export default function Category({ auth, data, message }) {
     const [showDialog, setShowDialog] = useState({
@@ -18,6 +17,7 @@ export default function Category({ auth, data, message }) {
         delete: false,
         show: false,
     });
+
     const {
         data: formData,
         setData: setFormData,
@@ -135,7 +135,7 @@ export default function Category({ auth, data, message }) {
                     <GoalsButton
                         className="py-[.6vw] px-[1.2vw] rounded-[.4vw] text-[.7vw]"
                         onClick={() => {
-                            setShowDialog({ create: true });
+                            setShowDialog({ ...showDialog, create: true });
                             setFormData({
                                 ...formData,
                                 id: "",
