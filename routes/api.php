@@ -68,5 +68,5 @@ Route::post('/lengkapi_profil', function (Request $request) {
         return response()->json(['message' => $e->getMessage()]);
     }
 });
-Route::get('iya', [ViewsClickAndSalesAmountController::class, 'index']);
+Route::get('views_sales', [ViewsClickAndSalesAmountController::class, 'index']);
 Route::get('user_growth', [ViewsClickAndSalesAmountController::class, 'userGrowth']);

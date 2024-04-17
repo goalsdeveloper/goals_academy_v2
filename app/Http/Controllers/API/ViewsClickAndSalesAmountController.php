@@ -9,6 +9,9 @@ use DateTimeInterface;
 use Exception;
 use Spatie\Analytics\Period;
 use Analytics;
+use App\Models\Order;
+use App\Models\Products;
+use App\Models\ProductType;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -21,67 +24,172 @@ class ViewsClickAndSalesAmountController extends Controller
     {
         $startDateString = $request->input('startDate');
         $endDateString = $request->input('endDate');
-        $productName = $request->input('product'); // Mengambil nama produk dari input request
+        $productType = $request->input('productType');
+        $productName = $request->input('productName');
         $limit = 1000;
 
         if ($startDateString && $endDateString) {
-            try {
-                $startDate = DateTime::createFromFormat('Y-m-d', $startDateString);
-                $endDate = DateTime::createFromFormat('Y-m-d', $endDateString);
-
-                if (!($startDate instanceof DateTimeInterface) || !($endDate instanceof DateTimeInterface)) {
-                    throw new Exception('Invalid date format. Please use YYYY-MM-DD');
-                }
-
-                $period = Period::create($startDate, $endDate);
-            } catch (Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 400);
-            }
+            $startDate = Carbon::createFromFormat('Y-m-d', $startDateString)->startOfDay();
+            $endDate = Carbon::createFromFormat('Y-m-d', $endDateString)->endOfDay();
         } else {
-            $period = Period::months(1);
+            $endDate = Carbon::now()->endOfDay();
+            $startDate = Carbon::now()->subMonth()->startOfDay();
         }
 
+        $period = Period::create($startDate, $endDate);
         $visitorsAndPageViews = Analytics::fetchVisitorsAndPageViewsByDate($period, $limit);
-
-        $totalClicks = 0;
-        $totalViews = 0;
-        $totalsByDate = [];
 
         foreach ($visitorsAndPageViews as $visitorData) {
             $date = $visitorData['date']->format('Y-m-d');
-            $pageTitle = $visitorData['pageTitle'];
+            $salesAmount = Order::where('status', '=', 'Success')
+                ->whereDate('created_at', $date)
+                ->sum('unit_price');
+            $totalSalesByDate[$date] = $salesAmount;
+        }
 
-            if (!isset($totalsByDate[$date])) {
-                $totalsByDate[$date] = [
-                    'totalClicks' => 0,
-                    'totalViews' => 0,
-                ];
+
+
+        if ($productType) {
+            $totalClicks = 0;
+            $totalViews = 0;
+            $totalsByDate = [];
+            $productType = ProductType::where('type', $productType)->first();
+
+            if (!$productType) {
+                return response()->json([
+                    'status' => false,
+                    'statusCode' => 400,
+                    'message' => 'Product type not found in the database.',
+                ], 400);
             }
 
-            // Cek apakah pengguna telah memberikan input produk atau tidak
-            if ($productName !== null && $productName !== '') { // Jika ada input produk dari pengguna
-                if (stripos($pageTitle, 'produk') !== false) {
-                    $screenPageViews = $visitorData['screenPageViews'];
-                    $totalsByDate[$date]['totalViews'] += $screenPageViews;
-                    $totalViews += $screenPageViews;
+            $products = Products::where('product_type_id', $productType->id)->get();
+            if ($products->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'statusCode' => 400,
+                    'message' => 'Products not found for the specified product type.',
+                ], 400);
+            }
+
+
+            foreach ($visitorsAndPageViews as $visitorData) {
+                $date = $visitorData['date']->format('Y-m-d');
+                $screenPageViews = $visitorData['screenPageViews'];
+                $pageTitle = $visitorData['pageTitle'];
+
+                if (!isset($totalsByDate[$date])) {
+                    $totalsByDate[$date] = [
+                        'totalClicks' => 0,
+                        'totalViews' => 0,
+                    ];
                 }
 
-                // Jika pageTitle sesuai dengan input pengguna, tambahkan ke totalClicks
-                if (stripos($pageTitle, $productName) !== false) {
-                    $screenPageViews = $visitorData['screenPageViews'];
-                    $totalsByDate[$date]['totalClicks'] += $screenPageViews;
-                    $totalClicks += $screenPageViews;
+                $salesAmount = Order::where('status', 'Success')
+                    ->whereDate('created_at', $date)
+                    ->whereHas('products', function ($query) use ($productType) {
+                        $query->where('product_type_id', $productType->id);
+                    })->sum('unit_price');
 
-                    // dd($totalViews,$totalClicks, $visitorData);
-                }
-            } else { // Jika tidak ada input produk dari pengguna
-                if (stripos($pageTitle, 'produk') !== false) {
-                    $screenPageViews = $visitorData['screenPageViews'];
-                    $totalsByDate[$date]['totalClicks'] += $screenPageViews;
-                    $totalsByDate[$date]['totalViews'] += $screenPageViews;
+                $totalSalesByDate[$date] = $salesAmount;
 
-                    $totalClicks += $screenPageViews;
+                // dd($salesAmount);
+
+                // Hitung total views untuk setiap data dengan pageTitle yang mengandung nama produk
+                if (stripos($pageTitle, "produk") !== false) {
                     $totalViews += $screenPageViews;
+                    $totalsByDate[$date]['totalViews'] += $screenPageViews;
+                }
+
+                foreach ($products as $product) {
+                    // Hitung total klik untuk setiap data dengan pageTitle yang mengandung nama produk
+                    if (stripos($pageTitle, $product->name) !== false) {
+                        $totalsByDate[$date]['totalClicks'] += $screenPageViews;
+                        $totalClicks += $screenPageViews;
+                    }
+                }
+            }
+        } else {
+            $totalClicks = 0;
+            $totalViews = 0;
+            $totalsByDate = [];
+            $productTypes = ProductType::get();
+            foreach ($visitorsAndPageViews as $visitorData) {
+                $date = $visitorData['date']->format('Y-m-d');
+                $screenPageViews = $visitorData['screenPageViews'];
+                $pageTitle = $visitorData['pageTitle'];
+
+                if (!isset($totalsByDate[$date])) {
+                    $totalsByDate[$date] = [
+                        'totalClicks' => 0,
+                        'totalViews' => 0,
+                    ];
+                }
+
+                // Hitung total views untuk setiap data dengan pageTitle yang mengandung kata "produk"
+                if (stripos($pageTitle, "produk") !== false) {
+                    $totalViews += $screenPageViews;
+                    $totalsByDate[$date]['totalViews'] += $screenPageViews;
+                }
+
+                foreach ($productTypes as $productTypeModel) {
+                    $products = Products::where('product_type_id', $productTypeModel->id)->get();
+                    // Hitung total klik untuk setiap produk dalam jenis produk yang ditentukan
+                    foreach ($products as $product) {
+                        if (stripos($pageTitle, $product->name) !== false) {
+                            $totalsByDate[$date]['totalClicks'] += $screenPageViews;
+                            $totalClicks += $screenPageViews;
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($productName) {
+            $totalClicks = 0;
+            $totalViews = 0;
+            $totalsByDate = [];
+            $product = Products::where('name', $productName)->first();
+
+            if (!$product) {
+                return response()->json([
+                    'status' => false,
+                    'statusCode' => 400,
+                    'message' => 'Product name not found in the database.',
+                ], 400);
+            }
+
+            foreach ($visitorsAndPageViews as $visitorData) {
+                $date = $visitorData['date']->format('Y-m-d');
+                $screenPageViews = $visitorData['screenPageViews'];
+                $pageTitle = $visitorData['pageTitle'];
+
+                if (!isset($totalsByDate[$date])) {
+                    $totalsByDate[$date] = [
+                        'totalClicks' => 0,
+                        'totalViews' => 0,
+                    ];
+                }
+                $salesAmount = Order::where('status', 'Success')
+                ->whereDate('created_at', $date)
+                ->whereHas('products', function ($query) use ($product) {
+                    $query->where('name', $product->name);
+                })
+                    ->sum('unit_price');
+
+                $totalSalesByDate[$date] = $salesAmount;
+
+
+                // Hitung total views untuk setiap data dengan pageTitle yang mengandung nama produk
+                if (stripos($pageTitle, "produk") !== false) {
+                    $totalViews += $screenPageViews;
+                    $totalsByDate[$date]['totalViews'] += $screenPageViews;
+                }
+
+                // Hitung total klik untuk setiap data dengan pageTitle yang mengandung nama produk
+                if (stripos($pageTitle, $product->name) !== false) {
+                    $totalsByDate[$date]['totalClicks'] += $screenPageViews;
+                    $totalClicks += $screenPageViews;
                 }
             }
         }
@@ -89,11 +197,15 @@ class ViewsClickAndSalesAmountController extends Controller
         return response()->json([
             'status' => true,
             'statusCode' => 200,
-            'totalClicksKeseluruhan' => $totalClicks,
-            'totalViewsKeseluruhan' => $totalViews,
+            // 'totalClicksKeseluruhan' => $totalClicks,
+            // 'totalViewsKeseluruhan' => $totalViews,
             'totalsByDate' => $totalsByDate,
+            'salesAmount' => $totalSalesByDate,
+            'data' => $visitorsAndPageViews,
         ], 200);
     }
+
+
 
     /**
      * Store a newly created resource in storage.
