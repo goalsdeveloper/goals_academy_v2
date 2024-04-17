@@ -29,15 +29,6 @@ const DetailBanyakPertemuan = ({ data, setIsAturJadwalShow }) => {
                 imageUrl={data[0].products.product_image}
                 className="hidden md:flex"
             >
-                {/* {createPortal(
-                    <AturJadwalPopup
-                        order_code={data[0].order.order_code}
-                        {...dataAturJadwalComp}
-                        show={isAturJadwalShow}
-                        setShow={() => setIsAturJadwalShow(false)}
-                    />,
-                    document.body
-                )} */}
 
                 <ProductItemCardHeader>
                     <GoalsBadge
@@ -56,7 +47,7 @@ const DetailBanyakPertemuan = ({ data, setIsAturJadwalShow }) => {
                         </p>
                     </div>
                     <GoalsButton
-                        disabled={!!data.find((item) => item.date != null)}
+                        disabled={!data.some((item) => item.date === null)}
                         variant="info"
                         onClick={() => setIsAturJadwalShow()}
                     >

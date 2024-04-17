@@ -13,9 +13,6 @@ import { ProductFilter } from "../constants";
 import { detailWebinar } from "./data";
 
 const Webinar = ({ auth, orderWebinar }) => {
-    const [data, setData] = useState(detailWebinar);
-
-    console.log(data);
 
     return (
         <UserLayout auth={auth} title="Webinar">
@@ -30,7 +27,7 @@ const Webinar = ({ auth, orderWebinar }) => {
                     filterList={ProductFilter}
                 /> */}
             </div>
-            {data.length == 0 ? (
+            {orderWebinar.length == 0 ? (
                 <EmptyProductLayout
                     description="Event belum tersedia"
                     buttonTxt="Kembali Ke Beranda"
@@ -38,39 +35,41 @@ const Webinar = ({ auth, orderWebinar }) => {
                 />
             ) : (
                 <div className="md:min-h-[22vw] flex flex-col gap-[2vw] md:gap-[1vw]">
-                    {data.map((item, index) => {
+                    {orderWebinar.map((item, index) => {
                         return (
                             <ProductItemCardLayout
                                 isLink
-                                href={`webinar/${item.slug}`}
+                                href={`webinar/${item.order_code}`}
                                 key={index}
-                                imageUrl={item.product_image}
+                                imageUrl={item.products.product_image}
                             >
                                 <div className="flex justify-between items-center">
                                     <div className="space-y-[1.8vw] w-full">
                                         <ProductItemCardContent>
                                             <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw]">
                                                 <h2 className="text-[3.2vw] md:text-[1vw] font-medium mb-[.4vw]">
-                                                    {item.name}
+                                                    {item.products.name}
                                                 </h2>
                                                 <p className="text-neutral-40">
-                                                    {item.webinar_properties
-                                                        .date !== undefined
+                                                    {item.products
+                                                        .webinar_properties
+                                                        ?.date !== undefined
                                                         ? new Date(
-                                                              item.webinar_properties.date
+                                                              item.products.webinar_properties.date
                                                           ).toDateString()
                                                         : new Date(
-                                                              item.webinar_properties.start_date
+                                                              item.products.webinar_properties.start_date
                                                           ).toDateString() +
                                                           " - " +
                                                           new Date(
-                                                              item.webinar_properties.end_date
+                                                              item.products.webinar_properties.end_date
                                                           ).toDateString()}
                                                 </p>
                                                 <p className="text-neutral-40">
-                                                    {item.webinar_properties
+                                                    {item.products
+                                                        .webinar_properties
                                                         ?.time
-                                                        ? item
+                                                        ? item.products
                                                               .webinar_properties
                                                               .time + " WIB"
                                                         : "Waktu Belum Ditentukan"}

@@ -138,7 +138,6 @@ export const FileMediaItemBackdrop = ({ item }) => {
     };
 
     return (
-        createPortal(
             <div className="w-full relative flex items-center gap-[1.8vw] md:gap-[.5vw] bg-white shadow p-[1vw] md:p-[.2vw] rounded-[.8vw] md:rounded-[.4vw]">
                 <div className="bg-primary-10 w-[11vw] md:w-[2.5vw] aspect-square flex items-center justify-center rounded-[.6vw] md:rounded-[.3vw]">
                     <RxFileText className="text-[4.8vw] md:text-[1.3vw]" />
@@ -171,7 +170,5 @@ export const FileMediaItemBackdrop = ({ item }) => {
                     </>
                 )}
             </div>
-        ),
-        document.body
     );
 };

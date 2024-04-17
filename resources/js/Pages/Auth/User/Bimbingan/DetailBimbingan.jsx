@@ -43,8 +43,6 @@ export default function DetailPesanan({
         post(`/bimbingan/${dataBimbingan[0].order.order_code}/review`);
     }
 
-    console.log(dataBimbingan)
-
     const dataAturJadwalComp = { cities, date, topics };
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
@@ -158,7 +156,8 @@ export default function DetailPesanan({
                                     dataBimbingan.length > 1 &&
                                     !!dataBimbingan.find(
                                         (item) => item.date == null
-                                    )
+                                    ) ||
+                                    dataBimbingan[0].ongoing == "berjalan"
                                 }
                                 variant="bordered"
                                 onClick={() =>
