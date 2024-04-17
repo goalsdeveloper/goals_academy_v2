@@ -28,7 +28,7 @@ class OrderSeeder extends Seeder
 
         Order::factory(3)->sequence(
             ['products_id' => 6, 'status' => OrderEnum::SUCCESS->value],
-            // ['products_id' => 7, 'status' => OrderEnum::SUCCESS->value],
+            ['products_id' => 7, 'status' => OrderEnum::SUCCESS->value],
         )->create();
 
         // Order::create([

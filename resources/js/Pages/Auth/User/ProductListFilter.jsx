@@ -25,7 +25,6 @@ const ProductListFilter = ({ data, setData, filterList, type = "product" }) => {
             setData(initialData);
         } else {
             const filteredData = initialData.filter((item) => {
-                console.log(getFilterVars(item) === filter.value);
                 return getFilterVars(item) === filter.value;
             });
             setData(filteredData);

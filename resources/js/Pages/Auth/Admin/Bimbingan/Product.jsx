@@ -1,21 +1,22 @@
-import { Link } from "@inertiajs/react";
-import React, { useMemo } from "react";
-import DashboardLayout from "@/Layouts/DashboardLayout";
+import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
+import DashboardLayout from "@/Layouts/DashboardLayout";
+import { Link } from "@inertiajs/react";
+import { useMemo } from "react";
 import {
     FiCheckCircle,
     FiEdit2,
     FiEye,
     FiPlus,
-    FiTrash2,
-    FiChevronRight,
+    FiTrash2
 } from "react-icons/fi";
+import SubHeading from "../components/Subheading";
 
-export default function Product({ auth, bimbingan_tuntas }) {
+export default function Product({ auth, bimbingan_sekali, bimbingan_tuntas }) {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "product_image", //access nested data with dot notation
+                accessorKey: "product_image",
                 header: "Gambar",
 
                 Cell: ({ cell }) => {
@@ -33,7 +34,7 @@ export default function Product({ auth, bimbingan_tuntas }) {
                 header: "Nama",
             },
             {
-                accessorKey: "is_visible", //normal accessorKey
+                accessorKey: "is_visible",
                 header: "Visibilitas",
 
                 Cell: ({ cell }) => (
@@ -102,71 +103,24 @@ export default function Product({ auth, bimbingan_tuntas }) {
         >
             <div className="space-y-[1.6vw]">
                 <SubHeading title="Produk">
-                    <Link
+                    <GoalsButton
                         isLink
                         method="GET"
+                        size="sm"
                         href={route("admin.bimbingan.product.create")}
-                        className="flex items-center gap-[.5vw] bg-secondary hover:bg-primary text-white py-[.6vw] px-[1.2vw] rounded-[.4vw] text-[.7vw]"
+                        className="flex items-center gap-[.5vw]"
                     >
                         <FiPlus className="text-[1vw]" />
                         Tambah Produk
-                    </Link>
+                    </GoalsButton>
                 </SubHeading>
                 {/* <GoalsAdminTable /> */}
                 <GoalsDashboardTable
                     columns={columns}
-                    data={bimbingan_tuntas}
+                    data={bimbingan_sekali}
                     isDraggable
                 />
             </div>
         </DashboardLayout>
     );
-    ``;
 }
-
-export const SubHeading = ({ title, children }) => {
-    return (
-        <div className="flex w-full justify-between items-center">
-            <span className="text-[1.2vw] font-medium">{title}</span>
-            {children}
-        </div>
-    );
-};
-
-export const Breadcrumb = ({ level = 2 }) => {
-    const pathArray = location.pathname.split("/");
-    const pathArrayBr = pathArray.slice(-level);
-    const sisaArr = pathArray.slice(0, pathArray.length - level);
-
-    return (
-        <div className="flex items-center font-medium text-neutral-50">
-            {pathArrayBr.map((path, index) => {
-                return (
-                    <React.Fragment key={index}>
-                        {index < pathArrayBr.length - 1 ? (
-                            <Link
-                                key={index}
-                                className="flex items-center text-[1.25vw]"
-                                href={sisaArr.join("/") + "/" + pathArrayBr[0]}
-                            >
-                                {path.charAt(0).toUpperCase() + path.slice(1)}
-                                {index < pathArrayBr.length - 1 && (
-                                    <span>
-                                        <FiChevronRight />
-                                    </span>
-                                )}
-                            </Link>
-                        ) : (
-                            <span className="flex items-center text-[1.25vw] text-black">
-                                {path.charAt(0).toUpperCase() + path.slice(1)}
-                                {index < pathArrayBr.length - 1 && (
-                                    <FiChevronRight />
-                                )}
-                            </span>
-                        )}
-                    </React.Fragment>
-                );
-            })}
-        </div>
-    );
-};

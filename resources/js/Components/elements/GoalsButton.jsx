@@ -6,6 +6,7 @@ const GoalsButton = ({
     children,
     variant = "primary",
     isLink = false,
+    type = "button",
     method = "GET",
     size = "default",
     href = "/",
@@ -19,6 +20,8 @@ const GoalsButton = ({
                 return {
                     href: href,
                     method: method,
+                    className: `${className}`,
+                    as: "button",
                 };
             default:
                 return {};
@@ -41,15 +44,15 @@ const GoalsButton = ({
             case "primary":
                 return "bg-secondary hover:bg-primary text-white ";
             case "bordered":
-                return "border-2 border-secondary text-secondary hover:border-primary hover:text-primary";
+                return "border-1 lg:border-2 border-secondary text-secondary hover:border-primary hover:text-primary";
             case "info":
                 return "bg-info-40 hover:bg-info-50 text-white";
             case "primary-inverse":
                 return "bg-primary-10 text-secondary hover:bg-primary-20";
             case "success":
-                return "bg-success-50 hover:bg-success-60 text-white";
+                return "border-1 lg:border-2 border-success-50 hover:border-success-60 bg-success-50 hover:bg-success-60 text-white";
             case "success-bordered":
-                return "border-2 border-success-50 text-success-50 hover:border-success-60 hover:text-success-60 ";
+                return "border-1 lg:border-2 border-success-50 text-success-50 hover:border-success-60 hover:text-success-60";
             default:
                 return "border-1 border-neutral-20";
         }
@@ -58,7 +61,8 @@ const GoalsButton = ({
     return (
         <Wrapper {...getProps()}>
             <button
-                className={`font-medium transition-all ${getVariantClassName()} ${getSizeClassName()} ${className}`}
+                className={`disabled:grayscale disabled:pointer-events-none font-medium transition-all box-border ${getVariantClassName()} ${getSizeClassName()} ${className}`}
+                type={type}
                 {...rest}
             >
                 {children}

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
@@ -21,19 +22,19 @@ class CategoryController extends Controller
                 $perPage = $request->input('perPage', 10);
                 $categories = Category::whereHas('productType', function ($query) {
                     $query->where('type', 'LIKE', '%bimbingan%');
-                });
+                })->get();
 
                 if ($search) {
                     $categories->where('name', 'LIKE', "%$search%");
                 }
 
-                $categories = $categories->with('productType:id,type')->paginate($perPage);;
-
+                // $categories = $categories->with('productType:id,type')->paginate($perPage);
+                // dd($categories);
                 return Inertia::render('Auth/Admin/Bimbingan/Category', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
-                    'data' => $categories,
+                    'data' => ['data'=>$categories],
                 ], 200);
             } else {
                 abort(403);
@@ -84,7 +85,8 @@ class CategoryController extends Controller
 
                 $category->save();
 
-                return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create category success', "data" => $category], 201);
+                // return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create category success', "data" => $category], 201);
+                return redirect()->route('admin.bimbingan.category.index');
             } else {
                 abort(403);
             }
@@ -131,13 +133,13 @@ class CategoryController extends Controller
                     'is_visible' => 'boolean',
                     'description' => 'string',
                 ]);
-
-
+                $id = $request->id;
                 $category = Category::findOrFail($id);
 
                 $category->update($validateData);
 
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update category success'], 200);
+                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update category success'], 200);
+                return redirect()->route('admin.bimbingan.category.index');
             } else {
                 abort(403);
             }
@@ -160,7 +162,8 @@ class CategoryController extends Controller
         try {
             if (Auth::user()->user_role == "admin") {
                 $category->delete();
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete category success'], 200);
+                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete category success'], 200);
+                return redirect()->back()->with('message', 'Delete Category Success!');
             } else {
                 abort(403);
             }
