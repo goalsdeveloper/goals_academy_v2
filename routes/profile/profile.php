@@ -15,7 +15,9 @@ Route::middleware(['auth'])->name('user.profile.')->group(function () {
 
     Route::get('/bimbingan', [BimbinganController::class, 'index'])->name('bimbingan');
     Route::get('/bimbingan/{order_id}', [BimbinganController::class, 'detailPembelajaran'])->name('detailPembelajaran');
-    Route::post('/bimbingan/{order}/atur-jadwal', [BimbinganController::class, 'aturJadwal'])->name('aturJadwal');
+    Route::post('/bimbingan/{order:order_code}/atur-jadwal', [BimbinganController::class, 'aturJadwal'])->name('aturJadwal');
+    Route::post('/bimbingan/{order:order_code}/review', [BimbinganController::class, 'review'])->name('review');
+    Route::put('/bimbingan/{order:order_code}/selesai-bimbingan', [BimbinganController::class, 'complete'])->name('selesaiBimbingan');
 
     Route::get('/webinar', [WebinarController::class, 'webinar'])->name('webinar');
     Route::get('/webinar/{id}', [WebinarController::class, 'detailWebinar'])->name('detailWebinar');

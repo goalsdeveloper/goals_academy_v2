@@ -20,7 +20,8 @@ const GoalsButton = ({
                 return {
                     href: href,
                     method: method,
-                    className: `${className}`
+                    className: `${className}`,
+                    as: "button",
                 };
             default:
                 return {};
@@ -60,7 +61,7 @@ const GoalsButton = ({
     return (
         <Wrapper {...getProps()}>
             <button
-                className={`font-medium transition-all box-border ${getVariantClassName()} ${getSizeClassName()} ${className}`}
+                className={`disabled:grayscale disabled:pointer-events-none font-medium transition-all box-border ${getVariantClassName()} ${getSizeClassName()} ${className}`}
                 type={type}
                 {...rest}
             >

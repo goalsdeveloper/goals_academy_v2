@@ -14,9 +14,9 @@ import { FiChevronRight } from "react-icons/fi";
 import ProductListFilter from "../ProductListFilter";
 import figure from "/resources/img/figure/8.svg";
 import { ProductFilter } from "../constants";
+import { statusClassMap } from "../RiwayatTransaksi/components/TransactionStatusBadge";
 
 export default function Index({ auth, orderBimbingan }) {
-    console.log(orderBimbingan);
     const [data, setData] = useState(orderBimbingan);
 
     return (
@@ -38,14 +38,6 @@ export default function Index({ auth, orderBimbingan }) {
                 <div className="space-y-[1vw]">
                     <div className="md:min-h-[22vw] flex flex-col gap-[2vw] md:gap-[1vw]">
                         {data.map((item, index) => {
-                            // if (
-                            //     item.products.features[0].category ==
-                            //         "online" ||
-                            //     item.products.features[0].category == "offline"
-                            // ) {
-                            //     return (
-                            //     );
-                            // }
                             return <BimbinganItem key={index} data={item} />;
                         })}
                     </div>
@@ -66,6 +58,9 @@ function BimbinganItem({ data }) {
               .add(data.products.features[0].duration, "minutes")
               .format("HH:mm")
         : "N/A";
+    const courseStatus =
+        data.course.ongoing.charAt(0).toUpperCase() +
+        data.course.ongoing.slice(1);
 
     return (
         <ProductItemCardLayout
@@ -81,11 +76,8 @@ function BimbinganItem({ data }) {
                             className="text-secondary bg-primary-10"
                         />
                         <GoalsBadge
-                            title={
-                                data.course.ongoing.charAt(0).toUpperCase() +
-                                data.course.ongoing.slice(1)
-                            }
-                            className="hidden md:block bg-success-10 text-success-50"
+                            title={courseStatus}
+                            className={`hidden md:block ${statusClassMap[courseStatus]}`}
                         />
                     </ProductItemCardHeader>
                     <ProductItemCardContent>
