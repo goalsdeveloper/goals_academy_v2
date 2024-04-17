@@ -40,6 +40,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Models\AddOn;
+use App\Models\Order;
+use App\Models\Products;
 use App\Models\TutorNote;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -48,6 +50,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period;
+use Illuminate\Http\Request;
 
 Route::get('/token', function () {
     return csrf_token();
@@ -172,11 +175,6 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth')->group(functi
         Route::resource('schedule', ModeratorScheduleTutorController::class);
     });
     Route::resource('overview', ModeratorOverviewController::class);
-});
-
-Route::get('/coba', function () {
-    $analyticsData = Analytics::fetchVisitorsAndPageViews(Period::days(7));
-    dd($analyticsData);
 });
 
 require __DIR__ . '/profile/profile.php';
