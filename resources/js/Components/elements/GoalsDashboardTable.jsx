@@ -3,9 +3,6 @@ import {
     MaterialReactTable,
     useMaterialReactTable,
 } from "material-react-table";
-import { useMemo } from "react";
-import { FiCheckCircle, FiEdit2, FiEye, FiTrash2 } from "react-icons/fi";
-import { Link } from "@inertiajs/react";
 import GoalsTextInput from "./GoalsTextInput";
 import { useState } from "react";
 

@@ -1,43 +1,92 @@
-import { useMemo } from "react";
-import { Link } from "@inertiajs/react";
+import { useMemo, useState } from "react";
+import { Link, router, useForm } from "@inertiajs/react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
-import { FiEdit2, FiTrash2, FiPlus } from "react-icons/fi";
+import { FiEdit2, FiTrash2, FiPlus, FiEye } from "react-icons/fi";
+import { FaRegCircleCheck, FaRegCircleXmark } from "react-icons/fa6";
+import SubHeading from "../components/SubHeading";
+import GoalsButton from "@/Components/GoalsButton";
+import moment from "moment";
+import Dialog from "./Category/Dialog";
+import toast, { Toaster } from "react-hot-toast";
 
-export default function Category({ auth }) {
+export default function Category({ auth, data, message }) {
+    const [showDialog, setShowDialog] = useState({
+        create: false,
+        edit: false,
+        delete: false,
+        show: false,
+    });
+
+    const {
+        data: formData,
+        setData: setFormData,
+        post,
+        put,
+    } = useForm({
+        id: "",
+        name: "",
+        slug: "",
+        description: "N/A",
+        is_visible: 0,
+    });
+
+    const callback = (method) => {
+        router.visit(route('admin.bimbingan.category.index'), {
+            only: ['data'],
+            onSuccess: () => {
+                if (method == 'create') {
+                    toast.success('Create Success!');
+                } else if (method == 'edit') {
+                    toast.success('Edit Success!');
+                } else {
+                    toast.success('Delete Success!');
+                }
+            }
+        });
+    }
+
     const columns = useMemo(
         () => [
             {
-                accessorKey: "nama_kategori",
+                accessorKey: "name",
                 header: "Nama Kategori",
-                size: 200,
+                size: 400,
             },
             {
-                accessorKey: "parent",
-                header: "Parent",
-                size: 200,
-            },
-            {
-                accessorKey: "visibility",
+                accessorKey: "is_visible",
                 header: "Visibilitas",
-                size: 200,
+                size: 50,
+                Cell: ({ cell }) => cell.getValue() ? <FaRegCircleCheck className="text-[1.25vw] text-green-500" /> : <FaRegCircleXmark className="text-[1.25vw] text-red-500" />,
             },
             {
-                accessorKey: "date",
+                accessorFn: (row) => moment(row.updated_at).format('DD/MM/YYYY'),
                 header: "Tangal Update",
-                size: 200,
+                size: 100,
             },
             {
-                accessorKey: "action",
+                accessorKey: "id",
                 header: "Action",
                 size: 50,
 
                 Cell: ({ cell }) => (
                     <ul className="flex gap-[.8vw] w-fit">
                         <li>
-                            <Link href="/admin/bimbingan/category/edit">
-                                <FiEdit2 className="text-[1.2vw] text-secondary" />
-                            </Link>
+                            <button>
+                                <FiEdit2
+                                    className="text-[1.2vw] text-secondary"
+                                    onClick={() => {
+                                        setShowDialog({ ...showDialog, edit: true });
+                                        setFormData({
+                                            ...formData,
+                                            id: cell.row.original.id,
+                                            name: cell.row.original.name,
+                                            slug: cell.row.original.slug,
+                                            is_visible: cell.row.original.is_visible,
+                                        });
+                                    }}
+                                />
+                            </button>
                         </li>
                         <li>
                             <Link
@@ -47,6 +96,23 @@ export default function Category({ auth }) {
                                 <FiTrash2 className="text-[1.2vw] text-danger-40" />
                             </Link>
                         </li>
+                        <li>
+                            <button>
+                                <FiEye
+                                    className="text-[1.2vw] text-gray-400"
+                                    onClick={() => {
+                                        setShowDialog({ ...showDialog, show: true });
+                                        setFormData({
+                                            ...formData,
+                                            id: cell.row.original.id,
+                                            name: cell.row.original.name,
+                                            slug: cell.row.original.slug,
+                                            is_visible: cell.row.original.is_visible,
+                                        });
+                                    }}
+                                />
+                            </button>
+                        </li>
                     </ul>
                 ),
             },
@@ -54,15 +120,7 @@ export default function Category({ auth }) {
         []
     );
 
-    const data = [
-        {
-            id: 1,
-            nama_kategori: "Dibimbing Tuntas Offline",
-            parent: "Dibimbing Tuntas",
-            Visibilitas: true,
-            tanggal_update: "08/12/2024",
-        },
-    ];
+    const categories = data.data;
 
     return (
         <DashboardLayout
@@ -71,73 +129,47 @@ export default function Category({ auth }) {
             role="admin"
             auth={auth}
         >
+            <Toaster />
             <div className="space-y-[1.6vw]">
                 <SubHeading title="Kategori">
-                    <Link
-                        isLink
-                        href="/admin/bimbingan/category/add"
-                        className="flex items-center gap-[.5vw] bg-secondary hover:bg-primary text-white py-[.6vw] px-[1.2vw] rounded-[.4vw] text-[.7vw]"
+                    <GoalsButton
+                        className="py-[.6vw] px-[1.2vw] rounded-[.4vw] text-[.7vw]"
+                        onClick={() => {
+                            setShowDialog({ ...showDialog, create: true });
+                            setFormData({
+                                ...formData,
+                                id: "",
+                                name: "",
+                                slug: "",
+                                is_visible: 0,
+                            });
+                        }}
                     >
                         <FiPlus className="text-[1vw]" />
                         Tambah Kategori
-                    </Link>
+                    </GoalsButton>
                 </SubHeading>
+
+                <Dialog
+                    {...{
+                        showDialog,
+                        setShowDialog,
+                        formData,
+                        setFormData,
+                        post,
+                        put,
+                        callback,
+                    }}
+                />
 
                 <GoalsDashboardTable
                     isHeadVisible
                     isPaginated
                     isSortable
                     columns={columns}
-                    data={data}
+                    data={categories}
                 />
             </div>
         </DashboardLayout>
     );
 }
-
-export const SubHeading = ({ title, children }) => {
-    return (
-        <div className="flex w-full justify-between items-center">
-            <span className="text-[1.2vw] font-medium">{title}</span>
-            {children}
-        </div>
-    );
-};
-
-export const Breadcrumb = ({ level = 2 }) => {
-    const pathArray = location.pathname.split("/");
-    const pathArrayBr = pathArray.slice(-level);
-    const sisaArr = pathArray.slice(0, pathArray.length - level);
-
-    return (
-        <div className="flex items-center font-medium text-neutral-50">
-            {pathArrayBr.map((path, index) => {
-                return (
-                    <React.Fragment key={index}>
-                        {index < pathArrayBr.length - 1 ? (
-                            <Link
-                                key={index}
-                                className="flex items-center text-[1.25vw]"
-                                href={sisaArr.join("/") + "/" + pathArrayBr[0]}
-                            >
-                                {path.charAt(0).toUpperCase() + path.slice(1)}
-                                {index < pathArrayBr.length - 1 && (
-                                    <span>
-                                        <FiChevronRight />
-                                    </span>
-                                )}
-                            </Link>
-                        ) : (
-                            <span className="flex items-center text-[1.25vw] text-black">
-                                {path.charAt(0).toUpperCase() + path.slice(1)}
-                                {index < pathArrayBr.length - 1 && (
-                                    <FiChevronRight />
-                                )}
-                            </span>
-                        )}
-                    </React.Fragment>
-                );
-            })}
-        </div>
-    );
-};
