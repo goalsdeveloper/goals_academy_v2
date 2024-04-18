@@ -197,7 +197,7 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
 
     return (
         <div
-            className={`absolute w-[74vw] h-full flex flex-col justify-between z-[500] top-0 left-0 bg-white min-h-screen duration-300 border-2 text-neutral-80 text-[3.7vw] ${
+            className={`overflow-y-scroll absolute w-[74vw] flex flex-col justify-between z-[500] top-0 left-0 bg-white h-screen max-h-screen duration-300 border-2 text-neutral-80 text-[3.2vw] ${
                 isOpen ? "translate-x-[0%]" : "opacity-0 -translate-x-[100%]"
             }`}
         >
