@@ -201,7 +201,7 @@ class ViewsClickAndSalesAmountController extends Controller
             // 'totalViewsKeseluruhan' => $totalViews,
             'totalsByDate' => $totalsByDate,
             'salesAmount' => $totalSalesByDate,
-            'data' => $visitorsAndPageViews,
+            // 'data' => $visitorsAndPageViews,
         ], 200);
     }
 

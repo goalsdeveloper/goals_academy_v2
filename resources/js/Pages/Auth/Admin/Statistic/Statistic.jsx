@@ -12,16 +12,23 @@ import {
     Title,
     Tooltip,
     Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import { faker } from '@faker-js/faker';
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import { faker } from "@faker-js/faker";
 import { FaRegCalendar } from "react-icons/fa6";
 import Datepicker from "react-tailwindcss-datepicker";
 import "@/script/momentCustomLocale";
-import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/elements/GoalsSelectInput";
+import {
+    GoalsSelectInput,
+    GoalsSelectInputItem,
+} from "@/Components/elements/GoalsSelectInput";
+import { useEffect } from "react";
 
-export default function Statistic ({ auth }) {
+export default function Statistic({ auth, product_type }) {
     const [isLoading, setIsLoading] = useState(false);
+    const [data, setData] = useState({
+        totalsByDate: {},
+    });
 
     // Chart Configuration
     ChartJS.register(
@@ -30,7 +37,7 @@ export default function Statistic ({ auth }) {
         LinearScale,
         BarElement,
         Tooltip,
-        Legend,
+        Legend
     );
 
     const options = {
@@ -38,18 +45,18 @@ export default function Statistic ({ auth }) {
             title: {
                 display: true,
                 text: null,
-                align: 'start',
+                align: "start",
                 font: {
                     family: 'Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
                     size: 12,
-                    weight: '500',
+                    weight: "500",
                 },
                 padding: {
                     top: 6,
                     bottom: 18,
                 },
             },
-            legend: { display: false }
+            legend: { display: false },
         },
         aspectRatio: 5.725,
         responsive: true,
@@ -60,20 +67,20 @@ export default function Statistic ({ auth }) {
                 beginAtZero: true,
                 stacked: true,
                 ticks: {
-                    color: '#A6A6A6',
+                    color: "#A6A6A6",
                     maxRotation: 0,
                 },
                 grid: {
                     display: true,
                     drawBorder: false,
                     drawTicks: true,
-                    color: context => {
+                    color: (context) => {
                         if (context.index === 0) {
-                            return '';
+                            return "";
                         } else {
-                            return '';
+                            return "";
                         }
-                    }
+                    },
                 },
             },
             y: {
@@ -87,160 +94,193 @@ export default function Statistic ({ auth }) {
                     drawTicks: false,
                     color: (context) => {
                         if (context.index === 0) {
-                            return '';
+                            return "";
                         } else {
-                            return 'rgba(160, 160, 160, 0.2)';
+                            return "rgba(160, 160, 160, 0.2)";
                         }
-                    }
+                    },
                 },
                 border: {
-                    dash: [6,4],
+                    dash: [6, 4],
                 },
             },
         },
     };
 
     // User Growth
-    const [userGrowthLabels, setUserGrowthLabels] = useState(['29', '30', '31', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', ]);
+    const [userGrowthLabels, setUserGrowthLabels] = useState([]);
 
-    const [userData, setUserData] = useState(userGrowthLabels.map(i => faker.datatype.number({ min: 50, max: 200 })))
-    const [moderatorData, setModeratorData] = useState(userGrowthLabels.map(i => faker.datatype.number({ min: 50, max: 200 })))
-    const [tutorData, setTutorData] = useState(userGrowthLabels.map(i => faker.datatype.number({ min: 50, max: 200 })))
+    const [userData, setUserData] = useState(
+        userGrowthLabels.map((i) =>
+            faker.datatype.number({ min: 50, max: 200 })
+        )
+    );
+    const [moderatorData, setModeratorData] = useState(
+        userGrowthLabels.map((i) =>
+            faker.datatype.number({ min: 50, max: 200 })
+        )
+    );
+    const [tutorData, setTutorData] = useState(
+        userGrowthLabels.map((i) =>
+            faker.datatype.number({ min: 50, max: 200 })
+        )
+    );
 
     const userGrowthData = {
         labels: userGrowthLabels,
         datasets: [
             {
-                label: 'User',
+                label: "User",
                 data: userData,
-                backgroundColor: '#5A6ACF',
+                backgroundColor: "#5A6ACF",
             },
             {
-                label: 'Moderator',
+                label: "Moderator",
                 data: moderatorData,
-                backgroundColor: '#FF8854',
+                backgroundColor: "#FF8854",
             },
             {
-                label: 'Tutor',
+                label: "Tutor",
                 data: tutorData,
-                backgroundColor: '#F0F469',
+                backgroundColor: "#F0F469",
             },
         ],
     };
 
     const [userGrowthDateRange, setUserGrowthDateRange] = useState({
-        startDate: moment().subtract(1, 'months').format('YYYY-MM-DD'),
-        endDate: moment().format('YYYY-MM-DD')
+        startDate: moment().subtract(1, "months").format("YYYY-MM-DD"),
+        endDate: moment().format("YYYY-MM-DD"),
     });
 
     const userGrowthDateRangeHandler = (range) => {
         const x = moment(range.startDate);
         const y = moment(range.endDate);
-        const diff = x.diff(y, 'days');
+        const diff = x.diff(y, "days");
         if (diff >= -30) {
             setIsLoading(true);
 
             setUserGrowthDateRange(range);
             setTimeout(() => {
                 let tempUserGrowthLabels = [];
-                tempUserGrowthLabels.push(x.format('DD'));
+                tempUserGrowthLabels.push(x.format("DD"));
                 if (diff) {
                     for (let i = 1; i <= -diff; i++) {
-                        tempUserGrowthLabels.push(x.add(1, 'day').format('DD'));
+                        tempUserGrowthLabels.push(x.add(1, "day").format("DD"));
                     }
                 }
 
                 setUserGrowthLabels(tempUserGrowthLabels);
-                setUserData(tempUserGrowthLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
-                setModeratorData(tempUserGrowthLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
-                setTutorData(tempUserGrowthLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
+                setUserData(
+                    tempUserGrowthLabels.map((i) =>
+                        faker.datatype.number({ min: 50, max: 200 })
+                    )
+                );
+                setModeratorData(
+                    tempUserGrowthLabels.map((i) =>
+                        faker.datatype.number({ min: 50, max: 200 })
+                    )
+                );
+                setTutorData(
+                    tempUserGrowthLabels.map((i) =>
+                        faker.datatype.number({ min: 50, max: 200 })
+                    )
+                );
                 setIsLoading(false);
             }, 3000);
         } else {
-            alert('Range tanggal maksimum 1 bulan!')
+            alert("Range tanggal maksimum 1 bulan!");
         }
-    }
+    };
 
     // Click & Views
-    const [barLabels, setBarLabels] = useState(['29', '30', '31', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', ]);
 
-    const [clickData, setClickData] = useState(barLabels.map(i => faker.datatype.number({ min: 50, max: 200 })))
-    const [viewsData, setViewsData] = useState(barLabels.map(i => faker.datatype.number({ min: 50, max: 200 })))
+    console.log(data.totalsByDate);
+    const [barLabels, setBarLabels] = useState(Object.keys(data.totalsByDate));
+
+    const [clickData, setClickData] = useState(
+        barLabels.map((i) => faker.datatype.number({ min: 50, max: 200 }))
+    );
+    const [viewsData, setViewsData] = useState(
+        barLabels.map((i) => faker.datatype.number({ min: 50, max: 200 }))
+    );
 
     const clickViewsData = {
         labels: barLabels,
         datasets: [
             {
-                label: 'Clicks',
+                label: "Clicks",
                 data: clickData,
-                backgroundColor: '#5A6ACF',
+                backgroundColor: "#5A6ACF",
             },
             {
-                label: 'Views',
+                label: "Views",
                 data: viewsData,
-                backgroundColor: '#FF8854',
+                backgroundColor: "#FF8854",
             },
         ],
     };
 
     // Sales Amount
-    const [salesData, setSalesData] = useState(barLabels.map(i => faker.datatype.number({ min: 50, max: 200 })))
+    const [salesData, setSalesData] = useState(
+        barLabels.map((i) => faker.datatype.number({ min: 50, max: 200 }))
+    );
 
     const salesAmountData = {
         labels: barLabels,
         datasets: [
             {
-                label: 'Sales Amount',
+                label: "Sales Amount",
                 data: salesData,
-                backgroundColor: '#5A6ACF',
+                backgroundColor: "#5A6ACF",
             },
         ],
     };
 
+    // Function to get Data
+    const getData = (parameter) => {
+        setIsLoading(true);
+        fetch("/api/views_sales")
+            .then((response) => response.json())
+            .then((response) => {
+                setUserGrowthLabels(Object.keys(response.totalsByDate));
+                setBarLabels(Object.keys(response.totalsByDate));
+                setClickData(
+                    Object.values(response.totalsByDate).map(
+                        ({ totalClicks }) => totalClicks
+                    )
+                );
+                setViewsData(
+                    Object.values(response.totalsByDate).map(
+                        ({ totalViews }) => totalViews
+                    )
+                );
+                setIsLoading(false);
+            })
+            .catch((error) => console.error("Error:", error));
+    };
+
+    // Mount Data
+    useEffect(() => {
+        getData();
+    }, []);
+
     // Filter
     const { data: filterData, setData: setFilterData } = useForm({
         dateRange: {
-            startDate: moment().subtract(1, 'months').format('YYYY-MM-DD'),
-            endDate: moment().format('YYYY-MM-DD')
+            startDate: moment().subtract(1, "months").format("YYYY-MM-DD"),
+            endDate: moment().format("YYYY-MM-DD"),
         },
         productType: "",
-        productCategory: "",
+        productName: "",
     });
 
-    const productTypes = [
-        {
-            id: 1,
-            type: 'Bimbingan',
-            slug: 'bimbingan',
-        },
-        {
-            id: 2,
-            type: 'Webinar',
-            slug: 'webinar',
-        },
-        {
-            id: 3,
-            type: 'E-book',
-            slug: 'e-book',
-        },
-    ]
+    const productTypes = product_type;
 
-    const [productCategories, setProductCategories] = useState([
-        {
-            id: 1,
-            name: 'Dibimbing Tuntas',
-            slug: 'dibimbing-tuntas',
-        },
-        {
-            id: 2,
-            name: 'Dibimbing Sekali',
-            slug: 'dibimbing-sekali',
-        },
-    ]);
+    const [products, setProducts] = useState([]);
 
     const [showForm, setShowForm] = useState({
         productType: false,
-        productCategory: false,
+        productName: false,
     });
 
     const showFormHandler = (key, value) => {
@@ -249,39 +289,51 @@ export default function Statistic ({ auth }) {
             i == key ? (tempShowForm[i] = value) : (tempShowForm[i] = false);
         });
         setShowForm(tempShowForm);
-    }
+    };
 
-    const filterHandler = (range, type, category) => {
+    const filterHandler = (range, type, product) => {
         const x = moment(range.startDate);
         const y = moment(range.endDate);
-        const diff = x.diff(y, 'days');
+        const diff = x.diff(y, "days");
         if (diff >= -30) {
             setIsLoading(true);
 
             let tempBarLabels = [];
-            tempBarLabels.push(x.format('DD'));
+            tempBarLabels.push(x.format("DD"));
             if (diff) {
                 for (let i = 1; i <= -diff; i++) {
-                    tempBarLabels.push(x.add(1, 'day').format('DD'));
+                    tempBarLabels.push(x.add(1, "day").format("DD"));
                 }
             }
 
-            if (category) {
-                // What to do if user select a product category
+            if (product) {
+                // What to do if user select a product
                 setFilterData({
                     ...filterData,
                     dateRange: range,
-                    productCategory: category.name,
+                    productName: product.name,
                 });
                 setTimeout(() => {
                     setBarLabels(tempBarLabels);
-                    setClickData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
-                    setViewsData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
-                    setSalesData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
-                    setIsLoading(false)
+                    setClickData(
+                        tempBarLabels.map((i) =>
+                            faker.datatype.number({ min: 50, max: 200 })
+                        )
+                    );
+                    setViewsData(
+                        tempBarLabels.map((i) =>
+                            faker.datatype.number({ min: 50, max: 200 })
+                        )
+                    );
+                    setSalesData(
+                        tempBarLabels.map((i) =>
+                            faker.datatype.number({ min: 50, max: 200 })
+                        )
+                    );
+                    setIsLoading(false);
                 }, 3000);
             } else {
-                if (type.type == 'text') {
+                if (type.type == "text") {
                     // What to do if user select a date range
                     setFilterData({
                         ...filterData,
@@ -289,76 +341,131 @@ export default function Statistic ({ auth }) {
                     });
                     setTimeout(() => {
                         setBarLabels(tempBarLabels);
-                        setClickData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
-                        setViewsData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
-                        setSalesData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
+                        setClickData(
+                            tempBarLabels.map((i) =>
+                                faker.datatype.number({ min: 50, max: 200 })
+                            )
+                        );
+                        setViewsData(
+                            tempBarLabels.map((i) =>
+                                faker.datatype.number({ min: 50, max: 200 })
+                            )
+                        );
+                        setSalesData(
+                            tempBarLabels.map((i) =>
+                                faker.datatype.number({ min: 50, max: 200 })
+                            )
+                        );
                         setIsLoading(false);
                     }, 3000);
                 } else {
                     // What to do if user select a product type
                     setFilterData({
                         dateRange: range,
-                        productType: type.type,
-                        productCategory: "",
+                        productType: type,
+                        productName: "",
                     });
+                    setProducts(type.products);
                     setTimeout(() => {
-                        setClickData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
-                        setViewsData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
-                        setSalesData(tempBarLabels.map(i => faker.datatype.number({ min: 50, max: 200 })));
-                        setIsLoading(false)
+                        setClickData(
+                            tempBarLabels.map((i) =>
+                                faker.datatype.number({ min: 50, max: 200 })
+                            )
+                        );
+                        setViewsData(
+                            tempBarLabels.map((i) =>
+                                faker.datatype.number({ min: 50, max: 200 })
+                            )
+                        );
+                        setSalesData(
+                            tempBarLabels.map((i) =>
+                                faker.datatype.number({ min: 50, max: 200 })
+                            )
+                        );
+                        setIsLoading(false);
                     }, 3000);
                 }
             }
         } else {
-            alert('Range tanggal maksimum 1 bulan!');
+            alert("Range tanggal maksimum 1 bulan!");
         }
-    }
+    };
 
     return (
         <DashboardLayout title="Statistic" role="admin" auth={auth}>
             <div className="relative">
                 <div className="relative flex flex-col gap-[1.67vw]">
-                    <UserGrowthChart options={options} data={userGrowthData} dateRange={userGrowthDateRange} dateRangeHandler={userGrowthDateRangeHandler} />
-                    <FilterTools showForm={showForm} showFormHandler={showFormHandler} filterData={filterData} filterHandler={filterHandler} productTypes={productTypes} productCategories={productCategories} />
+                    <UserGrowthChart
+                        options={options}
+                        data={userGrowthData}
+                        dateRange={userGrowthDateRange}
+                        dateRangeHandler={userGrowthDateRangeHandler}
+                    />
+                    <FilterTools
+                        showForm={showForm}
+                        showFormHandler={showFormHandler}
+                        filterData={filterData}
+                        filterHandler={filterHandler}
+                        productTypes={productTypes}
+                        products={products}
+                    />
                     <ClickViewsChart options={options} data={clickViewsData} />
-                    <SalesAmountChart options={options} data={salesAmountData} />
+                    <SalesAmountChart
+                        options={options}
+                        data={salesAmountData}
+                    />
                 </div>
             </div>
             {isLoading && <LoadingUI />}
         </DashboardLayout>
-    )
+    );
 }
 
-function UserGrowthChart ({ options, data, dateRange, dateRangeHandler }) {
+function UserGrowthChart({ options, data, dateRange, dateRangeHandler }) {
     return (
         <Card className="relative w-full h-[15.53vw]">
             <div className="absolute left-0 w-full flex justify-end font-sans font-medium text-[1vw] px-[1.67vw]">
-                <DateRangePicker value={dateRange} onChange={dateRangeHandler} />
+                <DateRangePicker
+                    value={dateRange}
+                    onChange={dateRangeHandler}
+                />
             </div>
             <Bar
-                options={{ ...options,
+                options={{
+                    ...options,
                     plugins: {
                         ...options.plugins,
                         title: {
                             ...options.plugins.title,
-                            text: 'User Growth',
+                            text: "User Growth",
                         },
                     },
                 }}
                 data={data}
-                className="cursor-pointer" />
+                className="cursor-pointer"
+            />
         </Card>
-    )
+    );
 }
 
-function FilterTools ({ showForm, showFormHandler, filterData, filterHandler, productTypes, productCategories }) {
+function FilterTools({
+    showForm,
+    showFormHandler,
+    filterData,
+    filterHandler,
+    productTypes,
+    products,
+}) {
     return (
         <div className="flex justify-end gap-[.25vw] font-sans font-medium text-[1vw]">
-            <DateRangePicker value={filterData.dateRange} onChange={filterHandler} />
+            <DateRangePicker
+                value={filterData.dateRange}
+                onChange={filterHandler}
+            />
             <GoalsSelectInput
                 show={showForm.productType}
-                setShow={i => showFormHandler("productType", i)}
-                data={filterData.productType}
+                setShow={(i) => showFormHandler("productType", i)}
+                data={filterData.productType.type}
                 placeholder="Tipe Produk"
                 className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[8.35vw] md:h-0 py-[.975vw] rounded-[2vw] border-1"
                 filledClassName=""
@@ -368,41 +475,54 @@ function FilterTools ({ showForm, showFormHandler, filterData, filterHandler, pr
                     <GoalsSelectInputItem
                         key={index}
                         className="text-[.83vw]"
-                        onClick={() => filterHandler(filterData.dateRange, item)}
-                    >{item.type}</GoalsSelectInputItem>
+                        onClick={() =>
+                            filterHandler(filterData.dateRange, item)
+                        }
+                    >
+                        {item.type}
+                    </GoalsSelectInputItem>
                 ))}
             </GoalsSelectInput>
             <GoalsSelectInput
-                show={showForm.productCategory}
-                setShow={i => showFormHandler("productCategory", i)}
-                data={filterData.productCategory}
-                placeholder="Kategori Produk"
+                show={showForm.productName}
+                setShow={(i) => showFormHandler("productName", i)}
+                data={filterData.productName}
+                placeholder="Produk"
                 className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[16.25vw] md:h-0 py-[.975vw] rounded-[2vw] border-1"
                 filledClassName=""
                 emptyClassName=""
             >
-                {productCategories.map((item, index) => (
+                {products.map((item, index) => (
                     <GoalsSelectInputItem
                         key={index}
                         className="text-[.83vw]"
-                        onClick={() => filterHandler(filterData.dateRange, filterData.productType, item)}
-                    >{item.name}</GoalsSelectInputItem>
+                        onClick={() =>
+                            filterHandler(
+                                filterData.dateRange,
+                                filterData.productType,
+                                item
+                            )
+                        }
+                    >
+                        {item.name}
+                    </GoalsSelectInputItem>
                 ))}
             </GoalsSelectInput>
         </div>
-    )
+    );
 }
 
-function ClickViewsChart ({ options, data }) {
+function ClickViewsChart({ options, data }) {
     return (
         <Card className="relative w-full h-[15.53vw]">
             <Bar
-                options={{ ...options,
+                options={{
+                    ...options,
                     plugins: {
                         ...options.plugins,
                         title: {
                             ...options.plugins.title,
-                            text: 'Click & Views',
+                            text: "Click & Views",
                         },
                     },
                 }}
@@ -410,31 +530,37 @@ function ClickViewsChart ({ options, data }) {
                 className="cursor-pointer"
             />
         </Card>
-    )
+    );
 }
 
-function SalesAmountChart ({ options, data }) {
+function SalesAmountChart({ options, data }) {
     return (
         <Card className="relative w-full h-[15.53vw]">
             <Bar
-                options={{ ...options,
+                options={{
+                    ...options,
                     plugins: {
                         ...options.plugins,
                         title: {
                             ...options.plugins.title,
-                            text: 'Sales Amount',
+                            text: "Sales Amount",
                         },
                     },
                 }}
                 data={data}
-                className="cursor-pointer" />
+                className="cursor-pointer"
+            />
         </Card>
-    )
+    );
 }
 
-function DateRangePicker ({ value, onChange }) {
+function DateRangePicker({ value, onChange }) {
     return (
-        <GoalsButton variant="default" className="relative w-[8.35vw] h-[2.1vw] md:px-[.1vw] md:py-[0vw] flex justify-center items-center gap-[.4vw] md:text-[.7vw] border-1 rounded-[.4vw]" activeClassName="">
+        <GoalsButton
+            variant="default"
+            className="relative w-[8.35vw] h-[2.1vw] md:px-[.1vw] md:py-[0vw] flex justify-center items-center gap-[.4vw] md:text-[.7vw] border-1 rounded-[.4vw]"
+            activeClassName=""
+        >
             <Datepicker
                 value={value}
                 onChange={onChange}
@@ -444,23 +570,30 @@ function DateRangePicker ({ value, onChange }) {
                 containerClassName="absolute"
                 toggleClassName="hidden"
                 popoverDirection="down"
-                maxDate={moment().format('YYYY-MM-DD')}
+                maxDate={moment().format("YYYY-MM-DD")}
             />
             <FaRegCalendar className="text-[1vw]" /> Select Date
         </GoalsButton>
-    )
+    );
 }
 
-function Card ({ className, ...props }) {
+function Card({ className, ...props }) {
     return (
-        <div {...props} className={`bg-white shadow-bottom-right rounded-[.625vw] py-[1.25vw] px-[1.67vw] ${className}`}></div>
-    )
+        <div
+            {...props}
+            className={`bg-white shadow-bottom-right rounded-[.625vw] py-[1.25vw] px-[1.67vw] ${className}`}
+        ></div>
+    );
 }
 
-function LoadingUI () {
+function LoadingUI() {
     return (
         <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
-            <img src={logo} alt="Goals Academy" className="w-[6vw] h-[6vw] animate-bounce" />
+            <img
+                src={logo}
+                alt="Goals Academy"
+                className="w-[6vw] h-[6vw] animate-bounce"
+            />
         </div>
-    )
+    );
 }
