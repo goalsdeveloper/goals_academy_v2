@@ -12,7 +12,7 @@ export default function BimbinganCard({ item, className }) {
                 <img
                     className="w-full"
                     src={`/storage/${item.product_image}`}
-                    alt={item.name}
+                    alt={"image-"+item.name}
                 />
             </div>
             <div className="flex flex-col justify-between p-4 xs:p-6 md:p-2 lg:p-3 xl:p-6">

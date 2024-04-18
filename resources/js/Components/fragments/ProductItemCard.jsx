@@ -9,7 +9,7 @@ const ContentLayout = ({ children, className = "", imageUrl, ...rest }) => {
         >
             <img
                 src={imageUrl}
-                alt={imageUrl}
+                alt={"content-image"}
                 className="w-[26.7vw] md:w-[13vw] h-[18.6vw] md:h-[9vw] rounded-[1.5vw] md:rounded-[.5vw] object-cover bg-neutral-400 flex-shrink-0"
             />
             <div className="w-full py-[.5vw] flex flex-col gap-[1.6vw] justify-center pr-[1vw]">
