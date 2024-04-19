@@ -23,12 +23,13 @@ const GoalsDashboardTable = ({
     function splitTableByCategory(data) {
         return Object.entries(
             data.reduce((acc, item) => {
-                const { kategori, ...rest } = item;
+                const { category: catData, ...rest } = item;
+                const category = catData.name
 
-                if (!acc[kategori]) {
-                    acc[kategori] = [];
+                if (!acc[category]) {
+                    acc[category] = [];
                 }
-                acc[kategori].push(item);
+                acc[category].push(item);
                 return acc;
             }, {})
         ).map(([kategori, items]) => ({
@@ -36,6 +37,8 @@ const GoalsDashboardTable = ({
             items,
         }));
     }
+
+    console.log(splitTableByCategory(data));
 
     function getOptionalConfig() {
         return {
