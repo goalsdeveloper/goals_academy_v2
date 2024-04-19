@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class Tutor
+class Admin
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class Tutor
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->user_role != 'tutor') {
+        if (Auth::user()->user_role != 'admin') {
             return abort(403);
         }
         return $next($request);

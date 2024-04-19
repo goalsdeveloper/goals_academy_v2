@@ -11,6 +11,7 @@ const Dialog = ({
     setFormData,
     post,
     put,
+    callback
 }) => {
     return (
         <div>
@@ -23,6 +24,7 @@ const Dialog = ({
                             formData,
                             setFormData,
                             put,
+                            callback
                         }}
                     />
                     <CreateDialog
@@ -32,6 +34,7 @@ const Dialog = ({
                             formData,
                             setFormData,
                             post,
+                            callback
                         }}
                     />
                 </>,
@@ -49,6 +52,7 @@ const CreateDialog = ({
     formData,
     setFormData,
     post,
+    callback
 }) => {
     return (
         <GoalsPopup
@@ -59,7 +63,9 @@ const CreateDialog = ({
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
-                    post(route("admin.bimbingan.addon.store"));
+                    post(route("admin.bimbingan.addon.store"), {
+                        onFinish: () => callback('create')
+                    });
                     setShowDialog({ ...showDialog, create: false });
                 }}
                 className="space-y-[1.2vw] w-full"
@@ -122,6 +128,7 @@ const EditDialog = ({
     formData,
     setFormData,
     put,
+    callback
 }) => {
     return (
         <GoalsPopup
@@ -132,7 +139,9 @@ const EditDialog = ({
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
-                    put(route("admin.bimbingan.addon.update", formData.id));
+                    put(route("admin.bimbingan.addon.update", formData.id), {
+                        onFinish: () => callback('edit')
+                    });
                     setShowDialog({ ...showDialog, edit: false });
                 }}
                 className="space-y-[1.2vw] w-full"

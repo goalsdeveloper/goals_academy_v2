@@ -8,11 +8,9 @@ import GoalsButton from "@/Components/GoalsButton";
 import Dialog from "./Topic/Dialog";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function Topic({ auth }) {
-    const data = [
-        { id: 1, name: "Topic 1", slug: "topic-1" },
-        { id: 2, name: "Topic 2", slug: "topic-2" },
-    ];
+export default function Topic({ auth, topics }) {
+    topics = topics.data
+    console.log(topics)
 
     const [showDialog, setShowDialog] = useState({
         create: false,
@@ -28,14 +26,14 @@ export default function Topic({ auth }) {
         put,
     } = useForm({
         id: "",
-        name: "",
+        topic: "",
         slug: "",
         description: "N/A",
     });
 
     const callback = (method) => {
         router.visit(route('admin.bimbingan.topic.index'), {
-            only: ['data'],
+            only: ['topics'],
             onSuccess: () => {
                 if (method == 'create') {
                     toast.success('Create Success!');
@@ -51,7 +49,7 @@ export default function Topic({ auth }) {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "name",
+                accessorKey: "topic",
                 header: "Topik",
                 size: 200,
             },
@@ -74,7 +72,7 @@ export default function Topic({ auth }) {
                                     setFormData({
                                         ...formData,
                                         id: cell.row.original.id,
-                                        name: cell.row.original.name,
+                                        topic: cell.row.original.topic,
                                         slug: cell.row.original.slug,
                                     });
                                 }}
@@ -86,6 +84,8 @@ export default function Topic({ auth }) {
                             <Link
                                 method="DELETE"
                                 href={`/admin/bimbingan/topic/${cell.getValue()}`}
+                                onSuccess={callback}
+                                as="button"
                             >
                                 <FiTrash2 className="text-[1.2vw] text-danger-40" />
                             </Link>
@@ -114,7 +114,7 @@ export default function Topic({ auth }) {
                             setFormData({
                                 ...formData,
                                 id: "",
-                                name: "",
+                                topic: "",
                                 slug: "",
                             });
                         }}
@@ -141,7 +141,7 @@ export default function Topic({ auth }) {
                     isPaginated
                     isSortable
                     columns={columns}
-                    data={data}
+                    data={topics}
                 />
             </div>
         </DashboardLayout>

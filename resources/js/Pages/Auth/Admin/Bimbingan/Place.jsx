@@ -8,7 +8,9 @@ import GoalsButton from "@/Components/GoalsButton";
 import Dialog from "./Place/Dialog";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function Place ({ auth }) {
+export default function Place ({ auth, places, cities }) {
+    places = places.data
+    cities = cities.data
     const [dataCity, setDataCity] = useState([
         {
             id: 1,
@@ -35,13 +37,13 @@ export default function Place ({ auth }) {
     } = useForm({
         id: "",
         city: "",
-        location: "",
+        place: "",
         target: "",
     });
 
     const callback = (method) => {
         router.visit(route('admin.bimbingan.topic.index'), {
-            only: ['data'],
+            only: ['places', 'cities'],
             onSuccess: () => {
                 if (method == 'create') {
                     toast.success('Create Success!');
@@ -100,7 +102,7 @@ export default function Place ({ auth }) {
                                     setFormData({
                                         id: cell.row.original.id,
                                         city: cell.row.original.city,
-                                        location: "",
+                                        place: "",
                                         target: "city",
                                     });
                                 }}
@@ -112,6 +114,8 @@ export default function Place ({ auth }) {
                             <Link
                                 method="DELETE"
                                 href={`/admin/bimbingan/place/${cell.getValue()}`}
+                                onSuccess={callback}
+                                as="button"
                             >
                                 <FiTrash2 className="text-[1.2vw] text-danger-40" />
                             </Link>
@@ -125,11 +129,11 @@ export default function Place ({ auth }) {
     const columnsLocation = useMemo(
         () => [
             {
-                accessorKey: 'location',
+                accessorKey: 'place',
                 header: 'Lokasi',
             },
             {
-                accessorKey: 'city',
+                accessorKey: 'city.city',
                 header: 'Kota',
             },
             {
@@ -143,8 +147,8 @@ export default function Place ({ auth }) {
                                     setShowDialog({ ...showDialog, edit: true });
                                     setFormData({
                                         id: cell.row.original.id,
-                                        city: cell.row.original.city,
-                                        location: cell.row.original.location,
+                                        city: cell.row.original.city.city,
+                                        place: cell.row.original.place,
                                         target: "location",
                                     });
                                 }}
@@ -156,6 +160,7 @@ export default function Place ({ auth }) {
                             <Link
                                 method="DELETE"
                                 href={`/admin/bimbingan/place/${cell.getValue()}`}
+                                as="button"
                             >
                                 <FiTrash2 className="text-[1.2vw] text-danger-40" />
                             </Link>
@@ -179,7 +184,7 @@ export default function Place ({ auth }) {
                                 setFormData({
                                     id: "",
                                     city: "",
-                                    location: "",
+                                    place: "",
                                     target: "city",
                                 });
                             }}
@@ -193,7 +198,7 @@ export default function Place ({ auth }) {
                         isPaginated
                         isSortable
                         columns={columnsCity}
-                        data={dataCity}
+                        data={cities}
                     />
                 </div>
                 <div className="space-y-[1.6vw]">
@@ -205,7 +210,7 @@ export default function Place ({ auth }) {
                                 setFormData({
                                     id: "",
                                     city: "",
-                                    location: "",
+                                    place: "",
                                     target: "location",
                                 });
                             }}
@@ -219,7 +224,7 @@ export default function Place ({ auth }) {
                         isPaginated
                         isSortable
                         columns={columnsLocation}
-                        data={dataLocation}
+                        data={places}
                     />
                 </div>
             </div>
