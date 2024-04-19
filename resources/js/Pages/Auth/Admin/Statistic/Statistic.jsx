@@ -109,22 +109,53 @@ export default function Statistic({ auth, product_type }) {
 
     // User Growth
     const [userGrowthLabels, setUserGrowthLabels] = useState([]);
-
     const [userData, setUserData] = useState(
         userGrowthLabels.map((i) =>
             faker.datatype.number({ min: 50, max: 200 })
         )
     );
-    const [moderatorData, setModeratorData] = useState(
-        userGrowthLabels.map((i) =>
-            faker.datatype.number({ min: 50, max: 200 })
+
+    const getDataUser = (startDate, endDate) => {
+        setIsLoading(true);
+        console.log(
+            `/api/user_growth?startDate=${startDate ? startDate : ""}&endDate=${
+                endDate ? endDate : ""
+            }`
+        );
+        fetch(
+            `/api/user_growth?startDate=${startDate ? startDate : ""}&endDate=${
+                endDate ? endDate : ""
+            }`
         )
-    );
-    const [tutorData, setTutorData] = useState(
-        userGrowthLabels.map((i) =>
-            faker.datatype.number({ min: 50, max: 200 })
-        )
-    );
+            .then((response) => response.json())
+            .then((response) => {
+                setUserGrowthLabels(Object.keys(response.totalPerDay));
+                setUserData(
+                    Object.values(response.totalPerDay).map((data) => data)
+                );
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                setIsLoading(true);
+            });
+    };
+
+    // Mount Data
+    useEffect(() => {
+        getDataUser("", "", "", "");
+    }, []);
+
+    // const [moderatorData, setModeratorData] = useState(
+    //     userGrowthLabels.map((i) =>
+    //         faker.datatype.number({ min: 50, max: 200 })
+    //     )
+    // );
+    // const [tutorData, setTutorData] = useState(
+    //     userGrowthLabels.map((i) =>
+    //         faker.datatype.number({ min: 50, max: 200 })
+    //     )
+    // );
 
     const userGrowthData = {
         labels: userGrowthLabels,
@@ -134,16 +165,16 @@ export default function Statistic({ auth, product_type }) {
                 data: userData,
                 backgroundColor: "#5A6ACF",
             },
-            {
-                label: "Moderator",
-                data: moderatorData,
-                backgroundColor: "#FF8854",
-            },
-            {
-                label: "Tutor",
-                data: tutorData,
-                backgroundColor: "#F0F469",
-            },
+            // {
+            //     label: "Moderator",
+            //     data: moderatorData,
+            //     backgroundColor: "#FF8854",
+            // },
+            // {
+            //     label: "Tutor",
+            //     data: tutorData,
+            //     backgroundColor: "#F0F469",
+            // },
         ],
     };
 
@@ -156,37 +187,38 @@ export default function Statistic({ auth, product_type }) {
         const x = moment(range.startDate);
         const y = moment(range.endDate);
         const diff = x.diff(y, "days");
-        if (diff >= -30) {
+        if (diff >= -31) {
             setIsLoading(true);
 
             setUserGrowthDateRange(range);
-            setTimeout(() => {
-                let tempUserGrowthLabels = [];
-                tempUserGrowthLabels.push(x.format("DD"));
-                if (diff) {
-                    for (let i = 1; i <= -diff; i++) {
-                        tempUserGrowthLabels.push(x.add(1, "day").format("DD"));
-                    }
-                }
+            getDataUser(range.startDate, range.endDate);
+            // setTimeout(() => {
+            //     let tempUserGrowthLabels = [];
+            //     tempUserGrowthLabels.push(x.format("DD"));
+            //     if (diff) {
+            //         for (let i = 1; i <= -diff; i++) {
+            //             tempUserGrowthLabels.push(x.add(1, "day").format("DD"));
+            //         }
+            //     }
 
-                setUserGrowthLabels(tempUserGrowthLabels);
-                setUserData(
-                    tempUserGrowthLabels.map((i) =>
-                        faker.datatype.number({ min: 50, max: 200 })
-                    )
-                );
-                setModeratorData(
-                    tempUserGrowthLabels.map((i) =>
-                        faker.datatype.number({ min: 50, max: 200 })
-                    )
-                );
-                setTutorData(
-                    tempUserGrowthLabels.map((i) =>
-                        faker.datatype.number({ min: 50, max: 200 })
-                    )
-                );
-                setIsLoading(false);
-            }, 3000);
+            //     setUserGrowthLabels(tempUserGrowthLabels);
+            //     setUserData(
+            //         tempUserGrowthLabels.map((i) =>
+            //             faker.datatype.number({ min: 50, max: 200 })
+            //         )
+            //     );
+            //     setModeratorData(
+            //         tempUserGrowthLabels.map((i) =>
+            //             faker.datatype.number({ min: 50, max: 200 })
+            //         )
+            //     );
+            //     setTutorData(
+            //         tempUserGrowthLabels.map((i) =>
+            //             faker.datatype.number({ min: 50, max: 200 })
+            //         )
+            //     );
+            //     setIsLoading(false);
+            // }, 3000);
         } else {
             alert("Range tanggal maksimum 1 bulan!");
         }
@@ -198,10 +230,14 @@ export default function Statistic({ auth, product_type }) {
     const [barLabels, setBarLabels] = useState(Object.keys(data.totalsByDate));
 
     const [clickData, setClickData] = useState(
-        barLabels.map((i) => faker.datatype.number({ min: 50, max: 200 }))
+        Object.values(data.totalsByDate).map(
+            ({ totalClicks, totalViews }) => totalClicks
+        )
     );
     const [viewsData, setViewsData] = useState(
-        barLabels.map((i) => faker.datatype.number({ min: 50, max: 200 }))
+        Object.values(data.totalsByDate).map(
+            ({ totalClicks, totalViews }) => totalViews
+        )
     );
 
     const clickViewsData = {
@@ -237,12 +273,25 @@ export default function Statistic({ auth, product_type }) {
     };
 
     // Function to get Data
-    const getData = (parameter) => {
+    const getData = (startDate, endDate, productType, productName) => {
         setIsLoading(true);
-        fetch("/api/views_sales")
+        console.log(
+            `/api/views_sales?startDate=${startDate ? startDate : ""}&endDate=${
+                endDate ? endDate : ""
+            }&productType=${productType ? productType : ""}&productName=${
+                productName ? productName : ""
+            }`
+        );
+        fetch(
+            `/api/views_sales?startDate=${startDate ? startDate : ""}&endDate=${
+                endDate ? endDate : ""
+            }&productType=${productType ? productType : ""}&productName=${
+                productName ? productName : ""
+            }`
+        )
             .then((response) => response.json())
             .then((response) => {
-                setUserGrowthLabels(Object.keys(response.totalsByDate));
+                // setUserGrowthLabels(Object.keys(response.totalsByDate));
                 setBarLabels(Object.keys(response.totalsByDate));
                 setClickData(
                     Object.values(response.totalsByDate).map(
@@ -254,14 +303,21 @@ export default function Statistic({ auth, product_type }) {
                         ({ totalViews }) => totalViews
                     )
                 );
+
+                setSalesData(
+                    Object.values(response.salesAmount).map((data) => data)
+                );
                 setIsLoading(false);
             })
-            .catch((error) => console.error("Error:", error));
+            .catch((error) => {
+                console.error("Error:", error);
+                setIsLoading(true);
+            });
     };
 
     // Mount Data
     useEffect(() => {
-        getData();
+        getData("", "", "", "");
     }, []);
 
     // Filter
@@ -295,9 +351,7 @@ export default function Statistic({ auth, product_type }) {
         const x = moment(range.startDate);
         const y = moment(range.endDate);
         const diff = x.diff(y, "days");
-        if (diff >= -30) {
-            setIsLoading(true);
-
+        if (diff >= -31) {
             let tempBarLabels = [];
             tempBarLabels.push(x.format("DD"));
             if (diff) {
@@ -313,25 +367,12 @@ export default function Statistic({ auth, product_type }) {
                     dateRange: range,
                     productName: product.name,
                 });
-                setTimeout(() => {
-                    setBarLabels(tempBarLabels);
-                    setClickData(
-                        tempBarLabels.map((i) =>
-                            faker.datatype.number({ min: 50, max: 200 })
-                        )
-                    );
-                    setViewsData(
-                        tempBarLabels.map((i) =>
-                            faker.datatype.number({ min: 50, max: 200 })
-                        )
-                    );
-                    setSalesData(
-                        tempBarLabels.map((i) =>
-                            faker.datatype.number({ min: 50, max: 200 })
-                        )
-                    );
-                    setIsLoading(false);
-                }, 3000);
+                getData(
+                    range.startDate,
+                    range.endDate,
+                    filterData.productType.type,
+                    product.name
+                );
             } else {
                 if (type.type == "text") {
                     // What to do if user select a date range
@@ -339,25 +380,7 @@ export default function Statistic({ auth, product_type }) {
                         ...filterData,
                         dateRange: range,
                     });
-                    setTimeout(() => {
-                        setBarLabels(tempBarLabels);
-                        setClickData(
-                            tempBarLabels.map((i) =>
-                                faker.datatype.number({ min: 50, max: 200 })
-                            )
-                        );
-                        setViewsData(
-                            tempBarLabels.map((i) =>
-                                faker.datatype.number({ min: 50, max: 200 })
-                            )
-                        );
-                        setSalesData(
-                            tempBarLabels.map((i) =>
-                                faker.datatype.number({ min: 50, max: 200 })
-                            )
-                        );
-                        setIsLoading(false);
-                    }, 3000);
+                    getData(range.startDate, range.endDate);
                 } else {
                     // What to do if user select a product type
                     setFilterData({
@@ -366,24 +389,7 @@ export default function Statistic({ auth, product_type }) {
                         productName: "",
                     });
                     setProducts(type.products);
-                    setTimeout(() => {
-                        setClickData(
-                            tempBarLabels.map((i) =>
-                                faker.datatype.number({ min: 50, max: 200 })
-                            )
-                        );
-                        setViewsData(
-                            tempBarLabels.map((i) =>
-                                faker.datatype.number({ min: 50, max: 200 })
-                            )
-                        );
-                        setSalesData(
-                            tempBarLabels.map((i) =>
-                                faker.datatype.number({ min: 50, max: 200 })
-                            )
-                        );
-                        setIsLoading(false);
-                    }, 3000);
+                    getData(range.startDate, range.endDate, type.type);
                 }
             }
         } else {
