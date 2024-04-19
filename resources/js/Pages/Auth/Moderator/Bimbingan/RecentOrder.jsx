@@ -4,9 +4,12 @@ import { useMemo } from "react";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { FiEdit2, FiEye } from "react-icons/fi";
 import { Link } from "@inertiajs/react";
+import GoalsPopup from "@/Components/elements/GoalsPopup";
+import View from "./RecentOrder/View";
 
 export default function RecentOrder({ auth, recent_order }) {
     // const [isLoading, setIsLoading] = useState(false);
+    const [isShow, setIsShow] = useState(false);
 
     // console.log(recent_order);
 
@@ -65,23 +68,17 @@ export default function RecentOrder({ auth, recent_order }) {
                                 <Link
                                     method="GET"
                                     href={route(
-                                        "admin.bimbingan.product.edit",
-                                        { product: cell.row.original }
+                                        "moderator.bimbingan.order.edit",
+                                        { order: cell.row.original }
                                     )}
                                 >
                                     <FiEdit2 className="text-[1.2vw] text-secondary" />
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    method="GET"
-                                    href={route(
-                                        "admin.bimbingan.product.show",
-                                        { product: cell.row.original }
-                                    )}
-                                >
+                                <button onClick={() => setIsShow(!isShow)}>
                                     <FiEye className="text-[1.2vw] text-neutral-60" />
-                                </Link>
+                                </button>
                             </li>
                         </ul>
                     );
@@ -100,15 +97,18 @@ export default function RecentOrder({ auth, recent_order }) {
         >
             {/* {isLoading && <LoadingUI />} */}
 
-            <h2>Recent Order</h2>
-            <div className="text-[.8vw]">
-                <GoalsDashboardTable
-                    columns={columns}
-                    data={data}
-                    isHeadVisible
-                    isSortable
-                    isPaginated
-                />
+            <ViewPopup show={isShow} setShow={() => setIsShow(!isShow)} />
+            <div className="space-y-[1.6vw]">
+                <h2 className="font-medium">Recent Order</h2>
+                <div className="text-[.8vw]">
+                    <GoalsDashboardTable
+                        columns={columns}
+                        data={data}
+                        isHeadVisible
+                        isSortable
+                        isPaginated
+                    />
+                </div>
             </div>
         </DashboardLayout>
     );
@@ -134,3 +134,27 @@ function LoadingUI() {
         </div>
     );
 }
+
+const ViewPopup = ({ show, setShow }) => {
+    return (
+        <>
+            <div
+                className={`${
+                    show ? "" : "hidden"
+                } fixed top-0 bottom-0 left-0 right-0 w-full h-screen overflow-hidden bg-dark bg-opacity-50 transition-all duration-300 z-50`}
+                onClick={() => {
+                    setShow(false);
+                }}
+            />
+            <div
+                className={`${
+                    show
+                        ? "md:top-0 bottom-0 md:scale-100"
+                        : "md:top-full -bottom-full md:scale-0"
+                } fixed inset-0 mx-auto flex gap-[2vw] w-[76vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50  md:mt-[8vh]`}
+            >
+                <View />
+            </div>
+        </>
+    );
+};
