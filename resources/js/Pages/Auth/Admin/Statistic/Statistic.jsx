@@ -473,7 +473,7 @@ function FilterTools({
                 setShow={(i) => showFormHandler("productType", i)}
                 data={filterData.productType.type}
                 placeholder="Tipe Produk"
-                className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[8.35vw] md:h-0 py-[.975vw] rounded-[2vw] border-1"
+                className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[8.35vw] md:h-[2.1vw] py-[0vw] rounded-[2vw] border-1"
                 filledClassName=""
                 emptyClassName=""
             >
@@ -490,11 +490,19 @@ function FilterTools({
                 ))}
             </GoalsSelectInput>
             <GoalsSelectInput
+<<<<<<< HEAD
                 show={showForm.productName}
                 setShow={(i) => showFormHandler("productName", i)}
                 data={filterData.productName}
                 placeholder="Produk"
                 className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[16.25vw] md:h-0 py-[.975vw] rounded-[2vw] border-1"
+=======
+                show={showForm.productCategory}
+                setShow={i => showFormHandler("productCategory", i)}
+                data={filterData.productCategory}
+                placeholder="Kategori Produk"
+                className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[16.25vw] md:h-[2.1vw] py-[0vw] rounded-[2vw] border-1"
+>>>>>>> fc8e42763d91818dadd875d5b3e821a05f353f38
                 filledClassName=""
                 emptyClassName=""
             >

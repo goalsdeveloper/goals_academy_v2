@@ -1,8 +1,6 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
-import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/elements/GoalsSelectInput";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
-import { useState } from "react";
 import { createPortal } from "react-dom";
 
 const Dialog = ({
@@ -13,27 +11,25 @@ const Dialog = ({
     post,
     put,
     callback,
-    dataCity,
 }) => {
     const status = showDialog.create ? 'Tambah' : showDialog.edit ? 'Ubah' : showDialog.show ? 'Detail' : ('')
-    const [showCityForm, setShowCityForm] = useState(false);
     return (
         <div>
             {createPortal(
                 <GoalsPopup
                     show={Object.values(showDialog).includes(true)}
                     setShow={() => setShowDialog({ create: false, edit: false, show: false, delete: false })}
-                    className="max-w-[20.8vw]"
+                    className="md:w-[39.583vw]"
                 >
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
                             if (showDialog.create) {
-                                post(route("admin.bimbingan.topic.store"), {
+                                post(route("admin.bimbingan.moderator.store"), {
                                     onFinish: () => callback('create')
                                 });
                             } else if (showDialog.edit) {
-                                put(route("admin.bimbingan.topic.update", formData.id), {
+                                put(route("admin.bimbingan.moderator.update", formData.id), {
                                     onFinish: () => callback('edit')
                                 });
                             }
@@ -42,35 +38,57 @@ const Dialog = ({
                         className="space-y-[1.2vw] w-full"
                     >
                         <h2 className="text-[1.25vw] text-center">
-                            {status} {formData.target == 'city' ? 'Kota' : 'Lokasi'}
+                            {status} User Profile
                         </h2>
-                        <div className="grid w-full gap-[.8vw]">
+                        <div className="grid grid-cols-2 w-full gap-[.8vw]">
                             <GoalsTextInput
+                                label="Username"
                                 required
-                                label={formData.target == 'city' ? 'Kota' : 'Lokasi'}
-                                data={formData.target == 'city' ? formData.city : formData.location}
+                                data={formData.username}
                                 placeholder=""
-                                onChange={(e) => formData.target == 'city' ? setFormData("city", e.target.value) : setFormData("location", e.target.value)}
+                                onChange={(e) => setFormData("name", e.target.value)}
                                 disabled={showDialog.show}
                             />
-                            {formData.target == 'location' ? (
-                                <GoalsSelectInput
-                                    show={showCityForm}
-                                    setShow={setShowCityForm}
-                                    className="text-[.9vw] font-normal"
-                                    label="Kota"
-                                    placeholder="Pilih Kota"
-                                    data={formData.city}
-                                >
-                                    {dataCity.map(i => (
-                                        <GoalsSelectInputItem
-                                            onClick={() => setFormData('city', i.city)}
-                                        >
-                                            {i.city}
-                                        </GoalsSelectInputItem>
-                                    ))}
-                                </GoalsSelectInput>
-                            ) : (<></>)}
+                            <GoalsTextInput
+                                label="Phone Number"
+                                required
+                                data={formData.phone_number}
+                                placeholder=""
+                                onChange={(e) => setFormData("name", e.target.value)}
+                                disabled={showDialog.show}
+                            />
+                            <GoalsTextInput
+                                label="Name"
+                                required
+                                data={formData.name}
+                                placeholder=""
+                                onChange={(e) => setFormData("name", e.target.value)}
+                                disabled={showDialog.show}
+                            />
+                            <GoalsTextInput
+                                label="University"
+                                required
+                                data={formData.university}
+                                placeholder=""
+                                onChange={(e) => setFormData("name", e.target.value)}
+                                disabled={showDialog.show}
+                            />
+                            <GoalsTextInput
+                                label="Email"
+                                required
+                                data={formData.email}
+                                placeholder=""
+                                onChange={(e) => setFormData("name", e.target.value)}
+                                disabled={showDialog.show}
+                            />
+                            <GoalsTextInput
+                                label="Major"
+                                required
+                                data={formData.major}
+                                placeholder=""
+                                onChange={(e) => setFormData("name", e.target.value)}
+                                disabled={showDialog.show}
+                            />
                         </div>
                         {showDialog.show ? (<></>) : (
                             (

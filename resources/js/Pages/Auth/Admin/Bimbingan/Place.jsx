@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
-import SubHeading from "../components/Subheading";
+import SubHeading from "../components/SubHeading";
 import GoalsButton from "@/Components/GoalsButton";
 import Dialog from "./Place/Dialog";
 import toast, { Toaster } from "react-hot-toast";
