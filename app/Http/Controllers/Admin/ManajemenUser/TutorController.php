@@ -79,8 +79,9 @@ class TutorController extends Controller
         try {
             if (Auth::user()->user_role == "admin") {
                 $tutorWithProfile = User::with('profile')->where("user_role", "tutor")->findOrFail($tutor->id);
+                $tutorWithProfile->load('profile', 'skills');
 
-                return response()->json([
+                return Inertia::render('Auth/Admin/ManajemenUser/Tutor/Show', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
@@ -104,10 +105,14 @@ class TutorController extends Controller
         if (Auth::user()->user_role == "admin") {
             $skill = Skill::get();
             $tutor->load('profile', 'skills');
-            // return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
-            //     'tutor' => $tutor,
-            // 'skill'=>$skill
-            // ]], 200);
+            return Inertia::render('Auth/Admin/ManajemenUser/Tutor/Update', [
+                'status' => true,
+                'statusCode' => 200,
+                'data' => [
+                    'tutor' => $tutor,
+                    'skill'=>$skill
+                ]
+            ]);
         } else {
             abort(403);
         }
