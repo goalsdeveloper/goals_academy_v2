@@ -305,7 +305,7 @@ export default function DashboardLayout ({ auth, title, subtitle, role, children
     }, []);
 
     return (
-        <main className="relative flex bg-gray-50 text-dark">
+        <main className="relative flex bg-gray-50 text-dark font-sans">
             <Head title={title} />
             <aside className="w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer">
                 <div className="flex justify-center items-center pt-[2.5vw] pb-[1.75vw]">

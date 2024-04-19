@@ -31,6 +31,7 @@ const GoalsTextInput = ({
             <div>
                 <div className="relative flex">
                     <input
+                        required={required}
                         type={type}
                         placeholder={placeholder}
                         value={data}

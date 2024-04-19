@@ -2,8 +2,6 @@ import GoalsBadge from "@/Components/elements/GoalsBadge";
 import React from "react";
 
 const TransactionStatusBadge = ({ data }) => {
-    console.log(data.status, statusClassMap[data.status]);
-
     return (
         <GoalsBadge
             title={data.status}
