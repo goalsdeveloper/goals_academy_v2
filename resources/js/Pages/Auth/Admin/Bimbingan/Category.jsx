@@ -92,6 +92,7 @@ export default function Category({ auth, data, message }) {
                             <Link
                                 method="DELETE"
                                 href={`/admin/bimbingan/category/${cell.getValue()}`}
+                                onSuccess={callback}
                             >
                                 <FiTrash2 className="text-[1.2vw] text-danger-40" />
                             </Link>
