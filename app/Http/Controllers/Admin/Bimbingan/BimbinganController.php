@@ -77,8 +77,14 @@ class BimbinganController extends Controller
                 'status' => true,
                 'statusCode' => 200,
                 'message' => 'get data success',
-                'bimbingan_sekali' => $sekali_bimbing,
-                'bimbingan_tuntas' => $bimbing_tuntas,
+                'bimbingan' => function() {
+                    $bimbingan = Products::whereHas('category.productType', function($q) {
+                        $q->where('type', 'bimbingan');
+                    })->with('category')->get();
+                    return $bimbingan;
+                }
+                // 'bimbingan_sekali' => $sekali_bimbing,
+                // 'bimbingan_tuntas' => $bimbing_tuntas,
             ], 200);
 
         } catch (\Exception $e) {
