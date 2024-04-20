@@ -9,12 +9,12 @@ import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 import Dialog from "./User/Dialog";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function User({ auth }) {
-    const data = [
-        { id: 1, name: "Hafiz Rizky 1", username: "hafizbaik", email: "hafizbaik@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: true },
-        { id: 2, name: "Hafiz Rizky 2", username: "hafizganteng", email: "hafizganteng@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: false },
-        { id: 3, name: "Hafiz Rizky 3", username: "hafizcute", email: "hafizcute@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: true },
-    ];
+export default function User({ auth,data }) {
+    // const data = [
+    //     { id: 1, name: "Hafiz Rizky 1", username: "hafizbaik", email: "hafizbaik@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: true },
+    //     { id: 2, name: "Hafiz Rizky 2", username: "hafizganteng", email: "hafizganteng@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: false },
+    //     { id: 3, name: "Hafiz Rizky 3", username: "hafizcute", email: "hafizcute@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: true },
+    // ];
 
     const [showDialog, setShowDialog] = useState({
         create: false,
@@ -71,12 +71,12 @@ export default function User({ auth }) {
                 size: 100,
             },
             {
-                accessorKey: "phone_number",
+                accessorKey: "profile.phone_number",
                 header: "Telepon",
                 size: 100,
             },
             {
-                accessorKey: "university",
+                accessorKey: "profile.university",
                 header: "Universitas",
                 size: 100,
             },
@@ -99,9 +99,9 @@ export default function User({ auth }) {
                                             name: cell.row.original.name,
                                             username: cell.row.original.username,
                                             email: cell.row.original.email,
-                                            phone_number: cell.row.original.phone_number,
-                                            university: cell.row.original.university,
-                                            major: cell.row.original.major,
+                                            phone_number: cell.row.original.profile.phone_number,
+                                            university: cell.row.original.profile.university,
+                                            major: cell.row.original.profile.major,
                                         });
                                     }}
                                 />
