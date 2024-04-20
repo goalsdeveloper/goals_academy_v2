@@ -25,11 +25,11 @@ const Dialog = ({
                         onSubmit={(e) => {
                             e.preventDefault();
                             if (showDialog.create) {
-                                post(route("admin.bimbingan.moderator.store"), {
+                                post(route("admin.manajemen_user.moderator.store"), {
                                     onFinish: () => callback('create')
                                 });
                             } else if (showDialog.edit) {
-                                put(route("admin.bimbingan.moderator.update", formData.id), {
+                                put(route("admin.manajemen_user.moderator.update", formData.id), {
                                     onFinish: () => callback('edit')
                                 });
                             }
@@ -46,7 +46,7 @@ const Dialog = ({
                                 required
                                 data={formData.username}
                                 placeholder=""
-                                onChange={(e) => setFormData("name", e.target.value)}
+                                onChange={(e) => setFormData("username", e.target.value)}
                                 disabled={showDialog.show}
                             />
                             <GoalsTextInput
@@ -54,7 +54,7 @@ const Dialog = ({
                                 required
                                 data={formData.phone_number}
                                 placeholder=""
-                                onChange={(e) => setFormData("name", e.target.value)}
+                                onChange={(e) => setFormData("phone_number", e.target.value)}
                                 disabled={showDialog.show}
                             />
                             <GoalsTextInput
@@ -70,7 +70,7 @@ const Dialog = ({
                                 required
                                 data={formData.university}
                                 placeholder=""
-                                onChange={(e) => setFormData("name", e.target.value)}
+                                onChange={(e) => setFormData("university", e.target.value)}
                                 disabled={showDialog.show}
                             />
                             <GoalsTextInput
@@ -78,7 +78,7 @@ const Dialog = ({
                                 required
                                 data={formData.email}
                                 placeholder=""
-                                onChange={(e) => setFormData("name", e.target.value)}
+                                onChange={(e) => setFormData("email", e.target.value)}
                                 disabled={showDialog.show}
                             />
                             <GoalsTextInput
@@ -86,7 +86,7 @@ const Dialog = ({
                                 required
                                 data={formData.major}
                                 placeholder=""
-                                onChange={(e) => setFormData("name", e.target.value)}
+                                onChange={(e) => setFormData("major", e.target.value)}
                                 disabled={showDialog.show}
                             />
                         </div>
