@@ -9,12 +9,13 @@ import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 import Dialog from "./Tutor/Dialog";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function Tutor({ auth }) {
-    const data = [
-        { id: 1, name: "Hafiz Rizky 1", username: "hafizbaik", email: "hafizbaik@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: true },
-        { id: 2, name: "Hafiz Rizky 2", username: "hafizganteng", email: "hafizganteng@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: false },
-        { id: 3, name: "Hafiz Rizky 3", username: "hafizcute", email: "hafizcute@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: true },
-    ];
+export default function Tutor({ auth, data }) {
+    console.log(data);
+    // const data = [
+    //     { id: 1, name: "Hafiz Rizky 1", username: "hafizbaik", email: "hafizbaik@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: true },
+    //     { id: 2, name: "Hafiz Rizky 2", username: "hafizganteng", email: "hafizganteng@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: false },
+    //     { id: 3, name: "Hafiz Rizky 3", username: "hafizcute", email: "hafizcute@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: true },
+    // ];
 
     const [showDialog, setShowDialog] = useState({
         create: false,
@@ -39,19 +40,19 @@ export default function Tutor({ auth }) {
     });
 
     const callback = (method) => {
-        router.visit(route('admin.bimbingan.tutor.index'), {
-            only: ['data'],
+        router.visit(route("admin.bimbingan.tutor.index"), {
+            only: ["data"],
             onSuccess: () => {
-                if (method == 'create') {
-                    toast.success('Create Success!');
-                } else if (method == 'edit') {
-                    toast.success('Edit Success!');
+                if (method == "create") {
+                    toast.success("Create Success!");
+                } else if (method == "edit") {
+                    toast.success("Edit Success!");
                 } else {
-                    toast.success('Delete Success!');
+                    toast.success("Delete Success!");
                 }
-            }
+            },
         });
-    }
+    };
 
     const columns = useMemo(
         () => [
@@ -71,12 +72,12 @@ export default function Tutor({ auth }) {
                 size: 100,
             },
             {
-                accessorKey: "phone_number",
+                accessorKey: "profile.phone_number",
                 header: "Telepon",
                 size: 100,
             },
             {
-                accessorKey: "university",
+                accessorKey: "profile.university",
                 header: "Universitas",
                 size: 100,
             },
@@ -90,7 +91,10 @@ export default function Tutor({ auth }) {
                         <li>
                             <Link
                                 method="GET"
-                                href={route('admin.manajemen_user.tutor.edit', 3)}
+                                href={route(
+                                    "admin.manajemen_user.tutor.edit",
+                                    cell.row.original.id
+                                )}
                             >
                                 <FiEdit2 className="text-[1.2vw] text-secondary" />
                             </Link>
@@ -98,7 +102,10 @@ export default function Tutor({ auth }) {
                         <li>
                             <Link
                                 method="GET"
-                                href={route('admin.manajemen_user.tutor.show', 3)}
+                                href={route(
+                                    "admin.manajemen_user.tutor.show",
+                                    cell.row.original.id
+                                )}
                             >
                                 <FiEye className="text-[1.2vw] text-gray-400" />
                             </Link>
@@ -112,7 +119,6 @@ export default function Tutor({ auth }) {
                                 isEnabled={cell.row.original.status}
                                 setIsEnabled={(i) => {
                                     // Update status tutor dengan menggunakan route
-
                                 }}
                             />
                         </li>
