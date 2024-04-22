@@ -5,7 +5,8 @@ import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
 import { FaWhatsappSquare } from "react-icons/fa";
 import React from "react";
 
-export default function Edit({ auth }) {
+export default function Edit({ auth, order }) {
+    console.log(order)
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -19,12 +20,12 @@ export default function Edit({ auth }) {
 
                 <form className="flex gap-[1.2vw]">
                     <FormSection title="User Information">
-                        <GoalsTextInput label="Username" />
-                        <GoalsTextInput label="University" />
-                        <GoalsTextInput label="Major" />
+                        <GoalsTextInput label="Username" data={order.user.name}/>
+                        <GoalsTextInput label="University" data={order.user?.profile?.university ?? 'Belum Ada Univ'}/>
+                        <GoalsTextInput label="Major" data={order.user?.profile?.major ?? 'Belum Ada Major'}/>
                         <div className="flex gap-[.4vw] w-full items-end">
-                            <GoalsTextInput label="Number" grow />
-                            <a href="wa.me/6289123456789" target="_blank">
+                            <GoalsTextInput label="Number" grow data={order.user?.profile?.phone_number ?? 'Belum Ada Nomor Telephone'} />
+                            <a href={`wa.me/${order.user.profile.phone_number ?? '6285672771772'}`} target="_blank">
                                 <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
                             </a>
                         </div>
@@ -36,8 +37,8 @@ export default function Edit({ auth }) {
                         </div>
                     </FormSection>
                     <FormSection title="Order Details">
-                        <GoalsTextInput label="Order Id" />
-                        <GoalsTextInput label="Product" />
+                        <GoalsTextInput label="Order Id" data={order.order_code}/>
+                        <GoalsTextInput label="Product" data={order.products.name}/>
                         <GoalsTextInput label="Topic" />
                         <GoalsTextInput label="Lokasi (Offline)" />
                         <div className="flex gap-[.4vw]">

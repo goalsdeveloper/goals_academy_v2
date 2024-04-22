@@ -5,33 +5,35 @@ import { FiPlus } from "react-icons/fi";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { useMemo } from "react";
 
-export default function Order({ auth }) {
+export default function Order({ auth, orders }) {
+    orders = orders.data
+    console.log(orders)
     const columns = useMemo(
         () => [
             {
-                accessorKey: "order_id", //access nested data with dot notation
+                accessorKey: "order_code", //access nested data with dot notation
                 header: "Id Pesanan",
 
-                Cell: ({ cell }) => {
-                    return (
-                        <img
-                            src={cell.row.original.gambar}
-                            alt="thumbnail-product"
-                            className="w-[3.6vw] h-[2.6vw] rounded-[.3vw]"
-                        />
-                    );
-                },
+                // Cell: ({ cell }) => {
+                //     return (
+                //         <img
+                //             src={cell.row.original.gambar}
+                //             alt="thumbnail-product"
+                //             className="w-[3.6vw] h-[2.6vw] rounded-[.3vw]"
+                //         />
+                //     );
+                // },
             },
             {
-                accessorKey: "name",
+                accessorKey: "user.name",
                 header: "Nama Pembeli",
             },
             {
-                accessorKey: "product",
+                accessorKey: "products.name",
                 header: "Produk",
             },
             {
-                accessorKey: "payment_method",
+                accessorKey: "payment_method.name",
                 header: "Pembayaran",
             },
             {
@@ -39,7 +41,7 @@ export default function Order({ auth }) {
                 header: "Status",
             },
             {
-                accessorKey: "order_date",
+                accessorKey: "updated_at",
                 header: "Tanggal Pesanan",
             },
         ],
@@ -61,21 +63,9 @@ export default function Order({ auth }) {
                     isPaginated
                     isSortable
                     columns={columns}
-                    data={data}
+                    data={orders}
                 />
             </div>
         </DashboardLayout>
     );
 }
-
-const data = [
-    {
-        id: 1,
-        order_id: "12345",
-        name: "John Doe",
-        product: "Product A",
-        payment_method: "Credit Card",
-        status: "Pending",
-        order_date: "2022-01-01",
-    },
-];

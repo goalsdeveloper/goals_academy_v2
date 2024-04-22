@@ -235,14 +235,15 @@ class BimbinganController extends Controller
         $addons = AddOn::get();
         $topics = Topic::get();
         $product->load('category', 'addOns', 'topics');
-        // return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
-        //     'categories' => $categories,
-        //     'products' => $product,
-        //     'addons' =>$addons,
-        //     'topics'=>$topics
-        // ]], 200);
-        return Inertia::render('Auth/Admin/Bimbingan/Product/Update');
-
+        return Inertia::render('Auth/Admin/Bimbingan/Product/Update', [
+            'status' => true,
+            'statusCode' => 200,
+            'message' => 'get data success',
+            'categories' => $categories,
+            'addons' => $addons,
+            'topics' => $topics,
+            'product' => $product,
+        ], 200);
     }
 
     /**

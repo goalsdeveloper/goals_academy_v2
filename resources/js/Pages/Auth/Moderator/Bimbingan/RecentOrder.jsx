@@ -5,52 +5,49 @@ import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { FiEdit2, FiEye } from "react-icons/fi";
 import { Link } from "@inertiajs/react";
 
-export default function RecentOrder({ auth, recent_order }) {
+export default function RecentOrder({ auth, orders }) {
+    orders = orders.data
+    console.log(orders)
     // const [isLoading, setIsLoading] = useState(false);
 
     // console.log(recent_order);
 
-    const data = [
-        {
-            id: 1,
-            username: "Hafiz",
-            product: "Dibimbing Sekali",
-            date: "08/12/2024",
-            time: "23:59",
-            lokasi: "Offline - Nakoa",
-            kelengkapan: "50%",
-        },
-    ];
 
     const columns = useMemo(
         () => [
             {
-                accessorKey: "username",
+                accessorKey: "user.name",
                 header: "Username",
             },
             {
-                accessorKey: "product",
+                accessorKey: "products.name",
                 header: "Product",
             },
             {
-                accessorKey: "date",
+                accessorKey: "updated_at",
                 header: "Tanggal Pembelian",
             },
             {
-                accessorKey: "time",
+                accessorKey: "created_at",
                 header: "Waktu Pembelian",
             },
             {
-                accessorKey: "lokasi",
+                accessorKey: "place.place",
                 header: "Lokasi",
+                Cell: ({ cell }) => (
+                    <span className="text-[.8vw] px-[.8vw] py-[.3vw] font-bold text-danger-40 bg-danger-50 rounded-[.3vw]">
+                        {cell.row.original?.place?.place ?? "Lokasi Belum Diset"}
+                        {/* <FiCheckCircle className="text-success-50 text-[1.2vw]" /> */}
+                    </span>
+                ),
             },
             {
-                accessorKey: "kelengkapan",
+                accessorKey: "completeness_percentage",
                 header: "Kelengkapan",
 
                 Cell: ({ cell }) => (
                     <span className="text-[.8vw] px-[.8vw] py-[.3vw] font-bold text-danger-40 bg-danger-50 rounded-[.3vw]">
-                        {cell.row.original.kelengkapan}
+                        {cell.row.original.completeness_percentage}
                         {/* <FiCheckCircle className="text-success-50 text-[1.2vw]" /> */}
                     </span>
                 ),
@@ -65,8 +62,8 @@ export default function RecentOrder({ auth, recent_order }) {
                                 <Link
                                     method="GET"
                                     href={route(
-                                        "admin.bimbingan.product.edit",
-                                        { product: cell.row.original }
+                                        "moderator.bimbingan.order.edit",
+                                        { order: cell.row.original.order_code }
                                     )}
                                 >
                                     <FiEdit2 className="text-[1.2vw] text-secondary" />
@@ -76,8 +73,8 @@ export default function RecentOrder({ auth, recent_order }) {
                                 <Link
                                     method="GET"
                                     href={route(
-                                        "admin.bimbingan.product.show",
-                                        { product: cell.row.original }
+                                        "moderator.bimbingan.order.show",
+                                        { order: cell.row.original.order_code }
                                     )}
                                 >
                                     <FiEye className="text-[1.2vw] text-neutral-60" />
@@ -104,7 +101,7 @@ export default function RecentOrder({ auth, recent_order }) {
             <div className="text-[.8vw]">
                 <GoalsDashboardTable
                     columns={columns}
-                    data={data}
+                    data={orders}
                     isHeadVisible
                     isSortable
                     isPaginated
