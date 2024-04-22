@@ -3,16 +3,17 @@ import TECollapseItem from "@/Components/TECollapseItem";
 import GoalsButton from "@/Components/GoalsButton";
 import ExpandedButton from "@/Components/ExpandedButton";
 
-function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih satu", data=[], error="", icon="", chevronIcon="", required=false, className, filledClassName="border-2 border-secondary text-secondary", emptyClassName="border-1 border-light-grey text-light-grey", children, onClick }) {
+function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih opsi", data=[], error="", icon="", chevronIcon="", required=false, className, labelClassName, placeholderClassName, filledPlaceholder="Opsi dipilih", filledClassName="border-2 border-secondary text-secondary", emptyClassName="border-1 border-light-grey text-light-grey", submitButtonClassName, messageClassName, children, onSubmit }) {
     return (
         <div>
             {label != "" ? (
-                <p className="mb-[2vw] md:mb-[.5vw]">{label}<sup className={`${required ? "" : "hidden"} text-red-600`}>*</sup></p>
+                <p className={`mb-[2vw] md:mb-[.5vw] ${labelClassName}`}>{label}<span className={`${required ? "" : "hidden"} text-red-600`}>*</span></p>
             ) : (<></>)}
             <ExpandedButton
                 className={`rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] cursor-pointer ${
                     data.length > 0 ? filledClassName : emptyClassName
                 } ${className}`}
+                textClassName={placeholderClassName}
                 icon={chevronIcon != "" ? chevronIcon : `fa-solid fa-chevron-down duration-300 ${show != "" ? "-rotate-180" : ""}`}
                 onClick={() => setShow(!show)}
             >
@@ -22,7 +23,7 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
                         &nbsp;&nbsp;
                     </>
                 ) : (<></>)}
-                {data.length > 0 ? 'Add-On ditambahkan' : (placeholder)}
+                {data.length > 0 ? filledPlaceholder : placeholder}
             </ExpandedButton>
             <div className="relative">
                 <TECollapse show={show} className={`${show ? "" : "md:hidden"} md:absolute z-30 w-full md:w-[120%] md:shadow-none md:-translate-x-[8.25%] pt-0 md:-translate-y-[1.5vw] md:px-[10%] pb-[.5vw]`}>
@@ -32,8 +33,8 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
                         </div>
                         <hr />
                         <div className="flex justify-end mt-[2vw] p-[2vw] md:mt-[.5vw] md:p-[.5vw]">
-                            <GoalsButton className="w-[30%] rounded-[2vw] md:rounded-[.5vw]" onClick={() => {
-                                onClick()
+                            <GoalsButton className={`w-[30%] rounded-[2vw] md:rounded-[.5vw] ${submitButtonClassName}`} onClick={() => {
+                                onSubmit()
                                 setShow(false)
                             }}>Simpan</GoalsButton>
                         </div>
@@ -41,7 +42,7 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
                 </TECollapse>
             </div>
             {error != "" ? (
-                <p className="text-red-500 text-[3.6vw] md:text-[.9vw] mt-[.25vw]">{error}</p>
+                <p className={`text-red-500 text-[3.6vw] md:text-[.9vw] mt-[.25vw] ${messageClassName}`}>{error}</p>
             ) : (<></>)}
         </div>
     )

@@ -1,5 +1,3 @@
-import React from "react";
-
 const SubHeading = ({ title, children }) => {
     return (
         <div className="flex w-full justify-between items-center">
