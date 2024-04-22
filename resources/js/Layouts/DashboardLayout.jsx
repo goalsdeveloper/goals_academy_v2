@@ -283,6 +283,37 @@ export default function DashboardLayout ({ auth, title, subtitle, role, children
                 },
             ];
             break;
+        case "tutor":
+            navConfig = [
+                {
+                    name: "Overview",
+                    href: "/tutor/overview",
+                    icon: <FiGrid className="text-[1vw]" />,
+                    isActive: title == "Overview",
+                },
+                {
+                    name: "Bimbingan",
+                    href: "",
+                    icon: "",
+                    isActive: false,
+                    branches: [
+                        {
+                            name: "Progress",
+                            href: "/tutor/bimbingan/progress",
+                            icon: <MdHistory className="text-[1vw]" />,
+                            isActive: title == "Bimbingan" && subtitle == "Progress",
+                        },
+                        {
+                            name: "History",
+                            href: "/tutor/bimbingan/history",
+                            icon: <MdOutlineEventNote className="text-[1vw]" />,
+                            isActive: title == "Bimbingan" && subtitle == "History",
+                        },
+                    ],
+                    collapsed: true,
+                },
+            ];
+            break;
 
         default:
             break;

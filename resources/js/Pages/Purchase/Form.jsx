@@ -264,7 +264,7 @@ function MainCard({
                             {dataProduct.facilities.map((item, index) => {
                                 return (
                                     <div key={index} className="flex items-center gap-[3vw] md:gap-[.5vw]">
-                                        <i className={`${item.icon} fa-regular fa-calendar text-primary`}></i>
+                                        <i className={`${item.icon} text-primary`}></i>
                                         <p>{item.text}</p>
                                     </div>
                                 )
