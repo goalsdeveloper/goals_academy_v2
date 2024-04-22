@@ -156,10 +156,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
     Route::resource('statistic', StatisticController::class);
 });
 
-Route::prefix('moderator')->name('moderator.')->middleware('auth')->group(function () {
+Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')->group(function () {
     Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
-        Route::resource('order', ModeratorOrderController::class);
-        Route::get('order/edit/{order}', [ModeratorOrderController::class, 'edit'])->name('order.edit');
+        Route::resource('order', ModeratorOrderController::class)->parameters(['order' => 'order:order_code']);
+        // Route::get('order/edit/{order}', [ModeratorOrderController::class, 'edit'])->name('order.edit');
         Route::get('order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('order.showOnline');
         Route::patch('order/{order}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('order.updateOnline');
         Route::resource('progress', ProgressController::class);
