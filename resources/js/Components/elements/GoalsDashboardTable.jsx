@@ -21,21 +21,26 @@ const GoalsDashboardTable = ({
     );
 
     function splitTableByCategory(data) {
-        return Object.entries(
-            data.reduce((acc, item) => {
-                const { kategori, ...rest } = item;
+        if (isSplitByCategory) {
+            return Object.entries(
+                data.reduce((acc, item) => {
+                    const { category: catData, ...rest } = item;
+                    const category = catData?.name;
 
-                if (!acc[kategori]) {
-                    acc[kategori] = [];
-                }
-                acc[kategori].push(item);
-                return acc;
-            }, {})
-        ).map(([kategori, items]) => ({
-            kategori,
-            items,
-        }));
+                    if (!acc[category]) {
+                        acc[category] = [];
+                    }
+                    acc[category].push(item);
+                    return acc;
+                }, {})
+            ).map(([kategori, items]) => ({
+                kategori,
+                items,
+            }));
+        }
     }
+
+    console.log(splitTableByCategory(data));
 
     function getOptionalConfig() {
         return {
@@ -53,7 +58,9 @@ const GoalsDashboardTable = ({
     );
 
     return (
-        <div className={`bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw] ${className}`}>
+        <div
+            className={`bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw] ${className}`}
+        >
             <GoalsTextInput
                 placeholder="🔍 Search"
                 className="max-w-[10.4vw] max-h-[2.4vw]"

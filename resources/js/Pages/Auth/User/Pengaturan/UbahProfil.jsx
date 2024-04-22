@@ -8,9 +8,10 @@ import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import { useMediaQuery } from "react-responsive";
 import { FiChevronLeft } from "react-icons/fi";
 import { PiPencilSimpleLight } from "react-icons/pi";
+import toast from "react-hot-toast";
 
 export default function Index({ auth, userData, profileData }) {
-    const { data, setData, post } = useForm({
+    const { data, setData, post, processing } = useForm({
         username: userData.username,
         name: userData.name,
         phone_number: profileData.phone_number,
@@ -20,10 +21,13 @@ export default function Index({ auth, userData, profileData }) {
         referral: "",
     });
 
-    console.log(data);
     const submit = (e) => {
         e.preventDefault();
-        post("/pengaturan");
+        post("/pengaturan", {
+            onSuccess: () => {
+                toast.success("Profil berhasil diubah");
+            },
+        });
     };
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
@@ -55,6 +59,7 @@ export default function Index({ auth, userData, profileData }) {
                     >
                         <div className="grid md:grid-cols-2 gap-[1.8vw] md:gap-[1.2vw]">
                             <GoalsTextInput
+                                required
                                 data={data.username}
                                 onChange={(e) =>
                                     setData("username", e.target.value)
@@ -127,10 +132,11 @@ export default function Index({ auth, userData, profileData }) {
                         />
 
                         <GoalsButton
+                            disabled={processing}
                             type="submit"
                             className="md:self-end mt-[1.8vw] md:mt-0"
                         >
-                            Simpan
+                            {processing ? <i className="fa-solid fa-circle-notch fa-spin text-inherit animate-spin"></i> : "Simpan"}
                         </GoalsButton>
                     </form>
                 </div>

@@ -82,35 +82,41 @@ class BimbinganController extends Controller
     {
         $course = $order->courses()->where('session', 1)->first();
         $validate = $request->validate([
-            'rate_tutor' => 'required|integer|min:1|max:5',
-            'rate_product' => 'required|integer|min:1|max:5',
-            'note_tutor' => 'required|string',
-            'note_product' => 'required|string',
+            'rate_tutor' => 'integer|min:1|max:5',
+            'rate_product' => 'integer|min:1|max:5',
+            'note_tutor' => 'string',
+            'note_product' => 'string',
         ]);
         try {
-            $data = ProductReview::create(array_merge($validate, ['course_id' => $course->id]));
+            ProductReview::create(array_merge($validate, ['course_id' => $course->id]));
         } catch (\Throwable $th) {
-            return response()->json([
-                'message' => $th->getMessage(),
-            ], 500);
+            // return response()->json([
+            //     'message' => $th->getMessage(),
+            // ], 500);
+            return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', $th->getMessage());
         }
-        return response()->json([
-            'message' => 'Berhasil Mengirim Review',
-        ]);
+        // return response()->json([
+        //     'message' => 'Berhasil Mengirim Review',
+        // ]);
+
+        redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', 'Berhasil Mengirim Review');
     }
 
     public function complete(Order $order)
     {
         try {
-            $courses = $order->courses()->update(['is_user' => true, 'ongoing' => CourseStatusEnum::SUCCESS->value]);
+            $courses = $order->courses()->update(['ongoing' => CourseStatusEnum::SUCCESS->value]);
         } catch (\Throwable $th) {
-            return response()->json([
-                'message' => $th->getMessage(),
-            ], 500);
+            // return response()->json([
+            //     'message' => $th->getMessage(),
+            // ], 500);
+            return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', $th->getMessage());
         }
-        return response()->json([
-            'message' => 'success',
-        ]);
+        // return response()->json([
+        //     'message' => 'success',
+        // ]);
+
+        redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', 'Berhasil Menyelesaikan Bimbingan');
     }
 
     public function aturJadwal(Order $order, Request $request)
@@ -125,16 +131,9 @@ class BimbinganController extends Controller
 
             $course->update($data);
         } catch (\Throwable $th) {
-            // return response()->json([
-            //     'message' => $th->getMessage(),
-            // ], 500);
 
             return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', $th->getMessage());
         }
-
-        // return response()->json([
-        //     'message' => 'Berhasil Mengatur Jadwal',
-        // ]);
 
         return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', 'Berhasil Mengatur Jadwal');
     }

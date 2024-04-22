@@ -91,7 +91,7 @@ class PurchaseController extends Controller
 
         // charge midtrans
         $phoneNumber = $user->profile->phone_number ?? '';
-        $form_result = [];
+        $form_result = ['add_on' => []];
         $form_config = (array) Products::find($orderData->products_id)->form_config;
         foreach ($form_config as $key => $value) {
             if ($key == 'add_on' && $key == 1 && $request->exists('add_on')) {

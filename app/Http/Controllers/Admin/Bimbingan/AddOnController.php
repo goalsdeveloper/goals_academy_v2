@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Bimbingan;
 
-use App\Models\AddOn;
 use App\Http\Controllers\Controller;
+use App\Models\AddOn;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class AddOnController extends Controller
@@ -17,27 +17,25 @@ class AddOnController extends Controller
     {
 
         try {
-            if (Auth::user()->user_role == "admin") {
-                $search = $request->input('search');
-                $perPage = $request->input('perPage', 10);
+            return Inertia::render('Auth/Admin/Bimbingan/AddOn', [
+                'status' => true,
+                'statusCode' => 200,
+                'message' => 'get data category success',
+                // 'data' => $addons,
+                'data' => function () use ($request) {
+                    $search = $request->input('search');
+                    $perPage = $request->input('perPage', 10);
 
-                $query = AddOn::query();
+                    $query = AddOn::query();
 
-                if ($search) {
-                    $query->where('name', 'LIKE', "%$search%");
-                }
+                    if ($search) {
+                        $query->where('name', 'LIKE', "%$search%");
+                    }
 
-                $addons = $query->paginate($perPage);
-
-                return Inertia::render('Auth/Admin/Bimbingan/AddOn', [
-                    'status' => true,
-                    'statusCode' => 200,
-                    'message' => 'get data category success',
-                    'data' => $addons,
-                ], 200);
-            } else {
-                abort(403);
-            }
+                    $addons = $query->paginate($perPage);
+                    return $addons;
+                },
+            ], 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to retrieve data. Internal Server Error'], 500);
         } catch (\Exception $e) {
@@ -59,24 +57,23 @@ class AddOnController extends Controller
     public function store(Request $request)
     {
         try {
-            if (Auth::user()->user_role == "admin") {
-                $validateData = $request->validate([
-                    'name' => 'required|string',
-                    'slug' => 'required|string',
-                    'price' => 'required|numeric',
-                ]);
 
-                $addon = new AddOn();
-                $addon->name = $validateData['name'];
-                $addon->slug = $validateData['slug'];
-                $addon->price = $validateData['price'];
+            $validateData = $request->validate([
+                'name' => 'required|string',
+                'slug' => 'required|string',
+                'price' => 'required|numeric',
+            ]);
 
-                $addon->save();
+            $addon = new AddOn();
+            $addon->name = $validateData['name'];
+            $addon->slug = $validateData['slug'];
+            $addon->price = $validateData['price'];
 
-                return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create addon success'], 201);
-            } else {
-                abort(403);
-            }
+            $addon->save();
+
+            // return Inertia::location(route('admin.bimbingan.addon.index'));
+            return redirect()->route('admin.bimbingan.addon.index');
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->errors()], 422);
         } catch (\Exception $e) {
@@ -84,17 +81,12 @@ class AddOnController extends Controller
         }
     }
 
-
     /**
      * Display the specified resource.
      */
     public function show(AddOn $addOn)
     {
-        if (Auth::user()->user_role == "admin") {
-            return response()->json(['status' => true, 'statusCode' => 200, 'data' => $addOn], 200);
-        } else {
-            abort(403);
-        }
+        return response()->json(['status' => true, 'statusCode' => 200, 'data' => $addOn], 200);
     }
 
     /**
@@ -102,11 +94,8 @@ class AddOnController extends Controller
      */
     public function edit(AddOn $addOn)
     {
-        if (Auth::user()->user_role == "admin") {
-            return response()->json(['status' => true, 'statusCode' => 200, 'data' => $addOn], 200);
-        } else {
-            abort(403);
-        }
+
+        return response()->json(['status' => true, 'statusCode' => 200, 'data' => $addOn], 200);
     }
 
     /**
@@ -115,23 +104,22 @@ class AddOnController extends Controller
     public function update(Request $request, AddOn $addon)
     {
         try {
-            if (Auth::user()->user_role == "admin") {
-                $validateData = $request->validate([
-                    'name' => 'string',
-                    'slug' => 'string',
-                    'price' => 'numeric',
+            $validateData = $request->validate([
+                'name' => 'string',
+                'slug' => 'string',
+                'price' => 'numeric',
 
-                ]);
+            ]);
 
-                $addon->update($validateData);
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update category success'], 200);
-            } else {
-                abort(403);
-            }
+            $addon->update($validateData);
+            return redirect()->route('admin.bimbingan.addon.index');
+            // return Inertia::location(route('admin.bimbingan.addon.index'));
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->errors()], 422);
+            // return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->errors()], 422);
+            return redirect()->route('admin.bimbingan.addon.index')->with('errors', $e->errors());
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+            return redirect()->route('admin.bimbingan.addon.index')->with('errors', $e->getMessage());
+            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
 
@@ -141,12 +129,10 @@ class AddOnController extends Controller
     public function destroy(AddOn $addon)
     {
         try {
-            if (Auth::user()->user_role == "admin") {
-                $addon->delete();
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete addon success'], 200);
-            } else {
-                abort(403);
-            }
+            $addon->delete();
+            // return Inertia::location(route('admin.bimbingan.addon.index'));
+            return redirect()->route('admin.bimbingan.addon.index');
+            // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete addon success'], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Addon not found'], 404);
         } catch (\Illuminate\Database\QueryException $e) {
