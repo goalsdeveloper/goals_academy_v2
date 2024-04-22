@@ -7,7 +7,7 @@ export default function History ({ auth }) {
     return (
         <DashboardLayout title="Bimbingan" subtitle="History" role="tutor" auth={auth}>
             {isLoading && <LoadingUI />}
-            Bimbingan
+            History
         </DashboardLayout>
     )
 }

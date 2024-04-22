@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tutor;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class HistoryController extends Controller
 {
@@ -48,7 +49,7 @@ class HistoryController extends Controller
                 }
             }])
             ->paginate($paginate);
-        return response()->json([
+        return Inertia::render('Auth/Tutor/Bimbingan/History', [
             'history' => $history,
         ]);
     }

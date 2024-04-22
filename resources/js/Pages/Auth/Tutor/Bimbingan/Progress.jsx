@@ -7,7 +7,7 @@ export default function Progress ({ auth }) {
     return (
         <DashboardLayout title="Bimbingan" subtitle="Progress" role="tutor" auth={auth}>
             {isLoading && <LoadingUI />}
-            Bimbingan
+            Progress
         </DashboardLayout>
     )
 }

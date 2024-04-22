@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\FileUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ProgressController extends Controller
 {
@@ -60,7 +61,7 @@ class ProgressController extends Controller
             $tutor = $tutor->orderBy('ongoing', $ongoing);
         }
         $tutor = $tutor->paginate(15);
-        return response()->json([
+        return Inertia::render('Auth/Tutor/Bimbingan/Progress', [
             'bimbingan' => $tutor,
         ]);
     }
