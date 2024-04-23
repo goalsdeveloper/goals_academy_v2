@@ -11,10 +11,8 @@ const FormSection = ({
             <div className="flex items-center justify-between">
                 <h2 className="text-[1vw] font-medium">{title}</h2>
 
-                    {titleAction}
-                </div>
-            }
-
+                {titleAction}
+            </div>
             <div className="space-y-[1.2vw]">{children}</div>
         </div>
     );
