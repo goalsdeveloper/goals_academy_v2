@@ -26,15 +26,22 @@ const Update = ({ auth, categories, topics, addons, products }) => {
         promo: products.promo_price ?? "",
         total_meet: products.total_meet,
         active_period: products.active_period,
-        meeting_duration: products.duration,
+        duration: products.duration,
         add_on: products.add_ons ?? [],
         topic: products.topics ?? [],
-        facilities: products.facilities ?? [],
+        facilities:
+            typeof products.facilities == "object"
+                ? products.facilities
+                : JSON.parse(JSON.parse(products.facilities)) ?? [],
         is_visible: products.is_visible == 1 ? true : false,
-        form_config: products.form_config ?? {},
+        form_config:
+            typeof products.form_config == "object"
+                ? products.form_config
+                : JSON.parse(JSON.parse(products.form_config)) ?? {},
     });
 
-    console.log(products, data)
+    console.log(products.add_ons );
+    console.log(products.topics );
 
     function handleSubmit() {
         const formData = new FormData();
@@ -47,27 +54,32 @@ const Update = ({ auth, categories, topics, addons, products }) => {
         formData.append("promo", Number(data.promo));
         formData.append("total_meet", data.total_meet);
         formData.append("active_period", data.active_period);
-        formData.append("meeting_duration", data.meeting_duration);
+        formData.append("duration", data.duration);
         formData.append("add_on", Number(data.add_on.id));
         formData.append("topic", Number(data.topic.id));
         formData.append("facilities", data.facilities);
         formData.append("is_visible", data.is_visible ? 1 : 0);
         formData.append("is_facilities", 0);
         formData.append("excerpt", data.description);
+        formData.append("form_config", JSON.stringify(data.form_config));
 
-        // router.post(route("admin.bimbingan.product.update"), formData, {
-        //     onSuccess: () => {
-        //         toast.success("Product berhasil ditambahkan");
-        //     },
-        //     onError: (error) => {
-        //         toast.error(error.message);
-        //     },
-        // });
+        router.put(
+            route("admin.bimbingan.product.update", products.id),
+            formData,
+            {
+                onSuccess: () => {
+                    toast.success("Product berhasil ditambahkan");
+                },
+                onError: (error) => {
+                    toast.error(error.message);
+                },
+            }
+        );
     }
 
     const formConfigList = [
         { key: "city", label: "Kota" },
-        { key: "document", label: "Dokumen / Berkas" },
+        // { key: "document", label: "Dokumen / Berkas" },
         { key: "place", label: "Lokasi" },
         { key: "schedule", label: "Jadwal" },
         { key: "topic", label: "Topik" },
@@ -269,11 +281,11 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                 <GoalsTextInput
                                     label="Durasi Pertemuan"
                                     required
-                                    data={data.meeting_duration}
+                                    data={data.duration}
                                     setData={(e) =>
                                         setData({
                                             ...data,
-                                            meeting_duration: e,
+                                            duration: e,
                                         })
                                     }
                                 />
@@ -311,10 +323,11 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                         <SelectMultiTagItem
                                             key={i}
                                             onClick={() => {
+                                                console.log(option, 'options');
                                                 if (
                                                     !data.add_on.some(
                                                         (item) =>
-                                                            item === option
+                                                            item == option
                                                     )
                                                 ) {
                                                     setData({
@@ -358,7 +371,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                         onClick={() => {
                                             if (
                                                 !data.topic.some(
-                                                    (item) => item === option
+                                                    (item) => item == option
                                                 )
                                             ) {
                                                 setData({
@@ -389,6 +402,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                             }
                         >
                             <div className="flex flex-wrap gap-[1.6vw]">
+                                {console.log(data.facilities)}
                                 {data.facilities.length == 0 ? (
                                     <p className="text-[.83vw] w-full text-center">
                                         Belum diatur

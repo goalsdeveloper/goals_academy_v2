@@ -73,8 +73,13 @@ class BimbinganController extends Controller
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
-                    'bimbingan_sekali' => $bimbingan_sekali->values()->toArray(),
-                    'bimbingan_tuntas' => $bimbingan_tuntas->values()->toArray(),
+                    'bimbingan' => function () {
+                        $bimbingan = Products::whereHas('category.productType', function ($q) {
+                            $q->where('type', 'bimbingan');
+                        })->with('category')->get();
+                        return $bimbingan;
+                    },
+
                 ], 200);
             } else {
                 abort(403);
@@ -109,11 +114,11 @@ class BimbinganController extends Controller
             //         'topics' => $topics
             //     ]
             // ], 200);
-            return Inertia::render('Auth/Admin/Bimbingan/Product/Create', ['data' => [
+            return Inertia::render('Auth/Admin/Bimbingan/Product/Create', [
                 'categories' => $categories,
                 'addons' => $addons,
                 'topics' => $topics
-            ]]);
+            ]);
         } else {
             abort(403);
         }
@@ -124,7 +129,7 @@ class BimbinganController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+         try {
             if (Auth::user()->user_role == "admin") {
                 $validateData = $request->validate([
                     'category_id' => 'required|numeric',
@@ -136,21 +141,20 @@ class BimbinganController extends Controller
                     'product_image' => 'image|mimes:png,jpg,jpeg,svg',
                     'is_visible' => 'required|in:0,1',
                     'is_facilities' => 'required|in:0,1',
-                    'number_list' => 'numeric',
+                    // 'number_list' => 'numeric',
                     'total_meet' => 'required|numeric',
                     'active_period' => 'required|numeric',
                     'facilities' => 'required|string',
                     'facilities.*.icon' => 'required|string',
                     'facilities.*.text' => 'required|string',
-                    'form_config.*' => '', // Allow seluruh key form_config
+                    'form_config' => 'required|string', // Allow seluruh key form_config
                     'duration' => 'numeric',
                     'promo_price' => 'numeric',
                 ]);
 
-                if ($validateData['form_config']['topic'] == 1) {
+                if (json_decode($validateData['form_config'], true)['topic'] == 1) {
                     $request->validate([
-                        'topics' => 'required|array|min:1',
-                        'topics.*' => 'required|numeric',
+                        'topics' => 'required|string',
                     ]);
                 }
 
@@ -164,7 +168,7 @@ class BimbinganController extends Controller
                 $product->price = $validateData['price'];
                 $product->is_visible = $validateData['is_visible'];
                 $product->is_facilities = $validateData['is_facilities'];
-                $product->number_list = $validateData['number_list'];
+                $product->number_list = 1;
                 $product->total_meet = $validateData['total_meet'];
                 $product->active_period = $validateData['active_period'];
                 if (isset($validateData['duration'])) {
@@ -175,7 +179,7 @@ class BimbinganController extends Controller
                     $product->promo_price = $validateData['promo_price'];
                 }
 
-                $facilities = $validateData['facilities'];
+                $facilities = json_encode($validateData['facilities']);
                 $product->facilities = $facilities;
 
                 $form_config = json_encode($validateData['form_config']);
@@ -194,9 +198,8 @@ class BimbinganController extends Controller
                         }
                     }
                 }
-
-                if (isset($validateData['form_config']['topic']) && $validateData['form_config']['topic'] == 1) {
-                    $product->topics()->attach($request->topics);
+                if (json_decode($validateData['form_config'], true)['topic'] == 1) {
+                    $product->topics = $request->topics;
                 }
 
                 return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
@@ -256,7 +259,12 @@ class BimbinganController extends Controller
             //     'addons' =>$addons,
             //     'topics'=>$topics
             // ]], 200);
-            return Inertia::render('Auth/Admin/Bimbingan/Product/Update');
+            return Inertia::render('Auth/Admin/Bimbingan/Product/Update', [
+                'categories' => $categories,
+                'products' => $product,
+                'addons' => $addons,
+                'topics' => $topics
+            ]);
         } else {
             abort(403);
         }

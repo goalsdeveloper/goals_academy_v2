@@ -45,6 +45,7 @@ const SelectMultiTag = ({
                 // activeClassName={
                 //
                 // }
+                type="button"
                 onClick={handleToggle} // Use handleToggle instead of setShow(!show)
             >
                 <div className="flex items-center gap-[1vw]">
@@ -97,7 +98,7 @@ const SelectMultiTag = ({
 function SelectMultiTagItem({ className, onClick, children }) {
     return (
         <div
-            onClick={onClick}
+            onClick={() => onClick()}
             className={`hover:bg-skin cursor-pointer p-[4vw] md:p-[1vw] ${className}`}
         >
             {children}
