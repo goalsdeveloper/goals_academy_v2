@@ -229,9 +229,6 @@ class BimbinganController extends Controller
      */
     public function edit(Products $product)
     {
-        $categories = Category::get();
-        $addons = AddOn::get();
-        $topics = Topic::get();
         $product->load('category', 'addOns', 'topics');
         // return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
         //     'categories' => $categories,
@@ -239,7 +236,12 @@ class BimbinganController extends Controller
         //     'addons' =>$addons,
         //     'topics'=>$topics
         // ]], 200);
-        return Inertia::render('Auth/Admin/Bimbingan/Product/Update');
+        return Inertia::render('Auth/Admin/Bimbingan/Product/Update', [
+            'products' => $product,
+            'categories' => Category::get(),
+            'addons' => AddOn::get(),
+            'topics' => Topic::get()
+        ]);
     }
 
     /**
