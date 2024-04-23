@@ -77,16 +77,15 @@ class BimbinganController extends Controller
                 'status' => true,
                 'statusCode' => 200,
                 'message' => 'get data success',
-                'bimbingan' => function() {
-                    $bimbingan = Products::whereHas('category.productType', function($q) {
+                'bimbingan' => function () {
+                    $bimbingan = Products::whereHas('category.productType', function ($q) {
                         $q->where('type', 'bimbingan');
                     })->with('category')->get();
                     return $bimbingan;
-                }
+                },
                 // 'bimbingan_sekali' => $sekali_bimbing,
                 // 'bimbingan_tuntas' => $bimbing_tuntas,
             ], 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
@@ -102,9 +101,6 @@ class BimbinganController extends Controller
      */
     public function create()
     {
-        $categories = Category::get();
-        $addons = AddOn::get();
-        $topics = Topic::get();
         // return response()->json([
         //     'status' => true,
         //     'statusCode' => 200,
@@ -115,7 +111,11 @@ class BimbinganController extends Controller
         //         'topics' => $topics
         //     ]
         // ], 200);
-        return Inertia::render('Auth/Admin/Bimbingan/Product/Create');
+        return Inertia::render('Auth/Admin/Bimbingan/Product/Create', [
+            'categories' => Category::get(),
+            'addons' => AddOn::get(),
+            'topics' => Topic::get()
+        ]);
     }
 
     /**
@@ -193,7 +193,6 @@ class BimbinganController extends Controller
             }
 
             return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
-
         } catch (\Exception $e) {
 
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
@@ -220,7 +219,6 @@ class BimbinganController extends Controller
                 $product->form_config = json_decode($product->form_config);
             }
             return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $product], 200);
-
         } catch (\Exception $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while processing request', 'error' => $e->getMessage()], 500);
         }
@@ -242,7 +240,6 @@ class BimbinganController extends Controller
         //     'topics'=>$topics
         // ]], 200);
         return Inertia::render('Auth/Admin/Bimbingan/Product/Update');
-
     }
 
     /**
@@ -321,7 +318,6 @@ class BimbinganController extends Controller
             }
 
             return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update product success'], 200);
-
         } catch (\Exception $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while updating category', 'error' => $e->getMessage()], 500);
         }
@@ -341,7 +337,6 @@ class BimbinganController extends Controller
             }
             $product->delete();
             return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete product success'], 200);
-
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to delete product. Internal Server Error'], 500);
         } catch (\Exception $e) {
