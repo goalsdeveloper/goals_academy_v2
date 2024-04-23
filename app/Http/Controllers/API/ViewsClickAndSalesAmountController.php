@@ -171,10 +171,10 @@ class ViewsClickAndSalesAmountController extends Controller
                     ];
                 }
                 $salesAmount = Order::where('status', 'Success')
-                ->whereDate('created_at', $date)
-                ->whereHas('products', function ($query) use ($product) {
-                    $query->where('name', $product->name);
-                })
+                    ->whereDate('created_at', $date)
+                    ->whereHas('products', function ($query) use ($product) {
+                        $query->where('name', $product->name);
+                    })
                     ->sum('unit_price');
 
                 $totalSalesByDate[$date] = $salesAmount;
@@ -194,6 +194,8 @@ class ViewsClickAndSalesAmountController extends Controller
             }
         }
 
+        ksort($totalsByDate);
+        ksort($totalSalesByDate);
         return response()->json([
             'status' => true,
             'statusCode' => 200,
@@ -201,7 +203,7 @@ class ViewsClickAndSalesAmountController extends Controller
             // 'totalViewsKeseluruhan' => $totalViews,
             'totalsByDate' => $totalsByDate,
             'salesAmount' => $totalSalesByDate,
-            'data' => $visitorsAndPageViews,
+            // 'data' => $visitorsAndPageViews,
         ], 200);
     }
 
@@ -231,7 +233,7 @@ class ViewsClickAndSalesAmountController extends Controller
             $currentDate->addDay();
         }
 
-        $newUsers = User::whereBetween('created_at', [$startDate, $endDate])->get();
+        $newUsers = User::whereBetween('created_at', [$startDate, $endDate])->where('user_role', 'user')->get();
 
         foreach ($newUsers as $user) {
             $date = $user->created_at->toDateString();

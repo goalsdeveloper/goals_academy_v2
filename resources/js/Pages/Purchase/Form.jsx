@@ -553,7 +553,7 @@ function MainCard({
                                     label="Add-On"
                                     placeholder="Tambah Add-On"
                                     data={data.add_on}
-                                    onClick={() => {
+                                    onSubmit={() => {
                                         if (
                                             !(
                                                 data.add_on.length == 0 &&

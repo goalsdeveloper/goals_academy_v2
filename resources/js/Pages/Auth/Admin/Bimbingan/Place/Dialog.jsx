@@ -95,6 +95,7 @@ const Dialog = ({
                                 <GoalsSelectInput
                                     show={showCityForm}
                                     setShow={setShowCityForm}
+                                    className="text-[.9vw] font-normal"
                                     label="Kota"
                                     placeholder="Pilih Kota"
                                     data={formData.city}

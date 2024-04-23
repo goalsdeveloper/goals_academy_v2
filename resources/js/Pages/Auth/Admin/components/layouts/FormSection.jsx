@@ -13,7 +13,6 @@ const FormSection = ({
 
                 {titleAction}
             </div>
-
             <div className="space-y-[1.2vw]">{children}</div>
         </div>
     );
