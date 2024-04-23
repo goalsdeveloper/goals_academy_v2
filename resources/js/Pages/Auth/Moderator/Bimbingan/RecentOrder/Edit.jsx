@@ -11,27 +11,43 @@ import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import View from "./View";
 import { router, useForm } from "@inertiajs/react";
+import {
+    GoalsSelectInput,
+    GoalsSelectInputItem,
+} from "@/Components/elements/GoalsSelectInput";
 
-export default function Edit({ auth, tipe = "bimbingan" }) {
-    const { data, setData, post } = useForm({
-        username: "Hafiz",
-        university: "Universitas Indonesia",
-        major: "Teknik Informatika",
-        number: "08123456789",
-        tutor_number: "08123456789",
-        order_id: "1",
-        product: "Dibimbing Sekali",
-        topic: "Topik Bimbingan",
-        location: "Offline - Nakoa",
-        date: "08/12/2024",
-        time: "23:59",
-    });
+export default function Edit({ auth, tipe = "bimbingan", order, places, tutors }) {
+    console.log(order);
+    console.log(places);
+    console.log(tutors);
 
+    // const { data, setData, post } = useForm({
+    //     username: "Hafiz",
+    //     university: "Universitas Indonesia",
+    //     major: "Teknik Informatika",
+    //     number: "08123456789",
+    //     tutor_number: "08123456789",
+    //     order_id: "1",
+    //     product: "Dibimbing Sekali",
+    //     topic: "Topik Bimbingan",
+    //     location: "Offline - Nakoa",
+    //     date: "08/12/2024",
+    //     time: "23:59",
+    // });
     const [isShow, setIsShow] = useState(false);
-}
-
-export default function Edit({ auth, order }) {
-    console.log(order)
+    const [showPlaces, setShowPlaces] = useState(false);
+    const {
+        data: formData,
+        setData: setFormData,
+        post,
+        put,
+    } = useForm({
+        id: "",
+        place: "",
+        place_id: 0,
+        tutor: "",
+        tutor_id: 0,
+    });
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -79,12 +95,43 @@ export default function Edit({ auth, order }) {
                 )}
                 <div className="flex gap-[1.2vw]">
                     <FormSection title="User Information">
-                        <GoalsTextInput label="Username" disabled />
-                        <GoalsTextInput label="University" disabled />
-                        <GoalsTextInput label="Major" disabled />
+                        <GoalsTextInput
+                            label="Username"
+                            disabled
+                            data={order.user?.name}
+                        />
+                        <GoalsTextInput
+                            label="University"
+                            disabled
+                            data={
+                                order.user?.profile?.university ??
+                                "Universitas Belum Diset"
+                            }
+                        />
+                        <GoalsTextInput
+                            label="Major"
+                            disabled
+                            data={
+                                order.user?.profile?.major ??
+                                "Jurusan Belum Diset"
+                            }
+                        />
                         <div className="flex gap-[.4vw] w-full items-end">
-                            <GoalsTextInput label="Number" grow data={order.user?.profile?.phone_number ?? 'Belum Ada Nomor Telephone'} />
-                            <a href={`wa.me/${order.user.profile.phone_number ?? '6285672771772'}`} target="_blank">
+                            <GoalsTextInput
+                                label="Number"
+                                grow
+                                data={
+                                    order.user?.profile?.phone_number ??
+                                    "Belum Ada Nomor Telephone"
+                                }
+                            />
+                            <a
+                                href={`wa.me/${
+                                    order.user.profile.phone_number ??
+                                    "6285672771772"
+                                }`}
+                                target="_blank"
+                            >
                                 <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
                             </a>
                         </div>
@@ -107,17 +154,47 @@ export default function Edit({ auth, order }) {
                             </button>
                         }
                     >
-                        <GoalsTextInput label="Order Id" disabled />
-                        <GoalsTextInput label="Product" disabled />
-                        <GoalsTextInput label="Topic" disabled />
                         <GoalsTextInput
+                            label="Order Id"
+                            disabled
+                            data={order.order_code}
+                        />
+                        <GoalsTextInput
+                            label="Product"
+                            disabled
+                            data={order.products.name}
+                        />
+                        <GoalsTextInput
+                            label="Topic"
+                            disabled
+                            data={order.course?.topic ?? "Topic belum diset"}
+                        />
+                        <GoalsSelectInput
+                            show={showPlaces}
+                            setShow={setShowPlaces}
+                            placeholder="Pilih Lokasi"
                             label={`Location ${
                                 tipe == "Webinar" ? "Link Zoom" : "Offline"
                             }`}
-                        />
+                            data={formData.place}
+                        >
+                            {places.map((i) => {
+                                <GoalsSelectInputItem
+                                    onClick={() => {
+                                        // formData.place = i.place
+                                        // formData.place_id = i.id
+                                        // setFormData(formData)
+                                        setFormData(...{
+                                            place: i.place,
+                                            place_id: i.id
+                                        })
+                                    }}
+                                >{i.place + " | " + i.city.name}</GoalsSelectInputItem>;
+                            })}
+                        </GoalsSelectInput>
                         <div className="flex gap-[.4vw]">
-                            <GoalsTextInput label="Date" grow />
-                            <GoalsTextInput label="Time" grow />
+                            <GoalsTextInput type="date" label="Date" grow />
+                            <GoalsTextInput type="time" label="Time" grow />
                         </div>
                     </FormSection>
                 </div>

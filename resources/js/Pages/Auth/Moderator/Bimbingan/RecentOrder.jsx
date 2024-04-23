@@ -6,6 +6,7 @@ import { FiEdit2, FiEye } from "react-icons/fi";
 import { Link } from "@inertiajs/react";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
 import View from "./RecentOrder/View";
+import moment from "moment"
 
 export default function RecentOrder({ auth, orders }) {
     orders = orders.data
@@ -27,11 +28,11 @@ export default function RecentOrder({ auth, orders }) {
                 header: "Product",
             },
             {
-                accessorKey: "updated_at",
+                accessorFn: (row) => moment(row.created_at).format("MMMM d, YYYY"),
                 header: "Tanggal Pembelian",
             },
             {
-                accessorKey: "created_at",
+                accessorFn: (row) => moment(row.created_at).format("HH:mm"),
                 header: "Waktu Pembelian",
             },
             {
@@ -100,7 +101,7 @@ export default function RecentOrder({ auth, orders }) {
                 <div className="text-[.8vw]">
                     <GoalsDashboardTable
                         columns={columns}
-                        data={data}
+                        data={orders}
                         isHeadVisible
                         isSortable
                         isPaginated

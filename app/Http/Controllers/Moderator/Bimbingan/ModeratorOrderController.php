@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Moderator\Bimbingan;
 
+use App\Enums\UserRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Order;
+use App\Models\Place;
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -156,7 +159,9 @@ class ModeratorOrderController extends Controller
     public function edit(Order $order)
     {
         return Inertia::render('Auth/Moderator/Bimbingan/RecentOrder/Edit', [
-            'order' => $order->load('products', 'user', 'user.profile', 'course.tutor'),
+            'order' => $order->load('products', 'user', 'user.profile', 'course.tutor', 'course.topic'),
+            'places' => fn() => Place::with('city')->get(),
+            'tutors' =>fn() => User::where('user_role', UserRoleEnum::TUTOR)->with('profile')->get(),
             'auth' => Auth::user(),
         ]);
     }

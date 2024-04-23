@@ -3,8 +3,12 @@ import DashboardLayout from "@/Layouts/DashboardLayout";
 import { useMemo } from "react";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { FiEye } from "react-icons/fi";
+import moment from "moment";
 
-export default function History({ auth }) {
+
+export default function History({ auth, order_history }) {
+    order_history = order_history.data
+    console.log(order_history)
     const [isLoading, setIsLoading] = useState(false);
 
     const data = [
@@ -22,27 +26,40 @@ export default function History({ auth }) {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "username",
+                accessorKey: "order.user.name",
                 header: "Username Customer",
             },
             {
-                accessorKey: "product",
+                accessorKey: "order.products.name",
                 header: "Product",
             },
             {
-                accessorKey: "date",
+                accessorKey: "order.created_at",
                 header: "Tanggal Pembelian",
+                Cell: ({ cell }) => {
+                    return (
+                        // <p>{cell.row.original.created_at}</p>
+                        <p>{moment(cell.row.original.created_at).format('MMMM d, YYYY')}</p>
+                    );
+                },
             },
             {
-                accessorKey: "time",
+                accessorKey: "order.course.time",
                 header: "Waktu Pembelian",
+                Cell: ({ cell }) => {
+                    return (
+                        <p>{moment(cell.row.original.created_at).format('HH:mm')}</p>
+                    );
+                },
             },
             {
-                accessorKey: "lokasi",
+                accessorFn: (row) => row.order.course?.place ?? 'Lokasi Belum Diset',
+                // accessorKey: "order.course.place",
                 header: "Lokasi",
             },
             {
-                accessorKey: "durasi",
+                accessorFn: (row) => row.order.course?.duration ?? 'Durasi Belum Diset',
+                // accessorKey: "order.course.duration",
                 header: "Durasi",
             },
             {
@@ -77,7 +94,7 @@ export default function History({ auth }) {
                 <div className="text-[.8vw]">
                     <GoalsDashboardTable
                         columns={columns}
-                        data={data}
+                        data={order_history}
                         isHeadVisible
                         isSortable
                         isPaginated
