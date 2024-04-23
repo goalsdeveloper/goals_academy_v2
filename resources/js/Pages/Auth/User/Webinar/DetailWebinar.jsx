@@ -4,18 +4,35 @@ import {
     ProductItemCardLayout,
 } from "@/Components/fragments/ProductItemCard";
 import MainLayout from "@/Layouts/MainLayout";
-import { Link } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
+import UlasanProgram from "../Components/UlasanProgram";
 import DetailBanyakSesi from "./layouts/DetailBanyakSesi";
 import DetailSatuSesi from "./layouts/DetailSatuSesi";
 import CardImage from "/resources/img/karir/academic-internship.png";
 
 const DetailWebinar = ({ auth, orderWebinar: data }) => {
+    const [showPopUp, setShowPopUp] = useState({
+        ulasanProgram: false,
+    });
+    const {
+        data: dataRating,
+        setData: setDataRating,
+        post,
+    } = useForm({
+        rate_product: 0,
+        note_product: "",
+    });
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
     const orderWebinar = data[0];
     const products = orderWebinar.products;
     const webinar_properties = products.webinar_properties;
+
+    function handleSubmit() {
+        post(`/webinar/${orderWebinar.order_code}/review`);
+    }
 
     return (
         <MainLayout
@@ -33,6 +50,18 @@ const DetailWebinar = ({ auth, orderWebinar: data }) => {
                     Kembali
                 </Link>
                 <div className="flex justify-between items-center">
+                    <UlasanProgram
+                        data={dataRating}
+                        setData={setDataRating}
+                        handleSubmit={handleSubmit}
+                        show={showPopUp.ulasanProgram}
+                        setShow={() =>
+                            setShowPopUp({
+                                ulasanProgram: false,
+                            })
+                        }
+                    />
+
                     {isMobile ? (
                         <Link
                             href="/webinar"
@@ -50,7 +79,14 @@ const DetailWebinar = ({ auth, orderWebinar: data }) => {
                     )}
 
                     <div className="hidden md:block w-full md:w-auto bottom-0 left-0 gap-[1vw] md:gap-[.5vw] justify-center pb-[3.7vw] pt-[3.4vw] bg-white md:p-0 z-[40] md:z-0">
-                        <GoalsButton variant="bordered">
+                        <GoalsButton
+                            variant="bordered"
+                            onClick={() =>
+                                setShowPopUp({
+                                    ulasanProgram: true,
+                                })
+                            }
+                        >
                             Beri Ulasan
                         </GoalsButton>
                     </div>
@@ -108,9 +144,7 @@ const DetailWebinar = ({ auth, orderWebinar: data }) => {
                 {webinar_properties.session ? (
                     <DetailBanyakSesi data={orderWebinar.products} />
                 ) : (
-                    <DetailSatuSesi
-                        data={orderWebinar.products}
-                    />
+                    <DetailSatuSesi data={orderWebinar.products} />
                 )}
             </div>
         </MainLayout>

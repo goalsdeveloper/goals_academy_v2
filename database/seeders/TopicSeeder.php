@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Topic;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class TopicSeeder extends Seeder
 {
@@ -13,11 +13,22 @@ class TopicSeeder extends Seeder
      */
     public function run(): void
     {
-        Topic::insert([
-            ['topic' => 'topic 1'],
-            ['topic' => 'topic 2'],
-            ['topic' => 'topic 3'],
-            ['topic' => 'topic 4'],
+        Topic::create([
+            'topic' => 'topic 1',
+            'slug' => Str::slug('topic 1'),
         ]);
+        Topic::create([
+            'topic' => 'topic 2',
+            'slug' => Str::slug('topic 2'),
+        ]);
+        Topic::create([
+            'topic' => 'topic 3',
+            'slug' => Str::slug('topic 3'),
+        ]);
+        Topic::create([
+            'topic' => 'topic 4',
+            'slug' => Str::slug('topic 4'),
+        ]);
+
     }
 }

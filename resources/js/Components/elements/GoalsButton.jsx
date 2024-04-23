@@ -21,7 +21,6 @@ const GoalsButton = ({
                     href: href,
                     method: method,
                     className: `${className}`,
-                    as: "button",
                 };
             default:
                 return {};

@@ -56,5 +56,13 @@ class CategorySeeder extends Seeder
             'description' => 'Pelaksanaan Webinar',
             'product_type_id' => 3,
         ]);
+        Category::create([
+            'name' => 'Ebook',
+            'slug' => Str::slug('Ebook'),
+            'is_visible' => true,
+            'description' => 'Ebook',
+            'product_type_id' => 2,
+        ]);
+
     }
 }

@@ -53,4 +53,20 @@ class WebinarController extends Controller
         // ]);
         return Inertia::render('Auth/User/Webinar/DetailWebinar', ['orderWebinar' => $orderWebinar]);
     }
+
+    public function reviewWebinar(Request $request, Order $order) {
+        $course = $order->courses()->where('session', 1)->first();
+        $validate = $request->validate([
+            'rate_tutor' => 'integer|min:1|max:5',
+            'rate_product' => 'integer|min:1|max:5',
+            'note_tutor' => 'string',
+            'note_product' => 'string',
+        ]);
+        try {
+            ProductReview::create(array_merge($validate, ['course_id' => $course->id]));
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('errors', 'Gagal Mengirimkan Review');
+        }
+        return redirect()->back()->with('success', 'Berhasil Mengirimkan Review');
+    }
 }

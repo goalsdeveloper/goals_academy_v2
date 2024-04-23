@@ -1,12 +1,14 @@
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { Link, useForm } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import { useMemo } from "react";
 import { FiEdit2, FiPlus, FiTrash2 } from "react-icons/fi";
 import SubHeading from "../components/SubHeading";
 import Dialog from "./AddOn/Dialog";
 import { useState } from "react";
 import GoalsButton from "@/Components/elements/GoalsButton";
+import toast, { Toaster } from "react-hot-toast";
+
 
 export default function AddOn({ auth, data }) {
     const addons = data.data;
@@ -26,6 +28,21 @@ export default function AddOn({ auth, data }) {
         slug: "",
         price: "",
     });
+
+    const callback = (method) => {
+        router.visit(route('admin.bimbingan.addon.index'), {
+            only: ['data'],
+            onSuccess: () => {
+                if (method == 'create') {
+                    toast.success('Create Success!');
+                } else if (method == 'edit') {
+                    toast.success('Edit Success!');
+                } else {
+                    toast.success('Delete Success!');
+                }
+            }
+        });
+    }
 
     console.log(addons);
 
@@ -72,6 +89,8 @@ export default function AddOn({ auth, data }) {
                             <Link
                                 method="DELETE"
                                 href={`/admin/bimbingan/addon/${cell.row.original.id}`}
+                                as="button"
+                                onSuccess={callback}
                             >
                                 <FiTrash2 className="text-[1.2vw] text-danger-40" />
                             </Link>
@@ -118,6 +137,7 @@ export default function AddOn({ auth, data }) {
                         setFormData,
                         post,
                         put,
+                        callback
                     }}
                 />
 

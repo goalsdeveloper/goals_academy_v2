@@ -15,7 +15,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         Products::create([
-            'category_id' => 1,
+            'category_id' => 3,
             'name' => 'Dibimbing Online 30 Menit',
             'slug' => Str::slug('Dibimbing Online 30 Menit'),
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
@@ -34,11 +34,10 @@ class ProductSeeder extends Seeder
                 'place' => 0,
                 'topic' => 1,
                 'document' => 1,
-                'add_on' => 1,
             ],
         ]);
         Products::create([
-            'category_id' => 1,
+            'category_id' => 3,
             'name' => 'Dibimbing Online 45 Menit',
             'slug' => Str::slug('Dibimbing Online 45 Menit'),
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
@@ -57,11 +56,10 @@ class ProductSeeder extends Seeder
                 'place' => 0,
                 'topic' => 1,
                 'document' => 1,
-                'add_on' => 1,
             ],
         ]);
         Products::create([
-            'category_id' => 1,
+            'category_id' => 4,
             'name' => 'Dibimbing Offline 60 Menit',
             'slug' => Str::slug('Dibimbing Offline 60 Menit'),
             'excerpt' => 'Bimbingan personal 1-on-1 secara tatap',
@@ -80,7 +78,6 @@ class ProductSeeder extends Seeder
                 'place' => 1,
                 'topic' => 1,
                 'document' => 1,
-                'add_on' => 1,
             ],
         ]);
 
@@ -104,12 +101,11 @@ class ProductSeeder extends Seeder
                 'place' => 1,
                 'topic' => 1,
                 'document' => 1,
-                'add_on' => 1,
             ],
         ]);
 
         Products::create([
-            'category_id' => 1,
+            'category_id' => 7,
             'name' => 'How To Survive Your Thesis? Start with Theme',
             'slug' => Str::slug('How To Survive Your Thesis? Start with Theme'),
             'excerpt' => '',
@@ -128,7 +124,6 @@ class ProductSeeder extends Seeder
                 'place' => 0,
                 'topic' => 0,
                 'document' => 0,
-                'add_on' => 0,
             ],
         ]);
         Products::create([
