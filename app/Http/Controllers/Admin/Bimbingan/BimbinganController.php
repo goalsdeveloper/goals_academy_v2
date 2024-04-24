@@ -147,12 +147,13 @@ class BimbinganController extends Controller
                     'promo_price' => 'numeric',
                 ]);
 
-                if ($validateData['form_config']['topic'] && $validateData['form_config']['topic'] == 1) {
+                if (isset($validateData['form_config']['topic']) && $validateData['form_config']['topic'] == 1) {
                     $request->validate([
                         'topics' => 'required|array|min:1',
                         'topics.*' => 'required|numeric',
                     ]);
                 }
+
 
                 $product = new Products();
                 $product->product_type_id = 1; // Kenapa 1, karena ini product untuk bimbingan aja
