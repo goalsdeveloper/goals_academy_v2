@@ -138,7 +138,7 @@ class BimbinganController extends Controller
                 'excerpt' => 'required|string',
                 'description' => 'required|string',
                 'price' => 'required|numeric',
-                'product_image' => 'image|mimes:png,jpg,jpeg,svg',
+                // 'product_image' => 'image|mimes:png,jpg,jpeg,svg',
                 'is_visible' => 'required|in:0,1',
                 'is_facilities' => 'required|in:0,1',
                 'number_list' => 'numeric',
@@ -147,12 +147,17 @@ class BimbinganController extends Controller
                 'facilities' => 'required|string',
                 'facilities.*.icon' => 'required|string',
                 'facilities.*.text' => 'required|string',
-                'form_config.*' => '', // Allow seluruh key form_config
+                'form_config' => '', // Allow seluruh key form_config
                 'duration' => 'numeric',
                 'promo_price' => 'numeric',
             ]);
 
-            if (isset($validateData['form_config']) && isset($validateData['form_config']['topic']) && $validateData['form_config']['topic'] == 1) {
+            $form_config = json_decode(
+                $validateData['form_config'],
+                true
+            );
+
+            if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
                 $request->validate([
                     'topics' => 'required|array|min:1',
                     'topics.*' => 'required|numeric',
