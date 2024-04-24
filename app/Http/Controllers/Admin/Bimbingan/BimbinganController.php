@@ -73,8 +73,13 @@ class BimbinganController extends Controller
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
-                    'bimbingan_sekali' => $bimbingan_sekali->values()->toArray(),
-                    'bimbingan_tuntas' => $bimbingan_tuntas->values()->toArray(),
+                    'bimbingan' => function () {
+                        $bimbingan = Products::whereHas('category.productType', function ($q) {
+                            $q->where('type', 'bimbingan');
+                        })->with('category')->get();
+                        return $bimbingan;
+                    },
+
                 ], 200);
             } else {
                 abort(403);
@@ -109,11 +114,11 @@ class BimbinganController extends Controller
             //         'topics' => $topics
             //     ]
             // ], 200);
-            return Inertia::render('Auth/Admin/Bimbingan/Product/Create', ['data' => [
+            return Inertia::render('Auth/Admin/Bimbingan/Product/Create', [
                 'categories' => $categories,
                 'addons' => $addons,
                 'topics' => $topics
-            ]]);
+            ]);
         } else {
             abort(403);
         }
@@ -124,7 +129,7 @@ class BimbinganController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+         try {
             if (Auth::user()->user_role == "admin") {
                 $validateData = $request->validate([
                     'category_id' => 'required|numeric',
@@ -265,7 +270,12 @@ class BimbinganController extends Controller
             //     'addons' =>$addons,
             //     'topics'=>$topics
             // ]], 200);
-            return Inertia::render('Auth/Admin/Bimbingan/Product/Update');
+            return Inertia::render('Auth/Admin/Bimbingan/Product/Update', [
+                'categories' => $categories,
+                'products' => $product,
+                'addons' => $addons,
+                'topics' => $topics
+            ]);
         } else {
             abort(403);
         }

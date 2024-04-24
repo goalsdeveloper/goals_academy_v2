@@ -8,6 +8,10 @@ import FormSection from "../../components/layouts/FormSection";
 import FacilityModal from "./Components/FacilityModal";
 import { SelectInput, SelectInputItem } from "./Components/SelectInput";
 import SliderButton from "./Components/SliderButton";
+import {
+    SelectMultiTag,
+    SelectMultiTagItem,
+} from "./Components/SelectMultiTag";
 
 const Create = ({ auth, categories, addons, topics }) => {
     const [show, setShow] = useState(false);
@@ -21,15 +25,13 @@ const Create = ({ auth, categories, addons, topics }) => {
         promo: "",
         total_meet: "",
         active_period: "",
-        meeting_duration: "",
-        add_on: "",
-        topic: "",
+        duration: "",
+        add_on: [],
+        topics: [],
         facilities: [],
         is_visible: false,
         form_config: {},
     });
-
-    console.log(data);
 
     function handleSubmit() {
         const formData = new FormData();
@@ -42,13 +44,16 @@ const Create = ({ auth, categories, addons, topics }) => {
         formData.append("promo", Number(data.promo));
         formData.append("total_meet", data.total_meet);
         formData.append("active_period", data.active_period);
-        formData.append("meeting_duration", data.meeting_duration);
-        formData.append("add_on", Number(data.add_on.id));
-        formData.append("topic", Number(data.topic.id));
-        formData.append("facilities", data.facilities);
+        formData.append("duration", data.duration);
+        const addOnArray = data.add_on.map((item) => item.id);
+        const topicsArray = data.topics.map((item) => item.id);
+        formData.append("addons", JSON.stringify(addOnArray));
+        formData.append("topics", JSON.stringify(topicsArray));
+        formData.append("facilities", JSON.stringify(data.facilities));
         formData.append("is_visible", data.is_visible ? 1 : 0);
         formData.append("is_facilities", 0);
         formData.append("excerpt", data.description);
+        formData.append("form_config",data.form_config);
 
         router.post(route("admin.bimbingan.product.store"), formData, {
             onSuccess: () => {
@@ -61,10 +66,11 @@ const Create = ({ auth, categories, addons, topics }) => {
     }
 
     const formConfigList = [
-        "Jadwal",
-        "Kota & Tempat",
-        "Topik",
-        "Dokumen / Berkas",
+        { key: "city", label: "Kota" },
+        // { key: "document", label: "Dokumen / Berkas" },
+        { key: "place", label: "Lokasi" },
+        { key: "schedule", label: "Jadwal" },
+        { key: "topic", label: "Topik" },
     ];
 
     return (
@@ -92,7 +98,15 @@ const Create = ({ auth, categories, addons, topics }) => {
                     <Breadcrumb />
 
                     <div className="space-x-[.8vw]">
-                        <GoalsButton onClick={() => router.visit(route('admin.bimbingan.product.index'))} size="sm" variant="success-bordered" >
+                        <GoalsButton
+                            onClick={() =>
+                                router.visit(
+                                    route("admin.bimbingan.product.index")
+                                )
+                            }
+                            size="sm"
+                            variant="success-bordered"
+                        >
                             Batal
                         </GoalsButton>
                         <GoalsButton
@@ -101,7 +115,7 @@ const Create = ({ auth, categories, addons, topics }) => {
                             onClick={() => {}}
                             type="submit"
                         >
-                            Tambah
+                            Simpan
                         </GoalsButton>
                     </div>
                 </div>
@@ -133,8 +147,8 @@ const Create = ({ auth, categories, addons, topics }) => {
                                 }
                             /> */}
                             <input
+                                required
                                 type="file"
-                                value={data.product_image.url}
                                 onChange={(e) =>
                                     setData({
                                         ...data,
@@ -255,17 +269,17 @@ const Create = ({ auth, categories, addons, topics }) => {
                                 <GoalsTextInput
                                     label="Durasi Pertemuan"
                                     required
-                                    data={data.meeting_duration}
+                                    data={data.duration}
                                     setData={(e) =>
                                         setData({
                                             ...data,
-                                            meeting_duration: e,
+                                            duration: e,
                                         })
                                     }
                                 />
                             </div>
 
-                            <SelectInput
+                            {/* <SelectInput
                                 value={data.add_on.name}
                                 label="Add-on"
                                 required
@@ -283,27 +297,84 @@ const Create = ({ auth, categories, addons, topics }) => {
                                         {option.name}
                                     </SelectInputItem>
                                 ))}
-                            </SelectInput>
+                            </SelectInput> */}
 
-                            <SelectInput
-                                value={data.topic.topic}
+                            <SelectMultiTag
+                                value={data.add_on}
+                                label="Add on"
+                                handleClearTag={() =>
+                                    setData({ ...data, add_on: [] })
+                                }
+                            >
+                                {addons.map((option, i) => {
+                                    return (
+                                        <SelectMultiTagItem
+                                            key={i}
+                                            onClick={() => {
+                                                if (
+                                                    !data.add_on.some(
+                                                        (item) =>
+                                                            item === option
+                                                    )
+                                                ) {
+                                                    setData({
+                                                        ...data,
+                                                        add_on: [
+                                                            ...data.add_on,
+                                                            option,
+                                                        ],
+                                                    });
+                                                }
+                                            }}
+                                        >
+                                            {option.name}
+                                        </SelectMultiTagItem>
+                                    );
+                                })}
+                            </SelectMultiTag>
+
+                            <SelectMultiTag
+                                value={data.topics}
                                 label="Topic"
+                                handleClearTag={() =>
+                                    setData({ ...data, topics: [] })
+                                }
                                 required
                             >
                                 {topics.map((option, i) => (
-                                    <SelectInputItem
+                                    // <SelectInputItem
+                                    //     key={i}
+                                    //     onClick={() =>
+                                    //         setData({
+                                    //             ...data,
+                                    //             topic: option,
+                                    //         })
+                                    //     }
+                                    // >
+                                    //     {option.topic}
+                                    // </SelectInputItem>
+                                    <SelectMultiTagItem
                                         key={i}
-                                        onClick={() =>
-                                            setData({
-                                                ...data,
-                                                topic: option,
-                                            })
-                                        }
+                                        onClick={() => {
+                                            if (
+                                                !data.topics.some(
+                                                    (item) => item === option
+                                                )
+                                            ) {
+                                                setData({
+                                                    ...data,
+                                                    topics: [
+                                                        ...data.topics,
+                                                        option,
+                                                    ],
+                                                });
+                                            }
+                                        }}
                                     >
                                         {option.topic}
-                                    </SelectInputItem>
+                                    </SelectMultiTagItem>
                                 ))}
-                            </SelectInput>
+                            </SelectMultiTag>
                         </FormSection>
 
                         <FormSection
@@ -354,21 +425,24 @@ const Create = ({ auth, categories, addons, topics }) => {
                                 </thead>
                                 <tbody>
                                     {formConfigList.map((item, i) => (
-                                        <tr className="border-b border-neutral-20">
-                                            <td className=" py-[.5vw] px-[1.2vw]">
-                                                {item}
+                                        <tr
+                                            className="border-b border-neutral-20"
+                                            key={i}
+                                        >
+                                            <td className="py-[.5vw] px-[1.2vw]">
+                                                {item.label}
                                             </td>
-                                            <td className=" text-center">
+                                            <td className="text-center">
                                                 <input
                                                     type="checkbox"
-                                                    name={item + "-visible"}
+                                                    name={item.key + "-visible"}
                                                     checked={data.form_config.hasOwnProperty(
-                                                        item
+                                                        item.key
                                                     )}
                                                     onChange={() => {
                                                         if (
                                                             data.form_config.hasOwnProperty(
-                                                                item
+                                                                item.key
                                                             )
                                                         ) {
                                                             const updatedFormConfig =
@@ -376,7 +450,7 @@ const Create = ({ auth, categories, addons, topics }) => {
                                                                     ...data.form_config,
                                                                 };
                                                             delete updatedFormConfig[
-                                                                item
+                                                                item.key
                                                             ];
                                                             setData({
                                                                 ...data,
@@ -388,20 +462,22 @@ const Create = ({ auth, categories, addons, topics }) => {
                                                                 ...data,
                                                                 form_config: {
                                                                     ...data.form_config,
-                                                                    [item]: 0,
+                                                                    [item.key]: 0,
                                                                 },
                                                             });
                                                         }
                                                     }}
                                                 />
                                             </td>
-                                            <td className=" text-center">
+                                            <td className="text-center">
                                                 <input
                                                     type="checkbox"
-                                                    name={item + "-required"}
+                                                    name={
+                                                        item.key + "-required"
+                                                    }
                                                     checked={
                                                         data.form_config[
-                                                            item
+                                                            item.key
                                                         ] == 1
                                                     }
                                                     onChange={(e) => {
@@ -409,7 +485,8 @@ const Create = ({ auth, categories, addons, topics }) => {
                                                             ...data,
                                                             form_config: {
                                                                 ...data.form_config,
-                                                                [item]: e.target
+                                                                [item.key]: e
+                                                                    .target
                                                                     .checked
                                                                     ? 1
                                                                     : 0,
