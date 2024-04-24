@@ -131,86 +131,89 @@ class BimbinganController extends Controller
     {
          try {
             if (Auth::user()->user_role == "admin") {
-            $validateData = $request->validate([
-                'category_id' => 'required|numeric',
-                'name' => 'required|string',
-                'slug' => 'required|string',
-                'excerpt' => 'required|string',
-                'description' => 'required|string',
-                'price' => 'required|numeric',
-                'product_image' => 'image|mimes:png,jpg,jpeg,svg',
-                'is_visible' => 'required|in:0,1',
-                'is_facilities' => 'required|in:0,1',
-                'number_list' => 'numeric',
-                'total_meet' => 'required|numeric',
-                'active_period' => 'required|numeric',
-                'facilities' => 'required|string',
-                'facilities.*.icon' => 'required|string',
-                'facilities.*.text' => 'required|string',
-                'form_config' => '', // Allow seluruh key form_config
-                'duration' => 'numeric',
-                'promo_price' => 'numeric',
-            ]);
-
-            $form_config = json_decode(
-                $validateData['form_config'],
-                true
-            );
-
-            if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
-                $request->validate([
-                    'topics' => 'required|array|min:1',
-                    'topics.*' => 'required|numeric',
+                $validateData = $request->validate([
+                    'category_id' => 'required|numeric',
+                    'name' => 'required|string',
+                    'slug' => 'required|string',
+                    'excerpt' => 'required|string',
+                    'description' => 'required|string',
+                    'price' => 'required|numeric',
+                    'product_image' => 'image|mimes:png,jpg,jpeg,svg',
+                    'is_visible' => 'required|in:0,1',
+                    'is_facilities' => 'required|in:0,1',
+                    // 'number_list' => 'numeric',
+                    'total_meet' => 'required|numeric',
+                    'active_period' => 'required|numeric',
+                    'facilities' => 'required|string',
+                    'facilities.*.icon' => 'required|string',
+                    'facilities.*.text' => 'required|string',
+                    'form_config' => '', // Allow seluruh key form_config
+                    'duration' => 'numeric',
+                    'promo_price' => 'numeric',
                 ]);
-            }
+
+                $form_config = json_decode(
+                    $validateData['form_config'],
+                    true
+                );
+
+                if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
+                    $request->validate([
+                        'topics' => 'required|array|min:1',
+                        'topics.*' => 'required|numeric',
+                    ]);
+                }
 
 
-            $product = new Products();
-            $product->product_type_id = 1; // Kenapa 1, karena ini product untuk bimbingan aja
-            $product->category_id = $validateData['category_id'];
-            $product->name = $validateData['name'];
-            $product->slug = $validateData['slug'];
-            $product->excerpt = $validateData['excerpt'];
-            $product->description = $validateData['description'];
-            $product->price = $validateData['price'];
-            $product->is_visible = $validateData['is_visible'];
-            $product->is_facilities = $validateData['is_facilities'];
-            $product->number_list = $validateData['number_list'];
-            $product->total_meet = $validateData['total_meet'];
-            $product->active_period = $validateData['active_period'];
-            if (isset($validateData['duration'])) {
-                $product->duration = $validateData['duration'];
-            }
+                $product = new Products();
+                $product->product_type_id = 1; // Kenapa 1, karena ini product untuk bimbingan aja
+                $product->number_list = 2;
+                $product->category_id = $validateData['category_id'];
+                $product->name = $validateData['name'];
+                $product->slug = $validateData['slug'];
+                $product->excerpt = $validateData['excerpt'];
+                $product->description = $validateData['description'];
+                $product->price = $validateData['price'];
+                $product->is_visible = $validateData['is_visible'];
+                $product->is_facilities = $validateData['is_facilities'];
+                // $product->number_list = $validateData['number_list'];
+                $product->total_meet = $validateData['total_meet'];
+                $product->active_period = $validateData['active_period'];
+                if (isset($validateData['duration'])) {
+                    $product->duration = $validateData['duration'];
+                }
 
-            if (isset($validateData['promo_price'])) {
-                $product->promo_price = $validateData['promo_price'];
-            }
+                if (isset($validateData['promo_price'])) {
+                    $product->promo_price = $validateData['promo_price'];
+                }
 
-            $facilities = json_decode($validateData['facilities'], true);
-            array_push($facilities);
-            $product->facilities = $facilities;
+                $facilities = json_decode($validateData['facilities'], true);
+                array_push($facilities);
+                $product->facilities = $facilities;
 
-            $product->form_config = $form_config;
+                $product->form_config = $form_config;
 
-            if ($request->File('product_image')) {
-                $product->product_image = $request->file('product_image')->store('resource/img/program/bimbingan/');
-            }
-            $product->save();
+                if ($request->File('product_image')) {
+                    $product->product_image = $request->file('product_image')->store('resource/img/program/bimbingan/');
+                }
+                $product->save();
 
-            if ($request->filled('addons')) {
-                foreach ($request->addons as $addonId) {
-                    $addon = AddOn::find($addonId);
-                    if ($addon) {
-                        $product->addOns()->attach($addonId);
+                if ($request->filled('addons')) {
+                    $addons = json_decode($request->addons);
+                    foreach ($addons as $addonId) {
+                        $addon = AddOn::find($addonId);
+                        if ($addon) {
+                            $product->addOns()->attach($addonId);
+                        }
                     }
                 }
-            }
 
-            if (isset($validateData['form_config']['topic']) && $validateData['form_config']['topic'] == 1) {
-                $product->topics()->attach($request->topics);
-            }
 
-            return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
+                if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
+                    $product->topics()->attach($request->topics);
+                }
+
+                return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
             } else {
                 abort(403);
             }
