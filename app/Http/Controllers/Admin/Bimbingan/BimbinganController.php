@@ -147,7 +147,7 @@ class BimbinganController extends Controller
                     'promo_price' => 'numeric',
                 ]);
 
-                if ($validateData['form_config']['topic'] == 1) {
+                if ($validateData['form_config']['topic'] && $validateData['form_config']['topic'] == 1) {
                     $request->validate([
                         'topics' => 'required|array|min:1',
                         'topics.*' => 'required|numeric',
