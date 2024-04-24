@@ -14,7 +14,7 @@ Route::middleware(['auth', 'tutor'])->group(function () {
         Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
             Route::patch('progress/tutor-approve/{course}', [ProgressController::class, 'tutorApprove'])->name('tutor.tutorApprove');
             Route::resource('progress', ProgressController::class, ['as' => 'tutor']);
-            Route::get('history', [HistoryController::class, 'index'])->name('tutor.history');
+            Route::resource('history', HistoryController::class, ['as' => 'tutor']);
         });
         Route::get('profile', [ProfileController::class, 'index'])->name('tutor.profile');
         Route::put('profile', [ProfileController::class, 'update'])->name('tutor.update');

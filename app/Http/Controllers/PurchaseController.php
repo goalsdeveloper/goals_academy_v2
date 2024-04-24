@@ -56,6 +56,7 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $user = Auth::user();
         $order_code = 'GA' . str(now()->format('YmdHis'));
         $orderData = new Order();
@@ -117,6 +118,7 @@ class PurchaseController extends Controller
                 $document[$idx]['file_name'] = $fileName;
                 $document[$idx]['size'] = $file->getSize();
                 $document[$idx]['mime_type'] = $file->getMimeType();
+                $document[$idx]['name'] = $file->getClientOriginalName();
             }
             $form_result = array_merge((array) $form_result, ['document' => $document]);
         }

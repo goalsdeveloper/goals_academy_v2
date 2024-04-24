@@ -37,6 +37,7 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         city: "",
         place: "",
         document: [],
+        document_meta: [],
         topic: "",
         init_price: dataProduct.price,
         promo: "",
@@ -55,6 +56,7 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         city: "",
         place: "",
         document: "",
+        document_meta: [],
         topic: "",
         init_price: dataProduct.price,
         promo: "",
@@ -92,7 +94,10 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
             location.href = `/produk/${dataProduct.slug}#lengkapi_profil`;
         } else {
             setIsProcessed(true);
-            post("/produk");
+            post("/produk", {
+                onFinish: () => setIsProcessed(false),
+                onError: () => setIsProcessed(false),
+            });
         }
     };
 
@@ -663,19 +668,38 @@ function MainCard({
                         {"document" in rules ? (
                             <div className="w-full">
                                 <GoalsUploadFile
-                                    required={rules["document"]}
-                                    data={data}
+                                    required={rules.document}
+                                    label="Berkas Pendukung"
+                                    data={data.document_meta}
                                     removeFile={(i) => {
-                                        setData(
-                                            "document",
-                                            data.document.filter((j) => j != i)
-                                        );
+                                        console.log(i)
+                                        setData({
+                                            ...data,
+                                            document: data.document.filter((j) => j.name != i.name && j.size != i.size),
+                                            document_meta: data.document_meta.filter((j) => j != i)
+                                        });
                                     }}
-                                    setData={(i) =>
+                                    setData={(i) => {
+                                        const meta = [{
+                                            ...i[0],
+                                            lastModified: i[0].lastModified,
+                                            lastModifiedDate: i[0].lastModifiedDate,
+                                            name: i[0].name,
+                                            size: i[0].size,
+                                            type: i[0].type,
+                                        }]
                                         setData({
                                             ...data,
                                             document: data.document.concat(i),
+                                            document_meta: data.document_meta.concat(meta),
                                         })
+                                    }
+                                    }
+                                    placeholder={
+                                        <p className="text-black">
+                                            Pilih file skripsi mu atau <br /> seret dan
+                                            lepas di sini
+                                        </p>
                                     }
                                 />
                             </div>

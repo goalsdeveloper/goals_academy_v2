@@ -3,6 +3,7 @@ const FormSection = ({
     children = <></>,
     titleAction = <></>,
     className = "",
+    titleClassName,
 }) => {
     return (
         <div
@@ -10,8 +11,7 @@ const FormSection = ({
         >
             {title &&
                 <div className="flex items-center justify-between">
-                    <h2 className="text-[1vw] font-medium">{title}</h2>
-
+                    <h2 className={`text-[1vw] font-medium ${titleClassName}`}>{title}</h2>
                     {titleAction}
                 </div>
             }

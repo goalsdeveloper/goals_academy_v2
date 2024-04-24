@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Tutor;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Models\Course;
+use App\Models\FileUpload;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class HistoryController extends Controller
 {
@@ -51,6 +53,16 @@ class HistoryController extends Controller
             ->paginate($paginate);
         return Inertia::render('Auth/Tutor/Bimbingan/History', [
             'history' => $history,
+        ]);
+    }
+
+    public function show(Request $request, Course $progress)
+    {
+        $order = $progress->load('order', 'addOns', 'fileUploads');
+        $files = FileUpload::where('course_id', $progress->parent_id)->get();
+        return Inertia::render('Auth/Tutor/Bimbingan/Partials/Show', [
+            'order' => $order,
+            'files' => $files,
         ]);
     }
 }

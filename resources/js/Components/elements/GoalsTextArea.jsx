@@ -1,7 +1,7 @@
 import React from "react";
 import { FiX } from "react-icons/fi";
 
-const GoalsTextInput = ({
+const GoalsTextArea = ({
     type = "text",
     label = "",
     name,
@@ -9,6 +9,8 @@ const GoalsTextInput = ({
     className = "",
     labelClassName,
     messageClassName,
+    rows=5,
+    cols,
     error = "",
     success = "",
     data,
@@ -17,6 +19,7 @@ const GoalsTextInput = ({
     required = false,
     grow = false,
     disabled = false,
+    resize = false,
     ...rest
 }) => {
     return (
@@ -33,20 +36,23 @@ const GoalsTextInput = ({
             )}
             <div>
                 <div className="relative flex">
-                    <input
+                    <textarea
                         id={name}
                         name={name}
                         required={required}
-                        type={type}
+                        // type={type}
                         placeholder={placeholder}
                         value={data}
                         onChange={(e) => setData(e.target.value)}
-                        className={`w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[3vw] border placeholder:text-light-grey ${
+                        className={`w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark border placeholder:text-light-grey ${
                             disabled ? "bg-gray-100 border-gray-300" : "border-neutral-50 focus:border-neutral-50"
                         } ${
                             cancelButton ? "pe-[9vw] md:pe-[2.6vw]" : ""
                         } ${className}`}
                         disabled={disabled}
+                        style={{ resize: resize ? "" : "none"}}
+                        rows={rows}
+                        cols={cols}
                         {...rest}
                     />
                     {cancelButton && data !== "" && (
@@ -73,4 +79,4 @@ const GoalsTextInput = ({
     );
 };
 
-export default GoalsTextInput;
+export default GoalsTextArea;
