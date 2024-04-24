@@ -181,7 +181,7 @@ class BimbinganController extends Controller
                 $product->form_config = $form_config;
 
                 if ($request->File('product_image')) {
-                    $product->product_image = $request->file('product_image')->store('resource/img/program/bimbingan/');
+                    $product->product_image = $request->file('product_image')->store('resource/img/program/bimbingan');
                 }
                 $product->save();
 
