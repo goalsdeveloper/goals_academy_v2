@@ -142,14 +142,15 @@ class BimbinganController extends Controller
                     'facilities' => 'required|string',
                     'facilities.*.icon' => 'required|string',
                     'facilities.*.text' => 'required|string',
-                    'form_config' => 'required|string', // Allow seluruh key form_config
+                    'form_config.*' => '', // Allow seluruh key form_config
                     'duration' => 'numeric',
                     'promo_price' => 'numeric',
                 ]);
 
-                if (json_decode($validateData['form_config'], true)['topic'] == 1) {
+                if ($validateData['form_config']['topic'] == 1) {
                     $request->validate([
-                        'topics' => 'required|string', 
+                        'topics' => 'required|array|min:1',
+                        'topics.*' => 'required|numeric',
                     ]);
                 }
 
@@ -193,8 +194,9 @@ class BimbinganController extends Controller
                         }
                     }
                 }
-                if (json_decode($validateData['form_config'], true)['topic'] == 1) {
-                    $product->topics = $request->topics; 
+
+                if (isset($validateData['form_config']['topic']) && $validateData['form_config']['topic'] == 1) {
+                    $product->topics()->attach($request->topics);
                 }
 
                 return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
