@@ -133,7 +133,7 @@ class BimbinganController extends Controller
                 'excerpt' => 'required|string',
                 'description' => 'required|string',
                 'price' => 'required|numeric',
-                // 'product_image' => 'image|mimes:png,jpg,jpeg,svg',
+                'product_image' => 'image|mimes:png,jpg,jpeg,svg',
                 'is_visible' => 'required|in:0,1',
                 'is_facilities' => 'required|in:0,1',
                 'number_list' => 'numeric',
