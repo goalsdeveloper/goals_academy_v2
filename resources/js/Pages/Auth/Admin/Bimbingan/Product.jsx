@@ -8,12 +8,12 @@ import {
     FiEdit2,
     FiEye,
     FiPlus,
-    FiTrash2
+    FiTrash2,
 } from "react-icons/fi";
 import SubHeading from "../components/SubHeading";
 
 export default function Product({ auth, bimbingan }) {
-    console.log(bimbingan)
+    console.log(bimbingan);
     // console.log(bimbingan_tuntas)
     const columns = useMemo(
         () => [
@@ -57,6 +57,7 @@ export default function Product({ auth, bimbingan }) {
                         <ul className="flex gap-[.8vw] w-fit">
                             <li>
                                 <Link
+                                    as="button"
                                     method="GET"
                                     href={route(
                                         "admin.bimbingan.product.edit",
@@ -68,6 +69,7 @@ export default function Product({ auth, bimbingan }) {
                             </li>
                             <li>
                                 <Link
+                                    as="button"
                                     method="DELETE"
                                     href={route(
                                         "admin.bimbingan.product.destroy",
@@ -79,6 +81,7 @@ export default function Product({ auth, bimbingan }) {
                             </li>
                             <li>
                                 <Link
+                                    as="button"
                                     method="GET"
                                     href={route(
                                         "admin.bimbingan.product.show",

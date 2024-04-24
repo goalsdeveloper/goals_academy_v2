@@ -15,6 +15,8 @@ import {
 import { router } from "@inertiajs/react";
 
 const Update = ({ auth, categories, topics, addons, products }) => {
+    console.log(products.add_ons);
+    console.log(products.topics);
     const [show, setShow] = useState(false);
     const [data, setData] = useState({
         name: products.name,
@@ -28,20 +30,19 @@ const Update = ({ auth, categories, topics, addons, products }) => {
         active_period: products.active_period,
         duration: products.duration,
         add_on: products.add_ons ?? [],
-        topic: products.topics ?? [],
-        facilities:
-            typeof products.facilities == "object"
-                ? products.facilities
-                : JSON.parse(JSON.parse(products.facilities)) ?? [],
+        topics: products.topics ?? [],
+        facilities: products.facilities,
+        // typeof products.facilities == "object"
+        //     ? products.facilities
+        //     : JSON.parse(JSON.parse(products.facilities)) ?? [],
         is_visible: products.is_visible == 1 ? true : false,
         form_config:
             typeof products.form_config == "object"
                 ? products.form_config
-                : JSON.parse(JSON.parse(products.form_config)) ?? {},
+                : JSON.parse(products.form_config) ?? {},
     });
 
-    console.log(products.add_ons );
-    console.log(products.topics );
+    console.log(data);
 
     function handleSubmit() {
         const formData = new FormData();
@@ -55,8 +56,14 @@ const Update = ({ auth, categories, topics, addons, products }) => {
         formData.append("total_meet", data.total_meet);
         formData.append("active_period", data.active_period);
         formData.append("duration", data.duration);
-        formData.append("add_on", Number(data.add_on.id));
-        formData.append("topic", Number(data.topic.id));
+        formData.append(
+            "addons",
+            JSON.stringify(data.add_on.map((item) => item.id))
+        );
+        formData.append(
+            "topics",
+            JSON.stringify(data.topics.map((item) => item.id))
+        );
         formData.append("facilities", data.facilities);
         formData.append("is_visible", data.is_visible ? 1 : 0);
         formData.append("is_facilities", 0);
@@ -323,11 +330,10 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                         <SelectMultiTagItem
                                             key={i}
                                             onClick={() => {
-                                                console.log(option, 'options');
+                                                console.log(option, "options");
                                                 if (
                                                     !data.add_on.some(
-                                                        (item) =>
-                                                            item == option
+                                                        (item) => item == option
                                                     )
                                                 ) {
                                                     setData({
@@ -347,10 +353,10 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                             </SelectMultiTag>
 
                             <SelectMultiTag
-                                value={data.topic}
+                                value={data.topics}
                                 label="Topic"
                                 handleClearTag={() =>
-                                    setData({ ...data, add_on: [] })
+                                    setData({ ...data, topics: [] })
                                 }
                                 required
                             >
@@ -370,21 +376,21 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                         key={i}
                                         onClick={() => {
                                             if (
-                                                !data.topic.some(
+                                                !data.topics.some(
                                                     (item) => item == option
                                                 )
                                             ) {
                                                 setData({
                                                     ...data,
-                                                    topic: [
-                                                        ...data.topic,
+                                                    topics: [
+                                                        ...data.topics,
                                                         option,
                                                     ],
                                                 });
                                             }
                                         }}
                                     >
-                                        {option.topic}
+                                        {option.topics}
                                     </SelectMultiTagItem>
                                 ))}
                             </SelectMultiTag>

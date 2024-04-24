@@ -45,13 +45,15 @@ const Create = ({ auth, categories, addons, topics }) => {
         formData.append("total_meet", data.total_meet);
         formData.append("active_period", data.active_period);
         formData.append("duration", data.duration);
-        formData.append("add_on", data.add_on.map((item) => item.id));
-        formData.append("topics", data.topics.map((item) => item.id));
+        const addOnArray = data.add_on.map((item) => item.id);
+        const topicsArray = data.topics.map((item) => item.id);
+        formData.append("addons", JSON.stringify(addOnArray));
+        formData.append("topics", JSON.stringify(topicsArray));
         formData.append("facilities", JSON.stringify(data.facilities));
         formData.append("is_visible", data.is_visible ? 1 : 0);
         formData.append("is_facilities", 0);
         formData.append("excerpt", data.description);
-        formData.append("form_config", JSON.stringify(data.form_config));
+        formData.append("form_config",data.form_config);
 
         router.post(route("admin.bimbingan.product.store"), formData, {
             onSuccess: () => {
@@ -145,8 +147,8 @@ const Create = ({ auth, categories, addons, topics }) => {
                                 }
                             /> */}
                             <input
+                                required
                                 type="file"
-                                value={data.product_image.url}
                                 onChange={(e) =>
                                     setData({
                                         ...data,
@@ -335,7 +337,7 @@ const Create = ({ auth, categories, addons, topics }) => {
                                 value={data.topics}
                                 label="Topic"
                                 handleClearTag={() =>
-                                    setData({ ...data, add_on: [] })
+                                    setData({ ...data, topics: [] })
                                 }
                                 required
                             >
