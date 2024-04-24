@@ -66,18 +66,18 @@ class ProgressController extends Controller
         ]);
     }
 
-    public function tutorApprove($course)
+    public function tutorApprove($progress)
     {
         $user = Auth::user();
-        if ($course->tutor_id != $user->id) {
+        if ($progress->tutor_id != $user->id) {
             return response()->json([
                 'status' => 'Forbidden',
                 'messages' => 'Anda Bukan Tutor untuk Bimbingan Ini',
             ], 403);
         }
         try {
-            $course->is_tutor = true;
-            $course->update();
+            $progress->is_tutor = true;
+            $progress->update();
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'Failed',
@@ -91,14 +91,28 @@ class ProgressController extends Controller
 
     }
 
-    public function show(Request $request, Course $progress)
+    public function show(Course $progress)
     {
         $order = $progress->load('order', 'addOns', 'fileUploads');
         $files = FileUpload::where('course_id', $progress->parent_id)->get();
-        return response()->json([
+        return Inertia::render('Auth/Tutor/Bimbingan/Progress/Show', [
             'order' => $order,
             'files' => $files,
         ]);
     }
 
+    public function edit(Course $progress)
+    {
+        $order = $progress->load('order', 'addOns', 'fileUploads');
+        $files = FileUpload::where('course_id', $progress->parent_id)->get();
+        return Inertia::render('Auth/Tutor/Bimbingan/Progress/Update', [
+            'order' => $order,
+            'files' => $files,
+        ]);
+    }
+
+    public function update(Request $request, Course $progress)
+    {
+        dd($request->all());
+    }
 }

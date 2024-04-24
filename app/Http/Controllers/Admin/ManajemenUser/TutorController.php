@@ -160,6 +160,7 @@ class TutorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request);
         try {
             if (Auth::user()->user_role == "admin") {
                 $tutor = User::findOrFail($id);

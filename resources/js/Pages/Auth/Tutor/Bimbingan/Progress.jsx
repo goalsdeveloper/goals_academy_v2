@@ -1,13 +1,122 @@
-import { useState } from "react";
+import { useMemo } from "react";
+import { Link } from "@inertiajs/react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
+import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
+import SubHeading from "../../Admin/components/SubHeading";
+import { FiEye, FiEdit2 } from "react-icons/fi";
+import moment from "moment";
 
 export default function Progress ({ auth }) {
-    const [isLoading, setIsLoading] = useState(false);
+    // const [isLoading, setIsLoading] = useState(false);
+
+    const data = [
+        {
+            id: 1,
+            username: "Hafiz",
+            topic: "Perancangan Bab 1-3",
+            date: "08/12/2024",
+            time: "20:59",
+            location: "Offline - Nakoa",
+        },
+        {
+            id: 2,
+            username: "Hafiz",
+            topic: "Perancangan Bab 4",
+            date: "10/12/2024",
+            time: "21:59",
+            location: "Offline - Nakoa",
+        },
+        {
+            id: 3,
+            username: "Hafiz",
+            topic: "Perancangan Bab 5",
+            date: "16/12/2024",
+            time: "18:59",
+            location: "Offline - Nakoa",
+        },
+        {
+            id: 4,
+            username: "Afan",
+            topic: "Perancangan Bab 5",
+            date: "24/04/2024",
+            time: "18:00",
+            location: "Offline - Nakoa",
+        },
+    ];
+
+    const columns = useMemo(
+        () => [
+            {
+                accessorKey: "username",
+                header: "Username",
+                size: 150,
+            },
+            {
+                accessorKey: "topic",
+                header: "Topik",
+                size: 100,
+            },
+            {
+                accessorFn: (row) => moment(row.date+' '+row.time, 'DD/MM/YYYY HH:mm'),
+                header: "Tanggal & Waktu Bimbingan",
+                size: 170,
+                Cell: ({ cell }) => {
+                    return (
+                        <div className="flex justify-between">
+                            <span>{cell.row.original.date}</span>
+                            <span>{cell.row.original.time}</span>
+                        </div>
+                    )
+                }
+            },
+            {
+                accessorFn: (row) => moment(row.date+' '+row.time, 'DD/MM/YYYY HH:mm'),
+                header: "Status",
+                size: 100,
+                Cell: ({ cell }) => {
+                    return moment().diff(cell.getValue(), 's') > 0 ?
+                        <div className="text-[.9vw] text-center"><span className="bg-yellow-100 text-yellow-500 py-[.2vw] px-[1vw] rounded">On Progress</span></div> :
+                        <div className="text-[.9vw] text-center text-blue-500">Upcoming</div>
+                },
+            },
+            {
+                accessorKey: "id",
+                header: "Action",
+                size: 10,
+                Cell: ({ cell }) => {
+                    return (
+                            <ul className="flex gap-[.8vw] w-fit">
+                                <li>
+                                <Link method="GET" href={route('tutor.bimbingan.progress.edit', 112)} >
+                                    <FiEdit2 className="text-[1.2vw] text-secondary" />
+                                </Link>
+                            </li>
+                            <li>
+                                <Link method="GET" href={route('tutor.bimbingan.progress.show', 112)}>
+                                    <FiEye className="text-[1.2vw] text-neutral-60" />
+                                </Link>
+                            </li>
+                        </ul>
+                    );
+                },
+            },
+        ],
+        []
+    );
 
     return (
         <DashboardLayout title="Bimbingan" subtitle="Progress" role="tutor" auth={auth}>
-            {isLoading && <LoadingUI />}
-            Progress
+            {/* {isLoading && <LoadingUI />} */}
+            <SubHeading title="Progress" /><br />
+            <div className="text-[.8vw]">
+                <GoalsDashboardTable
+                    columns={columns}
+                    data={data}
+                    isHeadVisible
+                    isSortable
+                    isPaginated
+                />
+            </div>
         </DashboardLayout>
     )
 }

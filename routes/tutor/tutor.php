@@ -12,9 +12,10 @@ Route::middleware(['auth', 'tutor'])->group(function () {
             return Inertia::render('Auth/Tutor/Overview/Overview');
         });
         Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
-            Route::patch('progress/tutor-approve/{course}', [ProgressController::class, 'tutorApprove'])->name('tutor.tutorApprove');
-            Route::resource('progress', ProgressController::class, ['as' => 'tutor']);
-            Route::resource('history', HistoryController::class, ['as' => 'tutor']);
+            Route::patch('progress/tutor-approve/{progress}', [ProgressController::class, 'tutorApprove'])->name('tutor.tutorApprove');
+            Route::post('progress/{progress}', [ProgressController::class, 'update'])->name('progress.update');
+            Route::resource('progress', ProgressController::class)->except(['update']);
+            Route::resource('history', HistoryController::class)->except(['update', 'edit']);
         });
         Route::get('profile', [ProfileController::class, 'index'])->name('tutor.profile');
         Route::put('profile', [ProfileController::class, 'update'])->name('tutor.update');

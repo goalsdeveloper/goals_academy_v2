@@ -56,7 +56,7 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $user = Auth::user();
         $order_code = 'GA' . str(now()->format('YmdHis'));
         $orderData = new Order();

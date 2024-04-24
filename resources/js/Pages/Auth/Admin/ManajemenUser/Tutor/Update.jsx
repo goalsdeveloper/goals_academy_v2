@@ -16,9 +16,9 @@ export default function Update({ auth, data }) {
     const {
         data: formData,
         setData: setFormData,
-        post,
+        put,
     } = useForm({
-        _method: "patch",
+        // _method: "patch",
         id: data.tutor.id,
         name: data.tutor.name ? data.tutor.name : "",
         username: data.tutor.username ? data.tutor.username : "",
@@ -59,7 +59,7 @@ export default function Update({ auth, data }) {
 
        console.log({ ...formData, "skills": skillIds });
        console.log(skillIds);
-       post(
+       put(
            route("admin.manajemen_user.tutor.update", {
                id: data.tutor.id,
            }),

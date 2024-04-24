@@ -7,7 +7,7 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
     return (
         <div>
             {label != "" ? (
-                <p className={`mb-[2vw] md:mb-[.5vw] ${labelClassName}`}>{label}<span className={`${required ? "" : "hidden"} text-red-600`}>*</span></p>
+                <p className={`mb-[2vw] md:mb-[.5vw] ${labelClassName}`}>{label}{required && <span className="text-red-600">*</span>}</p>
             ) : (<></>)}
             <ExpandedButton
                 className={`rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] cursor-pointer ${

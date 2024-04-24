@@ -56,11 +56,11 @@ class HistoryController extends Controller
         ]);
     }
 
-    public function show(Request $request, Course $progress)
+    public function show(Course $history)
     {
-        $order = $progress->load('order', 'addOns', 'fileUploads');
-        $files = FileUpload::where('course_id', $progress->parent_id)->get();
-        return Inertia::render('Auth/Tutor/Bimbingan/Partials/Show', [
+        $order = $history->load('order', 'addOns', 'fileUploads');
+        $files = FileUpload::where('course_id', $history->parent_id)->get();
+        return Inertia::render('Auth/Tutor/Bimbingan/History/Show', [
             'order' => $order,
             'files' => $files,
         ]);

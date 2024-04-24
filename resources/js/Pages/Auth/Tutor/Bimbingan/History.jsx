@@ -1,6 +1,8 @@
 import { useState, useMemo } from "react";
+import { Link } from "@inertiajs/react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
+import SubHeading from "../../Admin/components/SubHeading";
 import { FiEye } from "react-icons/fi";
 import moment from "moment";
 
@@ -80,9 +82,9 @@ export default function History ({ auth }) {
                     return (
                         <ul className="flex gap-[.8vw] w-fit">
                             <li>
-                                <button onClick={() => setIsShow(!isShow)}>
+                                <Link method="GET" href={route('tutor.bimbingan.history.show', 112)}>
                                     <FiEye className="text-[1.2vw] text-neutral-60" />
-                                </button>
+                                </Link>
                             </li>
                         </ul>
                     );
@@ -95,7 +97,7 @@ export default function History ({ auth }) {
     return (
         <DashboardLayout title="Bimbingan" subtitle="History" role="tutor" auth={auth}>
             {/* {isLoading && <LoadingUI />} */}
-            <h2 className="font-medium">History</h2>
+            <SubHeading title="History" /><br />
             <div className="text-[.8vw]">
                 <GoalsDashboardTable
                     columns={columns}

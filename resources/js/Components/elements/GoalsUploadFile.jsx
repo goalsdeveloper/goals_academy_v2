@@ -103,7 +103,7 @@ export default function GoalsUploadFile({
                         </GoalsButton>
                         <div
                             {...getRootProps()}
-                            className={`hidden md:block rounded-xl border border-dashed border-neutral-40 p-4 text-black/40 w-full ${disabled && "bg-gray-50"}`}
+                            className={`hidden md:block rounded-xl border border-dashed border-neutral-40 p-4 text-black/40 w-full ${disabled && "bg-gray-100"}`}
                         >
                             <input disabled={disabled} className="disabled:bg-gray-300" {...getInputProps()} required />
                             {isDragActive ? (
@@ -128,7 +128,11 @@ export default function GoalsUploadFile({
                     </>
                 )}
                 <div>
-                    <ul className="space-y-[1.6vw] md:space-y-[.4vw]">{acceptedFileItems}</ul>
+                    {!displayInput && data.length < 1 ? (
+                        <div className="h-[4vw] flex items-center justify-center italic">No File Found</div>
+                    ) : (
+                        <ul className="space-y-[1.6vw] md:space-y-[.4vw]">{acceptedFileItems}</ul>
+                    )}
                 </div>
             </div>
         </form>
