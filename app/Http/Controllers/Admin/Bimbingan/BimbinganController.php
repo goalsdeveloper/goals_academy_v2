@@ -181,10 +181,10 @@ class BimbinganController extends Controller
                 $product->promo_price = $validateData['promo_price'];
             }
 
-            $facilities = $validateData['facilities'];
+            $facilities = json_decode($validateData['facilities'], true);
+            array_push($facilities);
             $product->facilities = $facilities;
 
-            $form_config = json_encode($validateData['form_config']);
             $product->form_config = $form_config;
 
             if ($request->File('product_image')) {
