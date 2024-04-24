@@ -157,14 +157,6 @@ class BimbinganController extends Controller
                     true
                 );
 
-                if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
-                    $request->validate([
-                        'topics' => 'required|array|min:1',
-                        'topics.*' => 'required|numeric',
-                    ]);
-                }
-
-
                 $product = new Products();
                 $product->product_type_id = 1; // Kenapa 1, karena ini product untuk bimbingan aja
                 $product->number_list = 2;
@@ -210,7 +202,15 @@ class BimbinganController extends Controller
 
 
                 if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
-                    $product->topics()->attach($request->topics);
+                    if ($request->filled('topics')) {
+                        $topics = json_decode($request->topics);
+                        foreach ($topics as $topicId) {
+                            $topic = Topic::find($topicId);
+                            if ($topic) {
+                                $product->topics()->attach($topicId);
+                            }
+                        }
+                    }
                 }
 
                 return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
