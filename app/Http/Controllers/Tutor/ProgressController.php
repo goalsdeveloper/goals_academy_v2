@@ -66,7 +66,7 @@ class ProgressController extends Controller
         ]);
     }
 
-    public function tutorApprove($progress)
+    public function tutorApprove(Course $progress)
     {
         $user = Auth::user();
         if ($progress->tutor_id != $user->id) {

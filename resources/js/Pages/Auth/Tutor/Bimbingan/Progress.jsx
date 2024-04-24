@@ -3,7 +3,7 @@ import { Link } from "@inertiajs/react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import SubHeading from "../../Admin/components/SubHeading";
-import { FiEye, FiEdit2 } from "react-icons/fi";
+import { FiEye, FiEdit2, FiThumbsUp } from "react-icons/fi";
 import moment from "moment";
 
 export default function Progress ({ auth }) {
@@ -85,8 +85,13 @@ export default function Progress ({ auth }) {
                 size: 10,
                 Cell: ({ cell }) => {
                     return (
-                            <ul className="flex gap-[.8vw] w-fit">
-                                <li>
+                        <ul className="flex gap-[.8vw] w-fit">
+                            <li>
+                                <Link method="PATCH" href={route('tutor.bimbingan.tutor.tutorApprove', 112)} >
+                                    <FiThumbsUp className="text-[1.2vw] text-secondary" />
+                                </Link>
+                            </li>
+                            <li>
                                 <Link method="GET" href={route('tutor.bimbingan.progress.edit', 112)} >
                                     <FiEdit2 className="text-[1.2vw] text-secondary" />
                                 </Link>
