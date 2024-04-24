@@ -138,7 +138,7 @@ class BimbinganController extends Controller
                 'excerpt' => 'required|string',
                 'description' => 'required|string',
                 'price' => 'required|numeric',
-                // 'product_image' => 'image|mimes:png,jpg,jpeg,svg',
+                'product_image' => 'image|mimes:png,jpg,jpeg,svg',
                 'is_visible' => 'required|in:0,1',
                 'is_facilities' => 'required|in:0,1',
                 'number_list' => 'numeric',
@@ -186,10 +186,10 @@ class BimbinganController extends Controller
                 $product->promo_price = $validateData['promo_price'];
             }
 
-            $facilities = $validateData['facilities'];
+            $facilities = json_decode($validateData['facilities'], true);
+            array_push($facilities);
             $product->facilities = $facilities;
 
-            $form_config = json_encode($validateData['form_config']);
             $product->form_config = $form_config;
 
             if ($request->File('product_image')) {
