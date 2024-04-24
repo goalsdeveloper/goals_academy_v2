@@ -152,7 +152,7 @@ class BimbinganController extends Controller
                     'promo_price' => 'numeric',
                 ]);
 
-                if (json_decode($validateData['form_config'], true)['topic'] == 1) {
+                if ($validateData['form_config']['topic'] && $validateData['form_config']['topic'] == 1) {
                     $request->validate([
                         'topics' => 'required|string',
                     ]);
