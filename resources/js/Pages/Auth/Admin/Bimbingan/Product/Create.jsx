@@ -1,7 +1,7 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { router } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import Breadcrumb from "../../components/Breadcrumb";
 import FormSection from "../../components/layouts/FormSection";
@@ -12,10 +12,11 @@ import {
     SelectMultiTag,
     SelectMultiTagItem,
 } from "./Components/SelectMultiTag";
+import toast from "react-hot-toast";
 
 const Create = ({ auth, categories, addons, topics }) => {
     const [show, setShow] = useState(false);
-    const [data, setData] = useState({
+    const { data, setData } = useForm({
         name: "",
         product_image: "",
         slug: "",
@@ -34,35 +35,36 @@ const Create = ({ auth, categories, addons, topics }) => {
     });
 
     function handleSubmit() {
-        const formData = new FormData();
-        formData.append("name", data.name);
-        formData.append("product_image", data.product_image.file);
-        formData.append("slug", data.slug);
-        formData.append("category_id", Number(data.category_id.id));
-        formData.append("description", data.description);
-        formData.append("price", Number(data.price));
-        formData.append("promo", Number(data.promo));
-        formData.append("total_meet", data.total_meet);
-        formData.append("active_period", data.active_period);
-        formData.append("duration", data.duration);
-        const addOnArray = data.add_on.map((item) => item.id);
-        const topicsArray = data.topics.map((item) => item.id);
-        formData.append("addons", JSON.stringify(addOnArray));
-        formData.append("topics", JSON.stringify(topicsArray));
-        formData.append("facilities", JSON.stringify(data.facilities));
-        formData.append("is_visible", data.is_visible ? 1 : 0);
-        formData.append("is_facilities", 0);
-        formData.append("excerpt", data.description);
-        formData.append("form_config",data.form_config);
-
-        router.post(route("admin.bimbingan.product.store"), formData, {
-            onSuccess: () => {
-                toast.success("Product berhasil ditambahkan");
+        router.post(
+            route("admin.bimbingan.product.store"),
+            {
+                name: data.name,
+                product_image: data.product_image.file,
+                slug: data.slug,
+                category_id: Number(data.category_id.id),
+                description: data.description,
+                price: Number(data.price),
+                promo: Number(data.promo),
+                total_meet: data.total_meet,
+                active_period: data.active_period,
+                duration: data.duration,
+                addOnArray: data.add_on.map((item) => item.id),
+                topicsArray: data.topics.map((item) => item.id),
+                facilities: JSON.stringify(data.facilities),
+                is_visible: data.is_visible ? 1 : 0,
+                is_facilities: 0,
+                excerpt: data.description,
+                form_config: JSON.stringify(data.form_config),
             },
-            onError: (error) => {
-                toast.error(error.message);
-            },
-        });
+            {
+                onSuccess: () => {
+                    toast.success("Product berhasil ditambahkan");
+                },
+                onError: (error) => {
+                    toast.error(error.message);
+                },
+            }
+        );
     }
 
     const formConfigList = [
@@ -397,12 +399,32 @@ const Create = ({ auth, categories, addons, topics }) => {
                                     data.facilities.map((item) => (
                                         <div
                                             key={item.icon}
-                                            className="flex gap-[.6vw] items-center"
+                                            className="flex gap-[.6vw] items-center group"
                                         >
                                             <i
                                                 className={`${item.icon} text-secondary`}
                                             ></i>
                                             <p>{item.text}</p>
+
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    setData({
+                                                        ...data,
+                                                        facilities:
+                                                            data.facilities.filter(
+                                                                (i) => {
+                                                                    i.icon ==
+                                                                        item.icon &&
+                                                                        i.text ==
+                                                                            item.text;
+                                                                }
+                                                            ),
+                                                    })
+                                                }
+                                            >
+                                                <i className="fa-solid fa-xmark"></i>
+                                            </button>
                                         </div>
                                     ))
                                 )}

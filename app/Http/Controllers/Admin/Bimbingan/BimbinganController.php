@@ -79,6 +79,7 @@ class BimbinganController extends Controller
                         })->with('category')->get();
                         return $bimbingan;
                     },
+                    'categories' => Category::get(),
 
                 ], 200);
             } else {
@@ -213,13 +214,14 @@ class BimbinganController extends Controller
                     }
                 }
 
-                return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
+                return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil ditambahkan');
+                // return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
+            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
         }
     }
 
@@ -244,12 +246,15 @@ class BimbinganController extends Controller
                 if (is_string($product->form_config)) {
                     $product->form_config = json_decode($product->form_config);
                 }
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $product], 200);
+
+                return redirect()->route('admin.bimbingan.product.index');
+                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $product], 200);
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while processing request', 'error' => $e->getMessage()], 500);
+            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while processing request', 'error' => $e->getMessage()], 500);
         }
     }
 
@@ -348,12 +353,15 @@ class BimbinganController extends Controller
                     $topics = json_decode($request->topics);
                     $product->topics()->sync($topics);
                 }
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update product success'], 200);
+
+                return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil diupdate');
+                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update product success'], 200);
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while updating category', 'error' => $e->getMessage()], 500);
+            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while updating category', 'error' => $e->getMessage()], 500);
         }
     }
 
@@ -373,14 +381,18 @@ class BimbinganController extends Controller
                     Storage::delete($product->product_image);
                 }
                 $product->delete();
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete product success'], 200);
+
+                return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil dihapus');
+                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete product success'], 200);
             } else {
                 abort(403);
             }
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to delete product. Internal Server Error'], 500);
+            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to delete product. Internal Server Error'], 500);
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
 }
