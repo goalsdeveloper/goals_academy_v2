@@ -321,12 +321,6 @@ class BimbinganController extends Controller
                 );
                 $product->form_config = $form_config;
 
-                // if (isset($validateData['form_config']['topic']) && $validateData['form_config']['topic'] == 1) {
-                //     $request->validate([
-                //         'topics' => 'required|array|min:1',
-                //         'topics.*' => 'required|numeric',
-                //     ]);
-                // }
                 if ($request->hasFile('product_image')) {
                     // Hapus foto lama jika ada
                     if ($product->product_image) {
@@ -347,27 +341,13 @@ class BimbinganController extends Controller
 
                 if ($request->filled('addons')) {
                     $addons = json_decode($request->addons);
-                    foreach ($addons as $addonId) {
-                        $addon = AddOn::find($addonId);
-                        if ($addon) {
-                            $product->addOns()->attach($addonId);
-                        }
-                    }
+                    $product->addOns()->sync($addons);
                 }
 
-
-                if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
-                    if ($request->filled('topics')) {
-                        $topics = json_decode($request->topics);
-                        foreach ($topics as $topicId) {
-                            $topic = Topic::find($topicId);
-                            if ($topic) {
-                                $product->topics()->attach($topicId);
-                            }
-                        }
-                    }
+                if ($request->filled('topics')) {
+                    $topics = json_decode($request->topics);
+                    $product->topics()->sync($topics);
                 }
-
                 return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update product success'], 200);
             } else {
                 abort(403);
