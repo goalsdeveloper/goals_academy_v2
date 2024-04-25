@@ -129,7 +129,7 @@ class BimbinganController extends Controller
      */
     public function store(Request $request)
     {
-         try {
+        try {
             if (Auth::user()->user_role == "admin") {
                 $validateData = $request->validate([
                     'category_id' => 'required|numeric',
@@ -303,27 +303,30 @@ class BimbinganController extends Controller
                     'product_image' => 'image',
                     'is_visible' => 'in:0,1',
                     'is_facilities' => 'in:0,1',
-                    'number_list' => 'numeric',
+                    // 'number_list' => 'numeric',
                     'total_meet' => 'numeric',
                     'active_period' => 'numeric',
                     'facilities' => 'string',
                     'facilities.*.icon' => 'string',
                     'facilities.*.text' => 'string',
-                    'form_config.*' => '',
+                    'form_config' => '',
                     'duration' => 'numeric',
                     'promo_price' => 'numeric',
+
                 ]);
 
-
-                $form_config = json_encode($validateData['form_config']);
+                $form_config = json_decode(
+                    $validateData['form_config'],
+                    true
+                );
                 $product->form_config = $form_config;
 
-                if (isset($validateData['form_config']['topic']) && $validateData['form_config']['topic'] == 1) {
-                    $request->validate([
-                        'topics' => 'required|array|min:1',
-                        'topics.*' => 'required|numeric',
-                    ]);
-                }
+                // if (isset($validateData['form_config']['topic']) && $validateData['form_config']['topic'] == 1) {
+                //     $request->validate([
+                //         'topics' => 'required|array|min:1',
+                //         'topics.*' => 'required|numeric',
+                //     ]);
+                // }
                 if ($request->hasFile('product_image')) {
                     // Hapus foto lama jika ada
                     if ($product->product_image) {
@@ -333,12 +336,9 @@ class BimbinganController extends Controller
                 }
 
                 if (isset($validateData['facilities'])) {
-
                     $facilities = json_decode($validateData['facilities'], true);
-                    if (!is_array($facilities)) {
-                        throw new \Exception('Invalid facilities format');
-                    }
-                    $validateData['facilities'] = json_encode($facilities);
+                    array_push($facilities);
+                    $product->facilities = $facilities;
                 }
 
 
@@ -346,11 +346,8 @@ class BimbinganController extends Controller
 
 
                 if ($request->filled('addons')) {
-                    // Hapus dulu semua addons yang terkait dengan produk ini
-                    $product->addOns()->detach();
-
-                    // Tambahkan addons yang baru
-                    foreach ($request->addons as $addonId) {
+                    $addons = json_decode($request->addons);
+                    foreach ($addons as $addonId) {
                         $addon = AddOn::find($addonId);
                         if ($addon) {
                             $product->addOns()->attach($addonId);
@@ -358,17 +355,18 @@ class BimbinganController extends Controller
                     }
                 }
 
-                // Handle topics jika ada
-                if ($request->filled('topics')) {
-                    $product->topics()->detach();
-                    foreach ($request->topics as $topicId) {
-                        $topic = Topic::find($topicId);
-                        if ($topic) {
-                            $product->topics()->attach($topicId);
+
+                if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
+                    if ($request->filled('topics')) {
+                        $topics = json_decode($request->topics);
+                        foreach ($topics as $topicId) {
+                            $topic = Topic::find($topicId);
+                            if ($topic) {
+                                $product->topics()->attach($topicId);
+                            }
                         }
                     }
                 }
-
 
                 return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update product success'], 200);
             } else {
