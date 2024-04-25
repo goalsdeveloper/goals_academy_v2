@@ -25,13 +25,19 @@ const Dialog = ({
                         onSubmit={(e) => {
                             e.preventDefault();
                             if (showDialog.create) {
-                                post(route("admin.bimbingan.moderator.store"), {
+                                post(route("admin.manajemen_user.tutor.store"), {
                                     onFinish: () => callback('create')
                                 });
                             } else if (showDialog.edit) {
-                                put(route("admin.bimbingan.moderator.update", formData.id), {
-                                    onFinish: () => callback('edit')
-                                });
+                                put(
+                                    route(
+                                        "admin.manajemen_user.tutor.update",
+                                        formData.id
+                                    ),
+                                    {
+                                        onFinish: () => callback("edit"),
+                                    }
+                                );
                             }
                             setShowDialog({ create: false, edit: false, show: false, delete: false });
                         }}
@@ -54,7 +60,7 @@ const Dialog = ({
                                 required
                                 data={formData.email}
                                 placeholder=""
-                                onChange={(e) => setFormData("name", e.target.value)}
+                                onChange={(e) => setFormData("email", e.target.value)}
                                 disabled={showDialog.show}
                             />
                         </div>

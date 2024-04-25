@@ -9,6 +9,12 @@ export default function GoalsUploadFile({
     removeFile,
     fileLimit = 3,
     required=false,
+    disabled=false,
+    displayInput=true,
+    label,
+    placeholder,
+    labelClassName,
+    maxSize=10000000,
 }) {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: {
@@ -18,34 +24,38 @@ export default function GoalsUploadFile({
                 [],
         },
         maxFiles: fileLimit,
-        maxSize: 10000000,
+        maxSize: maxSize,
+        disabled: disabled,
         onDrop: (acceptedFiles) => {
-            console.log(data["document"].length);
-            if (
-                acceptedFiles.length > fileLimit ||
-                data["document"].length > fileLimit - 1
-            ) {
-                alert("Maksimal 3 file");
-                return;
+            if (disabled) {
+                return false
+            } else {
+                if (
+                    acceptedFiles.length > fileLimit ||
+                    data.length > fileLimit - 1
+                ) {
+                    alert(`Maksimal ${fileLimit} file`);
+                    return;
+                }
+
+                const totalSize = acceptedFiles.reduce(
+                    (acc, file) => acc + file.size,
+                    0
+                );
+
+                if (totalSize > maxSize) {
+                    alert(`Maksimal ukuran file adalah ${maxSize/1000000}MB`);
+                    return;
+                }
+
+                setData(acceptedFiles);
             }
-
-            const totalSize = acceptedFiles.reduce(
-                (acc, file) => acc + file.size,
-                0
-            );
-
-            if (totalSize > 10000000) {
-                alert("Maksimal ukuran file adalah 10MB");
-                return;
-            }
-
-            setData(acceptedFiles);
         },
     });
 
     const acceptedFileItems =
-        data["document"] &&
-        data["document"].map((file, i) => {
+        data &&
+        data.map((file, i) => {
             return (
                 <li key={i} className="h-[10vw] md:h-[2.5vw] rounded-md flex">
                     <img
@@ -55,15 +65,16 @@ export default function GoalsUploadFile({
                     />
 
                     <div className="flex items-center justify-between w-full pl-[4vw] py-[4vw] pr-[4vw] md:pl-[1vw] md:py-[1vw] md:pr-[.5vw] border border-l-0 border-neutral-40 rounded-r">
-                        <p className="flex-1 line-clamp-1">{file.path}</p>
-
-                        <button
-                            type="button"
-                            onClick={() => removeFile(file)}
-                            className="flex items-center justify-center aspect-square text-neutral-40"
-                        >
-                            <FiX className="text-[5.2vw] md:text-[1.3vw]" />
-                        </button>
+                        <p className="flex-1 line-clamp-1">{file.name}</p>
+                        {displayInput && (
+                            <button
+                                type="button"
+                                onClick={() => !disabled && removeFile(file)}
+                                className={`${disabled && 'hidden'} flex items-center justify-center aspect-square text-neutral-40`}
+                            >
+                                <FiX className="text-[5.2vw] md:text-[1.3vw]" />
+                            </button>
+                        )}
                     </div>
                 </li>
             );
@@ -71,7 +82,7 @@ export default function GoalsUploadFile({
 
     return (
         <form
-            className="cursor-pointer"
+            className={`${!disabled && "cursor-pointer"} select-none`}
         // onSubmit={(e) => {
         //     e.preventDefault();
         //     alert("Lamaran anda telah terkirim!!");
@@ -79,55 +90,60 @@ export default function GoalsUploadFile({
         // }}
         >
             <div className="flex flex-col w-full gap-2">
-                <p>Berkas Pendukung<sup className={`${required ? "" : "hidden"} text-red-600`}>*</sup></p>
-                <GoalsButton
-                    {...getRootProps()}
-                    className="md:hidden w-6/12 rounded-[2vw]"
-                    activeClassName="bg-skin hover:bg-skin text-secondary"
-                >
-                    Pilih File
-                </GoalsButton>
-                <div
-                    {...getRootProps()}
-                    className="hidden md:block rounded-xl border border-dashed border-neutral-40 p-4 text-black/40 w-full"
-                >
-                    <input {...getInputProps()} required />
-                    {isDragActive ? (
-                        <div className="flex flex-col justify-center items-center gap-4 text-center h-[14vw] ">
-                            <FiUploadCloud className="text-[3vw]" />
+                <p className={labelClassName}>{label}{required && <span className="text-red-600">*</span>}</p>
+                {displayInput && (
+                    <>
+                        <GoalsButton
+                            {...getRootProps()}
+                            className="md:hidden w-6/12 rounded-[2vw]"
+                            isActive={!disabled}
+                            activeClassName="bg-skin hover:bg-skin text-secondary"
+                        >
+                            Pilih File
+                        </GoalsButton>
+                        <div
+                            {...getRootProps()}
+                            className={`hidden md:block rounded-xl border border-dashed border-neutral-40 p-4 text-black/40 w-full ${disabled && "bg-gray-100"}`}
+                        >
+                            <input disabled={disabled} className="disabled:bg-gray-300" {...getInputProps()} required />
+                            {isDragActive ? (
+                                <div className="flex flex-col justify-center items-center gap-4 text-center h-[14vw] ">
+                                    <FiUploadCloud className="text-[3vw]" />
 
-                            <p className="text-black">Lepas di sini</p>
+                                    <p className="text-black">Lepas di sini</p>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col justify-center items-center gap-[1vw] text-center  h-[14vw]">
+                                    <FiUploadCloud className="text-[3vw]" />
+                                    {placeholder}
+
+                                    <p>pdf, docx ukuran file tidak lebih dari {maxSize/1000000}MB</p>
+
+                                    <ButtonDropzone disabled={disabled} className="rounded px-[1vw]">
+                                        Pilih File
+                                    </ButtonDropzone>
+                                </div>
+                            )}
                         </div>
-                    ) : (
-                        <div className="flex flex-col justify-center items-center gap-[1vw] text-center  h-[14vw]">
-                            <FiUploadCloud className="text-[3vw]" />
-
-                            <p className="text-black">
-                                Pilih file skripsi mu atau <br /> seret dan
-                                lepas di sini
-                            </p>
-
-                            <p>pdf, docx ukuran file tidak lebih dari 10MB</p>
-
-                            <ButtonDropzone className="rounded px-[1vw] bg-primary-10">
-                                Pilih File
-                            </ButtonDropzone>
-                        </div>
-                    )}
-                </div>
-
+                    </>
+                )}
                 <div>
-                    <ul className="space-y-[1.6vw] md:space-y-[.4vw]">{acceptedFileItems}</ul>
+                    {!displayInput && data.length < 1 ? (
+                        <div className="h-[4vw] flex items-center justify-center italic">No File Found</div>
+                    ) : (
+                        <ul className="space-y-[1.6vw] md:space-y-[.4vw]">{acceptedFileItems}</ul>
+                    )}
                 </div>
             </div>
         </form>
     );
 }
 
-const ButtonDropzone = ({ className }) => {
+const ButtonDropzone = ({ className, ...rest }) => {
     return (
         <button
-            className={`bg-primary-10 py-1 px-2 rounded text-primary-40 ${className}`}
+            className={`py-1 px-2 rounded ${rest.disabled ? "bg-gray-300 text-gray-500" : "bg-primary-10 text-primary-40"} ${className}`}
+            {...rest}
         >
             Pilih File
         </button>

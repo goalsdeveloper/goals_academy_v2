@@ -16,23 +16,23 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         try {
-            $perPage = $request->input('perPage', 10);
-            $search = $request->input('search');
+                // $perPage = $request->input('perPage', 10);
+                // $search = $request->input('search');
 
-            $query = Order::with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type', 'paymentMethod:id,name,category'])
-                ->whereHas('products', function ($query) {
-                    $query->whereHas('productType', function ($subQuery) {
-                        $subQuery->where('type', 'LIKE', '%bimbingan%');
+                $query = Order::with(['paymentMethod:id,payment_type', 'user:id,username,name', 'products:id,product_type_id,category_id,name,product_image', 'products.category:id,name', 'products.productType:id,type'])
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('productType', function ($subQuery) {
+                            $subQuery->where('type', 'LIKE', '%bimbingan%');
+                        });
                     });
-                });
 
-            if ($search) {
-                $query->whereHas('user', function ($userQuery) use ($search) {
-                    $userQuery->where('username', 'LIKE', "%$search%");
-                });
-            }
+                // if ($search) {
+                //     $query->whereHas('user', function ($userQuery) use ($search) {
+                //         $userQuery->where('username', 'LIKE', "%$search%");
+                //     });
+                // }
 
-            $orders = $query->paginate($perPage);
+                $orders = $query->get();
 
             return Inertia::render('Auth/Admin/Bimbingan/Order', [
                 'status' => true,

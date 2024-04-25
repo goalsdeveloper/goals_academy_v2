@@ -43,10 +43,20 @@ export default function Order({ auth, orders }) {
             {
                 accessorKey: "updated_at",
                 header: "Tanggal Pesanan",
+                Cell: ({ cell }) => formatDate(cell.row.original.created_at),
             },
         ],
         []
     );
+    const formatDate = (dateString) => {
+        const dateObj = new Date(dateString);
+        const day = dateObj.getDate();
+        const month = dateObj.getMonth() + 1;
+        const year = dateObj.getFullYear();
+        return `${day < 10 ? "0" + day : day}/${
+            month < 10 ? "0" + month : month
+        }/${year}`;
+    };
 
     return (
         <DashboardLayout

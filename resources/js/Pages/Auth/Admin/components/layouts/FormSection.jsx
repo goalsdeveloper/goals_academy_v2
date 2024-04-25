@@ -3,6 +3,7 @@ const FormSection = ({
     children = <></>,
     titleAction = <></>,
     className = "",
+    titleClassName,
 }) => {
     return (
         <div className="bg-white w-full rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">

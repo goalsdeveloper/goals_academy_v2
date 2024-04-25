@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { useMemo } from "react";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { FiEye } from "react-icons/fi";
 import moment from "moment";

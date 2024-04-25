@@ -2,7 +2,7 @@ import { Link } from "@inertiajs/react";
 import React from "react";
 import { FiChevronRight } from "react-icons/fi";
 
-const Breadcrumb = ({ level = 2, isLastHidden = false, except }) => {
+const Breadcrumb = ({ level = 2, except, isLastHidden = false }) => {
     const pathArray = location.pathname.split("/");
     const pathArrayBr = isLastHidden
         ? pathArray.slice(-level, -1)

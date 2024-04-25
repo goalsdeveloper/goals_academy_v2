@@ -8,12 +8,37 @@ import GoalsButton from "@/Components/GoalsButton";
 import Dialog from "./Moderator/Dialog";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function Moderator({ auth }) {
-    const data = [
-        { id: 1, name: "Hafiz Rizky 1", username: "hafizbaik", email: "hafizbaik@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi" },
-        { id: 2, name: "Hafiz Rizky 2", username: "hafizganteng", email: "hafizganteng@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi" },
-        { id: 3, name: "Hafiz Rizky 3", username: "hafizcute", email: "hafizcute@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi" },
-    ];
+export default function Moderator({ auth, data }) {
+    console.log(data);
+    // const data = [
+    //     {
+    //         id: 1,
+    //         name: "Hafiz Rizky 1",
+    //         username: "hafizbaik",
+    //         email: "hafizbaik@gmail.com",
+    //         phone_number: "085123456789",
+    //         university: "Universitas Brawijaya",
+    //         major: "Sistem Informasi",
+    //     },
+    //     {
+    //         id: 2,
+    //         name: "Hafiz Rizky 2",
+    //         username: "hafizganteng",
+    //         email: "hafizganteng@gmail.com",
+    //         phone_number: "085123456789",
+    //         university: "Universitas Brawijaya",
+    //         major: "Sistem Informasi",
+    //     },
+    //     {
+    //         id: 3,
+    //         name: "Hafiz Rizky 3",
+    //         username: "hafizcute",
+    //         email: "hafizcute@gmail.com",
+    //         phone_number: "085123456789",
+    //         university: "Universitas Brawijaya",
+    //         major: "Sistem Informasi",
+    //     },
+    // ];
 
     const [showDialog, setShowDialog] = useState({
         create: false,
@@ -38,19 +63,19 @@ export default function Moderator({ auth }) {
     });
 
     const callback = (method) => {
-        router.visit(route('admin.bimbingan.moderator.index'), {
-            only: ['data'],
+        router.visit(route("admin.bimbingan.moderator.index"), {
+            only: ["data"],
             onSuccess: () => {
-                if (method == 'create') {
-                    toast.success('Create Success!');
-                } else if (method == 'edit') {
-                    toast.success('Edit Success!');
+                if (method == "create") {
+                    toast.success("Create Success!");
+                } else if (method == "edit") {
+                    toast.success("Edit Success!");
                 } else {
-                    toast.success('Delete Success!');
+                    toast.success("Delete Success!");
                 }
-            }
+            },
         });
-    }
+    };
 
     const columns = useMemo(
         () => [
@@ -70,12 +95,12 @@ export default function Moderator({ auth }) {
                 size: 100,
             },
             {
-                accessorKey: "phone_number",
+                accessorKey: "profile.phone_number",
                 header: "Telepon",
                 size: 100,
             },
             {
-                accessorKey: "university",
+                accessorKey: "profile.university",
                 header: "Universitas",
                 size: 100,
             },
@@ -89,16 +114,23 @@ export default function Moderator({ auth }) {
                         <li>
                             <button
                                 onClick={() => {
-                                    setShowDialog({ ...showDialog, edit: true });
+                                    setShowDialog({
+                                        ...showDialog,
+                                        edit: true,
+                                    });
                                     setFormData({
                                         ...formData,
                                         id: cell.row.original.id,
                                         name: cell.row.original.name,
                                         username: cell.row.original.username,
                                         email: cell.row.original.email,
-                                        phone_number: cell.row.original.phone_number,
-                                        university: cell.row.original.university,
-                                        major: cell.row.original.major,
+                                        phone_number:
+                                            cell.row.original.profile
+                                                .phone_number,
+                                        university:
+                                            cell.row.original.profile
+                                                .university,
+                                        major: cell.row.original.profile.major,
                                     });
                                 }}
                             >
@@ -108,7 +140,10 @@ export default function Moderator({ auth }) {
                         <li>
                             <Link
                                 method="DELETE"
-                                href={`/admin/bimbingan/moderator/${cell.getValue()}`}
+                                href={route(
+                                    "admin.manajemen_user.moderator.destroy",
+                                    { moderator: cell.row.original.id }
+                                )}
                             >
                                 <FiTrash2 className="text-[1.2vw] text-danger-40" />
                             </Link>
@@ -118,16 +153,25 @@ export default function Moderator({ auth }) {
                                 <FiEye
                                     className="text-[1.2vw] text-gray-400"
                                     onClick={() => {
-                                        setShowDialog({ ...showDialog, show: true });
+                                        setShowDialog({
+                                            ...showDialog,
+                                            show: true,
+                                        });
                                         setFormData({
                                             ...formData,
                                             id: cell.row.original.id,
                                             name: cell.row.original.name,
-                                            username: cell.row.original.username,
+                                            username:
+                                                cell.row.original.username,
                                             email: cell.row.original.email,
-                                            phone_number: cell.row.original.phone_number,
-                                            university: cell.row.original.university,
-                                            major: cell.row.original.major,
+                                            phone_number:
+                                                cell.row.original.profile
+                                                    .phone_number,
+                                            university:
+                                                cell.row.original.profile
+                                                    .university,
+                                            major: cell.row.original.profile
+                                                .major,
                                         });
                                     }}
                                 />
