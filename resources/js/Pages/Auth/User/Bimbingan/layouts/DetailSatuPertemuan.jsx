@@ -127,6 +127,7 @@ export const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
         if (isVisible) {
             setIsVisible(false);
             allowScroll();
+            window.location.href = item.url;
         } else {
             setIsVisible(true);
             blockScroll();

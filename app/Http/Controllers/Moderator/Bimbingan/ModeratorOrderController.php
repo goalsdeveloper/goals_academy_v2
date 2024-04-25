@@ -29,11 +29,17 @@ class ModeratorOrderController extends Controller
 
             $query = Order::with([
                 'user:id,name',
+                'user.profile',
                 'products:id,product_type_id,category_id,name',
                 'products.category:id,name',
                 'products.productType:id,type',
                 'course:id,products_id,order_id,tutor_id,place_id,topic_id,date,time,location',
                 'course.place.city',
+                'course.place',
+                'course.tutor',
+                'course.tutor.profile',
+                'course.topic',
+                'course.fileUploads'
             ])->whereHas('products', function ($query) {
                 $query->whereHas('productType', function ($subQuery) {
                     $subQuery->where('type', 'LIKE', '%bimbingan%');
@@ -115,22 +121,13 @@ class ModeratorOrderController extends Controller
      */
     public function show(Order $order)
     {
-        dd($order);
         try {
-            $order = Order::with('user:id,name', 'user.profile:user_id,phone_number,university,faculty,major', 'products:id,name', 'course:id,products_id,order_id,tutor_id,topic_id,date,time,place_id,place', 'course.place.city', 'course.tutor:id,name')
-                ->whereHas('products.productType', function ($query) {
-                    $query->whereRaw('LOWER(type) LIKE ?', ['%bimbingan%']);
-                })
-                ->whereHas('products.category', function ($query) {
-                    $query->whereRaw('LOWER(name) LIKE ?', ['%offline%']);
-                })
-                ->findOrFail($order->id);
-
+            $order = $order->load('products', 'user', 'user.profile', 'course.place', 'course.tutor', 'course.tutor.profile', 'course.topic');
             return response()->json([
                 'status' => true,
                 'statusCode' => 200,
                 'message' => 'get data success',
-                'data' => $order,
+                'order' => $order,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
@@ -159,9 +156,9 @@ class ModeratorOrderController extends Controller
     public function edit(Order $order)
     {
         return Inertia::render('Auth/Moderator/Bimbingan/RecentOrder/Edit', [
-            'order' => $order->load('products', 'user', 'user.profile', 'course.tutor', 'course.topic'),
+            'order' => $order->load('products', 'user', 'user.profile', 'course.place', 'course.tutor', 'course.tutor.profile', 'course.topic', 'course.fileUploads'),
             'places' => fn() => Place::with('city')->get(),
-            'tutors' =>fn() => User::where('user_role', UserRoleEnum::TUTOR)->with('profile')->get(),
+            'tutors' => fn() => User::where('user_role', UserRoleEnum::TUTOR)->with('profile')->get(),
             'auth' => Auth::user(),
         ]);
     }
@@ -214,23 +211,20 @@ class ModeratorOrderController extends Controller
     }
 
     // $order diambil dari course id(perhatikan name model)
-    public function updateBimbinganOnline(Request $request, Course $order)
+    public function updateBimbinganOnline(Request $request, Order $order)
     {
+        // dd($request->all(), $order);
         try {
             $validateData = $request->validate([
                 'tutor_id' => 'numeric',
                 'date' => 'date',
                 'time' => 'date_format:H:i',
-                'location' => 'string',
+                'place_id' => 'numeric',
             ]);
 
-            $order->update($validateData);
+            $order->course()->update($validateData);
 
-            return response()->json([
-                'status' => true,
-                'statusCode' => 200,
-                'message' => 'Update data success',
-            ], 200);
+            return redirect()->back();
 
         } catch (ValidationException $e) {
             return response()->json([

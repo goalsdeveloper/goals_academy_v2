@@ -6,16 +6,16 @@ import { FiEdit2, FiEye } from "react-icons/fi";
 import { Link } from "@inertiajs/react";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
 import View from "./RecentOrder/View";
-import moment from "moment"
+import moment from "moment";
 
 export default function RecentOrder({ auth, orders }) {
-    orders = orders.data
-    console.log(orders)
+    orders = orders.data;
+    console.log(orders);
     // const [isLoading, setIsLoading] = useState(false);
     const [isShow, setIsShow] = useState(false);
-
+    // const [detailOrder, setDetailOrder] = useState({});
+    const [detailOrder, setDetailOrder] = useState({});
     // console.log(recent_order);
-
 
     const columns = useMemo(
         () => [
@@ -28,7 +28,8 @@ export default function RecentOrder({ auth, orders }) {
                 header: "Product",
             },
             {
-                accessorFn: (row) => moment(row.created_at).format("MMMM d, YYYY"),
+                accessorFn: (row) =>
+                    moment(row.created_at).format("MMMM d, YYYY"),
                 header: "Tanggal Pembelian",
             },
             {
@@ -40,7 +41,8 @@ export default function RecentOrder({ auth, orders }) {
                 header: "Lokasi",
                 Cell: ({ cell }) => (
                     <span className="text-[.8vw] px-[.8vw] py-[.3vw] font-bold text-danger-40 bg-danger-50 rounded-[.3vw]">
-                        {cell.row.original?.place?.place ?? "Lokasi Belum Diset"}
+                        {cell.row.original?.place?.place ??
+                            "Lokasi Belum Diset"}
                         {/* <FiCheckCircle className="text-success-50 text-[1.2vw]" /> */}
                     </span>
                 ),
@@ -74,7 +76,12 @@ export default function RecentOrder({ auth, orders }) {
                                 </Link>
                             </li>
                             <li>
-                                <button onClick={() => setIsShow(!isShow)}>
+                                <button
+                                    onClick={() => {
+                                        setIsShow(!isShow);
+                                        setDetailOrder(cell.row.original);
+                                    }}
+                                >
                                     <FiEye className="text-[1.2vw] text-neutral-60" />
                                 </button>
                             </li>
@@ -95,7 +102,11 @@ export default function RecentOrder({ auth, orders }) {
         >
             {/* {isLoading && <LoadingUI />} */}
 
-            <ViewPopup show={isShow} setShow={() => setIsShow(!isShow)} />
+            <ViewPopup
+                show={isShow}
+                setShow={() => setIsShow(!isShow)}
+                detailOrder={detailOrder}
+            />
             <div className="space-y-[1.6vw]">
                 <h2 className="font-medium">Recent Order</h2>
                 <div className="text-[.8vw]">
@@ -133,7 +144,7 @@ function LoadingUI() {
     );
 }
 
-const ViewPopup = ({ show, setShow }) => {
+const ViewPopup = ({ show, setShow, detailOrder }) => {
     return (
         <>
             <div
@@ -151,7 +162,7 @@ const ViewPopup = ({ show, setShow }) => {
                         : "md:top-full -bottom-full md:scale-0"
                 } fixed inset-0 mx-auto flex gap-[2vw] w-[76vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50  md:mt-[8vh]`}
             >
-                <View />
+                <View {...{ detailOrder }} />
             </div>
         </>
     );
