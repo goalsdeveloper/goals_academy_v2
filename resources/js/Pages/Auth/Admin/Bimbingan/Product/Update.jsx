@@ -13,10 +13,9 @@ import {
     SelectMultiTagItem,
 } from "./Components/SelectMultiTag";
 import { router } from "@inertiajs/react";
+import toast from "react-hot-toast";
 
 const Update = ({ auth, categories, topics, addons, products }) => {
-    console.log(products.add_ons);
-    console.log(products.topics);
     const [show, setShow] = useState(false);
     const [data, setData] = useState({
         name: products.name,
@@ -31,10 +30,10 @@ const Update = ({ auth, categories, topics, addons, products }) => {
         duration: products.duration,
         add_on: products.add_ons ?? [],
         topics: products.topics ?? [],
-        facilities: products.facilities,
-        // typeof products.facilities == "object"
-        //     ? products.facilities
-        //     : JSON.parse(JSON.parse(products.facilities)) ?? [],
+        facilities:
+            typeof products.facilities == "string"
+                ? JSON.parse(products.facilities)
+                : products.facilities,
         is_visible: products.is_visible == 1 ? true : false,
         form_config:
             typeof products.form_config == "object"
@@ -42,37 +41,28 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                 : JSON.parse(products.form_config) ?? {},
     });
 
-    console.log(data);
-
     function handleSubmit() {
-        const formData = new FormData();
-        formData.append("name", data.name);
-        formData.append("product_image", data.product_image.file);
-        formData.append("slug", data.slug);
-        formData.append("category_id", Number(data.category_id.id));
-        formData.append("description", data.description);
-        formData.append("price", Number(data.price));
-        formData.append("promo", Number(data.promo));
-        formData.append("total_meet", data.total_meet);
-        formData.append("active_period", data.active_period);
-        formData.append("duration", data.duration);
-        formData.append(
-            "addons",
-            JSON.stringify(data.add_on.map((item) => item.id))
-        );
-        formData.append(
-            "topics",
-            JSON.stringify(data.topics.map((item) => item.id))
-        );
-        formData.append("facilities", data.facilities);
-        formData.append("is_visible", data.is_visible ? 1 : 0);
-        formData.append("is_facilities", 0);
-        formData.append("excerpt", data.description);
-        formData.append("form_config", JSON.stringify(data.form_config));
-
         router.put(
-            route("admin.bimbingan.product.update", products.id),
-            formData,
+            route("admin.bimbingan.product.update", products),
+            {
+                name: data.name,
+                product_image: data.product_image.file,
+                slug: data.slug,
+                category_id: Number(data.category_id.id),
+                description: data.description,
+                price: Number(data.price),
+                promo: Number(data.promo),
+                total_meet: data.total_meet,
+                active_period: data.active_period,
+                duration: data.duration,
+                addons: JSON.stringify(data.add_on.map((item) => item.id)),
+                topics: JSON.stringify(data.topics.map((item) => item.id)),
+                facilities: JSON.stringify(data.facilities),
+                is_visible: data.is_visible ? 1 : 0,
+                is_facilities: 0,
+                excerpt: data.description,
+                form_config: JSON.stringify(data.form_config),
+            },
             {
                 onSuccess: () => {
                     toast.success("Product berhasil ditambahkan");
@@ -330,7 +320,6 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                         <SelectMultiTagItem
                                             key={i}
                                             onClick={() => {
-                                                console.log(option, "options");
                                                 if (
                                                     !data.add_on.some(
                                                         (item) => item == option
@@ -390,7 +379,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                             }
                                         }}
                                     >
-                                        {option.topics}
+                                        {option.topic}
                                     </SelectMultiTagItem>
                                 ))}
                             </SelectMultiTag>
@@ -408,7 +397,6 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                             }
                         >
                             <div className="flex flex-wrap gap-[1.6vw]">
-                                {console.log(data.facilities)}
                                 {data.facilities.length == 0 ? (
                                     <p className="text-[.83vw] w-full text-center">
                                         Belum diatur
@@ -417,12 +405,31 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                     data.facilities.map((item) => (
                                         <div
                                             key={item.icon}
-                                            className="flex gap-[.6vw] items-center"
+                                            className="flex gap-[.6vw] items-center group cursor-pointer"
                                         >
                                             <i
                                                 className={`${item.icon} text-secondary`}
                                             ></i>
                                             <p>{item.text}</p>
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    setData({
+                                                        ...data,
+                                                        facilities:
+                                                            data.facilities.filter(
+                                                                (i) => {
+                                                                    i.icon ==
+                                                                        item.icon &&
+                                                                        i.text ==
+                                                                            item.text;
+                                                                }
+                                                            ),
+                                                    })
+                                                }
+                                            >
+                                                <i className="fa-solid fa-xmark group-hover:opacity-100 opacity-0 transition-all"></i>
+                                            </button>
                                         </div>
                                     ))
                                 )}

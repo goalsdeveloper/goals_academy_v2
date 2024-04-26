@@ -6,6 +6,7 @@ import { useState } from "react";
 function SelectInput({
     label = "Label",
     placeholder = "Pilih satu",
+    disabled = false,
     value = "",
     error = "",
     icon = "",
@@ -31,16 +32,20 @@ function SelectInput({
             {label !== "" && (
                 <p className="mb-[2vw] md:mb-[.5vw]">
                     {label}
-                    <sup className={`${required ? "" : "hidden"} text-red-600 -top-1 ml-px`}>
+                    <sup
+                        className={`${
+                            required ? "" : "hidden"
+                        } text-red-600 -top-1 ml-px`}
+                    >
                         *
                     </sup>
                 </p>
             )}
-            <GoalsButton
-                className={`justify-between rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] px-[3vw] md:px-[1vw] cursor-pointer text-[.83vw] ${className}`}
-                activeClassName={
+            <button
+                disabled={disabled}
+                className={`flex disabled:bg-gray-100 disabled:border-gray-300 disabled:cursor-default justify-between items-center flex-wrap gap-[1vw] rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] px-[3vw] md:px-[1vw] cursor-pointer text-[.83vw] border w-full border-neutral-50 ${
                     value !== "" ? filledClassName : emptyClassName
-                }
+                }`}
                 onClick={handleToggle} // Use handleToggle instead of setShow(!show)
             >
                 {icon !== "" && (
@@ -59,7 +64,7 @@ function SelectInput({
                               }`
                     }
                 ></i>
-            </GoalsButton>
+            </button>
             <div className="relative text-[.83vw]">
                 <TECollapse
                     show={show}
