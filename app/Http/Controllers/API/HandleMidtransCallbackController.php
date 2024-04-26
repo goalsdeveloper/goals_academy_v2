@@ -94,6 +94,7 @@ class HandleMidtransCallbackController extends Controller
                                 'slug' => $key['file_name'],
                                 'filename' => $key['file_name'],
                                 'mime_type' => $key['mime_type'],
+                                'name' => $key['name'],
                                 'size' => $key['size'],
                                 'path' => '/file_uploads/' . $key['file_name'],
                                 'user_id' => $parentCourse->user_id,

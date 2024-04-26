@@ -74,21 +74,11 @@ const Dialog = ({
                         </h2>
                         <div className="grid w-full gap-[.8vw]">
                             <GoalsTextInput
-                                label={
-                                    formData.target == "city"
-                                        ? "Kota"
-                                        : "Lokasi"
-                                }
                                 required
-                                data={
-                                    formData.target == "city"
-                                        ? formData.city
-                                        : formData.place
-                                }
+                                label={formData.target == 'city' ? 'Kota' : 'Lokasi'}
+                                data={formData.target == 'city' ? formData.city : formData.location}
                                 placeholder=""
-                                onChange={(e) =>
-                                    setFormData("name", e.target.value)
-                                }
+                                onChange={(e) => formData.target == 'city' ? setFormData("city", e.target.value) : setFormData("location", e.target.value)}
                                 disabled={showDialog.show}
                             />
                             {formData.target == "location" ? (
