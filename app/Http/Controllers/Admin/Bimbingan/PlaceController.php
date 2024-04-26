@@ -39,6 +39,29 @@ class PlaceController extends Controller
                     return $cities;
                 },
             ], 200);
+            // return response()->json([
+            //     'status' => true,
+            //     'statusCode' => 200,
+            //     'message' => 'get data success',
+            //     'places' => function () use($request) {
+            //         $search = $request->input('placeSearch');
+            //         $perPage = $request->input('placePage', 10);
+
+            //         $places = Place::query()->when($search, function ($q, $search) {
+            //             $q->where('place', 'LIKE', "%$search%");
+            //         })->with('city')->paginate($perPage);
+            //         return $places;
+            //     },
+            //     'cities' => function () use($request) {
+            //         $search = $request->input('citySearch');
+            //         $perPage = $request->input('cityPage', 10);
+
+            //         $cities = City::query()->when($search, function ($q, $search) {
+            //             $q->where('city', 'LIKE', "%$search%");
+            //         })->paginate($perPage);
+            //         return $cities;
+            //     },
+            // ], 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to retrieve data. Internal Server Error', 'error' => $e->getMessage()], 500);
         } catch (\Exception $e) {
