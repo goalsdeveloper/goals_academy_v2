@@ -51,9 +51,12 @@ class HistoryController extends Controller
                 }
             }])
             ->paginate($paginate);
-        return Inertia::render('Auth/Tutor/Bimbingan/History', [
+        return response()->json([
             'history' => $history,
         ]);
+        // return Inertia::render('Auth/Tutor/Bimbingan/History', [
+        //     'history' => $history,
+        // ]);
     }
 
     public function show(Course $history)
