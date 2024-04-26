@@ -1,8 +1,9 @@
 import { useState } from "react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 
-export default function Schedule ({ auth }) {
+export default function Schedule ({ auth,data }) {
     const [isLoading, setIsLoading] = useState(false);
+    console.log(data);
 
     return (
         <DashboardLayout title="Tutor" subtitle="Schedule" role="moderator" auth={auth}>
