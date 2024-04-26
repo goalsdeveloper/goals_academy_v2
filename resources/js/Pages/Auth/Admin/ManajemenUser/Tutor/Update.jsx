@@ -11,6 +11,7 @@ import {
 import GoalsImageUploader from "@/Components/elements/GoalsImageUploader";
 import Breadcrumb from "../../components/Breadcrumb";
 import FormSection from "../../components/layouts/FormSection";
+import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 
 export default function Update({ auth, data }) {
     const {
@@ -33,8 +34,9 @@ export default function Update({ auth, data }) {
         linkedin: data.tutor.profile.linkedin_url
             ? data.tutor.profile.linkedin_url
             : "",
-        soft_skills: [],
-        hard_skills: [],
+        skills: [],
+        soft_skills: data.tutor.skills.filter((i) => i.category == 'soft_skill'),
+        hard_skills: data.tutor.skills.filter((i) => i.category == 'hard_skill'),
     });
 
     const { data: temp, setData: setTemp } = useForm({
@@ -45,28 +47,35 @@ export default function Update({ auth, data }) {
         university: "",
         major: "",
         linkedin: "",
-        soft_skills: [],
-        hard_skills: [],
+        skills: [],
+        soft_skills:  data.tutor.skills.filter((i) => i.category == 'soft_skill'),
+        hard_skills: data.tutor.skills.filter((i) => i.category == 'hard_skill'),
     });
 
     const [showForm, setShowForm] = useState({
         soft_skills: false,
         hard_skills: false,
     });
-   const handleClick = () => {
-       const combinedSkills = [...temp.soft_skills, ...temp.hard_skills];
-       const skillIds = combinedSkills.map((skill) => skill.id);
+    const handleClick = () => {
+        const combinedSkills = [
+            ...formData.soft_skills,
+            ...formData.hard_skills,
+        ];
+        const skillIds = combinedSkills.map((skill) => skill.id);
+        // setFormData({
+        //     ...formData,
+        //     skills: skillIds,
+        // });
 
-       console.log({ ...formData, "skills": skillIds });
-       console.log(skillIds);
-       put(
-           route("admin.manajemen_user.tutor.update", {
-               id: data.tutor.id,
-           }),
-           { ...formData, skills: skillIds }
-       );
-   };
-
+        console.log(formData);
+        console.log(skillIds);
+        put(
+            route("admin.manajemen_user.tutor.update", {
+                id: data.tutor.id,
+            }),
+            {formData}
+        );
+    };
 
     return (
         <DashboardLayout
@@ -218,10 +227,15 @@ export default function Update({ auth, data }) {
                                             )
                                         )
                                     ) {
-                                        setFormData(
-                                            "soft_skills",
-                                            temp.soft_skills
-                                        );
+                                        setFormData({
+                                            ...formData,
+                                            soft_skills: temp.soft_skills,
+                                            skills: formData.skills.concat(
+                                                temp.soft_skills.map(
+                                                    (skill) => skill.id
+                                                )
+                                            ),
+                                        });
                                     }
                                 }}
                             >
@@ -323,10 +337,15 @@ export default function Update({ auth, data }) {
                                             )
                                         )
                                     ) {
-                                        setFormData(
-                                            "hard_skills",
-                                            temp.hard_skills
-                                        );
+                                        setFormData({
+                                            ...formData,
+                                            hard_skills: temp.hard_skills,
+                                            skills: formData.skills.concat(
+                                                temp.hard_skills.map(
+                                                    (skill) => skill.id
+                                                )
+                                            ),
+                                        });
                                     }
                                 }}
                             >
