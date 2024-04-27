@@ -28,7 +28,7 @@ function SelectInput({
     };
 
     return (
-        <div className="text-inherit">
+        <div className={`text-inherit ${className}`}>
             {label !== "" && (
                 <p className="mb-[2vw] md:mb-[.5vw]">
                     {label}
