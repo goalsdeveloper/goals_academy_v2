@@ -2,15 +2,14 @@
 
 use App\Http\Controllers\Tutor\HistoryController;
 use App\Http\Controllers\Tutor\ProfileController;
+use App\Http\Controllers\Tutor\OverviewController;
 use App\Http\Controllers\Tutor\ProgressController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware(['auth', 'tutor'])->group(function () {
     Route::prefix('tutor')->name('tutor.')->group(function () {
-        Route::get('overview', function () {
-            return Inertia::render('Auth/Tutor/Overview/Overview');
-        });
+        Route::get('overview', [OverviewController::class, 'index']);
         Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
             Route::patch('progress/tutor-approve/{progress}', [ProgressController::class, 'tutorApprove'])->name('tutor.tutorApprove');
             Route::post('progress/{progress}', [ProgressController::class, 'update'])->name('progress.update');

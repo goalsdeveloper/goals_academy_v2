@@ -1,13 +1,17 @@
+import GoalsPopup from "@/Components/elements/GoalsPopup";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
+import { FileMediaItemBackdrop } from "@/Pages/Auth/User/Bimbingan/layouts/DetailSatuPertemuan";
 import { router, useForm } from "@inertiajs/react";
 import React from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 
 const View = ({ tipe = "bimbingan", detailOrder }) => {
+    const [isShow, setIsShow] = useState(false);
     return (
         <>
             {createPortal(
