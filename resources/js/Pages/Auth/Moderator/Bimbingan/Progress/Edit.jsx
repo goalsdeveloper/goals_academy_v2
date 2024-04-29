@@ -60,12 +60,13 @@ export default function Edit({ auth, progress }) {
                 </div>
 
                 <div className=" gap-[1.2vw] grid grid-cols-2">
-                    <div className="grid gap-[1.2vw]">
+                    <div className="flex flex-col gap-[1.2vw]">
                         <FormSection
                             title="User Information"
                             titleAction={
                                 <SliderButton label="Moderator confirmation" />
                             }
+                            className="h-fit"
                         >
                             <GoalsTextInput label="Username" disabled />
                             <GoalsTextInput label="University" disabled />
@@ -99,7 +100,7 @@ export default function Edit({ auth, progress }) {
                             ></textarea>
                         </FormSection>
                     </div>
-                    <div className="grid gap-[1.2vw]">
+                    <div className="flex flex-col gap-[1.2vw]">
                         <FormSection
                             title="Order Details"
                             titleAction={
