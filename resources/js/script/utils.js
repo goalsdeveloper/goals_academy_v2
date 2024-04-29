@@ -22,3 +22,8 @@ export function toSlug(x) {
         .join("-")
         .toLowerCase();
 }
+
+
+export function upperCaseFirstLetter(x) {
+    return x.charAt(0).toUpperCase() + x.slice(1);
+}

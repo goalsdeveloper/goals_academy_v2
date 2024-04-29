@@ -14,7 +14,7 @@ const GoalsDashboardTable = ({
     isPaginated = false,
     isHeadVisible = false,
     isSplitByCategory = false,
-    className,
+    className = "",
 }) => {
     const [tableData, setTableData] = useState(
         isSplitByCategory ? splitTableByCategory(data) : data
