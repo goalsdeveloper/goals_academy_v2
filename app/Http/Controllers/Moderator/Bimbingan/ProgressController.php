@@ -9,6 +9,7 @@ use App\Models\Course;
 use App\Models\FileUpload;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
@@ -29,11 +30,11 @@ class ProgressController extends Controller
                 $search = $request->input('search');
 
                 $query = Order::with(['user:id,name', 'products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session', 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session'])
-                ->whereHas('products', function ($query) {
-                    $query->whereHas('productType', function ($subQuery) {
-                        $subQuery->where('type', 'LIKE', '%bimbingan%');
-                    });
-                })
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('productType', function ($subQuery) {
+                            $subQuery->where('type', 'LIKE', '%bimbingan%');
+                        });
+                    })
                     ->where('status', 'Success');
 
                 if ($search) {
@@ -135,8 +136,11 @@ class ProgressController extends Controller
      */
     public function edit(Course $progress)
     {
+        $tutors = User::with('profile')->where("user_role", "tutor")->get();
+        $progress->load('user.profile', 'order', 'products', 'topic', "productReview", "addOns");
         return Inertia::render('Auth/Moderator/Bimbingan/Progress/Edit', [
             'progress' => $progress,
+            'tutors' => $tutors
         ]);
     }
 
