@@ -2,8 +2,8 @@ import GoalsBadge from "@/Components/elements/GoalsBadge";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { upperCaseFirstLetter } from "@/script/utils";
-import { Link } from "@inertiajs/react";
+import { getPaginationPages, upperCaseFirstLetter } from "@/script/utils";
+import { Link, router } from "@inertiajs/react";
 import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 import {
     MaterialReactTable,
@@ -14,10 +14,30 @@ import { createPortal } from "react-dom";
 import { FiEdit2, FiEye, FiThumbsUp } from "react-icons/fi";
 import { statusClassMap } from "../../User/RiwayatTransaksi/components/TransactionStatusBadge";
 import SubHeading from "../../Admin/components/SubHeading";
+import { useEffect } from "react";
 
 export default function Progress({ auth, data: recentOrder }) {
-    const data = recentOrder.recent_order.data;
+    const {
+        data,
+        last_page_url,
+        next_page_url,
+        prev_page_url,
+        first_page_url,
+        total,
+        from,
+        to,
+        current_page,
+        per_page,
+        last_page,
+        links,
+    } = recentOrder.recent_order;
     const [isShow, setIsShow] = useState(false);
+    const [pages, setPages] = useState([]);
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
+
 
     const columns = useMemo(
         () => [
@@ -167,7 +187,12 @@ export default function Progress({ auth, data: recentOrder }) {
         renderRowActions: ({ row }) => {
             const { course } = row.original;
 
-            if (course?.child.length > 1) return;
+            if (course?.child.length > 1)
+                return (
+                    <div className="text-nowrap">
+                        <span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
+                    </div>
+                );
             return (
                 <div className="flex items-center gap-[.8vw]">
                     <button
@@ -191,6 +216,38 @@ export default function Progress({ auth, data: recentOrder }) {
                     >
                         <FiEye className="text-[1.2vw] text-neutral-60" />
                     </Link>
+                </div>
+            );
+        },
+        renderBottomToolbar: () => {
+            return (
+                <div className="flex items-center justify-between mt-8 text-[.8vw]">
+                    <p className="text-[.8vw]">
+                        Showing {from} to {to} of {total} results
+                    </p>
+                    <div className="flex items-center gap-[1.6vw]">
+                        {pages.map((link, index) => {
+                            return (
+                                <button
+                                    key={index}
+                                    className="text-[.8vw] text-neutral-60 "
+                                    onClick={() => router.get(link.url)}
+                                >
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: link.label,
+                                        }}
+                                        className={`
+                                            ${
+                                                link.label == current_page &&
+                                                "font-semibold text-secondary"
+                                            }`}
+                                    />
+                                </button>
+                            );
+                        })}
+                    </div>
+                    <div>asdf</div>
                 </div>
             );
         },
@@ -412,6 +469,36 @@ const ViewDialog = ({ show, setShow, product, categories }) => {
                         Simpan
                     </GoalsButton>
                 </div>
+            </div>
+        </div>
+    );
+};
+
+const Pagination = ({
+    last_page_url,
+    next_page_url,
+    prev_page_url,
+    first_page_url,
+    total,
+}) => {
+    return (
+        <div className="flex items-center justify-between">
+            <p className="text-[.8vw]">Showing 1 to 10 of {total} entries</p>
+            <div className="flex items-center gap-[1.6vw]">
+                <button
+                    className="text-[.8vw] text-neutral-60"
+                    disabled={!prev_page_url}
+                    onClick={() => router.get(prev_page_url)}
+                >
+                    Previous
+                </button>
+                <button
+                    className="text-[.8vw] text-neutral-60"
+                    disabled={!next_page_url}
+                    onClick={() => router.get(next_page_url)}
+                >
+                    Next
+                </button>
             </div>
         </div>
     );
