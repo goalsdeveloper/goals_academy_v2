@@ -96,12 +96,16 @@ class ProgressController extends Controller
         try {
             if (Auth::user()->user_role == "moderator") {
                 $progress_user = Course::with('user:id,username', 'user.profile:id,user_id,university,major,phone_number,faculty', 'tutor:id,name', 'topic:id,topic', 'place.city', 'order:id,order_code', 'products:id,name', 'fileUploads', 'productReview')->findOrFail($progress->id);
-                return response()->json([
-                    'status' => true,
-                    'statusCode' => 200,
-                    'message' => 'Get data success',
-                    'data' => $progress_user,
-                ], 200);
+                // return response()->json([
+                //     'status' => true,
+                //     'statusCode' => 200,
+                //     'message' => 'Get data success',
+                //     'data' => $progress_user,
+                // ], 200);
+
+                return Inertia::render('Auth/Moderator/Bimbingan/Progress/View', [
+                    'progress' => $progress_user,
+                ]);
             } else {
                 abort(403);
             }
@@ -131,7 +135,9 @@ class ProgressController extends Controller
      */
     public function edit(Course $progress)
     {
-        //
+        return Inertia::render('Auth/Moderator/Bimbingan/Progress/Edit', [
+            'progress' => $progress,
+        ]);
     }
 
     /**

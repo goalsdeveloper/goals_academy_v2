@@ -1,49 +1,26 @@
-import { useState } from "react";
+import GoalsBadge from "@/Components/elements/GoalsBadge";
+import GoalsButton from "@/Components/elements/GoalsButton";
+import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
-import { useMemo } from "react";
+import { upperCaseFirstLetter } from "@/script/utils";
+import { Link } from "@inertiajs/react";
+import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 import {
     MaterialReactTable,
     useMaterialReactTable,
 } from "material-react-table";
-import TransactionStatusBadge, {
-    statusClassMap,
-} from "../../User/RiwayatTransaksi/components/TransactionStatusBadge";
-import GoalsBadge from "@/Components/elements/GoalsBadge";
-import {
-    Box,
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-    Typography,
-} from "@mui/material";
-import { upperCaseFirstLetter } from "@/script/utils";
+import { useMemo, useState } from "react";
+import { createPortal } from "react-dom";
+import { FiEdit2, FiEye, FiThumbsUp } from "react-icons/fi";
+import { statusClassMap } from "../../User/RiwayatTransaksi/components/TransactionStatusBadge";
+import SubHeading from "../../Admin/components/SubHeading";
 
 export default function Progress({ auth, data: recentOrder }) {
     const data = recentOrder.recent_order.data;
+    const [isShow, setIsShow] = useState(false);
 
     const columns = useMemo(
         () => [
-            // Cell: ({ renderedCellValue, row }) => (
-            //     <Box
-            //       sx={{
-            //         display: 'flex',
-            //         alignItems: 'center',
-            //         gap: '1rem',
-            //       }}
-            //     >
-            //       <img
-            //         alt="avatar"
-            //         height={30}
-            //         src={row.original.avatar}
-            //         loading="lazy"
-            //         style={{ borderRadius: '50%' }}
-            //       />
-            //       {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
-            //       <span>{renderedCellValue}</span>
-            //     </Box>
-            //   ),
             {
                 accessorKey: "user.name",
                 header: "Username",
@@ -93,7 +70,8 @@ export default function Progress({ auth, data: recentOrder }) {
                 Cell: ({ cell }) => {
                     const course = cell.row.original.course;
 
-                    if (course?.is_tutor == null) return;
+                    if (course?.is_tutor == null || course?.child.length > 1)
+                        return;
                     return (
                         <span className="w-full justify-center items-center">
                             {course.is_tutor == true ? (
@@ -110,19 +88,21 @@ export default function Progress({ auth, data: recentOrder }) {
                 header: "User Confirm",
                 Cell: ({ cell }) => {
                     const course = cell.row.original.course;
-
-                    if (course?.is_user == null) return;
-                    return (
-                        <span className="w-full justify-center items-center">
-                            {course.is_user == true ? (
-                                <i className="fa-regular fa-circle-check text-success-50 text-[1.2vw]"></i>
-                            ) : (
-                                <i className="fa-regular fa-circle-xmark text-danger-40 text-[1.2vw]"></i>
-                            )}
-                        </span>
-                    );
+                    if (course?.is_user == null || course?.child.length > 1) {
+                        return;
+                    } else
+                        return (
+                            <span className="w-full justify-center items-center">
+                                {course.is_user == true ? (
+                                    <i className="fa-regular fa-circle-check text-success-50 text-[1.2vw]"></i>
+                                ) : (
+                                    <i className="fa-regular fa-circle-xmark text-danger-40 text-[1.2vw]"></i>
+                                )}
+                            </span>
+                        );
                 },
             },
+            //TODO need checking for multiple session
             {
                 accessorKey: "status",
                 header: "Status",
@@ -147,34 +127,16 @@ export default function Progress({ auth, data: recentOrder }) {
         []
     );
 
-    // const expandCol = useMemo(() => [
-    //     {
-    //         accessorKey: "course.child",
-    //         header: "Detail",
-    //         Cell: ({ cell }) => <strong>{cell.row.original.course.child[0]}</strong>
-    //     }
-    // ],[])
-
     const table = useMaterialReactTable({
         columns,
         data: data,
         enableColumnActions: false,
         enableTopToolbar: false,
-        // enableRowActions: true,
-        // positionActionsColumn: "last",
+        enableRowActions: true,
+        positionActionsColumn: "last",
         positionExpandColumn: "last",
         paginateExpandedRows: false,
         enableExpanding: true,
-
-        // getSubRows: (originalRow) => {
-        //     if (
-        //         originalRow.course &&
-        //         originalRow.course.child &&
-        //         originalRow.course.child.length > 0
-        //     ) {
-        //         return originalRow.course.child.map((item) => item);
-        //     }
-        // },
         muiTablePaperProps: {
             sx: {
                 boxShadow: "none",
@@ -185,12 +147,52 @@ export default function Progress({ auth, data: recentOrder }) {
                 flex: 1,
             },
         },
-
+        muiDetailPanelProps: {
+            sx: {
+                padding: "0",
+            },
+        },
+        muiTableHeadRowProps: {
+            sx: {
+                background: "#F8F8FC",
+                borderRadius: ".4vw",
+            },
+        },
         muiTableProps: {
             sx: {
                 bgcolor: "#F3F6FF",
                 padding: "0",
             },
+        },
+        renderRowActions: ({ row }) => {
+            const { course } = row.original;
+
+            if (course?.child.length > 1) return;
+            return (
+                <div className="flex items-center gap-[.8vw]">
+                    <button
+                        onClick={() => {
+                            setIsShow(true);
+                        }}
+                    >
+                        <FiThumbsUp className="text-[1.2vw] text-success-50" />
+                    </button>
+                    <Link
+                        href={route("moderator.bimbingan.progress.edit", {
+                            progress: course.id,
+                        })}
+                    >
+                        <FiEdit2 className="text-[1.2vw] text-secondary" />
+                    </Link>
+                    <Link
+                        href={route("moderator.bimbingan.progress.show", {
+                            progress: course.id,
+                        })}
+                    >
+                        <FiEye className="text-[1.2vw] text-neutral-60" />
+                    </Link>
+                </div>
+            );
         },
         renderDetailPanel: ({ row }) => {
             const { course } = row.original;
@@ -212,7 +214,7 @@ export default function Progress({ auth, data: recentOrder }) {
                 !isPushed && course.child.unshift(firstSession);
 
                 return (
-                    <Table className="w-full grid bg-[#F3F6FF]">
+                    <Table>
                         <TableBody>
                             {course.child.map((item, index) => {
                                 const status = upperCaseFirstLetter(
@@ -221,7 +223,7 @@ export default function Progress({ auth, data: recentOrder }) {
                                 const cellData = {
                                     session: {
                                         label: (
-                                            <p className="font-semibold">
+                                            <p className="font-bold font-work-sans">
                                                 Sesi
                                             </p>
                                         ),
@@ -230,6 +232,7 @@ export default function Progress({ auth, data: recentOrder }) {
                                                 {item.session}
                                             </p>
                                         ),
+                                        note: "s",
                                     },
                                     sessions: {
                                         value: "",
@@ -269,14 +272,11 @@ export default function Progress({ auth, data: recentOrder }) {
                                         key={index}
                                         sx={{
                                             display: "flex",
-                                            marginLeft: "-1.2%",
-                                            width: "102%",
-                                            marginTop: "-1%",
-                                            height: "110%"
+                                            alignItems: "center",
                                         }}
                                     >
                                         {Object.entries(cellData).map(
-                                            ([key, { label, value }]) => (
+                                            ([key, { label, value, note }]) => (
                                                 <TableCell
                                                     key={key}
                                                     sx={{
@@ -285,13 +285,49 @@ export default function Progress({ auth, data: recentOrder }) {
                                                         alignItems: "center",
                                                     }}
                                                 >
-                                                    {label}&nbsp;{value}
+                                                    <div className="flex items-center gap-[.8vw]">
+                                                        <span className="flex items-center">
+                                                            {label}&nbsp;{value}
+                                                        </span>
+
+                                                        {note && (
+                                                            <span className="text-info-40 font-medium">
+                                                                Need Action
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                 </TableCell>
                                             )
                                         )}
-                                        <td className="w-[64px]"></td>
+                                        <td className="w-[9.8%] flex justify-center">
+                                            <div className="flex items-center justify-center gap-[.8vw] w-full">
+                                                <button
+                                                    onClick={() => {
+                                                        setIsShow(true);
+                                                    }}
+                                                >
+                                                    <FiThumbsUp className="text-[1.2vw] text-success-50" />
+                                                </button>
+                                                <Link
+                                                    href={route(
+                                                        "moderator.bimbingan.progress.edit",
+                                                        { progress: item.id }
+                                                    )}
+                                                >
+                                                    <FiEdit2 className="text-[1.2vw] text-secondary" />
+                                                </Link>
+                                                <Link
+                                                    href={route(
+                                                        "moderator.bimbingan.progress.show",
+                                                        { progress: item.id }
+                                                    )}
+                                                >
+                                                    <FiEye className="text-[1.2vw] text-neutral-60" />
+                                                </Link>
+                                            </div>
+                                        </td>
+                                        <td className="w-[4.8%]"></td>
                                     </TableRow>
-                                    // <GoalsDashboardTable data={data} columns={expandCol} />
                                 );
                             })}
                         </TableBody>
@@ -309,10 +345,12 @@ export default function Progress({ auth, data: recentOrder }) {
             auth={auth}
         >
             {/* {isLoading && <LoadingUI />} */}
-
-            {/* <ViewPopup show={isShow} setShow={() => setIsShow(!isShow)} /> */}
+            {createPortal(
+                <ViewDialog show={isShow} setShow={() => setIsShow(!isShow)} />,
+                document.body
+            )}
             <div className="space-y-[1.6vw]">
-                <h2 className="font-medium">Progress</h2>
+                <SubHeading title="Progress" />
                 <div className="text-[.8vw] bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
                     <MaterialReactTable table={table} />
                 </div>
@@ -344,23 +382,37 @@ const DateTimeComp = ({ date, time }) => {
     );
 };
 
-function Card({ className, ...props }) {
+const ViewDialog = ({ show, setShow, product, categories }) => {
     return (
         <div
-            {...props}
-            className={`bg-white shadow-bottom-right rounded-[.625vw] py-[1.25vw] px-[1.67vw] ${className}`}
-        ></div>
-    );
-}
+            className={`${
+                show ? "" : "opacity-0 pointer-events-none"
+            } z-50 fixed w-full h-full top-0 overflow-auto bg-dark focus:bg-red-400 bg-opacity-50 transition-all duration-300`}
+            onClick={() => {
+                setShow(false);
+            }}
+        >
+            <div
+                onClick={(e) => e.stopPropagation()}
+                className={`${
+                    show
+                        ? "md:top-0 bottom-0 scale-100"
+                        : "md:top-full -bottom-full scale-0"
+                } inset-0 mx-auto grid text-center gap-[1.6vw] w-[23vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.6vw] z-50 my-[8vh] `}
+            >
+                <h3>Durasi Bimbingan</h3>
+                <p>
+                    Harap masukkan durasi yang berjalan pada <br /> saat proses
+                    bimbingan
+                </p>
 
-function LoadingUI() {
-    return (
-        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
-            <img
-                src={logo}
-                alt="Goals Academy"
-                className="w-[6vw] h-[6vw] animate-bounce"
-            />
+                <div className="flex gap-[1vw]">
+                    <GoalsTextInput placeholder="Masukkan durasi" grow />
+                    <GoalsButton size="sm" variant="success">
+                        Simpan
+                    </GoalsButton>
+                </div>
+            </div>
         </div>
     );
-}
+};
