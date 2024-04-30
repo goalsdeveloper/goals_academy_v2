@@ -12,12 +12,12 @@ import {
     SelectMultiTag,
     SelectMultiTagItem,
 } from "./Components/SelectMultiTag";
-import { router } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import toast from "react-hot-toast";
 
 const Update = ({ auth, categories, topics, addons, products }) => {
     const [show, setShow] = useState(false);
-    const [data, setData] = useState({
+    const { data, setData, post, transform } = useForm({
         name: products.name,
         product_image: "",
         slug: products.slug,
@@ -42,36 +42,35 @@ const Update = ({ auth, categories, topics, addons, products }) => {
     });
 
     function handleSubmit() {
-        router.put(
-            route("admin.bimbingan.product.update", products),
-            {
-                name: data.name,
-                product_image: data.product_image.file,
-                slug: data.slug,
-                category_id: Number(data.category_id.id),
-                description: data.description,
-                price: Number(data.price),
-                promo: Number(data.promo),
-                total_meet: data.total_meet,
-                active_period: data.active_period,
-                duration: data.duration,
-                addons: JSON.stringify(data.add_on.map((item) => item.id)),
-                topics: JSON.stringify(data.topics.map((item) => item.id)),
-                facilities: JSON.stringify(data.facilities),
-                is_visible: data.is_visible ? 1 : 0,
-                is_facilities: 0,
-                excerpt: data.description,
-                form_config: JSON.stringify(data.form_config),
+        transform((data) => ({
+            _method: "put",
+            name: data.name,
+            product_image: data.product_image,
+            slug: data.slug,
+            category_id: Number(data.category_id.id),
+            description: data.description,
+            price: Number(data.price),
+            promo: Number(data.promo),
+            total_meet: data.total_meet,
+            active_period: data.active_period,
+            duration: data.duration,
+            addons: JSON.stringify(data.add_on.map((item) => item.id)),
+            topics: JSON.stringify(data.topics.map((item) => item.id)),
+            facilities: JSON.stringify(data.facilities),
+            is_visible: data.is_visible ? 1 : 0,
+            is_facilities: 0,
+            excerpt: data.description,
+            form_config: JSON.stringify(data.form_config),
+        }));
+
+        post(route("admin.bimbingan.product.update", products), {
+            onSuccess: () => {
+                toast.success("Product berhasil ditambahkan");
             },
-            {
-                onSuccess: () => {
-                    toast.success("Product berhasil ditambahkan");
-                },
-                onError: (error) => {
-                    toast.error(error.message);
-                },
-            }
-        );
+            onError: (error) => {
+                toast.error(error.message);
+            },
+        });
     }
 
     const formConfigList = [
@@ -157,14 +156,10 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                             /> */}
                             <input
                                 type="file"
-                                value={data.product_image.url}
                                 onChange={(e) =>
                                     setData({
                                         ...data,
-                                        product_image: {
-                                            url: e.target.value,
-                                            file: e.target.files[0],
-                                        },
+                                        product_image: e.target.files[0],
                                     })
                                 }
                             />
