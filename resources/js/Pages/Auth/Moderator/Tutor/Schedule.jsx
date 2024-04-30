@@ -1,109 +1,157 @@
 import { useState, useMemo } from "react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import SubHeading from "../../Admin/components/SubHeading";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import GoalsDataTable from "@/Components/elements/GoalsDataTable";
+import moment from "moment";
+import { createPortal } from "react-dom";
+import GoalsPopup from "@/Components/elements/GoalsPopup";
 
 export default function Schedule ({ auth, data }) {
     const [isLoading, setIsLoading] = useState(false);
-    console.log(data);
-    // const data = [
-    //     {
-    //         time: '08:00',
-    //         '2024-04-01': ['Timo', 'Hafiz'],
-    //         '2024-04-02': ['Hafiz'],
-    //         '2024-04-03': ['Hafiz'],
-    //         '2024-04-04': ['Hafiz'],
-    //         '2024-04-05': ['Hafiz'],
-    //         '2024-04-06': ['Hafiz'],
-    //         '2024-04-07': ['Hafiz', 'Timo'],
-    //         '2024-04-08': ['Hafiz'],
-    //         '2024-04-09': ['Hafiz'],
-    //         '2024-04-10': ['Hafiz'],
-    //         '2024-04-11': ['Hafiz'],
-    //         '2024-04-12': ['Hafiz'],
-    //         '2024-04-13': ['Hafiz'],
-    //         '2024-04-14': ['Hafiz'],
-    //         '2024-04-15': ['Hafiz'],
-    //         '2024-04-16': ['Hafiz'],
-    //         '2024-04-17': ['Hafiz'],
-    //         '2024-04-18': ['Hafiz'],
-    //         '2024-04-19': ['Hafiz'],
-    //         '2024-04-20': ['Hafiz'],
-    //         '2024-04-21': ['Hafiz'],
-    //         '2024-04-22': ['Hafiz'],
-    //         '2024-04-23': ['Hafiz'],
-    //         '2024-04-24': ['Hafiz'],
-    //         '2024-04-25': ['Hafiz'],
-    //         '2024-04-26': ['Hafiz'],
-    //         '2024-04-27': ['Hafiz'],
-    //         '2024-04-28': ['Hafiz'],
-    //         '2024-04-29': ['Hafiz'],
-    //         '2024-04-30': ['Hafiz'],
-    //         '2024-04-31': ['Hafiz'],
-    //     }
-    // ]
+    const [showDetail, setShowDetail] = useState(false);
+    const [dataDetail, setDataDetail] = useState([]);
+    const [dateRange, setDateRange] = useState({
+        start_date: '2024-04-01',
+        end_date: '2024-04-07',
+    });
+    const [dataSchedule, setDataSchedule] = useState([
+        {
+            time: '08:00',
+            '2024-04-01': ['Timo', 'Hafiz'],
+            '2024-04-02': ['Hafiz'],
+            '2024-04-03': ['Hafiz'],
+            '2024-04-04': [],
+            '2024-04-05': [],
+            '2024-04-06': ['Hafiz'],
+            '2024-04-07': ['Hafiz', 'Timo'],
+        },
+        {
+            time: '09:00',
+            '2024-04-01': ['Timo', 'Hafiz'],
+            '2024-04-02': ['Hafiz'],
+            '2024-04-03': ['Hafiz'],
+            '2024-04-04': ['Hafiz'],
+            '2024-04-05': ['Hafiz'],
+            '2024-04-06': ['Hafiz'],
+            '2024-04-07': ['Hafiz', 'Timo'],
+        },
+        {
+            time: '10:00',
+            '2024-04-01': ['Timo', 'Hafiz'],
+            '2024-04-02': ['Hafiz'],
+            '2024-04-03': ['Hafiz'],
+            '2024-04-04': ['Hafiz'],
+            '2024-04-05': ['Hafiz'],
+            '2024-04-06': ['Hafiz'],
+            '2024-04-07': ['Hafiz', 'Timo'],
+        },
+        {
+            time: '11:00',
+            '2024-04-01': ['Timo', 'Hafiz'],
+            '2024-04-02': ['Hafiz'],
+            '2024-04-03': ['Hafiz'],
+            '2024-04-04': ['Hafiz'],
+            '2024-04-05': ['Hafiz'],
+            '2024-04-06': ['Hafiz'],
+            '2024-04-07': ['Hafiz', 'Timo'],
+        },
+    ])
 
-    // const columns = useMemo(
-    //     () => [
-    //         {
-    //             accessorKey: "topic",
-    //             header: "Topik",
-    //             size: 200,
-    //         },
-    //         {
-    //             accessorKey: "slug",
-    //             header: "Slug",
-    //             size: 200,
-    //         },
-    //         {
-    //             accessorKey: "id",
-    //             header: "Action",
-    //             size: 50,
+    const columns = useMemo(
+        () => [
+            {
+                accessorKey: "time",
+                header: "",
+                size: 50,
+                Header: ({ column }) => <div className="bg-skin">{column.columnDef.header}</div>,
+                Cell: ({ cell }) => (<div className="text-center font-semibold">{cell.getValue()}</div>),
+            }
+        ].concat(Object.keys(dataSchedule[0]).filter(i => i != 'time').map(i => (
+            {
+                accessorKey: i,
+                header: moment(i).format('ddd, DD MMMM'),
+                size: 50,
+                Cell: ({ cell }) => {
+                    const value = cell.getValue();
+                    return (
+                        <button
+                            className="w-full flex items-center justify-center gap-[1vw] py-[1.5vw] px-[1.2vw]"
+                            onClick={() => {
+                                if (value.length > 1) {
+                                    setDataDetail(value);
+                                    setShowDetail(true);
+                                }
+                            }}
+                        >
+                            <span>{value[0]}</span>
+                            {value.length > 1 &&
+                                <span className="flex items-center justify-center bg-skin rounded-full w-[2vw] h-[2vw]">
+                                    {value.length}
+                                </span>
+                            }
+                        </button>
+                    )
+                }
+            }
+        ))),
+        [dataSchedule]
+    );
 
-    //             Cell: ({ cell }) => (
-    //                 <ul className="flex gap-[.8vw] w-fit">
-    //                     <li>
-    //                         <button
-    //                             onClick={() => {
-    //                                 setShowDialog({ ...showDialog, edit: true });
-    //                                 setFormData({
-    //                                     ...formData,
-    //                                     id: cell.row.original.id,
-    //                                     topic: cell.row.original.topic,
-    //                                     slug: cell.row.original.slug,
-    //                                 });
-    //                             }}
-    //                         >
-    //                             <FiEdit2 className="text-[1.2vw] text-secondary" />
-    //                         </button>
-    //                     </li>
-    //                     <li>
-    //                         <Link
-    //                             method="DELETE"
-    //                             href={`/admin/bimbingan/topic/${cell.getValue()}`}
-    //                             onSuccess={callback}
-    //                             as="button"
-    //                         >
-    //                             <FiTrash2 className="text-[1.2vw] text-danger-40" />
-    //                         </Link>
-    //                     </li>
-    //                 </ul>
-    //             ),
-    //         },
-    //     ],
-    //     []
-    // );
+    const options = {
+        enableTopToolbar: false,
+        enableColumnActions: false,
+        enableSorting: false,
+        muiTableHeadCellProps: {
+            sx: {
+                fontFamily: "Poppins",
+                fontWeight: 600,
+                backgroundColor: "#F8F8FC",
+                padding: 0,
+                '>.Mui-TableHeadCell-Content': {
+                    justifyContent: "center",
+                },
+            }
+        },
+        muiTableBodyCellProps: {
+            sx: {
+                padding: 0,
+                // '&:hover': {
+                //     backgroundColor: 'lightgray'
+                // }
+            },
+        }
+    }
 
     return (
         <DashboardLayout title="Tutor" subtitle="Schedule" role="moderator" auth={auth}>
             {isLoading && <LoadingUI />}
-            <SubHeading title="Schedule" className="mb-[1.2vw]" />
+            <p className="font-medium text-[1.2vw] mb-[1.2vw]">Schedule</p>
             <div className="bg-white rounded-[.625vw] px-[1.67vw] py-[1.25vw]">
-                <div>asdf</div>
-                <div>asdf</div>
-                <div>asdf</div>
-                <div>asdf</div>
+                <div className="w-full bg-dark-indigo text-white flex justify-between items-center p-[1vw] rounded-t-[.5vw]">
+                    <button><FiChevronLeft className="text-[1.5vw]" /></button>
+                    <p>{moment(dateRange.start_date).format("DD MMMM YYYY")} - {moment(dateRange.end_date).format("DD MMMM YYYY")}</p>
+                    <button><FiChevronRight className="text-[1.5vw]" /></button>
+                </div>
+                <GoalsDataTable data={dataSchedule} columns={columns} options={options} />
             </div>
+            <CellDetail show={showDetail} setShow={setShowDetail} data={dataDetail} />
         </DashboardLayout>
+    )
+}
+
+function CellDetail ({ show, setShow, data }) {
+    return (
+        <div>
+            {createPortal(
+                <GoalsPopup
+                    {...{ show, setShow }}
+                    className="max-w-[9vw]"
+                >
+                    {data.map(i => <div className="text-center">{i}</div>)}
+                </GoalsPopup>,
+                document.body
+            )}
+        </div>
     )
 }
 
