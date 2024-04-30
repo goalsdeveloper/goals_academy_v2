@@ -39,15 +39,9 @@ export default function Edit({ auth, progress, tutors }) {
         note_product: progress.product_review?.note_product,
         note: progress.note,
         is_moderator: progress.is_moderator,
-        record: null,
+        record: "",
         tutor_id: progress.tutor_id,
     });
-
-
-
-    const type = "tuntas";
-
-    console.log(data);
 
     return (
         <DashboardLayout
@@ -83,12 +77,13 @@ export default function Edit({ auth, progress, tutors }) {
                                         { progress: progress.id }
                                     ),
                                     {
-                                        tutor_id: data.tutor.id,
-                                        location: data.location,
-                                        date: data.date,
-                                        time: data.time,
-                                        record: data.record,
-                                        is_moderator: JSON.stringify(data.is_moderator ? 1 : 0),
+                                        preserveScroll: true,
+                                        onSuccess: () =>
+                                            router.replace(
+                                                route(
+                                                    "moderator.bimbingan.progress.index"
+                                                )
+                                            ),
                                     }
                                 );
                             }}
@@ -158,7 +153,10 @@ export default function Edit({ auth, progress, tutors }) {
                                                 key={item.id}
                                                 onClick={() => {
                                                     setData("tutor", item);
-                                                    setData("tutor_id", item.id);
+                                                    setData(
+                                                        "tutor_id",
+                                                        item.id
+                                                    );
                                                 }}
                                             >
                                                 {item.name}
@@ -259,7 +257,7 @@ export default function Edit({ auth, progress, tutors }) {
                                     );
                                 })}
                             </SelectMultiTag>
-                            {type === "tuntas" && (
+                            {data.session && (
                                 <GoalsTextInput
                                     label="Session"
                                     disabled
@@ -291,6 +289,7 @@ export default function Edit({ auth, progress, tutors }) {
                             <input
                                 type="file"
                                 className=""
+                                accept="application/pdf"
                                 onChange={(e) =>
                                     setData({
                                         ...data,

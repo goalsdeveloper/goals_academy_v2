@@ -195,7 +195,8 @@ class ProgressController extends Controller
                     // $fileUpload->save();
                 }
 
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress berhasil'], 200);
+                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress berhasil'], 200);
+                return redirect()->route("moderator.bimbingan.progress.index")->with('success', 'Update progress berhasil');
             } else {
                 abort(403);
             }
