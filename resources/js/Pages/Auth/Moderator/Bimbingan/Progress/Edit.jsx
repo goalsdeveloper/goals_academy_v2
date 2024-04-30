@@ -20,7 +20,8 @@ import {
 import { phoneNumberFormat } from "@/script/utils";
 
 export default function Edit({ auth, progress, tutors }) {
-    const { data, setData, put } = useForm({
+    const { data, setData, post } = useForm({
+        _method: "put",
         add_on: progress.add_ons,
         username: progress.user.username,
         university: progress.user.profile.university,
@@ -72,11 +73,11 @@ export default function Edit({ auth, progress, tutors }) {
                         <GoalsButton
                             variant="success"
                             size="sm"
-                            onClick={() =>
-                                router.put(
+                            onClick={() => {
+                                post(
                                     route(
                                         "moderator.bimbingan.progress.update",
-                                        progress.id
+                                        { progress: progress.id }
                                     ),
                                     {
                                         tutor_id: data.tutor.id,
@@ -84,10 +85,10 @@ export default function Edit({ auth, progress, tutors }) {
                                         date: data.date,
                                         time: data.time,
                                         record: data.record,
-                                        is_moderator: data.is_moderator ? 1 : 0,
-                                    },
-                                )
-                            }
+                                        is_moderator: JSON.stringify(data.is_moderator ? 1 : 0),
+                                    }
+                                );
+                            }}
                         >
                             Simpan
                         </GoalsButton>
@@ -283,7 +284,16 @@ export default function Edit({ auth, progress, tutors }) {
                                 />
                             </div>
 
-                            <input type="file" className="" onChange={(e) => setData({...data, record: e.target.files[0]})}/>
+                            <input
+                                type="file"
+                                className=""
+                                onChange={(e) =>
+                                    setData({
+                                        ...data,
+                                        record: e.target.files[0],
+                                    })
+                                }
+                            />
                         </FormSection>
                         <FormSection
                             title="Tutor Information"

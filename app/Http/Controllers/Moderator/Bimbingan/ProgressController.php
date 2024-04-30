@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 
 class ProgressController extends Controller
 {
@@ -151,7 +152,6 @@ class ProgressController extends Controller
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                dd($request->all());
                 if ($progress->ongoing == "selesai") {
                     return response()->json(['status' => false, 'statusCode' => 403, 'message' => 'Progress sudah selesai dan tidak dapat diubah'], 403);
                 }
