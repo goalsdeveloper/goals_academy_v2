@@ -2,8 +2,8 @@ import GoalsBadge from "@/Components/elements/GoalsBadge";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { upperCaseFirstLetter } from "@/script/utils";
-import { Link } from "@inertiajs/react";
+import { getPaginationPages, upperCaseFirstLetter } from "@/script/utils";
+import { Link, router } from "@inertiajs/react";
 import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 import {
     MaterialReactTable,
@@ -14,10 +14,17 @@ import { createPortal } from "react-dom";
 import { FiEdit2, FiEye, FiThumbsUp } from "react-icons/fi";
 import { statusClassMap } from "../../User/RiwayatTransaksi/components/TransactionStatusBadge";
 import SubHeading from "../../Admin/components/SubHeading";
+import { useEffect } from "react";
 
 export default function Progress({ auth, data: recentOrder }) {
-    const data = recentOrder.recent_order.data;
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        recentOrder.recent_order;
     const [isShow, setIsShow] = useState(false);
+    const [pages, setPages] = useState([]);
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
 
     const columns = useMemo(
         () => [
@@ -26,7 +33,7 @@ export default function Progress({ auth, data: recentOrder }) {
                 header: "Username",
                 Cell: ({ renderedCellValue }) => {
                     return (
-                        <p className="text-[.8vw] font-semibold">
+                        <p className="text-[.8vw] font-medium">
                             {renderedCellValue}
                         </p>
                     );
@@ -37,7 +44,7 @@ export default function Progress({ auth, data: recentOrder }) {
                 header: "Product",
                 Cell: ({ renderedCellValue }) => {
                     return (
-                        <p className="text-[.8vw] font-semibold">
+                        <p className="text-[.8vw] font-medium">
                             {renderedCellValue}
                         </p>
                     );
@@ -67,6 +74,7 @@ export default function Progress({ auth, data: recentOrder }) {
             {
                 accessorKey: "is_tutor",
                 header: "Tutor Confirm",
+                enableSorting: false,
                 Cell: ({ cell }) => {
                     const course = cell.row.original.course;
 
@@ -86,6 +94,7 @@ export default function Progress({ auth, data: recentOrder }) {
             {
                 accessorKey: "is_user",
                 header: "User Confirm",
+                enableSorting: false,
                 Cell: ({ cell }) => {
                     const course = cell.row.original.course;
                     if (course?.is_user == null || course?.child.length > 1) {
@@ -102,7 +111,7 @@ export default function Progress({ auth, data: recentOrder }) {
                         );
                 },
             },
-            //TODO need checking for multiple session
+            //TODO need checking for multiple session only done when all session finished
             {
                 accessorKey: "status",
                 header: "Status",
@@ -130,44 +139,16 @@ export default function Progress({ auth, data: recentOrder }) {
     const table = useMaterialReactTable({
         columns,
         data: data,
-        enableColumnActions: false,
-        enableTopToolbar: false,
-        enableRowActions: true,
-        positionActionsColumn: "last",
-        positionExpandColumn: "last",
-        paginateExpandedRows: false,
-        enableExpanding: true,
-        muiTablePaperProps: {
-            sx: {
-                boxShadow: "none",
-            },
-        },
-        muiTableBodyCellProps: {
-            sx: {
-                flex: 1,
-            },
-        },
-        muiDetailPanelProps: {
-            sx: {
-                padding: "0",
-            },
-        },
-        muiTableHeadRowProps: {
-            sx: {
-                background: "#F8F8FC",
-                borderRadius: ".4vw",
-            },
-        },
-        muiTableProps: {
-            sx: {
-                bgcolor: "#F3F6FF",
-                padding: "0",
-            },
-        },
+        ...getTableStyling(),
         renderRowActions: ({ row }) => {
             const { course } = row.original;
 
-            if (course?.child.length > 1) return;
+            if (course?.child.length > 1)
+                return (
+                    <div className="text-nowrap">
+                        <span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
+                    </div>
+                );
             return (
                 <div className="flex items-center gap-[.8vw]">
                     <button
@@ -194,146 +175,24 @@ export default function Progress({ auth, data: recentOrder }) {
                 </div>
             );
         },
+        renderBottomToolbar: () => {
+            return (
+                <BottomPaginationTable
+                    {...{
+                        from,
+                        to,
+                        total,
+                        pages,
+                        per_page,
+                        current_page,
+                    }}
+                />
+            );
+        },
         renderDetailPanel: ({ row }) => {
-            const { course } = row.original;
+            if (row.original.course?.child.length < 1) return;
 
-            if (course && course.child && course.child.length > 0) {
-                const firstSession = {
-                    id: course.id,
-                    date: course.date,
-                    time: course.time,
-                    ongoing: course.ongoing,
-                    is_tutor: course.is_tutor,
-                    is_user: course.is_user,
-                    order_id: course.order_id,
-                    session: course.session,
-                };
-
-                const isPushed = course.child.find((x) => x.id == course.id);
-
-                !isPushed && course.child.unshift(firstSession);
-
-                return (
-                    <Table>
-                        <TableBody>
-                            {course.child.map((item, index) => {
-                                const status = upperCaseFirstLetter(
-                                    item.ongoing
-                                );
-                                const cellData = {
-                                    session: {
-                                        label: (
-                                            <p className="font-bold font-work-sans">
-                                                Sesi
-                                            </p>
-                                        ),
-                                        value: (
-                                            <p className="font-semibold">
-                                                {item.session}
-                                            </p>
-                                        ),
-                                        note: "s",
-                                    },
-                                    sessions: {
-                                        value: "",
-                                    },
-                                    dateTime: {
-                                        value: (
-                                            <DateTimeComp
-                                                date={item.date}
-                                                time={item.time}
-                                            />
-                                        ),
-                                    },
-                                    is_tutor: {
-                                        value: (
-                                            <StatusIcon
-                                                isTrue={item.is_tutor}
-                                            />
-                                        ),
-                                    },
-                                    is_user: {
-                                        value: (
-                                            <StatusIcon isTrue={item.is_user} />
-                                        ),
-                                    },
-                                    ongoing: {
-                                        value: (
-                                            <GoalsBadge
-                                                title={status}
-                                                className={`${statusClassMap[status]} font-semibold`}
-                                            />
-                                        ),
-                                    },
-                                };
-
-                                return (
-                                    <TableRow
-                                        key={index}
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        {Object.entries(cellData).map(
-                                            ([key, { label, value, note }]) => (
-                                                <TableCell
-                                                    key={key}
-                                                    sx={{
-                                                        flex: 1,
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                    }}
-                                                >
-                                                    <div className="flex items-center gap-[.8vw]">
-                                                        <span className="flex items-center">
-                                                            {label}&nbsp;{value}
-                                                        </span>
-
-                                                        {note && (
-                                                            <span className="text-info-40 font-medium">
-                                                                Need Action
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                </TableCell>
-                                            )
-                                        )}
-                                        <td className="w-[9.8%] flex justify-center">
-                                            <div className="flex items-center justify-center gap-[.8vw] w-full">
-                                                <button
-                                                    onClick={() => {
-                                                        setIsShow(true);
-                                                    }}
-                                                >
-                                                    <FiThumbsUp className="text-[1.2vw] text-success-50" />
-                                                </button>
-                                                <Link
-                                                    href={route(
-                                                        "moderator.bimbingan.progress.edit",
-                                                        { progress: item.id }
-                                                    )}
-                                                >
-                                                    <FiEdit2 className="text-[1.2vw] text-secondary" />
-                                                </Link>
-                                                <Link
-                                                    href={route(
-                                                        "moderator.bimbingan.progress.show",
-                                                        { progress: item.id }
-                                                    )}
-                                                >
-                                                    <FiEye className="text-[1.2vw] text-neutral-60" />
-                                                </Link>
-                                            </div>
-                                        </td>
-                                        <td className="w-[4.8%]"></td>
-                                    </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                );
-            }
+            return <DropdownDetailPanel row={row} />;
         },
     });
 
@@ -415,4 +274,237 @@ const ViewDialog = ({ show, setShow, product, categories }) => {
             </div>
         </div>
     );
+};
+
+export const DropdownDetailPanel = ({ row, isActionDisabled = false }) => {
+    const { course } = row.original;
+
+    if (course && course.child && course.child.length > 0) {
+        const firstSession = {
+            id: course.id,
+            date: course.date,
+            time: course.time,
+            ongoing: course.ongoing,
+            is_tutor: course.is_tutor,
+            is_user: course.is_user,
+            order_id: course.order_id,
+            session: course.session,
+        };
+
+        const isPushed = course.child.find((x) => x.id == course.id);
+
+        !isPushed && course.child.unshift(firstSession);
+
+        return (
+            <Table>
+                <TableBody>
+                    {course.child.map((item, index) => {
+                        const status = upperCaseFirstLetter(item.ongoing);
+                        const cellData = {
+                            session: {
+                                label: (
+                                    <p className="font-bold font-work-sans">
+                                        Sesi
+                                    </p>
+                                ),
+                                value: (
+                                    <p className="font-semibold">
+                                        {item.session}
+                                    </p>
+                                ),
+                                note: "s",
+                            },
+                            sessions: {
+                                value: "",
+                            },
+                            dateTime: {
+                                value: (
+                                    <DateTimeComp
+                                        date={item.date}
+                                        time={item.time}
+                                    />
+                                ),
+                            },
+                            is_tutor: {
+                                value: <StatusIcon isTrue={item.is_tutor} />,
+                            },
+                            is_user: {
+                                value: <StatusIcon isTrue={item.is_user} />,
+                            },
+                            ongoing: {
+                                value: (
+                                    <GoalsBadge
+                                        title={status}
+                                        className={`${statusClassMap[status]} font-semibold`}
+                                    />
+                                ),
+                            },
+                        };
+
+                        return (
+                            <TableRow
+                                key={index}
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                }}
+                            >
+                                {Object.entries(cellData).map(
+                                    ([key, { label, value, note }]) => (
+                                        <TableCell
+                                            key={key}
+                                            sx={{
+                                                flex: 1,
+                                                display: "flex",
+                                                height: "3.2vw",
+                                            }}
+                                        >
+                                            <div className="flex items-center gap-[.8vw]">
+                                                <span className="flex items-center">
+                                                    {label}&nbsp;{value}
+                                                </span>
+
+                                                {note && (
+                                                    <span className="text-info-40 font-medium">
+                                                        Need Action
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </TableCell>
+                                    )
+                                )}
+                                <td className="w-[9.8%] flex justify-center h-[3.2vw] border-b border-neutral-20">
+                                    <div className="flex items-center justify-center gap-[.8vw] w-full">
+                                        {isActionDisabled == false && (
+                                            <>
+                                                <button
+                                                    onClick={() => {
+                                                        setIsShow(true);
+                                                    }}
+                                                >
+                                                    <FiThumbsUp className="text-[1.2vw] text-success-50" />
+                                                </button>
+                                                <Link
+                                                    href={route(
+                                                        "moderator.bimbingan.progress.edit",
+                                                        { progress: item.id }
+                                                    )}
+                                                >
+                                                    <FiEdit2 className="text-[1.2vw] text-secondary" />
+                                                </Link>
+                                            </>
+                                        )}
+
+                                        <Link
+                                            href={route(
+                                                "moderator.bimbingan.progress.show",
+                                                { progress: item.id }
+                                            )}
+                                        >
+                                            <FiEye className="text-[1.2vw] text-neutral-60" />
+                                        </Link>
+                                    </div>
+                                </td>
+                                <td className="w-[4.8%] flex justify-center h-[3.2vw] border-b border-neutral-20"></td>
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
+            </Table>
+        );
+    }
+};
+
+export const BottomPaginationTable = ({
+    from,
+    to,
+    total,
+    pages,
+    per_page,
+    current_page,
+}) => {
+    return (
+        <div className="flex items-center justify-between mt-8 text-[.8vw]">
+            <p className="text-[.8vw] text-neutral-50">
+                Showing {from} to {to} of {total} results
+            </p>
+            <div className="flex items-center gap-[1.6vw]">
+                {pages?.map((link, index) => {
+                    return (
+                        <button
+                            key={index}
+                            className="text-[.8vw] text-neutral-60 "
+                            onClick={() => router.get(link.url)}
+                        >
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: link.label,
+                                }}
+                                className={`
+                                            ${
+                                                link.label == current_page &&
+                                                "font-semibold text-secondary"
+                                            }`}
+                            />
+                        </button>
+                    );
+                })}
+            </div>
+            <p className="text-neutral-50">Items per page {per_page}</p>
+        </div>
+    );
+};
+
+export const getTableStyling = () => {
+    return {
+        enableColumnActions: false,
+        enableTopToolbar: false,
+        enableRowActions: true,
+        positionActionsColumn: "last",
+        positionExpandColumn: "last",
+        paginateExpandedRows: false,
+        enableExpanding: true,
+        muiTablePaperProps: {
+            sx: {
+                boxShadow: "none",
+            },
+        },
+        muiTableBodyCellProps: {
+            sx: {
+                flex: 1,
+                color: "black",
+                fontFamily: "inherit",
+                height: "full",
+                paddingTop: ".6vw",
+                paddingBottom: ".6vw",
+                borderColor: "#D9D9D9",
+            },
+        },
+        muiDetailPanelProps: {
+            sx: {
+                padding: "0",
+            },
+        },
+        muiTableHeadRowProps: {
+            sx: {
+                background: "#F8F8FC",
+                borderRadius: ".4vw",
+            },
+        },
+        muiTableHeadCellProps: {
+            sx: {
+                fontSize: ".8vw",
+                fontWeight: "regular",
+                gap: "1.6vw",
+                fontFamily: "inherit",
+                color: "black",
+            },
+        },
+        muiTableProps: {
+            sx: {
+                bgcolor: "#F3F6FF",
+                padding: "0",
+            },
+        },
+    };
 };
