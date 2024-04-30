@@ -174,7 +174,9 @@ class ProgressController extends Controller
 
                     $file = new FileUpload();
 
-                    $file->file_path  = $filePath;
+                    $file->course_id  = $progress->id;
+                    $file->user_id = Auth::user()->id;
+                    $file->path  = $filePath;
                     $file->filename = $fileName;
                     $file->size = $uploadedFile->getSize();
                     $file->slug = Str::slug(pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME));
@@ -279,5 +281,4 @@ class ProgressController extends Controller
             ], 500);
         }
     }
-
 }
