@@ -40,7 +40,10 @@ export default function Edit({ auth, progress, tutors }) {
         note: progress.note,
         is_moderator: progress.is_moderator,
         record: null,
+        tutor_id: progress.tutor_id,
     });
+
+
 
     const type = "tuntas";
 
@@ -155,6 +158,7 @@ export default function Edit({ auth, progress, tutors }) {
                                                 key={item.id}
                                                 onClick={() => {
                                                     setData("tutor", item);
+                                                    setData("tutor_id", item.id);
                                                 }}
                                             >
                                                 {item.name}
