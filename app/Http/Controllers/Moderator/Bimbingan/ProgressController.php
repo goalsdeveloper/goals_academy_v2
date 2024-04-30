@@ -166,10 +166,22 @@ class ProgressController extends Controller
                 $progress->update($validateData);
 
                 if ($request->hasFile('record')) {
-                    $file = $request->file('record');
+                    $uploadedFile = $request->file('record');
 
-                    $filePath = $file->store('resource/file/moderator');
+                    $fileName = Str::random(8) . '-' . time() . '.' . $uploadedFile->getClientOriginalExtension();
+                    $filePath = Storage::putFileAs('file_uploads', $uploadedFile, $fileName);
 
+                    $file = new FileUpload();
+
+                    $file->file_path  = $filePath;
+                    $file->filename = $fileName;
+                    $file->size = $uploadedFile->getSize();
+                    $file->slug = Str::slug(pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME));
+                    $file->mime_type = $uploadedFile->getMimeType();
+                    $file->name = $uploadedFile->getClientOriginalName();
+                    $file->save();
+
+                    
                     // $fileUpload = new FileUpload();
                     // $fileUpload->filename = $file->getClientOriginalName();
                     // $fileUpload->slug  = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -177,30 +189,7 @@ class ProgressController extends Controller
                     // $fileUpload->file_path  = $filePath;
                     // $fileUpload->size = $file->getSize();
                     // $fileUpload->user_id = Auth::user()->id;
-
-
-                    $file = new FileUpload();
-
-                    $file->filename = Str::random(8) . '-' . time() . '.' . $file->extension();
-                    Storage::putFileAs('file_uploads', $file, $fileName);
-                    $documents[$idx]['size'] = $file->getSize();
-                    $file->slug['slug'] = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-                    $file->mime_type = $file->getMimeType();
-                    $documents[$idx]['name'] = $file->getClientOriginalName();
-
-
-                    $file = new FileUpload();
-                    $file->course_id = $progress->id;
-                    $file->filename = $document['file_name'];
-                    $file->mime_type = $document['mime_type'];
-                    $file->path = 'file_uploads';
-                    $file->size = $document['size'];
-                    $file->user_id = auth()->user()->id;
-                    $file->name = $document['name'];
-                    $file->slug = $document['slug'];
-                    $file->save();
-
-                    $fileUpload->save();
+                    // $fileUpload->save();
                 }
 
                 return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress berhasil'], 200);
