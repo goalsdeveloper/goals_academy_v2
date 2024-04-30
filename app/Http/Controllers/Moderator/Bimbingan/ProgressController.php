@@ -29,7 +29,7 @@ class ProgressController extends Controller
                 $perPage = $request->input('perPage', 10);
                 $search = $request->input('search');
 
-                $query = Order::with(['user:id,name', 'products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session', 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session'])
+                $query = Order::with(['user:id,username', 'products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session', 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session'])
                     ->whereHas('products', function ($query) {
                         $query->whereHas('productType', function ($subQuery) {
                             $subQuery->where('type', 'LIKE', '%bimbingan%');
@@ -181,7 +181,7 @@ class ProgressController extends Controller
                     $file->name = $uploadedFile->getClientOriginalName();
                     $file->save();
 
-                    
+
                     // $fileUpload = new FileUpload();
                     // $fileUpload->filename = $file->getClientOriginalName();
                     // $fileUpload->slug  = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -231,4 +231,50 @@ class ProgressController extends Controller
     {
         //
     }
+
+    public function confirmBimbingan(Course $progress)
+    {
+        try {
+            if (Auth::user()->user_role == "moderator") {
+                if ($progress->ongoing == "selesai") {
+                    return response()->json(['status' => false, 'statusCode' => 403, 'message' => 'Progress sudah selesai dan tidak dapat diubah'], 403);
+                }
+
+                $validateData = request()->validate([
+                    'duration' => 'required|numeric',
+                ]);
+
+                $progress->update(array_merge($validateData, ['ongoing' => 'selesai']));
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Progress berhasil diperbarui menjadi selesai'], 200);
+            } else {
+                abort(403);
+            }
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 422,
+                'message' => 'Validation error: ' . $e->getMessage(),
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (AuthorizationException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 403,
+                'message' => $e->getMessage(),
+            ], 403);
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'An error occurred while updating progress: ' . $e->getMessage(),
+            ], 500);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
 }
