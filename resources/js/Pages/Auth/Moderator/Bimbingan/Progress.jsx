@@ -3,7 +3,7 @@ import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { getPaginationPages, upperCaseFirstLetter } from "@/script/utils";
-import { Link, router } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 import {
     MaterialReactTable,
@@ -19,8 +19,19 @@ import { useEffect } from "react";
 export default function Progress({ auth, data: recentOrder }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
         recentOrder.recent_order;
-    const [isShow, setIsShow] = useState(false);
+    const [isShow, setIsShow] = useState({
+        duration: false,
+        confirmation: false,
+    });
     const [pages, setPages] = useState([]);
+    const {
+        data: payloadData,
+        setData: setPayloadData,
+        put,
+    } = useForm({
+        duration_per_meet: "",
+        id: "",
+    });
 
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
@@ -29,7 +40,7 @@ export default function Progress({ auth, data: recentOrder }) {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "user.name",
+                accessorKey: "user.username",
                 header: "Username",
                 Cell: ({ renderedCellValue }) => {
                     return (
@@ -118,12 +129,19 @@ export default function Progress({ auth, data: recentOrder }) {
                 Cell: ({ cell }) => {
                     if (cell.row.original.course?.ongoing == null) return;
 
-                    const status = upperCaseFirstLetter(
-                        cell.row.original.course?.ongoing
-                    );
+                    console.log(cell.row.original.course?.child);
+
+                    const status =
+                        cell.row.original.course?.child.find(
+                            (x) => x.ongoing == "berjalan"
+                        ) == null || cell.row.original.course?.child.length < 1
+                            ? upperCaseFirstLetter(
+                                  cell.row.original.course?.ongoing
+                              )
+                            : "Berjalan";
 
                     return (
-                        <div>
+                        <div className="pl-1">
                             <GoalsBadge
                                 title={status}
                                 className={`${statusClassMap[status]} font-semibold`}
@@ -153,7 +171,8 @@ export default function Progress({ auth, data: recentOrder }) {
                 <div className="flex items-center gap-[.8vw]">
                     <button
                         onClick={() => {
-                            setIsShow(true);
+                            setIsShow({ ...isShow, duration: true });
+                            setPayloadData({ ...payloadData, id: course.id });
                         }}
                     >
                         <FiThumbsUp className="text-[1.2vw] text-success-50" />
@@ -192,7 +211,15 @@ export default function Progress({ auth, data: recentOrder }) {
         renderDetailPanel: ({ row }) => {
             if (row.original.course?.child.length < 1) return;
 
-            return <DropdownDetailPanel row={row} />;
+            return (
+                <DropdownDetailPanel
+                    row={row}
+                    isShow={isShow}
+                    setIsShow={setIsShow}
+                    setPayloadData={setPayloadData}
+                    payloadData={payloadData}
+                />
+            );
         },
     });
 
@@ -205,7 +232,30 @@ export default function Progress({ auth, data: recentOrder }) {
         >
             {/* {isLoading && <LoadingUI />} */}
             {createPortal(
-                <ViewDialog show={isShow} setShow={() => setIsShow(!isShow)} />,
+                <>
+                    <DurationDialog
+                        payloadData={payloadData}
+                        setPayloadData={setPayloadData}
+                        show={isShow.duration}
+                        setShow={setIsShow}
+                    />
+                    <ConfirmationDialog
+                        show={isShow.confirmation}
+                        setShow={() =>
+                            setIsShow({ ...isShow, confirmation: false })
+                        }
+                        payloadData={payloadData}
+                        confirmHandler={() => {
+                            put(
+                                route(
+                                    "moderator.bimbingan.progress.confirmBimbingan",
+                                    { progress: payloadData.id }
+                                )
+                            );
+                            setPayloadData({ duration_per_meet: "", id: "" });
+                        }}
+                    />
+                </>,
                 document.body
             )}
             <div className="space-y-[1.6vw]">
@@ -241,15 +291,13 @@ const DateTimeComp = ({ date, time }) => {
     );
 };
 
-const ViewDialog = ({ show, setShow, product, categories }) => {
+const DurationDialog = ({ show, setShow, payloadData, setPayloadData }) => {
     return (
         <div
             className={`${
                 show ? "" : "opacity-0 pointer-events-none"
             } z-50 fixed w-full h-full top-0 overflow-auto bg-dark focus:bg-red-400 bg-opacity-50 transition-all duration-300`}
-            onClick={() => {
-                setShow(false);
-            }}
+            onClick={() => setShow({ duration: false })}
         >
             <div
                 onClick={(e) => e.stopPropagation()}
@@ -266,8 +314,26 @@ const ViewDialog = ({ show, setShow, product, categories }) => {
                 </p>
 
                 <div className="flex gap-[1vw]">
-                    <GoalsTextInput placeholder="Masukkan durasi" grow />
-                    <GoalsButton size="sm" variant="success">
+                    <GoalsTextInput
+                        placeholder="Masukkan durasi dalam menit"
+                        grow
+                        type="number"
+                        data={payloadData.duration_per_meet}
+                        setData={(e) => {
+                            setPayloadData({
+                                ...payloadData,
+                                duration_per_meet: e,
+                            });
+                        }}
+                    />
+                    <GoalsButton
+                        size="sm"
+                        variant="success"
+                        onClick={() => {
+                            (e) => e.stopPropagation();
+                            setShow({ duration: false, confirmation: true });
+                        }}
+                    >
                         Simpan
                     </GoalsButton>
                 </div>
@@ -276,7 +342,67 @@ const ViewDialog = ({ show, setShow, product, categories }) => {
     );
 };
 
-export const DropdownDetailPanel = ({ row, isActionDisabled = false }) => {
+const ConfirmationDialog = ({ show, setShow, payloadData, confirmHandler }) => {
+    return (
+        <div
+            className={`${
+                show ? "" : "opacity-0 pointer-events-none"
+            } z-50 fixed w-full h-full top-0 overflow-auto bg-dark focus:bg-red-400 bg-opacity-50 transition-all duration-300`}
+            onClick={() => setShow()}
+        >
+            <div
+                onClick={(e) => e.stopPropagation()}
+                className={`${
+                    show
+                        ? "md:top-0 bottom-0 scale-100"
+                        : "md:top-full -bottom-full scale-0"
+                } inset-0 mx-auto grid text-center gap-[1.6vw] w-[23vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.6vw] z-50 my-[8vh] `}
+            >
+                <h3>Konfirmasi Bimbingan</h3>
+                <p>
+                    Apakah anda yakin untuk menyelesaikan <br /> dan
+                    mengonfirmasi bimbingan?
+                </p>
+
+                <div className="flex gap-[1vw] w-full">
+                    <GoalsButton
+                        size="sm"
+                        variant="info-bordered"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setShow();
+                        }}
+                        className="w-full"
+                    >
+                        Batal
+                    </GoalsButton>
+                    <GoalsButton
+                        size="sm"
+                        variant="info"
+                        disabled={payloadData.duration_per_meet == ""}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setShow();
+                            confirmHandler();
+                        }}
+                        className="w-full"
+                    >
+                        Konfirmasi
+                    </GoalsButton>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export const DropdownDetailPanel = ({
+    row,
+    isShow,
+    setIsShow,
+    isActionDisabled = false,
+    payloadData,
+    setPayloadData,
+}) => {
     const { course } = row.original;
 
     if (course && course.child && course.child.length > 0) {
@@ -359,8 +485,8 @@ export const DropdownDetailPanel = ({ row, isActionDisabled = false }) => {
                                                 height: "3.2vw",
                                             }}
                                         >
-                                            <div className="flex items-center gap-[.8vw]">
-                                                <span className="flex items-center">
+                                            <div className="flex items-center gap-[.8vw] w-full">
+                                                <span className="flex items-center w-full">
                                                     {label}&nbsp;{value}
                                                 </span>
 
@@ -379,7 +505,15 @@ export const DropdownDetailPanel = ({ row, isActionDisabled = false }) => {
                                             <>
                                                 <button
                                                     onClick={() => {
-                                                        setIsShow(true);
+                                                        console.log(course.id)
+                                                        setIsShow({
+                                                            ...isShow,
+                                                            duration: true,
+                                                        });
+                                                        setPayloadData({
+                                                            ...payloadData,
+                                                            id: item.id,
+                                                        });
                                                     }}
                                                 >
                                                     <FiThumbsUp className="text-[1.2vw] text-success-50" />

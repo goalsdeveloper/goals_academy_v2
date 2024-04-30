@@ -12,18 +12,16 @@ import {
 } from "@/Pages/Auth/Admin/Bimbingan/Product/Components/SelectInput";
 import StarRating from "@/Pages/Auth/User/Components/StarRating";
 import { RxFileText } from "react-icons/rx";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import {
     SelectMultiTag,
     SelectMultiTagItem,
 } from "@/Pages/Auth/Admin/Bimbingan/Product/Components/SelectMultiTag";
+import { phoneNumberFormat } from "@/script/utils";
 
 export default function Edit({ auth, progress, tutors }) {
-    console.log(progress);
-    console.log(tutors);
-
     const { data, setData, put } = useForm({
-        add_on: progress.add_on,
+        add_on: progress.add_ons,
         username: progress.user.username,
         university: progress.user.profile.university,
         major: progress.user.profile.major,
@@ -35,13 +33,17 @@ export default function Edit({ auth, progress, tutors }) {
         time: progress.time,
         location: progress.location,
         number: progress.user.profile.phone_number,
-        tutor: progress.tutor_id,
+        tutor: tutors.find((item) => item.id == progress.tutor_id),
         rate_product: progress.product_review?.rate_product,
         note_product: progress.product_review?.note_product,
         note: progress.note,
+        is_moderator: progress.is_moderator,
+        record: null,
     });
 
     const type = "tuntas";
+
+    console.log(data);
 
     return (
         <DashboardLayout
@@ -71,11 +73,19 @@ export default function Edit({ auth, progress, tutors }) {
                             variant="success"
                             size="sm"
                             onClick={() =>
-                                post(
-                                    "moderator.bimbingan.progress.updateOnline",
+                                router.put(
+                                    route(
+                                        "moderator.bimbingan.progress.update",
+                                        progress.id
+                                    ),
                                     {
-                                        data: data,
-                                    }
+                                        tutor_id: data.tutor.id,
+                                        location: data.location,
+                                        date: data.date,
+                                        time: data.time,
+                                        record: data.record,
+                                        is_moderator: data.is_moderator ? 1 : 0,
+                                    },
                                 )
                             }
                         >
@@ -115,10 +125,16 @@ export default function Edit({ auth, progress, tutors }) {
                                 <GoalsTextInput
                                     label="Number"
                                     grow
+                                    disabled
                                     data={data.number}
                                     setData={(i) => setData("number", i)}
                                 />
-                                <a href="wa.me/6289123456789" target="_blank">
+                                <a
+                                    href={`https://wa.me/${phoneNumberFormat(
+                                        data.number
+                                    )}`}
+                                    target="_blank"
+                                >
                                     <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
                                 </a>
                             </div>
@@ -126,19 +142,18 @@ export default function Edit({ auth, progress, tutors }) {
                                 <SelectInput
                                     label="Tutor"
                                     value={
-                                        tutors.filter(
-                                            (item) => item.id == data.tutor
-                                        )[0].name
+                                        tutors.find(
+                                            (item) => item.id == data.tutor.id
+                                        ).name
                                     }
                                     className="w-full"
                                 >
                                     {tutors.map((item, index) => {
                                         return (
                                             <SelectInputItem
+                                                key={item.id}
                                                 onClick={() => {
-                                                    console.log(item.id);
-                                                    console.log(data.tutor);
-                                                    setData("tutor", item.id);
+                                                    setData("tutor", item);
                                                 }}
                                             >
                                                 {item.name}
@@ -146,7 +161,12 @@ export default function Edit({ auth, progress, tutors }) {
                                         );
                                     })}
                                 </SelectInput>
-                                <a href="wa.me/6289123456789" target="_blank">
+                                <a
+                                    href={`https://wa.me/${phoneNumberFormat(
+                                        data?.tutor?.profile?.phone_number
+                                    )}`}
+                                    target="_blank"
+                                >
                                     <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
                                 </a>
                             </div>
@@ -251,21 +271,19 @@ export default function Edit({ auth, progress, tutors }) {
                             <div className="flex gap-[.8vw]">
                                 <GoalsTextInput
                                     label="Date"
-                                    disabled
                                     grow
                                     data={data.date}
                                     setData={(i) => setData("date", i)}
                                 />
                                 <GoalsTextInput
                                     label="Time"
-                                    disabled
                                     grow
                                     data={data.time}
                                     setData={(i) => setData("time", i)}
                                 />
                             </div>
 
-                            <input type="file" className="" />
+                            <input type="file" className="" onChange={(e) => setData({...data, record: e.target.files[0]})}/>
                         </FormSection>
                         <FormSection
                             title="Tutor Information"

@@ -76,3 +76,11 @@ export function getPaginationPages({ links, current_page, last_page }) {
 
     return pages;
 }
+
+export function phoneNumberFormat(x) {
+    if (x != null && x.charAt(0) === "0") {
+        return "62" + x.slice(1);
+    }
+
+    return x;
+}

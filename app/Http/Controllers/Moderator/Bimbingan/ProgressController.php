@@ -151,6 +151,7 @@ class ProgressController extends Controller
     {
         try {
             if (Auth::user()->user_role == "moderator") {
+                dd($request->all());
                 if ($progress->ongoing == "selesai") {
                     return response()->json(['status' => false, 'statusCode' => 403, 'message' => 'Progress sudah selesai dan tidak dapat diubah'], 403);
                 }
@@ -237,7 +238,8 @@ class ProgressController extends Controller
         try {
             if (Auth::user()->user_role == "moderator") {
                 if ($progress->ongoing == "selesai") {
-                    return response()->json(['status' => false, 'statusCode' => 403, 'message' => 'Progress sudah selesai dan tidak dapat diubah'], 403);
+                    // return response()->json(['status' => false, 'statusCode' => 403, 'message' => 'Progress sudah selesai dan tidak dapat diubah'], 403);
+                    return redirect()->back()->with('error', 'Progress sudah selesai dan tidak dapat diubah');
                 }
 
                 $validateData = request()->validate([
@@ -245,7 +247,8 @@ class ProgressController extends Controller
                 ]);
 
                 $progress->update(array_merge($validateData, ['ongoing' => 'selesai']));
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Progress berhasil diperbarui menjadi selesai'], 200);
+                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Progress berhasil diperbarui menjadi selesai'], 200);
+                return redirect()->back()->with('success', 'Progress berhasil diperbarui menjadi selesai');
             } else {
                 abort(403);
             }
