@@ -245,7 +245,6 @@ export default function Edit({ auth, progress, tutors }) {
 
                             <GoalsTextInput
                                 label="Location (Link Zoom)"
-                                disabled
                                 data={data.location}
                                 setData={(i) => setData("location", i)}
                             />
