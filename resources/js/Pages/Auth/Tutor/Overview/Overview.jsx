@@ -1,14 +1,13 @@
 import { useState } from "react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 
-export default function Schedule ({ auth,data }) {
+export default function Overview ({ auth }) {
     const [isLoading, setIsLoading] = useState(false);
-    console.log(data);
 
     return (
-        <DashboardLayout title="Tutor" subtitle="Schedule" role="moderator" auth={auth}>
+        <DashboardLayout title="Overview" role="tutor" auth={auth}>
             {isLoading && <LoadingUI />}
-            <div>Schedule</div>
+            Overview
         </DashboardLayout>
     )
 }

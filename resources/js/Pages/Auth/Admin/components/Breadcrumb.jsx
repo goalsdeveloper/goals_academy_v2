@@ -4,6 +4,7 @@ import { FiChevronRight } from "react-icons/fi";
 
 const Breadcrumb = ({
     level = 2,
+    except,
     isLastHidden = false,
     isSlug = false,
     overrideLast = "",

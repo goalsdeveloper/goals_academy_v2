@@ -68,7 +68,7 @@ class Course extends Model
 
     public function fileUploads()
     {
-        return $this->belongsToMany(FileUpload::class);
+        return $this->hasMany(FileUpload::class);
     }
     public function productReview()
     {
