@@ -170,13 +170,35 @@ class ProgressController extends Controller
 
                     $filePath = $file->store('resource/file/moderator');
 
-                    $fileUpload = new FileUpload();
-                    $fileUpload->filename = $file->getClientOriginalName();
-                    $fileUpload->slug  = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $fileUpload->mime_type  = $file->getClientMimeType();
-                    $fileUpload->file_path  = $filePath;
-                    $fileUpload->size = $file->getSize();
-                    $fileUpload->user_id = Auth::user()->id;
+                    // $fileUpload = new FileUpload();
+                    // $fileUpload->filename = $file->getClientOriginalName();
+                    // $fileUpload->slug  = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    // $fileUpload->mime_type  = $file->getClientMimeType();
+                    // $fileUpload->file_path  = $filePath;
+                    // $fileUpload->size = $file->getSize();
+                    // $fileUpload->user_id = Auth::user()->id;
+
+
+                    $file = new FileUpload();
+
+                    $file->filename = Str::random(8) . '-' . time() . '.' . $file->extension();
+                    Storage::putFileAs('file_uploads', $file, $fileName);
+                    $documents[$idx]['size'] = $file->getSize();
+                    $file->slug['slug'] = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+                    $file->mime_type = $file->getMimeType();
+                    $documents[$idx]['name'] = $file->getClientOriginalName();
+
+
+                    $file = new FileUpload();
+                    $file->course_id = $progress->id;
+                    $file->filename = $document['file_name'];
+                    $file->mime_type = $document['mime_type'];
+                    $file->path = 'file_uploads';
+                    $file->size = $document['size'];
+                    $file->user_id = auth()->user()->id;
+                    $file->name = $document['name'];
+                    $file->slug = $document['slug'];
+                    $file->save();
 
                     $fileUpload->save();
                 }
