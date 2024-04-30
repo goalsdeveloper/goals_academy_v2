@@ -241,7 +241,7 @@ class ProgressController extends Controller
                 }
 
                 $validateData = request()->validate([
-                    'duration' => 'required|numeric',
+                    'duration_per_meet' => 'required|numeric',
                 ]);
 
                 $progress->update(array_merge($validateData, ['ongoing' => 'selesai']));
