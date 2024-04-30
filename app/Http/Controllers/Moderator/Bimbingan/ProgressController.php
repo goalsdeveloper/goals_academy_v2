@@ -169,7 +169,7 @@ class ProgressController extends Controller
                     $uploadedFile = $request->file('record');
 
                     $fileName = Str::random(8) . '-' . time() . '.' . $uploadedFile->getClientOriginalExtension();
-                    $filePath = Storage::putFileAs('file_uploads', $uploadedFile, $fileName);
+                    $filePath = Storage::putFileAs('file_uploads/record', $uploadedFile, $fileName);
 
                     $file = new FileUpload();
 
