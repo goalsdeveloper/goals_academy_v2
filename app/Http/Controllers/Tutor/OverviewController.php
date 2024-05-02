@@ -14,11 +14,10 @@ class OverviewController extends Controller
         $user = Auth::user();
         $base_course = $user->tutor();
         $product_types = $user->tutor()
-            ->selectRaw('product_types.type ,COUNT(*) as jumlah')
+            ->selectRaw('categories.name ,COUNT(*) as jumlah')
             ->join('products', 'products.id', '=', 'courses.products_id')
             ->join('categories', 'categories.id', '=', 'products.category_id')
-            ->join('product_types', 'product_types.id', '=', 'categories.product_type_id')
-            ->groupBy('product_types.id')->get();
+            ->groupBy('categories.id')->get();
         $total_bimbingan = $user->tutor()
             ->selectRaw('categories.name, COUNT(*) as order_count')
             ->join('products', 'products.id', '=', 'courses.products_id')

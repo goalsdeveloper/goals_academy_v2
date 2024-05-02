@@ -3,11 +3,11 @@ import DashboardLayout from "@/Layouts/DashboardLayout";
 import { FiTrendingUp } from "react-icons/fi";
 import { FaCartShopping, FaGlobe } from "react-icons/fa6";
 
-export default function Overview ({ auth }) {
+export default function Overview ({ auth, total_order, total_checkout }) {
     const [isLoading, setIsLoading] = useState(false);
 
-    const [totalOrder, setTotalOrder] = useState(123);
-    const [totalCheckout, setTotalCheckout] = useState(123);
+    const [totalOrder, setTotalOrder] = useState(total_order);
+    const [totalCheckout, setTotalCheckout] = useState(total_checkout);
 
     return (
         <DashboardLayout title="Overview" role="moderator" auth={auth}>

@@ -52,7 +52,7 @@ export default function Overview({
         plugins: {
             title: {
                 display: true,
-                text: "Product Type",
+                text: "Category Product",
                 position: "top",
                 align: "start",
                 color: "black",
@@ -81,7 +81,7 @@ export default function Overview({
     };
 
     const productTypeDataset = {
-        labels: product_types.map((item) => item.type),
+        labels: product_types.map((item) => item.name),
         datasets: [
             {
                 data: product_types.map((item) => item.jumlah),
