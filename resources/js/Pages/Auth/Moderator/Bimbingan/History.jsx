@@ -183,7 +183,7 @@ export default function History({ auth, data: orderHistory }) {
             {/* {isLoading && <LoadingUI />} */}
             <div className="space-y-[1.6vw]">
                 <h2 className="font-medium">History</h2>
-                <div className="text-[.8vw]">
+                <div className="text-[.8vw] bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
                     <MaterialReactTable table={table} />
                 </div>
             </div>

@@ -122,7 +122,6 @@ export default function Progress({ auth, data: recentOrder }) {
                         );
                 },
             },
-            //TODO need checking for multiple session only done when all session finished
             {
                 accessorKey: "status",
                 header: "Status",
@@ -491,7 +490,7 @@ export const DropdownDetailPanel = ({
                                                 </span>
 
                                                 {note && (
-                                                    <span className="text-info-40 font-medium">
+                                                    <span className="text-info-40 font-medium text-nowrap">
                                                         Need Action
                                                     </span>
                                                 )}
@@ -601,6 +600,7 @@ export const getTableStyling = () => {
         muiTablePaperProps: {
             sx: {
                 boxShadow: "none",
+                borderRadius: ".4vw",
             },
         },
         muiTableBodyCellProps: {
@@ -619,10 +619,10 @@ export const getTableStyling = () => {
                 padding: "0",
             },
         },
+
         muiTableHeadRowProps: {
             sx: {
                 background: "#F8F8FC",
-                borderRadius: ".4vw",
             },
         },
         muiTableHeadCellProps: {

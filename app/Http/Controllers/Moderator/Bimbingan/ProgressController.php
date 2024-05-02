@@ -96,6 +96,7 @@ class ProgressController extends Controller
     public function show(Course $progress)
     {
         try {
+            $tutors = User::with('profile')->where("user_role", "tutor")->get();
             if (Auth::user()->user_role == "moderator") {
                 $progress_user = Course::with('user:id,username', 'user.profile:id,user_id,university,major,phone_number,faculty', 'tutor:id,name', 'topic:id,topic', 'place.city', 'order:id,order_code', 'products:id,name', 'fileUploads', 'productReview')->findOrFail($progress->id);
                 // return response()->json([
@@ -107,6 +108,7 @@ class ProgressController extends Controller
 
                 return Inertia::render('Auth/Moderator/Bimbingan/Progress/View', [
                     'progress' => $progress_user,
+                    'tutors' => $tutors
                 ]);
             } else {
                 abort(403);
