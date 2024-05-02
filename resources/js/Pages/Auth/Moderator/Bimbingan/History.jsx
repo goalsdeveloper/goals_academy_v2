@@ -9,18 +9,8 @@ export default function History({ auth, order_history }) {
     order_history = order_history.data
     console.log(order_history)
     const [isLoading, setIsLoading] = useState(false);
-
-    const data = [
-        {
-            id: 1,
-            username: "Hafiz",
-            product: "Dibimbing Sekali",
-            date: "08/12/2024",
-            time: "23:59",
-            lokasi: "Offline - Nakoa",
-            durasi: "1 Jam",
-        },
-    ];
+    const { data, from, to, total, pages, per_page, current_page } =
+        orderHistory.order_history;
 
     const columns = useMemo(
         () => [
@@ -31,6 +21,13 @@ export default function History({ auth, order_history }) {
             {
                 accessorKey: "order.products.name",
                 header: "Product",
+                Cell: ({ renderedCellValue }) => {
+                    return (
+                        <p className="text-[.8vw] font-medium">
+                            {renderedCellValue}
+                        </p>
+                    );
+                },
             },
             {
                 accessorKey: "order.created_at",
@@ -61,24 +58,76 @@ export default function History({ auth, order_history }) {
                 // accessorKey: "order.course.duration",
                 header: "Durasi",
             },
+            //TODO need checking for multiple session only done when all session finished
             {
-                header: "Action",
-
+                accessorKey: "status",
+                header: "Status",
                 Cell: ({ cell }) => {
+                    if (cell.row.original.course?.ongoing == null) return;
+
+                    const status = upperCaseFirstLetter(
+                        cell.row.original.course?.ongoing
+                    );
+
                     return (
-                        <ul className="flex gap-[.8vw] w-fit">
-                            <li>
-                                <button onClick={() => setIsShow(!isShow)}>
-                                    <FiEye className="text-[1.2vw] text-neutral-60" />
-                                </button>
-                            </li>
-                        </ul>
+                        <div>
+                            <GoalsBadge
+                                title={status}
+                                className={`${statusClassMap[status]} font-semibold`}
+                            />
+                        </div>
                     );
                 },
             },
         ],
         []
     );
+
+    const table = useMaterialReactTable({
+        columns,
+        data: data,
+        ...getTableStyling(),
+        renderRowActions: ({ row }) => {
+            const { course } = row.original;
+
+            if (course?.child.length > 1)
+                return (
+                    <div className="text-nowrap">
+                        <span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
+                    </div>
+                );
+            return (
+                <div className="flex items-center gap-[.8vw]">
+                    <Link
+                        href={route("moderator.bimbingan.progress.show", {
+                            progress: course.id,
+                        })}
+                    >
+                        <FiEye className="text-[1.2vw] text-neutral-60" />
+                    </Link>
+                </div>
+            );
+        },
+        renderBottomToolbar: () => {
+            return (
+                <BottomPaginationTable
+                    {...{
+                        from,
+                        to,
+                        total,
+                        pages,
+                        per_page,
+                        current_page,
+                    }}
+                />
+            );
+        },
+        renderDetailPanel: ({ row }) => {
+            if (row.original.course?.child.length < 1) return;
+
+            return <DropdownDetailPanel row={row} isActionDisabled/>;
+        },
+    });
 
     return (
         <DashboardLayout

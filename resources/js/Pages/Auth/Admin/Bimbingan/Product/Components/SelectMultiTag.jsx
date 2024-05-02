@@ -1,12 +1,11 @@
-import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
-import GoalsButton from "@/Components/GoalsButton";
 import { useState } from "react";
+import { TECollapse } from "tw-elements-react";
 
-function SelectInput({
+const SelectMultiTag = ({
     label = "Label",
-    placeholder = "Pilih satu",
-    disabled = false,
+    disabled= false,
+    placeholder = "Pilih satu atau lebih",
     value = "",
     error = "",
     icon = "",
@@ -15,9 +14,10 @@ function SelectInput({
     className = "",
     filledClassName = "border-1 border-light-grey text-light-grey font-semibold",
     emptyClassName = "border-1 border-light-grey text-light-grey font-normal",
+    handleClearTag = () => {},
     children,
     onChange, // New prop for handling value change
-}) {
+}) => {
     const [show, setShow] = useState(false);
 
     const handleToggle = () => {
@@ -28,7 +28,7 @@ function SelectInput({
     };
 
     return (
-        <div className={`text-inherit ${className}`}>
+        <div className="text-inherit">
             {label !== "" && (
                 <p className="mb-[2vw] md:mb-[.5vw]">
                     {label}
@@ -43,25 +43,29 @@ function SelectInput({
             )}
             <button
                 disabled={disabled}
-                className={`flex disabled:bg-gray-100 disabled:border-gray-300 disabled:cursor-default justify-between items-center flex-wrap gap-[1vw] rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] px-[3vw] md:px-[1vw] cursor-pointer text-[.83vw] border w-full border-neutral-50 ${
-                    value !== "" ? filledClassName : emptyClassName
-                }`}
+                className={`flex disabled:bg-gray-100 disabled:border-gray-300 disabled:cursor-default justify-between items-center flex-wrap gap-[1vw] rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] px-[3vw] md:px-[1vw] cursor-pointer text-[.83vw] border w-full border-neutral-50 ${value !== "" ? filledClassName : emptyClassName}`}
+                // activeClassName={
+                //
+                // }
+                type="button"
                 onClick={handleToggle} // Use handleToggle instead of setShow(!show)
             >
-                {icon !== "" && (
-                    <>
-                        <i className={icon}></i>
-                        &nbsp;&nbsp;
-                    </>
-                )}
-                {value !== "" ? value : placeholder}
+                <div className="flex items-center gap-[1vw]">
+                    {value.length > 0
+                        ? value.map((item) => (
+                              <div key={item.id} className="rounded-full px-[.4vw] border border-secondary text-secondary">
+                                  {item.name || item.topic}
+                              </div>
+                          ))
+                        : placeholder}
+                </div>
                 <i
                     className={
                         chevronIcon !== ""
                             ? chevronIcon
                             : `fa-solid fa-chevron-down duration-300 ${
                                   show ? "-rotate-180" : ""
-                              }`
+                              }` + ""
                     }
                 ></i>
             </button>
@@ -79,6 +83,7 @@ function SelectInput({
                     >
                         <div className="h-full max-h-[52vw] md:max-h-[16vw] overflow-y-auto">
                             {children}
+                            <div className="hover:bg-skin cursor-pointer p-[4vw] md:p-[1vw] flex items-center gap-[.5vw]" onClick={() => handleClearTag()}><i className="fa-solid fa-trash-can"></i> Hapus Pilihan</div>
                         </div>
                     </TECollapseItem>
                 </TECollapse>
@@ -90,12 +95,12 @@ function SelectInput({
             )}
         </div>
     );
-}
+};
 
-function SelectInputItem({ className, onClick, children }) {
+function SelectMultiTagItem({ className, onClick, children }) {
     return (
         <div
-            onClick={onClick}
+            onClick={() => onClick()}
             className={`hover:bg-skin cursor-pointer p-[4vw] md:p-[1vw] ${className}`}
         >
             {children}
@@ -103,4 +108,4 @@ function SelectInputItem({ className, onClick, children }) {
     );
 }
 
-export { SelectInput, SelectInputItem };
+export { SelectMultiTag, SelectMultiTagItem };

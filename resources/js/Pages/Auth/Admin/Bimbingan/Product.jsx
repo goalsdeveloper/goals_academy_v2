@@ -1,20 +1,29 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { Link } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import { useMemo } from "react";
 import {
     FiCheckCircle,
     FiEdit2,
     FiEye,
     FiPlus,
-    FiTrash2
+    FiTrash2,
 } from "react-icons/fi";
 import SubHeading from "../components/SubHeading";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import View from "./Product/View";
+import { createPortal } from "react-dom";
+import { useRef } from "react";
+import { useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 
-export default function Product({ auth, bimbingan }) {
-    console.log(bimbingan)
-    // console.log(bimbingan_tuntas)
+export default function Product({ auth, bimbingan, categories }) {
+    const isDesktop = useMediaQuery({ minWidth: 1024 });
+
+    const [show, setShow] = useState(false);
+    const [product, setProduct] = useState(null);
     const columns = useMemo(
         () => [
             {
@@ -57,6 +66,7 @@ export default function Product({ auth, bimbingan }) {
                         <ul className="flex gap-[.8vw] w-fit">
                             <li>
                                 <Link
+                                    as="button"
                                     method="GET"
                                     href={route(
                                         "admin.bimbingan.product.edit",
@@ -68,7 +78,18 @@ export default function Product({ auth, bimbingan }) {
                             </li>
                             <li>
                                 <Link
+                                    as="button"
                                     method="DELETE"
+                                    onSuccess={() => {
+                                        toast.success(
+                                            "Produk berhasil dihapus"
+                                        );
+                                        router.reload(
+                                            route(
+                                                "admin.bimbingan.product.index"
+                                            )
+                                        );
+                                    }}
                                     href={route(
                                         "admin.bimbingan.product.destroy",
                                         { product: cell.row.original }
@@ -78,15 +99,20 @@ export default function Product({ auth, bimbingan }) {
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    method="GET"
-                                    href={route(
-                                        "admin.bimbingan.product.show",
-                                        { product: cell.row.original }
-                                    )}
+                                <button
+                                    onClick={() => {
+                                        setProduct(() =>
+                                            bimbingan.find(
+                                                (item) =>
+                                                    item.id ===
+                                                    cell.row.original.id
+                                            )
+                                        );
+                                        setShow(true);
+                                    }}
                                 >
                                     <FiEye className="text-[1.2vw] text-neutral-60" />
-                                </Link>
+                                </button>
                             </li>
                         </ul>
                     );
@@ -103,27 +129,74 @@ export default function Product({ auth, bimbingan }) {
             role="admin"
             auth={auth}
         >
-            <div className="space-y-[1.6vw]">
-                <SubHeading title="Produk">
-                    <GoalsButton
-                        isLink
-                        method="GET"
-                        size="sm"
-                        href={route("admin.bimbingan.product.create")}
-                        className="flex items-center gap-[.5vw]"
-                    >
-                        <FiPlus className="text-[1vw]" />
-                        Tambah Produk
-                    </GoalsButton>
-                </SubHeading>
-                {/* <GoalsAdminTable /> */}
-                <GoalsDashboardTable
-                    columns={columns}
-                    data={bimbingan}
-                    isSplitByCategory
-                    isDraggable
-                />
-            </div>
+            {isDesktop ? (
+                <div className="space-y-[1.6vw]">
+                    <SubHeading title="Produk">
+                        <GoalsButton
+                            isLink
+                            method="GET"
+                            size="sm"
+                            href={route("admin.bimbingan.product.create")}
+                            className="flex items-center gap-[.5vw]"
+                        >
+                            <FiPlus className="text-[1vw]" />
+                            Tambah Produk
+                        </GoalsButton>
+                    </SubHeading>
+                    {/* <GoalsAdminTable /> */}
+
+                    {product != null &&
+                        createPortal(
+                            <ViewDialog
+                                show={show}
+                                setShow={setShow}
+                                product={product}
+                                categories={categories}
+                            />,
+                            document.body
+                        )}
+                    <GoalsDashboardTable
+                        columns={columns}
+                        data={bimbingan}
+                        isSplitByCategory
+                        isDraggable
+                    />
+                </div>
+            ) : (
+                <span className="text-[2vw]">Desktop Only</span>
+            )}
         </DashboardLayout>
     );
 }
+
+const ViewDialog = ({ show, setShow, product, categories }) => {
+    const dialogRef = useRef(null);
+
+    return (
+        <div
+            className={`${
+                show ? "" : "hidden"
+            } z-50 fixed w-full h-full top-0 overflow-auto bg-dark focus:bg-red-400 bg-opacity-50 transition-all duration-300`}
+            onClick={() => {
+                setShow(false);
+            }}
+        >
+            {/* <div
+                className={`${
+                    show ? "" : "hidden"
+                } fixed top-0 bottom-0 left-0 right-0 w-full h-[200vh] overflow-auto bg-dark bg-opacity-50 transition-all duration-300 z-40`}
+
+            ></div> */}
+            <div
+                onClick={(e) => e.stopPropagation()}
+                className={`${
+                    show
+                        ? "md:top-0 bottom-0 md:scale-100"
+                        : "md:top-full -bottom-full md:scale-0"
+                } inset-0 focus:bg-red-400 mx-auto flex gap-[2vw] w-[76vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 my-[8vh] `}
+            >
+                <View products={product} categories={categories} />
+            </div>
+        </div>
+    );
+};

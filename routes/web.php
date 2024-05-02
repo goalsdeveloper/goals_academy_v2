@@ -163,6 +163,7 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')-
         Route::get('order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('order.showOnline');
         Route::patch('order/{order:order_code}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('order.updateOnline');
         Route::resource('progress', ProgressController::class);
+        Route::put('progress/{progress}/confirm-bimbingan', [ProgressController::class,'confirmBimbingan'])->name('progress.confirmBimbingan');
         Route::resource('history', ModeratorHistoryBimbinganController::class);
     });
     Route::prefix('tutor')->name('tutor.')->group(function () {

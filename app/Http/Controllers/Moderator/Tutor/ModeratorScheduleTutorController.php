@@ -20,8 +20,8 @@ class ModeratorScheduleTutorController extends Controller
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $courses = Course::with(['tutor:id,name'])
-                    ->select('id', 'tutor_id', 'date', 'time')
+                $courses = Course::with(['tutor:id,name',"products:id,name,duration"])
+                    ->select('id', 'tutor_id', 'date', 'time','products_id')
                     ->where('ongoing', 'berjalan')
                     ->whereNotNull('tutor_id')
                     ->whereNotNull('date')
