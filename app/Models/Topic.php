@@ -9,7 +9,8 @@ class Topic extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'topic'
+        'topic',
+        'slug'
     ];
 
     public function products() {

@@ -5,6 +5,7 @@ import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import { useMediaQuery } from "react-responsive";
 import { FiChevronLeft } from "react-icons/fi";
+import toast from "react-hot-toast";
 
 export default function Index({ auth }) {
     const { data, setData, post } = useForm({
@@ -15,7 +16,11 @@ export default function Index({ auth }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post("/pengaturan/ubah_password");
+        post("/pengaturan/ubah_password", {
+            onSuccess: () => {
+                toast.success("Password berhasil diubah");
+            },
+        });
     };
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
@@ -44,6 +49,7 @@ export default function Index({ auth }) {
                     className="md:min-h-[22vw] flex flex-col gap-[1.8vw] md:gap-[1.2vw]"
                 >
                     <GoalsTextInput
+                        required
                         value={data.old_password}
                         onChange={(e) =>
                             setData("old_password", e.target.value)
@@ -54,6 +60,7 @@ export default function Index({ auth }) {
                         label="Password Lama"
                     />
                     <GoalsTextInput
+                        required
                         value={data.new_password}
                         onChange={(e) =>
                             setData("new_password", e.target.value)
@@ -64,6 +71,7 @@ export default function Index({ auth }) {
                         label="Password Baru"
                     />
                     <GoalsTextInput
+                        required
                         value={data.validation_password}
                         onChange={(e) =>
                             setData("validation_password", e.target.value)

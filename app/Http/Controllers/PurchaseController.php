@@ -56,6 +56,7 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $user = Auth::user();
         $order_code = 'GA' . str(now()->format('YmdHis'));
         $orderData = new Order();
@@ -91,7 +92,7 @@ class PurchaseController extends Controller
 
         // charge midtrans
         $phoneNumber = $user->profile->phone_number ?? '';
-        $form_result = [];
+        $form_result = ['add_on' => []];
         $form_config = (array) Products::find($orderData->products_id)->form_config;
         foreach ($form_config as $key => $value) {
             if ($key == 'add_on' && $key == 1 && $request->exists('add_on')) {
@@ -117,6 +118,7 @@ class PurchaseController extends Controller
                 $document[$idx]['file_name'] = $fileName;
                 $document[$idx]['size'] = $file->getSize();
                 $document[$idx]['mime_type'] = $file->getMimeType();
+                $document[$idx]['name'] = $file->getClientOriginalName();
             }
             $form_result = array_merge((array) $form_result, ['document' => $document]);
         }

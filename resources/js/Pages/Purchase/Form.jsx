@@ -92,7 +92,10 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
             location.href = `/produk/${dataProduct.slug}#lengkapi_profil`;
         } else {
             setIsProcessed(true);
-            post("/produk");
+            post("/produk", {
+                onFinish: () => setIsProcessed(false),
+                onError: () => setIsProcessed(false),
+            });
         }
     };
 
@@ -264,7 +267,7 @@ function MainCard({
                             {dataProduct.facilities.map((item, index) => {
                                 return (
                                     <div key={index} className="flex items-center gap-[3vw] md:gap-[.5vw]">
-                                        <i className={`${item.icon} fa-regular fa-calendar text-primary`}></i>
+                                        <i className={`${item.icon} text-primary`}></i>
                                         <p>{item.text}</p>
                                     </div>
                                 )
@@ -553,7 +556,7 @@ function MainCard({
                                     label="Add-On"
                                     placeholder="Tambah Add-On"
                                     data={data.add_on}
-                                    onClick={() => {
+                                    onSubmit={() => {
                                         if (
                                             !(
                                                 data.add_on.length == 0 &&
@@ -663,19 +666,28 @@ function MainCard({
                         {"document" in rules ? (
                             <div className="w-full">
                                 <GoalsUploadFile
-                                    required={rules["document"]}
-                                    data={data}
+                                    required={rules.document}
+                                    label="Berkas Pendukung"
+                                    data={data.document}
                                     removeFile={(i) => {
-                                        setData(
-                                            "document",
-                                            data.document.filter((j) => j != i)
-                                        );
+                                        console.log(i)
+                                        setData({
+                                            ...data,
+                                            document: data.document.filter((j) => j != i),
+                                        });
                                     }}
-                                    setData={(i) =>
+                                    setData={(i) => {
                                         setData({
                                             ...data,
                                             document: data.document.concat(i),
                                         })
+                                    }
+                                    }
+                                    placeholder={
+                                        <p className="text-black">
+                                            Pilih file skripsi mu atau <br /> seret dan
+                                            lepas di sini
+                                        </p>
                                     }
                                 />
                             </div>

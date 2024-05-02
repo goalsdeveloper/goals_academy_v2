@@ -18,19 +18,19 @@ class UserController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                $perPage = $request->input('perPage', 10);
-                $search = $request->input('search');
+                // $perPage = $request->input('perPage', 10);
+                // $search = $request->input('search');
 
-                $query = User::where("user_role", "user");
+                $query = User::with('profile')->where("user_role", "user");
 
-                if ($search) {
-                    $query->where(function ($subquery) use ($search) {
-                        $subquery->where('name', 'LIKE', "%$search%")
-                            ->orWhere('username', 'LIKE', "%$search%");
-                    });
-                }
+                // if ($search) {
+                //     $query->where(function ($subquery) use ($search) {
+                //         $subquery->where('name', 'LIKE', "%$search%")
+                //             ->orWhere('username', 'LIKE', "%$search%");
+                //     });
+                // }
 
-                $users = $query->paginate($perPage);
+                $users = $query->get();
 
                 return Inertia::render('Auth/Admin/ManajemenUser/User', [
                     'status' => true,

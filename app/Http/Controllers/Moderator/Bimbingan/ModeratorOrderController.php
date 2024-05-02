@@ -155,7 +155,10 @@ class ModeratorOrderController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return Inertia::render('Auth/Moderator/Bimbingan/RecentOrder/Edit', [
+            'order_id' => $id,
+            'auth' => Auth::user(),
+        ]);
     }
 
     /**
