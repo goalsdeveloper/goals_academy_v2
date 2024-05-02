@@ -167,6 +167,7 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')-
     });
     Route::prefix('tutor')->name('tutor.')->group(function () {
         Route::resource('tutor_list', ModeratorTutorController::class);
+        Route::get('tutor_list/schedule/{tutor}', [ModeratorTutorController::class, 'scheduleTutor'])->name('tutorSchedule');
         Route::resource('schedule', ModeratorScheduleTutorController::class);
     });
     Route::resource('overview', ModeratorOverviewController::class);
