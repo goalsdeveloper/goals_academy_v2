@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Moderator\Tutor;
 
-use App\Models\User;
-use Inertia\Inertia;
-use App\Models\Order;
-use App\Models\Course;
-use App\Models\OrderHistory;
-use Illuminate\Http\Request;
+use App\Enums\CourseStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Course;
+use App\Models\Order;
+use App\Models\Skill;
+use App\Models\User;
+use App\Models\UserProfile;
+use Carbon\CarbonPeriod;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ModeratorTutorController extends Controller
 {
@@ -19,49 +22,54 @@ class ModeratorTutorController extends Controller
     public function index(Request $request)
     {
         try {
-            if (Auth::user()->user_role == "moderator") {
-                $search = $request->input('search');
-                $perPage = $request->input('perPage', 10);
-                $major = $request->input('major');
-                $skill = $request->input('skill');
-
-                $query = User::with('profile', 'skills')->where("user_role", "tutor");
-
-                if ($search) {
-                    $query->whereHas('profile', function ($profileQuery) use ($search) {
-                        $profileQuery->where('name', 'LIKE', "%$search%");
+            return Inertia::render('Auth/Moderator/Tutor/TutorList', [
+                'status' => true,
+                'statusCode' => 200,
+                'message' => 'get data tutor success',
+                'tutors' => function () use ($request) {
+                    $search = $request->input('search');
+                    $perPage = $request->input('perPage', 10);
+                    $major = $request->input('major');
+                    $skill = $request->input('skill');
+                    $query = User::with('profile', 'skills')->where("user_role", "tutor")
+                        ->when($search, function ($query) use ($search) {
+                            $query->where('name', 'LIKE', "%$search%");
+                        })->when($major, function ($query) use ($major) {
+                            $query->whereHas('profile', function ($profileQuery) use ($major) {
+                                $profileQuery->where('major', $major);
+                            });
+                        })->when($skill, function ($query) use ($skill) {
+                            $query->whereHas('skills', function ($skillQuery) use ($skill) {
+                                $skillQuery->where('name', $skill);
+                            });
+                        });
+                    $tutors = $query->paginate($perPage);
+                    $tutors->each(function ($tutor) {
+                        $onprogress = Course::where('tutor_id', $tutor->id)->where('ongoing', CourseStatusEnum::ONGOING)->count();
+                        $onprogress_courses = Course::where('tutor_id', $tutor->id)->where('ongoing', CourseStatusEnum::ONGOING)->join('orders', 'orders.id', '=', 'courses.order_id')
+                            ->join('products', 'products.id', '=', 'orders.products_id')
+                            ->join('categories', 'categories.id', '=', 'products.category_id')
+                            ->groupBy('categories.id')->selectRaw('categories.id, categories.name, COUNT(*) as jumlah_bimbingan')->limit(3)->get();
+                        $done = Course::where('tutor_id', $tutor->id)->where('ongoing', CourseStatusEnum::SUCCESS)->count();
+                        $done_courses = Course::where('tutor_id', $tutor->id)->where('ongoing', CourseStatusEnum::ONGOING)->join('orders', 'orders.id', '=', 'courses.order_id')
+                            ->join('products', 'products.id', '=', 'orders.products_id')
+                            ->join('categories', 'categories.id', '=', 'products.category_id')
+                            ->groupBy('categories.id')->selectRaw('categories.id, categories.name, COUNT(*) as jumlah_bimbingan')->limit(3)->get();
+                        // dd($done_courses);
+                        $tutor->finished_course = $onprogress;
+                        $tutor->finished_category = $done_courses;
+                        $tutor->ongoing_course = $done;
+                        $tutor->ongoing_category = $onprogress_courses;
                     });
-                }
-
-                if ($major) {
-                    $query->whereHas('profile', function ($profileQuery) use ($major) {
-                        $profileQuery->where('major', $major);
-                    });
-                }
-                if ($skill) {
-                    $query->whereHas('skills', function ($skillQuery) use ($skill) {
-                        $skillQuery->where('name', $skill);
-                    });
-                }
-
-                $tutors = $query->paginate($perPage);
-
-                $tutors->each(function ($tutor) {
-                    $onprogress = Course::where('tutor_id', $tutor->id)->where('ongoing', 'berjalan')->count();
-                    $done = Course::where('tutor_id', $tutor->id)->where('ongoing', 'selesai')->count();
-                    $tutor->total_course_onprogress = $onprogress;
-                    $tutor->total_course_done = $done;
-                });
-
-                return Inertia::render('Auth/Moderator/Tutor/TutorList', [
-                    'status' => true,
-                    'statusCode' => 200,
-                    'message' => 'get data tutor success',
-                    'data' => $tutors,
-                ], 200);
-            } else {
-                abort(403);
-            }
+                    return $tutors;
+                },
+                'majors' => function () {
+                    return UserProfile::distinct()->whereNotNull('major')->get(['major']);
+                },
+                'skills' => function () {
+                    return Skill::all();
+                },
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
@@ -69,6 +77,24 @@ class ModeratorTutorController extends Controller
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function scheduleTutor(Request $req, User $tutor)
+    {
+        $start_date = $req['start_date'];
+        $end_date = $req['end_date'];
+        $period = CarbonPeriod::create($start_date, $end_date);
+        $dates = $period->toArray();
+        $schedule = [];
+        foreach ($dates as $key => $value) {
+            $date = $value->format('Y-m-d');
+            $schedule_per_day = $tutor->tutor()->where('date', $date)->with('products:id,name,duration')->get(['time', 'products_id']);
+            $schedule[$date] = $schedule_per_day;
+        }
+        return response()->json([
+            'message' => 'success',
+            'schedules' => [$schedule],
+        ], 200);
     }
 
     /**
@@ -120,7 +146,6 @@ class ModeratorTutorController extends Controller
                         ->where('ongoing', 'berjalan');
                 })->count();
 
-
                 $total_bimbingan_tuntas_selesai = Course::where('tutor_id', $tutorlist->id)
                     ->where('ongoing', 'selesai')
                     ->whereHas('products', function ($query) {
@@ -146,7 +171,6 @@ class ModeratorTutorController extends Controller
                         ->where('ongoing', 'selesai');
                 })->count();
 
-
                 return response()->json([
                     'status' => true,
                     'statusCode' => 200,
@@ -157,7 +181,7 @@ class ModeratorTutorController extends Controller
                     'desk_review_onprogress' => $desk_review_onprogress,
                     'total_bimbingan_tuntas_selesai' => $total_bimbingan_tuntas_selesai,
                     'total_bimbingan_sekali_selesai' => $total_bimbingan_sekali_selesai,
-                    'desk_review_selesai' => $desk_review_selesai
+                    'desk_review_selesai' => $desk_review_selesai,
                 ], 200);
             } else {
                 abort(403);
@@ -170,7 +194,6 @@ class ModeratorTutorController extends Controller
             ], 500);
         }
     }
-
 
     /**
      * Show the form for editing the specified resource.

@@ -10,9 +10,11 @@ import {
     FiPlus,
     FiTrash2
 } from "react-icons/fi";
-import SubHeading from "../components/Subheading";
+import SubHeading from "../components/SubHeading";
 
-export default function Product({ auth, bimbingan_sekali, bimbingan_tuntas }) {
+export default function Product({ auth, bimbingan }) {
+    console.log(bimbingan)
+    // console.log(bimbingan_tuntas)
     const columns = useMemo(
         () => [
             {
@@ -117,7 +119,8 @@ export default function Product({ auth, bimbingan_sekali, bimbingan_tuntas }) {
                 {/* <GoalsAdminTable /> */}
                 <GoalsDashboardTable
                     columns={columns}
-                    data={bimbingan_sekali}
+                    data={bimbingan}
+                    isSplitByCategory
                     isDraggable
                 />
             </div>

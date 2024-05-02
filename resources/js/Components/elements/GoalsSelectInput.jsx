@@ -2,11 +2,11 @@ import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import GoalsButton from "../GoalsButton";
 
-function GoalsSelectInput ({ show, setShow, label="", placeholder="Pilih satu", data="", error="", icon="", chevronIcon="", required=false, className, filledClassName="border-2 border-secondary text-secondary", emptyClassName="border-1 border-light-grey text-light-grey", children }) {
+function GoalsSelectInput ({ show, setShow, label="", placeholder="Pilih satu", data="", error="", icon="", chevronIcon="", required=false, className, labelClassName, filledClassName="border-2 border-secondary text-secondary", emptyClassName="border-1 border-light-grey text-light-grey", children }) {
     return (
         <div className="text-inherit">
             {label != "" ? (
-                <p className="mb-[2vw] md:mb-[.5vw]">{label}<sup className={`${required ? "" : "hidden"} text-red-600`}>*</sup></p>
+                <p className={`mb-[2vw] md:mb-[.5vw] ${labelClassName}`}>{label}{required && <span className="text-red-600">*</span>}</p>
             ) : (<></>)}
             <GoalsButton
                 className={`justify-between rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] px-[3vw] md:px-[1vw] cursor-pointer ${className}`}

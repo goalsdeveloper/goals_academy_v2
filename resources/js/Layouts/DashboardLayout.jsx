@@ -283,6 +283,37 @@ export default function DashboardLayout ({ auth, title, subtitle, role, children
                 },
             ];
             break;
+        case "tutor":
+            navConfig = [
+                {
+                    name: "Overview",
+                    href: "/tutor/overview",
+                    icon: <FiGrid className="text-[1vw]" />,
+                    isActive: title == "Overview",
+                },
+                {
+                    name: "Bimbingan",
+                    href: "",
+                    icon: "",
+                    isActive: false,
+                    branches: [
+                        {
+                            name: "Progress",
+                            href: "/tutor/bimbingan/progress",
+                            icon: <MdHistory className="text-[1vw]" />,
+                            isActive: title == "Bimbingan" && subtitle == "Progress",
+                        },
+                        {
+                            name: "History",
+                            href: "/tutor/bimbingan/history",
+                            icon: <MdOutlineEventNote className="text-[1vw]" />,
+                            isActive: title == "Bimbingan" && subtitle == "History",
+                        },
+                    ],
+                    collapsed: true,
+                },
+            ];
+            break;
 
         default:
             break;
@@ -305,7 +336,7 @@ export default function DashboardLayout ({ auth, title, subtitle, role, children
     }, []);
 
     return (
-        <main className="relative flex bg-gray-50 text-dark">
+        <main className="relative flex bg-gray-50 text-dark font-sans">
             <Head title={title} />
             <aside className="w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer">
                 <div className="flex justify-center items-center pt-[2.5vw] pb-[1.75vw]">

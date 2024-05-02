@@ -4,8 +4,11 @@ import { FiX } from "react-icons/fi";
 const GoalsTextInput = ({
     type = "text",
     label = "",
+    name,
     placeholder = "Goals Input",
     className = "",
+    labelClassName,
+    messageClassName,
     error = "",
     success = "",
     data,
@@ -23,7 +26,7 @@ const GoalsTextInput = ({
             } gap-[2vw] md:gap-[.4vw]`}
         >
             {label !== "" && (
-                <label>
+                <label htmlFor={name} className={labelClassName}>
                     {label}
                     {required && <span className="text-red-600">*</span>}
                 </label>
@@ -31,6 +34,9 @@ const GoalsTextInput = ({
             <div>
                 <div className="relative flex">
                     <input
+                        id={name}
+                        name={name}
+                        required={required}
                         type={type}
                         placeholder={placeholder}
                         value={data}
@@ -53,12 +59,12 @@ const GoalsTextInput = ({
                     )}
                 </div>
                 {error !== "" && (
-                    <p className="text-red-500 text-[3.6vw] md:text-[.9vw]">
+                    <p className={`text-red-500 text-[3.6vw] md:text-[.9vw] ${messageClassName}`}>
                         {error}
                     </p>
                 )}
                 {success !== "" && (
-                    <p className="text-green-500 text-[3.6vw] md:text-[.9vw]">
+                    <p className={`text-green-500 text-[3.6vw] md:text-[.9vw] ${messageClassName}`}>
                         {success}
                     </p>
                 )}

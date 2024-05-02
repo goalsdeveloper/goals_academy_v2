@@ -3,25 +3,14 @@ import React, { useMemo, useState } from "react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
-import SubHeading from "../components/Subheading";
+import SubHeading from "../components/SubHeading";
 import GoalsButton from "@/Components/GoalsButton";
 import Dialog from "./Place/Dialog";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function Place ({ auth, places, cities }) {
-    places = places.data
-    cities = cities.data
-    const [dataCity, setDataCity] = useState([
-        {
-            id: 1,
-            city: 'Malang',
-        },
-        {
-            id: 2,
-            city: 'Surabaya',
-        },
-    ])
-
+export default function Place({ auth, places, cities }) {
+    places = places.data;
+    cities = cities.data;
     const [showDialog, setShowDialog] = useState({
         create: false,
         edit: false,
@@ -37,68 +26,44 @@ export default function Place ({ auth, places, cities }) {
     } = useForm({
         id: "",
         city: "",
+        city_id: 0,
         place: "",
         target: "",
     });
 
     const callback = (method) => {
-        router.visit(route('admin.bimbingan.topic.index'), {
-            only: ['places', 'cities'],
+        router.visit(route("admin.bimbingan.place.index"), {
+            only: ["places", "cities"],
             onSuccess: () => {
-                if (method == 'create') {
-                    toast.success('Create Success!');
-                } else if (method == 'edit') {
-                    toast.success('Edit Success!');
+                if (method == "create") {
+                    toast.success("Create Success!");
+                } else if (method == "edit") {
+                    toast.success("Edit Success!");
                 } else {
-                    toast.success('Delete Success!');
+                    toast.success("Delete Success!");
                 }
-            }
+            },
         });
-    }
-
-    const [dataLocation, setDataLocation] = useState([
-        {
-            id: 1,
-            location: 'Kafe 1',
-            city: 'Malang',
-        },
-        {
-            id: 2,
-            location: 'Kafe 2',
-            city: 'Malang',
-        },
-        {
-            id: 3,
-            location: 'Kafe 3',
-            city: 'Malang',
-        },
-        {
-            id: 3,
-            location: 'Kafe 4',
-            city: 'Surabaya',
-        },
-        {
-            id: 4,
-            location: 'Kafe 5',
-            city: 'Surabaya',
-        },
-    ])
+    };
 
     const columnsCity = useMemo(
         () => [
             {
-                accessorKey: 'city',
-                header: 'Kota',
+                accessorKey: "city",
+                header: "Kota",
             },
             {
-                accessorKey: 'id',
-                header: 'Action',
+                accessorKey: "id",
+                header: "Action",
                 Cell: ({ cell }) => (
                     <ul className="flex gap-[.8vw] w-fit">
                         <li>
                             <button
                                 onClick={() => {
-                                    setShowDialog({ ...showDialog, edit: true });
+                                    setShowDialog({
+                                        ...showDialog,
+                                        edit: true,
+                                    });
                                     setFormData({
                                         id: cell.row.original.id,
                                         city: cell.row.original.city,
@@ -113,7 +78,9 @@ export default function Place ({ auth, places, cities }) {
                         <li>
                             <Link
                                 method="DELETE"
-                                href={`/admin/bimbingan/place/${cell.getValue()}`}
+                                href={route("admin.bimbingan.city.destroy", {
+                                    city: cell.getValue(),
+                                })}
                                 onSuccess={callback}
                                 as="button"
                             >
@@ -123,31 +90,36 @@ export default function Place ({ auth, places, cities }) {
                     </ul>
                 ),
             },
-        ], []
-    )
+        ],
+        []
+    );
 
     const columnsLocation = useMemo(
         () => [
             {
-                accessorKey: 'place',
-                header: 'Lokasi',
+                accessorKey: "place",
+                header: "Lokasi",
             },
             {
-                accessorKey: 'city.city',
-                header: 'Kota',
+                accessorKey: "city.city",
+                header: "Kota",
             },
             {
-                accessorKey: 'id',
-                header: 'Action',
+                accessorKey: "id",
+                header: "Action",
                 Cell: ({ cell }) => (
                     <ul className="flex gap-[.8vw] w-fit">
                         <li>
                             <button
                                 onClick={() => {
-                                    setShowDialog({ ...showDialog, edit: true });
+                                    setShowDialog({
+                                        ...showDialog,
+                                        edit: true,
+                                    });
                                     setFormData({
                                         id: cell.row.original.id,
                                         city: cell.row.original.city.city,
+                                        city_id: cell.row.original.city.id,
                                         place: cell.row.original.place,
                                         target: "location",
                                     });
@@ -159,7 +131,8 @@ export default function Place ({ auth, places, cities }) {
                         <li>
                             <Link
                                 method="DELETE"
-                                href={`/admin/bimbingan/place/${cell.getValue()}`}
+                                href={route('admin.bimbingan.place.destroy', {place: cell.getValue()})}
+                                onSuccess={callback}
                                 as="button"
                             >
                                 <FiTrash2 className="text-[1.2vw] text-danger-40" />
@@ -168,11 +141,17 @@ export default function Place ({ auth, places, cities }) {
                     </ul>
                 ),
             },
-        ], []
-    )
+        ],
+        []
+    );
 
     return (
-        <DashboardLayout title="Bimbingan" subtitle="Place" role="admin" auth={auth}>
+        <DashboardLayout
+            title="Bimbingan"
+            subtitle="Place"
+            role="admin"
+            auth={auth}
+        >
             <Toaster />
             <div className="grid grid-cols-2 gap-[2vw]">
                 <div className="space-y-[1.6vw]">
@@ -211,6 +190,7 @@ export default function Place ({ auth, places, cities }) {
                                     id: "",
                                     city: "",
                                     place: "",
+                                    city_id: 0,
                                     target: "location",
                                 });
                             }}
@@ -237,9 +217,9 @@ export default function Place ({ auth, places, cities }) {
                     post,
                     put,
                     callback,
-                    dataCity
+                    cities,
                 }}
             />
         </DashboardLayout>
-    )
+    );
 }

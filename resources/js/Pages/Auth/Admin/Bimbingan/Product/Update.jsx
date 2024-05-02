@@ -5,7 +5,8 @@ import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import Breadcrumb from "../../components/Breadcrumb";
 import FormSection from "../../components/layouts/FormSection";
 
-const Update = ({ auth }) => {
+const Update = ({ auth, topics, product, categories, addons }) => {
+    console.log(product)
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -34,7 +35,10 @@ const Update = ({ auth }) => {
                             <div className="flex gap-[1.2vw]">
                                 <div className="h-40 aspect-square border-2 rounded-"></div>
                                 <div className="w-full space-y-[1.2vw]">
-                                    <GoalsTextInput label="Nama" required />
+                                    <GoalsTextInput label="Nama" data={product.name}
+                                    onChange={(e) => {
+                                        
+                                    }} required />
                                     <GoalsTextInput label="Slug" />
                                 </div>
                             </div>

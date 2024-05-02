@@ -16,7 +16,7 @@ const Dialog = ({
     post,
     put,
     callback,
-    dataCity,
+    cities,
 }) => {
     const status = showDialog.create
         ? "Tambah"
@@ -45,13 +45,22 @@ const Dialog = ({
                         onSubmit={(e) => {
                             e.preventDefault();
                             if (showDialog.create) {
-                                post(route("admin.bimbingan.place.store"), {
-                                    onFinish: () => callback("create"),
-                                });
+                                post(
+                                    route(
+                                        formData.target == "city"
+                                            ? "admin.bimbingan.city.store"
+                                            : "admin.bimbingan.place.store"
+                                    ),
+                                    {
+                                        onFinish: () => callback("create"),
+                                    }
+                                );
                             } else if (showDialog.edit) {
                                 put(
                                     route(
-                                        "admin.bimbingan.place.update",
+                                        formData.target == "city"
+                                            ? "admin.bimbingan.city.update"
+                                            : "admin.bimbingan.place.update",
                                         formData.id
                                     ),
                                     {
@@ -74,12 +83,12 @@ const Dialog = ({
                         </h2>
                         <div className="grid w-full gap-[.8vw]">
                             <GoalsTextInput
+                                required
                                 label={
                                     formData.target == "city"
                                         ? "Kota"
                                         : "Lokasi"
                                 }
-                                required
                                 data={
                                     formData.target == "city"
                                         ? formData.city
@@ -87,7 +96,12 @@ const Dialog = ({
                                 }
                                 placeholder=""
                                 onChange={(e) =>
-                                    setFormData("name", e.target.value)
+                                    formData.target == "city"
+                                        ? setFormData("city", e.target.value)
+                                        : setFormData(
+                                              "place",
+                                              e.target.value
+                                          )
                                 }
                                 disabled={showDialog.show}
                             />
@@ -95,15 +109,18 @@ const Dialog = ({
                                 <GoalsSelectInput
                                     show={showCityForm}
                                     setShow={setShowCityForm}
+                                    className="text-[.9vw] font-normal"
                                     label="Kota"
                                     placeholder="Pilih Kota"
                                     data={formData.city}
                                 >
-                                    {dataCity.map((i) => (
+                                    {cities.map((i) => (
                                         <GoalsSelectInputItem
-                                            onClick={() =>
-                                                setFormData("city", i.city)
-                                            }
+                                            onClick={() => {
+                                                formData.city = i.city
+                                                formData.city_id = i.id
+                                                setFormData(formData)
+                                            }}
                                         >
                                             {i.city}
                                         </GoalsSelectInputItem>

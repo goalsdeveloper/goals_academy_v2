@@ -6,10 +6,7 @@ import ProductListFilter from "../ProductListFilter";
 import { TransactionFilter } from "../constants";
 import RiwayatItem from "./components/RiwayatItem";
 
-export default function RiwayatTransaksi({ auth, dataOrder }) {
-    const [data, setData] = useState(dataOrder);
-
-    console.log(dataOrder);
+export default function RiwayatTransaksi({ auth, dataOrder: data }) {
 
     return (
         <UserLayout auth={auth} title="Riwayat Transaksi">

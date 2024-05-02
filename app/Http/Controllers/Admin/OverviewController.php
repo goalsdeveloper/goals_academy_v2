@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Products;
+use Carbon\Carbon;
 use DateTime;
 use Exception;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class OverviewController extends Controller
                     $oneMonthAgo = now()->subMonth();
                     $order =  Order::where('created_at', '>=', $oneMonthAgo)
                         ->orderBy('created_at', 'desc')
-                        ->with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])
+                        ->with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])->take(5)
                         ->get();
 
                     $topSellingProducts = Products::select('products.id', 'products.name', \DB::raw('COUNT(CASE WHEN orders.status = "Success" THEN orders.id END) as order_count'))
@@ -87,7 +88,8 @@ class OverviewController extends Controller
                         }
                     }
 
-                    return response()->json([
+                    ksort($totalsByDate);
+                    return Inertia::render('Auth/Admin/Overview/Overview', [
                         'status' => true,
                         'statusCode' => 200,
                         'total_earning' => $totalEarning,
@@ -101,27 +103,27 @@ class OverviewController extends Controller
                     ], 200);
                 } else {
                     $order = Order::query()
-                        ->whereBetween('created_at', [$startDateString, $endDateString])
+                        ->whereBetween('created_at', [$startDateString, Carbon::createFromDate($endDateString)->addDays(1)])
                         ->orderBy('created_at', 'desc')
-                        ->with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])
+                        ->with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])->take(5)
                         ->get();
 
                     $topSellingProducts = Products::select('products.id', 'products.name', \DB::raw('COUNT(CASE WHEN orders.status = "Success" THEN orders.id END) as order_count'))
                         ->leftJoin('orders', 'products.id', '=', 'orders.products_id')
-                        ->whereBetween('orders.created_at', [$startDateString, $endDateString])
+                        ->whereBetween('orders.created_at', [$startDateString, Carbon::createFromDate($endDateString)->addDays(1)])
                         ->groupBy('products.id', 'products.name')
                         ->orderByDesc('order_count')
                         ->take(5)
                         ->get();
 
-                    $totalOrder = Order::whereBetween('created_at', [$startDateString, $endDateString])
+                    $totalOrder = Order::whereBetween('created_at', [$startDateString, Carbon::createFromDate($endDateString)->addDays(1)])
                         ->where('status', '=', 'Success')
                         ->count();
 
-                    $totalCheckout = Order::whereBetween('created_at', [$startDateString, $endDateString])
+                    $totalCheckout = Order::whereBetween('created_at', [$startDateString, Carbon::createFromDate($endDateString)->addDays(1)])
                         ->count();
 
-                    $totalEarning = (int)Order::whereBetween('created_at', [$startDateString, $endDateString])
+                    $totalEarning = (int)Order::whereBetween('created_at', [$startDateString, Carbon::createFromDate($endDateString)->addDays(1)])
                         ->where('status', '=', 'Success')
                         ->sum('unit_price');
 
@@ -172,7 +174,8 @@ class OverviewController extends Controller
                         return response()->json(['error' => $e->getMessage()], 400);
                     }
 
-                    return response()->json([
+                    ksort($totalsByDate);
+                    return Inertia::render('Auth/Admin/Overview/Overview', [
                         'status' => true,
                         'statusCode' => 200,
                         'total_earning' => $totalEarning,

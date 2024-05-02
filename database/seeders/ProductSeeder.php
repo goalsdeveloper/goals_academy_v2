@@ -15,7 +15,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         Products::create([
-            'category_id' => 1,
+            'category_id' => 3,
             'name' => 'Dibimbing Online 30 Menit',
             'slug' => Str::slug('Dibimbing Online 30 Menit'),
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
@@ -37,7 +37,7 @@ class ProductSeeder extends Seeder
             ],
         ]);
         Products::create([
-            'category_id' => 1,
+            'category_id' => 3,
             'name' => 'Dibimbing Online 45 Menit',
             'slug' => Str::slug('Dibimbing Online 45 Menit'),
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
@@ -59,7 +59,7 @@ class ProductSeeder extends Seeder
             ],
         ]);
         Products::create([
-            'category_id' => 1,
+            'category_id' => 4,
             'name' => 'Dibimbing Offline 60 Menit',
             'slug' => Str::slug('Dibimbing Offline 60 Menit'),
             'excerpt' => 'Bimbingan personal 1-on-1 secara tatap',
@@ -105,7 +105,7 @@ class ProductSeeder extends Seeder
         ]);
 
         Products::create([
-            'category_id' => 1,
+            'category_id' => 7,
             'name' => 'How To Survive Your Thesis? Start with Theme',
             'slug' => Str::slug('How To Survive Your Thesis? Start with Theme'),
             'excerpt' => '',

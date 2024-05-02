@@ -90,9 +90,16 @@ class BimbinganController extends Controller
         try {
             ProductReview::create(array_merge($validate, ['course_id' => $course->id]));
         } catch (\Throwable $th) {
-            return redirect()->back()->with('errors', 'Gagal Mengirimkan Review');
+            // return response()->json([
+            //     'message' => $th->getMessage(),
+            // ], 500);
+            return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', $th->getMessage());
         }
-        return redirect()->back()->with('success', 'Berhasil Mengirimkan Review');
+        // return response()->json([
+        //     'message' => 'Berhasil Mengirim Review',
+        // ]);
+
+        redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', 'Berhasil Mengirim Review');
     }
 
     public function complete(Order $order)
@@ -100,10 +107,16 @@ class BimbinganController extends Controller
         try {
             $courses = $order->courses()->update(['ongoing' => CourseStatusEnum::SUCCESS->value]);
         } catch (\Throwable $th) {
-            return redirect()->back()->with('errors', 'Gagal Menyelesaikan Bimbingan');
+            // return response()->json([
+            //     'message' => $th->getMessage(),
+            // ], 500);
+            return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', $th->getMessage());
         }
-        return redirect()->back()->with('success', 'Berhasil Menyelesaikan Bimbingan');
+        // return response()->json([
+        //     'message' => 'success',
+        // ]);
 
+        redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', 'Berhasil Menyelesaikan Bimbingan');
     }
 
     public function aturJadwal(Order $order, Request $request)

@@ -8,6 +8,7 @@ import MainHeader from "./Partials/MainHeader";
 import wave7 from "/resources/img/vector/wave-7.svg";
 import userIcon from "/resources/img/icon/user.png";
 import "@/script/mainHeader";
+import { Toaster } from "react-hot-toast";
 
 export default function UserLayout({ auth, title, children }) {
     const [showImageUploader, setShowImageUploader] = useState(false);
@@ -21,6 +22,7 @@ export default function UserLayout({ auth, title, children }) {
             <Head title={title} />
             <MainHeader auth={auth} title="Dashboard" />
             <main className="text-dark pb-[8vw] md:pb-[3vw] text-[3vw] md:text-[1.15vw] overflow-visible">
+                <Toaster />
                 {/* <Preliminary
                     auth={auth}
                     title={title}
