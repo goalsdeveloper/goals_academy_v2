@@ -25,7 +25,7 @@ class ModeratorHistoryBimbinganController extends Controller
 
             $query = OrderHistory::where('status', OrderEnum::SUCCESS)->whereHas('order.products.productType', function ($q) {
                 $q->where('type', 'bimbingan');
-            })->with(['order.products:id,name', 'order.user:id,name', 'order.course', 'order.course.place']);
+            })->with(['order.products:id,name', 'order.user:id,name', 'order.course.child', 'order.course.place']);
             if ($search) {
                 $query->whereHas('order.user', function ($userQuery) use ($search) {
                     $userQuery->where('name', 'LIKE', "%$search%");
