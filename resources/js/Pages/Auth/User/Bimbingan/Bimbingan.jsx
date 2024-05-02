@@ -49,13 +49,13 @@ export default function Index({ auth, orderBimbingan }) {
 
 function BimbinganItem({ data }) {
     const start_time = data.course.time
-        ? moment(data.course.time, "HH:mm").format("HH:mm")
+        ? moment(data?.course?.time, "HH:mm").format("HH:mm")
         : "N/A";
     const finish_time = data.course.time
         ? moment()
-              .hours(data.course.time.split(":")[0])
-              .minutes(data.course.time.split(":")[1])
-              .add(data.products.features[0].duration, "minutes")
+              .hours(data?.course?.time.split(":")[0])
+              .minutes(data?.course?.time.split(":")[1])
+              .add(data?.products?.duration, "minutes")
               .format("HH:mm")
         : "N/A";
     const courseStatus =

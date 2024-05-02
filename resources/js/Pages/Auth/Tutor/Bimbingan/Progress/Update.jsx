@@ -9,46 +9,28 @@ import GoalsTextArea from "@/Components/elements/GoalsTextArea";
 import { FiFileText } from "react-icons/fi";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
 
-export default function Update ({ auth }) {
-    // console.log(data);
-    const {data: formData, setData: setFormData, post} = useForm({
-        username: 'hafizpemberani',
-        university: 'UIN Brawijaya',
-        major: 'Sistem Informasi',
-        topic: 'Bab 6',
-        note: 'Good job',
-        add_on: [
-            {name: 'king'},
-            {name: 'queen'},
-            {name: 'jack'},
-        ],
+export default function Update({ auth, order, files }) {
+    console.log(order);
+    console.log(files);
+    const {
+        data: formData,
+        setData: setFormData,
+        post,
+    } = useForm({
+        username: order.user.username,
+        university: order.user.profile.university,
+        major: order.user.profile.major,
+        topic: order.topic.topic,
+        note: order.note,
+        add_on: order.add_ons,
         document: [],
-        document_meta: [
-            {
-                path: 'asdf.pdf',
-                lastModified: '2024-12-02',
-                lastModifiedDate: '2024-12-02',
-                name: 'asdf.pdf',
-                size: 1000000,
-                type: 'document/pdf',
-                id: 1,
-            },
-            {
-                path: 'asdf1324.docx',
-                lastModified: '2024-12-02',
-                lastModifiedDate: '2024-12-02',
-                name: 'asdf1324.docx',
-                size: 3000000,
-                type: 'document/docx',
-                id: 2,
-            },
-        ],
+        document_meta: files,
         document_deleted: [],
     });
 
     const submit = () => {
-        post(route('tutor.bimbingan.progress.update', 112));
-    }
+        post(route("tutor.bimbingan.progress.update", order.id));
+    };
 
     return (
         <DashboardLayout
@@ -59,7 +41,7 @@ export default function Update ({ auth }) {
         >
             <div className="space-y-[1.6vw]">
                 <div className="flex justify-between">
-                    <Breadcrumb level={3} except={1} />
+                    <Breadcrumb level={2} except={1} isSlug />
                     <div className="space-x-[.8vw]">
                         <GoalsButton
                             className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[.75vw] md:rounded-[.5vw]"
@@ -83,7 +65,12 @@ export default function Update ({ auth }) {
                         titleClassName="!font-semibold md:text-[1.1vw]"
                         title="Order Details"
                         titleAction={
-                            <a href="#" className="text-secondary text-[.9vw] font-medium flex items-center gap-[.2vw]">File & Media <FiFileText /></a>
+                            <a
+                                href="#"
+                                className="text-secondary text-[.9vw] font-medium flex items-center gap-[.2vw]"
+                            >
+                                File & Media <FiFileText />
+                            </a>
                         }
                     >
                         <GoalsTextInput
@@ -119,16 +106,16 @@ export default function Update ({ auth }) {
                             <div className="flex items-center gap-[.5vw] bg-gray-100 border border-gray-300 rounded-md h-[12vw] md:h-[3vw] p-[1vw] text-[.8vw]">
                                 {formData.add_on.map((item, index) => {
                                     return (
-                                        <span className="text-white bg-neutral-400 rounded-[.3vw] p-[.9vw] py-[.2vw]">{item.name}</span>
-                                    )
+                                        <span className="text-white bg-neutral-400 rounded-[.3vw] p-[.9vw] py-[.2vw]">
+                                            {item.name}
+                                        </span>
+                                    );
                                 })}
                             </div>
                         </div>
                     </FormSection>
                     <div className="space-y-[1.2vw] ">
-                        <FormSection
-                            className="md:!p-[2vw]"
-                        >
+                        <FormSection className="md:!p-[2vw]">
                             <GoalsTextArea
                                 label="Note for User"
                                 placeholder="Note for User"
@@ -137,49 +124,68 @@ export default function Update ({ auth }) {
                                 labelClassName="font-medium"
                             />
                         </FormSection>
-                        <FormSection
-                            className="md:!p-[2vw]"
-                        >
+                        <FormSection className="md:!p-[2vw]">
                             <GoalsUploadFile
                                 label="File & Media"
                                 labelClassName="font-medium te"
                                 data={formData.document_meta}
                                 setData={(i) => {
-                                    const meta = [{
-                                        ...i[0],
-                                        lastModified: i[0].lastModified,
-                                        lastModifiedDate: i[0].lastModifiedDate,
-                                        name: i[0].name,
-                                        size: i[0].size,
-                                        type: i[0].type,
-                                        id: "auto",
-                                    }]
+                                    const meta = [
+                                        {
+                                            ...i[0],
+                                            lastModified: i[0].lastModified,
+                                            lastModifiedDate:
+                                                i[0].lastModifiedDate,
+                                            name: i[0].name,
+                                            size: i[0].size,
+                                            type: i[0].type,
+                                            id: "auto",
+                                        },
+                                    ];
                                     setFormData({
                                         ...formData,
                                         document: formData.document.concat(i),
-                                        document_meta: formData.document_meta.concat(meta),
-                                    }
-                                )}}
+                                        document_meta:
+                                            formData.document_meta.concat(meta),
+                                    });
+                                }}
                                 removeFile={(i) => {
                                     if (i.id != "auto") {
                                         setFormData({
                                             ...formData,
-                                            document: formData.document.filter((j) => j.name != i.name && j.size != i.size),
-                                            document_meta: formData.document_meta.filter((j) => j != i),
-                                            document_deleted: formData.document_deleted.concat([i.id]),
+                                            document: formData.document.filter(
+                                                (j) =>
+                                                    j.name != i.name &&
+                                                    j.size != i.size
+                                            ),
+                                            document_meta:
+                                                formData.document_meta.filter(
+                                                    (j) => j != i
+                                                ),
+                                            document_deleted:
+                                                formData.document_deleted.concat(
+                                                    [i.id]
+                                                ),
                                         });
                                     } else {
                                         setFormData({
                                             ...formData,
-                                            document: formData.document.filter((j) => j.name != i.name && j.size != i.size),
-                                            document_meta: formData.document_meta.filter((j) => j != i),
+                                            document: formData.document.filter(
+                                                (j) =>
+                                                    j.name != i.name &&
+                                                    j.size != i.size
+                                            ),
+                                            document_meta:
+                                                formData.document_meta.filter(
+                                                    (j) => j != i
+                                                ),
                                         });
                                     }
                                 }}
                                 placeholder={
                                     <p className="text-black">
-                                        Pilih file referensimu atau <br /> seret dan
-                                        lepas di sini
+                                        Pilih file referensimu atau <br /> seret
+                                        dan lepas di sini
                                     </p>
                                 }
                             />
@@ -189,4 +195,4 @@ export default function Update ({ auth }) {
             </div>
         </DashboardLayout>
     );
-};
+}
