@@ -40,7 +40,7 @@ export default function RecentOrder({ auth, orders }) {
                 accessorKey: "place.place",
                 header: "Lokasi",
                 Cell: ({ cell }) => (
-                    <span className="text-[.8vw] px-[.8vw] py-[.3vw] font-bold text-danger-40 bg-danger-50 rounded-[.3vw]">
+                    <span className="text-[.8vw] px-[.8vw] py-[.3vw] font-bold text-danger-40 bg-danger-50 rounded-[.3vw] text-nowrap">
                         {cell.row.original?.place?.place ??
                             "Lokasi Belum Diset"}
                         {/* <FiCheckCircle className="text-success-50 text-[1.2vw]" /> */}

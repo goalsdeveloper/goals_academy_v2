@@ -19,6 +19,7 @@ import { useEffect } from "react";
 export default function Progress({ auth, data: recentOrder }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
         recentOrder.recent_order;
+
     const [isShow, setIsShow] = useState({
         duration: false,
         confirmation: false,
@@ -127,9 +128,6 @@ export default function Progress({ auth, data: recentOrder }) {
                 header: "Status",
                 Cell: ({ cell }) => {
                     if (cell.row.original.course?.ongoing == null) return;
-
-                    console.log(cell.row.original.course?.child);
-
                     const status =
                         cell.row.original.course?.child.find(
                             (x) => x.ongoing == "berjalan"
@@ -504,7 +502,6 @@ export const DropdownDetailPanel = ({
                                             <>
                                                 <button
                                                     onClick={() => {
-                                                        console.log(course.id)
                                                         setIsShow({
                                                             ...isShow,
                                                             duration: true,
@@ -565,6 +562,7 @@ export const BottomPaginationTable = ({
             </p>
             <div className="flex items-center gap-[1.6vw]">
                 {pages?.map((link, index) => {
+                    console.log(pages);
                     return (
                         <button
                             key={index}

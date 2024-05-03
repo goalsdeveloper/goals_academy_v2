@@ -1,9 +1,7 @@
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import FormSection from "../../components/layouts/FormSection";
 import { SelectInput } from "./Components/SelectInput";
-import {
-    SelectMultiTag
-} from "./Components/SelectMultiTag";
+import { SelectMultiTag } from "./Components/SelectMultiTag";
 import SliderButton from "./Components/SliderButton";
 
 const View = ({ products, categories }) => {
@@ -28,7 +26,7 @@ const View = ({ products, categories }) => {
         form_config:
             typeof products.form_config == "object"
                 ? products.form_config
-                : JSON.parse(products.form_config) ?? {},
+                : products.form_config && JSON.parse(products.form_config),
     };
 
     const formConfigList = [
@@ -55,6 +53,7 @@ const View = ({ products, categories }) => {
                             title="Details"
                             titleAction={
                                 <SliderButton
+                                    disabled
                                     label="Visibilitas"
                                     isOn={data.is_visible}
                                 />
@@ -195,7 +194,7 @@ const View = ({ products, categories }) => {
                                             ></i>
                                             <p>{item.text}</p>
                                             <button type="button">
-                                                <i className="fa-solid fa-xmark group-hover:opacity-100 opacity-0 transition-all"></i>
+                                                <i className="fa-solid fa-xmark opacity-0 transition-all"></i>
                                             </button>
                                         </div>
                                     ))
