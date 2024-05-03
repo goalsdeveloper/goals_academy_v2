@@ -6,8 +6,8 @@ import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { useMemo } from "react";
 
 export default function Order({ auth, orders }) {
-    orders = orders.data
-    console.log(orders)
+    const data = orders;
+    console.log(data);
     const columns = useMemo(
         () => [
             {
@@ -73,7 +73,7 @@ export default function Order({ auth, orders }) {
                     isPaginated
                     isSortable
                     columns={columns}
-                    data={orders}
+                    data={data}
                 />
             </div>
         </DashboardLayout>
