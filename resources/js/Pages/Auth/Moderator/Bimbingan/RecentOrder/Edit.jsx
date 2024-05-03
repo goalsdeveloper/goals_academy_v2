@@ -36,14 +36,15 @@ export default function Edit({
         patch,
     } = useForm({
         id: "",
-        place: order.course.place.place,
-        place_id: order.course.place.id,
+        place: order?.course?.place?.place,
+        place_id: order?.course?.place?.id,
         tutor: order.course.tutor.name,
         tutor_id: order.course.tutor.name,
         tutor_phone: order.course.tutor.profile.phone_number,
         date: order.course.date ?? "",
         time: order.course.time ?? "",
     });
+
     return (
         <DashboardLayout
             title="Bimbingan"
