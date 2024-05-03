@@ -118,7 +118,6 @@ const TransactionDetailContent = ({ data }) => {
                         Add On Produk
                     </h3>
                     <div className="grid">
-                        {console.log(data.form_result.add_on)}
                         {add_on.length != 0
                             ? add_on.map((item, index) => {
                                   if (item == "") {

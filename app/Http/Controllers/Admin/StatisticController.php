@@ -17,13 +17,13 @@ class StatisticController extends Controller
     public function index(Request $request)
     {
         if (Auth::user()->user_role == "admin") {
-            // $productType = ProductType::with('products')->get();
+            $productType = ProductType::with('products')->get();
             // return response()->json([
             //     'status' => true,
             //     'statusCode' => 200,
             //     'productType' => $productType,
             // ], 200);
-            return Inertia::render('Auth/Admin/Statistic/Statistic');
+            return Inertia::render('Auth/Admin/Statistic/Statistic', ['product_type' => $productType]);
         } else {
             abort(403);
         }

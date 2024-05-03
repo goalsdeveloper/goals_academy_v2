@@ -1,56 +1,50 @@
 <?php
 
-use App\Http\Controllers\DashboardUserController;
-use App\Http\Controllers\Admin\OverviewController as AdminOverviewController;
-use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\Bimbingan\AddOnController;
 use App\Http\Controllers\Admin\Bimbingan\BimbinganController;
 use App\Http\Controllers\Admin\Bimbingan\CategoryController;
 use App\Http\Controllers\Admin\Bimbingan\CityController;
-use App\Http\Controllers\Admin\Bimbingan\PlaceController;
 use App\Http\Controllers\Admin\Bimbingan\OrderController as AdminOrderBimbinganController;
+use App\Http\Controllers\Admin\Bimbingan\PlaceController;
 use App\Http\Controllers\Admin\Bimbingan\TopicController;
 use App\Http\Controllers\Admin\Career\JobController;
 use App\Http\Controllers\Admin\Career\ParticipantController;
-use App\Http\Controllers\Admin\Ebook\EbookController;
 use App\Http\Controllers\Admin\Ebook\CategoryController as AdminCategoryEbookController;
+use App\Http\Controllers\Admin\Ebook\EbookController;
 use App\Http\Controllers\Admin\Ebook\OrderController as AdminOrderEbookController;
+use App\Http\Controllers\Admin\Ecourse\CategoryController as AdminCategoryEcourseController;
 use App\Http\Controllers\Admin\Ecourse\EcourseController;
 use App\Http\Controllers\Admin\Ecourse\OrderController as AdminOrderEcourseController;
-use App\Http\Controllers\Admin\Ecourse\CategoryController as AdminCategoryEcourseController;
-use App\Http\Controllers\Admin\Webinar\WebinarController;
-use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
-use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
+use App\Http\Controllers\Admin\ManajemenUser\ModeratorController;
 use App\Http\Controllers\Admin\ManajemenUser\TutorController;
 use App\Http\Controllers\Admin\ManajemenUser\UserController;
-use App\Http\Controllers\Admin\ManajemenUser\ModeratorController;
 use App\Http\Controllers\Admin\Marketing\AffiliateController;
 use App\Http\Controllers\Admin\Marketing\VoucherController;
+use App\Http\Controllers\Admin\OverviewController as AdminOverviewController;
+use App\Http\Controllers\Admin\StatisticController;
+use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
+use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
+use App\Http\Controllers\Admin\Webinar\WebinarController;
+use App\Http\Controllers\DashboardUserController;
 // use App\Http\Controllers\Moderator\CourseController;
-use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
-use App\Http\Controllers\Moderator\Bimbingan\ProgressController;
-use App\Http\Controllers\Moderator\Bimbingan\ModeratorHistoryBimbinganController;
-use App\Http\Controllers\Moderator\Bimbingan\ModeratorOrderController;
-use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
-use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
-
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\Moderator\Bimbingan\ModeratorHistoryBimbinganController;
+use App\Http\Controllers\Moderator\Bimbingan\ModeratorOrderController;
+use App\Http\Controllers\Moderator\Bimbingan\ProgressController;
+use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
+use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
+use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
-use App\Models\AddOn;
-use App\Models\Order;
-use App\Models\Products;
 use App\Models\TutorNote;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
-
 use Inertia\Inertia;
 use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period;
-use Illuminate\Http\Request;
+use Xendit\Configuration;
 
 Route::get('/token', function () {
     return csrf_token();
@@ -120,7 +114,7 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
     }
 });
 
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(function () {
     Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
         Route::resource('category', CategoryController::class);
         Route::resource('addon', AddOnController::class);
@@ -162,16 +156,19 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('statistic', StatisticController::class);
 });
 
-Route::prefix('moderator')->name('moderator.')->middleware('auth')->group(function () {
+Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')->group(function () {
     Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
-        Route::resource('order', ModeratorOrderController::class);
+        Route::resource('order', ModeratorOrderController::class)->parameters(['order' => 'order:order_code']);
+        // Route::get('order/edit/{order}', [ModeratorOrderController::class, 'edit'])->name('order.edit');
         Route::get('order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('order.showOnline');
-        Route::patch('order/{order}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('order.updateOnline');
+        Route::patch('order/{order:order_code}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('order.updateOnline');
         Route::resource('progress', ProgressController::class);
+        Route::put('progress/{progress}/confirm-bimbingan', [ProgressController::class,'confirmBimbingan'])->name('progress.confirmBimbingan');
         Route::resource('history', ModeratorHistoryBimbinganController::class);
     });
     Route::prefix('tutor')->name('tutor.')->group(function () {
         Route::resource('tutor_list', ModeratorTutorController::class);
+        Route::get('tutor_list/schedule/{tutor}', [ModeratorTutorController::class, 'scheduleTutor'])->name('tutorSchedule');
         Route::resource('schedule', ModeratorScheduleTutorController::class);
     });
     Route::resource('overview', ModeratorOverviewController::class);

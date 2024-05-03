@@ -12,7 +12,7 @@ export default function GoalsDatePicker ({ show, setShow, label="", chevronIcon=
     return (
         <div className={wrapperClassName}>
             {label != "" ? (
-                <p className="mb-[2vw] md:mb-[.5vw]">{label}<sup className={`${required ? "" : "hidden"} text-red-600`}>*</sup></p>
+                <p className="mb-[2vw] md:mb-[.5vw]">{label}{required && <span className="text-red-600">*</span>}</p>
             ) : (<></>)}
             <ExpandedButton
                 className={`rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] ${

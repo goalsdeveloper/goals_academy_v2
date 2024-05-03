@@ -21,6 +21,7 @@ Route::middleware(['auth'])->name('user.profile.')->group(function () {
 
     Route::get('/webinar', [WebinarController::class, 'webinar'])->name('webinar');
     Route::get('/webinar/{id}', [WebinarController::class, 'detailWebinar'])->name('detailWebinar');
+    Route::post('/webinar/{order:order_code}/review', [WebinarController::class, 'reviewWebinar'])->name('reviewWebinar');
 
     // Route::get('/purchase/detail/{order_code}', [BimbinganController::class, 'index'])->name('detailPesanan');
 

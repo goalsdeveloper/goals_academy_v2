@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-const GoalsCupertinoButton = ({ className, isEnabled=false, setIsEnabled, label = "Goals Button", size='sm', disabled, ...rest }) => {
+const GoalsCupertinoButton = ({ className, isEnabled=false, setIsEnabled, label = "Goals Button", size='sm', enabledClassName="bg-primary-40", disabled, ...rest }) => {
     function getSizeClassName () {
         switch (size) {
             case 'sm':
@@ -17,7 +17,7 @@ const GoalsCupertinoButton = ({ className, isEnabled=false, setIsEnabled, label 
                 role={disabled ? "" : "button"}
                 onClick={() => disabled ? false : setIsEnabled(!isEnabled)}
                 className={`relative flex items-center rounded-full ${getSizeClassName()} ${
-                    isEnabled ? "bg-primary-40" : "bg-neutral-60"
+                    isEnabled ? enabledClassName : "bg-neutral-60"
                 } transition-all`}
                 {...rest}
             >

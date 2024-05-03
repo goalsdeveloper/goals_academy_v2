@@ -17,7 +17,7 @@ class Tutor
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::user()->user_role != 'tutor') {
-            return abort(401);
+            return abort(403);
         }
         return $next($request);
     }

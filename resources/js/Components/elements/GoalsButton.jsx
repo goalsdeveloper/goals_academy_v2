@@ -21,7 +21,6 @@ const GoalsButton = ({
                     href: href,
                     method: method,
                     className: `${className}`,
-                    as: "button",
                 };
             default:
                 return {};
@@ -47,6 +46,8 @@ const GoalsButton = ({
                 return "border-1 lg:border-2 border-secondary text-secondary hover:border-primary hover:text-primary";
             case "info":
                 return "bg-info-40 hover:bg-info-50 text-white";
+            case "info-bordered":
+                return "border-1 lg:border-2 border-info-40 text-info-40 hover:border-info-50 hover:text-info-50";
             case "primary-inverse":
                 return "bg-primary-10 text-secondary hover:bg-primary-20";
             case "success":

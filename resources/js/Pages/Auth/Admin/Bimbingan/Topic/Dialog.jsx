@@ -45,19 +45,19 @@ const Dialog = ({
                             <GoalsTextInput
                                 label="Name"
                                 required
-                                data={formData.name}
+                                data={formData.topic}
                                 placeholder=""
-                                onChange={(e) => setFormData("name", e.target.value)}
+                                onChange={(e) => setFormData("topic", e.target.value)}
                                 disabled={showDialog.show}
                             />
                             <GoalsTextInput
                                 label="Slug"
-                                data={(formData.slug = toSlug(formData.name))}
+                                data={(formData.slug = toSlug(formData.topic))}
                                 placeholder=""
                                 onChange={() =>
                                     setFormData((prevData) => ({
                                         ...prevData,
-                                        slug: toSlug(prevData.name),
+                                        slug: toSlug(prevData.topic),
                                     }))
                                 }
                                 disabled

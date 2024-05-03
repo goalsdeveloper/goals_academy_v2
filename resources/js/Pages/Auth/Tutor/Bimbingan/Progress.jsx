@@ -1,0 +1,184 @@
+import { useMemo } from "react";
+import { Link, router } from "@inertiajs/react";
+import DashboardLayout from "@/Layouts/DashboardLayout";
+import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
+import SubHeading from "../../Admin/components/SubHeading";
+import { FiEye, FiEdit2, FiThumbsUp } from "react-icons/fi";
+import moment from "moment";
+import { BottomPaginationTable } from "../../Moderator/Bimbingan/Progress";
+import { getPaginationPages } from "@/script/utils";
+import { useEffect } from "react";
+import { useState } from "react";
+
+export default function Progress({ auth, bimbingan }) {
+    // const [isLoading, setIsLoading] = useState(false);
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        bimbingan;
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(new URLSearchParams(window.location.search).get('search'))
+
+    console.log(bimbingan);
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
+
+    const onSearchCallback = (search) => {
+        router.visit(route("tutor.bimbingan.progress.index", {search: search}), {
+            only: ["bimbingan"],
+        });
+    };
+
+    const columns = useMemo(
+        () => [
+            {
+                accessorKey: "user.username",
+                header: "Username",
+                size: 150,
+            },
+            {
+                accessorKey: "topic.topic",
+                header: "Topik",
+                size: 100,
+            },
+            {
+                accessorFn: (row) => moment(row.date + " " + row.time),
+                header: "Tanggal & Waktu Bimbingan",
+                size: 170,
+                Cell: ({ cell }) => {
+                    return (
+                        <div className="flex justify-between">
+                            <span>{cell.getValue().format("DD/MM/YYYY")}</span>
+                            <span>{cell.getValue().format("HH:mm")}</span>
+                        </div>
+                    );
+                },
+            },
+            {
+                accessorFn: (row) => moment(row.date + " " + row.time),
+                header: "Status",
+                size: 100,
+                Cell: ({ cell }) => {
+                    return moment().diff(cell.getValue(), "s") > 0 ? (
+                        <div className="text-[.9vw] text-center">
+                            <span className="bg-yellow-100 text-yellow-500 py-[.2vw] px-[1vw] rounded">
+                                On Progress
+                            </span>
+                        </div>
+                    ) : (
+                        <div className="text-[.9vw] text-center text-blue-500">
+                            Upcoming
+                        </div>
+                    );
+                },
+            },
+            {
+                accessorKey: "id",
+                header: "Action",
+                size: 10,
+                Cell: ({ cell }) => {
+                    return (
+                        <ul className="flex gap-[.8vw] w-fit">
+                            <li>
+                                <Link
+                                    method="PATCH"
+                                    href={route(
+                                        "tutor.bimbingan.tutor.tutorApprove",
+                                        cell.row.original.id
+                                    )}
+                                    as="button"
+                                >
+                                    <FiThumbsUp className="text-[1.2vw] text-secondary" />
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    method="GET"
+                                    href={route(
+                                        "tutor.bimbingan.progress.edit",
+                                        cell.row.original.id
+                                    )}
+                                >
+                                    <FiEdit2 className="text-[1.2vw] text-secondary" />
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    method="GET"
+                                    href={route(
+                                        "tutor.bimbingan.progress.show",
+                                        cell.row.original.id
+                                    )}
+                                >
+                                    <FiEye className="text-[1.2vw] text-neutral-60" />
+                                </Link>
+                            </li>
+                        </ul>
+                    );
+                },
+            },
+        ],
+        []
+    );
+
+    return (
+        <DashboardLayout
+            title="Bimbingan"
+            subtitle="Progress"
+            role="tutor"
+            auth={auth}
+        >
+            {/* {isLoading && <LoadingUI />} */}
+            <SubHeading title="Progress" />
+            <br />
+            <div className="text-[.8vw]">
+                <GoalsDashboardTable
+                    columns={columns}
+                    data={data}
+                    isHeadVisible
+                    isSortable
+                    isPaginated
+                    keyword={keyword}
+                    setKeyword={setKeyword}
+                    onSearch={(i) => {
+                        onSearchCallback(i)
+                    }}
+                />
+                <div>
+                    <BottomPaginationTable
+                        {...{
+                            from,
+                            to,
+                            total,
+                            pages,
+                            per_page,
+                            current_page,
+                            keyword
+                        }}
+                    />
+                </div>
+            </div>
+        </DashboardLayout>
+    );
+}
+
+function Card({ className, ...props }) {
+    return (
+        <div
+            {...props}
+            className={`bg-white shadow-bottom-right rounded-[.625vw] py-[1.25vw] px-[1.67vw] ${className}`}
+        ></div>
+    );
+}
+
+function LoadingUI() {
+    return (
+        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+            <img
+                src={logo}
+                alt="Goals Academy"
+                className="w-[6vw] h-[6vw] animate-bounce"
+            />
+        </div>
+    );
+}

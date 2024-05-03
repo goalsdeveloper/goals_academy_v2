@@ -10,9 +10,12 @@ import { useState } from "react";
 import { FiChevronRight } from "react-icons/fi";
 import DetailTransaksi from "../layouts/DetailTransaksi";
 import TransactionStatusBadge from "./TransactionStatusBadge";
+import { useMediaQuery } from "react-responsive";
 
 function RiwayatItem({ data }) {
     const [isVisible, setIsVisible] = useState(false);
+
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     const { expiry_time } = JSON.parse(
         Number(data.order_history[0]?.payload) || 0
@@ -29,7 +32,7 @@ function RiwayatItem({ data }) {
 
             <ProductItemCardLayout
                 imageUrl={data.products.product_image}
-                onClick={() => setIsVisible(true)}
+                onClick={() => isMobile && setIsVisible(true)}
                 className="cursor-pointer md:cursor-default"
             >
                 <div className="flex justify-between items-center">
@@ -81,10 +84,9 @@ function RiwayatItem({ data }) {
                                 >
                                     Lihat Detail
                                 </GoalsButton>
-
                                 {data.status == "Berhasil" ||
-                                    ("Success" && (
-                                        <GoalsButton>Beli Lagi</GoalsButton>
+                                    (data.status == "Success" && (
+                                        <GoalsButton isLink href={"/produk/"+ data.products.slug}>Beli Lagi</GoalsButton>
                                     ))}
                             </div>
                         </ProductItemCardContent>
