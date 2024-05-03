@@ -45,7 +45,10 @@ const Update = ({ auth, categories, topics, addons, products }) => {
         transform((data) => ({
             _method: "put",
             name: data.name,
-            product_image: data.product_image,
+            product_image:
+                typeof data.product_image == File
+                    ? data.product_image
+                    : undefined,
             slug: data.slug,
             category_id: Number(data.category_id.id),
             description: data.description,
@@ -145,15 +148,6 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                 />
                             }
                         >
-                            {/* <GoalsUploadFile
-                                data={data.product_image}
-                                setData={() =>
-                                    setData({
-                                        product_image: data.product_image,
-                                        ...rest,
-                                    })
-                                }
-                            /> */}
                             <input
                                 type="file"
                                 onChange={(e) =>
@@ -283,26 +277,6 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                 />
                             </div>
 
-                            {/* <SelectInput
-                                value={data.add_on.name}
-                                label="Add-on"
-                                required
-                            >
-                                {addons.map((option, i) => (
-                                    <SelectInputItem
-                                        key={i}
-                                        onClick={() =>
-                                            setData({
-                                                ...data,
-                                                add_on: option,
-                                            })
-                                        }
-                                    >
-                                        {option.name}
-                                    </SelectInputItem>
-                                ))}
-                            </SelectInput> */}
-
                             <SelectMultiTag
                                 value={data.add_on}
                                 label="Add on"
@@ -400,7 +374,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                     data.facilities.map((item) => (
                                         <div
                                             key={item.icon}
-                                            className="flex gap-[.6vw] items-center group cursor-pointer"
+                                            className="flex gap-[.6vw] items-center group hover:bg-neutral-20 px-2 py-1 rounded-full cursor-pointer"
                                         >
                                             <i
                                                 className={`${item.icon} text-secondary`}

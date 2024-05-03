@@ -1,127 +1,80 @@
-import { useState, useMemo } from "react";
+import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
-import { FiEye } from "react-icons/fi";
-import {
-    BottomPaginationTable,
-    DropdownDetailPanel,
-    getTableStyling,
-} from "./Progress";
+import { getPaginationPages } from "@/script/utils";
+import { Link } from "@inertiajs/react";
 import {
     MaterialReactTable,
     useMaterialReactTable,
 } from "material-react-table";
+import moment from "moment";
+import { useEffect, useMemo, useState } from "react";
+import { FiEye } from "react-icons/fi";
+import {
+    BottomPaginationTable,
+    getTableStyling
+} from "./Progress";
 
-export default function History({ auth, data: orderHistory }) {
+export default function History({ auth, order_history: res }) {
     const [isLoading, setIsLoading] = useState(false);
-    const { data, from, to, total, pages, per_page, current_page } =
-        orderHistory.order_history;
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        res;
+    const [pages, setPages] = useState([]);
+    const [searchQuery, setSearchQuery] = useState(
+        new URLSearchParams(document.location.search).get("search") ?? ""
+    );
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
 
     const columns = useMemo(
         () => [
             {
-                accessorKey: "user.name",
-                header: "Username",
-                Cell: ({ renderedCellValue }) => {
-                    return (
-                        <p className="text-[.8vw] font-medium">
-                            {renderedCellValue}
-                        </p>
-                    );
-                },
+                accessorKey: "order.user.name",
+                header: "Username Customer",
             },
             {
-                accessorKey: "products.category.name",
+                accessorKey: "order.products.name",
                 header: "Product",
-                Cell: ({ renderedCellValue }) => {
+            },
+            {
+                accessorKey: "order.created_at",
+                header: "Tanggal Pembelian",
+                Cell: ({ cell }) => {
                     return (
-                        <p className="text-[.8vw] font-medium">
-                            {renderedCellValue}
+                        // <p>{cell.row.original.created_at}</p>
+                        <p>
+                            {moment(cell.row.original.created_at).format(
+                                "MMMM d, YYYY"
+                            )}
                         </p>
                     );
                 },
             },
             {
-                accessorKey: "date",
-                header: "Tanggal & Waktu Bimbingan",
-                Cell: ({ renderedCellValue, cell }) => {
-                    const course = cell.row.original.course;
-
-                    if (course?.date == null && course?.time == null)
-                        return "-";
-                    return (
-                        <div className="flex items-center justify-between text-[.8vw]">
-                            <p>
-                                {new Date(course.date).toLocaleDateString(
-                                    "id-ID"
-                                )}
-                            </p>
-                            {/* {course.time} */}
-                            <p>{course.time ?? "-"}</p>
-                        </div>
-                    );
-                },
-            },
-            {
-                accessorKey: "is_tutor",
-                header: "Tutor Confirm",
-                enableSorting: false,
+                accessorKey: "order.course.time",
+                header: "Waktu Pembelian",
                 Cell: ({ cell }) => {
-                    const course = cell.row.original.course;
-
-                    if (course?.is_tutor == null || course?.child.length > 1)
-                        return;
                     return (
-                        <span className="w-full justify-center items-center">
-                            {course.is_tutor == true ? (
-                                <i className="fa-regular fa-circle-check text-success-50 text-[1.2vw]"></i>
-                            ) : (
-                                <i className="fa-regular fa-circle-xmark text-danger-40 text-[1.2vw]"></i>
+                        <p>
+                            {moment(cell.row.original.created_at).format(
+                                "HH:mm"
                             )}
-                        </span>
+                        </p>
                     );
                 },
             },
             {
-                accessorKey: "is_user",
-                header: "User Confirm",
-                enableSorting: false,
-                Cell: ({ cell }) => {
-                    const course = cell.row.original.course;
-                    if (course?.is_user == null || course?.child.length > 1) {
-                        return;
-                    } else
-                        return (
-                            <span className="w-full justify-center items-center">
-                                {course.is_user == true ? (
-                                    <i className="fa-regular fa-circle-check text-success-50 text-[1.2vw]"></i>
-                                ) : (
-                                    <i className="fa-regular fa-circle-xmark text-danger-40 text-[1.2vw]"></i>
-                                )}
-                            </span>
-                        );
-                },
+                accessorFn: (row) =>
+                    row.order.course?.place ?? "Lokasi Belum Diset",
+                // accessorKey: "order.course.place",
+                header: "Lokasi",
             },
-            //TODO need checking for multiple session only done when all session finished
             {
-                accessorKey: "status",
-                header: "Status",
-                Cell: ({ cell }) => {
-                    if (cell.row.original.course?.ongoing == null) return;
-
-                    const status = upperCaseFirstLetter(
-                        cell.row.original.course?.ongoing
-                    );
-
-                    return (
-                        <div>
-                            <GoalsBadge
-                                title={status}
-                                className={`${statusClassMap[status]} font-semibold`}
-                            />
-                        </div>
-                    );
-                },
+                accessorFn: (row) =>
+                    row.order.course?.duration ?? "Durasi Belum Diset",
+                // accessorKey: "order.course.duration",
+                header: "Durasi",
             },
         ],
         []
@@ -132,9 +85,9 @@ export default function History({ auth, data: orderHistory }) {
         data: data,
         ...getTableStyling(),
         renderRowActions: ({ row }) => {
-            const { course } = row.original;
+            const { course } = row.original.order;
 
-            if (course?.child.length > 1)
+            if (course?.child?.length > 1)
                 return (
                     <div className="text-nowrap">
                         <span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
@@ -162,14 +115,17 @@ export default function History({ auth, data: orderHistory }) {
                         pages,
                         per_page,
                         current_page,
+                        searchQuery,
                     }}
                 />
             );
         },
         renderDetailPanel: ({ row }) => {
-            if (row.original.course?.child.length < 1) return;
+            const { child } = row.original.order?.course;
 
-            return <DropdownDetailPanel row={row} isActionDisabled/>;
+            if (child?.length < 1) return;
+
+            return <div>s</div>;
         },
     });
 
@@ -184,6 +140,13 @@ export default function History({ auth, data: orderHistory }) {
             <div className="space-y-[1.6vw]">
                 <h2 className="font-medium">History</h2>
                 <div className="text-[.8vw] bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
+                    <GoalsTextInput
+                        placeholder="🔍 Search"
+                        className="max-w-[10.4vw] max-h-[2.4vw]"
+                        data={searchQuery}
+                        setData={(e) => setSearchQuery(e)}
+                    />
+
                     <MaterialReactTable table={table} />
                 </div>
             </div>

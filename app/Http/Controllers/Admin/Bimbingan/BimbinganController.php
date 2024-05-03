@@ -202,26 +202,26 @@ class BimbinganController extends Controller
                 }
 
 
-                if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
-                    if ($request->filled('topics')) {
-                        $topics = json_decode($request->topics);
-                        foreach ($topics as $topicId) {
-                            $topic = Topic::find($topicId);
-                            if ($topic) {
-                                $product->topics()->attach($topicId);
-                            }
+                // if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
+                if ($request->filled('topics')) {
+                    $topics = json_decode($request->topics);
+                    foreach ($topics as $topicId) {
+                        $topic = Topic::find($topicId);
+                        if ($topic) {
+                            $product->topics()->attach($topicId);
                         }
                     }
                 }
+                // }
 
-                return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil ditambahkan');
-                // return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
+                // return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil ditambahkan');
+                return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
-            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
+            // return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
         }
     }
 
@@ -247,8 +247,8 @@ class BimbinganController extends Controller
                     $product->form_config = json_decode($product->form_config);
                 }
 
-                return redirect()->route('admin.bimbingan.product.index');
-                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $product], 200);
+                // return redirect()->route('admin.bimbingan.product.index');
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $product], 200);
             } else {
                 abort(403);
             }

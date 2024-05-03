@@ -6,54 +6,54 @@ import { FiEdit2, FiEye } from "react-icons/fi";
 import { Link } from "@inertiajs/react";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
 import View from "./RecentOrder/View";
+import moment from "moment";
 
-export default function RecentOrder({ auth, recent_order }) {
+export default function RecentOrder({ auth, orders }) {
+    orders = orders.data;
+    console.log(orders);
     // const [isLoading, setIsLoading] = useState(false);
     const [isShow, setIsShow] = useState(false);
-
+    // const [detailOrder, setDetailOrder] = useState({});
+    const [detailOrder, setDetailOrder] = useState({});
     // console.log(recent_order);
-
-    const data = [
-        {
-            id: 1,
-            username: "Hafiz",
-            product: "Dibimbing Sekali",
-            date: "08/12/2024",
-            time: "23:59",
-            lokasi: "Offline - Nakoa",
-            kelengkapan: "50%",
-        },
-    ];
 
     const columns = useMemo(
         () => [
             {
-                accessorKey: "username",
+                accessorKey: "user.name",
                 header: "Username",
             },
             {
-                accessorKey: "product",
+                accessorKey: "products.name",
                 header: "Product",
             },
             {
-                accessorKey: "date",
+                accessorFn: (row) =>
+                    moment(row.created_at).format("MMMM d, YYYY"),
                 header: "Tanggal Pembelian",
             },
             {
-                accessorKey: "time",
+                accessorFn: (row) => moment(row.created_at).format("HH:mm"),
                 header: "Waktu Pembelian",
             },
             {
-                accessorKey: "lokasi",
+                accessorKey: "place.place",
                 header: "Lokasi",
+                Cell: ({ cell }) => (
+                    <span className="text-[.8vw] px-[.8vw] py-[.3vw] font-bold text-danger-40 bg-danger-50 rounded-[.3vw] text-nowrap">
+                        {cell.row.original?.place?.place ??
+                            "Lokasi Belum Diset"}
+                        {/* <FiCheckCircle className="text-success-50 text-[1.2vw]" /> */}
+                    </span>
+                ),
             },
             {
-                accessorKey: "kelengkapan",
+                accessorKey: "completeness_percentage",
                 header: "Kelengkapan",
 
                 Cell: ({ cell }) => (
                     <span className="text-[.8vw] px-[.8vw] py-[.3vw] font-bold text-danger-40 bg-danger-50 rounded-[.3vw]">
-                        {cell.row.original.kelengkapan}
+                        {cell.row.original.completeness_percentage}
                         {/* <FiCheckCircle className="text-success-50 text-[1.2vw]" /> */}
                     </span>
                 ),
@@ -69,14 +69,19 @@ export default function RecentOrder({ auth, recent_order }) {
                                     method="GET"
                                     href={route(
                                         "moderator.bimbingan.order.edit",
-                                        { order: cell.row.original }
+                                        { order: cell.row.original.order_code }
                                     )}
                                 >
                                     <FiEdit2 className="text-[1.2vw] text-secondary" />
                                 </Link>
                             </li>
                             <li>
-                                <button onClick={() => setIsShow(!isShow)}>
+                                <button
+                                    onClick={() => {
+                                        setIsShow(!isShow);
+                                        setDetailOrder(cell.row.original);
+                                    }}
+                                >
                                     <FiEye className="text-[1.2vw] text-neutral-60" />
                                 </button>
                             </li>
@@ -97,13 +102,17 @@ export default function RecentOrder({ auth, recent_order }) {
         >
             {/* {isLoading && <LoadingUI />} */}
 
-            <ViewPopup show={isShow} setShow={() => setIsShow(!isShow)} />
+            <ViewPopup
+                show={isShow}
+                setShow={() => setIsShow(!isShow)}
+                detailOrder={detailOrder}
+            />
             <div className="space-y-[1.6vw]">
                 <h2 className="font-medium">Recent Order</h2>
                 <div className="text-[.8vw]">
                     <GoalsDashboardTable
                         columns={columns}
-                        data={data}
+                        data={orders}
                         isHeadVisible
                         isSortable
                         isPaginated
@@ -135,7 +144,7 @@ function LoadingUI() {
     );
 }
 
-const ViewPopup = ({ show, setShow }) => {
+const ViewPopup = ({ show, setShow, detailOrder }) => {
     return (
         <>
             <div
@@ -153,7 +162,7 @@ const ViewPopup = ({ show, setShow }) => {
                         : "md:top-full -bottom-full md:scale-0"
                 } fixed inset-0 mx-auto flex gap-[2vw] w-[76vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50  md:mt-[8vh]`}
             >
-                <View />
+                <View {...{ detailOrder }} />
             </div>
         </>
     );

@@ -21,9 +21,16 @@ import { useMediaQuery } from "react-responsive";
 
 export default function Product({ auth, bimbingan, categories }) {
     const isDesktop = useMediaQuery({ minWidth: 1024 });
-
     const [show, setShow] = useState(false);
-    const [product, setProduct] = useState(null);
+    const [product, setProduct] = useState()
+
+    async function getBimbinganDetail(id) {
+        setProduct(null);
+        const res = await fetch("/admin/bimbingan/product/" + id);
+        const { data } = await res.json();
+        setProduct(data);
+    }
+
     const columns = useMemo(
         () => [
             {
@@ -101,12 +108,8 @@ export default function Product({ auth, bimbingan, categories }) {
                             <li>
                                 <button
                                     onClick={() => {
-                                        setProduct(() =>
-                                            bimbingan.find(
-                                                (item) =>
-                                                    item.id ===
-                                                    cell.row.original.id
-                                            )
+                                        getBimbinganDetail(
+                                            cell.row.original.id
                                         );
                                         setShow(true);
                                     }}
@@ -145,7 +148,7 @@ export default function Product({ auth, bimbingan, categories }) {
                     </SubHeading>
                     {/* <GoalsAdminTable /> */}
 
-                    {product != null &&
+                    {product &&
                         createPortal(
                             <ViewDialog
                                 show={show}
@@ -170,8 +173,6 @@ export default function Product({ auth, bimbingan, categories }) {
 }
 
 const ViewDialog = ({ show, setShow, product, categories }) => {
-    const dialogRef = useRef(null);
-
     return (
         <div
             className={`${
@@ -181,12 +182,6 @@ const ViewDialog = ({ show, setShow, product, categories }) => {
                 setShow(false);
             }}
         >
-            {/* <div
-                className={`${
-                    show ? "" : "hidden"
-                } fixed top-0 bottom-0 left-0 right-0 w-full h-[200vh] overflow-auto bg-dark bg-opacity-50 transition-all duration-300 z-40`}
-
-            ></div> */}
             <div
                 onClick={(e) => e.stopPropagation()}
                 className={`${

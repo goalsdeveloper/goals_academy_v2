@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -17,7 +16,6 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         try {
-            if (Auth::user()->user_role == "admin") {
                 // $perPage = $request->input('perPage', 10);
                 // $search = $request->input('search');
 
@@ -36,15 +34,12 @@ class OrderController extends Controller
 
                 $orders = $query->get();
 
-                return Inertia::render('Auth/Admin/Bimbingan/Order', [
-                    'status' => true,
-                    'statusCode' => 200,
-                    'message' => 'get data history success',
-                    'data' => $orders,
-                ], 200);
-            } else {
-                abort(403);
-            }
+            return Inertia::render('Auth/Admin/Bimbingan/Order', [
+                'status' => true,
+                'statusCode' => 200,
+                'message' => 'get data history success',
+                'orders' => $orders,
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => false,

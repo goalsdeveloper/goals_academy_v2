@@ -6,8 +6,8 @@ import { createPortal } from "react-dom";
 import { router } from "@inertiajs/react";
 
 const DetailSatuPertemuan = ({ data, className = "" }) => {
+    //TODO DATA BELUM LENGKAP
     const gapSize = 1;
-
     console.log(data);
 
     const form_field = {
@@ -28,7 +28,13 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
         //         ? data?.add_ons?.map((item) => item["name"]).join(", ")
         //         : "Tidak Ada Add Ons",
         document: "Lampiran Dokumen",
-        schedule: data?.date ?? "Jadwal Belum Diatur",
+        schedule:
+            new Date(data?.date).toLocaleDateString("id-ID", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                weekday: "long",
+            }) ?? "Jadwal Belum Diatur",
         time: data?.time ?? "Jam Belum Diatur",
     };
 
@@ -103,6 +109,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                             data.file_uploads.map((item, index) => {
                                 return (
                                     <FileMediaItemBackdrop
+                                        isBackdropVisible={false}
                                         key={index}
                                         item={item}
                                     />
@@ -130,6 +137,7 @@ export const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
         if (isVisible) {
             setIsVisible(false);
             allowScroll();
+            window.location.href = item.url;
         } else {
             setIsVisible(true);
             blockScroll();

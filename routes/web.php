@@ -156,18 +156,19 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
     Route::resource('statistic', StatisticController::class);
 });
 
-Route::prefix('moderator')->name('moderator.')->middleware('auth')->group(function () {
+Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')->group(function () {
     Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
-        Route::resource('order', ModeratorOrderController::class);
-        Route::get('order/edit/{order}', [ModeratorOrderController::class, 'edit'])->name('order.edit');
+        Route::resource('order', ModeratorOrderController::class)->parameters(['order' => 'order:order_code']);
+        // Route::get('order/edit/{order}', [ModeratorOrderController::class, 'edit'])->name('order.edit');
         Route::get('order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('order.showOnline');
-        Route::patch('order/{order}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('order.updateOnline');
+        Route::patch('order/{order:order_code}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('order.updateOnline');
         Route::resource('progress', ProgressController::class);
         Route::put('progress/{progress}/confirm-bimbingan', [ProgressController::class,'confirmBimbingan'])->name('progress.confirmBimbingan');
         Route::resource('history', ModeratorHistoryBimbinganController::class);
     });
     Route::prefix('tutor')->name('tutor.')->group(function () {
         Route::resource('tutor_list', ModeratorTutorController::class);
+        Route::get('tutor_list/schedule/{tutor}', [ModeratorTutorController::class, 'scheduleTutor'])->name('tutorSchedule');
         Route::resource('schedule', ModeratorScheduleTutorController::class);
     });
     Route::resource('overview', ModeratorOverviewController::class);
