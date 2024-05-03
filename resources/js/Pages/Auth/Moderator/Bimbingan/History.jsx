@@ -1,16 +1,31 @@
-import { useState, useMemo } from "react";
+import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
-import { FiEye } from "react-icons/fi";
+import { getPaginationPages } from "@/script/utils";
+import { Link } from "@inertiajs/react";
+import {
+    MaterialReactTable,
+    useMaterialReactTable,
+} from "material-react-table";
 import moment from "moment";
+import { useEffect, useMemo, useState } from "react";
+import { FiEye } from "react-icons/fi";
+import {
+    BottomPaginationTable,
+    getTableStyling
+} from "./Progress";
 
-
-export default function History({ auth, order_history }) {
-    order_history = order_history.data
-    console.log(order_history)
+export default function History({ auth, order_history: res }) {
     const [isLoading, setIsLoading] = useState(false);
-    const { data, from, to, total, pages, per_page, current_page } =
-        orderHistory.order_history;
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        res;
+    const [pages, setPages] = useState([]);
+    const [searchQuery, setSearchQuery] = useState(
+        new URLSearchParams(document.location.search).get("search") ?? ""
+    );
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
 
     const columns = useMemo(
         () => [
@@ -21,13 +36,6 @@ export default function History({ auth, order_history }) {
             {
                 accessorKey: "order.products.name",
                 header: "Product",
-                Cell: ({ renderedCellValue }) => {
-                    return (
-                        <p className="text-[.8vw] font-medium">
-                            {renderedCellValue}
-                        </p>
-                    );
-                },
             },
             {
                 accessorKey: "order.created_at",
@@ -35,7 +43,11 @@ export default function History({ auth, order_history }) {
                 Cell: ({ cell }) => {
                     return (
                         // <p>{cell.row.original.created_at}</p>
-                        <p>{moment(cell.row.original.created_at).format('MMMM d, YYYY')}</p>
+                        <p>
+                            {moment(cell.row.original.created_at).format(
+                                "MMMM d, YYYY"
+                            )}
+                        </p>
                     );
                 },
             },
@@ -44,40 +56,25 @@ export default function History({ auth, order_history }) {
                 header: "Waktu Pembelian",
                 Cell: ({ cell }) => {
                     return (
-                        <p>{moment(cell.row.original.created_at).format('HH:mm')}</p>
+                        <p>
+                            {moment(cell.row.original.created_at).format(
+                                "HH:mm"
+                            )}
+                        </p>
                     );
                 },
             },
             {
-                accessorFn: (row) => row.order.course?.place ?? 'Lokasi Belum Diset',
+                accessorFn: (row) =>
+                    row.order.course?.place ?? "Lokasi Belum Diset",
                 // accessorKey: "order.course.place",
                 header: "Lokasi",
             },
             {
-                accessorFn: (row) => row.order.course?.duration ?? 'Durasi Belum Diset',
+                accessorFn: (row) =>
+                    row.order.course?.duration ?? "Durasi Belum Diset",
                 // accessorKey: "order.course.duration",
                 header: "Durasi",
-            },
-            //TODO need checking for multiple session only done when all session finished
-            {
-                accessorKey: "status",
-                header: "Status",
-                Cell: ({ cell }) => {
-                    if (cell.row.original.course?.ongoing == null) return;
-
-                    const status = upperCaseFirstLetter(
-                        cell.row.original.course?.ongoing
-                    );
-
-                    return (
-                        <div>
-                            <GoalsBadge
-                                title={status}
-                                className={`${statusClassMap[status]} font-semibold`}
-                            />
-                        </div>
-                    );
-                },
             },
         ],
         []
@@ -88,9 +85,9 @@ export default function History({ auth, order_history }) {
         data: data,
         ...getTableStyling(),
         renderRowActions: ({ row }) => {
-            const { course } = row.original;
+            const { course } = row.original.order;
 
-            if (course?.child.length > 1)
+            if (course?.child?.length > 1)
                 return (
                     <div className="text-nowrap">
                         <span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
@@ -118,14 +115,17 @@ export default function History({ auth, order_history }) {
                         pages,
                         per_page,
                         current_page,
+                        searchQuery,
                     }}
                 />
             );
         },
         renderDetailPanel: ({ row }) => {
-            if (row.original.course?.child.length < 1) return;
+            const { child } = row.original.order?.course;
 
-            return <DropdownDetailPanel row={row} isActionDisabled/>;
+            if (child?.length < 1) return;
+
+            return <div>s</div>;
         },
     });
 
@@ -139,14 +139,15 @@ export default function History({ auth, order_history }) {
             {/* {isLoading && <LoadingUI />} */}
             <div className="space-y-[1.6vw]">
                 <h2 className="font-medium">History</h2>
-                <div className="text-[.8vw]">
-                    <GoalsDashboardTable
-                        columns={columns}
-                        data={order_history}
-                        isHeadVisible
-                        isSortable
-                        isPaginated
+                <div className="text-[.8vw] bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
+                    <GoalsTextInput
+                        placeholder="🔍 Search"
+                        className="max-w-[10.4vw] max-h-[2.4vw]"
+                        data={searchQuery}
+                        setData={(e) => setSearchQuery(e)}
                     />
+
+                    <MaterialReactTable table={table} />
                 </div>
             </div>
         </DashboardLayout>
