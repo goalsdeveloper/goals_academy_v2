@@ -33,7 +33,8 @@ export function getPaginationPages({ links, current_page, last_page }) {
 
     const addPage = (label) => {
         const link = links.find((link) => link.label === label);
-        if (link) {
+        const isExist =  pages.find((page) => page.label === label);
+        if (link && !isExist ) {
             pages.push(link);
         }
     };

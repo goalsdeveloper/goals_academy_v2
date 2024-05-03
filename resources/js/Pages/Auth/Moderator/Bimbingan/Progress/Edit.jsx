@@ -20,21 +20,20 @@ import {
 import { phoneNumberFormat } from "@/script/utils";
 
 export default function Edit({ auth, progress, tutors }) {
-    const { data, setData, post } = useForm({
-        _method: "put",
-        add_on: progress.add_ons,
+    const { data, setData, post, transform } = useForm({
+        add_on: progress.add_ons ?? undefined,
         username: progress.user.username,
-        university: progress.user.profile.university,
-        major: progress.user.profile.major,
+        university: progress.user.profile.university ?? "",
+        major: progress.user.profile.major ?? "",
         order_code: progress.order.order_code,
         product: progress.products.name,
-        topic: progress.topic?.topic,
-        session: progress.session,
-        date: progress.date,
-        time: progress.time,
-        location: progress.location,
-        number: progress.user.profile.phone_number,
-        tutor: tutors.find((item) => item.id == progress.tutor_id),
+        topic: progress.topic?.topic ?? "",
+        session: progress.session ?? "",
+        date: progress.date ?? "",
+        time: progress.time ?? "",
+        location: progress.locationv ?? "",
+        number: progress.user.profile.phone_number ?? "",
+        tutor: tutors?.find((item) => item.id == progress.tutor_id),
         rate_product: progress.product_review?.rate_product,
         note_product: progress.product_review?.note_product,
         note: progress.note,
@@ -71,6 +70,16 @@ export default function Edit({ auth, progress, tutors }) {
                             variant="success"
                             size="sm"
                             onClick={() => {
+                                transform((data) => ({
+                                    _method: "put",
+                                    tutor_id: data.tutor.id,
+                                    record: data.record,
+                                    is_moderator: data.is_moderator,
+                                    date: data.date,
+                                    time: data.time,
+                                    location: data.location,
+                                }));
+
                                 post(
                                     route(
                                         "moderator.bimbingan.progress.update",
@@ -140,11 +149,7 @@ export default function Edit({ auth, progress, tutors }) {
                             <div className="flex gap-[.4vw] w-full items-end">
                                 <SelectInput
                                     label="Tutor"
-                                    value={
-                                        tutors.find(
-                                            (item) => item.id == data.tutor.id
-                                        ).name
-                                    }
+                                    value={data.tutor.name}
                                     className="w-full"
                                 >
                                     {tutors.map((item, index) => {
@@ -153,10 +158,10 @@ export default function Edit({ auth, progress, tutors }) {
                                                 key={item.id}
                                                 onClick={() => {
                                                     setData("tutor", item);
-                                                    setData(
-                                                        "tutor_id",
-                                                        item.id
-                                                    );
+                                                    // setData(
+                                                    //     "tutor_id",
+                                                    //     item.id
+                                                    // );
                                                 }}
                                             >
                                                 {item.name}

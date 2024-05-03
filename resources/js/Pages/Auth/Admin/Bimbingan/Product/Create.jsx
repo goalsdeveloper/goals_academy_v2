@@ -48,8 +48,8 @@ const Create = ({ auth, categories, addons, topics }) => {
                 total_meet: data.total_meet,
                 active_period: data.active_period,
                 duration: data.duration,
-                addOnArray: data.add_on.map((item) => item.id),
-                topicsArray: data.topics.map((item) => item.id),
+                addons: JSON.stringify(data.add_on.map((item) => item.id)),
+                topics: JSON.stringify(data.topics.map((item) => item.id)),
                 facilities: JSON.stringify(data.facilities),
                 is_visible: data.is_visible ? 1 : 0,
                 is_facilities: 0,
@@ -281,26 +281,6 @@ const Create = ({ auth, categories, addons, topics }) => {
                                 />
                             </div>
 
-                            {/* <SelectInput
-                                value={data.add_on.name}
-                                label="Add-on"
-                                required
-                            >
-                                {addons.map((option, i) => (
-                                    <SelectInputItem
-                                        key={i}
-                                        onClick={() =>
-                                            setData({
-                                                ...data,
-                                                add_on: option,
-                                            })
-                                        }
-                                    >
-                                        {option.name}
-                                    </SelectInputItem>
-                                ))}
-                            </SelectInput> */}
-
                             <SelectMultiTag
                                 value={data.add_on}
                                 label="Add on"
@@ -344,17 +324,6 @@ const Create = ({ auth, categories, addons, topics }) => {
                                 required
                             >
                                 {topics.map((option, i) => (
-                                    // <SelectInputItem
-                                    //     key={i}
-                                    //     onClick={() =>
-                                    //         setData({
-                                    //             ...data,
-                                    //             topic: option,
-                                    //         })
-                                    //     }
-                                    // >
-                                    //     {option.topic}
-                                    // </SelectInputItem>
                                     <SelectMultiTagItem
                                         key={i}
                                         onClick={() => {
@@ -399,7 +368,7 @@ const Create = ({ auth, categories, addons, topics }) => {
                                     data.facilities.map((item) => (
                                         <div
                                             key={item.icon}
-                                            className="flex gap-[.6vw] items-center group"
+                                            className="flex gap-[.6vw] items-center group hover:bg-neutral-20 px-2 py-1 rounded-full cursor-pointer"
                                         >
                                             <i
                                                 className={`${item.icon} text-secondary`}
@@ -423,7 +392,7 @@ const Create = ({ auth, categories, addons, topics }) => {
                                                     })
                                                 }
                                             >
-                                                <i className="fa-solid fa-xmark"></i>
+                                                <i className="fa-solid fa-xmark group-hover:opacity-100 opacity-0 transition-all"></i>
                                             </button>
                                         </div>
                                     ))
