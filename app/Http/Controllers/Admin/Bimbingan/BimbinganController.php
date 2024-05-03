@@ -202,7 +202,7 @@ class BimbinganController extends Controller
                 }
 
 
-                if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
+                // if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
                     if ($request->filled('topics')) {
                         $topics = json_decode($request->topics);
                         foreach ($topics as $topicId) {
@@ -212,7 +212,7 @@ class BimbinganController extends Controller
                             }
                         }
                     }
-                }
+                // }
 
                 return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil ditambahkan');
                 // return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
