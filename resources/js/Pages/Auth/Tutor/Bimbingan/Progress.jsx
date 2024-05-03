@@ -1,49 +1,33 @@
 import { useMemo } from "react";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import SubHeading from "../../Admin/components/SubHeading";
 import { FiEye, FiEdit2, FiThumbsUp } from "react-icons/fi";
 import moment from "moment";
+import { BottomPaginationTable } from "../../Moderator/Bimbingan/Progress";
+import { getPaginationPages } from "@/script/utils";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function Progress({ auth, bimbingan }) {
     // const [isLoading, setIsLoading] = useState(false);
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        bimbingan;
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(new URLSearchParams(window.location.search).get('search'))
 
     console.log(bimbingan);
-    const data = [
-        {
-            id: 1,
-            username: "Hafiz",
-            topic: "Perancangan Bab 1-3",
-            date: "08/12/2024",
-            time: "20:59",
-            location: "Offline - Nakoa",
-        },
-        {
-            id: 2,
-            username: "Hafiz",
-            topic: "Perancangan Bab 4",
-            date: "10/12/2024",
-            time: "21:59",
-            location: "Offline - Nakoa",
-        },
-        {
-            id: 3,
-            username: "Hafiz",
-            topic: "Perancangan Bab 5",
-            date: "16/12/2024",
-            time: "18:59",
-            location: "Offline - Nakoa",
-        },
-        {
-            id: 4,
-            username: "Afan",
-            topic: "Perancangan Bab 5",
-            date: "24/04/2024",
-            time: "18:00",
-            location: "Offline - Nakoa",
-        },
-    ];
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
+
+    const onSearchCallback = (search) => {
+        router.visit(route("tutor.bimbingan.progress.index", {search: search}), {
+            only: ["bimbingan"],
+        });
+    };
 
     const columns = useMemo(
         () => [
@@ -102,6 +86,7 @@ export default function Progress({ auth, bimbingan }) {
                                         "tutor.bimbingan.tutor.tutorApprove",
                                         cell.row.original.id
                                     )}
+                                    as="button"
                                 >
                                     <FiThumbsUp className="text-[1.2vw] text-secondary" />
                                 </Link>
@@ -149,11 +134,29 @@ export default function Progress({ auth, bimbingan }) {
             <div className="text-[.8vw]">
                 <GoalsDashboardTable
                     columns={columns}
-                    data={bimbingan}
+                    data={data}
                     isHeadVisible
                     isSortable
                     isPaginated
+                    keyword={keyword}
+                    setKeyword={setKeyword}
+                    onSearch={(i) => {
+                        onSearchCallback(i)
+                    }}
                 />
+                <div>
+                    <BottomPaginationTable
+                        {...{
+                            from,
+                            to,
+                            total,
+                            pages,
+                            per_page,
+                            current_page,
+                            keyword
+                        }}
+                    />
+                </div>
             </div>
         </DashboardLayout>
     );
