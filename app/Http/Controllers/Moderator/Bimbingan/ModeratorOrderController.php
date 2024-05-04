@@ -52,6 +52,7 @@ class ModeratorOrderController extends Controller
                 });
             }
 
+            $query->orderBy('created_at', 'asc');
             $orders = $query->paginate($perPage);
 
             $orders->getCollection()->transform(function ($order) {

@@ -30,13 +30,20 @@ class ProgressController extends Controller
                 $perPage = $request->input('perPage', 10);
                 $search = $request->input('search');
 
-                $query = Order::with(['user:id,username', 'products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session', 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session'])
-                    ->whereHas('products', function ($query) {
-                        $query->whereHas('productType', function ($subQuery) {
-                            $subQuery->where('type', 'LIKE', '%bimbingan%');
-                        });
+                $query = Order::with(['user:id,username', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type', 'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id', 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session', "course.tutor"])
+                ->whereHas('products', function ($query) {
+                    $query->whereHas('productType', function ($subQuery) {
+                        $subQuery->where('type', 'LIKE', '%bimbingan%');
+                    });
+                })
+                    ->whereHas('course', function ($courseQuery) {
+                        $courseQuery->whereNotNull('tutor_id');
                     })
-                    ->where('status', 'Success');
+                    ->where('status', 'Success')
+                ->whereHas('course', function ($courseQuery) {
+                    $courseQuery->whereNotNull('tutor_id');
+                })
+                ->where('status', 'Success');
 
                 if ($search) {
                     $query->whereHas('user', function ($userQuery) use ($search) {
@@ -46,6 +53,12 @@ class ProgressController extends Controller
 
                 $orders = $query->paginate($perPage);
 
+                // return response()->json([
+                //     'status' => true,
+                //     'statusCode' => 200,
+                //     'message' => 'Update course success',
+                //     'recent_order' => $orders,
+                // ], 200);
                 return Inertia::render('Auth/Moderator/Bimbingan/Progress', [
                     'status' => true,
                     'statusCode' => 200,
