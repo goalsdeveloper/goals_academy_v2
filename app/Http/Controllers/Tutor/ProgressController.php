@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Tutor;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\FileUpload;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Exception;
 
 class ProgressController extends Controller
 {
@@ -21,51 +21,25 @@ class ProgressController extends Controller
 
     public function index(Request $request)
     {
-        $user = Auth::user();
-        $topic = $request->topic;
-        $username = $request->username;
-        $date = $request->date;
-        $time = $request->time;
-        $ongoing = $request->ongoing;
-        $tutor = $user->tutor();
-        if ($request->search) {
-            $search = $request->search;
-            $tutor = $tutor->Where('time', 'LIKE', '%' . $search . '%')
-                ->orWhere('ongoing', 'LIKE', '%' . $search . '%')
-                ->orWhere('date', 'LIKE', '%' . $search . '%')
-                ->orWhereHas('user', function ($q) use ($search) {
-                    $q->where('username', 'LIKE', '%' . $search . '%');
-                })->orWhereHas('topic', function ($q) use ($search) {
-                    $q->where('topic', 'LIKE', '%' . $search . '%');
-                });
-        }
-        $tutor = $tutor->with(['topic' => function ($query) use ($topic) {
-            $query->select(['topic', 'id']);
-            if (!is_null($topic)) {
-                $query->orderBy('topic', $topic);
-            }
-            return $query;
-        }, 'user' => function ($query) use ($username) {
-            $query->select(['username', 'id']);
-            if (!is_null($username)) {
-                $query->orderBy('username', $username);
-            }
-            return $query;
-        }, 'products:id,name']);
-        if (!is_null($date)) {
-            $tutor = $tutor->orderBy('date', $date);
-        }
-
-        if ($request->time) {
-            $tutor = $tutor->orderBy('time', $time);
-        }
-
-        if ($request->ongoing) {
-            $tutor = $tutor->orderBy('ongoing', $ongoing);
-        }
-        $tutor = $tutor->get();
         return Inertia::render('Auth/Tutor/Bimbingan/Progress', [
-            'bimbingan' => $tutor,
+            'bimbingan' => function () use ($request) {
+                $user = Auth::user();
+                $perPage = $request->input('perPage', 10);
+                $search = $request->search;
+                $tutor = $user->tutor()->when($search, function ($q) use ($search) {
+                    $q->where(function ($q) use ($search) {
+                        $q->where('time', 'LIKE', '%' . $search . '%')
+                            ->orWhere('ongoing', 'LIKE', '%' . $search . '%')
+                            ->orWhere('date', 'LIKE', '%' . $search . '%')
+                            ->orWhereHas('user', function ($q) use ($search) {
+                                $q->where('username', 'LIKE', '%' . $search . '%');
+                            })->orWhereHas('topic', function ($q) use ($search) {
+                            $q->where('topic', 'LIKE', '%' . $search . '%');
+                        });
+                    });
+                })->with('topic:id,topic', 'user:id,username', 'products:id,name')->paginate($perPage);
+                return $tutor;
+            },
         ]);
     }
 
@@ -120,7 +94,7 @@ class ProgressController extends Controller
         try {
             // dd($request->all());
             $progress->update([
-                'note' => $request->input('note')
+                'note' => $request->input('note'),
             ]);
             if ($request->has('document_deleted')) {
                 $fileIdsToDelete = $request->input('document_deleted');
