@@ -30,7 +30,7 @@ export default function History({ auth, order_history: res }) {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "order.user.name",
+                accessorKey: "order.user.username",
                 header: "Username Customer",
             },
             {
@@ -45,7 +45,7 @@ export default function History({ auth, order_history: res }) {
                         // <p>{cell.row.original.created_at}</p>
                         <p>
                             {moment(cell.row.original.created_at).format(
-                                "MMMM d, YYYY"
+                                "MMMM D, YYYY"
                             )}
                         </p>
                     );
