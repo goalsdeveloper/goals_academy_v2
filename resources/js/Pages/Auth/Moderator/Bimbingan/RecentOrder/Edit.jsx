@@ -1,5 +1,9 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
+import {
+    SelectInput,
+    SelectInputItem,
+} from "@/Pages/Auth/Admin/Bimbingan/Product/Components/SelectInput";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
@@ -11,24 +15,35 @@ import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import View from "./View";
 import { router, useForm } from "@inertiajs/react";
+import {
+    GoalsSelectInput,
+    GoalsSelectInputItem,
+} from "@/Components/elements/GoalsSelectInput";
 
-export default function Edit({ auth, tipe = "bimbingan" }) {
-    const { data, setData, post } = useForm({
-        username: "Hafiz",
-        university: "Universitas Indonesia",
-        major: "Teknik Informatika",
-        number: "08123456789",
-        tutor_number: "08123456789",
-        order_id: "1",
-        product: "Dibimbing Sekali",
-        topic: "Topik Bimbingan",
-        location: "Offline - Nakoa",
-        date: "08/12/2024",
-        time: "23:59",
-    });
-
+export default function Edit({
+    auth,
+    tipe = "bimbingan",
+    order,
+    places,
+    tutors,
+}) {
+    console.log(order);
     const [isShow, setIsShow] = useState(false);
-
+    const [showPlaces, setShowPlaces] = useState(false);
+    const {
+        data: formData,
+        setData: setFormData,
+        patch,
+    } = useForm({
+        id: "",
+        place: order.course.place.place,
+        place_id: order.course.place.id,
+        tutor: order.course.tutor.name,
+        tutor_id: order.course.tutor.name,
+        tutor_phone: order.course.tutor.profile.phone_number,
+        date: order.course.date ?? "",
+        time: order.course.time ?? "",
+    });
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -57,9 +72,15 @@ export default function Edit({ auth, tipe = "bimbingan" }) {
                             variant="success"
                             size="sm"
                             onClick={() =>
-                                post("moderator.bimbingan.order.updateOnline", {
-                                    data: data,
-                                })
+                                patch(
+                                    route(
+                                        "moderator.bimbingan.order.updateOnline",
+                                        { order: order.order_code }
+                                    ),
+                                    {
+                                        data: formData,
+                                    }
+                                )
                             }
                         >
                             Simpan
@@ -71,23 +92,80 @@ export default function Edit({ auth, tipe = "bimbingan" }) {
                     <DownloadLampiranPopup
                         show={isShow}
                         setShow={() => setIsShow(!isShow)}
+                        items={order.file_uploads}
                     />,
                     document.body
                 )}
                 <div className="flex gap-[1.2vw]">
                     <FormSection title="User Information">
-                        <GoalsTextInput label="Username" disabled />
-                        <GoalsTextInput label="University" disabled />
-                        <GoalsTextInput label="Major" disabled />
+                        <GoalsTextInput
+                            label="Username"
+                            disabled
+                            data={order.user?.name}
+                        />
+                        <GoalsTextInput
+                            label="University"
+                            disabled
+                            data={
+                                order.user?.profile?.university ??
+                                "Universitas Belum Diset"
+                            }
+                        />
+                        <GoalsTextInput
+                            label="Major"
+                            disabled
+                            data={
+                                order.user?.profile?.major ??
+                                "Jurusan Belum Diset"
+                            }
+                        />
                         <div className="flex gap-[.4vw] w-full items-end">
-                            <GoalsTextInput label="Number" grow />
-                            <a href="wa.me/6289123456789" target="_blank">
+                            <GoalsTextInput
+                                label="Number"
+                                grow
+                                data={
+                                    order.user?.profile?.phone_number ??
+                                    "Belum Ada Nomor Telephone"
+                                }
+                            />
+                            <a
+                                href={`wa.me/${
+                                    order.user.profile.phone_number ??
+                                    "6285672771772"
+                                }`}
+                                target="_blank"
+                            >
                                 <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
                             </a>
                         </div>
                         <div className="flex gap-[.4vw] w-full items-end">
-                            <GoalsTextInput label="Tutor  Number" grow />
-                            <a href="wa.me/6289123456789" target="_blank">
+                            <SelectInput
+                                value={formData.tutor}
+                                label="Tutor"
+                                required
+                            >
+                                {tutors.map((option, i) => (
+                                    <SelectInputItem
+                                        key={i}
+                                        onClick={() =>
+                                            setFormData({
+                                                ...formData,
+                                                tutor_id: option.id,
+                                                tutor: option.name,
+                                                tutor_phone:
+                                                    option.profile
+                                                        ?.phone_number ?? "",
+                                            })
+                                        }
+                                    >
+                                        {option.name}
+                                    </SelectInputItem>
+                                ))}
+                            </SelectInput>
+                            <a
+                                href={`wa.me/${formData.tutor_phone}`}
+                                target="_blank"
+                            >
                                 <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
                             </a>
                         </div>
@@ -104,17 +182,65 @@ export default function Edit({ auth, tipe = "bimbingan" }) {
                             </button>
                         }
                     >
-                        <GoalsTextInput label="Order Id" disabled />
-                        <GoalsTextInput label="Product" disabled />
-                        <GoalsTextInput label="Topic" disabled />
                         <GoalsTextInput
+                            label="Order Id"
+                            disabled
+                            data={order.order_code}
+                        />
+                        <GoalsTextInput
+                            label="Product"
+                            disabled
+                            data={order.products.name}
+                        />
+                        <GoalsTextInput
+                            label="Topic"
+                            disabled
+                            data={order.course?.topic ?? "Topic belum diset"}
+                        />
+                        <SelectInput
+                            value={formData.place}
+                            placeholder="Pilih Lokasi"
                             label={`Location ${
                                 tipe == "Webinar" ? "Link Zoom" : "Offline"
                             }`}
-                        />
+                            required
+                        >
+                            {places.map((option, i) => (
+                                <SelectInputItem
+                                    key={i}
+                                    onClick={() =>
+                                        setFormData({
+                                            ...formData,
+                                            place: option.place,
+                                            place_id: option.id,
+                                        })
+                                    }
+                                >
+                                    {option.place + " | " + option.city.city}
+                                </SelectInputItem>
+                            ))}
+                        </SelectInput>
                         <div className="flex gap-[.4vw]">
-                            <GoalsTextInput label="Date" grow />
-                            <GoalsTextInput label="Time" grow />
+                            <GoalsTextInput
+                                type="date"
+                                label="Date"
+                                data={formData.date}
+                                grow
+                                required
+                                setData={(e) =>
+                                    setFormData({ ...formData, date: e })
+                                }
+                            />
+                            <GoalsTextInput
+                                type="time"
+                                label="Time"
+                                data={formData.time}
+                                setData={(e) =>
+                                    setFormData({ ...formData, time: e })
+                                }
+                                grow
+                                required
+                            />
                         </div>
                     </FormSection>
                 </div>
@@ -123,17 +249,22 @@ export default function Edit({ auth, tipe = "bimbingan" }) {
     );
 }
 
-const DownloadLampiranPopup = ({ show, setShow }) => {
+const DownloadLampiranPopup = ({ show, setShow, items = [] }) => {
     const item = {
         title: "File Title",
-        url: "https://www.google.com",
+        url: "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
     };
+    console.log(items)
     return (
         <GoalsPopup show={show} setShow={setShow}>
             <h2>File & Media</h2>
-
             <div>
-                <FileMediaItemBackdrop item={item} isBackdropVisible={false} />
+                {items.map((i) => {
+                    <FileMediaItemBackdrop
+                        item={item}
+                        isBackdropVisible={false}
+                    />;
+                })}
             </div>
         </GoalsPopup>
     );

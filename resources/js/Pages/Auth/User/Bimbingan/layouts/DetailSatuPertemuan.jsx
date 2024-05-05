@@ -3,9 +3,12 @@ import { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { RxFileText } from "react-icons/rx";
 import { createPortal } from "react-dom";
+import { router } from "@inertiajs/react";
 
 const DetailSatuPertemuan = ({ data, className = "" }) => {
+    //TODO DATA BELUM LENGKAP
     const gapSize = 1;
+    console.log(data);
 
     const form_field = {
         schedule: "Jadwal Pelaksanaan",
@@ -25,7 +28,13 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
         //         ? data?.add_ons?.map((item) => item["name"]).join(", ")
         //         : "Tidak Ada Add Ons",
         document: "Lampiran Dokumen",
-        schedule: data?.date ?? "Jadwal Belum Diatur",
+        schedule:
+            new Date(data?.date).toLocaleDateString("id-ID", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                weekday: "long",
+            }) ?? "Jadwal Belum Diatur",
         time: data?.time ?? "Jam Belum Diatur",
     };
 
@@ -100,6 +109,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                             data.file_uploads.map((item, index) => {
                                 return (
                                     <FileMediaItemBackdrop
+                                        isBackdropVisible={false}
                                         key={index}
                                         item={item}
                                     />
@@ -127,13 +137,15 @@ export const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
         if (isVisible) {
             setIsVisible(false);
             allowScroll();
+            window.location.href = item.url;
         } else {
             setIsVisible(true);
             blockScroll();
         }
     };
 
-    const downloadHandler = () => {
+    const downloadHandler = (id) => {
+        router.get("/unduhfile/" + id);
         handleToggle();
     };
 
@@ -145,7 +157,7 @@ export const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
 
             <div className="flex items-center justify-between w-full">
                 <p className="text-[2.8vw] md:text-[.8vw] text-neutral-80 w-[80%]">
-                    {item.title}
+                    {item.name}
                 </p>
 
                 <button onClick={handleToggle}>
@@ -156,7 +168,7 @@ export const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
             {isVisible && (
                 <>
                     <button
-                        onClick={downloadHandler}
+                        onClick={() => downloadHandler(item.path)}
                         className={`h6 font-medium text-neutral-80 px-[5.5vw] py-[3.7vw] md:py-[.8vw] md:px-[1vw] rounded-[1.8vw] md:rounded-[.4vw] shadow-centered-spread absolute -bottom-[70%] right-0 z-[60] bg-white transition-all ${
                             isVisible ? "translate-x-0" : "translate-x-5"
                         }`}
@@ -169,7 +181,7 @@ export const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
                                 ? "bg-black/20 "
                                 : "bg-transparent"
                         } inset-0 fixed top-0 left-0 w-auto h-auto z-[55]`}
-                        onClick={downloadHandler}
+                        onClick={handleToggle}
                     />
                 </>
             )}

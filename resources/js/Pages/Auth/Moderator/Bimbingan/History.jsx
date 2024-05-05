@@ -1,67 +1,133 @@
-import { useState, useMemo } from "react";
+import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
+import { getPaginationPages } from "@/script/utils";
+import { Link } from "@inertiajs/react";
+import {
+    MaterialReactTable,
+    useMaterialReactTable,
+} from "material-react-table";
+import moment from "moment";
+import { useEffect, useMemo, useState } from "react";
 import { FiEye } from "react-icons/fi";
+import {
+    BottomPaginationTable,
+    getTableStyling
+} from "./Progress";
 
-export default function History({ auth }) {
+export default function History({ auth, order_history: res }) {
     const [isLoading, setIsLoading] = useState(false);
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        res;
+    const [pages, setPages] = useState([]);
+    const [searchQuery, setSearchQuery] = useState(
+        new URLSearchParams(document.location.search).get("search") ?? ""
+    );
 
-    const data = [
-        {
-            id: 1,
-            username: "Hafiz",
-            product: "Dibimbing Sekali",
-            date: "08/12/2024",
-            time: "23:59",
-            lokasi: "Offline - Nakoa",
-            durasi: "1 Jam",
-        },
-    ];
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
 
     const columns = useMemo(
         () => [
             {
-                accessorKey: "username",
+                accessorKey: "order.user.name",
                 header: "Username Customer",
             },
             {
-                accessorKey: "product",
+                accessorKey: "order.products.name",
                 header: "Product",
             },
             {
-                accessorKey: "date",
+                accessorKey: "order.created_at",
                 header: "Tanggal Pembelian",
+                Cell: ({ cell }) => {
+                    return (
+                        // <p>{cell.row.original.created_at}</p>
+                        <p>
+                            {moment(cell.row.original.created_at).format(
+                                "MMMM d, YYYY"
+                            )}
+                        </p>
+                    );
+                },
             },
             {
-                accessorKey: "time",
+                accessorKey: "order.course.time",
                 header: "Waktu Pembelian",
+                Cell: ({ cell }) => {
+                    return (
+                        <p>
+                            {moment(cell.row.original.created_at).format(
+                                "HH:mm"
+                            )}
+                        </p>
+                    );
+                },
             },
             {
-                accessorKey: "lokasi",
+                accessorFn: (row) =>
+                    row.order.course?.place ?? "Lokasi Belum Diset",
+                // accessorKey: "order.course.place",
                 header: "Lokasi",
             },
             {
-                accessorKey: "durasi",
+                accessorFn: (row) =>
+                    row.order.course?.duration ?? "Durasi Belum Diset",
+                // accessorKey: "order.course.duration",
                 header: "Durasi",
-            },
-            {
-                header: "Action",
-
-                Cell: ({ cell }) => {
-                    return (
-                        <ul className="flex gap-[.8vw] w-fit">
-                            <li>
-                                <button onClick={() => setIsShow(!isShow)}>
-                                    <FiEye className="text-[1.2vw] text-neutral-60" />
-                                </button>
-                            </li>
-                        </ul>
-                    );
-                },
             },
         ],
         []
     );
+
+    const table = useMaterialReactTable({
+        columns,
+        data: data,
+        ...getTableStyling(),
+        renderRowActions: ({ row }) => {
+            const { course } = row.original.order;
+
+            if (course?.child?.length > 1)
+                return (
+                    <div className="text-nowrap">
+                        <span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
+                    </div>
+                );
+            return (
+                <div className="flex items-center gap-[.8vw]">
+                    <Link
+                        href={route("moderator.bimbingan.progress.show", {
+                            progress: course.id,
+                        })}
+                    >
+                        <FiEye className="text-[1.2vw] text-neutral-60" />
+                    </Link>
+                </div>
+            );
+        },
+        renderBottomToolbar: () => {
+            return (
+                <BottomPaginationTable
+                    {...{
+                        from,
+                        to,
+                        total,
+                        pages,
+                        per_page,
+                        current_page,
+                        searchQuery,
+                    }}
+                />
+            );
+        },
+        renderDetailPanel: ({ row }) => {
+            const { child } = row.original.order?.course;
+
+            if (child?.length < 1) return;
+
+            return <div>s</div>;
+        },
+    });
 
     return (
         <DashboardLayout
@@ -73,14 +139,15 @@ export default function History({ auth }) {
             {/* {isLoading && <LoadingUI />} */}
             <div className="space-y-[1.6vw]">
                 <h2 className="font-medium">History</h2>
-                <div className="text-[.8vw]">
-                    <GoalsDashboardTable
-                        columns={columns}
-                        data={data}
-                        isHeadVisible
-                        isSortable
-                        isPaginated
+                <div className="text-[.8vw] bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
+                    <GoalsTextInput
+                        placeholder="🔍 Search"
+                        className="max-w-[10.4vw] max-h-[2.4vw]"
+                        data={searchQuery}
+                        setData={(e) => setSearchQuery(e)}
                     />
+
+                    <MaterialReactTable table={table} />
                 </div>
             </div>
         </DashboardLayout>

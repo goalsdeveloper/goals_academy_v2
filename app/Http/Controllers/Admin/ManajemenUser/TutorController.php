@@ -19,7 +19,6 @@ class TutorController extends Controller
     public function index(Request $request)
     {
         try {
-            if (Auth::user()->user_role == "admin") {
                 // $search = $request->input('search');
                 // $perPage = $request->input('perPage', 10);
 
@@ -39,9 +38,6 @@ class TutorController extends Controller
                     'message' => 'get data success',
                     'data' => $tutors,
                 ], 200);
-            } else {
-                abort(403);
-            }
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to retrieve data. Internal Server Error'], 500);
         } catch (\Exception $e) {
@@ -55,14 +51,10 @@ class TutorController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->user_role == "admin") {
             $skill = Skill::get();
             return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
                 'skill' => $skill
             ]], 200);
-        } else {
-            abort(403);
-        }
     }
 
     /**
@@ -71,7 +63,6 @@ class TutorController extends Controller
     public function store(Request $request)
     {
         try {
-            if (Auth::user()->user_role == "admin") {
                 $validatedData = $request->validate([
                     'name' => 'required|string',
                     'email' => 'required|email|unique:users,email',
@@ -87,12 +78,8 @@ class TutorController extends Controller
                 $userProfile = new UserProfile();
                 $userProfile->user_id = $user->id;
                 $userProfile->save();
-
-
                 return Inertia::location(route('admin.manajemen_user.tutor.index'));
-            } else {
-                abort(403);
-            }
+
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
@@ -114,7 +101,6 @@ class TutorController extends Controller
     public function show(User $tutor)
     {
         try {
-            if (Auth::user()->user_role == "admin") {
                 $tutorWithProfile = User::where("user_role", "tutor")->findOrFail($tutor->id);
                 $tutorWithProfile->load('profile', 'skills');
 
@@ -124,9 +110,7 @@ class TutorController extends Controller
                     'message' => 'get data success',
                     'data' => $tutorWithProfile,
                 ], 200);
-            } else {
-                abort(403);
-            }
+
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'User not found'], 404);
         } catch (\Exception $e) {
@@ -139,7 +123,6 @@ class TutorController extends Controller
      */
     public function edit(User $tutor)
     {
-        if (Auth::user()->user_role == "admin") {
             $skill = Skill::get();
             $tutor->load('profile', 'skills');
             return Inertia::render('Auth/Admin/ManajemenUser/Tutor/Update', [
@@ -150,9 +133,7 @@ class TutorController extends Controller
                     'skill' => $skill
                 ]
             ]);
-        } else {
-            abort(403);
-        }
+
     }
 
     /**
@@ -160,9 +141,7 @@ class TutorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request);
         try {
-            if (Auth::user()->user_role == "admin") {
                 $tutor = User::findOrFail($id);
                 $validatedData = $request->validate([
                     'name' => 'string',
@@ -198,9 +177,7 @@ class TutorController extends Controller
                 $tutor->skills()->attach($validatedData['skills']);
 
                 return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update success'], 200);
-            } else {
-                abort(403);
-            }
+
         } catch (ValidationException $e) {
             return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->validator->errors()], 422);
         } catch (\Exception $e) {

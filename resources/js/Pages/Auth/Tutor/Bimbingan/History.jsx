@@ -6,53 +6,20 @@ import SubHeading from "../../Admin/components/SubHeading";
 import { FiEye } from "react-icons/fi";
 import moment from "moment";
 
-export default function History ({ auth }) {
+export default function History ({ auth, history }) {
     // const [isLoading, setIsLoading] = useState(false);
-
-    const data = [
-        {
-            id: 1,
-            username: "Hafiz",
-            topic: "Perancangan Bab 1-3",
-            date: "08/12/2024",
-            time: "20:59",
-            location: "Offline - Nakoa",
-        },
-        {
-            id: 2,
-            username: "Hafiz",
-            topic: "Perancangan Bab 4",
-            date: "10/12/2024",
-            time: "21:59",
-            location: "Offline - Nakoa",
-        },
-        {
-            id: 3,
-            username: "Hafiz",
-            topic: "Perancangan Bab 5",
-            date: "16/12/2024",
-            time: "18:59",
-            location: "Offline - Nakoa",
-        },
-        {
-            id: 4,
-            username: "Afan",
-            topic: "Perancangan Bab 5",
-            date: "10/12/2024",
-            time: "05:59",
-            location: "Offline - Nakoa",
-        },
-    ];
+    history = history.data;
+    console.log(history)
 
     const columns = useMemo(
         () => [
             {
-                accessorKey: "username",
+                accessorKey: "user.name",
                 header: "Username",
                 size: 150,
             },
             {
-                accessorKey: "topic",
+                accessorFn: (row) => row?.topic?.topic ?? "No Topic",
                 header: "Topik",
                 size: 100,
             },
@@ -63,14 +30,14 @@ export default function History ({ auth }) {
                 Cell: ({ cell }) => {
                     return (
                         <div className="flex justify-between">
-                            <span>{cell.row.original.date}</span>
-                            <span>{cell.row.original.time}</span>
+                            <span>{cell.row.original.date ?? ""}</span>
+                            <span>{cell.row.original.time ?? ""}</span>
                         </div>
                     )
                 }
             },
             {
-                accessorKey: "location",
+                accessorFn: (row) => row?.place?.place ?? "No Place",
                 header: "Lokasi",
                 size: 100,
             },
@@ -101,7 +68,7 @@ export default function History ({ auth }) {
             <div className="text-[.8vw]">
                 <GoalsDashboardTable
                     columns={columns}
-                    data={data}
+                    data={history}
                     isHeadVisible
                     isSortable
                     isPaginated

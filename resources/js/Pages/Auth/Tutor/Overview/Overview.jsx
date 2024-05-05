@@ -24,8 +24,10 @@ import { router } from "@inertiajs/react";
 import userIcon from "/resources/img/icon/user.png";
 
 export default function Overview({
-    auth,
+    auth, product_types, total_bimbingan, history
 }) {
+    console.log(total_bimbingan)
+    console.log(history)
     const user = auth.user;
     const currency = Intl.NumberFormat("id-ID");
     const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +52,7 @@ export default function Overview({
         plugins: {
             title: {
                 display: true,
-                text: "Product Type",
+                text: "Category Product",
                 position: "top",
                 align: "start",
                 color: "black",
@@ -79,10 +81,10 @@ export default function Overview({
     };
 
     const productTypeDataset = {
-        labels: productTypeLabels,
+        labels: product_types.map((item) => item.name),
         datasets: [
             {
-                data: productTypeData,
+                data: product_types.map((item) => item.jumlah),
                 backgroundColor: [
                     '#FF8854',
                     '#5A6ACF',
@@ -95,71 +97,11 @@ export default function Overview({
 
     // Total Bimbingan
     const [totalBimbinganData, setTotalBimbinganData] = useState(
-        [
-            {
-                name: "Dibimbing Sekali Online 30 Menit",
-                order_count: Math.round(Math.random() * 100),
-            },
-            {
-                name: "Dibimbing Sekali Offline 45 Menit",
-                order_count: Math.round(Math.random() * 100),
-            },
-            {
-                name: "Desk Review",
-                order_count: Math.round(Math.random() * 100),
-            },
-            {
-                name: "Dibimbing Tuntas",
-                order_count: Math.round(Math.random() * 100),
-            },
-        ].sort((x, y) => (x.order_count > y.order_count ? -1 : 1))
+        total_bimbingan.sort((x, y) => (x.order_count > y.order_count ? -1 : 1))
     );
 
     // History
-    const [historyData, setHistoryData] = useState(
-        [
-            {
-                order_code: 'GA1234',
-                user: {
-                    name: 'Hafiz',
-                },
-                products: {
-                    name: 'Dibimbing Online 30 Menit'
-                },
-                created_at: '2024-11-01'
-            },
-            {
-                order_code: 'GA2345',
-                user: {
-                    name: 'Rizki',
-                },
-                products: {
-                    name: 'Dibimbing Online 60 Menit'
-                },
-                created_at: '2024-11-01'
-            },
-            {
-                order_code: 'GA3456',
-                user: {
-                    name: 'Timo',
-                },
-                products: {
-                    name: 'Dibimbing Tuntas'
-                },
-                created_at: '2024-10-30'
-            },
-            {
-                order_code: 'GA4567',
-                user: {
-                    name: 'Wildan',
-                },
-                products: {
-                    name: 'Desk Review'
-                },
-                created_at: '2024-11-04'
-            },
-        ]
-    );
+    const [historyData, setHistoryData] = useState(history);
 
     const historyColumns = useMemo(
         () => [
@@ -168,7 +110,7 @@ export default function Overview({
                 header: "Customer",
             },
             {
-                accessorKey: "products.name",
+                accessorKey: "order.products.name",
                 header: "Product Name",
             },
             {
@@ -304,64 +246,6 @@ export default function Overview({
             className: "scrollbar-hidden",
         },
     });
-
-    // Data's Date Range
-    // const [dateRange, setDateRange] = useState({
-    //     startDate: moment().subtract(1, "months").format("YYYY-MM-DD"),
-    //     endDate: moment().format("YYYY-MM-DD"),
-    // });
-
-    // const dateRangeHandler = (range) => {
-    //     // router.get(route("admin.overview.index"), {
-    //     //     startDate: range.startDate,
-    //     //     endDate: range.endDate,
-    //     // });
-    //     const x = moment(range.startDate);
-    //     const y = moment(range.endDate);
-    //     const diff = x.diff(y, "days");
-
-    //     if (diff >= -30) {
-    //         setIsLoading(true);
-
-    //         setTimeout(() => {
-    //             let tempProductTypeLabels = [];
-    //             tempProductTypeLabels.push(x.format("DD"));
-    //             if (diff) {
-    //                 for (let i = 1; i <= -diff; i++) {
-    //                     tempProductTypeLabels.push(x.add(1, "day").format("DD"));
-    //                 }
-    //             }
-
-    //             let temptotalBimbinganData = [
-    //                 {
-    //                     name: "Dibimbing Sekali Online 30 Menit",
-    //                     order_count: Math.round(Math.random() * 100),
-    //                 },
-    //                 {
-    //                     name: "Dibimbing Sekali Offline 45 Menit",
-    //                     order_count: Math.round(Math.random() * 100),
-    //                 },
-    //                 {
-    //                     name: "Desk Review",
-    //                     order_count: Math.round(Math.random() * 100),
-    //                 },
-    //                 {
-    //                     name: "Dibimbing Tuntas",
-    //                     order_count: Math.round(Math.random() * 100),
-    //                 },
-    //             ].sort((x, y) => (x.order_count > y.order_count ? -1 : 1));
-
-    //             setDateRange(range);
-    //             setProductTypeLabels(tempProductTypeLabels);
-    //             setProductTypeData(tempProductTypeLabels.map((i) => faker.datatype.number({ min: 50, max: 200 })));
-    //             setViewsData(tempProductTypeLabels.map((i) => faker.datatype.number({ min: 50, max: 200 })));
-    //             setTotalBimbinganData(temptotalBimbinganData);
-    //             setIsLoading(false);
-    //         }, 3000);
-    //     } else {
-    //         alert("Range tanggal maksimum 1 bulan!");
-    //     }
-    // };
 
     return (
         <DashboardLayout title="Overview" role="tutor" auth={auth}>

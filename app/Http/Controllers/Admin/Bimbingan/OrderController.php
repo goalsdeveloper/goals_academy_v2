@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -17,11 +16,10 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         try {
-            if (Auth::user()->user_role == "admin") {
                 // $perPage = $request->input('perPage', 10);
                 // $search = $request->input('search');
 
-                $query = Order::with(['paymentMethod:id,payment_type', 'user:id,username,name', 'products:id,product_type_id,category_id,name,product_image', 'products.category:id,name', 'products.productType:id,type'])
+                $query = Order::with(['paymentMethod:id,name', 'user:id,username,name', 'products:id,product_type_id,category_id,name,product_image', 'products.category:id,name', 'products.productType:id,type'])
                     ->whereHas('products', function ($query) {
                         $query->whereHas('productType', function ($subQuery) {
                             $subQuery->where('type', 'LIKE', '%bimbingan%');
@@ -36,15 +34,17 @@ class OrderController extends Controller
 
                 $orders = $query->get();
 
-                return Inertia::render('Auth/Admin/Bimbingan/Order', [
-                    'status' => true,
-                    'statusCode' => 200,
-                    'message' => 'get data history success',
-                    'data' => $orders,
-                ], 200);
-            } else {
-                abort(403);
-            }
+                // return response()->json([
+                // 'status' => true,
+                // 'statusCode' => 200,
+                // 'message' => 'get data success',
+                //  'orders' => $orders]);
+            return Inertia::render('Auth/Admin/Bimbingan/Order', [
+                'status' => true,
+                'statusCode' => 200,
+                'message' => 'get data history success',
+                'orders' => $orders,
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => false,

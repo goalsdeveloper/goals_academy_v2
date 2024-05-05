@@ -21,7 +21,14 @@ class OverviewController extends Controller
             if (Auth::user()->user_role == "moderator") {
                 $totalOrder = Order::where('status', '=', 'Success')->count();
                 $totalChekout = Order::count();
-                return Inertia::render('Auth/Moderator/Overview/Overview', ['status' => true, 'statusCode' => 200, 'message' => 'Get data category success', 'total_order' => $totalOrder, 'total_checkout' => $totalChekout], 200);
+                return Inertia::render('Auth/Moderator/Overview/Overview',
+                    [
+                        'status' => true,
+                        'statusCode' => 200,
+                        'message' => 'Get data category success',
+                        'total_order' => $totalOrder,
+                        'total_checkout' => $totalChekout,
+                    ], 200);
             } else {
                 abort(403);
             }
