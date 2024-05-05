@@ -15,6 +15,9 @@ const GoalsDashboardTable = ({
     isHeadVisible = false,
     isSplitByCategory = false,
     className = "",
+    keyword,
+    setKeyword,
+    onSearch
 }) => {
     const [tableData, setTableData] = useState(
         isSplitByCategory ? splitTableByCategory(data) : data
@@ -40,8 +43,6 @@ const GoalsDashboardTable = ({
         }
     }
 
-    console.log(splitTableByCategory(data));
-
     function getOptionalConfig() {
         return {
             enableSorting: isSortable,
@@ -64,6 +65,12 @@ const GoalsDashboardTable = ({
             <GoalsTextInput
                 placeholder="🔍 Search"
                 className="max-w-[10.4vw] max-h-[2.4vw]"
+                data={keyword}
+                setData={(i)=> {
+                    setKeyword(i)
+                    onSearch(i)
+                }}
+
             />
             <div className="text-[.8vw]">
                 {isSplitByCategory && (

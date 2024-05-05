@@ -19,7 +19,7 @@ class OrderController extends Controller
                 // $perPage = $request->input('perPage', 10);
                 // $search = $request->input('search');
 
-                $query = Order::with(['paymentMethod:id,payment_type', 'user:id,username,name', 'products:id,product_type_id,category_id,name,product_image', 'products.category:id,name', 'products.productType:id,type'])
+                $query = Order::with(['paymentMethod:id,name', 'user:id,username,name', 'products:id,product_type_id,category_id,name,product_image', 'products.category:id,name', 'products.productType:id,type'])
                     ->whereHas('products', function ($query) {
                         $query->whereHas('productType', function ($subQuery) {
                             $subQuery->where('type', 'LIKE', '%bimbingan%');
@@ -34,6 +34,11 @@ class OrderController extends Controller
 
                 $orders = $query->get();
 
+                // return response()->json([
+                // 'status' => true,
+                // 'statusCode' => 200,
+                // 'message' => 'get data success',
+                //  'orders' => $orders]);
             return Inertia::render('Auth/Admin/Bimbingan/Order', [
                 'status' => true,
                 'statusCode' => 200,
