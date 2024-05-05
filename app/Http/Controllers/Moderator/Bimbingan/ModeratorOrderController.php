@@ -28,7 +28,7 @@ class ModeratorOrderController extends Controller
             $search = $request->input('search');
 
             $query = Order::with([
-                'user:id,name',
+                'user:id,username',
                 'user.profile',
                 'products:id,product_type_id,category_id,name',
                 'products.category:id,name',

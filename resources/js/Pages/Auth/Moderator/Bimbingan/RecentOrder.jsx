@@ -20,7 +20,7 @@ export default function RecentOrder({ auth, orders }) {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "user.name",
+                accessorKey: "user.username",
                 header: "Username",
             },
             {
@@ -29,7 +29,7 @@ export default function RecentOrder({ auth, orders }) {
             },
             {
                 accessorFn: (row) =>
-                    moment(row.created_at).format("MMMM d, YYYY"),
+                    moment(row.created_at).format("MMMM D, YYYY"),
                 header: "Tanggal Pembelian",
             },
             {

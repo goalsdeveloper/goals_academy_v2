@@ -38,9 +38,9 @@ export default function Edit({
         id: "",
         place: order.course.place?.place,
         place_id: order.course.place?.id,
-        tutor: order.course.tutor.name,
-        tutor_id: order.course.tutor.name,
-        tutor_phone: order.course.tutor.profile.phone_number,
+        tutor: order.course.tutor?.name,
+        tutor_id: order.course.tutor?.id,
+        tutor_phone: order.course.tutor?.profile.phone_number,
         date: order.course.date ?? "",
         time: order.course.time ?? "",
     });
