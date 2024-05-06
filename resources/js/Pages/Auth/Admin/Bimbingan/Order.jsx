@@ -5,13 +5,24 @@ import { FiPlus } from "react-icons/fi";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { useMemo } from "react";
 
-export default function Order({ auth, data }) {
+export default function Order({ auth, orders }) {
+    const data = orders;
     console.log(data);
     const columns = useMemo(
         () => [
             {
                 accessorKey: "order_code", //access nested data with dot notation
                 header: "Id Pesanan",
+
+                // Cell: ({ cell }) => {
+                //     return (
+                //         <img
+                //             src={cell.row.original.gambar}
+                //             alt="thumbnail-product"
+                //             className="w-[3.6vw] h-[2.6vw] rounded-[.3vw]"
+                //         />
+                //     );
+                // },
             },
             {
                 accessorKey: "user.name",
@@ -22,7 +33,7 @@ export default function Order({ auth, data }) {
                 header: "Produk",
             },
             {
-                accessorKey: "payment_method.payment_type",
+                accessorKey: "payment_method.name",
                 header: "Pembayaran",
             },
             {
@@ -30,7 +41,7 @@ export default function Order({ auth, data }) {
                 header: "Status",
             },
             {
-                accessorKey: "created_at",
+                accessorKey: "updated_at",
                 header: "Tanggal Pesanan",
                 Cell: ({ cell }) => formatDate(cell.row.original.created_at),
             },
@@ -68,15 +79,3 @@ export default function Order({ auth, data }) {
         </DashboardLayout>
     );
 }
-
-const data = [
-    {
-        id: 1,
-        order_id: "12345",
-        name: "John Doe",
-        product: "Product A",
-        payment_method: "Credit Card",
-        status: "Pending",
-        order_date: "2022-01-01",
-    },
-];

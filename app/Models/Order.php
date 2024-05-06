@@ -71,6 +71,6 @@ class Order extends Model
 
     public function productReview()
     {
-        return $this->hasMany(ProductReview::class);
+        return $this->hasOne(ProductReview::class);
     }
 }

@@ -95,8 +95,6 @@ class PlaceController extends Controller
 
             $place->save();
             return redirect()->back();
-
-            // return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create place success', 'data' => $place], 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['status' => false, 'statusCode' => 422, 'message' => 'Validation failed', 'errors' => $e->errors()], 422);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -140,7 +138,7 @@ class PlaceController extends Controller
             ]);
 
             $place->update($validateData);
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update place success'], 200);
+            return redirect()->back();
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
@@ -159,7 +157,7 @@ class PlaceController extends Controller
     {
         try {
             $place->delete();
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete place success'], 200);
+            return redirect()->back();
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to delete place. Internal Server Error'], 500);
         } catch (\Exception $e) {

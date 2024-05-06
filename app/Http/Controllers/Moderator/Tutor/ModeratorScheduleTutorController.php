@@ -8,6 +8,8 @@ use Inertia\Inertia;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 
@@ -20,19 +22,54 @@ class ModeratorScheduleTutorController extends Controller
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $courses = Course::with(['tutor:id,name'])
-                    ->select('id', 'tutor_id', 'date', 'time')
+                $now = now();
+                $period = CarbonPeriod::create($now, $now->copy()->addDays(6));
+
+                $formattedCourses = [];
+
+                for ($hour = 8; $hour <= 19; $hour++) {
+                    $time = str_pad($hour, 2, "0", STR_PAD_LEFT) . ":00:00";
+                    $schedule = [
+                        'time' => $time
+                    ];
+
+                    foreach ($period as $date) {
+                        $dateKey = $date->format('Y-m-d');
+                        $schedule[$dateKey] = [];
+                    }
+
+                    $formattedCourses[] = $schedule;
+                }
+
+                $courses = Course::with(['tutor:id,name', 'products:id,name,duration'])
+                    ->select('id', 'tutor_id', 'date', 'time', 'products_id')
                     ->where('ongoing', 'berjalan')
                     ->whereNotNull('tutor_id')
                     ->whereNotNull('date')
                     ->whereNotNull('time')
                     ->get();
 
+                foreach ($courses as $course) {
+                    $durationInHours = ceil($course->products->duration / 60);
+                    $startTime = Carbon::createFromFormat('H:i:s', $course->time);
+                    $endTime = $startTime->copy()->addHours($durationInHours);
+
+                    foreach ($formattedCourses as &$schedule) {
+                        $time = Carbon::createFromFormat('H:i:s', $schedule['time']);
+                        if ($time >= $startTime && $time < $endTime) {
+                            $dateKey = $course->date;
+                            if (isset($schedule[$dateKey])) {
+                                $schedule[$dateKey][] = $course->tutor->name;
+                            }
+                        }
+                    }
+                }
+
                 return Inertia::render('Auth/Moderator/Tutor/Schedule', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'Get data schedule success',
-                    'data' => $courses
+                    'data' => $formattedCourses
                 ], 200);
             } else {
                 abort(403);
@@ -51,6 +88,8 @@ class ModeratorScheduleTutorController extends Controller
             ], 500);
         }
     }
+
+
 
     /**
      * Show the form for creating a new resource.

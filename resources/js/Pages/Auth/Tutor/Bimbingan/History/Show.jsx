@@ -9,21 +9,18 @@ import { FiFileText } from "react-icons/fi";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
 import GoalsStarRating from "@/Components/elements/GoalsStarRating";
 
-export default function Show ({ auth }) {
+export default function Show ({ auth, course }) {
+    console.log(course)
     // console.log(data);
     const {data: formData, setData: setFormData} = useForm({
-        username: 'hafizpemberani',
-        university: 'UIN Brawijaya',
-        major: 'Sistem Informasi',
-        topic: 'Bab 6',
-        note: 'Good job',
-        add_on: [
-            {name: 'king'},
-            {name: 'queen'},
-            {name: 'jack'},
-        ],
-        tutor_rating: 4,
-        user_note: 'qwerty',
+        username: course.user.name,
+        university: course.user?.profile?.university,
+        major: course.user?.profile?.major,
+        topic: course?.topic?.topic,
+        note: course.note,
+        add_on: course.add_ons,
+        tutor_rating: course.order?.productReview?.rate_tutor,
+        user_note: course.order?.productReview?.note_tutor,
         document: [],
         document_meta: [
             {
@@ -71,28 +68,28 @@ export default function Show ({ auth }) {
                             disabled
                             label="Username"
                             placeholder="Username"
-                            data={formData.username}
+                            data={formData.username ?? ""}
                             labelClassName="font-medium"
                         />
                         <GoalsTextInput
                             disabled
                             label="University"
                             placeholder="University"
-                            data={formData.university}
+                            data={formData.university ?? ""}
                             labelClassName="font-medium"
                         />
                         <GoalsTextInput
                             disabled
                             label="Major"
                             placeholder="Major"
-                            data={formData.major}
+                            data={formData.major ?? ""}
                             labelClassName="font-medium"
                         />
                         <GoalsTextInput
                             disabled
                             label="Topic"
                             placeholder="Topic"
-                            data={formData.topic}
+                            data={formData.topic ?? ""}
                             labelClassName="font-medium"
                         />
                         <div className="space-y-[.3vw]">
@@ -114,7 +111,7 @@ export default function Show ({ auth }) {
                                 disabled
                                 label="Note for User"
                                 placeholder="Note for User"
-                                data={formData.note}
+                                data={formData.note ?? ""}
                                 labelClassName="font-medium"
                             />
                         </FormSection>
@@ -175,13 +172,13 @@ export default function Show ({ auth }) {
                                     className="text-right"
                                     starClassName="!text-[2vw]"
                                     totalStars={5}
-                                    data={formData.tutor_rating}
+                                    data={formData.tutor_rating ?? 0}
                                     // setData={(i) => setFormData("tutor_rating", i)}
                                 />
                             </div>
                             <GoalsTextArea
                                 disabled
-                                data={formData.user_note}
+                                data={formData.user_note ?? ""}
                             />
                         </FormSection>
                     </div>

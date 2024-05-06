@@ -1,82 +1,75 @@
 import { useMemo } from "react";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import SubHeading from "../../Admin/components/SubHeading";
 import { FiEye, FiEdit2, FiThumbsUp } from "react-icons/fi";
 import moment from "moment";
+import { BottomPaginationTable } from "../../Moderator/Bimbingan/Progress";
+import { getPaginationPages } from "@/script/utils";
+import { useEffect } from "react";
+import { useState } from "react";
 
-export default function Progress ({ auth }) {
+export default function Progress({ auth, bimbingan }) {
     // const [isLoading, setIsLoading] = useState(false);
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        bimbingan;
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(new URLSearchParams(window.location.search).get('search'))
 
-    const data = [
-        {
-            id: 1,
-            username: "Hafiz",
-            topic: "Perancangan Bab 1-3",
-            date: "08/12/2024",
-            time: "20:59",
-            location: "Offline - Nakoa",
-        },
-        {
-            id: 2,
-            username: "Hafiz",
-            topic: "Perancangan Bab 4",
-            date: "10/12/2024",
-            time: "21:59",
-            location: "Offline - Nakoa",
-        },
-        {
-            id: 3,
-            username: "Hafiz",
-            topic: "Perancangan Bab 5",
-            date: "16/12/2024",
-            time: "18:59",
-            location: "Offline - Nakoa",
-        },
-        {
-            id: 4,
-            username: "Afan",
-            topic: "Perancangan Bab 5",
-            date: "24/04/2024",
-            time: "18:00",
-            location: "Offline - Nakoa",
-        },
-    ];
+    console.log(bimbingan);
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
+
+    const onSearchCallback = (search) => {
+        router.visit(route("tutor.bimbingan.progress.index", {search: search}), {
+            only: ["bimbingan"],
+        });
+    };
 
     const columns = useMemo(
         () => [
             {
-                accessorKey: "username",
+                accessorKey: "user.username",
                 header: "Username",
                 size: 150,
             },
             {
-                accessorKey: "topic",
+                accessorKey: "topic.topic",
                 header: "Topik",
                 size: 100,
             },
             {
-                accessorFn: (row) => moment(row.date+' '+row.time, 'DD/MM/YYYY HH:mm'),
+                accessorFn: (row) => moment(row.date + " " + row.time),
                 header: "Tanggal & Waktu Bimbingan",
                 size: 170,
                 Cell: ({ cell }) => {
                     return (
                         <div className="flex justify-between">
-                            <span>{cell.row.original.date}</span>
-                            <span>{cell.row.original.time}</span>
+                            <span>{cell.getValue().format("DD/MM/YYYY")}</span>
+                            <span>{cell.getValue().format("HH:mm")}</span>
                         </div>
-                    )
-                }
+                    );
+                },
             },
             {
-                accessorFn: (row) => moment(row.date+' '+row.time, 'DD/MM/YYYY HH:mm'),
+                accessorFn: (row) => moment(row.date + " " + row.time),
                 header: "Status",
                 size: 100,
                 Cell: ({ cell }) => {
-                    return moment().diff(cell.getValue(), 's') > 0 ?
-                        <div className="text-[.9vw] text-center"><span className="bg-yellow-100 text-yellow-500 py-[.2vw] px-[1vw] rounded">On Progress</span></div> :
-                        <div className="text-[.9vw] text-center text-blue-500">Upcoming</div>
+                    return moment().diff(cell.getValue(), "s") > 0 ? (
+                        <div className="text-[.9vw] text-center">
+                            <span className="bg-yellow-100 text-yellow-500 py-[.2vw] px-[1vw] rounded">
+                                On Progress
+                            </span>
+                        </div>
+                    ) : (
+                        <div className="text-[.9vw] text-center text-blue-500">
+                            Upcoming
+                        </div>
+                    );
                 },
             },
             {
@@ -87,17 +80,36 @@ export default function Progress ({ auth }) {
                     return (
                         <ul className="flex gap-[.8vw] w-fit">
                             <li>
-                                <Link method="PATCH" href={route('tutor.bimbingan.tutor.tutorApprove', 112)} >
+                                <Link
+                                    method="PATCH"
+                                    href={route(
+                                        "tutor.bimbingan.tutor.tutorApprove",
+                                        cell.row.original.id
+                                    )}
+                                    as="button"
+                                >
                                     <FiThumbsUp className="text-[1.2vw] text-secondary" />
                                 </Link>
                             </li>
                             <li>
-                                <Link method="GET" href={route('tutor.bimbingan.progress.edit', 112)} >
+                                <Link
+                                    method="GET"
+                                    href={route(
+                                        "tutor.bimbingan.progress.edit",
+                                        cell.row.original.id
+                                    )}
+                                >
                                     <FiEdit2 className="text-[1.2vw] text-secondary" />
                                 </Link>
                             </li>
                             <li>
-                                <Link method="GET" href={route('tutor.bimbingan.progress.show', 112)}>
+                                <Link
+                                    method="GET"
+                                    href={route(
+                                        "tutor.bimbingan.progress.show",
+                                        cell.row.original.id
+                                    )}
+                                >
                                     <FiEye className="text-[1.2vw] text-neutral-60" />
                                 </Link>
                             </li>
@@ -110,9 +122,15 @@ export default function Progress ({ auth }) {
     );
 
     return (
-        <DashboardLayout title="Bimbingan" subtitle="Progress" role="tutor" auth={auth}>
+        <DashboardLayout
+            title="Bimbingan"
+            subtitle="Progress"
+            role="tutor"
+            auth={auth}
+        >
             {/* {isLoading && <LoadingUI />} */}
-            <SubHeading title="Progress" /><br />
+            <SubHeading title="Progress" />
+            <br />
             <div className="text-[.8vw]">
                 <GoalsDashboardTable
                     columns={columns}
@@ -120,22 +138,47 @@ export default function Progress ({ auth }) {
                     isHeadVisible
                     isSortable
                     isPaginated
+                    keyword={keyword}
+                    setKeyword={setKeyword}
+                    onSearch={(i) => {
+                        onSearchCallback(i)
+                    }}
                 />
+                <div>
+                    <BottomPaginationTable
+                        {...{
+                            from,
+                            to,
+                            total,
+                            pages,
+                            per_page,
+                            current_page,
+                            keyword
+                        }}
+                    />
+                </div>
             </div>
         </DashboardLayout>
-    )
+    );
 }
 
-function Card ({ className, ...props }) {
+function Card({ className, ...props }) {
     return (
-        <div {...props} className={`bg-white shadow-bottom-right rounded-[.625vw] py-[1.25vw] px-[1.67vw] ${className}`}></div>
-    )
+        <div
+            {...props}
+            className={`bg-white shadow-bottom-right rounded-[.625vw] py-[1.25vw] px-[1.67vw] ${className}`}
+        ></div>
+    );
 }
 
-function LoadingUI () {
+function LoadingUI() {
     return (
         <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
-            <img src={logo} alt="Goals Academy" className="w-[6vw] h-[6vw] animate-bounce" />
+            <img
+                src={logo}
+                alt="Goals Academy"
+                className="w-[6vw] h-[6vw] animate-bounce"
+            />
         </div>
-    )
+    );
 }
