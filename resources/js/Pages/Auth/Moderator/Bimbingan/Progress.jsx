@@ -52,7 +52,7 @@ export default function Progress({ auth, data: recentOrder }) {
                 },
             },
             {
-                accessorKey: "products.category.name",
+                accessorKey: "products.name",
                 header: "Product",
                 Cell: ({ renderedCellValue }) => {
                     return (
@@ -552,8 +552,9 @@ export const BottomPaginationTable = ({
     pages,
     per_page,
     current_page,
-    
+    keyword
 }) => {
+    console.log(keyword)
     return (
         <div className="flex items-center justify-between mt-8 text-[.8vw]">
             <p className="text-[.8vw] text-neutral-50">
@@ -566,8 +567,8 @@ export const BottomPaginationTable = ({
                         <button
                             key={index}
                             className="text-[.8vw] text-neutral-60 "
-                            disabled={!link.url || pages.length <= 3}
-                            onClick={() => link.url && router.get(link.url)}
+                            // disabled={pages.length <= 3}
+                            onClick={() => router.get(link.url + (keyword != null ? `&search=${keyword}` : ''))}
                         >
                             <div
                                 dangerouslySetInnerHTML={{

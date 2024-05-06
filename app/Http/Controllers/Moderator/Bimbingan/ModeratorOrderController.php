@@ -28,7 +28,7 @@ class ModeratorOrderController extends Controller
             $search = $request->input('search');
 
             $query = Order::with([
-                'user:id,name',
+                'user:id,username',
                 'user.profile',
                 'products:id,product_type_id,category_id,name',
                 'products.category:id,name',
@@ -46,12 +46,18 @@ class ModeratorOrderController extends Controller
                 });
             })->where('status', 'Success');
 
+
+            $query->whereHas('course', function ($courseQuery) {
+                $courseQuery->whereNull('tutor_id');
+            });
+
             if ($search) {
                 $query->whereHas('user', function ($userQuery) use ($search) {
                     $userQuery->where('name', 'LIKE', "%$search%");
                 });
             }
 
+            $query->orderBy('created_at', 'asc');
             $orders = $query->paginate($perPage);
 
             $orders->getCollection()->transform(function ($order) {
@@ -84,7 +90,6 @@ class ModeratorOrderController extends Controller
                 'message' => 'get data history success',
                 'orders' => $orders,
             ], 200);
-
         } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
@@ -157,8 +162,8 @@ class ModeratorOrderController extends Controller
     {
         return Inertia::render('Auth/Moderator/Bimbingan/RecentOrder/Edit', [
             'order' => $order->load('products', 'user', 'user.profile', 'course.place', 'course.tutor', 'course.tutor.profile', 'course.topic', 'course.fileUploads'),
-            'places' => fn() => Place::with('city')->get(),
-            'tutors' => fn() => User::where('user_role', UserRoleEnum::TUTOR)->with('profile')->get(),
+            'places' => fn () => Place::with('city')->get(),
+            'tutors' => fn () => User::where('user_role', UserRoleEnum::TUTOR)->with('profile')->get(),
             'auth' => Auth::user(),
         ]);
     }
@@ -185,7 +190,6 @@ class ModeratorOrderController extends Controller
                 'statusCode' => 200,
                 'message' => 'Update course success',
             ], 200);
-
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
@@ -225,7 +229,6 @@ class ModeratorOrderController extends Controller
             $order->course()->update($validateData);
 
             return redirect()->back();
-
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
@@ -260,7 +263,6 @@ class ModeratorOrderController extends Controller
                 'message' => 'Get data success',
                 'data' => $order,
             ], 200);
-
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => false,
