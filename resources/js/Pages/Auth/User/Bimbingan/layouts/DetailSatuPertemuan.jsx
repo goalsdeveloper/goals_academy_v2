@@ -157,7 +157,7 @@ export const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
 
             <div className="flex items-center justify-between w-full">
                 <p className="text-[2.8vw] md:text-[.8vw] text-neutral-80 w-[80%]">
-                    {item.name}
+                    {item.name.slice(0, 40) + "..."}
                 </p>
 
                 <button onClick={handleToggle}>
