@@ -27,7 +27,6 @@ export default function Edit({
     places,
     tutors,
 }) {
-    console.log(order);
     const [isShow, setIsShow] = useState(false);
     const [showPlaces, setShowPlaces] = useState(false);
     const {
@@ -255,18 +254,21 @@ const DownloadLampiranPopup = ({ show, setShow, items = [] }) => {
         title: "File Title",
         url: "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
     };
-    console.log(items)
-    return (
-        <GoalsPopup show={show} setShow={setShow}>
-            <h2>File & Media</h2>
-            <div>
-                {items.map((i) => {
-                    <FileMediaItemBackdrop
-                        item={item}
-                        isBackdropVisible={false}
-                    />;
-                })}
-            </div>
-        </GoalsPopup>
-    );
+
+    console.log(items, 'test')
+
+    if (items.length > 0)
+        return (
+            <GoalsPopup show={show} setShow={setShow}>
+                <h2>File & Media</h2>
+                <div>
+                    {items.map((i) => {
+                        <FileMediaItemBackdrop
+                            item={item}
+                            isBackdropVisible={false}
+                        />;
+                    })}
+                </div>
+            </GoalsPopup>
+        );
 };

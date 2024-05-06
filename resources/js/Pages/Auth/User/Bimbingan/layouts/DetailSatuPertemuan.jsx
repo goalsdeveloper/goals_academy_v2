@@ -4,6 +4,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { RxFileText } from "react-icons/rx";
 import { createPortal } from "react-dom";
 import { router } from "@inertiajs/react";
+import { truncateWithEllipsis } from "@/script/utils";
 
 const DetailSatuPertemuan = ({ data, className = "" }) => {
     //TODO DATA BELUM LENGKAP
@@ -157,7 +158,8 @@ export const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
 
             <div className="flex items-center justify-between w-full">
                 <p className="text-[2.8vw] md:text-[.8vw] text-neutral-80 w-[80%]">
-                    {item.name.slice(0, 40) + "..."}
+                    {truncateWithEllipsis(item?.name) ||
+                        truncateWithEllipsis(item?.title)}
                 </p>
 
                 <button onClick={handleToggle}>
@@ -168,7 +170,7 @@ export const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
             {isVisible && (
                 <>
                     <button
-                        onClick={() => downloadHandler(item.path)}
+                        onClick={() => downloadHandler(item?.path || item?.url)}
                         className={`h6 font-medium text-neutral-80 px-[5.5vw] py-[3.7vw] md:py-[.8vw] md:px-[1vw] rounded-[1.8vw] md:rounded-[.4vw] shadow-centered-spread absolute -bottom-[70%] right-0 z-[60] bg-white transition-all ${
                             isVisible ? "translate-x-0" : "translate-x-5"
                         }`}

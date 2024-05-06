@@ -10,7 +10,7 @@ import moment from "moment";
 
 export default function RecentOrder({ auth, orders }) {
     orders = orders.data;
-    console.log(orders);
+    // console.log(orders);
     // const [isLoading, setIsLoading] = useState(false);
     const [isShow, setIsShow] = useState(false);
     // const [detailOrder, setDetailOrder] = useState({});
@@ -41,7 +41,7 @@ export default function RecentOrder({ auth, orders }) {
                 header: "Lokasi",
                 Cell: ({ cell }) => (
                     <span className="text-[.8vw] px-[.8vw] py-[.3vw] font-bold text-danger-40 bg-danger-50 rounded-[.3vw] text-nowrap">
-                        {cell.row.original.course.place?.place ??
+                        {cell.row.original.course?.place?.place ??
                             "Lokasi Belum Diset"}
                         {/* <FiCheckCircle className="text-success-50 text-[1.2vw]" /> */}
                     </span>
