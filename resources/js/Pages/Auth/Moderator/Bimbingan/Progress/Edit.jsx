@@ -279,12 +279,14 @@ export default function Edit({ auth, progress, tutors }) {
                             <div className="flex gap-[.8vw]">
                                 <GoalsTextInput
                                     label="Date"
+                                    type="date"
                                     grow
                                     data={data.date}
                                     setData={(i) => setData("date", i)}
                                 />
                                 <GoalsTextInput
                                     label="Time"
+                                    type="time"
                                     grow
                                     data={data.time}
                                     setData={(i) => setData("time", i)}
