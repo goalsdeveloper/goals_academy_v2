@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
 use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
 use App\Http\Controllers\Admin\Webinar\WebinarController;
+use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\DashboardUserController;
 // use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\EmailDiskonController;
