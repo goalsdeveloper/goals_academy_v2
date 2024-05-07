@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Moderator\Bimbingan;
 
+use App\Enums\CourseStatusEnum;
 use Exception;
 use Inertia\Inertia;
 use App\Models\Order;
@@ -15,7 +16,9 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator as PaginationLengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class ProgressController extends Controller
@@ -27,16 +30,30 @@ class ProgressController extends Controller
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $perPage = $request->input('perPage', 10);
+                $perPage = $request->input('perPage', 25);
                 $search = $request->input('search');
 
-                $query = Order::with(['user:id,username', 'products:id,product_type_id,category_id', 'products.category:id,name', 'products.productType:id,type', 'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session', 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session'])
+                $query = Order::with([
+                    'user:id,username',
+                    'products:id,product_type_id,category_id,name,total_meet',
+                    'products.category:id,name',
+                    'products.productType:id,type',
+                    'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id',
+                    'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session',
+                    'course.tutor'
+                ])
                     ->whereHas('products', function ($query) {
                         $query->whereHas('productType', function ($subQuery) {
                             $subQuery->where('type', 'LIKE', '%bimbingan%');
                         });
                     })
+                    ->whereHas('course', function ($courseQuery) {
+                        $courseQuery->where('ongoing', CourseStatusEnum::ONGOING);
+                    })
                     ->where('status', 'Success');
+
+                $query->orderBy("updated_at", "desc");
+
 
                 if ($search) {
                     $query->whereHas('user', function ($userQuery) use ($search) {
@@ -45,7 +62,7 @@ class ProgressController extends Controller
                 }
 
                 $orders = $query->paginate($perPage);
-
+                // dd($orders);
                 return Inertia::render('Auth/Moderator/Bimbingan/Progress', [
                     'status' => true,
                     'statusCode' => 200,
