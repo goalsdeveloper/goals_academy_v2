@@ -149,7 +149,7 @@ export default function Edit({ auth, progress, tutors }) {
                             <div className="flex gap-[.4vw] w-full items-end">
                                 <SelectInput
                                     label="Tutor"
-                                    value={data.tutor.name}
+                                    value={data.tutor?.name}
                                     className="w-full"
                                 >
                                     {tutors.map((item, index) => {

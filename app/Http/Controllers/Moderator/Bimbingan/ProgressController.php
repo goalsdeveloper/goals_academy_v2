@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Moderator\Bimbingan;
 
+use App\Enums\CourseStatusEnum;
 use Exception;
 use Inertia\Inertia;
 use App\Models\Order;
@@ -46,14 +47,8 @@ class ProgressController extends Controller
                             $subQuery->where('type', 'LIKE', '%bimbingan%');
                         });
                     })
-                    // ->orWhereHas('products', function ($query) {
-                    //     $query->whereHas('productType', function ($subQuery) {
-                    //         $subQuery->where('type', 'LIKE', '%bimbingan%');
-                    //     })
-                    //         ->where('total_meet', '>', 1);
-                    // })
                     ->whereHas('course', function ($courseQuery) {
-                        $courseQuery->whereNotNull('tutor_id');
+                        $courseQuery->where('ongoing', CourseStatusEnum::ONGOING);
                     })
                     ->where('status', 'Success');
 
@@ -68,58 +63,6 @@ class ProgressController extends Controller
 
                 $orders = $query->paginate($perPage);
                 // dd($orders);
-                $order_arr = $orders->getCollection()->toArray();
-
-                $new_orders = collect($order_arr)->map(function ($item) {
-                    if ($item['products']['total_meet'] > 1) {
-                        if (!is_null($item['course']['tutor_id'])) {
-                            return $item;
-                        }
-                    } else {
-                        if (!is_null($item['course']['tutor_id']) && !is_null($item['course']['date']) && !is_null($item['course']['time'])) {
-                            return $item;
-                        }
-                    }
-                })->filter()->values(); 
-                return response()->json([
-                    'data' => $new_orders
-                ]);
-
-                $data = new PaginationLengthAwarePaginator(
-                    $new_orders,
-                    $new_orders,
-                    $new_orders->perPage(),
-                    $new_orders->currentPage(),
-                    [
-                        'path' => \Request->url(),
-                        'query' => [
-                            'page' => $new_orders->currentPage()
-                        ]
-                    ]
-
-                );
-
-                // $paginator = tap($orders, function ($paginatedInstance) {
-                //     return $paginatedInstance->getCollection()->transform(function ($value) {
-                //         if ($value['products']['total_meet'] > 1) {
-                //             if ($value['course']['tutor_id'] != null) {
-                //                 return $value;
-                //             }
-                //         } else {
-                //             if ($value['course']['tutor_id'] != null && $value['course']['date'] != null && $value['course']['time'] != null) {
-                //                 return $value;
-                //             }
-                //         }
-                //     });
-                // });
-
-                dd($data);
-                // return response()->json([
-                //     'status' => true,
-                //     'statusCode' => 200,
-                //     'message' => 'Update course success',
-                //     'recent_order' => $orders,
-                // ], 200);
                 return Inertia::render('Auth/Moderator/Bimbingan/Progress', [
                     'status' => true,
                     'statusCode' => 200,
