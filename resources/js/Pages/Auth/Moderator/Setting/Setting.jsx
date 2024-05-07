@@ -9,27 +9,21 @@ import {
 } from "@/Components/elements/GoalsSelectMultipleInput";
 import GoalsImageUploader from "@/Components/elements/GoalsImageUploader";
 
-export default function Pengaturan({ auth, data }) {
+export default function Setting({ auth, data }) {
     const {
         data: formData,
         setData: setFormData,
         put,
     } = useForm({
         // _method: "patch",
-        id: data.tutor.id,
-        name: data.tutor.name ? data.tutor.name : "",
-        username: data.tutor.username ? data.tutor.username : "",
-        phone_number: data.tutor.profile.phone_number
-            ? data.tutor.profile.phone_number
-            : "",
-        email: data.tutor.email ? data.tutor.email : "",
-        university: data.tutor.profile.university
-            ? data.tutor.profile.university
-            : "",
-        major: data.tutor.profile.major ? data.tutor.profile.major : "",
-        linkedin: data.tutor.profile.linkedin_url
-            ? data.tutor.profile.linkedin_url
-            : "",
+        id: "",
+        name: "",
+        username: "",
+        phone_number: "",
+        email: "",
+        university: "",
+        major: "",
+        linkedin: "",
         soft_skills: [],
         hard_skills: [],
     });

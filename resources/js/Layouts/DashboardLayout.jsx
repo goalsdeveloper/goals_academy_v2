@@ -14,7 +14,6 @@ import { GrTag, GrLocation } from "react-icons/gr";
 import { IoSettingsOutline } from "react-icons/io5";
 import { ImExit } from "react-icons/im";
 import { MdOutlineEventNote, MdHistory } from "react-icons/md";
-import moment from "moment";
 
 export default function DashboardLayout ({ auth, title, subtitle, role, children }) {
     let navConfig;
@@ -338,16 +337,7 @@ export default function DashboardLayout ({ auth, title, subtitle, role, children
     const [showNotification, setShowNotification] = useState(false);
     const [dataNotification, setDataNotification] = useState(auth.notifications.filter(i => i.data.category != 'Transaksi'));
 
-    // let notificationInterval = useRef()
-
-    // const startInterval = () => {
-    //     notificationInterval.current = setInterval(() => {
-    //         console.log('Test')
-    //     }, 3000);
-    // }
-
     useEffect(() => {
-        // startInterval()
         setInterval(() => {
             fetch(route('api.notification.get'))
                 .then(response => response.json())
@@ -453,7 +443,7 @@ export default function DashboardLayout ({ auth, title, subtitle, role, children
                                 </TECollapseItem>
                             </TECollapse>
                         </button>
-                        <Link href="#">
+                        <Link href={route(`${auth.user.user_role}.setting.index`)}>
                             <IoSettingsOutline />
                         </Link>
                         <Link as="button" href="/logout" method="POST">

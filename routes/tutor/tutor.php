@@ -9,6 +9,7 @@ use Inertia\Inertia;
 
 Route::middleware(['auth', 'tutor'])->group(function () {
     Route::prefix('tutor')->name('tutor.')->group(function () {
+        Route::get('/', [OverviewController::class, 'index'])->name('index');
         Route::get('overview', [OverviewController::class, 'index']);
         Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
             Route::patch('progress/tutor-approve/{progress}', [ProgressController::class, 'tutorApprove'])->name('tutor.tutorApprove');
