@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Moderator\Bimbingan;
 
+use App\Enums\CourseStatusEnum;
 use App\Enums\OrderEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\OrderHistory;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,16 +18,26 @@ class ModeratorHistoryBimbinganController extends Controller
     public function index(Request $request)
     {
         try {
-            $perPage = $request->input('perPage', 10);
+            $perPage = $request->input('perPage', 25);
             $search = $request->input('search');
-            $order = OrderHistory::where('status', 'Success')
-                ->with('order.course')
-                ->limit(10)->get();
-            // dd($order[0]);
+            // $order = OrderHistory::where('status', 'Success')
+            //     ->with('order.course')
+            //     ->limit(10)->get();
+            // // dd($order[0]);
 
-            $query = OrderHistory::where('status', OrderEnum::SUCCESS)->whereHas('order.products.productType', function ($q) {
+            $query = Order::where('status', OrderEnum::SUCCESS)
+            ->whereHas('products.productType', function ($q) {
                 $q->where('type', 'bimbingan');
-            })->with(['order.products:id,name', 'order.user:id,username', 'order.course.child', 'order.course.place']);
+            })
+            ->whereHas('course', function ($q) {
+                $q->where('ongoing', CourseStatusEnum::SUCCESS);
+            })
+            ->with(['products:id,name', 'user:id,username', 'course.child', 'course.place']);
+
+
+            // $query = OrderHistory::where('status', OrderEnum::SUCCESS)->whereHas('order.products.productType', function ($q) {
+            //     $q->where('type', 'bimbingan');
+            // })->with(['order.products:id,name', 'order.user:id,username', 'order.course.child', 'order.course.place']);
             if ($search) {
                 $query->whereHas('order.user', function ($userQuery) use ($search) {
                     $userQuery->where('name', 'LIKE', "%$search%");
@@ -33,6 +45,12 @@ class ModeratorHistoryBimbinganController extends Controller
             }
 
             $order_history = $query->paginate($perPage);
+
+            // return response()->json([
+            //     'status' => false,
+            //     'statusCode' => 500,
+            //     'order_history' => $order_history,
+            // ], 500);
 
             return Inertia::render('Auth/Moderator/Bimbingan/History', [
                 'status' => true,

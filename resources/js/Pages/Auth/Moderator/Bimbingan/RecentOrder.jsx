@@ -20,6 +20,10 @@ export default function RecentOrder({ auth, orders }) {
     const columns = useMemo(
         () => [
             {
+                accessorKey: "order_code",
+                header: "Order Code",
+            },
+            {
                 accessorKey: "user.username",
                 header: "Username",
             },
@@ -115,7 +119,7 @@ export default function RecentOrder({ auth, orders }) {
                         data={orders}
                         isHeadVisible
                         isSortable
-                        isPaginated
+                        isPaginated={false}
                     />
                 </div>
             </div>

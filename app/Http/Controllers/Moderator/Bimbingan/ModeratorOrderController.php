@@ -24,7 +24,7 @@ class ModeratorOrderController extends Controller
     public function index(Request $request)
     {
         try {
-            $perPage = $request->input('perPage', 10);
+            $perPage = $request->input('perPage', 25);
             $search = $request->input('search');
 
             $query = Order::with([
@@ -43,13 +43,21 @@ class ModeratorOrderController extends Controller
             ])->whereHas('products', function ($query) {
                 $query->whereHas('productType', function ($subQuery) {
                     $subQuery->where('type', 'LIKE', '%bimbingan%');
-                });
-            })->where('status', 'Success');
-
-
-            $query->whereHas('course', function ($courseQuery) {
+                })
+                    ->where('total_meet', 1)
+                    ->whereHas('course', function ($courseQuery) {
+                        $courseQuery->whereNull('date')
+                            ->orWhereNull('time');
+                    });
+            })->orWhereHas('products', function ($query) {
+                $query->whereHas('productType', function ($subQuery) {
+                    $subQuery->where('type', 'LIKE', '%bimbingan%');
+                })
+                    ->where('total_meet', '>', 1);
+            })->whereHas('course', function ($courseQuery) {
                 $courseQuery->whereNull('tutor_id');
-            });
+            })
+                ->where('status', 'Success');
 
             if ($search) {
                 $query->whereHas('user', function ($userQuery) use ($search) {
@@ -173,17 +181,27 @@ class ModeratorOrderController extends Controller
      */
 
     // $order diambil dari course id(perhatikan name model)
-    public function update(Request $request, Course $order)
+    public function update(Request $request, Order $order)
     {
         try {
-            $validateData = $request->validate([
-                'tutor_id' => 'numeric',
-                'date' => 'date',
-                'time' => 'date_format:H:i',
-                'place_id' => 'numeric',
-            ]);
+            $order = $order->load('products');
 
-            $order->update($validateData);
+            if ($order->products->total_meet > 1) {
+                $validateData = $request->validate([
+                    'tutor_id' => 'numeric',
+                ]);
+            } else {
+                $validateData = $request->validate([
+                    'tutor_id' => 'numeric',
+                    'date' => 'date',
+                    'time' => 'date_format:H:i',
+                    'place_id' => 'numeric',
+                ]);
+            }
+            // dd($order->parent()->first());
+
+            $parent = Course::find($order->course->id);
+            $parent->update($validateData);
 
             return response()->json([
                 'status' => true,

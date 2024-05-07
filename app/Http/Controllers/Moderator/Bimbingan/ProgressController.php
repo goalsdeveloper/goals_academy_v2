@@ -15,7 +15,9 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator as PaginationLengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class ProgressController extends Controller
@@ -27,19 +29,36 @@ class ProgressController extends Controller
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $perPage = $request->input('perPage', 10);
+                $perPage = $request->input('perPage', 25);
                 $search = $request->input('search');
 
-                $query = Order::with(['user:id,username', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type', 'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id', 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session', "course.tutor"])
+                $query = Order::with([
+                    'user:id,username',
+                    'products:id,product_type_id,category_id,name,total_meet',
+                    'products.category:id,name',
+                    'products.productType:id,type',
+                    'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id',
+                    'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session',
+                    'course.tutor'
+                ])
                     ->whereHas('products', function ($query) {
                         $query->whereHas('productType', function ($subQuery) {
                             $subQuery->where('type', 'LIKE', '%bimbingan%');
                         });
                     })
+                    // ->orWhereHas('products', function ($query) {
+                    //     $query->whereHas('productType', function ($subQuery) {
+                    //         $subQuery->where('type', 'LIKE', '%bimbingan%');
+                    //     })
+                    //         ->where('total_meet', '>', 1);
+                    // })
                     ->whereHas('course', function ($courseQuery) {
                         $courseQuery->whereNotNull('tutor_id');
                     })
                     ->where('status', 'Success');
+
+                $query->orderBy("updated_at", "desc");
+
 
                 if ($search) {
                     $query->whereHas('user', function ($userQuery) use ($search) {
@@ -48,7 +67,53 @@ class ProgressController extends Controller
                 }
 
                 $orders = $query->paginate($perPage);
+                // dd($orders);
+                $order_arr = $orders->getCollection()->toArray();
 
+                $new_orders = collect($order_arr)->map(function ($item) {
+                    if ($item['products']['total_meet'] > 1) {
+                        if (!is_null($item['course']['tutor_id'])) {
+                            return $item;
+                        }
+                    } else {
+                        if (!is_null($item['course']['tutor_id']) && !is_null($item['course']['date']) && !is_null($item['course']['time'])) {
+                            return $item;
+                        }
+                    }
+                })->filter()->values(); 
+                return response()->json([
+                    'data' => $new_orders
+                ]);
+
+                $data = new PaginationLengthAwarePaginator(
+                    $new_orders,
+                    $new_orders,
+                    $new_orders->perPage(),
+                    $new_orders->currentPage(),
+                    [
+                        'path' => \Request->url(),
+                        'query' => [
+                            'page' => $new_orders->currentPage()
+                        ]
+                    ]
+
+                );
+
+                // $paginator = tap($orders, function ($paginatedInstance) {
+                //     return $paginatedInstance->getCollection()->transform(function ($value) {
+                //         if ($value['products']['total_meet'] > 1) {
+                //             if ($value['course']['tutor_id'] != null) {
+                //                 return $value;
+                //             }
+                //         } else {
+                //             if ($value['course']['tutor_id'] != null && $value['course']['date'] != null && $value['course']['time'] != null) {
+                //                 return $value;
+                //             }
+                //         }
+                //     });
+                // });
+
+                dd($data);
                 // return response()->json([
                 //     'status' => true,
                 //     'statusCode' => 200,
