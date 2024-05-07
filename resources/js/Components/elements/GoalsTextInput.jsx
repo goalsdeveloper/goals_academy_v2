@@ -5,7 +5,7 @@ const GoalsTextInput = ({
     type = "text",
     label = "",
     name,
-    placeholder = "Goals Input",
+    placeholder = "",
     className = "",
     labelClassName,
     messageClassName,
