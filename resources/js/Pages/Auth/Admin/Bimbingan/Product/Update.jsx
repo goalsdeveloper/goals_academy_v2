@@ -14,6 +14,7 @@ import {
 } from "./Components/SelectMultiTag";
 import { router, useForm } from "@inertiajs/react";
 import toast from "react-hot-toast";
+import { toSlug } from "@/script/utils";
 
 const Update = ({ auth, categories, topics, addons, products }) => {
     const [show, setShow] = useState(false);
@@ -159,22 +160,23 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                             />
 
                             <div className="flex gap-[1.2vw]">
-                                <div className="h-40 aspect-square border-2 rounded-"></div>
+                                <div className="h-40 border-2 aspect-square rounded-"></div>
                                 <div className="w-full space-y-[1.2vw]">
                                     <GoalsTextInput
                                         label="Nama"
                                         data={data.name}
                                         setData={(e) =>
-                                            setData({ ...data, name: e })
+                                            setData({ ...data, name: e, slug: toSlug(e) })
                                         }
                                         required
                                     />
                                     <GoalsTextInput
                                         label="Slug"
                                         data={data.slug}
-                                        setData={(e) =>
-                                            setData({ ...data, slug: e })
-                                        }
+                                        disabled
+                                        // setData={(e) =>
+                                        //     setData({ ...data, slug: e })
+                                        // }
                                     />
                                 </div>
                             </div>
@@ -397,7 +399,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                                     })
                                                 }
                                             >
-                                                <i className="fa-solid fa-xmark group-hover:opacity-100 opacity-0 transition-all"></i>
+                                                <i className="transition-all opacity-0 fa-solid fa-xmark group-hover:opacity-100"></i>
                                             </button>
                                         </div>
                                     ))
