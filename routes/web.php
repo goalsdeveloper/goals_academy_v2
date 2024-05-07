@@ -35,6 +35,7 @@ use App\Http\Controllers\Moderator\Bimbingan\ModeratorHistoryBimbinganController
 use App\Http\Controllers\Moderator\Bimbingan\ModeratorOrderController;
 use App\Http\Controllers\Moderator\Bimbingan\ProgressController;
 use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
+use App\Http\Controllers\Moderator\SettingController as ModeratorSettingController;
 use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
 use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
 use App\Http\Controllers\ProfileController;
@@ -178,6 +179,7 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')-
         Route::resource('schedule', ModeratorScheduleTutorController::class);
     });
     Route::resource('overview', ModeratorOverviewController::class);
+    Route::resource('setting', ModeratorSettingController::class);
 });
 
 require __DIR__ . '/profile/profile.php';
