@@ -2,7 +2,7 @@ import DashboardLayout from "@/Layouts/DashboardLayout";
 import React from "react";
 import { useState } from "react";
 import { useForm } from "@inertiajs/react";
-import GoalsButton from "@/Components/elements/GoalsButton";
+import GoalsButton from "@/Components/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import {
     GoalsSelectMultipleInput,
@@ -34,7 +34,7 @@ export default function Update({ auth, data }) {
         linkedin: data.tutor.profile.linkedin_url
             ? data.tutor.profile.linkedin_url
             : "",
-        skills: [],
+        skills: data.tutor.skills.map(i => i.id),
         soft_skills: data.tutor.skills.filter((i) => i.category == 'soft_skill'),
         hard_skills: data.tutor.skills.filter((i) => i.category == 'hard_skill'),
     });
@@ -47,7 +47,7 @@ export default function Update({ auth, data }) {
         university: "",
         major: "",
         linkedin: "",
-        skills: [],
+        skills: data.tutor.skills.map(i => i.id),
         soft_skills:  data.tutor.skills.filter((i) => i.category == 'soft_skill'),
         hard_skills: data.tutor.skills.filter((i) => i.category == 'hard_skill'),
     });
@@ -56,31 +56,19 @@ export default function Update({ auth, data }) {
         soft_skills: false,
         hard_skills: false,
     });
-    const handleClick = () => {
-        const combinedSkills = [
-            ...formData.soft_skills,
-            ...formData.hard_skills,
-        ];
-        const skillIds = combinedSkills.map((skill) => skill.id);
-        // setFormData({
-        //     ...formData,
-        //     skills: skillIds,
-        // });
 
-        console.log(formData);
-        console.log(skillIds);
+    const handleClick = () => {
         put(
             route("admin.manajemen_user.tutor.update", {
                 id: data.tutor.id,
             }),
-            {formData}
         );
     };
 
     return (
         <DashboardLayout
-            title="Bimbingan"
-            subtitle="Product"
+            title="Manajemen User"
+            subtitle="Tutor"
             role="admin"
             auth={auth}
         >
@@ -90,14 +78,14 @@ export default function Update({ auth, data }) {
 
                     <div className="space-x-[.8vw]">
                         <GoalsButton
-                            className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[.75vw] md:rounded-[.5vw]"
-                            variant="success-bordered"
+                            className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[1vw] md:rounded-[.5vw]"
+                            activeClassName="bg-transparent border-2 border-green-500 text-green-500 hover:border-green-600"
                         >
                             Batal
                         </GoalsButton>
                         <GoalsButton
-                            className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[.75vw] md:rounded-[.5vw]"
-                            variant="success"
+                            className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[1vw] md:rounded-[.5vw]"
+                            activeClassName="bg-green-500 border-2 border-green-500 text-white hover:bg-green-600 hover:border-green-600"
                             onClick={handleClick}
                         >
                             Simpan
@@ -230,11 +218,7 @@ export default function Update({ auth, data }) {
                                         setFormData({
                                             ...formData,
                                             soft_skills: temp.soft_skills,
-                                            skills: formData.skills.concat(
-                                                temp.soft_skills.map(
-                                                    (skill) => skill.id
-                                                )
-                                            ),
+                                            skills: temp.soft_skills.map(i => i.id).concat(formData.hard_skills.map(i => i.id))
                                         });
                                     }
                                 }}
@@ -340,11 +324,7 @@ export default function Update({ auth, data }) {
                                         setFormData({
                                             ...formData,
                                             hard_skills: temp.hard_skills,
-                                            skills: formData.skills.concat(
-                                                temp.hard_skills.map(
-                                                    (skill) => skill.id
-                                                )
-                                            ),
+                                            skills: temp.hard_skills.map(i => i.id).concat(formData.soft_skills.map(i => i.id)),
                                         });
                                     }
                                 }}

@@ -1,7 +1,7 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { useState } from "react";
-import { useForm } from "@inertiajs/react";
-import GoalsButton from "@/Components/elements/GoalsButton";
+import { router, useForm } from "@inertiajs/react";
+import GoalsButton from "@/Components/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import {
     GoalsSelectMultipleInput,
@@ -10,77 +10,66 @@ import {
 import GoalsImageUploader from "@/Components/elements/GoalsImageUploader";
 
 export default function Setting({ auth, user, skills }) {
-    console.log(user);
+    const [isLoading, setIsLoading] = useState(false);
 
     const {
         data: formData,
         setData: setFormData,
         put,
     } = useForm({
-        // _method: "patch",
-        id: "",
-        name: "",
-        username: "",
-        phone_number: "",
-        email: "",
-        university: "",
-        major: "",
-        linkedin: "",
-        soft_skills: [],
-        hard_skills: [],
+        id: user.id,
+        name: user.name,
+        username: user.username,
+        phone_number: user.profile.phone_number,
+        email: user.email,
+        university: user.profile.university,
+        faculty: user.profile.faculty,
+        major: user.profile.major,
+        linkedin: user.profile.linkedin_url,
+        skills: user.skills.map(i => i.id),
+        soft_skills: user.skills.filter((i) => i.category == 'soft_skill'),
+        hard_skills: user.skills.filter((i) => i.category == 'hard_skill'),
     });
 
     const { data: temp, setData: setTemp } = useForm({
-        name: "",
-        username: "",
-        phone_number: "",
-        email: "",
-        university: "",
-        major: "",
-        linkedin: "",
-        soft_skills: [],
-        hard_skills: [],
+        skills: user.skills.map(i => i.id),
+        soft_skills: user.skills.filter((i) => i.category == 'soft_skill'),
+        hard_skills: user.skills.filter((i) => i.category == 'hard_skill'),
     });
 
     const [showForm, setShowForm] = useState({
         soft_skills: false,
         hard_skills: false,
     });
-   const handleClick = () => {
-       const combinedSkills = [...temp.soft_skills, ...temp.hard_skills];
-       const skillIds = combinedSkills.map((skill) => skill.id);
 
-       console.log({ ...formData, "skills": skillIds });
-       console.log(skillIds);
+   const handleClick = () => {
        put(
-           route("admin.manajemen_user.tutor.update", {
+           route("admin.setting.update", {
                id: user.id,
            }),
-           { ...formData, skills: skillIds }
        );
    };
 
-
     return (
         <DashboardLayout
-            title="Bimbingan"
-            subtitle="Product"
-            role="admin"
+            title="Setting"
+            role="moderator"
             auth={auth}
         >
+            {isLoading && <LoadingUI />}
             <div className="space-y-[1.6vw]">
-                <div className="flex justify-between">
-
-                    <div className="space-x-[.8vw]">
+                <div className="flex items-center justify-between">
+                    <p className="font-medium text-[1.2vw]">Update Profile</p>
+                    <div className="flex items-center gap-[.75vw]">
                         <GoalsButton
-                            className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[.75vw] md:rounded-[.5vw]"
-                            variant="success-bordered"
+                            className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[1vw] md:rounded-[.5vw]"
+                            activeClassName="bg-transparent border-2 border-green-500 text-green-500 hover:border-green-600"
                         >
                             Batal
                         </GoalsButton>
                         <GoalsButton
-                            className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[.75vw] md:rounded-[.5vw]"
-                            variant="success"
+                            className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[1vw] md:rounded-[.5vw]"
+                            activeClassName="bg-green-500 border-2 border-green-500 text-white hover:bg-green-600 hover:border-green-600"
                             onClick={handleClick}
                         >
                             Simpan
@@ -89,12 +78,13 @@ export default function Setting({ auth, user, skills }) {
                 </div>
 
                 <div className="flex gap-[1.2vw]">
-                    <div>
+                    <div className="bg-white w-full rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
                         <div className="flex gap-[1.2vw]">
-                            <ProfileImage auth={auth} />
+                            <ProfileImage auth={auth} setIsLoading={setIsLoading} />
                             <div className="w-full space-y-[1.2vw]">
                                 <GoalsTextInput
                                     required
+                                    disabled
                                     label="Username"
                                     placeholder="Username"
                                     data={formData.username ?? ""}
@@ -114,7 +104,7 @@ export default function Setting({ auth, user, skills }) {
                         <GoalsTextInput
                             required
                             label="Phone Number"
-                            placeholder="Phone Number"
+                            placeholder="08XXXXXXXXXX"
                             data={formData.phone_number ?? ""}
                             setData={(i) => setFormData("phone_number", i)}
                             labelClassName="font-medium"
@@ -128,7 +118,7 @@ export default function Setting({ auth, user, skills }) {
                             labelClassName="font-medium"
                         />
                     </div>
-                    <div>
+                    <div className="bg-white w-full rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
                         <GoalsTextInput
                             required
                             label="University"
@@ -137,14 +127,24 @@ export default function Setting({ auth, user, skills }) {
                             setData={(i) => setFormData("university", i)}
                             labelClassName="font-medium"
                         />
-                        <GoalsTextInput
-                            required
-                            label="Major"
-                            placeholder="Major"
-                            data={formData.major ?? ""}
-                            setData={(i) => setFormData("major", i)}
-                            labelClassName="font-medium"
-                        />
+                        <div className="grid grid-cols-2 gap-[1.2vw]">
+                            <GoalsTextInput
+                                required
+                                label="Faculty"
+                                placeholder="Faculty"
+                                data={formData.faculty ?? ""}
+                                setData={(i) => setFormData("faculty", i)}
+                                labelClassName="font-medium"
+                            />
+                            <GoalsTextInput
+                                required
+                                label="Major"
+                                placeholder="Major"
+                                data={formData.major ?? ""}
+                                setData={(i) => setFormData("major", i)}
+                                labelClassName="font-medium"
+                            />
+                        </div>
                         <GoalsTextInput
                             label="Linkedin"
                             placeholder="Linkedin"
@@ -210,14 +210,15 @@ export default function Setting({ auth, user, skills }) {
                                             )
                                         )
                                     ) {
-                                        setFormData(
-                                            "soft_skills",
-                                            temp.soft_skills
-                                        );
+                                        setFormData({
+                                            ...formData,
+                                            soft_skills: temp.soft_skills,
+                                            skills: temp.soft_skills.map(i => i.id).concat(formData.hard_skills.map(i => i.id))
+                                        });
                                     }
                                 }}
                             >
-                                {user.skills.map(
+                                {skills.map(
                                     (item, index) =>
                                         item.category == "soft_skill" && (
                                             <GoalsSelectMultipleInputItem
@@ -315,14 +316,15 @@ export default function Setting({ auth, user, skills }) {
                                             )
                                         )
                                     ) {
-                                        setFormData(
-                                            "hard_skills",
-                                            temp.hard_skills
-                                        );
+                                        setFormData({
+                                            ...formData,
+                                            hard_skills: temp.hard_skills,
+                                            skills: temp.hard_skills.map(i => i.id).concat(formData.soft_skills.map(i => i.id)),
+                                        });
                                     }
                                 }}
                             >
-                                {user.skills.map(
+                                {skills.map(
                                     (item, index) =>
                                         item.category == "hard_skill" && (
                                             <GoalsSelectMultipleInputItem
@@ -372,13 +374,20 @@ export default function Setting({ auth, user, skills }) {
     );
 }
 
-const ProfileImage = ({ auth }) => {
+const ProfileImage = ({ auth, setIsLoading }) => {
     const [showImageUploader, setShowImageUploader] = useState(false);
     const [profileImage, setProfileImage] = useState(
         auth.user.profile.profile_image
             ? `/storage/${auth.user.profile.profile_image}`
             : "https://mura.cfbf.com/sites/cfbv2/cache/file/B44C718C-17B1-475D-BBDFFD8C4906BAB4.png"
     );
+
+    const submitHandler = (image) => {
+        setIsLoading(true);
+        router.post("/profile_image", { image: image }, {
+            onFinish: () => setIsLoading(false)
+        });
+    }
 
     return (
         <div className="relative flex flex-shrink-0 flex-col gap-[.5vw] self-center h-fit">
@@ -400,8 +409,20 @@ const ProfileImage = ({ auth }) => {
                 setShow={setShowImageUploader}
                 profileImage={profileImage}
                 setProfileImage={setProfileImage}
-                onSubmit={(i) => console.log(i)}
+                onSubmit={submitHandler}
             />
         </div>
     );
 };
+
+function LoadingUI() {
+    return (
+        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+            <img
+                src={logo}
+                alt="Goals Academy"
+                className="w-[6vw] h-[6vw] animate-bounce"
+            />
+        </div>
+    );
+}

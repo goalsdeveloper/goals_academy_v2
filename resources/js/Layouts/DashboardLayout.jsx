@@ -342,7 +342,7 @@ export default function DashboardLayout ({ auth, title, subtitle, role, children
             fetch(route('api.notification.get'))
                 .then(response => response.json())
                 .then(response => {
-                    console.log(response.notifications)
+                    // console.log(response.notifications)
                     setDataNotification(response.notifications)
                 })
         }, 5000);
