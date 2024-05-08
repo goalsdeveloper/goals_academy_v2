@@ -96,8 +96,8 @@ export default function History({ auth, order_history: res }) {
             return (
                 <div className="flex items-center gap-[.8vw]">
                     <Link
-                        href={route("moderator.bimbingan.progress.show", {
-                            progress: course.id,
+                        href={route("moderator.bimbingan.history.show", {
+                            history: course.id,
                         })}
                     >
                         <FiEye className="text-[1.2vw] text-neutral-60" />
@@ -165,7 +165,7 @@ function Card({ className, ...props }) {
 
 function LoadingUI() {
     return (
-        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+        <div className="absolute top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-opacity-50 bg-gray-50">
             <img
                 src={logo}
                 alt="Goals Academy"
