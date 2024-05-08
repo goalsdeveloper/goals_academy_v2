@@ -1,24 +1,18 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
-import GoalsPopup from "@/Components/elements/GoalsPopup";
+import GoalsTextInput from "@/Components/elements/GoalsTextInput";
+import DashboardLayout from "@/Layouts/DashboardLayout";
 import {
     SelectInput,
     SelectInputItem,
 } from "@/Pages/Auth/Admin/Bimbingan/Product/Components/SelectInput";
-import GoalsTextInput from "@/Components/elements/GoalsTextInput";
-import DashboardLayout from "@/Layouts/DashboardLayout";
 import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
 import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
-import { FileMediaItemBackdrop } from "@/Pages/Auth/User/Bimbingan/layouts/DetailSatuPertemuan";
+import { router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
-import View from "./View";
-import { router, useForm } from "@inertiajs/react";
-import {
-    GoalsSelectInput,
-    GoalsSelectInputItem,
-} from "@/Components/elements/GoalsSelectInput";
+import FileMediaPopup from "../components/FileMediaPopup";
 
 export default function Edit({
     auth,
@@ -52,7 +46,7 @@ export default function Edit({
         >
             {/* {isLoading && <LoadingUI />} */}
             <div className="space-y-[1.6vw]">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                     <Breadcrumb level={3} isLastHidden />
 
                     <div className="space-x-[.8vw]">
@@ -87,7 +81,7 @@ export default function Edit({
                 </div>
 
                 {createPortal(
-                    <DownloadLampiranPopup
+                    <FileMediaPopup
                         show={isShow}
                         setShow={() => setIsShow(!isShow)}
                         items={order.file_uploads}
@@ -133,7 +127,7 @@ export default function Edit({
                                 }`}
                                 target="_blank"
                             >
-                                <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
+                                <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
                             </a>
                         </div>
                         <div className="flex gap-[.4vw] w-full items-end">
@@ -164,7 +158,7 @@ export default function Edit({
                                 href={`wa.me/${formData.tutor_phone}`}
                                 target="_blank"
                             >
-                                <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
+                                <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
                             </a>
                         </div>
                     </FormSection>

@@ -1,25 +1,40 @@
-import DashboardLayout from "@/Layouts/DashboardLayout";
-import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
 import GoalsButton from "@/Components/elements/GoalsButton";
-import React from "react";
-import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
-import SliderButton from "@/Pages/Auth/Admin/Bimbingan/Product/Components/SliderButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
-import { FaWhatsappSquare } from "react-icons/fa";
+import DashboardLayout from "@/Layouts/DashboardLayout";
 import {
     SelectInput,
     SelectInputItem,
 } from "@/Pages/Auth/Admin/Bimbingan/Product/Components/SelectInput";
-import StarRating from "@/Pages/Auth/User/Components/StarRating";
-import { RxFileText } from "react-icons/rx";
-import { router, useForm } from "@inertiajs/react";
 import {
     SelectMultiTag,
     SelectMultiTagItem,
 } from "@/Pages/Auth/Admin/Bimbingan/Product/Components/SelectMultiTag";
+import SliderButton from "@/Pages/Auth/Admin/Bimbingan/Product/Components/SliderButton";
+import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
+import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
+import StarRating from "@/Pages/Auth/User/Components/StarRating";
 import { phoneNumberFormat } from "@/script/utils";
+import { router, useForm } from "@inertiajs/react";
+import React from "react";
+import { createPortal } from "react-dom";
+import { FaWhatsappSquare } from "react-icons/fa";
+import { RxFileText } from "react-icons/rx";
+import FileMediaPopup from "../components/FileMediaPopup";
 
 export default function Edit({ auth, progress, tutors }) {
+    const item = [
+        {
+            url: "https://www.google.com",
+            name: "File Name",
+        },
+    ];
+
+    console.log(progress);
+
+    const [isShow, setIsShow] = React.useState({
+        orderDetails: false,
+        tutorDetails: false,
+    });
     const { data, setData, post, transform } = useForm({
         add_on: progress.add_ons ?? undefined,
         username: progress.user.username,
@@ -51,8 +66,24 @@ export default function Edit({ auth, progress, tutors }) {
         >
             {/* {isLoading && <LoadingUI />} */}
             <div className="space-y-[1.6vw]">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                     <Breadcrumb level={2} isSlug />
+
+                    {/* Popup Area  */}
+                    {createPortal(
+                        <FileMediaPopup
+                            show={isShow.orderDetails || isShow.tutorDetails}
+                            setShow={() => setIsShow({
+                                orderDetails: false,
+                                tutorDetails: false,
+                            })}
+                            // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
+                            files={item}
+                        />,
+                        document.body
+                    )}
+
+                    {/* Popup Area  */}
 
                     <div className="space-x-[.8vw]">
                         <GoalsButton
@@ -143,7 +174,7 @@ export default function Edit({ auth, progress, tutors }) {
                                     )}`}
                                     target="_blank"
                                 >
-                                    <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
+                                    <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
                                 </a>
                             </div>
                             <div className="flex gap-[.4vw] w-full items-end">
@@ -175,7 +206,7 @@ export default function Edit({ auth, progress, tutors }) {
                                     )}`}
                                     target="_blank"
                                 >
-                                    <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
+                                    <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
                                 </a>
                             </div>
                         </FormSection>
@@ -203,7 +234,12 @@ export default function Edit({ auth, progress, tutors }) {
                         <FormSection
                             title="Order Details"
                             titleAction={
-                                <button className="flex items-center gap-[.4vw] text-[.8vw] text-primary">
+                                <button
+                                    onClick={() =>
+                                        setIsShow({ orderDetails: true })
+                                    }
+                                    className="flex items-center gap-[.4vw] text-[.8vw] text-primary"
+                                >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
                                 </button>
@@ -308,7 +344,12 @@ export default function Edit({ auth, progress, tutors }) {
                         <FormSection
                             title="Tutor Information"
                             titleAction={
-                                <button className="flex items-center gap-[.4vw] text-[.8vw] text-primary">
+                                <button
+                                    onClick={() =>
+                                        setIsShow({ tutorDetails: true })
+                                    }
+                                    className="flex items-center gap-[.4vw] text-[.8vw] text-primary"
+                                >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
                                 </button>

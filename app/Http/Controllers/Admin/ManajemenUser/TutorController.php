@@ -160,6 +160,7 @@ class TutorController extends Controller
                 $tutor->profile->update($validatedData);
             }
 
+
             if ($request->hasFile('profile_image')) {
 
                 if ($tutor->profile_image) {
@@ -174,7 +175,7 @@ class TutorController extends Controller
             $tutor->skills()->detach();
             $tutor->skills()->attach($validatedData['skills']);
 
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update success'], 200);
+            return redirect()->route('admin.manajemen_user.tutor.index');
 
         } catch (ValidationException $e) {
             return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->validator->errors()], 422);
