@@ -42,6 +42,7 @@ function SelectInput({
                 </p>
             )}
             <button
+                type="button"
                 disabled={disabled}
                 className={`flex disabled:bg-gray-100 disabled:border-gray-300 disabled:cursor-default justify-between items-center flex-wrap gap-[1vw] rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] px-[3vw] md:px-[1vw] cursor-pointer text-[.83vw] border w-full border-neutral-50 ${
                     value !== "" ? filledClassName : emptyClassName

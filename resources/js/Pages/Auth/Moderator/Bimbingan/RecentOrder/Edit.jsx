@@ -1,24 +1,18 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
-import GoalsPopup from "@/Components/elements/GoalsPopup";
+import GoalsTextInput from "@/Components/elements/GoalsTextInput";
+import DashboardLayout from "@/Layouts/DashboardLayout";
 import {
     SelectInput,
     SelectInputItem,
 } from "@/Pages/Auth/Admin/Bimbingan/Product/Components/SelectInput";
-import GoalsTextInput from "@/Components/elements/GoalsTextInput";
-import DashboardLayout from "@/Layouts/DashboardLayout";
 import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
 import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
-import { FileMediaItemBackdrop } from "@/Pages/Auth/User/Bimbingan/layouts/DetailSatuPertemuan";
+import { router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
-import View from "./View";
-import { router, useForm } from "@inertiajs/react";
-import {
-    GoalsSelectInput,
-    GoalsSelectInputItem,
-} from "@/Components/elements/GoalsSelectInput";
+import FileMediaPopup from "../components/FileMediaPopup";
 
 export default function Edit({
     auth,
@@ -27,7 +21,6 @@ export default function Edit({
     places,
     tutors,
 }) {
-    console.log(order);
     const [isShow, setIsShow] = useState(false);
     const [showPlaces, setShowPlaces] = useState(false);
     const {
@@ -36,14 +29,15 @@ export default function Edit({
         patch,
     } = useForm({
         id: "",
-        place: order.course.place.place,
-        place_id: order.course.place.id,
+        place: order?.course?.place?.place,
+        place_id: order?.course?.place?.id,
         tutor: order.course.tutor.name,
         tutor_id: order.course.tutor.name,
         tutor_phone: order.course.tutor.profile.phone_number,
         date: order.course.date ?? "",
         time: order.course.time ?? "",
     });
+
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -53,7 +47,7 @@ export default function Edit({
         >
             {/* {isLoading && <LoadingUI />} */}
             <div className="space-y-[1.6vw]">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                     <Breadcrumb level={3} isLastHidden />
 
                     <div className="space-x-[.8vw]">
@@ -89,7 +83,7 @@ export default function Edit({
                 </div>
 
                 {createPortal(
-                    <DownloadLampiranPopup
+                    <FileMediaPopup
                         show={isShow}
                         setShow={() => setIsShow(!isShow)}
                         items={order.file_uploads}
@@ -135,7 +129,7 @@ export default function Edit({
                                 }`}
                                 target="_blank"
                             >
-                                <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
+                                <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
                             </a>
                         </div>
                         <div className="flex gap-[.4vw] w-full items-end">
@@ -166,7 +160,7 @@ export default function Edit({
                                 href={`wa.me/${formData.tutor_phone}`}
                                 target="_blank"
                             >
-                                <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
+                                <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
                             </a>
                         </div>
                     </FormSection>
@@ -248,24 +242,3 @@ export default function Edit({
         </DashboardLayout>
     );
 }
-
-const DownloadLampiranPopup = ({ show, setShow, items = [] }) => {
-    const item = {
-        title: "File Title",
-        url: "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
-    };
-    console.log(items)
-    return (
-        <GoalsPopup show={show} setShow={setShow}>
-            <h2>File & Media</h2>
-            <div>
-                {items.map((i) => {
-                    <FileMediaItemBackdrop
-                        item={item}
-                        isBackdropVisible={false}
-                    />;
-                })}
-            </div>
-        </GoalsPopup>
-    );
-};

@@ -52,7 +52,7 @@ export default function Progress({ auth, data: recentOrder }) {
                 },
             },
             {
-                accessorKey: "products.category.name",
+                accessorKey: "products.name",
                 header: "Product",
                 Cell: ({ renderedCellValue }) => {
                     return (
