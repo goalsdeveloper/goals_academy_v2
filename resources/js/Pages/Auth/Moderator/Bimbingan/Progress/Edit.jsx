@@ -29,7 +29,7 @@ export default function Edit({ auth, progress, tutors }) {
         },
     ];
 
-    console.log(progress)
+    console.log(progress);
 
     const [isShow, setIsShow] = React.useState({
         orderDetails: false,
@@ -72,8 +72,11 @@ export default function Edit({ auth, progress, tutors }) {
                     {/* Popup Area  */}
                     {createPortal(
                         <FileMediaPopup
-                            show={isShow}
-                            setShow={setIsShow}
+                            show={show.orderDetails || show.tutorDetails}
+                            setShow={() => setIsShow({
+                                orderDetails: false,
+                                tutorDetails: false,
+                            })}
                             // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
                             files={item}
                         />,
@@ -367,5 +370,3 @@ export default function Edit({ auth, progress, tutors }) {
         </DashboardLayout>
     );
 }
-
-

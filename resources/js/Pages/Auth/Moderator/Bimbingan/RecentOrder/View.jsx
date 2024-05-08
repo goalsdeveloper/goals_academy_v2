@@ -9,15 +9,18 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
+import FileMediaPopup from "../components/FileMediaPopup";
 
 const View = ({ tipe = "bimbingan", detailOrder }) => {
     const [isShow, setIsShow] = useState(false);
+
     return (
         <>
             {createPortal(
-                <DownloadLampiranPopup
+                <FileMediaPopup
                     show={isShow}
                     setShow={() => setIsShow(!isShow)}
+                    files={detailOrder?.course?.file_uploads}
                 />,
                 document.body
             )}
@@ -121,19 +124,3 @@ const View = ({ tipe = "bimbingan", detailOrder }) => {
 };
 
 export default View;
-
-const DownloadLampiranPopup = ({ show, setShow }) => {
-    const item = {
-        title: "File Title",
-        url: "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
-    };
-    return (
-        <GoalsPopup show={show} setShow={setShow}>
-            <h2>File & Media</h2>
-
-            <div>
-                <FileMediaItemBackdrop item={item} isBackdropVisible={false} />
-            </div>
-        </GoalsPopup>
-    );
-};

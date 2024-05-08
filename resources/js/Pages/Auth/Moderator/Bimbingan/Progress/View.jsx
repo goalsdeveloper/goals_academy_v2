@@ -73,8 +73,13 @@ export default function View({ auth, progress, tutors }) {
                 {/* Popup Area  */}
                 {createPortal(
                     <FileMediaPopup
-                        show={isShow}
-                        setShow={setIsShow}
+                        show={isShow.orderDetails || isShow.tutorDetails}
+                        setShow={() =>
+                            setIsShow({
+                                orderDetails: false,
+                                tutorDetails: false,
+                            })
+                        }
                         // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
                         files={item}
                     />,
