@@ -24,7 +24,7 @@ class OrderController extends Controller
                         $query->whereHas('productType', function ($subQuery) {
                             $subQuery->where('type', 'LIKE', '%bimbingan%');
                         });
-                    });
+                    })->orderBy('updated', 'desc');
 
                 // if ($search) {
                 //     $query->whereHas('user', function ($userQuery) use ($search) {

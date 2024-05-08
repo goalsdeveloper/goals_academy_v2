@@ -1,7 +1,6 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import React from "react";
 import { useState } from "react";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import GoalsButton from "@/Components/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import {
@@ -9,47 +8,33 @@ import {
     GoalsSelectMultipleInputItem,
 } from "@/Components/elements/GoalsSelectMultipleInput";
 import GoalsImageUploader from "@/Components/elements/GoalsImageUploader";
-import Breadcrumb from "../../components/Breadcrumb";
-import FormSection from "../../components/layouts/FormSection";
-import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 
-export default function Update({ auth, data }) {
+export default function Setting({ auth, user, skills }) {
+    const [isLoading, setIsLoading] = useState(false);
+
     const {
         data: formData,
         setData: setFormData,
         put,
     } = useForm({
-        // _method: "patch",
-        id: data.tutor.id,
-        name: data.tutor.name ? data.tutor.name : "",
-        username: data.tutor.username ? data.tutor.username : "",
-        phone_number: data.tutor.profile.phone_number
-            ? data.tutor.profile.phone_number
-            : "",
-        email: data.tutor.email ? data.tutor.email : "",
-        university: data.tutor.profile.university
-            ? data.tutor.profile.university
-            : "",
-        major: data.tutor.profile.major ? data.tutor.profile.major : "",
-        linkedin: data.tutor.profile.linkedin_url
-            ? data.tutor.profile.linkedin_url
-            : "",
-        skills: data.tutor.skills.map(i => i.id),
-        soft_skills: data.tutor.skills.filter((i) => i.category == 'soft_skill'),
-        hard_skills: data.tutor.skills.filter((i) => i.category == 'hard_skill'),
+        id: user.id,
+        name: user.name,
+        username: user.username,
+        phone_number: user.profile.phone_number,
+        email: user.email,
+        university: user.profile.university,
+        faculty: user.profile.faculty,
+        major: user.profile.major,
+        linkedin: user.profile.linkedin_url,
+        skills: user.skills.map(i => i.id),
+        soft_skills: user.skills.filter((i) => i.category == 'soft_skill'),
+        hard_skills: user.skills.filter((i) => i.category == 'hard_skill'),
     });
 
     const { data: temp, setData: setTemp } = useForm({
-        name: "",
-        username: "",
-        phone_number: "",
-        email: "",
-        university: "",
-        major: "",
-        linkedin: "",
-        skills: data.tutor.skills.map(i => i.id),
-        soft_skills:  data.tutor.skills.filter((i) => i.category == 'soft_skill'),
-        hard_skills: data.tutor.skills.filter((i) => i.category == 'hard_skill'),
+        skills: user.skills.map(i => i.id),
+        soft_skills: user.skills.filter((i) => i.category == 'soft_skill'),
+        hard_skills: user.skills.filter((i) => i.category == 'hard_skill'),
     });
 
     const [showForm, setShowForm] = useState({
@@ -57,26 +42,25 @@ export default function Update({ auth, data }) {
         hard_skills: false,
     });
 
-    const handleClick = () => {
-        put(
-            route("admin.manajemen_user.tutor.update", {
-                id: data.tutor.id,
-            }),
-        );
-    };
+   const handleClick = () => {
+       put(
+           route("admin.setting.update", {
+               id: user.id,
+           }),
+       );
+   };
 
     return (
         <DashboardLayout
-            title="Manajemen User"
-            subtitle="Tutor"
-            role="admin"
+            title="Setting"
+            role="tutor"
             auth={auth}
         >
+            {isLoading && <LoadingUI />}
             <div className="space-y-[1.6vw]">
-                <div className="flex justify-between">
-                    <Breadcrumb level={3} except={1} />
-
-                    <div className="space-x-[.8vw]">
+                <div className="flex items-center justify-between">
+                    <p className="font-medium text-[1.2vw]">Update Profile</p>
+                    <div className="flex items-center gap-[.75vw]">
                         <GoalsButton
                             className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[1vw] md:rounded-[.5vw]"
                             activeClassName="bg-transparent border-2 border-green-500 text-green-500 hover:border-green-600"
@@ -94,12 +78,13 @@ export default function Update({ auth, data }) {
                 </div>
 
                 <div className="flex gap-[1.2vw]">
-                    <FormSection>
+                    <div className="bg-white w-full rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
                         <div className="flex gap-[1.2vw]">
-                            <ProfileImage auth={auth} />
+                            <ProfileImage auth={auth} setIsLoading={setIsLoading} />
                             <div className="w-full space-y-[1.2vw]">
                                 <GoalsTextInput
                                     required
+                                    disabled
                                     label="Username"
                                     placeholder="Username"
                                     data={formData.username ?? ""}
@@ -119,7 +104,7 @@ export default function Update({ auth, data }) {
                         <GoalsTextInput
                             required
                             label="Phone Number"
-                            placeholder="Phone Number"
+                            placeholder="08XXXXXXXXXX"
                             data={formData.phone_number ?? ""}
                             setData={(i) => setFormData("phone_number", i)}
                             labelClassName="font-medium"
@@ -132,8 +117,8 @@ export default function Update({ auth, data }) {
                             setData={(i) => setFormData("email", i)}
                             labelClassName="font-medium"
                         />
-                    </FormSection>
-                    <FormSection>
+                    </div>
+                    <div className="bg-white w-full rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
                         <GoalsTextInput
                             required
                             label="University"
@@ -142,14 +127,24 @@ export default function Update({ auth, data }) {
                             setData={(i) => setFormData("university", i)}
                             labelClassName="font-medium"
                         />
-                        <GoalsTextInput
-                            required
-                            label="Major"
-                            placeholder="Major"
-                            data={formData.major ?? ""}
-                            setData={(i) => setFormData("major", i)}
-                            labelClassName="font-medium"
-                        />
+                        <div className="grid grid-cols-2 gap-[1.2vw]">
+                            <GoalsTextInput
+                                required
+                                label="Faculty"
+                                placeholder="Faculty"
+                                data={formData.faculty ?? ""}
+                                setData={(i) => setFormData("faculty", i)}
+                                labelClassName="font-medium"
+                            />
+                            <GoalsTextInput
+                                required
+                                label="Major"
+                                placeholder="Major"
+                                data={formData.major ?? ""}
+                                setData={(i) => setFormData("major", i)}
+                                labelClassName="font-medium"
+                            />
+                        </div>
                         <GoalsTextInput
                             label="Linkedin"
                             placeholder="Linkedin"
@@ -223,7 +218,7 @@ export default function Update({ auth, data }) {
                                     }
                                 }}
                             >
-                                {data.skill.map(
+                                {skills.map(
                                     (item, index) =>
                                         item.category == "soft_skill" && (
                                             <GoalsSelectMultipleInputItem
@@ -329,7 +324,7 @@ export default function Update({ auth, data }) {
                                     }
                                 }}
                             >
-                                {data.skill.map(
+                                {skills.map(
                                     (item, index) =>
                                         item.category == "hard_skill" && (
                                             <GoalsSelectMultipleInputItem
@@ -372,20 +367,27 @@ export default function Update({ auth, data }) {
                                 )}
                             </GoalsSelectMultipleInput>
                         </div>
-                    </FormSection>
+                    </div>
                 </div>
             </div>
         </DashboardLayout>
     );
 }
 
-const ProfileImage = ({ auth }) => {
+const ProfileImage = ({ auth, setIsLoading }) => {
     const [showImageUploader, setShowImageUploader] = useState(false);
     const [profileImage, setProfileImage] = useState(
         auth.user.profile.profile_image
             ? `/storage/${auth.user.profile.profile_image}`
             : "https://mura.cfbf.com/sites/cfbv2/cache/file/B44C718C-17B1-475D-BBDFFD8C4906BAB4.png"
     );
+
+    const submitHandler = (image) => {
+        setIsLoading(true);
+        router.post("/profile_image", { image: image }, {
+            onFinish: () => setIsLoading(false)
+        });
+    }
 
     return (
         <div className="relative flex flex-shrink-0 flex-col gap-[.5vw] self-center h-fit">
@@ -407,8 +409,20 @@ const ProfileImage = ({ auth }) => {
                 setShow={setShowImageUploader}
                 profileImage={profileImage}
                 setProfileImage={setProfileImage}
-                onSubmit={(i) => console.log(i)}
+                onSubmit={submitHandler}
             />
         </div>
     );
 };
+
+function LoadingUI() {
+    return (
+        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+            <img
+                src={logo}
+                alt="Goals Academy"
+                className="w-[6vw] h-[6vw] animate-bounce"
+            />
+        </div>
+    );
+}

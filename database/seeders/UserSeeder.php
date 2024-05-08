@@ -64,6 +64,14 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
         User::create([
+            'name' => 'Mohammad Ilham Arkan',
+            'username' => 'IlhamArkan',
+            'email' => 'ilhamarkan2004@gmail.com',
+            'password' => Hash::make('password'),
+            'user_role' => 'moderator',
+            'email_verified_at' => now(),
+        ]);
+        User::create([
             'name' => 'Naufal Romero',
             'username' => 'rmvs',
             'email' => 'naufalromero@gmail.com',

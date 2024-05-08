@@ -68,13 +68,6 @@ class PurchaseController extends Controller
         $orderData->payment_method_id = $request['purchase_method']['id'];
         $orderData->order_code = $order_code;
 
-        // dd($request->all());
-        $validateData = $request->validate([
-            'schedule' => 'required|date',
-            'init_price' => 'required',
-            'purchase_method' => 'required',
-        ]);
-
         $quantity = 1;
         $discount = 0;
         $responseMidtrans = null;

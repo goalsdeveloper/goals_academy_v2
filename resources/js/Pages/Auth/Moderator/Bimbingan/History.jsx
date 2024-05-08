@@ -30,29 +30,29 @@ export default function History({ auth, order_history: res }) {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "order.user.name",
+                accessorKey: "user.username",
                 header: "Username Customer",
             },
             {
-                accessorKey: "order.products.name",
+                accessorKey: "products.name",
                 header: "Product",
             },
             {
-                accessorKey: "order.created_at",
+                accessorKey: "created_at",
                 header: "Tanggal Pembelian",
                 Cell: ({ cell }) => {
                     return (
                         // <p>{cell.row.original.created_at}</p>
                         <p>
                             {moment(cell.row.original.created_at).format(
-                                "MMMM d, YYYY"
+                                "MMMM D, YYYY"
                             )}
                         </p>
                     );
                 },
             },
             {
-                accessorKey: "order.course.time",
+                accessorKey: "course.time",
                 header: "Waktu Pembelian",
                 Cell: ({ cell }) => {
                     return (
@@ -66,13 +66,13 @@ export default function History({ auth, order_history: res }) {
             },
             {
                 accessorFn: (row) =>
-                    row.order.course?.place ?? "Lokasi Belum Diset",
+                    row.course.place?.place ?? "Lokasi Belum Diset",
                 // accessorKey: "order.course.place",
                 header: "Lokasi",
             },
             {
                 accessorFn: (row) =>
-                    row.order.course?.duration ?? "Durasi Belum Diset",
+                    row.course?.duration ?? "Durasi Belum Diset",
                 // accessorKey: "order.course.duration",
                 header: "Durasi",
             },
@@ -85,7 +85,7 @@ export default function History({ auth, order_history: res }) {
         data: data,
         ...getTableStyling(),
         renderRowActions: ({ row }) => {
-            const { course } = row.original.order;
+            const { course } = row.original;
 
             if (course?.child?.length > 1)
                 return (
@@ -96,8 +96,8 @@ export default function History({ auth, order_history: res }) {
             return (
                 <div className="flex items-center gap-[.8vw]">
                     <Link
-                        href={route("moderator.bimbingan.progress.show", {
-                            progress: course.id,
+                        href={route("moderator.bimbingan.history.show", {
+                            history: course.id,
                         })}
                     >
                         <FiEye className="text-[1.2vw] text-neutral-60" />
@@ -121,7 +121,7 @@ export default function History({ auth, order_history: res }) {
             );
         },
         renderDetailPanel: ({ row }) => {
-            const { child } = row.original.order?.course;
+            const { child } = row.original.course;
 
             if (child?.length < 1) return;
 
@@ -165,7 +165,7 @@ function Card({ className, ...props }) {
 
 function LoadingUI() {
     return (
-        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+        <div className="absolute top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-opacity-50 bg-gray-50">
             <img
                 src={logo}
                 alt="Goals Academy"

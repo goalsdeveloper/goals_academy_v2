@@ -328,14 +328,16 @@ function NavbarExpand({ auth, title, notificationData, profileImage }) {
                             <TECollapseItem className="py-[2vw] px-[3vw] md:py-[1vw] md:px-[1.5vw] gap-[2vw] md:gap-[1vw] text-start bg-white shadow-centered rounded-xl">
                                 <Link
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
-                                    href="/user"
+                                    href={"/"+auth.user.user_role}
+                                    method="GET"
                                 >
                                     <i className="fa-regular fa-circle-user md:text-12 lg:text-20 3xl:text-24"></i>
                                     Dashboard
                                 </Link>
                                 <Link
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
-                                    href="/pengaturan"
+                                    href={auth.user.user_role == "user" ? "/pengaturan" : route(`${auth.user.user_role}.setting.index`)}
+                                    method="GET"
                                 >
                                     <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
                                     Pengaturan
@@ -513,7 +515,8 @@ function AuthDropdownMobile({ show, setShow }) {
                     </div>
                     <div className="grid gap-[8vw]">
                         <Link
-                            href="/user"
+                            href={"/"+auth.user.user_role}
+                            method="GET"
                             className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-[4.25vw]`}
                         >
                             Dashboard
@@ -521,7 +524,8 @@ function AuthDropdownMobile({ show, setShow }) {
                             <i className="fa-solid fa-arrow-up rotate-45 text-[6vw]"></i>
                         </Link>
                         <Link
-                            href="/pengaturan"
+                            href={auth.user.user_role == "user" ? "/pengaturan" : route(`${auth.user.user_role}.setting.index`)}
+                            method="GET"
                             className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-secondary hover:bg-primary p-[4.25vw]`}
                         >
                             Pengaturan

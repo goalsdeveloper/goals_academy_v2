@@ -4,6 +4,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { RxFileText } from "react-icons/rx";
 import { createPortal } from "react-dom";
 import { router } from "@inertiajs/react";
+import { truncateWithEllipsis } from "@/script/utils";
 
 const DetailSatuPertemuan = ({ data, className = "" }) => {
     //TODO DATA BELUM LENGKAP
@@ -42,7 +43,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
         <div className={`md:flex gap-[${gapSize}vw] ${className}`}>
             {/* Informasi detil pembelajaran */}
             <div className="md:border border-neutral-20 w-full rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
-                <h2 className="h4 font-medium text-secondary">
+                <h2 className="font-medium h4 text-secondary">
                     Pelaksanaan Pembelajaran
                 </h2>
                 <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
@@ -70,7 +71,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                         height: `calc(50% - ${gapSize * 0.5}vw)`,
                     }}
                 >
-                    <h2 className="h4 font-medium text-secondary">
+                    <h2 className="font-medium h4 text-secondary">
                         Informasi Tutor
                     </h2>
                     <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
@@ -100,7 +101,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                         height: `calc(50% - ${gapSize * 0.5}vw)`,
                     }}
                 >
-                    <h2 className="h4 font-medium text-secondary">
+                    <h2 className="font-medium h4 text-secondary">
                         File dan media
                     </h2>
 
@@ -129,6 +130,8 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
 
 export default DetailSatuPertemuan;
 
+
+// TODO MOVE THIS TO ROOT COMPONENT
 export const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [blockScroll, allowScroll] = useScrollBlock();
@@ -156,8 +159,9 @@ export const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
             </div>
 
             <div className="flex items-center justify-between w-full">
-                <p className="text-[2.8vw] md:text-[.8vw] text-neutral-80 w-[80%]">
-                    {item.name}
+                <p className="text-[2.8vw] md:text-[.8vw] text-neutral-80 w-[80%] text-start">
+                    {truncateWithEllipsis(item?.name) ||
+                        truncateWithEllipsis(item?.title)}
                 </p>
 
                 <button onClick={handleToggle}>
@@ -168,7 +172,7 @@ export const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
             {isVisible && (
                 <>
                     <button
-                        onClick={() => downloadHandler(item.path)}
+                        onClick={() => downloadHandler(item?.path || item?.url)}
                         className={`h6 font-medium text-neutral-80 px-[5.5vw] py-[3.7vw] md:py-[.8vw] md:px-[1vw] rounded-[1.8vw] md:rounded-[.4vw] shadow-centered-spread absolute -bottom-[70%] right-0 z-[60] bg-white transition-all ${
                             isVisible ? "translate-x-0" : "translate-x-5"
                         }`}

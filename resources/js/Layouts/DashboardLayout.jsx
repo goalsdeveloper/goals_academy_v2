@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Head, Link } from "@inertiajs/react";
 import logo from "/resources/img/icon/goals-6.svg";
 import GoalsButton from "@/Components/GoalsButton";
@@ -335,6 +334,20 @@ export default function DashboardLayout ({ auth, title, subtitle, role, children
         }
     }, []);
 
+    const [showNotification, setShowNotification] = useState(false);
+    const [dataNotification, setDataNotification] = useState(auth.notifications.filter(i => i.data.category != 'Transaksi'));
+
+    useEffect(() => {
+        setInterval(() => {
+            fetch(route('api.notification.get'))
+                .then(response => response.json())
+                .then(response => {
+                    // console.log(response.notifications)
+                    setDataNotification(response.notifications)
+                })
+        }, 5000);
+    }, [])
+
     return (
         <main className="relative flex bg-gray-50 text-dark font-sans">
             <Head title={title} />
@@ -394,9 +407,48 @@ export default function DashboardLayout ({ auth, title, subtitle, role, children
                 <header className="absolute z-50 top-0 w-full h-[5.8vw] flex justify-between items-center bg-gray-50 px-[4.2vw] pt-[2.5vw] pb-[1.75vw] border-b-1">
                     <h1 className="font-poppins font-semibold text-[1.2vw]">{title}</h1>
                     <div id="tools" className="flex gap-[.5vw] text-[1.5vw] text-gray-400">
-                        <FaRegBell />
-                        <IoSettingsOutline />
-                        <ImExit />
+                        <button className="flex justify-end">
+                            <FaRegBell onClick={() => setShowNotification(!showNotification)} />
+                            <TECollapse
+                                show={showNotification}
+                                className="absolute z-10 shadow-none p-1 translate-y-4"
+                            >
+                                {/* profile navbar */}
+                                <TECollapseItem className="w-[30vw] py-[2vw] px-[3vw] md:py-[1vw] md:px-[1.5vw] gap-[2vw] md:gap-[1vw] text-start bg-white shadow-centered rounded-xl">
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-poppins text-[4vw] md:text-[1.25vw]">
+                                            Notifikasi
+                                        </span>
+                                        <Link
+                                            href="/notifikasi"
+                                            className="font-normal text-[4vw] md:text-[1vw] hover:text-secondary"
+                                        >
+                                            Lihat Semua
+                                        </Link>
+                                    </div>
+                                    {dataNotification.length ? (
+                                        dataNotification.map((item, index) => {
+                                            return (
+                                                <NotificationItem
+                                                    key={index}
+                                                    item={item}
+                                                />
+                                            );
+                                        })
+                                    ) : (
+                                        <div className="flex justify-center items-center h-[30vh]">
+                                            Oops.. belum ada notifikasi
+                                        </div>
+                                    )}
+                                </TECollapseItem>
+                            </TECollapse>
+                        </button>
+                        <Link href={route(`${auth.user.user_role}.setting.index`)}>
+                            <IoSettingsOutline />
+                        </Link>
+                        <Link as="button" href="/logout" method="POST">
+                            <ImExit />
+                        </Link>
                     </div>
                 </header>
                 <div className="w-full h-screen pt-[7.5vw] pb-[2vw] px-[4.2vw] overflow-y-auto scrollbar-hidden">
@@ -414,6 +466,36 @@ function NavItem ({ name, href, icon, isActive }) {
             activeClassName={isActive && "bg-white text-dark-indigo"}
             isLink={true}
             href={href}
-        >{icon} {name}</GoalsButton>
+        >
+            {icon} {name}
+        </GoalsButton>
     )
+}
+
+function NotificationItem({ item }) {
+    return (
+        <Link
+            href=""
+            className="relative w-full flex justify-between items-center shadow-centered-spread rounded-[.25vw] p-[4vw] md:p-[1vw] hover:bg-soft"
+        >
+            <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
+                <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[2.5vw] md:text-[.75vw]">
+                    {item.data.category}
+                </span>
+                <div>
+                    <h4 className="text-secondary font-normal font-sans text-[2.5vw] md:text-[1vw] md:mb-[.5vw]">
+                        {item.data.title}
+                    </h4>
+                    <div className="text-[2vw] md:text-[.75vw]">
+                        {item.data.description}
+                    </div>
+                </div>
+            </div>
+            <div
+                className={`${
+                    item.read_at ? "hidden" : ""
+                } bg-secondary rounded-full w-[3vw] h-[3vw] md:w-[.9vw] md:h-[.9vw]`}
+            ></div>
+        </Link>
+    );
 }

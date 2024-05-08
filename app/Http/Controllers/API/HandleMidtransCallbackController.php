@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\CourseStatusEnum;
 use App\Enums\OrderEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
@@ -84,6 +85,7 @@ class HandleMidtransCallbackController extends Controller
                                 'place_id' => $form_result['place_id'] ?? null,
                                 'topic_id' => $form_result['topic'] ?? null,
                                 'session' => ++$session,
+                                'ongoing' =>CourseStatusEnum::WAITING
                             ])
                         );
                     }

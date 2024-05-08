@@ -31,10 +31,6 @@ use App\Http\Controllers\API\ViewsClickAndSalesAmountController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::middleware('auth')->group(function () {
-    Route::get('/notifikasi', [NotificationController::class, 'index'])->name('api.notification.index');
-    Route::get('/notifikasi/{id}', [NotificationController::class, 'readNotification'])->name('api.notification.readNotification');
-});
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');

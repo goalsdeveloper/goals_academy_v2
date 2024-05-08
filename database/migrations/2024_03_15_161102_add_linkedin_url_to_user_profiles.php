@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('user_profiles', function (Blueprint $table) {
             $table->string('linkedin_url')->nullable();
+            $table->string('is_active')->default(true)->nullable();
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('user_profiles', function (Blueprint $table) {
             $table->dropColumn('linkedin_url');
+            $table->dropColumn('is_active');
         });
     }
 };

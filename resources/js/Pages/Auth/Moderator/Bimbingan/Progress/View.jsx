@@ -18,8 +18,20 @@ import SliderButton from "@/Pages/Auth/Admin/Bimbingan/Product/Components/Slider
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import { phoneNumberFormat } from "@/script/utils";
 import { RxFileText } from "react-icons/rx";
+import { createPortal } from "react-dom";
+import FileMediaPopup from "../components/FileMediaPopup";
 
 export default function View({ auth, progress, tutors }) {
+    const item = [
+        {
+            url: "https://www.google.com",
+            name: "File Name",
+        },
+    ];
+    const [isShow, setIsShow] = React.useState({
+        orderDetails: false,
+        tutorDetails: false,
+    });
     const { data, setData, post } = useForm({
         _method: "put",
         add_on: progress.add_ons ?? undefined,
@@ -54,9 +66,27 @@ export default function View({ auth, progress, tutors }) {
         >
             {/* {isLoading && <LoadingUI />} */}
             <div className="space-y-[1.6vw]">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                     <Breadcrumb level={2} overrideLast="View" />
                 </div>
+
+                {/* Popup Area  */}
+                {createPortal(
+                    <FileMediaPopup
+                        show={isShow.orderDetails || isShow.tutorDetails}
+                        setShow={() =>
+                            setIsShow({
+                                orderDetails: false,
+                                tutorDetails: false,
+                            })
+                        }
+                        // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
+                        files={item}
+                    />,
+                    document.body
+                )}
+
+                {/* Popup Area  */}
 
                 <div className=" gap-[1.2vw] grid grid-cols-2">
                     <div className="flex flex-col gap-[1.2vw]">
@@ -167,7 +197,12 @@ export default function View({ auth, progress, tutors }) {
                         <FormSection
                             title="Order Details"
                             titleAction={
-                                <button className="flex items-center gap-[.4vw] text-[.8vw] text-primary">
+                                <button
+                                    onClick={() =>
+                                        setIsShow({ orderDetails: true })
+                                    }
+                                    className="flex items-center gap-[.4vw] text-[.8vw] text-primary"
+                                >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
                                 </button>
@@ -274,7 +309,12 @@ export default function View({ auth, progress, tutors }) {
                         <FormSection
                             title="Tutor Information"
                             titleAction={
-                                <button className="flex items-center gap-[.4vw] text-[.8vw] text-primary">
+                                <button
+                                    onClick={() =>
+                                        setIsShow({ tutorDetails: true })
+                                    }
+                                    className="flex items-center gap-[.4vw] text-[.8vw] text-primary"
+                                >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
                                 </button>

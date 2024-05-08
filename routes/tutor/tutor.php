@@ -1,14 +1,16 @@
 <?php
 
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Tutor\HistoryController;
 use App\Http\Controllers\Tutor\ProfileController;
+use App\Http\Controllers\Tutor\SettingController;
 use App\Http\Controllers\Tutor\OverviewController;
 use App\Http\Controllers\Tutor\ProgressController;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::middleware(['auth', 'tutor'])->group(function () {
     Route::prefix('tutor')->name('tutor.')->group(function () {
+        Route::get('/', [OverviewController::class, 'index'])->name('index');
         Route::get('overview', [OverviewController::class, 'index']);
         Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
             Route::patch('progress/tutor-approve/{progress}', [ProgressController::class, 'tutorApprove'])->name('tutor.tutorApprove');
@@ -18,6 +20,7 @@ Route::middleware(['auth', 'tutor'])->group(function () {
         });
         Route::get('profile', [ProfileController::class, 'index'])->name('tutor.profile');
         Route::put('profile', [ProfileController::class, 'update'])->name('tutor.update');
+        Route::resource('setting', SettingController::class);
     });
 
 });
