@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tutor;
 
+use App\Enums\CourseStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\FileUpload;
@@ -26,7 +27,8 @@ class ProgressController extends Controller
                 $user = Auth::user();
                 $perPage = $request->input('perPage', 10);
                 $search = $request->search;
-                $tutor = $user->tutor()->when($search, function ($q) use ($search) {
+                $tutor = $user->tutor()->where('is_moderator', false)->where('ongoing', '!=', CourseStatusEnum::SUCCESS)
+                ->when($search, function ($q) use ($search) {
                     $q->where(function ($q) use ($search) {
                         $q->where('time', 'LIKE', '%' . $search . '%')
                             ->orWhere('ongoing', 'LIKE', '%' . $search . '%')
@@ -38,6 +40,7 @@ class ProgressController extends Controller
                         });
                     });
                 })->with('topic:id,topic', 'user:id,username', 'products:id,name')->paginate($perPage);
+                // dd($tutor);
                 return $tutor;
             },
         ]);
@@ -55,16 +58,13 @@ class ProgressController extends Controller
         try {
             $progress->is_tutor = true;
             $progress->update();
+            return redirect()->back();
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'Failed',
                 'messages' => $th->getMessage(),
             ], 500);
         }
-        return response()->json([
-            'status' => 'Success',
-            'messages' => 'Bimbingan Berhasil di Update',
-        ], 200);
     }
 
     public function show(Course $progress)
