@@ -60,4 +60,8 @@ class Products extends Model
     {
         return $this->belongsToMany(Topic::class);
     }
+    public function course()
+    {
+        return $this->hasMany(Course::class);
+    }
 }

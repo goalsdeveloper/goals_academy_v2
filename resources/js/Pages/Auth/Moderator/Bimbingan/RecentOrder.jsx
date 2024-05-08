@@ -10,7 +10,7 @@ import moment from "moment";
 
 export default function RecentOrder({ auth, orders }) {
     orders = orders.data;
-    console.log(orders);
+    // console.log(orders);
     // const [isLoading, setIsLoading] = useState(false);
     const [isShow, setIsShow] = useState(false);
     // const [detailOrder, setDetailOrder] = useState({});
@@ -20,7 +20,11 @@ export default function RecentOrder({ auth, orders }) {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "user.name",
+                accessorKey: "order_code",
+                header: "Order Code",
+            },
+            {
+                accessorKey: "user.username",
                 header: "Username",
             },
             {
@@ -29,7 +33,7 @@ export default function RecentOrder({ auth, orders }) {
             },
             {
                 accessorFn: (row) =>
-                    moment(row.created_at).format("MMMM d, YYYY"),
+                    moment(row.created_at).format("MMMM D, YYYY"),
                 header: "Tanggal Pembelian",
             },
             {
@@ -37,11 +41,11 @@ export default function RecentOrder({ auth, orders }) {
                 header: "Waktu Pembelian",
             },
             {
-                accessorKey: "place.place",
+                accessorKey: "course.place.place",
                 header: "Lokasi",
                 Cell: ({ cell }) => (
                     <span className="text-[.8vw] px-[.8vw] py-[.3vw] font-bold text-danger-40 bg-danger-50 rounded-[.3vw] text-nowrap">
-                        {cell.row.original?.place?.place ??
+                        {cell.row.original.course?.place?.place ??
                             "Lokasi Belum Diset"}
                         {/* <FiCheckCircle className="text-success-50 text-[1.2vw]" /> */}
                     </span>
@@ -115,7 +119,7 @@ export default function RecentOrder({ auth, orders }) {
                         data={orders}
                         isHeadVisible
                         isSortable
-                        isPaginated
+                        isPaginated={false}
                     />
                 </div>
             </div>

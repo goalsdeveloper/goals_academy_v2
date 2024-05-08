@@ -30,29 +30,29 @@ export default function History({ auth, order_history: res }) {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "order.user.name",
+                accessorKey: "user.username",
                 header: "Username Customer",
             },
             {
-                accessorKey: "order.products.name",
+                accessorKey: "products.name",
                 header: "Product",
             },
             {
-                accessorKey: "order.created_at",
+                accessorKey: "created_at",
                 header: "Tanggal Pembelian",
                 Cell: ({ cell }) => {
                     return (
                         // <p>{cell.row.original.created_at}</p>
                         <p>
                             {moment(cell.row.original.created_at).format(
-                                "MMMM d, YYYY"
+                                "MMMM D, YYYY"
                             )}
                         </p>
                     );
                 },
             },
             {
-                accessorKey: "order.course.time",
+                accessorKey: "course.time",
                 header: "Waktu Pembelian",
                 Cell: ({ cell }) => {
                     return (
@@ -66,13 +66,13 @@ export default function History({ auth, order_history: res }) {
             },
             {
                 accessorFn: (row) =>
-                    row.order.course?.place ?? "Lokasi Belum Diset",
+                    row.course.place?.place ?? "Lokasi Belum Diset",
                 // accessorKey: "order.course.place",
                 header: "Lokasi",
             },
             {
                 accessorFn: (row) =>
-                    row.order.course?.duration ?? "Durasi Belum Diset",
+                    row.course?.duration ?? "Durasi Belum Diset",
                 // accessorKey: "order.course.duration",
                 header: "Durasi",
             },
@@ -85,7 +85,7 @@ export default function History({ auth, order_history: res }) {
         data: data,
         ...getTableStyling(),
         renderRowActions: ({ row }) => {
-            const { course } = row.original.order;
+            const { course } = row.original;
 
             if (course?.child?.length > 1)
                 return (
@@ -121,7 +121,7 @@ export default function History({ auth, order_history: res }) {
             );
         },
         renderDetailPanel: ({ row }) => {
-            const { child } = row.original.order?.course;
+            const { child } = row.original.course;
 
             if (child?.length < 1) return;
 

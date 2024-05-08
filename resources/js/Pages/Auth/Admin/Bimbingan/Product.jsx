@@ -18,11 +18,12 @@ import { createPortal } from "react-dom";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
+import { FaRegCheckCircle, FaRegTimesCircle } from "react-icons/fa";
 
 export default function Product({ auth, bimbingan, categories }) {
     const isDesktop = useMediaQuery({ minWidth: 1024 });
     const [show, setShow] = useState(false);
-    const [product, setProduct] = useState()
+    const [product, setProduct] = useState();
 
     async function getBimbinganDetail(id) {
         setProduct(null);
@@ -57,7 +58,11 @@ export default function Product({ auth, bimbingan, categories }) {
 
                 Cell: ({ cell }) => (
                     <span>
-                        <FiCheckCircle className="text-success-50 text-[1.2vw]" />
+                        {cell.row.original.is_visible == 0 ? (
+                            <FaRegTimesCircle className="text-danger-40 text-[1.2vw]" />
+                        ) : (
+                            <FaRegCheckCircle className="text-success-50 text-[1.2vw]" />
+                        )}
                     </span>
                 ),
             },
