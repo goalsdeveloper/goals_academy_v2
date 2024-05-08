@@ -137,7 +137,7 @@ export default function Statistic({ auth, product_type }) {
             })
             .catch((error) => {
                 console.error("Error:", error);
-                setIsLoading(true);
+                setIsLoading(false);
             });
     };
 
@@ -192,33 +192,6 @@ export default function Statistic({ auth, product_type }) {
 
             setUserGrowthDateRange(range);
             getDataUser(range.startDate, range.endDate);
-            // setTimeout(() => {
-            //     let tempUserGrowthLabels = [];
-            //     tempUserGrowthLabels.push(x.format("DD"));
-            //     if (diff) {
-            //         for (let i = 1; i <= -diff; i++) {
-            //             tempUserGrowthLabels.push(x.add(1, "day").format("DD"));
-            //         }
-            //     }
-
-            //     setUserGrowthLabels(tempUserGrowthLabels);
-            //     setUserData(
-            //         tempUserGrowthLabels.map((i) =>
-            //             faker.datatype.number({ min: 50, max: 200 })
-            //         )
-            //     );
-            //     setModeratorData(
-            //         tempUserGrowthLabels.map((i) =>
-            //             faker.datatype.number({ min: 50, max: 200 })
-            //         )
-            //     );
-            //     setTutorData(
-            //         tempUserGrowthLabels.map((i) =>
-            //             faker.datatype.number({ min: 50, max: 200 })
-            //         )
-            //     );
-            //     setIsLoading(false);
-            // }, 3000);
         } else {
             alert("Range tanggal maksimum 1 bulan!");
         }
@@ -374,7 +347,7 @@ export default function Statistic({ auth, product_type }) {
                     product.name
                 );
             } else {
-                if (type.type == "text") {
+                if (type?.type == "text" || type === undefined) {
                     // What to do if user select a date range
                     setFilterData({
                         ...filterData,
@@ -473,7 +446,7 @@ function FilterTools({
                 setShow={(i) => showFormHandler("productType", i)}
                 data={filterData.productType.type}
                 placeholder="Tipe Produk"
-                className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[8.35vw] md:h-[2.1vw] py-[0vw] rounded-[2vw] border-1"
+                className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[8.35vw] md:h-[2.099vw] py-[0vw] rounded-[2vw] border-1"
                 filledClassName=""
                 emptyClassName=""
             >
@@ -494,7 +467,7 @@ function FilterTools({
                 setShow={(i) => showFormHandler("productName", i)}
                 data={filterData.productName}
                 placeholder="Produk"
-                className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[16.25vw] md:h-0 py-[.975vw] rounded-[2vw] border-1"
+                className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[16.25vw] md:h-[2.099vw] py-[0vw] rounded-[2vw] border-1"
                 filledClassName=""
                 emptyClassName=""
             >
