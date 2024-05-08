@@ -16,6 +16,11 @@ class UserProfile extends Model
         'faculty',
         'major',
         'profile_image',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'bool'
     ];
 
     public function user()
