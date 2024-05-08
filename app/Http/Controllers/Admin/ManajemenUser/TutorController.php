@@ -142,41 +142,41 @@ class TutorController extends Controller
     public function update(Request $request, $id)
     {
         try {
-                $tutor = User::findOrFail($id);
-                $validatedData = $request->validate([
-                    'name' => 'string',
-                    'username' => 'string',
-                    'phone_number' => 'string',
-                    'university' => 'string',
-                    'major' => 'string',
-                    'linkedin_url' => 'string',
-                    'skills' => 'array',
-                    'skills.*' => 'exists:skills,id',
-                    'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                ]);
+            $tutor = User::findOrFail($id);
+            $validatedData = $request->validate([
+                'name' => 'string',
+                'username' => 'string',
+                'phone_number' => 'string',
+                'university' => 'string',
+                'major' => 'string',
+                'linkedin_url' => 'string',
+                'skills' => 'array',
+                'skills.*' => 'exists:skills,id',
+                'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
 
-                $tutor->update($validatedData);
+            $tutor->update($validatedData);
 
-                if ($request->has(['phone_number', 'university', 'major', 'linkedin_url'])) {
-                    $tutor->profile->update($validatedData);
+            if ($request->has(['phone_number', 'university', 'major', 'linkedin_url'])) {
+                $tutor->profile->update($validatedData);
+            }
+
+
+            if ($request->hasFile('profile_image')) {
+
+                if ($tutor->profile_image) {
+                    Storage::delete($tutor->profile_image);
                 }
 
+                $profileImagePath = $request->file('profile_image')->store('img/manajemen_user_tutor');
 
-                if ($request->hasFile('profile_image')) {
+                $tutor->profile->update(['profile_image' => $profileImagePath]);
+            }
 
-                    if ($tutor->profile_image) {
-                        Storage::delete($tutor->profile_image);
-                    }
+            $tutor->skills()->detach();
+            $tutor->skills()->attach($validatedData['skills']);
 
-                    $profileImagePath = $request->file('profile_image')->store('img/manajemen_user_tutor');
-
-                    $tutor->profile->update(['profile_image' => $profileImagePath]);
-                }
-
-                $tutor->skills()->detach();
-                $tutor->skills()->attach($validatedData['skills']);
-
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update success'], 200);
+            return redirect()->route('admin.manajemen_user.tutor.index');
 
         } catch (ValidationException $e) {
             return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->validator->errors()], 422);

@@ -21,10 +21,12 @@ use App\Http\Controllers\Admin\ManajemenUser\UserController;
 use App\Http\Controllers\Admin\Marketing\AffiliateController;
 use App\Http\Controllers\Admin\Marketing\VoucherController;
 use App\Http\Controllers\Admin\OverviewController as AdminOverviewController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
 use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
 use App\Http\Controllers\Admin\Webinar\WebinarController;
+use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\DashboardUserController;
 // use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\EmailDiskonController;
@@ -33,11 +35,13 @@ use App\Http\Controllers\Moderator\Bimbingan\ModeratorHistoryBimbinganController
 use App\Http\Controllers\Moderator\Bimbingan\ModeratorOrderController;
 use App\Http\Controllers\Moderator\Bimbingan\ProgressController;
 use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
+use App\Http\Controllers\Moderator\SettingController as ModeratorSettingController;
 use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
 use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
+use App\Http\Controllers\Tutor\OverviewController;
 use App\Models\TutorNote;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
@@ -115,6 +119,7 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
 });
 
 Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(function () {
+    Route::get('/', [AdminOverviewController::class, 'index'])->name('index');
     Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
         Route::resource('category', CategoryController::class);
         Route::resource('addon', AddOnController::class);
@@ -154,9 +159,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
     });
     Route::resource('overview', AdminOverviewController::class);
     Route::resource('statistic', StatisticController::class);
+    Route::resource('setting', SettingController::class);
 });
 
 Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')->group(function () {
+    Route::get('/', [ModeratorOverviewController::class, 'index'])->name('index');
     Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
         Route::resource('order', ModeratorOrderController::class)->parameters(['order' => 'order:order_code']);
         // Route::get('order/edit/{order}', [ModeratorOrderController::class, 'edit'])->name('order.edit');
@@ -172,6 +179,7 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')-
         Route::resource('schedule', ModeratorScheduleTutorController::class);
     });
     Route::resource('overview', ModeratorOverviewController::class);
+    Route::resource('setting', ModeratorSettingController::class);
 });
 
 require __DIR__ . '/profile/profile.php';
