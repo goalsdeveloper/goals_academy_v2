@@ -72,7 +72,7 @@ export default function Edit({ auth, progress, tutors }) {
                     {/* Popup Area  */}
                     {createPortal(
                         <FileMediaPopup
-                            show={show.orderDetails || show.tutorDetails}
+                            show={isShow.orderDetails || isShow.tutorDetails}
                             setShow={() => setIsShow({
                                 orderDetails: false,
                                 tutorDetails: false,
