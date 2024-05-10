@@ -9,9 +9,11 @@ import {
 import moment from "moment";
 import { useEffect, useMemo, useState } from "react";
 import { FiEye } from "react-icons/fi";
-import { BottomPaginationTable, getTableStyling } from "./Progress";
+import {  getTableStyling } from "./Progress";
 import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 import DateTimeComp from "./components/DateTimeComp";
+import SubHeading from "../../Admin/components/SubHeading";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 
 export default function History({ auth, order_history: res }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
@@ -30,7 +32,7 @@ export default function History({ auth, order_history: res }) {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "order.user.username",
+                accessorKey: "user.username",
                 header: "Username Cust",
                 Cell: ({ renderedCellValue }) => {
                     return (
@@ -54,7 +56,7 @@ export default function History({ auth, order_history: res }) {
             {
                 accessorKey: "date",
                 header: "Tanggal & Waktu Bimbingan",
-                Cell: ({ renderedCellValue, cell }) => {
+                Cell: ({ cell }) => {
                     const course = cell.row.original.course;
 
                     if (course?.date == null && course?.time == null)
@@ -73,13 +75,12 @@ export default function History({ auth, order_history: res }) {
                 },
             },
             {
-                accessorFn: (row) =>
-                    row.order.course?.place ?? "Lokasi Belum Diset",
+                accessorFn: (row) => row.course?.place ?? "Lokasi Belum Diset",
                 header: "Lokasi",
             },
             {
                 accessorFn: (row) =>
-                    row.order.course?.duration_per_meet ?? "Durasi Belum Diset",
+                    row.course?.duration_per_meet ?? "Durasi Belum Diset",
                 header: "Durasi",
             },
         ],
@@ -90,7 +91,8 @@ export default function History({ auth, order_history: res }) {
         columns,
         data: data,
         ...getTableStyling(),
-        // enableTableHead: false,
+        manualPagination: true,
+        rowCount: per_page,
         renderRowActions: ({ row }) => {
             const { course } = row.original;
 
@@ -145,7 +147,7 @@ export default function History({ auth, order_history: res }) {
         >
             {/* {isLoading && <LoadingUI />} */}
             <div className="space-y-[1.6vw]">
-                <h2 className="font-medium">History</h2>
+                <SubHeading title="History" />
                 <div className="text-[.8vw] bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
                     <GoalsTextInput
                         placeholder="🔍 Search"
@@ -162,7 +164,7 @@ export default function History({ auth, order_history: res }) {
 }
 
 function HistoryDetailPanel({ row }) {
-    const { course } = row.original?.order;
+    const { course } = row.original;
 
     if (course && course.child && course.child.length > 0) {
         const firstSession = {
@@ -219,7 +221,8 @@ function HistoryDetailPanel({ row }) {
                             duration: {
                                 value: (
                                     <p className="">
-                                        {item.duration_per_meet ?? "Durasi Belum Diset"}
+                                        {item.duration_per_meet ??
+                                            "Durasi Belum Diset"}
                                     </p>
                                 ),
                             },

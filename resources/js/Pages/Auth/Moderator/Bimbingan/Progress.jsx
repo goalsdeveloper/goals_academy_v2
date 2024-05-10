@@ -4,7 +4,14 @@ import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { getPaginationPages, upperCaseFirstLetter } from "@/script/utils";
 import { Link, router, useForm } from "@inertiajs/react";
-import { Table, TableBody, TableCell, TableRow } from "@mui/material";
+import {
+    MenuItem,
+    Select,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+} from "@mui/material";
 import {
     MaterialReactTable,
     useMaterialReactTable,
@@ -16,6 +23,8 @@ import { statusClassMap } from "../../User/RiwayatTransaksi/components/Transacti
 import SubHeading from "../../Admin/components/SubHeading";
 import { useEffect } from "react";
 import DateTimeComp from "./components/DateTimeComp";
+import SelectInput from "@mui/material/Select/SelectInput";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 
 export default function Progress({ auth, data: recentOrder }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
@@ -41,17 +50,17 @@ export default function Progress({ auth, data: recentOrder }) {
 
     const columns = useMemo(
         () => [
-            {
-                accessorKey: "order_code",
-                header: "Order Code",
-                Cell: ({ renderedCellValue }) => {
-                    return (
-                        <p className="text-[.8vw] font-medium">
-                            {renderedCellValue}
-                        </p>
-                    );
-                },
-            },
+            // {
+            //     accessorKey: "order_code",
+            //     header: "Order Code",
+            //     Cell: ({ renderedCellValue }) => {
+            //         return (
+            //             <p className="text-[.8vw] font-medium">
+            //                 {renderedCellValue}
+            //             </p>
+            //         );
+            //     },
+            // },
             {
                 accessorKey: "user.username",
                 header: "Username Cust",
@@ -167,6 +176,8 @@ export default function Progress({ auth, data: recentOrder }) {
         columns,
         data: data,
         ...getTableStyling(),
+        manualPagination: true,
+        rowCount: per_page,
         renderRowActions: ({ row }) => {
             const { course } = row.original;
 
@@ -544,55 +555,6 @@ export const DropdownDetailPanel = ({
             </Table>
         );
     }
-};
-
-export const BottomPaginationTable = ({
-    from,
-    to,
-    total,
-    pages,
-    per_page,
-    current_page,
-    keyword,
-}) => {
-    return (
-        <div className="flex items-center justify-between mt-8 text-[.8vw]">
-            <p className="text-[.8vw] text-neutral-50">
-                Showing {from} to {to} of {total} results
-            </p>
-            <div className="flex items-center gap-[1.6vw]">
-                {pages?.map((link, index) => {
-                    return (
-                        <button
-                            key={index}
-                            className="text-[.8vw] text-neutral-60 "
-                            // disabled={pages.length <= 3}
-                            onClick={() =>
-                                router.get(
-                                    link.url +
-                                        (keyword != null
-                                            ? `&search=${keyword}`
-                                            : "")
-                                )
-                            }
-                        >
-                            <div
-                                dangerouslySetInnerHTML={{
-                                    __html: link.label,
-                                }}
-                                className={`
-                                            ${
-                                                link.label == current_page &&
-                                                "font-semibold text-secondary"
-                                            }`}
-                            />
-                        </button>
-                    );
-                })}
-            </div>
-            <p className="text-neutral-50">Items per page {per_page}</p>
-        </div>
-    );
 };
 
 export const getTableStyling = () => {

@@ -5,10 +5,10 @@ import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import SubHeading from "../../Admin/components/SubHeading";
 import { FiEye, FiEdit2, FiThumbsUp } from "react-icons/fi";
 import moment from "moment";
-import { BottomPaginationTable } from "../../Moderator/Bimbingan/Progress";
 import { getPaginationPages } from "@/script/utils";
 import { useEffect } from "react";
 import { useState } from "react";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 
 export default function Progress({ auth, bimbingan }) {
     // const [isLoading, setIsLoading] = useState(false);
@@ -173,7 +173,7 @@ function Card({ className, ...props }) {
 
 function LoadingUI() {
     return (
-        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+        <div className="absolute top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-opacity-50 bg-gray-50">
             <img
                 src={logo}
                 alt="Goals Academy"
