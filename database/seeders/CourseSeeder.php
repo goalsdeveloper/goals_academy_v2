@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\CourseStatusEnum;
 use App\Enums\OrderEnum;
 use App\Models\Course;
 use App\Models\Order;
@@ -22,6 +23,7 @@ class CourseSeeder extends Seeder
                 'user_id' => $value->user_id,
                 'products_id' => $value->products_id,
                 'order_id' => $value->id,
+                'ongoing'=>CourseStatusEnum::WAITING
             ];
             $session = 1;
             $parent = Course::create(array_merge($dataCourse, ['tutor_id' => $tutor->id, 'session' => $session]));

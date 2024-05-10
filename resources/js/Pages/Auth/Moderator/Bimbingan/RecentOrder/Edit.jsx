@@ -32,12 +32,11 @@ export default function Edit({
         place: order?.course?.place?.place,
         place_id: order?.course?.place?.id,
         tutor: order.course.tutor.name,
-        tutor_id: order.course.tutor.name,
+        tutor_id: order.course.tutor.id,
         tutor_phone: order.course.tutor.profile.phone_number,
         date: order.course.date ?? "",
         time: order.course.time ?? "",
     });
-
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -67,10 +66,9 @@ export default function Edit({
                             size="sm"
                             onClick={() =>
                                 patch(
-                                    route(
-                                        "moderator.bimbingan.order.updateOnline",
-                                        { order: order.order_code }
-                                    ),
+                                    route("moderator.bimbingan.order.update", {
+                                        order: order.order_code,
+                                    }),
                                     {
                                         data: formData,
                                     }
@@ -95,7 +93,7 @@ export default function Edit({
                         <GoalsTextInput
                             label="Username"
                             disabled
-                            data={order.user?.name}
+                            data={order.user?.username}
                         />
                         <GoalsTextInput
                             label="University"
@@ -191,51 +189,65 @@ export default function Edit({
                             disabled
                             data={order.course?.topic ?? "Topic belum diset"}
                         />
-                        <SelectInput
-                            value={formData.place}
-                            placeholder="Pilih Lokasi"
-                            label={`Location ${
-                                tipe == "Webinar" ? "Link Zoom" : "Offline"
-                            }`}
-                            required
-                        >
-                            {places.map((option, i) => (
-                                <SelectInputItem
-                                    key={i}
-                                    onClick={() =>
-                                        setFormData({
-                                            ...formData,
-                                            place: option.place,
-                                            place_id: option.id,
-                                        })
-                                    }
+                        {order.products.total_meet == 1 && (
+                            <>
+                                <SelectInput
+                                    value={formData.place}
+                                    placeholder="Pilih Lokasi"
+                                    label={`Location ${
+                                        tipe == "Webinar"
+                                            ? "Link Zoom"
+                                            : "Offline"
+                                    }`}
+                                    required
                                 >
-                                    {option.place + " | " + option.city.city}
-                                </SelectInputItem>
-                            ))}
-                        </SelectInput>
-                        <div className="flex gap-[.4vw]">
-                            <GoalsTextInput
-                                type="date"
-                                label="Date"
-                                data={formData.date}
-                                grow
-                                required
-                                setData={(e) =>
-                                    setFormData({ ...formData, date: e })
-                                }
-                            />
-                            <GoalsTextInput
-                                type="time"
-                                label="Time"
-                                data={formData.time}
-                                setData={(e) =>
-                                    setFormData({ ...formData, time: e })
-                                }
-                                grow
-                                required
-                            />
-                        </div>
+                                    {places.map((option, i) => (
+                                        <SelectInputItem
+                                            key={i}
+                                            onClick={() =>
+                                                setFormData({
+                                                    ...formData,
+                                                    place: option.place,
+                                                    place_id: option.id,
+                                                })
+                                            }
+                                        >
+                                            {option.place +
+                                                " | " +
+                                                option.city.city}
+                                        </SelectInputItem>
+                                    ))}
+                                </SelectInput>
+                                <div className="flex gap-[.4vw]">
+                                    <GoalsTextInput
+                                        type="date"
+                                        label="Date"
+                                        data={formData.date}
+                                        grow
+                                        required
+                                        setData={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                date: e,
+                                            })
+                                        }
+                                    />
+                                    <GoalsTextInput
+                                        type="time"
+                                        label="Time"
+                                        data={formData.time}
+                                        setData={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                time: e,
+                                            })
+                                        }
+                                        grow
+                                        required
+                                    />
+                                </div>
+                            </>
+                        )}
                     </FormSection>
                 </div>
             </div>

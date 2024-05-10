@@ -42,6 +42,17 @@ export default function Progress({ auth, data: recentOrder }) {
     const columns = useMemo(
         () => [
             {
+                accessorKey: "order_code",
+                header: "Order Code",
+                Cell: ({ renderedCellValue }) => {
+                    return (
+                        <p className="text-[.8vw] font-medium">
+                            {renderedCellValue}
+                        </p>
+                    );
+                },
+            },
+            {
                 accessorKey: "user.username",
                 header: "Username Cust",
                 Cell: ({ renderedCellValue }) => {
@@ -542,7 +553,7 @@ export const BottomPaginationTable = ({
     pages,
     per_page,
     current_page,
-    keyword
+    keyword,
 }) => {
     return (
         <div className="flex items-center justify-between mt-8 text-[.8vw]">
@@ -556,7 +567,14 @@ export const BottomPaginationTable = ({
                             key={index}
                             className="text-[.8vw] text-neutral-60 "
                             // disabled={pages.length <= 3}
-                            onClick={() => router.get(link.url + (keyword != null ? `&search=${keyword}` : ''))}
+                            onClick={() =>
+                                router.get(
+                                    link.url +
+                                        (keyword != null
+                                            ? `&search=${keyword}`
+                                            : "")
+                                )
+                            }
                         >
                             <div
                                 dangerouslySetInnerHTML={{

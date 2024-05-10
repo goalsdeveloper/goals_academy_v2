@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Moderator\Bimbingan;
 
+use App\Enums\CourseStatusEnum;
 use App\Enums\UserRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
@@ -24,32 +25,27 @@ class ModeratorOrderController extends Controller
     public function index(Request $request)
     {
         try {
-            $perPage = $request->input('perPage', 10);
+            $perPage = $request->input('perPage', 25);
             $search = $request->input('search');
 
             $query = Order::with([
                 'user:id,username',
-                'user.profile',
-                'products:id,product_type_id,category_id,name',
+                'products:id,product_type_id,category_id,name,total_meet',
                 'products.category:id,name',
                 'products.productType:id,type',
-                'course:id,products_id,order_id,tutor_id,place_id,topic_id,date,time,location',
-                'course.place.city',
-                'course.place',
-                'course.tutor',
-                'course.tutor.profile',
-                'course.topic',
-                'course.fileUploads'
-            ])->whereHas('products', function ($query) {
-                $query->whereHas('productType', function ($subQuery) {
-                    $subQuery->where('type', 'LIKE', '%bimbingan%');
-                });
-            })->where('status', 'Success');
-
-
-            $query->whereHas('course', function ($courseQuery) {
-                $courseQuery->whereNull('tutor_id');
-            });
+                'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id',
+                'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session',
+                'course.tutor'
+            ])
+                ->whereHas('products', function ($query) {
+                    $query->whereHas('productType', function ($subQuery) {
+                        $subQuery->where('type', 'LIKE', '%bimbingan%');
+                    });
+                })
+                ->whereHas('course', function ($courseQuery) {
+                    $courseQuery->where('ongoing', CourseStatusEnum::WAITING);
+                })
+                ->where('status', 'Success');
 
             if ($search) {
                 $query->whereHas('user', function ($userQuery) use ($search) {
@@ -173,17 +169,26 @@ class ModeratorOrderController extends Controller
      */
 
     // $order diambil dari course id(perhatikan name model)
-    public function update(Request $request, Course $order)
+    public function update(Request $request, Order $order)
     {
         try {
-            $validateData = $request->validate([
-                'tutor_id' => 'numeric',
-                'date' => 'date',
-                'time' => 'date_format:H:i',
-                'place_id' => 'numeric',
-            ]);
+            $order = $order->load('products');
 
-            $order->update($validateData);
+            if ($order->products->total_meet > 1) {
+                $validateData = $request->validate([
+                    'tutor_id' => 'numeric',
+                ]);
+                $order->course()->update(array_merge($validateData, ['ongoing' => CourseStatusEnum::ONGOING]));
+            } else {
+                $validateData = $request->validate([
+                    'tutor_id' => 'numeric',
+                    'date' => 'date',
+                    'time' => 'date_format:H:i',
+                    'place_id' => 'numeric',
+                ]);
+                $parent = Course::find($order->course->id);
+                $parent->update(array_merge($validateData, ['ongoing' => CourseStatusEnum::ONGOING]));
+            }
 
             return response()->json([
                 'status' => true,

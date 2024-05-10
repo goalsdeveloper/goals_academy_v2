@@ -41,7 +41,7 @@ export default function History({ auth, order_history: res }) {
                 },
             },
             {
-                accessorKey: "order.products.name",
+                accessorKey: "products.name",
                 header: "Product",
                 Cell: ({ renderedCellValue }) => {
                     return (
@@ -92,7 +92,7 @@ export default function History({ auth, order_history: res }) {
         ...getTableStyling(),
         // enableTableHead: false,
         renderRowActions: ({ row }) => {
-            const { course } = row.original.order;
+            const { course } = row.original;
 
             if (course?.child?.length > 1)
                 return (
@@ -128,7 +128,7 @@ export default function History({ auth, order_history: res }) {
             );
         },
         renderDetailPanel: ({ row }) => {
-            const { child } = row.original.order?.course;
+            const { child } = row.original.course;
 
             if (child?.length < 1) return;
 
