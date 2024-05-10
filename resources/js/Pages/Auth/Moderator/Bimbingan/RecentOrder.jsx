@@ -9,7 +9,7 @@ import View from "./RecentOrder/View";
 import moment from "moment";
 
 export default function RecentOrder({ auth, orders }) {
-    orders = orders.data;
+    orders = orders;
     // console.log(orders);
     // const [isLoading, setIsLoading] = useState(false);
     const [isShow, setIsShow] = useState(false);
