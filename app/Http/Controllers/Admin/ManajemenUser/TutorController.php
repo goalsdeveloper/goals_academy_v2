@@ -155,13 +155,8 @@ class TutorController extends Controller
                 'skills.*' => 'exists:skills,id',
                 'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
-
             $tutor->update($validatedData);
-
-            if ($request->has(['phone_number', 'university', 'faculty', 'major', 'linkedin_url'])) {
-                $tutor->profile->update($validatedData);
-            }
-
+            $tutor->profile->update($validatedData);
 
             if ($request->hasFile('profile_image')) {
 

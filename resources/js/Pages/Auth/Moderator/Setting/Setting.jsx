@@ -402,7 +402,7 @@ const ProfileImage = ({ auth, setIsLoading }) => {
     return (
         <div className="relative flex flex-shrink-0 flex-col gap-[.5vw] self-center h-fit">
             <p className="font-medium">Picture</p>
-            <div className="flex items-center bg-red-500 md:w-[11vw] md:h-[9vw] rounded-[.5vw] cursor-pointer overflow-hidden">
+            <div className="flex items-center bg-bg-gray-500 md:w-[11vw] md:h-[9vw] rounded-[.5vw] cursor-pointer overflow-hidden">
                 <img
                     className="w-full"
                     src={
