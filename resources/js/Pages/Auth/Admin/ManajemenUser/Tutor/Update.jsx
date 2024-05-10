@@ -30,6 +30,7 @@ export default function Update({ auth, data }) {
         university: data.tutor.profile.university
             ? data.tutor.profile.university
             : "",
+        faculty: data.tutor.profile.faculty ? data.tutor.profile.faculty : "",
         major: data.tutor.profile.major ? data.tutor.profile.major : "",
         linkedin: data.tutor.profile.linkedin_url
             ? data.tutor.profile.linkedin_url
@@ -45,6 +46,7 @@ export default function Update({ auth, data }) {
         phone_number: "",
         email: "",
         university: "",
+        faculty: "",
         major: "",
         linkedin: "",
         skills: data.tutor.skills.map(i => i.id),
@@ -142,14 +144,24 @@ export default function Update({ auth, data }) {
                             setData={(i) => setFormData("university", i)}
                             labelClassName="font-medium"
                         />
-                        <GoalsTextInput
-                            required
-                            label="Major"
-                            placeholder="Major"
-                            data={formData.major ?? ""}
-                            setData={(i) => setFormData("major", i)}
-                            labelClassName="font-medium"
-                        />
+                        <div className="grid grid-cols-2 gap-[1.2vw]">
+                            <GoalsTextInput
+                                required
+                                label="Faculty"
+                                placeholder="Faculty"
+                                data={formData.faculty ?? ""}
+                                setData={(i) => setFormData("faculty", i)}
+                                labelClassName="font-medium"
+                            />
+                            <GoalsTextInput
+                                required
+                                label="Major"
+                                placeholder="Major"
+                                data={formData.major ?? ""}
+                                setData={(i) => setFormData("major", i)}
+                                labelClassName="font-medium"
+                            />
+                        </div>
                         <GoalsTextInput
                             label="Linkedin"
                             placeholder="Linkedin"

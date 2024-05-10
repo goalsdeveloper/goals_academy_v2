@@ -148,6 +148,7 @@ class TutorController extends Controller
                 'username' => 'string',
                 'phone_number' => 'string',
                 'university' => 'string',
+                'faculty' => 'string',
                 'major' => 'string',
                 'linkedin_url' => 'string',
                 'skills' => 'array',
@@ -157,7 +158,7 @@ class TutorController extends Controller
 
             $tutor->update($validatedData);
 
-            if ($request->has(['phone_number', 'university', 'major', 'linkedin_url'])) {
+            if ($request->has(['phone_number', 'university', 'faculty', 'major', 'linkedin_url'])) {
                 $tutor->profile->update($validatedData);
             }
 
