@@ -102,7 +102,7 @@ class ModeratorHistoryBimbinganController extends Controller
                 //     'data' => $history_user,
                 // ], 200);
 
-                return Inertia::render('Auth/Moderator/Bimbingan/Progress/View', [
+                return Inertia::render('Auth/Moderator/Bimbingan/History/View', [
                     'progress' => $history_user,
                     'tutors' => $tutors
                 ]);
