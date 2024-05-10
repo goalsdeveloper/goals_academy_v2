@@ -15,6 +15,7 @@ import { FiEdit2, FiEye, FiThumbsUp } from "react-icons/fi";
 import { statusClassMap } from "../../User/RiwayatTransaksi/components/TransactionStatusBadge";
 import SubHeading from "../../Admin/components/SubHeading";
 import { useEffect } from "react";
+import DateTimeComp from "./components/DateTimeComp";
 
 export default function Progress({ auth, data: recentOrder }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
@@ -42,7 +43,7 @@ export default function Progress({ auth, data: recentOrder }) {
         () => [
             {
                 accessorKey: "user.username",
-                header: "Username",
+                header: "Username Cust",
                 Cell: ({ renderedCellValue }) => {
                     return (
                         <p className="text-[.8vw] font-medium">
@@ -93,7 +94,7 @@ export default function Progress({ auth, data: recentOrder }) {
                     if (course?.is_tutor == null || course?.child.length > 1)
                         return;
                     return (
-                        <span className="w-full justify-center items-center">
+                        <span className="items-center justify-center w-full">
                             {course.is_tutor == true ? (
                                 <i className="fa-regular fa-circle-check text-success-50 text-[1.2vw]"></i>
                             ) : (
@@ -113,7 +114,7 @@ export default function Progress({ auth, data: recentOrder }) {
                         return;
                     } else
                         return (
-                            <span className="w-full justify-center items-center">
+                            <span className="items-center justify-center w-full">
                                 {course.is_user == true ? (
                                     <i className="fa-regular fa-circle-check text-success-50 text-[1.2vw]"></i>
                                 ) : (
@@ -267,24 +268,13 @@ export default function Progress({ auth, data: recentOrder }) {
 
 const StatusIcon = ({ isTrue }) => {
     return (
-        <span className="w-full justify-center items-center">
+        <span className="items-center justify-center w-full">
             {isTrue ? (
                 <i className="fa-regular fa-circle-check text-success-50 text-[1.2vw] flex-shrink-0"></i>
             ) : (
                 <i className="fa-regular fa-circle-xmark text-danger-40 text-[1.2vw] flex-shrink-0"></i>
             )}
         </span>
-    );
-};
-
-const DateTimeComp = ({ date, time }) => {
-    if (date == null && time == null) return "-";
-    return (
-        <div className="flex w-full items-center justify-between gap-2">
-            <p>{new Date(date).toLocaleDateString("id-ID")}</p>
-            {/* {time} */}
-            <p>{time ?? "-"}</p>
-        </div>
     );
 };
 
@@ -488,7 +478,7 @@ export const DropdownDetailPanel = ({
                                                 </span>
 
                                                 {note && (
-                                                    <span className="text-info-40 font-medium text-nowrap">
+                                                    <span className="font-medium text-info-40 text-nowrap">
                                                         Need Action
                                                     </span>
                                                 )}
@@ -554,7 +544,6 @@ export const BottomPaginationTable = ({
     current_page,
     keyword
 }) => {
-    console.log(keyword)
     return (
         <div className="flex items-center justify-between mt-8 text-[.8vw]">
             <p className="text-[.8vw] text-neutral-50">
@@ -562,7 +551,6 @@ export const BottomPaginationTable = ({
             </p>
             <div className="flex items-center gap-[1.6vw]">
                 {pages?.map((link, index) => {
-                    console.log(pages);
                     return (
                         <button
                             key={index}
