@@ -254,27 +254,3 @@ export default function Edit({
         </DashboardLayout>
     );
 }
-
-const DownloadLampiranPopup = ({ show, setShow, items = [] }) => {
-    const item = {
-        title: "File Title",
-        url: "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
-    };
-
-    console.log(items, "test");
-
-    if (items.length > 0)
-        return (
-            <GoalsPopup show={show} setShow={setShow}>
-                <h2>File & Media</h2>
-                <div>
-                    {items.map((i) => {
-                        <FileMediaItemBackdrop
-                            item={item}
-                            isBackdropVisible={false}
-                        />;
-                    })}
-                </div>
-            </GoalsPopup>
-        );
-};

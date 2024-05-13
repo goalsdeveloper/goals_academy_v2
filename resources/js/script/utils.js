@@ -48,7 +48,7 @@ export function getPaginationPages({ links, current_page, last_page }) {
     if (current_page - countShowFromCurr == 1) {
         addPage("2");
     } else if (current_page > countShowFromCurr) {
-        pages.push({ label: "...", url: "#" });
+        pages.push({ label: "...", url: null });
     }
 
     if (current_page > 2) {
@@ -66,7 +66,7 @@ export function getPaginationPages({ links, current_page, last_page }) {
     if (current_page + countShowFromCurr == last_page) {
         addPage(`${last_page - 1}`);
     } else if (current_page < last_page - 2) {
-        pages.push({ label: "...", url: "#" });
+        pages.push({ label: "...", url: null });
     }
 
     if (current_page <= last_page) {

@@ -7,9 +7,10 @@ import { Link } from "@inertiajs/react";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
 import View from "./RecentOrder/View";
 import moment from "moment";
+import SubHeading from "../../Admin/components/SubHeading";
 
 export default function RecentOrder({ auth, orders }) {
-    orders = orders.data;
+    orders = orders;
     // console.log(orders);
     // const [isLoading, setIsLoading] = useState(false);
     const [isShow, setIsShow] = useState(false);
@@ -112,7 +113,7 @@ export default function RecentOrder({ auth, orders }) {
                 detailOrder={detailOrder}
             />
             <div className="space-y-[1.6vw]">
-                <h2 className="font-medium">Recent Order</h2>
+                <SubHeading title='Recent Order'/>
                 <div className="text-[.8vw]">
                     <GoalsDashboardTable
                         columns={columns}
@@ -138,7 +139,7 @@ function Card({ className, ...props }) {
 
 function LoadingUI() {
     return (
-        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+        <div className="absolute top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-opacity-50 bg-gray-50">
             <img
                 src={logo}
                 alt="Goals Academy"
