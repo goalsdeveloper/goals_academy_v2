@@ -113,15 +113,15 @@ jobs:
           ACTIVE_RELEASE_PATH: ${{ secrets.TEST_DIR }}/current
           STORAGE_PATH: ${{ secrets.TEST_DIR }}/storage
           BASE_PATH: ${{ secrets.TEST_DIR }}
-          # LARAVEL_ENV: ${{ secrets.ENV_DEPLOY }}
+          LARAVEL_ENV: ${{ secrets.ENV_DEPLOY }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
-          envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
+          envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH,LARAVEL_ENV
           script: |
-            echo ${{ secrets.ENV_DEPLOY }}
+            echo ${LARAVEL_ENV}
             ln -s -f "${BASE_PATH}/.env" "${RELEASE_PATH}"
             ln -s -f "${STORAGE_PATH}" "${RELEASE_PATH}"
             ln -s -f "${RELEASE_PATH}/public" "${BASE_PATH}"
