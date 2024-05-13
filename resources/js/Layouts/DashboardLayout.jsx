@@ -337,16 +337,16 @@ export default function DashboardLayout ({ auth, title, subtitle, role, children
     const [showNotification, setShowNotification] = useState(false);
     const [dataNotification, setDataNotification] = useState(auth.notifications.filter(i => i.data.category != 'Transaksi'));
 
-    useEffect(() => {
-        setInterval(() => {
-            fetch(route('api.notification.get'))
-                .then(response => response.json())
-                .then(response => {
-                    // console.log(response.notifications)
-                    setDataNotification(response.notifications)
-                })
-        }, 5000);
-    }, [])
+    // useEffect(() => {
+    //     setInterval(() => {
+    //         fetch(route('api.notification.get'))
+    //             .then(response => response.json())
+    //             .then(response => {
+    //                 // console.log(response.notifications)
+    //                 setDataNotification(response.notifications)
+    //             })
+    //     }, 5000);
+    // }, [])
 
     return (
         <main className="relative flex bg-gray-50 text-dark font-sans">
