@@ -160,7 +160,6 @@ class ModeratorOrderController extends Controller
             'order' => $order->load('products', 'user', 'user.profile', 'course.place', 'course.tutor', 'course.tutor.profile', 'course.topic', 'course.fileUploads'),
             'places' => fn () => Place::with('city')->get(),
             'tutors' => fn () => User::where('user_role', UserRoleEnum::TUTOR)->with('profile')->get(),
-            'auth' => Auth::user(),
         ]);
     }
 
