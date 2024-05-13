@@ -30,6 +30,7 @@ class SettingController extends Controller
                 'username' => 'string',
                 'phone_number' => 'string',
                 'university' => 'string',
+                'faculty' => 'string',
                 'major' => 'string',
                 'linkedin_url' => 'string',
                 'skills' => 'array',
@@ -37,15 +38,13 @@ class SettingController extends Controller
                 'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
             $user->update($validatedData);
-
-            if ($request->has(['phone_number', 'university', 'major', 'linkedin_url'])) {
-                $user->profile->update($validatedData);
-            }
+            $user->profile->update($validatedData);
 
             $user->skills()->detach();
             $user->skills()->attach($validatedData['skills']);
 
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update success'], 200);
+            return redirect()->back();
+            // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update success'], 200);
 
         } catch (ValidationException $e) {
             return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->validator->errors()], 422);
