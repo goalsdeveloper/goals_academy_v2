@@ -14,7 +14,7 @@ export default function History ({ auth, history }) {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "user.name",
+                accessorKey: "user.username",
                 header: "Username",
                 size: 150,
             },

@@ -13,7 +13,7 @@ export default function Show ({ auth, course }) {
     console.log(course)
     // console.log(data);
     const {data: formData, setData: setFormData} = useForm({
-        username: course.user.name,
+        username: course.user.username,
         university: course.user?.profile?.university,
         major: course.user?.profile?.major,
         topic: course?.topic?.topic,
