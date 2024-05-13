@@ -1,7 +1,7 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import React from "react";
 import { useState } from "react";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import GoalsButton from "@/Components/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import {
@@ -12,8 +12,12 @@ import GoalsImageUploader from "@/Components/elements/GoalsImageUploader";
 import Breadcrumb from "../../components/Breadcrumb";
 import FormSection from "../../components/layouts/FormSection";
 import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
+import logo from "/resources/img/icon/goals-5.svg";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Update({ auth, data }) {
+    const [isLoading, setIsLoading] = useState(false);
+
     const {
         data: formData,
         setData: setFormData,
@@ -30,8 +34,9 @@ export default function Update({ auth, data }) {
         university: data.tutor.profile.university
             ? data.tutor.profile.university
             : "",
+        faculty: data.tutor.profile.faculty ? data.tutor.profile.faculty : "",
         major: data.tutor.profile.major ? data.tutor.profile.major : "",
-        linkedin: data.tutor.profile.linkedin_url
+        linkedin_url: data.tutor.profile.linkedin_url
             ? data.tutor.profile.linkedin_url
             : "",
         skills: data.tutor.skills.map(i => i.id),
@@ -45,8 +50,9 @@ export default function Update({ auth, data }) {
         phone_number: "",
         email: "",
         university: "",
+        faculty: "",
         major: "",
-        linkedin: "",
+        linkedin_url: "",
         skills: data.tutor.skills.map(i => i.id),
         soft_skills:  data.tutor.skills.filter((i) => i.category == 'soft_skill'),
         hard_skills: data.tutor.skills.filter((i) => i.category == 'hard_skill'),
@@ -62,6 +68,9 @@ export default function Update({ auth, data }) {
             route("admin.manajemen_user.tutor.update", {
                 id: data.tutor.id,
             }),
+            {
+                onFinish: () => toast.success("Profile Updated!")
+            }
         );
     };
 
@@ -72,11 +81,12 @@ export default function Update({ auth, data }) {
             role="admin"
             auth={auth}
         >
+            {isLoading && <LoadingUI />}
             <div className="space-y-[1.6vw]">
                 <div className="flex justify-between">
                     <Breadcrumb level={3} except={1} />
 
-                    <div className="space-x-[.8vw]">
+                    <div className="flex items-center gap-[.8vw]">
                         <GoalsButton
                             className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[1vw] md:rounded-[.5vw]"
                             activeClassName="bg-transparent border-2 border-green-500 text-green-500 hover:border-green-600"
@@ -96,7 +106,7 @@ export default function Update({ auth, data }) {
                 <div className="flex gap-[1.2vw]">
                     <FormSection>
                         <div className="flex gap-[1.2vw]">
-                            <ProfileImage auth={auth} />
+                            <ProfileImage auth={data.tutor} />
                             <div className="w-full space-y-[1.2vw]">
                                 <GoalsTextInput
                                     required
@@ -142,19 +152,29 @@ export default function Update({ auth, data }) {
                             setData={(i) => setFormData("university", i)}
                             labelClassName="font-medium"
                         />
-                        <GoalsTextInput
-                            required
-                            label="Major"
-                            placeholder="Major"
-                            data={formData.major ?? ""}
-                            setData={(i) => setFormData("major", i)}
-                            labelClassName="font-medium"
-                        />
+                        <div className="grid grid-cols-2 gap-[1.2vw]">
+                            <GoalsTextInput
+                                required
+                                label="Faculty"
+                                placeholder="Faculty"
+                                data={formData.faculty ?? ""}
+                                setData={(i) => setFormData("faculty", i)}
+                                labelClassName="font-medium"
+                            />
+                            <GoalsTextInput
+                                required
+                                label="Major"
+                                placeholder="Major"
+                                data={formData.major ?? ""}
+                                setData={(i) => setFormData("major", i)}
+                                labelClassName="font-medium"
+                            />
+                        </div>
                         <GoalsTextInput
                             label="Linkedin"
                             placeholder="Linkedin"
-                            data={formData.linkedin ?? ""}
-                            setData={(i) => setFormData("linkedin", i)}
+                            data={formData.linkedin_url ?? ""}
+                            setData={(i) => setFormData("linkedin_url", i)}
                             labelClassName="font-medium"
                         />
                         <div className="grid grid-cols-2 gap-[1.2vw]">
@@ -379,18 +399,28 @@ export default function Update({ auth, data }) {
     );
 }
 
-const ProfileImage = ({ auth }) => {
+const ProfileImage = ({ auth, setIsLoading }) => {
     const [showImageUploader, setShowImageUploader] = useState(false);
     const [profileImage, setProfileImage] = useState(
-        auth.user.profile.profile_image
-            ? `/storage/${auth.user.profile.profile_image}`
+        auth.profile.profile_image
+            ? `/storage/${auth.profile.profile_image}`
             : "https://mura.cfbf.com/sites/cfbv2/cache/file/B44C718C-17B1-475D-BBDFFD8C4906BAB4.png"
     );
+
+    const submitHandler = (image) => {
+        setIsLoading(true);
+        router.post("/profile_image", { image: image }, {
+            onFinish: () => {
+                setIsLoading(false);
+                toast.success("Profile Picture Updated!");
+            }
+        });
+    }
 
     return (
         <div className="relative flex flex-shrink-0 flex-col gap-[.5vw] self-center h-fit">
             <p className="font-medium">Picture</p>
-            <div className="flex items-center bg-red-500 md:w-[11vw] md:h-[9vw] rounded-[.5vw] cursor-pointer overflow-hidden">
+            <div className="flex items-center bg-gray-500 md:w-[11vw] md:h-[9vw] rounded-[.5vw] cursor-pointer overflow-hidden">
                 <img
                     className="w-full"
                     src={
@@ -407,8 +437,20 @@ const ProfileImage = ({ auth }) => {
                 setShow={setShowImageUploader}
                 profileImage={profileImage}
                 setProfileImage={setProfileImage}
-                onSubmit={(i) => console.log(i)}
+                onSubmit={submitHandler}
             />
         </div>
     );
 };
+
+function LoadingUI() {
+    return (
+        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+            <img
+                src={logo}
+                alt="Goals Academy"
+                className="w-[6vw] h-[6vw] animate-bounce"
+            />
+        </div>
+    );
+}

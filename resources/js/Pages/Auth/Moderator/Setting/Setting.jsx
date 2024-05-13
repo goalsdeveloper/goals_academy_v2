@@ -8,6 +8,8 @@ import {
     GoalsSelectMultipleInputItem,
 } from "@/Components/elements/GoalsSelectMultipleInput";
 import GoalsImageUploader from "@/Components/elements/GoalsImageUploader";
+import logo from "/resources/img/icon/goals-5.svg";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Setting({ auth, user, skills }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +27,7 @@ export default function Setting({ auth, user, skills }) {
         university: user.profile.university,
         faculty: user.profile.faculty,
         major: user.profile.major,
-        linkedin: user.profile.linkedin_url,
+        linkedin_url: user.profile.linkedin_url,
         skills: user.skills.map(i => i.id),
         soft_skills: user.skills.filter((i) => i.category == 'soft_skill'),
         hard_skills: user.skills.filter((i) => i.category == 'hard_skill'),
@@ -42,13 +44,16 @@ export default function Setting({ auth, user, skills }) {
         hard_skills: false,
     });
 
-   const handleClick = () => {
-       put(
-           route("admin.setting.update", {
-               id: user.id,
-           }),
-       );
-   };
+    const handleClick = () => {
+        put(
+            route("moderator.setting.update", {
+                id: user.id,
+            }),
+            {
+                onFinish: () => toast.success("Profile Updated!")
+            }
+        );
+    };
 
     return (
         <DashboardLayout
@@ -57,6 +62,7 @@ export default function Setting({ auth, user, skills }) {
             auth={auth}
         >
             {isLoading && <LoadingUI />}
+            <Toaster />
             <div className="space-y-[1.6vw]">
                 <div className="flex items-center justify-between">
                     <p className="font-medium text-[1.2vw]">Update Profile</p>
@@ -64,6 +70,7 @@ export default function Setting({ auth, user, skills }) {
                         <GoalsButton
                             className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[1vw] md:rounded-[.5vw]"
                             activeClassName="bg-transparent border-2 border-green-500 text-green-500 hover:border-green-600"
+                            onClick={() => history.back()}
                         >
                             Batal
                         </GoalsButton>
@@ -148,8 +155,8 @@ export default function Setting({ auth, user, skills }) {
                         <GoalsTextInput
                             label="Linkedin"
                             placeholder="Linkedin"
-                            data={formData.linkedin ?? ""}
-                            setData={(i) => setFormData("linkedin", i)}
+                            data={formData.linkedin_url ?? ""}
+                            setData={(i) => setFormData("linkedin_url", i)}
                             labelClassName="font-medium"
                         />
                         <div className="grid grid-cols-2 gap-[1.2vw]">
@@ -385,14 +392,17 @@ const ProfileImage = ({ auth, setIsLoading }) => {
     const submitHandler = (image) => {
         setIsLoading(true);
         router.post("/profile_image", { image: image }, {
-            onFinish: () => setIsLoading(false)
+            onFinish: () => {
+                setIsLoading(false);
+                toast.success("Profile Picture Updated!");
+            }
         });
     }
 
     return (
         <div className="relative flex flex-shrink-0 flex-col gap-[.5vw] self-center h-fit">
             <p className="font-medium">Picture</p>
-            <div className="flex items-center bg-red-500 md:w-[11vw] md:h-[9vw] rounded-[.5vw] cursor-pointer overflow-hidden">
+            <div className="flex items-center bg-bg-gray-500 md:w-[11vw] md:h-[9vw] rounded-[.5vw] cursor-pointer overflow-hidden">
                 <img
                     className="w-full"
                     src={
