@@ -23,7 +23,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
     const form_result = {
         city: data?.location?.city?.city ?? "Kota Belum Diatur",
         place: data?.location ?? "Lokasi Belum Diatur",
-        topic: data?.topic ?? "Topik Belum Diatur",
+        topic: data?.topic?.topic ?? "Topik Belum Diatur",
         // add_on:
         //     data?.add_ons?.map((item) => item["name"]).join(", ") != ""
         //         ? data?.add_ons?.map((item) => item["name"]).join(", ")
