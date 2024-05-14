@@ -147,6 +147,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
     Route::prefix('manajemen_user')->name('manajemen_user.')->group(function () {
         Route::resource('user', UserController::class)->except(['update', 'create', 'store', 'destroy', 'edit']);
         Route::resource('tutor', TutorController::class);
+        Route::put('tutor/{tutor}/updateActive', [TutorController::class, 'updateActive'])->name('tutor.updateActive');
         Route::resource('moderator', ModeratorController::class);
     });
     Route::prefix('marketing')->name('marketing.')->group(function () {

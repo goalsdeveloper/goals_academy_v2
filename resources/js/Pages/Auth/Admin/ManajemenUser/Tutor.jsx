@@ -40,9 +40,10 @@ export default function Tutor({ auth, data }) {
     });
 
     const callback = (method) => {
-        router.visit(route("admin.bimbingan.tutor.index"), {
+        router.visit(route("admin.manajemen_user.tutor.index"), {
             only: ["data"],
             onSuccess: () => {
+                console.log("berhasil");
                 if (method == "create") {
                     toast.success("Create Success!");
                 } else if (method == "edit") {
@@ -52,6 +53,24 @@ export default function Tutor({ auth, data }) {
                 }
             },
         });
+    };
+
+    const updateActive = (data) => {
+        // Update status tutor dengan menggunakan route
+        console.log("sedang fetching");
+        const is_active = !data.profile.is_active;
+        // console.log("is_active = ", is_active);
+        router.put(
+            route("admin.manajemen_user.tutor.updateActive", {
+                tutor: data.id,
+            }),
+            { is_active: is_active },
+            {
+                onSuccess: callback,
+                preserveScroll: true,
+            }
+        );
+        // callback
     };
 
     const columns = useMemo(
@@ -116,10 +135,10 @@ export default function Tutor({ auth, data }) {
                                 enabledClassName="bg-blue-600"
                                 label=""
                                 size="sm"
-                                isEnabled={cell.row.original.status}
-                                setIsEnabled={(i) => {
-                                    // Update status tutor dengan menggunakan route
-                                }}
+                                isEnabled={cell.row.original.profile.is_active}
+                                setIsEnabled={() =>
+                                    updateActive(cell.row.original)
+                                }
                             />
                         </li>
                     </ul>

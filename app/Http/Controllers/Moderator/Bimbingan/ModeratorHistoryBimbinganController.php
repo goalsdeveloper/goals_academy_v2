@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Moderator\Bimbingan;
 
+use App\Enums\CourseStatusEnum;
 use App\Enums\OrderEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Course;
+use App\Models\Order;
 use App\Models\OrderHistory;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,16 +21,26 @@ class ModeratorHistoryBimbinganController extends Controller
     public function index(Request $request)
     {
         try {
-            $perPage = $request->input('perPage', 10);
+            $perPage = $request->input('perPage', 25);
             $search = $request->input('search');
-            $order = OrderHistory::where('status', 'Success')
-                ->with('order.course')
-                ->limit(10)->get();
-            // dd($order[0]);
+            // $order = OrderHistory::where('status', 'Success')
+            //     ->with('order.course')
+            //     ->limit(10)->get();
+            // // dd($order[0]);
 
-            $query = OrderHistory::where('status', OrderEnum::SUCCESS)->whereHas('order.products.productType', function ($q) {
+            $query = Order::where('status', OrderEnum::SUCCESS)
+            ->whereHas('products.productType', function ($q) {
                 $q->where('type', 'bimbingan');
-            })->with(['order.products:id,name', 'order.user:id,username', 'order.course.child', 'order.course.place']);
+            })
+            ->whereHas('course', function ($q) {
+                $q->where('ongoing', CourseStatusEnum::SUCCESS);
+            })
+            ->with(['products:id,name', 'user:id,username', 'course.child', 'course.place']);
+
+
+            // $query = OrderHistory::where('status', OrderEnum::SUCCESS)->whereHas('order.products.productType', function ($q) {
+            //     $q->where('type', 'bimbingan');
+            // })->with(['order.products:id,name', 'order.user:id,username', 'order.course.child', 'order.course.place']);
             if ($search) {
                 $query->whereHas('order.user', function ($userQuery) use ($search) {
                     $userQuery->where('name', 'LIKE', "%$search%");
@@ -33,6 +48,12 @@ class ModeratorHistoryBimbinganController extends Controller
             }
 
             $order_history = $query->paginate($perPage);
+
+            // return response()->json([
+            //     'status' => false,
+            //     'statusCode' => 500,
+            //     'order_history' => $order_history,
+            // ], 500);
 
             return Inertia::render('Auth/Moderator/Bimbingan/History', [
                 'status' => true,
@@ -68,9 +89,45 @@ class ModeratorHistoryBimbinganController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Course $history)
     {
-        //
+        try {
+            $tutors = User::with('profile')->where("user_role", "tutor")->get();
+            if (Auth::user()->user_role == "moderator") {
+                $history_user = Course::with('user:id,username', 'user.profile:id,user_id,university,major,phone_number,faculty', 'tutor:id,name', 'topic:id,topic', 'place.city', 'order:id,order_code', 'products:id,name', 'fileUploads', 'productReview')->findOrFail($history->id);
+                // return response()->json([
+                //     'status' => true,
+                //     'statusCode' => 200,
+                //     'message' => 'Get data success',
+                //     'data' => $history_user,
+                // ], 200);
+
+                return Inertia::render('Auth/Moderator/Bimbingan/History/View', [
+                    'progress' => $history_user,
+                    'tutors' => $tutors
+                ]);
+            } else {
+                abort(403);
+            }
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 404,
+                'message' => 'Course not found.',
+            ], 404);
+        } catch (AuthorizationException $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 403,
+                'message' => $e->getMessage(),
+            ], 403);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'statusCode' => 500,
+                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

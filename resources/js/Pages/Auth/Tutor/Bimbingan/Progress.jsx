@@ -5,26 +5,35 @@ import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import SubHeading from "../../Admin/components/SubHeading";
 import { FiEye, FiEdit2, FiThumbsUp } from "react-icons/fi";
 import moment from "moment";
-import { BottomPaginationTable } from "../../Moderator/Bimbingan/Progress";
 import { getPaginationPages } from "@/script/utils";
 import { useEffect } from "react";
 import { useState } from "react";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 
 export default function Progress({ auth, bimbingan }) {
     // const [isLoading, setIsLoading] = useState(false);
     const { data, total, from, to, current_page, per_page, last_page, links } =
         bimbingan;
     const [pages, setPages] = useState([]);
-    const [keyword, setKeyword] = useState(new URLSearchParams(window.location.search).get('search'))
-
-    console.log(bimbingan);
+    const [keyword, setKeyword] = useState(
+        new URLSearchParams(window.location.search).get("search")
+    );
 
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
     }, [current_page]);
 
     const onSearchCallback = (search) => {
-        router.visit(route("tutor.bimbingan.progress.index", {search: search}), {
+        router.visit(
+            route("tutor.bimbingan.progress.index", { search: search }),
+            {
+                only: ["bimbingan"],
+            }
+        );
+    };
+
+    const approveCallback = () => {
+        router.visit(route("tutor.bimbingan.progress.index"), {
             only: ["bimbingan"],
         });
     };
@@ -57,19 +66,29 @@ export default function Progress({ auth, bimbingan }) {
             {
                 accessorFn: (row) => moment(row.date + " " + row.time),
                 header: "Status",
-                size: 100,
+                size: 150,
                 Cell: ({ cell }) => {
-                    return moment().diff(cell.getValue(), "s") > 0 ? (
-                        <div className="text-[.9vw] text-center">
-                            <span className="bg-yellow-100 text-yellow-500 py-[.2vw] px-[1vw] rounded">
-                                On Progress
-                            </span>
-                        </div>
-                    ) : (
-                        <div className="text-[.9vw] text-center text-blue-500">
-                            Upcoming
-                        </div>
-                    );
+                    if (moment().diff(cell.getValue(), "s") > 0) {
+                        return !cell.row.original.is_moderator ? (
+                            <div className="text-[.9vw] text-center">
+                                <span className="bg-green-100 text-green-500 rounded">
+                                    Menunggu Konfirmasi
+                                </span>
+                            </div>
+                        ) : (
+                            <div className="text-[.9vw] text-center">
+                                <span className="bg-yellow-100 text-yellow-500 py-[.2vw] px-[1vw] rounded">
+                                    On Progress
+                                </span>
+                            </div>
+                        );
+                    } else {
+                        return (
+                            <div className="text-[.9vw] text-center text-blue-500">
+                                Upcoming
+                            </div>
+                        );
+                    }
                 },
             },
             {
@@ -86,9 +105,25 @@ export default function Progress({ auth, bimbingan }) {
                                         "tutor.bimbingan.tutor.tutorApprove",
                                         cell.row.original.id
                                     )}
+                                    onSuccess={approveCallback}
+                                    disabled={
+                                        cell.row.original.is_tutor ||
+                                        moment().diff(
+                                            cell.row.original.date,
+                                            "s"
+                                        ) < 0 ||
+                                        cell.row.original.date == null
+                                    }
                                     as="button"
                                 >
-                                    <FiThumbsUp className="text-[1.2vw] text-secondary" />
+                                    <FiThumbsUp
+                                        className={
+                                            "text-[1.2vw] " +
+                                            (cell.row.original.is_tutor
+                                                ? "text-success"
+                                                : "text-secondary")
+                                        }
+                                    />
                                 </Link>
                             </li>
                             <li>
@@ -141,7 +176,7 @@ export default function Progress({ auth, bimbingan }) {
                     keyword={keyword}
                     setKeyword={setKeyword}
                     onSearch={(i) => {
-                        onSearchCallback(i)
+                        onSearchCallback(i);
                     }}
                 />
                 <div>
@@ -153,7 +188,7 @@ export default function Progress({ auth, bimbingan }) {
                             pages,
                             per_page,
                             current_page,
-                            keyword
+                            keyword,
                         }}
                     />
                 </div>
@@ -173,7 +208,7 @@ function Card({ className, ...props }) {
 
 function LoadingUI() {
     return (
-        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+        <div className="absolute top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-opacity-50 bg-gray-50">
             <img
                 src={logo}
                 alt="Goals Academy"

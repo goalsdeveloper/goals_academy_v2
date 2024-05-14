@@ -96,7 +96,6 @@ class ProductSeeder extends Seeder
             'active_period' => 30,
             'number_list' => 6,
             'form_config' => [
-                'schedule' => 1,
                 'city' => 1,
                 'place' => 1,
                 'topic' => 1,

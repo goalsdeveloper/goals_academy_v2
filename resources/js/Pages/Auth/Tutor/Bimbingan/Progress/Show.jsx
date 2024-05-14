@@ -12,14 +12,14 @@ export default function Show({ auth, order, files }) {
     console.log(order);
     console.log(files);
     const { data: formData, setData: setFormData } = useForm({
-        username: order.user.username,
-        university: order.user.profile.university,
-        major: order.user.profile.major,
-        topic: order.topic.topic,
-        note: order.note,
-        add_on: order.add_ons,
+        username: order?.user?.username,
+        university: order?.user?.profile?.university,
+        major: order?.user?.profile?.major,
+        topic: order?.topic?.topic,
+        note: order?.note,
+        add_on: order?.add_ons,
         document: [],
-        document_meta: order.file_uploads,
+        document_meta: order?.file_uploads,
         document_deleted: [],
     });
 

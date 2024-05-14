@@ -1,4 +1,3 @@
-import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import {
@@ -14,28 +13,26 @@ import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
 import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
 import StarRating from "@/Pages/Auth/User/Components/StarRating";
 import { phoneNumberFormat } from "@/script/utils";
-import { router, useForm } from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
 import React from "react";
 import { createPortal } from "react-dom";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 
-export default function Edit({ auth, progress, tutors }) {
+export default function View({ auth, progress, tutors }) {
     const item = [
         {
             url: "https://www.google.com",
             name: "File Name",
         },
     ];
-
-    console.log(progress);
-
     const [isShow, setIsShow] = React.useState({
         orderDetails: false,
         tutorDetails: false,
     });
-    const { data, setData, post, transform } = useForm({
+    const { data, setData, post } = useForm({
+        _method: "put",
         add_on: progress.add_ons ?? undefined,
         username: progress.user.username,
         university: progress.user.profile.university ?? "",
@@ -57,88 +54,48 @@ export default function Edit({ auth, progress, tutors }) {
         tutor_id: progress.tutor_id,
     });
 
+    console.log(data);
+
     return (
         <DashboardLayout
             title="Bimbingan"
-            subtitle="Progress"
+            subtitle="History"
             role="moderator"
             auth={auth}
         >
             {/* {isLoading && <LoadingUI />} */}
             <div className="space-y-[1.6vw]">
                 <div className="flex items-center justify-between">
-                    <Breadcrumb level={2} isSlug />
+                    <Breadcrumb level={2} overrideLast="View" />
+                </div>
 
-                    {/* Popup Area  */}
-                    {createPortal(
-                        <FileMediaPopup
-                            show={isShow.orderDetails || isShow.tutorDetails}
-                            setShow={() => setIsShow({
+                {/* Popup Area  */}
+                {createPortal(
+                    <FileMediaPopup
+                        show={isShow.orderDetails || isShow.tutorDetails}
+                        setShow={() =>
+                            setIsShow({
                                 orderDetails: false,
                                 tutorDetails: false,
-                            })}
-                            // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
-                            files={item}
-                        />,
-                        document.body
-                    )}
+                            })
+                        }
+                        // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
+                        files={item}
+                    />,
+                    document.body
+                )}
 
-                    {/* Popup Area  */}
-
-                    <div className="space-x-[.8vw]">
-                        <GoalsButton
-                            variant="success-bordered"
-                            size="sm"
-                            onClick={() =>
-                                router.replace(
-                                    route("moderator.bimbingan.progress.index")
-                                )
-                            }
-                        >
-                            Batal
-                        </GoalsButton>
-                        <GoalsButton
-                            variant="success"
-                            size="sm"
-                            onClick={() => {
-                                transform((data) => ({
-                                    _method: "put",
-                                    tutor_id: data.tutor.id,
-                                    record: data.record,
-                                    is_moderator: data.is_moderator,
-                                    date: data.date,
-                                    time: data.time,
-                                    location: data.location,
-                                }));
-
-                                post(
-                                    route(
-                                        "moderator.bimbingan.progress.update",
-                                        { progress: progress.id }
-                                    ),
-                                    {
-                                        preserveScroll: true,
-                                        onSuccess: () =>
-                                            router.replace(
-                                                route(
-                                                    "moderator.bimbingan.progress.index"
-                                                )
-                                            ),
-                                    }
-                                );
-                            }}
-                        >
-                            Simpan
-                        </GoalsButton>
-                    </div>
-                </div>
+                {/* Popup Area  */}
 
                 <div className=" gap-[1.2vw] grid grid-cols-2">
                     <div className="flex flex-col gap-[1.2vw]">
                         <FormSection
                             title="User Information"
                             titleAction={
-                                <SliderButton label="Moderator confirmation" />
+                                <SliderButton
+                                    label="Moderator confirmation"
+                                    disabled
+                                />
                             }
                             className="h-fit"
                         >
@@ -174,25 +131,30 @@ export default function Edit({ auth, progress, tutors }) {
                                     )}`}
                                     target="_blank"
                                 >
-                                    <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
+                                    <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
                                 </a>
                             </div>
                             <div className="flex gap-[.4vw] w-full items-end">
                                 <SelectInput
                                     label="Tutor"
-                                    value={data.tutor?.name}
+                                    disabled
+                                    value={
+                                        tutors?.find(
+                                            (item) => item.id == data.tutor.id
+                                        ).name
+                                    }
                                     className="w-full"
                                 >
-                                    {tutors.map((item, index) => {
+                                    {tutors?.map((item, index) => {
                                         return (
                                             <SelectInputItem
                                                 key={item.id}
                                                 onClick={() => {
                                                     setData("tutor", item);
-                                                    // setData(
-                                                    //     "tutor_id",
-                                                    //     item.id
-                                                    // );
+                                                    setData(
+                                                        "tutor_id",
+                                                        item.id
+                                                    );
                                                 }}
                                             >
                                                 {item.name}
@@ -206,7 +168,7 @@ export default function Edit({ auth, progress, tutors }) {
                                     )}`}
                                     target="_blank"
                                 >
-                                    <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
+                                    <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
                                 </a>
                             </div>
                         </FormSection>
@@ -310,20 +272,21 @@ export default function Edit({ auth, progress, tutors }) {
                             <GoalsTextInput
                                 label="Location (Link Zoom)"
                                 data={data.location}
+                                disabled
                                 setData={(i) => setData("location", i)}
                             />
                             <div className="flex gap-[.8vw]">
                                 <GoalsTextInput
                                     label="Date"
-                                    type="date"
                                     grow
+                                    disabled
                                     data={data.date}
                                     setData={(i) => setData("date", i)}
                                 />
                                 <GoalsTextInput
                                     label="Time"
-                                    type="time"
                                     grow
+                                    disabled
                                     data={data.time}
                                     setData={(i) => setData("time", i)}
                                 />
@@ -333,6 +296,7 @@ export default function Edit({ auth, progress, tutors }) {
                                 type="file"
                                 className=""
                                 accept="application/pdf"
+                                disabled
                                 onChange={(e) =>
                                     setData({
                                         ...data,
