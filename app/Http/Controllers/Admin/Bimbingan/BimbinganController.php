@@ -187,7 +187,7 @@ class BimbinganController extends Controller
                 $product->form_config = $form_config;
 
                 if ($request->File('product_image')) {
-                    $product->product_image = $request->file('product_image')->store('public/img/program/bimbingan');
+                    $product->product_image = $request->file('product_image')->store('public/product_images/bimbingan');
                 }
                 $product->save();
 
@@ -331,7 +331,7 @@ class BimbinganController extends Controller
                     if ($product->product_image) {
                         Storage::delete($product->product_image);
                     }
-                    $validateData['product_image'] = $request->file('product_image')->store('public/img/program/bimbingan');
+                    $validateData['product_image'] = $request->file('product_image')->store('public/product_images/bimbingan');
                 }
 
                 if (isset($validateData['facilities'])) {
