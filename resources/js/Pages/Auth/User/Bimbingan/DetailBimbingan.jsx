@@ -63,7 +63,7 @@ export default function DetailPesanan({
                     Kembali
                 </Link>
 
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                     {createPortal(
                         <>
                             <SelesaiProgram
@@ -165,7 +165,7 @@ export default function DetailPesanan({
                                         ulasanTutor: true,
                                     })
                                 }
-                                className="w-full whitespace-nowrap scale-y-95"
+                                className="w-full scale-y-95 whitespace-nowrap"
                             >
                                 Beri Ulasan
                             </GoalsButton>
@@ -217,7 +217,7 @@ const SelesaiProgram = ({ show, setShow, order_code }) => {
             className="h-fit md:max-w-[23.5vw]"
         >
             <div className="flex flex-col items-center gap-[7.4vw] md:gap-[2vw]">
-                <h3 className="h4 font-semibold">Selesaikan Bimbingan</h3>
+                <h3 className="font-semibold h4">Selesaikan Bimbingan</h3>
 
                 <p className="text-[3.7vw] md:text-[1vw] text-black text-center">
                     Apakah kamu ingin menyelesaikan bimbingan?
@@ -252,7 +252,7 @@ const UlasanTutor = ({ show, setShow, data, setData }) => {
     return (
         <GoalsPopup show={show} setShow={setShow} className="md:max-w-[23.5vw]">
             <div className="flex flex-col items-center gap-[7.4vw] md:gap-[2vw]">
-                <h3 className="h4 font-medium md:font-semibold">
+                <h3 className="font-medium h4 md:font-semibold">
                     Beri Ulasan Tutor
                 </h3>
 
@@ -310,7 +310,7 @@ const UlasanProgram = ({ show, setShow, data, setData, handleSubmit }) => {
     return (
         <GoalsPopup show={show} setShow={setShow} className="md:max-w-[23.5vw]">
             <div className="flex flex-col items-center gap-[4vw] md:gap-[2vw]">
-                <h3 className="h4 font-semibold">Beri Ulasan Program</h3>
+                <h3 className="font-semibold h4">Beri Ulasan Program</h3>
 
                 <p className="text-[3.7vw] md:text-[1vw] text-black text-center">
                     Bagaimana perasaan kamu setelah <br />

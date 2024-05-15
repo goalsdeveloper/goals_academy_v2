@@ -1,9 +1,9 @@
 import React from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { templateDataDetailBanyakSesi as template } from "../data";
-import { FileMediaItemBackdrop } from "../../Bimbingan/layouts/DetailSatuPertemuan";
 import { getValue } from "@/script/utils";
 import DetailSatuSesi from "./DetailSatuSesi";
+import FileMediaItemBackdrop from "@/Components/fragments/FileMediaItemBackdrop";
 
 const DetailBanyakSesi = ({ data }) => {
     const [showDetail, setShowDetail] = React.useState(null);
@@ -65,7 +65,7 @@ const DetailBanyakSesi = ({ data }) => {
                                             }vw)`,
                                         }}
                                     >
-                                        <h2 className="h4 font-medium text-secondary">
+                                        <h2 className="font-medium h4 text-secondary">
                                             Informasi
                                         </h2>
                                         <ul className="text-black space-y-[1.25vw]">
@@ -96,7 +96,7 @@ const DetailBanyakSesi = ({ data }) => {
                                             }vw)`,
                                         }}
                                     >
-                                        <h2 className="h4 font-medium text-secondary">
+                                        <h2 className="font-medium h4 text-secondary">
                                             File dan media
                                         </h2>
 

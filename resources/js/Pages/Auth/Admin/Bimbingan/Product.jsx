@@ -48,7 +48,7 @@ export default function Product({ auth, bimbingan, categories }) {
                                 cell.row.original.product_image
                             }
                             alt="thumbnail-product"
-                            className="w-[3.6vw] h-[2.6vw] rounded-[.3vw]"
+                            className="w-[3.6vw] h-[2.6vw] rounded-[.3vw] object-contain bg-neutral-20"
                         />
                     );
                 },

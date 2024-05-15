@@ -1,5 +1,5 @@
+import FileMediaItemBackdrop from "@/Components/fragments/FileMediaItemBackdrop";
 import React from "react";
-import { FileMediaItemBackdrop } from "../../Bimbingan/layouts/DetailSatuPertemuan";
 
 const DetailSatuSesi = ({ data, className = "" }) => {
     const gapSize = 1;
@@ -26,7 +26,7 @@ const DetailSatuSesi = ({ data, className = "" }) => {
                     height: `calc(50% - ${gapSize * 0.5}vw)`,
                 }}
             >
-                <h2 className="h4 font-medium text-secondary">Informasi</h2>
+                <h2 className="font-medium h4 text-secondary">Informasi</h2>
                 <ul className="text-black space-y-[1.25vw]">
                     {Object.keys(form_field).map((key) => (
                         <li key={key} className="space-y-[.2vw]">
@@ -48,7 +48,7 @@ const DetailSatuSesi = ({ data, className = "" }) => {
                     height: `calc(50% - ${gapSize * 0.5}vw)`,
                 }}
             >
-                <h2 className="h4 font-medium text-secondary">
+                <h2 className="font-medium h4 text-secondary">
                     File dan media
                 </h2>
 
