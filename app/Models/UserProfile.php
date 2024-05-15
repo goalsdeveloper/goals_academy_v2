@@ -15,6 +15,7 @@ class UserProfile extends Model
         'university',
         'faculty',
         'major',
+        'linkedin_url',
         'profile_image',
         'is_active',
     ];
