@@ -19,8 +19,8 @@ export default function Show ({ auth, course }) {
         topic: course?.topic?.topic,
         note: course.note,
         add_on: course.add_ons,
-        tutor_rating: course.order?.productReview?.rate_tutor,
-        user_note: course.order?.productReview?.note_tutor,
+        tutor_rating: course?.productReview?.rate_tutor,
+        user_note: course?.productReview?.note_tutor,
         document: [],
         document_meta: [
             {
