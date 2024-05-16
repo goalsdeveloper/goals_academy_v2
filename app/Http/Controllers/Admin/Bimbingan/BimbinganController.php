@@ -181,13 +181,13 @@ class BimbinganController extends Controller
                 }
 
                 $facilities = json_decode($validateData['facilities'], true);
-            array_push($facilities);
+                array_push($facilities);
                 $product->facilities = $facilities;
 
                 $product->form_config = $form_config;
 
                 if ($request->File('product_image')) {
-                    $product->product_image = str_replace('public/','', $request->file('product_image')->store('public/product_images/bimbingan'));
+                    $product->product_image = str_replace('public/', '', $request->file('product_image')->store('public/img/program/bimbingan'));
                 }
                 $product->save();
 
@@ -324,20 +324,20 @@ class BimbinganController extends Controller
                     $validateData['form_config'],
                     true
                 );
-                $product->form_config = $form_config;
+                $validateData['form_config'] = $form_config;
 
                 if ($request->hasFile('product_image')) {
                     // Hapus foto lama jika ada
                     if ($product->product_image) {
                         Storage::delete($product->product_image);
                     }
-                    $validateData['product_image'] = str_replace('public/','',$request->file('product_image')->store('public/product_images/bimbingan'));
+                    $validateData['product_image'] = str_replace('public/', '', $request->file('product_image')->store('public/img/program/bimbingan'));
                 }
 
                 if (isset($validateData['facilities'])) {
                     $facilities = json_decode($validateData['facilities'], true);
                     array_push($facilities);
-                    $product->facilities = $facilities;
+                    $validateData['facilities'] = $facilities;
                 }
 
 
