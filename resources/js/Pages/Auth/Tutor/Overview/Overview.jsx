@@ -292,7 +292,7 @@ export default function Overview({
                                 <p className="">Welcome, {user.name} 👋</p>
                                 <p className="text-gray-400">{user.email}</p>
                             </div>
-                            <div className="absolute max-w-full bottom-[1vw] px-[1.25vw]">
+                            <div className="absolute left-0 max-w-full bottom-[1vw] px-[1.25vw]">
                                 <p className="font-medium">Total Earning</p>
                                 <p className="font-bold text-[1.25vw]">Rp {currency.format(totalEarning)}</p>
                             </div>

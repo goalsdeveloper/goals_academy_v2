@@ -446,7 +446,7 @@ function FilterTools({
                 setShow={(i) => showFormHandler("productType", i)}
                 data={filterData.productType.type}
                 placeholder="Tipe Produk"
-                className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[8.35vw] md:h-[2.099vw] py-[0vw] rounded-[2vw] border-1"
+                className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[8.35vw] md:!h-[2.1vw] py-[0vw] rounded-[2vw] border-1"
                 filledClassName=""
                 emptyClassName=""
             >
@@ -467,11 +467,11 @@ function FilterTools({
                 setShow={(i) => showFormHandler("productName", i)}
                 data={filterData.productName}
                 placeholder="Produk"
-                className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[16.25vw] md:h-[2.099vw] py-[0vw] rounded-[2vw] border-1"
+                className="flex-row-reverse md:justify-end gap-[.5vw] text-[.7vw] md:px-[1vw] md:w-[16.25vw] md:!h-[2.1vw] py-[0vw] rounded-[2vw] border-1"
                 filledClassName=""
                 emptyClassName=""
             >
-                {products.map((item, index) => (
+                {products.length > 0 ? products.map((item, index) => (
                     <GoalsSelectInputItem
                         key={index}
                         className="text-[.83vw]"
@@ -485,7 +485,7 @@ function FilterTools({
                     >
                         {item.name}
                     </GoalsSelectInputItem>
-                ))}
+                )) : (<GoalsSelectInputItem className="text-[.83vw] text-gray-400">Pilih Tipe Produk Dahulu</GoalsSelectInputItem>)}
             </GoalsSelectInput>
         </div>
     );
