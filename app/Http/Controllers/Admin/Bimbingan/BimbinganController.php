@@ -187,7 +187,7 @@ class BimbinganController extends Controller
                 $product->form_config = $form_config;
 
                 if ($request->File('product_image')) {
-                    $product->product_image = $request->file('product_image')->store('public/product_images/bimbingan');
+                    $product->product_image = str_replace('public/','', $request->file('product_image')->store('public/img/program/bimbingan'));
                 }
                 $product->save();
 
@@ -234,7 +234,7 @@ class BimbinganController extends Controller
             if (Auth::user()->user_role == "admin") {
 
 
-                if (strcasecmp($product->productType->type, "bimbingan") !== 0) {
+                if (strcasecmp($product->productType->type, "bimbingan") != 0) {
                     return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Product not found'], 404);
                 }
 
@@ -294,7 +294,7 @@ class BimbinganController extends Controller
         try {
             if (Auth::user()->user_role == "admin") {
                 // Jika product tidak bertipe bimbingan
-                if ($product->product_type_id !== 1) {
+                if ($product->product_type_id != 1) {
                     throw new \Exception('Invalid object type');
                 }
 
@@ -331,7 +331,7 @@ class BimbinganController extends Controller
                     if ($product->product_image) {
                         Storage::delete($product->product_image);
                     }
-                    $validateData['product_image'] = $request->file('product_image')->store('public/product_images/bimbingan');
+                    $validateData['product_image'] = str_replace('public/','',$request->file('product_image')->store('public/img/program/bimbingan'));
                 }
 
                 if (isset($validateData['facilities'])) {
@@ -374,7 +374,7 @@ class BimbinganController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                if ($product->product_type_id !== 1) {
+                if ($product->product_type_id != 1) {
                     throw new \Exception('Invalid object type');
                 }
                 if ($product->product_image) {
