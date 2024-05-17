@@ -32,7 +32,6 @@ export default function Product({ auth, bimbingan, categories }) {
         setProduct(data);
     }
 
-    console.log(bimbingan)
 
     const columns = useMemo(
         () => [
@@ -98,13 +97,16 @@ export default function Product({ auth, bimbingan, categories }) {
                                     as="button"
                                     method="DELETE"
                                     onSuccess={() => {
-                                        toast.success(
-                                            "Produk berhasil dihapus"
-                                        );
-                                        router.reload(
-                                            route(
-                                                "admin.bimbingan.product.index"
-                                            )
+                                        router.visit(
+                                            route("admin.bimbingan.product.index"),
+                                            {
+                                                only: ['bimbingan'],
+                                                onSuccess: () => {
+                                                    toast.success(
+                                                        "Produk berhasil dihapus"
+                                                    );
+                                                },
+                                            }
                                         );
                                     }}
                                     href={route(
