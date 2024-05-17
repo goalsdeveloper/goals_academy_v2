@@ -28,6 +28,7 @@ export default function View({ auth, progress, tutors }) {
             name: "File Name",
         },
     ];
+
     const [isShow, setIsShow] = React.useState({
         orderDetails: false,
         tutorDetails: false,
@@ -55,7 +56,7 @@ export default function View({ auth, progress, tutors }) {
         tutor_id: progress.tutor_id,
     });
 
-    console.log(data);
+    console.log(progress);
 
     return (
         <DashboardLayout
@@ -81,7 +82,7 @@ export default function View({ auth, progress, tutors }) {
                             })
                         }
                         // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
-                        files={item}
+                        files={progress.file_uploads}
                     />,
                     document.body
                 )}
@@ -140,13 +141,13 @@ export default function View({ auth, progress, tutors }) {
                                     label="Tutor"
                                     disabled
                                     value={
-                                        tutors?.find(
+                                        (tutors ?? [])?.find(
                                             (item) => item.id == data.tutor.id
                                         ).name
                                     }
                                     className="w-full"
                                 >
-                                    {tutors?.map((item, index) => {
+                                    {(tutors ?? [])?.map((item, index) => {
                                         return (
                                             <SelectInputItem
                                                 key={item.id}
@@ -235,7 +236,7 @@ export default function View({ auth, progress, tutors }) {
                                     setData({ ...data, add_on: [] })
                                 }
                             >
-                                {data.add_on?.map((option, i) => {
+                                {(data.add_on ?? []).map((option, i) => {
                                     return (
                                         <SelectMultiTagItem
                                             key={i}

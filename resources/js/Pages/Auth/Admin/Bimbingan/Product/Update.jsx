@@ -46,10 +46,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
         transform((data) => ({
             _method: "put",
             name: data.name,
-            product_image:
-                typeof data.product_image == File
-                    ? data.product_image
-                    : undefined,
+            product_image: data.product_image.file ?? undefined,
             slug: data.slug,
             category_id: Number(data.category_id.id),
             description: data.description,
@@ -154,7 +151,10 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                 onChange={(e) =>
                                     setData({
                                         ...data,
-                                        product_image: e.target.files[0],
+                                        product_image: {
+                                            url: e.target.value,
+                                            file: e.target.files[0],
+                                        },
                                     })
                                 }
                             />
@@ -166,7 +166,11 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                         label="Nama"
                                         data={data.name}
                                         setData={(e) =>
-                                            setData({ ...data, name: e, slug: toSlug(e) })
+                                            setData({
+                                                ...data,
+                                                name: e,
+                                                slug: toSlug(e),
+                                            })
                                         }
                                         required
                                     />
