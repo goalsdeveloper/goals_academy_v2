@@ -138,6 +138,7 @@ class BimbinganController extends Controller
                     'slug' => 'required|string',
                     'excerpt' => 'required|string',
                     'description' => 'required|string',
+                    'contact_type' => 'required|string',
                     'price' => 'required|numeric',
                     'product_image' => 'image|mimes:png,jpg,jpeg,svg',
                     'is_visible' => 'required|in:0,1',
@@ -186,25 +187,17 @@ class BimbinganController extends Controller
 
                 $product->form_config = $form_config;
 
-                // if ($request->File('product_image')) {
-                //     $product->product_image = str_replace('public/', '', $request->file('product_image')->store('public/img/program/bimbingan'));
-                // }
-
 
                 if ($request->hasFile('product_image')) {
-                    if (!Storage::disk('public')->exists('product/bimbingan')) {
-                        Storage::disk('public')->makeDirectory('product/bimbingan');
+                    if (!Storage::disk('public')->exists('product')) {
+                        Storage::disk('public')->makeDirectory('product');
                     }
                     $image = $validateData['product_image'];
-                    $image = str_replace('data:image/jpeg;base64,', '', $image);
-                    $image = str_replace(' ', '+', $image);
-                    $image = base64_decode($image);
-
-                    $fileName = 'bimbingan' . time() . '.jpeg';
-                    $path = storage_path('/app/public/product/bimbingan/' . $fileName);
-                    file_put_contents($path, $image);
-                    $product->product_image = 'product/bimbingan/' . $fileName;
+                    $fileName = 'bimbingan' . time() . '.' . $image->extension();
+                    $path = Storage::disk('public')->putFileAs('product/bimbingan', $image, $fileName);
+                    $product->product_image = $path;
                 }
+
 
                 $product->save();
 
@@ -322,6 +315,7 @@ class BimbinganController extends Controller
                     'excerpt' => 'string',
                     'description' => 'string',
                     'price' => 'numeric',
+                    'contact_type' => 'string',
                     'product_image' => 'image',
                     'is_visible' => 'in:0,1',
                     'is_facilities' => 'in:0,1',
@@ -353,14 +347,9 @@ class BimbinganController extends Controller
                         Storage::disk('public')->makeDirectory('product/bimbingan');
                     }
                     $image = $validateData['product_image'];
-                    $image = str_replace('data:image/jpeg;base64,', '', $image);
-                    $image = str_replace(' ', '+', $image);
-                    $image = base64_decode($image);
-
-                    $fileName = 'bimbingan' . time() . '.jpeg';
-                    $path = storage_path('/app/public/product/bimbingan/' . $fileName);
-                    file_put_contents($path, $image);
-                    $validateData['product_image'] = 'product/bimbingan/' . $fileName;
+                    $fileName = 'bimbingan' . time() . '.' . $image->extension();
+                    $path = Storage::disk('public')->put('product/bimbingan/' . $fileName, $image);
+                    $validateData['product_image'] = $path;
                 }
 
                 if (isset($validateData['facilities'])) {
