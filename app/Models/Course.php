@@ -30,6 +30,7 @@ class Course extends Model
         'is_tutor',
         'is_moderator',
         'is_user',
+        'duration_per_meet'
     ];
 
     protected $casts = [

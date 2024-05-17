@@ -138,6 +138,7 @@ class BimbinganController extends Controller
                     'slug' => 'required|string',
                     'excerpt' => 'required|string',
                     'description' => 'required|string',
+                    'contact_type' => 'required|string',
                     'price' => 'required|numeric',
                     'product_image' => 'image|mimes:png,jpg,jpeg,svg',
                     'is_visible' => 'required|in:0,1',
@@ -186,9 +187,18 @@ class BimbinganController extends Controller
 
                 $product->form_config = $form_config;
 
-                if ($request->File('product_image')) {
-                    $product->product_image = str_replace('public/', '', $request->file('product_image')->store('public/img/program/bimbingan'));
+
+                if ($request->hasFile('product_image')) {
+                    if (!Storage::disk('public')->exists('product')) {
+                        Storage::disk('public')->makeDirectory('product');
+                    }
+                    $image = $validateData['product_image'];
+                    $fileName = 'bimbingan' . time() . '.' . $image->extension();
+                    $path = Storage::disk('public')->putFileAs('product/bimbingan', $image, $fileName);
+                    $product->product_image = $path;
                 }
+
+
                 $product->save();
 
                 if ($request->filled('addons')) {
@@ -214,14 +224,14 @@ class BimbinganController extends Controller
                 }
                 // }
 
-                // return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil ditambahkan');
-                return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
+                return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil ditambahkan');
+                // return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-            // return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
+            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
         }
     }
 
@@ -305,6 +315,7 @@ class BimbinganController extends Controller
                     'excerpt' => 'string',
                     'description' => 'string',
                     'price' => 'numeric',
+                    'contact_type' => 'string',
                     'product_image' => 'image',
                     'is_visible' => 'in:0,1',
                     'is_facilities' => 'in:0,1',
@@ -326,12 +337,19 @@ class BimbinganController extends Controller
                 );
                 $validateData['form_config'] = $form_config;
 
+
                 if ($request->hasFile('product_image')) {
                     // Hapus foto lama jika ada
                     if ($product->product_image) {
-                        Storage::delete($product->product_image);
+                        Storage::disk('public')->delete($product->product_image);
                     }
-                    $validateData['product_image'] = str_replace('public/', '', $request->file('product_image')->store('public/img/program/bimbingan'));
+                    if (!Storage::disk('public')->exists('product/bimbingan')) {
+                        Storage::disk('public')->makeDirectory('product/bimbingan');
+                    }
+                    $image = $validateData['product_image'];
+                    $fileName = 'bimbingan' . time() . '.' . $image->extension();
+                    $path = Storage::disk('public')->put('product/bimbingan/' . $fileName, $image);
+                    $validateData['product_image'] = $path;
                 }
 
                 if (isset($validateData['facilities'])) {
