@@ -186,9 +186,26 @@ class BimbinganController extends Controller
 
                 $product->form_config = $form_config;
 
-                if ($request->File('product_image')) {
-                    $product->product_image = str_replace('public/', '', $request->file('product_image')->store('public/img/program/bimbingan'));
+                // if ($request->File('product_image')) {
+                //     $product->product_image = str_replace('public/', '', $request->file('product_image')->store('public/img/program/bimbingan'));
+                // }
+
+
+                if ($request->hasFile('product_image')) {
+                    if (!Storage::disk('public')->exists('product/bimbingan')) {
+                        Storage::disk('public')->makeDirectory('product/bimbingan');
+                    }
+                    $image = $validateData['product_image'];
+                    $image = str_replace('data:image/jpeg;base64,', '', $image);
+                    $image = str_replace(' ', '+', $image);
+                    $image = base64_decode($image);
+
+                    $fileName = 'bimbingan' . time() . '.jpeg';
+                    $path = storage_path('/app/public/product/bimbingan/' . $fileName);
+                    file_put_contents($path, $image);
+                    $product->product_image = 'product/bimbingan/' . $fileName;
                 }
+
                 $product->save();
 
                 if ($request->filled('addons')) {
@@ -326,12 +343,24 @@ class BimbinganController extends Controller
                 );
                 $validateData['form_config'] = $form_config;
 
+
                 if ($request->hasFile('product_image')) {
                     // Hapus foto lama jika ada
                     if ($product->product_image) {
-                        Storage::delete($product->product_image);
+                        Storage::disk('public')->delete($product->product_image);
                     }
-                    $validateData['product_image'] = str_replace('public/', '', $request->file('product_image')->store('public/img/program/bimbingan'));
+                    if (!Storage::disk('public')->exists('product/bimbingan')) {
+                        Storage::disk('public')->makeDirectory('product/bimbingan');
+                    }
+                    $image = $validateData['product_image'];
+                    $image = str_replace('data:image/jpeg;base64,', '', $image);
+                    $image = str_replace(' ', '+', $image);
+                    $image = base64_decode($image);
+
+                    $fileName = 'bimbingan' . time() . '.jpeg';
+                    $path = storage_path('/app/public/product/bimbingan/' . $fileName);
+                    file_put_contents($path, $image);
+                    $validateData['product_image'] = 'product/bimbingan/' . $fileName;
                 }
 
                 if (isset($validateData['facilities'])) {
