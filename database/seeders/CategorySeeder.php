@@ -15,33 +15,33 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         Category::create([
-            'name' => 'Dibimbing Tuntas',
-            'slug' => 'dibimbing-tuntas',
+            'name' => 'Paket Pertemuan',
+            'slug' => 'paket-pertemuan',
             'is_visible' => true,
             'description' => 'Dibimbing Skripsi Hingga Tuntas',
             'product_type_id' => 1,
         ]);
         Category::create([
-            'name' => 'Dibimbing Sekali',
-            'slug' => 'dibimbing-sekali',
+            'name' => 'Sekali Pertemuan',
+            'slug' => 'sekali-pertemuan',
             'is_visible' => true,
             'description' => 'Dibimbing sekali online/offline',
             'product_type_id' => 1,
         ]);
-        Category::create([
-            'name' => 'Dibimbing Sekali Online',
-            'slug' => 'dibimbing-sekali-online',
-            'is_visible' => true,
-            'description' => 'Dibimbing secara online',
-            'product_type_id' => 1,
-        ]);
-        Category::create([
-            'name' => 'Dibimbing Sekali Offline',
-            'slug' => 'dibimbing-sekali-offline',
-            'is_visible' => true,
-            'description' => 'Dibimbing secara offline',
-            'product_type_id' => 1,
-        ]);
+        // Category::create([
+        //     'name' => 'Dibimbing Sekali Online',
+        //     'slug' => 'dibimbing-sekali-online',
+        //     'is_visible' => true,
+        //     'description' => 'Dibimbing secara online',
+        //     'product_type_id' => 1,
+        // ]);
+        // Category::create([
+        //     'name' => 'Dibimbing Sekali Offline',
+        //     'slug' => 'dibimbing-sekali-offline',
+        //     'is_visible' => true,
+        //     'description' => 'Dibimbing secara offline',
+        //     'product_type_id' => 1,
+        // ]);
         Category::create([
             'name' => 'Webinar',
             'slug' => 'webinar',
@@ -63,6 +63,5 @@ class CategorySeeder extends Seeder
             'description' => 'Ebook',
             'product_type_id' => 2,
         ]);
-
     }
 }

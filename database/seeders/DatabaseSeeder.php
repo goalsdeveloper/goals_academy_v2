@@ -35,9 +35,9 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             AddOnSeeder::class,
             UserProfileSeeder::class,
-            OrderSeeder::class,
-            CourseSeeder::class,
-            OrderHistorySeeder::class,
+            // OrderSeeder::class,
+            // CourseSeeder::class,
+            // OrderHistorySeeder::class,
             TutorSkillSeeder::class,
             DivisionSeeder::class,
             EducationSeeder::class,
@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        User::factory(50)->create();
+        // User::factory(50)->create();
 
         PromoCode::create([
             'promo_code' => 19283155,

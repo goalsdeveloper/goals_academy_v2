@@ -40,8 +40,7 @@ class HistoryController extends Controller
 
     public function show(Course $history)
     {
-        $course = $history->load('order', 'order.productReview', 'addOns', 'fileUploads', 'user', 'user.profile', 'topic');
-        dd($course);
+        $course = $history->load('productReview', 'addOns', 'fileUploads', 'user', 'user.profile', 'topic');
         $files = FileUpload::where('course_id', $history->parent_id)->get();
         return Inertia::render('Auth/Tutor/Bimbingan/History/Show', [
             'course' => $course,

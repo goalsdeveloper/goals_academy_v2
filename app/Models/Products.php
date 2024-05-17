@@ -28,6 +28,8 @@ class Products extends Model
         'is_visible',
         'is_facilities',
         'number_list',
+        'form_config',
+        'contact_type',
     ];
 
     protected $casts = [

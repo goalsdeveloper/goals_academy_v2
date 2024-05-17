@@ -33,8 +33,8 @@ class PurchaseController extends Controller
     public function index(Products $products)
     {
         // $dataDibimbing = Category::where('slug', 'like', 'dibimbing%')->first()->products;
-        $dataDibimbing = Products::whereHas('category', function ($query) {
-            $query->where('slug', 'LIKE', 'dibimbing%');
+        $dataDibimbing = Products::whereHas('productType', function ($query) {
+            $query->where('type', 'bimbingan');
         })
             ->where('is_visible', true)
             ->with('category', 'productType')->get();

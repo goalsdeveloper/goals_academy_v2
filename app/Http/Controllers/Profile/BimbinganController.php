@@ -25,8 +25,8 @@ class BimbinganController extends Controller
         // dd($user);
         $orderBimbingan = Order::where('user_id', $user->id)
             ->where('status', OrderEnum::SUCCESS->value)
-            ->whereHas('products.category', function ($query) {
-                $query->where('name', 'like', '%dibimbing%');
+            ->whereHas('products.productType', function ($query) {
+                $query->where('type', 'bimbingan');
             })
             ->whereHas('course', function ($q) use ($request) {
                 $q->when($request['status'] == 'berjalan', function ($q) {

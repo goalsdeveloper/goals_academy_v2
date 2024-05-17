@@ -40,6 +40,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
             typeof products.form_config == "object"
                 ? products.form_config
                 : JSON.parse(products.form_config) ?? {},
+        contact_type: products.contact_type,
     });
 
     function handleSubmit() {
@@ -62,6 +63,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
             is_facilities: 0,
             excerpt: data.description,
             form_config: JSON.stringify(data.form_config),
+            contact_type: data.contact_type,
         }));
 
         post(route("admin.bimbingan.product.update", products), {
@@ -203,6 +205,30 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                         {option.name}
                                     </SelectInputItem>
                                 ))}
+                            </SelectInput>
+
+                            <SelectInput
+                                value={data.contact_type}
+                                filledClassName="capitalize"
+                                label="Tipe kontak"
+                                required
+                            >
+                                {["online", "offline", "hybrid", "other"].map(
+                                    (option, i) => (
+                                        <SelectInputItem
+                                            key={i}
+                                            className="capitalize"
+                                            onClick={() =>
+                                                setData({
+                                                    ...data,
+                                                    contact_type: option,
+                                                })
+                                            }
+                                        >
+                                            {option}
+                                        </SelectInputItem>
+                                    )
+                                )}
                             </SelectInput>
 
                             <div className="space-y-[.5vw]">
