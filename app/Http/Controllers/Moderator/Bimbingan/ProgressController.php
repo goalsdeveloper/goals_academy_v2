@@ -265,10 +265,17 @@ class ProgressController extends Controller
                 }
 
                 $validateData = request()->validate([
-                    'duration_per_meet' => 'required|numeric',
+                    'duration_per_meet' => 'required',
                 ]);
 
-                $progress->update(array_merge($validateData, ['ongoing' => 'selesai']));
+                $validateData['duration_per_meet'] = intval($validateData['duration_per_meet']);
+
+                if ($progress->is_tutor == 1) {
+                    $progress->update(array_merge($validateData, ['ongoing' => 'selesai', 'is_moderator' => 1]));
+                } else {
+                    $progress->update(array_merge($validateData, ['is_moderator' => 1]));
+                }
+
                 // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Progress berhasil diperbarui menjadi selesai'], 200);
                 return redirect()->back()->with('success', 'Progress berhasil diperbarui menjadi selesai');
             } else {

@@ -20,7 +20,7 @@ export default function Update({ auth, order, files }) {
         username: order.user.username,
         university: order.user.profile.university,
         major: order.user.profile.major,
-        topic: order.topic.topic,
+        topic: order.topic?.topic,
         note: order.note,
         add_on: order.add_ons,
         document: [],

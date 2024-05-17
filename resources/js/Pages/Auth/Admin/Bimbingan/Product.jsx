@@ -32,6 +32,7 @@ export default function Product({ auth, bimbingan, categories }) {
         setProduct(data);
     }
 
+
     const columns = useMemo(
         () => [
             {
@@ -41,9 +42,12 @@ export default function Product({ auth, bimbingan, categories }) {
                 Cell: ({ cell }) => {
                     return (
                         <img
-                            src={cell.row.original.gambar}
+                            src={
+                                `${window.location.origin}/storage/` +
+                                cell.row.original.product_image
+                            }
                             alt="thumbnail-product"
-                            className="w-[3.6vw] h-[2.6vw] rounded-[.3vw]"
+                            className="w-[3.6vw] h-[2.6vw] rounded-[.3vw] object-contain bg-neutral-20"
                         />
                     );
                 },
@@ -93,13 +97,16 @@ export default function Product({ auth, bimbingan, categories }) {
                                     as="button"
                                     method="DELETE"
                                     onSuccess={() => {
-                                        toast.success(
-                                            "Produk berhasil dihapus"
-                                        );
-                                        router.reload(
-                                            route(
-                                                "admin.bimbingan.product.index"
-                                            )
+                                        router.visit(
+                                            route("admin.bimbingan.product.index"),
+                                            {
+                                                only: ['bimbingan'],
+                                                onSuccess: () => {
+                                                    toast.success(
+                                                        "Produk berhasil dihapus"
+                                                    );
+                                                },
+                                            }
                                         );
                                     }}
                                     href={route(

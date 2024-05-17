@@ -126,7 +126,7 @@ class BimbinganController extends Controller
             $data = [
                 'place_id' => $request['place_id'],
                 'date' => $request['date'],
-                'topic_id' => $request['topic_id'],
+                'topic_id' => $request['topic'],
             ];
 
             $course->update($data);

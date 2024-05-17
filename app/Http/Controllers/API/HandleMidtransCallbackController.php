@@ -70,7 +70,7 @@ class HandleMidtransCallbackController extends Controller
                         'order_id' => $order->id,
                     ];
                     $session = 1;
-                    $parentCourse = Course::create(array_merge($dataCourse, ['session' => $session]));
+                    $parentCourse = Course::create(array_merge($dataCourse, ['session' => $session, 'ongoing' => CourseStatusEnum::WAITING]));
                     $dataCourse['parent_id'] = $parentCourse->id;
                     $form_result = $order->form_result;
                     if (array_key_exists('add_on', $form_result) && $form_result['add_on'] != null) {

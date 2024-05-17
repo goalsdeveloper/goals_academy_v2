@@ -32,7 +32,7 @@ class HistoryController extends Controller
                             ->orWhere('date', 'LIKE', "%$search%")
                             ->orWhere('time', 'LIKE', "%$search%");
                     });
-                })->with('user:id,name', 'products:id,name', 'place:id,place')->paginate($paginate);
+                })->with('user:id,username', 'products:id,name', 'place:id,place')->paginate($paginate);
                 return $history;
             },
         ]);
@@ -40,8 +40,8 @@ class HistoryController extends Controller
 
     public function show(Course $history)
     {
-        $course = $history->load('order', 'order.productReview', 'addOns', 'fileUploads', 'user', 'user.profile', 'topic');
-        // $files = FileUpload::where('course_id', $history->parent_id)->get();
+        $course = $history->load('productReview', 'addOns', 'fileUploads', 'user', 'user.profile', 'topic');
+        $files = FileUpload::where('course_id', $history->parent_id)->get();
         return Inertia::render('Auth/Tutor/Bimbingan/History/Show', [
             'course' => $course,
             // 'files' => $files,

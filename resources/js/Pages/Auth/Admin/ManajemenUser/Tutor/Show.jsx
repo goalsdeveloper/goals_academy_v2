@@ -53,7 +53,7 @@ export default function Show ({ auth, data }) {
                 <div className="flex gap-[1.2vw]">
                     <FormSection>
                         <div className="flex gap-[1.2vw]">
-                            <ProfileImage auth={auth} />
+                            <ProfileImage auth={data} />
                             <div className="w-full space-y-[1.2vw]">
                                 <GoalsTextInput
                                     disabled
@@ -273,20 +273,20 @@ export default function Show ({ auth, data }) {
 const ProfileImage = ({ auth }) => {
     const [showImageUploader, setShowImageUploader] = useState(false);
     const [profileImage, setProfileImage] = useState(
-        auth.user.profile.profile_image
-            ? `/storage/${auth.user.profile.profile_image}`
+        auth.profile.profile_image
+            ? `/storage/${auth.profile.profile_image}`
             : 'https://mura.cfbf.com/sites/cfbv2/cache/file/B44C718C-17B1-475D-BBDFFD8C4906BAB4.png'
     );
 
     return (
         <div className="relative flex flex-shrink-0 flex-col gap-[.5vw] self-center h-fit">
             <p className="font-medium">Picture</p>
-            <div className="flex items-center bg-red-500 md:w-[11vw] md:h-[9vw] rounded-[.5vw] cursor-pointer overflow-hidden">
+            <div className="flex items-center bg-dark-indigo md:w-[11vw] md:h-[9vw] rounded-[.5vw] cursor-pointer overflow-hidden">
                 <img
                     className="w-full"
                     src={profileImage ? profileImage : 'https://mura.cfbf.com/sites/cfbv2/cache/file/B44C718C-17B1-475D-BBDFFD8C4906BAB4.png'}
                     alt="User"
-                    onClick={() => setShowImageUploader(true)}
+                    onClick={() => true}
                 />
             </div>
             <GoalsImageUploader

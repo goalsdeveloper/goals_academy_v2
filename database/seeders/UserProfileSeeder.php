@@ -35,24 +35,24 @@ class UserProfileSeeder extends Seeder
             'university' => 'Universitas Brawijaya',
             'major' => 'Hukum',
         ]);
-        UserProfile::create([
-            'user_id' => 5,
-            'phone_number' => '087763420871',
-            'university' => 'Universitas Islam Malang',
-            'major' => 'Matematika',
-        ]);
-        UserProfile::create([
-            'user_id' => 6,
-            'phone_number' => '0877634208769',
-            'university' => 'Universitas Brawijaya',
-            'major' => 'TI',
-        ]);
+        // UserProfile::create([
+        //     'user_id' => 5,
+        //     'phone_number' => '087763420871',
+        //     'university' => 'Universitas Islam Malang',
+        //     'major' => 'Matematika',
+        // ]);
+        // UserProfile::create([
+        //     'user_id' => 6,
+        //     'phone_number' => '0877634208769',
+        //     'university' => 'Universitas Brawijaya',
+        //     'major' => 'TI',
+        // ]);
 
-        $users = User::where('id', '>', 6)->get();
-        // $users->profile()->create();
-        foreach ($users as $key => $value) {
-            $value->profile()->create();
-        }
+        // $users = User::where('id', '>', 6)->get();
+        // // $users->profile()->create();
+        // foreach ($users as $key => $value) {
+        //     $value->profile()->create();
+        // }
 
         // $users = User::all();
 

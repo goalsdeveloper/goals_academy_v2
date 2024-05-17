@@ -17,12 +17,16 @@ class Category extends Model
 
     protected $fillable = [
         'name', 'slug',
-        // 'parent_id', 
+        // 'parent_id',
         'is_visible',
         'description'
     ];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    protected $casts = [
+        'is_visible' => 'bool',
+    ];
 
     public function parent(): BelongsTo
     {

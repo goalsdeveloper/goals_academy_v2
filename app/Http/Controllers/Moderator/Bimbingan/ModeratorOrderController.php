@@ -25,7 +25,6 @@ class ModeratorOrderController extends Controller
     public function index(Request $request)
     {
         try {
-            $perPage = $request->input('perPage', 25);
             $search = $request->input('search');
 
             $query = Order::with([
@@ -54,9 +53,9 @@ class ModeratorOrderController extends Controller
             }
 
             $query->orderBy('created_at', 'asc');
-            $orders = $query->paginate($perPage);
+            $orders = $query->get();
 
-            $orders->getCollection()->transform(function ($order) {
+            $orders->transform(function ($order) {
                 $totalFields = 4;
                 $completeFields = 0;
                 $course = $order->course;
@@ -100,6 +99,7 @@ class ModeratorOrderController extends Controller
             ], 500);
         }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -160,7 +160,6 @@ class ModeratorOrderController extends Controller
             'order' => $order->load('products', 'user', 'user.profile', 'course.place', 'course.tutor', 'course.tutor.profile', 'course.topic', 'course.fileUploads'),
             'places' => fn () => Place::with('city')->get(),
             'tutors' => fn () => User::where('user_role', UserRoleEnum::TUTOR)->with('profile')->get(),
-            'auth' => Auth::user(),
         ]);
     }
 

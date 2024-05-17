@@ -31,11 +31,11 @@ export default function Edit({
         id: "",
         place: order?.course?.place?.place,
         place_id: order?.course?.place?.id,
-        tutor: order.course.tutor.name,
-        tutor_id: order.course.tutor.id,
-        tutor_phone: order.course.tutor.profile.phone_number,
-        date: order.course.date ?? "",
-        time: order.course.time ?? "",
+        tutor: order?.course?.tutor?.name,
+        tutor_id: order?.course?.tutor?.id,
+        tutor_phone: order?.course?.tutor?.profile?.phone_number,
+        date: order?.course?.date ?? "",
+        time: order?.course?.time ?? "",
     });
     return (
         <DashboardLayout
@@ -187,7 +187,7 @@ export default function Edit({
                         <GoalsTextInput
                             label="Topic"
                             disabled
-                            data={order.course?.topic ?? "Topic belum diset"}
+                            data={order.course?.topic?.topic ?? "Topic belum diset"}
                         />
                         {order.products.total_meet == 1 && (
                             <>
@@ -254,27 +254,3 @@ export default function Edit({
         </DashboardLayout>
     );
 }
-
-const DownloadLampiranPopup = ({ show, setShow, items = [] }) => {
-    const item = {
-        title: "File Title",
-        url: "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
-    };
-
-    console.log(items, "test");
-
-    if (items.length > 0)
-        return (
-            <GoalsPopup show={show} setShow={setShow}>
-                <h2>File & Media</h2>
-                <div>
-                    {items.map((i) => {
-                        <FileMediaItemBackdrop
-                            item={item}
-                            isBackdropVisible={false}
-                        />;
-                    })}
-                </div>
-            </GoalsPopup>
-        );
-};

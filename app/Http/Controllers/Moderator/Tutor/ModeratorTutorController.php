@@ -49,12 +49,12 @@ class ModeratorTutorController extends Controller
                         $onprogress_courses = Course::where('tutor_id', $tutor->id)->where('ongoing', CourseStatusEnum::ONGOING)->join('orders', 'orders.id', '=', 'courses.order_id')
                             ->join('products', 'products.id', '=', 'orders.products_id')
                             ->join('categories', 'categories.id', '=', 'products.category_id')
-                            ->groupBy('categories.id')->selectRaw('categories.id, categories.name, COUNT(*) as jumlah_bimbingan')->limit(3)->get();
+                            ->groupBy('categories.id', 'categories.name')->selectRaw('categories.id, categories.name, COUNT(*) as jumlah_bimbingan')->limit(3)->get();
                         $done = Course::where('tutor_id', $tutor->id)->where('ongoing', CourseStatusEnum::SUCCESS)->count();
                         $done_courses = Course::where('tutor_id', $tutor->id)->where('ongoing', CourseStatusEnum::ONGOING)->join('orders', 'orders.id', '=', 'courses.order_id')
                             ->join('products', 'products.id', '=', 'orders.products_id')
                             ->join('categories', 'categories.id', '=', 'products.category_id')
-                            ->groupBy('categories.id')->selectRaw('categories.id, categories.name, COUNT(*) as jumlah_bimbingan')->limit(3)->get();
+                            ->groupBy('categories.id', 'categories.name')->selectRaw('categories.id, categories.name, COUNT(*) as jumlah_bimbingan')->limit(3)->get();
                         // dd($done_courses);
                         $tutor->finished_course = $onprogress;
                         $tutor->finished_category = $done_courses;
