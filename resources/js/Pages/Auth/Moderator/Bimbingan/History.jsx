@@ -9,7 +9,7 @@ import {
 import moment from "moment";
 import { useEffect, useMemo, useState } from "react";
 import { FiEye } from "react-icons/fi";
-import {  getTableStyling } from "./Progress";
+import { getTableStyling } from "./Progress";
 import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 import DateTimeComp from "./components/DateTimeComp";
 import SubHeading from "../../Admin/components/SubHeading";
@@ -22,12 +22,11 @@ export default function History({ auth, order_history: res }) {
     const [searchQuery, setSearchQuery] = useState(
         new URLSearchParams(document.location.search).get("search") ?? ""
     );
+    console.log(data);
 
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
     }, [current_page]);
-
-    console.log(data);
 
     const columns = useMemo(
         () => [
@@ -75,7 +74,8 @@ export default function History({ auth, order_history: res }) {
                 },
             },
             {
-                accessorFn: (row) => row.course?.place?.place ?? "Lokasi Belum Diset",
+                accessorFn: (row) =>
+                    row.course?.place.place ?? "Lokasi Belum Diset",
                 header: "Lokasi",
             },
             {
@@ -146,9 +146,9 @@ export default function History({ auth, order_history: res }) {
             auth={auth}
         >
             {/* {isLoading && <LoadingUI />} */}
-            <div className="space-y-[1.6vw]">
+            <div className="space-y-[1.6vw] " >
                 <SubHeading title="History" />
-                <div className="text-[.8vw] bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
+                <div className="text-[.8vw] bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]" >
                     <GoalsTextInput
                         placeholder="🔍 Search"
                         className="max-w-[10.4vw] max-h-[2.4vw]"
