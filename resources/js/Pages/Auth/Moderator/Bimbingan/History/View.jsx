@@ -21,6 +21,8 @@ import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 
 export default function View({ auth, progress, tutors }) {
+    console.log(progress);
+
     const item = [
         {
             url: "https://www.google.com",
@@ -80,7 +82,7 @@ export default function View({ auth, progress, tutors }) {
                             })
                         }
                         // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
-                        files={item}
+                        files={progress.file_uploads}
                     />,
                     document.body
                 )}
@@ -186,10 +188,9 @@ export default function View({ auth, progress, tutors }) {
                                 id="deskripsi"
                                 placeholder="Deskripsi singkat tentang program ini"
                                 disabled
+                                value={data.note_product}
                                 className="disabled:bg-gray-100 disabled:border-gray-300 w-full h-[7.8vw] border border-neutral-50 text-[.83vw] rounded-[.4vw] px-[1.2vw] md:py-[1vw] resize-none "
-                            >
-                                {data.note_product}
-                            </textarea>
+                            />
                         </FormSection>
                     </div>
                     <div className="flex flex-col gap-[1.2vw]">
@@ -323,10 +324,9 @@ export default function View({ auth, progress, tutors }) {
                                 id="deskripsi"
                                 placeholder="Deskripsi singkat tentang program ini"
                                 disabled
+                                value={data.note}
                                 className="disabled:bg-gray-100 disabled:border-gray-300 w-full h-[7.8vw] border border-neutral-50 text-[.83vw] rounded-[.4vw] px-[1.2vw] md:py-[1vw] resize-none "
-                            >
-                                {data.note}
-                            </textarea>
+                            />
                         </FormSection>
                     </div>
                 </div>
