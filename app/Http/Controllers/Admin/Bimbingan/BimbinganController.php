@@ -214,14 +214,14 @@ class BimbinganController extends Controller
                 }
                 // }
 
-                // return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil ditambahkan');
-                return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
+                return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil ditambahkan');
+                // return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-            // return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
+            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
         }
     }
 
