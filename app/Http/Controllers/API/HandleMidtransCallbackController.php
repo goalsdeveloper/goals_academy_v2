@@ -70,9 +70,14 @@ class HandleMidtransCallbackController extends Controller
                         'order_id' => $order->id,
                     ];
                     $session = 1;
-                    $parentCourse = Course::create(array_merge($dataCourse, ['session' => $session, 'ongoing' => CourseStatusEnum::WAITING]));
-                    $dataCourse['parent_id'] = $parentCourse->id;
                     $form_result = $order->form_result;
+                    $parentCourse = Course::create(array_merge($dataCourse,[
+                        'session' => $session, 'ongoing' => CourseStatusEnum::WAITING,
+                        'date' => $form_result['schedule'] ?? null,
+                        'place_id' => $form_result['place_id'] ?? null,
+                        'topic_id' => $form_result['topic'] ?? null
+                    ]));
+                    $dataCourse['parent_id'] = $parentCourse->id;
                     if (array_key_exists('add_on', $form_result) && $form_result['add_on'] != null) {
                         foreach ($form_result['add_on'] as $key => $value) {
                             $parentCourse->addOns()->attach($value['id']);
@@ -85,7 +90,7 @@ class HandleMidtransCallbackController extends Controller
                                 'place_id' => $form_result['place_id'] ?? null,
                                 'topic_id' => $form_result['topic'] ?? null,
                                 'session' => ++$session,
-                                'ongoing' =>CourseStatusEnum::WAITING
+                                'ongoing' => CourseStatusEnum::WAITING,
                             ])
                         );
                     }

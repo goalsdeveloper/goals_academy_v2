@@ -27,6 +27,7 @@ const View = ({ products, categories }) => {
             typeof products.form_config == "object"
                 ? products.form_config
                 : products.form_config && JSON.parse(products.form_config),
+        contact_type: products.contact_type,
     };
 
     const formConfigList = [
@@ -98,6 +99,13 @@ const View = ({ products, categories }) => {
                             <SelectInput
                                 value={data.category_id.name}
                                 label="Kategori"
+                                disabled
+                            ></SelectInput>
+
+                            <SelectInput
+                                value={data.contact_type}
+                                filledClassName="capitalize"
+                                label="Tipe kontak"
                                 disabled
                             ></SelectInput>
 

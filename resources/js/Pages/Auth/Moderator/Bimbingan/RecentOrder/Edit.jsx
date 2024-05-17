@@ -187,7 +187,7 @@ export default function Edit({
                         <GoalsTextInput
                             label="Topic"
                             disabled
-                            data={order.course?.topic ?? "Topic belum diset"}
+                            data={order.course?.topic?.topic ?? "Topic belum diset"}
                         />
                         {order.products.total_meet == 1 && (
                             <>

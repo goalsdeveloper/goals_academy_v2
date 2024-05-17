@@ -19,8 +19,8 @@ class OverviewController extends Controller
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $totalOrder = Order::where('status', '=', 'Success')->count();
-                $totalChekout = Order::count();
+                $totalChekout = Order::where('status', '=', 'Success')->count();
+                $totalOrder = Order::count();
                 return Inertia::render('Auth/Moderator/Overview/Overview',
                     [
                         'status' => true,
