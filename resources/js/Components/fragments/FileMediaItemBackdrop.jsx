@@ -5,7 +5,7 @@ import { router } from "@inertiajs/react";
 import { BsThreeDots } from "react-icons/bs";
 import { RxFileText } from "react-icons/rx";
 
-const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
+const FileMediaItemBackdrop = ({ item, isBackdropVisible = false }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [blockScroll, allowScroll] = useScrollBlock();
 
@@ -13,7 +13,6 @@ const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
         if (isVisible) {
             setIsVisible(false);
             allowScroll();
-            window.location.href = item.url;
         } else {
             setIsVisible(true);
             blockScroll();
@@ -45,8 +44,10 @@ const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
             {isVisible && (
                 <>
                     <button
-                        onClick={() => downloadHandler(item?.path || item?.url)}
-                        className={`h6 font-medium text-neutral-80 px-[5.5vw] py-[3.7vw] md:py-[.8vw] md:px-[1vw] rounded-[1.8vw] md:rounded-[.4vw] shadow-centered-spread absolute -bottom-[70%] right-0 z-[60] bg-white transition-all ${
+                        onClick={(e) =>
+                            downloadHandler(item?.path || item?.url)
+                        }
+                        className={`text-[.8vw] font-medium text-neutral-80 px-[5.5vw] py-[3.7vw] md:py-[.8vw] md:px-[1vw] rounded-[1.8vw] md:rounded-[.4vw] shadow-centered-spread absolute -bottom-[70%] right-0 z-[60] bg-white transition-all ${
                             isVisible ? "translate-x-0" : "translate-x-5"
                         }`}
                     >
@@ -58,7 +59,10 @@ const FileMediaItemBackdrop = ({ item, isBackdropVisible = true }) => {
                                 ? "bg-black/20 "
                                 : "bg-transparent"
                         } inset-0 fixed top-0 left-0 w-auto h-auto z-[55]`}
-                        onClick={handleToggle}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleToggle();
+                        }}
                     />
                 </>
             )}

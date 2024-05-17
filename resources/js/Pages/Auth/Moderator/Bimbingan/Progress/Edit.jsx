@@ -73,12 +73,14 @@ export default function Edit({ auth, progress, tutors }) {
                     {createPortal(
                         <FileMediaPopup
                             show={isShow.orderDetails || isShow.tutorDetails}
-                            setShow={() => setIsShow({
-                                orderDetails: false,
-                                tutorDetails: false,
-                            })}
+                            setShow={() =>
+                                setIsShow({
+                                    orderDetails: false,
+                                    tutorDetails: false,
+                                })
+                            }
                             // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
-                            files={item}
+                            files={progress.file_uploads}
                         />,
                         document.body
                     )}
@@ -118,12 +120,16 @@ export default function Edit({ auth, progress, tutors }) {
                                     ),
                                     {
                                         preserveScroll: true,
-                                        onSuccess: () =>
-                                            router.replace(
-                                                route(
-                                                    "moderator.bimbingan.progress.index"
-                                                )
-                                            ),
+                                        onSuccess: () => {
+                                            toast.success(
+                                                "Data berhasil diubah"
+                                            );
+                                        },
+                                        onError: (errors) => {
+                                            if (errors.record) {
+                                                toast.error(errors.record[0]);
+                                            }
+                                        },
                                     }
                                 );
                             }}
