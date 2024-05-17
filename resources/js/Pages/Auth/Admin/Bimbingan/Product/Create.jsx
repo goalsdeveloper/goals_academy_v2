@@ -215,7 +215,7 @@ const Create = ({ auth, categories, addons, topics }) => {
                                 label="Tipe kontak"
                                 required
                             >
-                                {["online", "offline", "other"].map((option, i) => (
+                                {["online", "offline", "hybrid", "other"].map((option, i) => (
                                     <SelectInputItem
                                         key={i}
                                         className="capitalize"

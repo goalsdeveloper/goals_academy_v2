@@ -213,7 +213,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                 label="Tipe kontak"
                                 required
                             >
-                                {["online", "offline", "other"].map(
+                                {["online", "offline", "hybrid", "other"].map(
                                     (option, i) => (
                                         <SelectInputItem
                                             key={i}
