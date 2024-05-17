@@ -33,6 +33,7 @@ const Create = ({ auth, categories, addons, topics }) => {
         facilities: [],
         is_visible: false,
         form_config: {},
+        contact_type: "",
     });
 
     function handleSubmit() {
@@ -56,6 +57,7 @@ const Create = ({ auth, categories, addons, topics }) => {
                 is_facilities: 0,
                 excerpt: data.description,
                 form_config: JSON.stringify(data.form_config),
+                contact_type: data.contact_type,
             },
             {
                 onSuccess: () => {
@@ -152,6 +154,7 @@ const Create = ({ auth, categories, addons, topics }) => {
                             <input
                                 required
                                 type="file"
+                                accept="image/*"
                                 onChange={(e) =>
                                     setData({
                                         ...data,
@@ -202,6 +205,28 @@ const Create = ({ auth, categories, addons, topics }) => {
                                         }
                                     >
                                         {option.name}
+                                    </SelectInputItem>
+                                ))}
+                            </SelectInput>
+                            
+                            <SelectInput
+                                value={data.contact_type}
+                                filledClassName="capitalize"
+                                label="Tipe kontak"
+                                required
+                            >
+                                {["online", "offline", "other"].map((option, i) => (
+                                    <SelectInputItem
+                                        key={i}
+                                        className="capitalize"
+                                        onClick={() =>
+                                            setData({
+                                                ...data,
+                                                contact_type: option,
+                                            })
+                                        }
+                                    >
+                                        {option}
                                     </SelectInputItem>
                                 ))}
                             </SelectInput>

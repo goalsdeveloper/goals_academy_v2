@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('excerpt');
             $table->text('description');
             $table->string('features');
+            $table->enum('contact_type',["online","offline","other"]);
             $table->unsignedBigInteger('price');
             $table->longText('product_image')->nullable();
             $table->dateTime('date_start')->nullable();
