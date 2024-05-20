@@ -8,14 +8,30 @@ import GoalsButton from "@/Components/GoalsButton";
 import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 import Dialog from "./Tutor/Dialog";
 import toast, { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
+import { getPaginationPages } from "@/script/utils";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 
-export default function Tutor({ auth, data }) {
-    console.log(data);
-    // const data = [
-    //     { id: 1, name: "Hafiz Rizky 1", username: "hafizbaik", email: "hafizbaik@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: true },
-    //     { id: 2, name: "Hafiz Rizky 2", username: "hafizganteng", email: "hafizganteng@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: false },
-    //     { id: 3, name: "Hafiz Rizky 3", username: "hafizcute", email: "hafizcute@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: true },
-    // ];
+export default function Tutor({ auth, tutors }) {
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        tutors;
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(
+        new URLSearchParams(window.location.search).get("search")
+    );
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
+
+    const onSearchCallback = (search) => {
+        router.visit(
+            route("admin.manajemen_user.tutor.index", { search: search }),
+            {
+                only: ["tutors"],
+            }
+        );
+    };
 
     const [showDialog, setShowDialog] = useState({
         create: false,
@@ -135,7 +151,7 @@ export default function Tutor({ auth, data }) {
                                 enabledClassName="bg-blue-600"
                                 label=""
                                 size="sm"
-                                isEnabled={cell.row.original.profile.is_active}
+                                isEnabled={cell.row.original.profile?.is_active}
                                 setIsEnabled={() =>
                                     updateActive(cell.row.original)
                                 }
@@ -193,10 +209,25 @@ export default function Tutor({ auth, data }) {
 
                 <GoalsDashboardTable
                     isHeadVisible
-                    isPaginated
                     isSortable
                     columns={columns}
-                    data={data}
+                    data={tutors.data}
+                    keyword={keyword}
+                    setKeyword={setKeyword}
+                    onSearch={(i) => {
+                        onSearchCallback(i);
+                    }}
+                />
+                <BottomPaginationTable
+                    {...{
+                        from,
+                        to,
+                        total,
+                        pages,
+                        per_page,
+                        current_page,
+                        keyword,
+                    }}
                 />
             </div>
         </DashboardLayout>

@@ -32,9 +32,25 @@ class TutorController extends Controller
                 'status' => true,
                 'statusCode' => 200,
                 'message' => 'get data success',
-                'data' => function () {
+                'tutors' =>
+                function () use ($request) {
+                    $search =  $request->input('search');
+                    $perPage = (int) $request->input('perPage', 25);
+
                     $query = User::with('profile')->where("user_role", "tutor");
-                    $tutors = $query->get();
+
+                    if ($search) {
+                        $query->where(function ($subquery) use ($search) {
+                            $subquery->where('name', 'LIKE', "%$search%")
+                            ->orWhere('username', 'LIKE', "%$search%")
+                            ->orWhere('email', 'LIKE', "%$search%")
+                            ->orWhereHas('profile', function ($profileQuery) use ($search) {
+                                $profileQuery->where('phone_number', 'LIKE', "%$search%")
+                                    ->orWhere('university', 'LIKE', "%$search%");
+                            });
+                        });
+                    }
+                    $tutors = $query->paginate($perPage);
                     return $tutors;
                 },
             ], 200);
