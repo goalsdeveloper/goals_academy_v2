@@ -16,12 +16,33 @@ export default function Show({ auth, order, files }) {
         university: order?.user?.profile?.university,
         major: order?.user?.profile?.major,
         topic: order?.topic?.topic,
+        location: order.location,
+        place: order.place?.place,
+        city: order.place?.city?.city,
         note: order?.note,
         add_on: order?.add_ons,
         document: [],
         document_meta: order?.file_uploads,
         document_deleted: [],
     });
+
+    const GetLocationData = () => {
+        switch (order.products.contact_type) {
+            case "online":
+                return <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={formData.location} labelClassName="font-medium" />
+            case "offline":
+                return <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${formData.place} | ${formData.city}`} labelClassName="font-medium" />
+            case "hybrid":
+                return (
+                    <>
+                        <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={formData.location} labelClassName="font-medium" />
+                        <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${formData.place} | ${formData.city}`} labelClassName="font-medium" />
+                    </>
+                )
+            default:
+                return <></>
+        }
+    }
 
     return (
         <DashboardLayout
@@ -68,6 +89,7 @@ export default function Show({ auth, order, files }) {
                             data={formData.major}
                             labelClassName="font-medium"
                         />
+                        {GetLocationData()}
                         <GoalsTextInput
                             disabled
                             label="Topic"

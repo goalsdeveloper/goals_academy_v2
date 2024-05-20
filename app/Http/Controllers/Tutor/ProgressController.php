@@ -39,7 +39,7 @@ class ProgressController extends Controller
                             $q->where('topic', 'LIKE', '%' . $search . '%');
                         });
                     });
-                })->with('topic:id,topic', 'user:id,username', 'products:id,name')->paginate($perPage);
+                })->with('topic:id,topic', 'user:id,username', 'products:id,name,contact_type')->paginate($perPage);
                 // dd($tutor);
                 return $tutor;
             },
@@ -69,7 +69,7 @@ class ProgressController extends Controller
 
     public function show(Course $progress)
     {
-        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic");
+        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic", "products:id,contact_type", "place:id,name");
         // $files = FileUpload::where('course_id', $progress->parent_id)->get();
         $files = $progress->fileUploads;
         return Inertia::render('Auth/Tutor/Bimbingan/Progress/Show', [
@@ -80,7 +80,7 @@ class ProgressController extends Controller
 
     public function edit(Course $progress)
     {
-        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic");
+        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic", "products:id,contact_type", "place:id,name");
         // $files = FileUpload::where('course_id', $progress->parent_id)->get();
         $files = $progress->fileUploads;
         return Inertia::render('Auth/Tutor/Bimbingan/Progress/Update', [

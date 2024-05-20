@@ -21,6 +21,9 @@ export default function Update({ auth, order, files }) {
         university: order.user.profile.university,
         major: order.user.profile.major,
         topic: order.topic?.topic,
+        location: order.location,
+        place: order.place?.place,
+        city: order.place?.city?.city,
         note: order.note,
         add_on: order.add_ons,
         document: [],
@@ -31,6 +34,24 @@ export default function Update({ auth, order, files }) {
     const submit = () => {
         post(route("tutor.bimbingan.progress.update", order.id));
     };
+
+    const GetLocationData = () => {
+        switch (order.products.contact_type) {
+            case "online":
+                return <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={formData.location} labelClassName="font-medium" />
+            case "offline":
+                return <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${formData.place} | ${formData.city}`} labelClassName="font-medium" />
+            case "hybrid":
+                return (
+                    <>
+                        <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={formData.location} labelClassName="font-medium" />
+                        <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${formData.place} | ${formData.city}`} labelClassName="font-medium" />
+                    </>
+                )
+            default:
+                return <></>
+        }
+    }
 
     return (
         <DashboardLayout
@@ -46,6 +67,7 @@ export default function Update({ auth, order, files }) {
                         <GoalsButton
                             className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[.75vw] md:rounded-[.5vw]"
                             variant="success-bordered"
+                            onClick={() => history.back()}
                         >
                             Batal
                         </GoalsButton>
@@ -94,6 +116,7 @@ export default function Update({ auth, order, files }) {
                             data={formData.major}
                             labelClassName="font-medium"
                         />
+                        {GetLocationData()}
                         <GoalsTextInput
                             disabled
                             label="Topic"
