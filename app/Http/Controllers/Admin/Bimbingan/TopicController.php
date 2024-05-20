@@ -22,11 +22,9 @@ class TopicController extends Controller
                 'topics' => function () use ($request) {
                     $search = $request->input('search');
                     $perPage = $request->input('perPage', 10);
-                    $query = Topic::query();
-                    if ($search) {
-                        $query->where('topic', 'LIKE', "%$search%");
-                    }
-                    $topics = $query->paginate($perPage);
+                    $topics = Topic::when($search, function($q) use ($search){
+                        $q->where('topic', 'LIKE', "%$search%");
+                    })->orderBy('is_visible', 'desc')->orderBy('topic', 'asc')->paginate($perPage);
                     return $topics;
                 },
             ], 200);
@@ -101,6 +99,20 @@ class TopicController extends Controller
             return redirect()->back();
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+        }
+    }
+
+    public function updateVisible(Request $request, Topic $topic)
+    {
+        try {
+            $validateData = $request->validate([
+                'is_visible' => 'boolean',
+            ]);
+            $topic->update($validateData);
+            return redirect()->back();
+
         } catch (\Exception $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }

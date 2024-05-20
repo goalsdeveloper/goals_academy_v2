@@ -7,6 +7,7 @@ import SubHeading from "../components/SubHeading";
 import GoalsButton from "@/Components/GoalsButton";
 import Dialog from "./Place/Dialog";
 import toast, { Toaster } from "react-hot-toast";
+import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 
 export default function Place({ auth, places, cities }) {
     places = places.data;
@@ -34,6 +35,7 @@ export default function Place({ auth, places, cities }) {
     const callback = (method) => {
         router.visit(route("admin.bimbingan.place.index"), {
             only: ["places", "cities"],
+            preserveScroll: true,
             onSuccess: () => {
                 if (method == "create") {
                     toast.success("Create Success!");
@@ -76,16 +78,28 @@ export default function Place({ auth, places, cities }) {
                             </button>
                         </li>
                         <li>
-                            <Link
-                                method="DELETE"
-                                href={route("admin.bimbingan.city.destroy", {
-                                    city: cell.getValue(),
-                                })}
-                                onSuccess={callback}
-                                as="button"
-                            >
-                                <FiTrash2 className="text-[1.2vw] text-danger-40" />
-                            </Link>
+                            <GoalsCupertinoButton
+                                className="text-[1vw] gap-[.4vw] cursor-pointer"
+                                label=""
+                                size="lg"
+                                isEnabled={cell.row.original.is_visible}
+                                disabled={cell.row.original.is_visible}
+                                onClick={() => {
+                                    router.put(
+                                        route(
+                                            "admin.bimbingan.city.updateVisible",
+                                            { city: cell.row.original.id }
+                                        ),
+                                        {
+                                            is_visible:
+                                                !cell.row.original.is_visible,
+                                        },
+                                        {
+                                            onSuccess: () => callback("edit"),
+                                        }
+                                    );
+                                }}
+                            />
                         </li>
                     </ul>
                 ),
@@ -129,14 +143,28 @@ export default function Place({ auth, places, cities }) {
                             </button>
                         </li>
                         <li>
-                            <Link
-                                method="DELETE"
-                                href={route('admin.bimbingan.place.destroy', {place: cell.getValue()})}
-                                onSuccess={callback}
-                                as="button"
-                            >
-                                <FiTrash2 className="text-[1.2vw] text-danger-40" />
-                            </Link>
+                            <GoalsCupertinoButton
+                                className="text-[1vw] gap-[.4vw] cursor-pointer"
+                                label=""
+                                size="lg"
+                                isEnabled={cell.row.original.is_visible}
+                                disabled={cell.row.original.is_visible}
+                                onClick={() => {
+                                    router.put(
+                                        route(
+                                            "admin.bimbingan.place.updateVisible",
+                                            { place: cell.row.original.id }
+                                        ),
+                                        {
+                                            is_visible:
+                                                !cell.row.original.is_visible,
+                                        },
+                                        {
+                                            onSuccess: () => callback("edit"),
+                                        }
+                                    );
+                                }}
+                            />
                         </li>
                     </ul>
                 ),

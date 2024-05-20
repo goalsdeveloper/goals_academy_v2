@@ -9,8 +9,9 @@ import GoalsButton from "@/Components/GoalsButton";
 import moment from "moment";
 import Dialog from "./Category/Dialog";
 import toast, { Toaster } from "react-hot-toast";
+import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 
-export default function Category({ auth, data, message }) {
+export default function Category({ auth, categories, message }) {
     const [showDialog, setShowDialog] = useState({
         create: false,
         edit: false,
@@ -32,19 +33,19 @@ export default function Category({ auth, data, message }) {
     });
 
     const callback = (method) => {
-        router.visit(route('admin.bimbingan.category.index'), {
-            only: ['data'],
+        router.visit(route("admin.bimbingan.category.index"), {
+            only: ["categories"],
             onSuccess: () => {
-                if (method == 'create') {
-                    toast.success('Create Success!');
-                } else if (method == 'edit') {
-                    toast.success('Edit Success!');
+                if (method == "create") {
+                    toast.success("Create Success!");
+                } else if (method == "edit") {
+                    toast.success("Edit Success!");
                 } else {
-                    toast.success('Delete Success!');
+                    toast.success("Delete Success!");
                 }
-            }
+            },
         });
-    }
+    };
 
     const columns = useMemo(
         () => [
@@ -57,10 +58,31 @@ export default function Category({ auth, data, message }) {
                 accessorKey: "is_visible",
                 header: "Visibilitas",
                 size: 50,
-                Cell: ({ cell }) => cell.getValue() ? <FaRegCircleCheck className="text-[1.25vw] text-green-500" /> : <FaRegCircleXmark className="text-[1.25vw] text-red-500" />,
+                Cell: ({ cell }) => (
+                    <GoalsCupertinoButton
+                        className="text-[1vw] gap-[.4vw] cursor-pointer"
+                        label=""
+                        size="lg"
+                        isEnabled={cell.row.original.is_visible}
+                        disabled={cell.row.original.is_visible}
+                        onClick={() => {
+                            router.put(
+                                route(
+                                    "admin.bimbingan.category.updateVisible",
+                                    { category: cell.row.original.id }
+                                ),
+                                { is_visible: !cell.row.original.is_visible },
+                                {
+                                    onSuccess: () => callback('edit'),
+                                }
+                            );
+                        }}
+                    />
+                ),
             },
             {
-                accessorFn: (row) => moment(row.updated_at).format('DD/MM/YYYY'),
+                accessorFn: (row) =>
+                    moment(row.updated_at).format("DD/MM/YYYY"),
                 header: "Tangal Update",
                 size: 100,
             },
@@ -76,39 +98,38 @@ export default function Category({ auth, data, message }) {
                                 <FiEdit2
                                     className="text-[1.2vw] text-secondary"
                                     onClick={() => {
-                                        setShowDialog({ ...showDialog, edit: true });
+                                        setShowDialog({
+                                            ...showDialog,
+                                            edit: true,
+                                        });
                                         setFormData({
                                             ...formData,
                                             id: cell.row.original.id,
                                             name: cell.row.original.name,
                                             slug: cell.row.original.slug,
-                                            is_visible: cell.row.original.is_visible,
+                                            is_visible:
+                                                cell.row.original.is_visible,
                                         });
                                     }}
                                 />
                             </button>
                         </li>
                         <li>
-                            <Link
-                                method="DELETE"
-                                href={`/admin/bimbingan/category/${cell.getValue()}`}
-                                onSuccess={callback}
-                            >
-                                <FiTrash2 className="text-[1.2vw] text-danger-40" />
-                            </Link>
-                        </li>
-                        <li>
                             <button>
                                 <FiEye
                                     className="text-[1.2vw] text-gray-400"
                                     onClick={() => {
-                                        setShowDialog({ ...showDialog, show: true });
+                                        setShowDialog({
+                                            ...showDialog,
+                                            show: true,
+                                        });
                                         setFormData({
                                             ...formData,
                                             id: cell.row.original.id,
                                             name: cell.row.original.name,
                                             slug: cell.row.original.slug,
-                                            is_visible: cell.row.original.is_visible,
+                                            is_visible:
+                                                cell.row.original.is_visible,
                                         });
                                     }}
                                 />
@@ -121,7 +142,7 @@ export default function Category({ auth, data, message }) {
         []
     );
 
-    const categories = data.data;
+    categories = categories.data;
 
     return (
         <DashboardLayout

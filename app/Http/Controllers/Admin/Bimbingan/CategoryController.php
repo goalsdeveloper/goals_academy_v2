@@ -16,23 +16,20 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         try {
-            $search = $request->input('search');
-            $perPage = $request->input('perPage', 10);
-            $categories = Category::whereHas('productType', function ($query) {
-                $query->where('type', 'LIKE', '%bimbingan%');
-            })->get();
-
-            if ($search) {
-                $categories->where('name', 'LIKE', "%$search%");
-            }
-
-            // $categories = $categories->with('productType:id,type')->paginate($perPage);
-            // dd($categories);
             return Inertia::render('Auth/Admin/Bimbingan/Category', [
                 'status' => true,
                 'statusCode' => 200,
                 'message' => 'get data success',
-                'data' => ['data' => $categories],
+                'categories' => function () use ($request) {
+                    $search = $request->input('search');
+                    $perPage = $request->input('perPage', 10);
+                    $categories = Category::when($search, function ($q) use ($search) {
+                        $q->where('name', 'LIKE', "%$search%");
+                    })->whereHas('productType', function ($query) {
+                        $query->where('type', 'LIKE', '%bimbingan%');
+                    })->orderBy('is_visible', 'desc')->orderBy('name', 'asc')->paginate($perPage);
+                    return $categories;
+                },
             ], 200);
 
         } catch (\Illuminate\Database\QueryException $e) {
@@ -134,6 +131,20 @@ class CategoryController extends Controller
             return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Category not found'], 404);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to update category. Internal Server Error'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+        }
+    }
+
+    public function updateVisible(Request $request, Category $category)
+    {
+        try {
+            $validateData = $request->validate([
+                'is_visible' => 'boolean',
+            ]);
+            $category->update($validateData);
+            return redirect()->back();
+
         } catch (\Exception $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }

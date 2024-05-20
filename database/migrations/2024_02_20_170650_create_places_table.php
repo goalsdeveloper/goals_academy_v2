@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(City::class)->constrained('cities')->cascadeOnDelete();
             $table->string('place');
+            $table->boolean('is_visible')->default(true);
             $table->timestamps();
         });
     }

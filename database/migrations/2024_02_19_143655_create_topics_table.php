@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Products::class)->constrained('products')->cascadeOnDelete();
             $table->string('topic');
+            $table->boolean('is_visible')->default(true);
             $table->timestamps();
         });
     }

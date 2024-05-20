@@ -97,6 +97,20 @@ class CityController extends Controller
         }
     }
 
+    public function updateVisible(Request $request, City $city)
+    {
+        try {
+            $validateData = $request->validate([
+                'is_visible' => 'boolean',
+            ]);
+            $city->update($validateData);
+            return redirect()->back();
+
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      */

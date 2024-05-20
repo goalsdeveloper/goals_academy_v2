@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Bimbingan;
 
-use App\Models\Products;
 use App\Http\Controllers\Controller;
 use App\Models\AddOn;
 use App\Models\Category;
+use App\Models\Products;
 use App\Models\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +46,6 @@ class BimbinganController extends Controller
                     return str_contains($product->category->name, 'Dibimbing Sekali');
                 });
 
-
                 $bimbingan_tuntas->transform(function ($product) {
 
                     if (is_string($product->facilities)) {
@@ -73,10 +72,19 @@ class BimbinganController extends Controller
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
-                    'bimbingan' => function () {
+                    'bimbingan' => function () use ($request) {
+                        $search = $request->input('search');
+                        $perPage = $request->input('perPage', 15);
                         $bimbingan = Products::whereHas('category.productType', function ($q) {
                             $q->where('type', 'bimbingan');
-                        })->with('category')->get();
+                        })->when($search, function ($q) use ($search) {
+                            $q->where(function ($query) use ($search) {
+                                $query->where('name', 'LIKE', "%$search%")
+                                    ->orWhereHas('category', function ($query) use ($search) {
+                                        $query->where('name', 'LIKE', "%$search%");
+                                    });
+                            });
+                        })->with('category')->orderBy('number_list', 'asc')->paginate($perPage);
                         return $bimbingan;
                     },
                     'categories' => Category::get(),
@@ -90,11 +98,10 @@ class BimbinganController extends Controller
                 'status' => false,
                 'statusCode' => 500,
                 'message' => 'An error occurred while processing request',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -118,7 +125,7 @@ class BimbinganController extends Controller
             return Inertia::render('Auth/Admin/Bimbingan/Product/Create', [
                 'categories' => $categories,
                 'addons' => $addons,
-                'topics' => $topics
+                'topics' => $topics,
             ]);
         } else {
             abort(403);
@@ -187,7 +194,6 @@ class BimbinganController extends Controller
 
                 $product->form_config = $form_config;
 
-
                 if ($request->hasFile('product_image')) {
                     if (!Storage::disk('public')->exists('product')) {
                         Storage::disk('public')->makeDirectory('product');
@@ -197,7 +203,6 @@ class BimbinganController extends Controller
                     $path = Storage::disk('public')->putFileAs('product/bimbingan', $image, $fileName);
                     $product->product_image = $path;
                 }
-
 
                 $product->save();
 
@@ -210,7 +215,6 @@ class BimbinganController extends Controller
                         }
                     }
                 }
-
 
                 // if (isset($form_config) && isset($form_config['topic']) && $form_config['topic'] == 1) {
                 if ($request->filled('topics')) {
@@ -243,7 +247,6 @@ class BimbinganController extends Controller
         try {
             if (Auth::user()->user_role == "admin") {
 
-
                 if (strcasecmp($product->productType->type, "bimbingan") != 0) {
                     return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Product not found'], 404);
                 }
@@ -268,7 +271,6 @@ class BimbinganController extends Controller
         }
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -289,7 +291,7 @@ class BimbinganController extends Controller
                 'categories' => $categories,
                 'products' => $product,
                 'addons' => $addons,
-                'topics' => $topics
+                'topics' => $topics,
             ]);
         } else {
             abort(403);
@@ -337,7 +339,6 @@ class BimbinganController extends Controller
                 );
                 $validateData['form_config'] = $form_config;
 
-
                 if ($request->hasFile('product_image')) {
                     // Hapus foto lama jika ada
                     if ($product->product_image) {
@@ -358,9 +359,7 @@ class BimbinganController extends Controller
                     $validateData['facilities'] = $facilities;
                 }
 
-
                 $product->update($validateData);
-
 
                 if ($request->filled('addons')) {
                     $addons = json_decode($request->addons);
@@ -383,7 +382,23 @@ class BimbinganController extends Controller
         }
     }
 
+    public function updateVisible(Request $request, Products $product)
+    {
+        try {
+            $validateData = $request->validate([
+                'is_visible' => 'boolean',
+            ]);
+            // if($validateData['is_visible'] == false){
+            //     Products::selectRaw('select max(number_list)')->where('category_id', $product->category_id);
+            //     $validateData['number_list'];
+            // }
+            $product->update($validateData);
+            return redirect()->back();
 
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+        }
+    }
 
     /**
      * Remove the specified resource from storage.

@@ -25,14 +25,9 @@ class AddOnController extends Controller
                 'data' => function () use ($request) {
                     $search = $request->input('search');
                     $perPage = $request->input('perPage', 10);
-
-                    $query = AddOn::query();
-
-                    if ($search) {
-                        $query->where('name', 'LIKE', "%$search%");
-                    }
-
-                    $addons = $query->paginate($perPage);
+                    $addons = AddOn::when($search, function ($q) use($search) {
+                        $q->where('name', 'LIKE', "%$search%");
+                    })->orderBy('is_visible', 'desc')->orderBy('name', 'asc')->paginate($perPage);
                     return $addons;
                 },
             ], 200);
@@ -114,6 +109,22 @@ class AddOnController extends Controller
             $addon->update($validateData);
             return redirect()->route('admin.bimbingan.addon.index');
             // return Inertia::location(route('admin.bimbingan.addon.index'));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->errors()], 422);
+            return redirect()->route('admin.bimbingan.addon.index')->with('errors', $e->errors());
+        } catch (\Exception $e) {
+            return redirect()->route('admin.bimbingan.addon.index')->with('errors', $e->getMessage());
+            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+        }
+    }
+    public function updateVisible(Request $request, AddOn $addon)
+    {
+        try {
+            $validateData = $request->validate([
+                'is_visible' => 'boolean',
+            ]);
+            $addon->update($validateData);
+            return redirect()->back();
         } catch (\Illuminate\Validation\ValidationException $e) {
             // return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->errors()], 422);
             return redirect()->route('admin.bimbingan.addon.index')->with('errors', $e->errors());
