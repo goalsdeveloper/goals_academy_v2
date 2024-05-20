@@ -49,7 +49,7 @@ export default function History ({ auth, history }) {
                     return (
                         <ul className="flex gap-[.8vw] w-fit">
                             <li>
-                                <Link method="GET" href={route('tutor.bimbingan.history.show', 112)}>
+                                <Link method="GET" href={route('tutor.bimbingan.history.show', cell.getValue())}>
                                     <FiEye className="text-[1.2vw] text-neutral-60" />
                                 </Link>
                             </li>

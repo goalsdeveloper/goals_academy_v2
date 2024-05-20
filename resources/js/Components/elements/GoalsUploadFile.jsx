@@ -90,7 +90,7 @@ export default function GoalsUploadFile({
         // }}
         >
             <div className="flex flex-col w-full gap-2">
-                <p className={labelClassName}>{label}{required && <span className="text-red-600">*</span>}</p>
+                <p className={labelClassName}>{label}{required ? <span className="text-red-600">*</span> : <></>}</p>
                 {displayInput && (
                     <>
                         <GoalsButton

@@ -29,14 +29,68 @@ export default function Edit({
         patch,
     } = useForm({
         id: "",
-        place: order?.course?.place?.place,
+        place:`${order?.course?.place?.place} | ${order?.course?.place?.city.city}`,
         place_id: order?.course?.place?.id,
+        location: order?.courser?.location,
         tutor: order?.course?.tutor?.name,
         tutor_id: order?.course?.tutor?.id,
         tutor_phone: order?.course?.tutor?.profile?.phone_number,
         date: order?.course?.date ?? "",
         time: order?.course?.time ?? "",
     });
+
+    const GetLocationForm = () => {
+        if (order.products?.total_meet == 1) {
+            switch (order.products?.contact_type) {
+                case "online":
+                    return <GoalsTextInput label="Meeting URL" placeholder="Meeting URL" data={formData.location} setData={(i) => setFormData("location", i)} labelClassName="font-medium" required />
+                case "offline":
+                    return (
+                        <SelectInput label="Meeting Location" placeholder="Meeting Location" value={formData.place} labelClassName="font-medium" required>
+                            {places.map((option, i) => (
+                                <SelectInputItem
+                                    key={i}
+                                    onClick={() =>
+                                        setFormData({
+                                            ...formData,
+                                            place: `${option.place} | ${option.city.city}`,
+                                            place_id: option.id,
+                                        })
+                                    }
+                                >
+                                    {`${option.place} | ${option.city.city}`}
+                                </SelectInputItem>
+                            ))}
+                        </SelectInput>
+                    )
+                case "hybrid":
+                    return (
+                        <>
+                            <GoalsTextInput label="Meeting URL" placeholder="Meeting URL" data={formData.location} setData={(i) => setFormData("location", i)} labelClassName="font-medium" />
+                            <SelectInput label="Meeting Location" placeholder="Meeting Location" value={formData.place} labelClassName="font-medium">
+                            {places.map((option, i) => (
+                                    <SelectInputItem
+                                        key={i}
+                                        onClick={() =>
+                                            setFormData({
+                                                ...formData,
+                                                place: `${option.place} | ${option.city.city}`,
+                                                place_id: option.id,
+                                            })
+                                        }
+                                    >
+                                        {`${option.place} | ${option.city.city}`}
+                                    </SelectInputItem>
+                                ))}
+                            </SelectInput>
+                        </>
+                    )
+                default:
+                    return <></>
+            }
+        }
+    }
+    
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -117,13 +171,13 @@ export default function Edit({
                                 grow
                                 data={
                                     order.user?.profile?.phone_number ??
-                                    "Belum Ada Nomor Telephone"
+                                    "Belum Ada Nomor Telepon"
                                 }
                             />
                             <a
                                 href={`wa.me/${
                                     order.user.profile.phone_number ??
-                                    "6285672771772"
+                                    ""
                                 }`}
                                 target="_blank"
                             >
@@ -191,33 +245,7 @@ export default function Edit({
                         />
                         {order.products.total_meet == 1 && (
                             <>
-                                <SelectInput
-                                    value={formData.place}
-                                    placeholder="Pilih Lokasi"
-                                    label={`Location ${
-                                        tipe == "Webinar"
-                                            ? "Link Zoom"
-                                            : "Offline"
-                                    }`}
-                                    required
-                                >
-                                    {places.map((option, i) => (
-                                        <SelectInputItem
-                                            key={i}
-                                            onClick={() =>
-                                                setFormData({
-                                                    ...formData,
-                                                    place: option.place,
-                                                    place_id: option.id,
-                                                })
-                                            }
-                                        >
-                                            {option.place +
-                                                " | " +
-                                                option.city.city}
-                                        </SelectInputItem>
-                                    ))}
-                                </SelectInput>
+                                {GetLocationForm()}
                                 <div className="flex gap-[.4vw]">
                                     <GoalsTextInput
                                         type="date"

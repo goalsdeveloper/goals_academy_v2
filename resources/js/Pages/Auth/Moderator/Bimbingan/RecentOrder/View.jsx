@@ -5,9 +5,29 @@ import { createPortal } from "react-dom";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
+import { useEffect } from "react";
 
 const View = ({ tipe = "bimbingan", detailOrder }) => {
     const [isShow, setIsShow] = useState(false);
+    const GetLocationData = () => {
+        if (detailOrder.products?.total_meet == 1) {
+            switch (detailOrder.products?.contact_type) {
+                case "online":
+                    return <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={detailOrder.course.location} labelClassName="font-medium" />
+                case "offline":
+                    return <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${detailOrder.course.place?.place} | ${detailOrder.course.place?.city.city}`} labelClassName="font-medium" />
+                case "hybrid":
+                    return (
+                        <>
+                            <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={detailOrder.course.location} labelClassName="font-medium" />
+                            <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${detailOrder.course.place?.place} | ${detailOrder.course.place?.city.city}`} labelClassName="font-medium" />
+                        </>
+                    )
+                default:
+                    return <></>
+            }
+        }
+    }
 
     return (
         <>
@@ -92,13 +112,7 @@ const View = ({ tipe = "bimbingan", detailOrder }) => {
                     disabled
                     data={detailOrder.course?.topic?.topic}
                 />
-                <GoalsTextInput
-                    label={`Location ${
-                        tipe == "Webinar" ? "Link Zoom" : "Offline"
-                    }`}
-                    disabled
-                    data={detailOrder.course?.place?.place}
-                />
+                {GetLocationData()}
                 <div className="flex gap-[.4vw]">
                     <GoalsTextInput
                         label="Date"

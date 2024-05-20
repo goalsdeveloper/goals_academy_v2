@@ -17,6 +17,9 @@ export default function Show ({ auth, course }) {
         university: course.user?.profile?.university,
         major: course.user?.profile?.major,
         topic: course?.topic?.topic,
+        location: course.location,
+        place: course.place?.place,
+        city: course.place?.city?.city,
         note: course.note,
         add_on: course.add_ons,
         tutor_rating: course?.productReview?.rate_tutor,
@@ -44,6 +47,25 @@ export default function Show ({ auth, course }) {
         ],
         document_deleted: [],
     });
+
+    const GetLocationData = () => {
+        switch (course.products.contact_type) {
+            case "online":
+                return <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={formData.location} labelClassName="font-medium" />
+            case "offline":
+                return <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${formData.place} | ${formData.city}`} labelClassName="font-medium" />
+            case "hybrid":
+                return (
+                    <>
+                        <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={formData.location} labelClassName="font-medium" />
+                        <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${formData.place} | ${formData.city}`} labelClassName="font-medium" />
+                    </>
+                )
+            default:
+                return <></>
+        }
+    }
+
 
     return (
         <DashboardLayout
@@ -85,6 +107,7 @@ export default function Show ({ auth, course }) {
                             data={formData.major ?? ""}
                             labelClassName="font-medium"
                         />
+                        {GetLocationData()}
                         <GoalsTextInput
                             disabled
                             label="Topic"

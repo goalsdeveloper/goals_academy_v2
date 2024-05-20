@@ -10,14 +10,11 @@ import moment from "moment";
 import SubHeading from "../../Admin/components/SubHeading";
 
 export default function RecentOrder({ auth, orders }) {
-    orders = orders;
-    // console.log(orders);
     // const [isLoading, setIsLoading] = useState(false);
     const [isShow, setIsShow] = useState(false);
     // const [detailOrder, setDetailOrder] = useState({});
     const [detailOrder, setDetailOrder] = useState({});
     // console.log(recent_order);
-
     const columns = useMemo(
         () => [
             {

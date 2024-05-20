@@ -6,6 +6,7 @@ import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import { Link } from "@inertiajs/react";
 import { useRef } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import "@/script/momentCustomLocale";
 
 export default function Status({
@@ -103,7 +104,7 @@ export default function Status({
                 clearInterval(countdownInterval.current);
                 setCountdown(moment().hours(0).minutes(0).seconds(0));
                 location.href = "/";
-                alert("Waktu Pembayaran Telah Habis!");
+                toast.error("Waktu Pembayaran Telah Habis!");
             }
             if (purchaseStatus.toLowerCase() == "success") {
                 clearInterval(countdownInterval.current);
@@ -136,6 +137,7 @@ export default function Status({
 
     return (
         <MainLayout auth={auth} title="Purchase">
+            <Toaster />
             <section
                 id="purchase-form"
                 className="mb-16 xs:mb-20 md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32"
@@ -216,7 +218,7 @@ export default function Status({
                                                                 .va_numbers[0]
                                                                 .va_number
                                                         );
-                                                        alert("Text copied!");
+                                                        toast.success("Text copied!");
                                                     }}
                                                 >
                                                     {orderHistory.va_numbers
@@ -233,7 +235,7 @@ export default function Status({
                                                                 .va_numbers[0]
                                                                 .va_number
                                                         );
-                                                        alert("Text copied!");
+                                                        toast.success("Text copied!");
                                                     }}
                                                 >
                                                     <i className="bi bi-copy"></i>{" "}

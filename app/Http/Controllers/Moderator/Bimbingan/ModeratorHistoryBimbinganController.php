@@ -94,7 +94,7 @@ class ModeratorHistoryBimbinganController extends Controller
         try {
             $tutors = User::with('profile')->where("user_role", "tutor")->get();
             if (Auth::user()->user_role == "moderator") {
-                $history_user = Course::with('user:id,username', 'user.profile:id,user_id,university,major,phone_number,faculty', 'tutor:id,name', 'topic:id,topic', 'place.city', 'order:id,order_code', 'products:id,name', 'fileUploads', 'productReview')->findOrFail($history->id);
+                $history_user = Course::with('user:id,username', 'user.profile:id,user_id,university,major,phone_number,faculty', 'tutor:id,name', 'topic:id,topic', 'place.city', 'order:id,order_code', 'products:id,name,contact_type', 'fileUploads', 'productReview')->findOrFail($history->id);
                 // return response()->json([
                 //     'status' => true,
                 //     'statusCode' => 200,

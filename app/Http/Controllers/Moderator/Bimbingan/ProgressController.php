@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Models\FileUpload;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Place;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
@@ -30,45 +31,45 @@ class ProgressController extends Controller
     {
         try {
             if (Auth::user()->user_role == "moderator") {
-                $perPage = $request->input('perPage', 25);
-                $search = $request->input('search');
+                $perPage = $request->input("perPage", 25);
+                $search = $request->input("search");
 
                 $query = Order::with([
-                    'user:id,username',
-                    'products:id,product_type_id,category_id,name,total_meet',
-                    'products.category:id,name',
-                    'products.productType:id,type',
-                    'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id',
-                    'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session',
-                    'course.tutor'
+                    "user:id,username",
+                    "products:id,product_type_id,category_id,name,total_meet",
+                    "products.category:id,name",
+                    "products.productType:id,type",
+                    "course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id",
+                    "course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session",
+                    "course.tutor"
                 ])
-                    ->whereHas('products', function ($query) {
-                        $query->whereHas('productType', function ($subQuery) {
-                            $subQuery->where('type', 'LIKE', '%bimbingan%');
+                    ->whereHas("products", function ($query) {
+                        $query->whereHas("productType", function ($subQuery) {
+                            $subQuery->where("type", "LIKE", "%bimbingan%");
                         });
                     })
-                    ->whereHas('course', function ($courseQuery) {
-                        $courseQuery->where('ongoing', CourseStatusEnum::ONGOING);
+                    ->whereHas("course", function ($courseQuery) {
+                        $courseQuery->where("ongoing", CourseStatusEnum::ONGOING);
                     })
-                    ->where('status', 'Success');
+                    ->where("status", "Success");
 
                 $query->orderBy("updated_at", "desc");
 
 
                 if ($search) {
-                    $query->whereHas('user', function ($userQuery) use ($search) {
-                        $userQuery->where('name', 'LIKE', "%$search%");
+                    $query->whereHas("user", function ($userQuery) use ($search) {
+                        $userQuery->where("name", "LIKE", "%$search%");
                     });
                 }
 
                 $orders = $query->paginate($perPage);
                 // dd($orders);
-                return Inertia::render('Auth/Moderator/Bimbingan/Progress', [
-                    'status' => true,
-                    'statusCode' => 200,
-                    'message' => 'Get data history success',
-                    'data' => [
-                        'recent_order' => $orders,
+                return Inertia::render("Auth/Moderator/Bimbingan/Progress", [
+                    "status" => true,
+                    "statusCode" => 200,
+                    "message" => "Get data history success",
+                    "data" => [
+                        "recent_order" => $orders,
                     ],
                 ], 200);
             } else {
@@ -76,15 +77,15 @@ class ProgressController extends Controller
             }
         } catch (QueryException $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'An error occurred while fetching data: ' . $e->getMessage(),
+                "status" => false,
+                "statusCode" => 500,
+                "message" => "An error occurred while fetching data: " . $e->getMessage(),
             ], 500);
         } catch (Exception $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+                "status" => false,
+                "statusCode" => 500,
+                "message" => "An unexpected error occurred: " . $e->getMessage(),
             ], 500);
         }
     }
@@ -113,40 +114,40 @@ class ProgressController extends Controller
     public function show(Course $progress)
     {
         try {
-            $tutors = User::with('profile')->where("user_role", "tutor")->get();
+            $tutors = User::with("profile")->where("user_role", "tutor")->get();
             if (Auth::user()->user_role == "moderator") {
-                $progress_user = Course::with('user:id,username', 'user.profile:id,user_id,university,major,phone_number,faculty', 'tutor:id,name', 'topic:id,topic', 'place.city', 'order:id,order_code', 'products:id,name', 'fileUploads', 'productReview')->findOrFail($progress->id);
+                $progress_user = Course::with("user:id,username", "user.profile:id,user_id,university,major,phone_number,faculty", "tutor:id,name", "topic:id,topic", "place", "place.city", "order:id,order_code", "products:id,name,contact_type", "fileUploads", "productReview")->findOrFail($progress->id);
                 // return response()->json([
-                //     'status' => true,
-                //     'statusCode' => 200,
-                //     'message' => 'Get data success',
-                //     'data' => $progress_user,
+                //     "status" => true,
+                //     "statusCode" => 200,
+                //     "message" => "Get data success",
+                //     "data" => $progress_user,
                 // ], 200);
 
-                return Inertia::render('Auth/Moderator/Bimbingan/Progress/View', [
-                    'progress' => $progress_user,
-                    'tutors' => $tutors
+                return Inertia::render("Auth/Moderator/Bimbingan/Progress/View", [
+                    "progress" => $progress_user,
+                    "tutors" => $tutors
                 ]);
             } else {
                 abort(403);
             }
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 404,
-                'message' => 'Course not found.',
+                "status" => false,
+                "statusCode" => 404,
+                "message" => "Course not found.",
             ], 404);
         } catch (AuthorizationException $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 403,
-                'message' => $e->getMessage(),
+                "status" => false,
+                "statusCode" => 403,
+                "message" => $e->getMessage(),
             ], 403);
         } catch (Exception $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+                "status" => false,
+                "statusCode" => 500,
+                "message" => "An unexpected error occurred: " . $e->getMessage(),
             ], 500);
         }
     }
@@ -156,11 +157,12 @@ class ProgressController extends Controller
      */
     public function edit(Course $progress)
     {
-        $tutors = User::with('profile')->where("user_role", "tutor")->get();
-        $progress->load('user.profile', 'order', 'products', 'topic', "productReview", "addOns");
-        return Inertia::render('Auth/Moderator/Bimbingan/Progress/Edit', [
-            'progress' => $progress,
-            'tutors' => $tutors
+        $tutors = User::with("profile")->where("user_role", "tutor")->get();
+        $progress->load("user.profile", "order", "products", "topic", "productReview", "addOns", "place", "place.city");
+        return Inertia::render("Auth/Moderator/Bimbingan/Progress/Edit", [
+            "progress" => $progress,
+            "tutors" => $tutors,
+            "places" => Place::with("city")->get()
         ]);
     }
 
@@ -172,24 +174,24 @@ class ProgressController extends Controller
         try {
             if (Auth::user()->user_role == "moderator") {
                 if ($progress->ongoing == "selesai") {
-                    return response()->json(['status' => false, 'statusCode' => 403, 'message' => 'Progress sudah selesai dan tidak dapat diubah'], 403);
+                    return response()->json(["status" => false, "statusCode" => 403, "message" => "Progress sudah selesai dan tidak dapat diubah"], 403);
                 }
 
                 $validateData = $request->validate([
-                    'tutor_id' => 'required|numeric',
-                    'location' => 'required|string',
-                    'date' => 'required|date',
-                    'time' => 'required|date_format:H:i',
-                    'record' => 'mimes:pdf',
-                    'is_moderator' => 'in:0,1',
+                    "tutor_id" => "required|numeric",
+                    "location" => "required|string",
+                    "date" => "required|date",
+                    "time" => "required|date_format:H:i",
+                    "record" => "mimes:pdf|nullable",
+                    // "is_moderator" => "in:0,1",
                 ]);
                 $progress->update($validateData);
 
-                if ($request->hasFile('record')) {
-                    $uploadedFile = $request->file('record');
+                if ($request->hasFile("record")) {
+                    $uploadedFile = $request->file("record");
 
-                    $fileName = Str::random(8) . '-' . time() . '.' . $uploadedFile->getClientOriginalExtension();
-                    $filePath = Storage::putFileAs('file_uploads/record', $uploadedFile, $fileName);
+                    $fileName = Str::random(8) . "-" . time() . "." . $uploadedFile->getClientOriginalExtension();
+                    $filePath = Storage::putFileAs("file_uploads/record", $uploadedFile, $fileName);
 
                     $file = new FileUpload();
 
@@ -214,35 +216,35 @@ class ProgressController extends Controller
                     // $fileUpload->save();
                 }
 
-                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress berhasil'], 200);
-                return redirect()->route("moderator.bimbingan.progress.index")->with('success', 'Update progress berhasil');
+                // return response()->json(["status" => true, "statusCode" => 200, "message" => "Update progress berhasil"], 200);
+                return redirect()->route("moderator.bimbingan.progress.index")->with("success", "Update progress berhasil");
             } else {
                 abort(403);
             }
         } catch (ValidationException $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 422,
-                'message' => 'Validation error: ' . $e->getMessage(),
-                'errors' => $e->errors(),
+                "status" => false,
+                "statusCode" => 422,
+                "message" => "Validation error: " . $e->getMessage(),
+                "errors" => $e->errors(),
             ], 422);
         } catch (AuthorizationException $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 403,
-                'message' => $e->getMessage(),
+                "status" => false,
+                "statusCode" => 403,
+                "message" => $e->getMessage(),
             ], 403);
         } catch (QueryException $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'An error occurred while updating progress: ' . $e->getMessage(),
+                "status" => false,
+                "statusCode" => 500,
+                "message" => "An error occurred while updating progress: " . $e->getMessage(),
             ], 500);
         } catch (Exception $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+                "status" => false,
+                "statusCode" => 500,
+                "message" => "An unexpected error occurred: " . $e->getMessage(),
             ], 500);
         }
     }
@@ -260,51 +262,51 @@ class ProgressController extends Controller
         try {
             if (Auth::user()->user_role == "moderator") {
                 if ($progress->ongoing == "selesai") {
-                    // return response()->json(['status' => false, 'statusCode' => 403, 'message' => 'Progress sudah selesai dan tidak dapat diubah'], 403);
-                    return redirect()->back()->with('error', 'Progress sudah selesai dan tidak dapat diubah');
+                    // return response()->json(["status" => false, "statusCode" => 403, "message" => "Progress sudah selesai dan tidak dapat diubah"], 403);
+                    return redirect()->back()->with("error", "Progress sudah selesai dan tidak dapat diubah");
                 }
 
                 $validateData = request()->validate([
-                    'duration_per_meet' => 'required',
+                    "duration_per_meet" => "required",
                 ]);
 
-                $validateData['duration_per_meet'] = intval($validateData['duration_per_meet']);
+                $validateData["duration_per_meet"] = intval($validateData["duration_per_meet"]);
 
                 if ($progress->is_tutor == 1) {
-                    $progress->update(array_merge($validateData, ['ongoing' => 'selesai', 'is_moderator' => 1]));
+                    $progress->update(array_merge($validateData, ["ongoing" => "selesai", "is_moderator" => 1]));
                 } else {
-                    $progress->update(array_merge($validateData, ['is_moderator' => 1]));
+                    $progress->update(array_merge($validateData, ["is_moderator" => 1]));
                 }
 
-                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Progress berhasil diperbarui menjadi selesai'], 200);
-                return redirect()->back()->with('success', 'Progress berhasil diperbarui menjadi selesai');
+                // return response()->json(["status" => true, "statusCode" => 200, "message" => "Progress berhasil diperbarui menjadi selesai"], 200);
+                return redirect()->back()->with("success", "Progress berhasil diperbarui menjadi selesai");
             } else {
                 abort(403);
             }
         } catch (ValidationException $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 422,
-                'message' => 'Validation error: ' . $e->getMessage(),
-                'errors' => $e->errors(),
+                "status" => false,
+                "statusCode" => 422,
+                "message" => "Validation error: " . $e->getMessage(),
+                "errors" => $e->errors(),
             ], 422);
         } catch (AuthorizationException $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 403,
-                'message' => $e->getMessage(),
+                "status" => false,
+                "statusCode" => 403,
+                "message" => $e->getMessage(),
             ], 403);
         } catch (QueryException $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'An error occurred while updating progress: ' . $e->getMessage(),
+                "status" => false,
+                "statusCode" => 500,
+                "message" => "An error occurred while updating progress: " . $e->getMessage(),
             ], 500);
         } catch (Exception $e) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+                "status" => false,
+                "statusCode" => 500,
+                "message" => "An unexpected error occurred: " . $e->getMessage(),
             ], 500);
         }
     }
