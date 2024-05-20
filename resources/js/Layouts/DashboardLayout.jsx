@@ -23,7 +23,7 @@ export default function DashboardLayout({
     children,
 }) {
     let navConfig;
-    console.log(auth);
+    // console.log(auth);
     switch (role) {
         case "admin":
             navConfig = [

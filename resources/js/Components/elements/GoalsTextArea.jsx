@@ -31,7 +31,7 @@ const GoalsTextArea = ({
             {label !== "" && (
                 <label htmlFor={name} className={labelClassName}>
                     {label}
-                    {required && <span className="text-red-600">*</span>}
+                    {required ? <span className="text-red-600">*</span> : <></>}
                 </label>
             )}
             <div>

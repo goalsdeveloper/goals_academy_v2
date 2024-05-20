@@ -29,12 +29,14 @@ class ModeratorOrderController extends Controller
 
             $query = Order::with([
                 'user:id,username',
-                'products:id,product_type_id,category_id,name,total_meet',
+                'products:id,product_type_id,category_id,name,total_meet,contact_type',
                 'products.category:id,name',
                 'products.productType:id,type',
-                'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id',
+                'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id,place_id',
                 'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session',
-                'course.tutor'
+                'course.tutor',
+                'course.place',
+                'course.place.city'
             ])
                 ->whereHas('products', function ($query) {
                     $query->whereHas('productType', function ($subQuery) {
@@ -157,7 +159,7 @@ class ModeratorOrderController extends Controller
     public function edit(Order $order)
     {
         return Inertia::render('Auth/Moderator/Bimbingan/RecentOrder/Edit', [
-            'order' => $order->load('products', 'user', 'user.profile', 'course.place', 'course.tutor', 'course.tutor.profile', 'course.topic', 'course.fileUploads'),
+            'order' => $order->load('products', 'user', 'user.profile', 'course.place', 'course.place.city', 'course.tutor', 'course.tutor.profile', 'course.topic', 'course.fileUploads'),
             'places' => fn () => Place::with('city')->get(),
             'tutors' => fn () => User::where('user_role', UserRoleEnum::TUTOR)->with('profile')->get(),
         ]);
@@ -170,6 +172,7 @@ class ModeratorOrderController extends Controller
     // $order diambil dari course id(perhatikan name model)
     public function update(Request $request, Order $order)
     {
+        dd($request);
         try {
             $order = $order->load('products');
 
