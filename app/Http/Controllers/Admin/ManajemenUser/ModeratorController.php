@@ -17,24 +17,31 @@ class ModeratorController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                // $search = $request->input('search');
-                // $perPage = $request->input('perPage', 10);
-
-                $query = User::with('profile')->where("user_role", "moderator");
-
-                // if ($search) {
-                //     $query->where(function ($subquery) use ($search) {
-                //         $subquery->where('name', 'LIKE', "%$search%")
-                //             ->orWhere('username', 'LIKE', "%$search%");
-                //     });
-                // }
-                $moderators = $query->get();
-
                 return Inertia::render('Auth/Admin/ManajemenUser/Moderator', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
-                    'data' => $moderators,
+                    'moderators'
+                    => function () use ($request) {
+                        $search =  $request->input('search');
+                        $perPage = (int) $request->input('perPage', 25);
+
+                        $query = User::with('profile')->where("user_role", "moderator");
+
+                        if ($search) {
+                            $query->where(function ($subquery) use ($search) {
+                                $subquery->where('name', 'LIKE', "%$search%")
+                                ->orWhere('username', 'LIKE', "%$search%")
+                                ->orWhere('email', 'LIKE', "%$search%")
+                                ->orWhereHas('profile', function ($profileQuery) use ($search) {
+                                    $profileQuery->where('phone_number', 'LIKE', "%$search%")
+                                    ->orWhere('university', 'LIKE', "%$search%");
+                                });
+                            });
+                        }
+                        $moderators = $query->paginate($perPage);
+                        return $moderators;
+                    },
                 ], 200);
             } else {
                 abort(403);

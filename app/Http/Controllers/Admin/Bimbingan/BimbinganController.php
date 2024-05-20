@@ -349,7 +349,7 @@ class BimbinganController extends Controller
                     }
                     $image = $validateData['product_image'];
                     $fileName = 'bimbingan' . time() . '.' . $image->extension();
-                    $path = Storage::disk('public')->put('product/bimbingan/' . $fileName, $image);
+                    $path = Storage::disk('public')->putFileAs('product/bimbingan/' . $fileName, $image);
                     $validateData['product_image'] = $path;
                 }
 

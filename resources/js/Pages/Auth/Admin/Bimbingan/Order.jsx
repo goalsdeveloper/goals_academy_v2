@@ -1,13 +1,40 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import SubHeading from "../components/SubHeading";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { FiPlus } from "react-icons/fi";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { useMemo } from "react";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
+import { useState } from "react";
+import { getPaginationPages } from "@/script/utils";
+import { useEffect } from "react";
 
 export default function Order({ auth, orders }) {
-    const data = orders;
-    console.log(data);
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        orders;
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(
+        new URLSearchParams(window.location.search).get("search")
+    );
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
+
+    const onSearchCallback = (search) => {
+        router.visit(
+            route("admin.bimbingan.order.index", { search: search }),
+            {
+                only: ["orders"],
+            }
+        );
+    };
+
+    // const approveCallback = () => {
+    //     router.visit(route("admin.bimbingan.product.index"), {
+    //         only: ["orders"],
+    //     });
+    // };
     const columns = useMemo(
         () => [
             {
@@ -70,10 +97,25 @@ export default function Order({ auth, orders }) {
 
                 <GoalsDashboardTable
                     isHeadVisible
-                    isPaginated
                     isSortable
                     columns={columns}
-                    data={data}
+                    data={orders.data}
+                    keyword={keyword}
+                    setKeyword={setKeyword}
+                    onSearch={(i) => {
+                        onSearchCallback(i);
+                    }}
+                />
+                <BottomPaginationTable
+                    {...{
+                        from,
+                        to,
+                        total,
+                        pages,
+                        per_page,
+                        current_page,
+                        keyword,
+                    }}
                 />
             </div>
         </DashboardLayout>
