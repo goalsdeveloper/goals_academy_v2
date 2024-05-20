@@ -7,9 +7,30 @@ import SubHeading from "../components/SubHeading";
 import GoalsButton from "@/Components/GoalsButton";
 import Dialog from "./Moderator/Dialog";
 import toast, { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
+import { getPaginationPages } from "@/script/utils";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 
-export default function Moderator({ auth, data }) {
-    console.log(data);
+export default function Moderator({ auth, moderators }) {
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        moderators;
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(
+        new URLSearchParams(window.location.search).get("search")
+    );
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
+
+    const onSearchCallback = (search) => {
+        router.visit(
+            route("admin.manajemen_user.moderator.index", { search: search }),
+            {
+                only: ["moderators"],
+            }
+        );
+    };
     // const data = [
     //     {
     //         id: 1,
@@ -64,7 +85,7 @@ export default function Moderator({ auth, data }) {
 
     const callback = (method) => {
         router.visit(route("admin.bimbingan.moderator.index"), {
-            only: ["data"],
+            only: ["moderators"],
             onSuccess: () => {
                 if (method == "create") {
                     toast.success("Create Success!");
@@ -229,10 +250,25 @@ export default function Moderator({ auth, data }) {
 
                 <GoalsDashboardTable
                     isHeadVisible
-                    isPaginated
                     isSortable
                     columns={columns}
-                    data={data}
+                    data={moderators.data}
+                    keyword={keyword}
+                    setKeyword={setKeyword}
+                    onSearch={(i) => {
+                        onSearchCallback(i);
+                    }}
+                />
+                <BottomPaginationTable
+                    {...{
+                        from,
+                        to,
+                        total,
+                        pages,
+                        per_page,
+                        current_page,
+                        keyword,
+                    }}
                 />
             </div>
         </DashboardLayout>

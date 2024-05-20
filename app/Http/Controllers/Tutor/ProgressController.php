@@ -25,7 +25,7 @@ class ProgressController extends Controller
         return Inertia::render('Auth/Tutor/Bimbingan/Progress', [
             'bimbingan' => function () use ($request) {
                 $user = Auth::user();
-                $perPage = $request->input('perPage', 10);
+                $perPage = (int)$request->input('perPage', 10);
                 $search = $request->search;
                 $tutor = $user->tutor()->where('is_moderator', false)->where('ongoing', '!=', CourseStatusEnum::SUCCESS)
                     ->when($search, function ($q) use ($search) {
