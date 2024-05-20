@@ -21,8 +21,7 @@ import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 
 export default function View({ auth, progress, tutors }) {
-    console.log(progress);
-
+    console.log(progress)
     const item = [
         {
             url: "https://www.google.com",
@@ -45,7 +44,9 @@ export default function View({ auth, progress, tutors }) {
         session: progress.session ?? "",
         date: progress.date ?? "",
         time: progress.time ?? "",
-        location: progress.locationv ?? "",
+        location: progress.location ?? "",
+        place: progress.place?.place ?? "",
+        city: progress.place?.city.city ?? "",
         number: progress.user.profile.phone_number ?? "",
         tutor: tutors?.find((item) => item.id == progress.tutor_id),
         rate_product: progress.product_review?.rate_product,
@@ -56,7 +57,23 @@ export default function View({ auth, progress, tutors }) {
         tutor_id: progress.tutor_id,
     });
 
-    console.log(data);
+    const GetLocationData = () => {
+        switch (progress.products.contact_type) {
+            case "online":
+                return <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={data.location} labelClassName="font-medium" />
+            case "offline":
+                return <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${data.place} | ${data.city}`} labelClassName="font-medium" />
+            case "hybrid":
+                return (
+                    <>
+                        <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={data.location} labelClassName="font-medium" />
+                        <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${data.place} | ${data.city}`} labelClassName="font-medium" />
+                    </>
+                )
+            default:
+                return <></>
+        }
+    }
 
     return (
         <DashboardLayout
@@ -269,13 +286,7 @@ export default function View({ auth, progress, tutors }) {
                                     setData={(i) => setData("session", i)}
                                 />
                             )}
-
-                            <GoalsTextInput
-                                label="Location (Link Zoom)"
-                                data={data.location}
-                                disabled
-                                setData={(i) => setData("location", i)}
-                            />
+                            {GetLocationData()}
                             <div className="flex gap-[.8vw]">
                                 <GoalsTextInput
                                     label="Date"

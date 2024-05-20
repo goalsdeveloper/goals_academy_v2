@@ -218,7 +218,7 @@ export default function Status({
                                                                 .va_numbers[0]
                                                                 .va_number
                                                         );
-                                                        toast.succes("Text copied!");
+                                                        toast.success("Text copied!");
                                                     }}
                                                 >
                                                     {orderHistory.va_numbers
@@ -235,7 +235,7 @@ export default function Status({
                                                                 .va_numbers[0]
                                                                 .va_number
                                                         );
-                                                        toast.succes("Text copied!");
+                                                        toast.success("Text copied!");
                                                     }}
                                                 >
                                                     <i className="bi bi-copy"></i>{" "}
