@@ -2,7 +2,7 @@ import GoalsBadge from "@/Components/elements/GoalsBadge";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { getPaginationPages, upperCaseFirstLetter } from "@/script/utils";
+import { getPaginationPages, updateSearchParams, upperCaseFirstLetter } from "@/script/utils";
 import { Link, router, useForm } from "@inertiajs/react";
 import {
     MenuItem,
@@ -29,6 +29,8 @@ import BottomPaginationTable from "@/Components/fragments/BottomTablePagination"
 export default function Progress({ auth, data: recentOrder }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
         recentOrder.recent_order;
+    const searchParams = new URLSearchParams(window.location.search);
+    const [keyword, setKeyword] = useState(searchParams.get("search") ?? "");
 
     const [isShow, setIsShow] = useState({
         duration: false,
@@ -281,6 +283,18 @@ export default function Progress({ auth, data: recentOrder }) {
             <div className="space-y-[1.6vw]">
                 <SubHeading title="Progress" />
                 <div className="text-[.8vw] bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
+                    <GoalsTextInput
+                        placeholder="🔍 Search"
+                        className="max-w-[10.4vw] max-h-[2.4vw]"
+                        data={keyword}
+                        setData={(e) => setKeyword(e)}
+                        onKeyUp={(e) => {
+                            if (e.key === "Enter") {
+                                updateSearchParams("search", keyword);
+                            }
+                        }}
+                    />
+
                     <MaterialReactTable table={table} />
                 </div>
             </div>

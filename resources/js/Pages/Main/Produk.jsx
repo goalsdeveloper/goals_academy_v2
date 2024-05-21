@@ -32,7 +32,6 @@ export default function Produk({
     webinarData,
 }) {
     const dataBimbingan = dataDibimbing;
-    console.log('halo')
     const bimbinganCategories = ['Semua', 'Dibimbing Sekali', 'Dibimbing Sekali Online', 'Dibimbing Tuntas']
     const dataEbook = ebookData;
     // const dataEbook = [

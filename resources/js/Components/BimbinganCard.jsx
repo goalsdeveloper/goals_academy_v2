@@ -36,18 +36,12 @@ export default function BimbinganCard({ item, className }) {
                 </p>
                 <div className="flex flex-col gap-2 md:gap-1 lg:gap-2 3xl:gap-3 mb-8 md:mb-4 xl:mb-8 3xl:mb-12">
                     <p>Layanan :</p>
-                    <div className="flex items-center gap-2">
-                        <i className="fa-regular fa-calendar text-primary"></i>
-                        {/* <p>{features.times}x Pertemuan</p> */}
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <i className="fa-solid fa-clock text-12 md:text-6 lg:text-10 xl:text-12 3xl:text-18 text-primary"></i>
-                        {/* <p>{features.duration} Menit</p> */}
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <i className="fa-solid fa-location-dot text-primary"></i>
-                        {/* <p>{features.category}</p> */}
-                    </div>
+                    {item.facilities.map(({icon, text}, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                            <i className={`${icon} text-secondary`}></i>
+                            <p>{text}</p>
+                        </div>
+                    ))}
                 </div>
                 <ButtonPill href={`/produk/${item.slug}`} className={"w-full"} isLink={true}>
                     Daftar Sekarang

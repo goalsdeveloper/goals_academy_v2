@@ -57,9 +57,7 @@ const BottomPaginationTable = ({
                             value={item}
                             onClick={() => {
                                 router.get(
-                                    route(
-                                        "moderator.bimbingan.progress.index"
-                                    ) +
+                                    window.location.pathname +
                                         (`?perPage=${item}` ||
                                             new URLSearchParams(
                                                 window.location.search

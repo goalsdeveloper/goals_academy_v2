@@ -1,3 +1,5 @@
+import { router } from "@inertiajs/react";
+
 export function getValue(obj, propertyString) {
     const properties = propertyString.split(".");
     let value = obj;
@@ -92,4 +94,17 @@ export const truncateWithEllipsis = (str) => {
         return str.slice(0, maxLength) + '...';
     }
     return str;
+};
+
+
+export const updateSearchParams = (key, value) => {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+
+    if (value) {
+        urlSearchParams.set(key, value);
+    } else {
+        urlSearchParams.delete(key);
+    }
+
+    router.get(window.location.pathname, Object.fromEntries(urlSearchParams.entries()), { preserveState: true });
 };
