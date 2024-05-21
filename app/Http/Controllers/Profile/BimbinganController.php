@@ -51,7 +51,7 @@ class BimbinganController extends Controller
         })->whereHas('products.productType', function (Builder $query) {
             $query->where('type', 'like', '%bimbingan%');
         })
-            ->with('order', 'tutor:id,name', 'tutorNote', 'fileUploads', 'products:id,name,slug,product_image', 'place:id,place', 'place.city:id,city', 'addOns', 'topic:id,topic')
+            ->with('order', 'tutor:id,name', 'tutorNote', 'fileUploads', 'products:id,name,slug,product_image,contact_type', 'place:id,place', 'place.city:id,city', 'addOns', 'topic:id,topic')
             ->get();
         if ($course->isEmpty()) {
             return abort(404);
