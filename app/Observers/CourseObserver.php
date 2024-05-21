@@ -213,16 +213,16 @@ class CourseObserver
                 }
             }
 
-            Notification::make()
-                ->title('Anda melakukan perubahan')
-                ->body('Anda telah melakukan perubahan pada ' . $course->order->order_code)
-                ->info()
-                ->actions([
-                    Action::make('view')->url(
-                        CourseResource::getUrl('edit', ['record' => $course]),
-                    )
-                ])
-                ->sendToDatabase(auth()->user());
+            // Notification::make()
+            //     ->title('Anda melakukan perubahan')
+            //     ->body('Anda telah melakukan perubahan pada ' . $course->order->order_code)
+            //     ->info()
+            //     ->actions([
+            //         Action::make('view')->url(
+            //             CourseResource::getUrl('edit', ['record' => $course]),
+            //         )
+            //     ])
+            //     ->sendToDatabase(auth()->user());
         } else if (isset($changes['ongoing']) == 'batal') {
             //
         }

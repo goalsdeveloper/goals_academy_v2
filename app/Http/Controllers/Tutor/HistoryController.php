@@ -7,6 +7,7 @@ use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Models\FileUpload;
 
 class HistoryController extends Controller
 {
@@ -40,7 +41,7 @@ class HistoryController extends Controller
 
     public function show(Course $history)
     {
-        $course = $history->load('productReview', 'addOns', 'fileUploads', 'user', 'user.profile', 'topic');
+        $course = $history->load('productReview', 'addOns', 'fileUploads', 'user', 'user.profile', 'topic', 'products:id,contact_type', 'place:id,place,city_id', 'place.city:id,city');
         $files = FileUpload::where('course_id', $history->parent_id)->get();
         return Inertia::render('Auth/Tutor/Bimbingan/History/Show', [
             'course' => $course,

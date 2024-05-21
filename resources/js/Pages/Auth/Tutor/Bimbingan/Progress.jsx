@@ -69,7 +69,7 @@ export default function Progress({ auth, bimbingan }) {
                 size: 150,
                 Cell: ({ cell }) => {
                     if (moment().diff(cell.getValue(), "s") > 0) {
-                        return !cell.row.original.is_moderator ? (
+                        return !cell.row.original.is_moderator && cell.row.original.is_tutor ? (
                             <div className="text-[.9vw] text-center">
                                 <span className="bg-green-100 text-green-500 rounded">
                                     Menunggu Konfirmasi

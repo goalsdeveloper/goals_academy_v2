@@ -23,7 +23,7 @@ export default function DashboardLayout({
     children,
 }) {
     let navConfig;
-    console.log(auth);
+    // console.log(auth);
     switch (role) {
         case "admin":
             navConfig = [
@@ -373,16 +373,19 @@ export default function DashboardLayout({
         auth.notifications.filter((i) => i.data.category != "Transaksi")
     );
 
-    // useEffect(() => {
-    //     setInterval(() => {
-    //         fetch(route('api.notification.get'))
-    //             .then(response => response.json())
-    //             .then(response => {
-    //                 // console.log(response.notifications)
-    //                 setDataNotification(response.notifications)
-    //             })
-    //     }, 5000);
-    // }, [])
+    const getNotification = () => {
+        fetch(route('api.notification.get'))
+            .then(response => response.json())
+            .then(response => {
+                // console.log(response.notifications)
+                setDataNotification(response.notifications);
+                setTimeout(() => getNotification(), 3000)
+            })
+    }
+
+    useEffect(() => {
+        getNotification();
+    }, [])
 
     return (
         <main className="relative flex bg-gray-50 text-dark font-sans">
