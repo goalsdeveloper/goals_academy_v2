@@ -83,14 +83,14 @@ export default function Edit({ auth, progress, tutors, places }) {
             case "hybrid":
                 return (
                     <>
-                        <GoalsTextInput label="Meeting URL" placeholder="Meeting URL" data={formData.location} setData={(i) => setFormData("location", i)} />
-                        <SelectInput label="Meeting Location" placeholder="Meeting Location" value={formData.place} labelClassName="font-medium">
+                        <GoalsTextInput label="Meeting URL" placeholder="Meeting URL" data={data.location} setData={(i) => setData("location", i)} />
+                        <SelectInput label="Meeting Location" placeholder="Meeting Location" value={data.place} labelClassName="font-medium">
                         {places.map((option, i) => (
                                 <SelectInputItem
                                     key={i}
                                     onClick={() =>
-                                        setFormData({
-                                            ...formData,
+                                        setData({
+                                            ...data,
                                             place: `${option.place} | ${option.city.city}`,
                                             place_id: option.id,
                                         })
