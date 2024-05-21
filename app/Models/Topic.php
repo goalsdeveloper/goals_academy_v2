@@ -10,7 +10,8 @@ class Topic extends Model
     use HasFactory;
     protected $fillable = [
         'topic',
-        'slug'
+        'slug',
+        'is_visible'
     ];
 
     public function products() {

@@ -7,10 +7,11 @@ import SubHeading from "../components/SubHeading";
 import GoalsButton from "@/Components/GoalsButton";
 import Dialog from "./Topic/Dialog";
 import toast, { Toaster } from "react-hot-toast";
+import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 
 export default function Topic({ auth, topics }) {
-    topics = topics.data
-    console.log(topics)
+    topics = topics.data;
+    console.log(topics);
 
     const [showDialog, setShowDialog] = useState({
         create: false,
@@ -32,19 +33,19 @@ export default function Topic({ auth, topics }) {
     });
 
     const callback = (method) => {
-        router.visit(route('admin.bimbingan.topic.index'), {
-            only: ['topics'],
+        router.visit(route("admin.bimbingan.topic.index"), {
+            only: ["topics"],
             onSuccess: () => {
-                if (method == 'create') {
-                    toast.success('Create Success!');
-                } else if (method == 'edit') {
-                    toast.success('Edit Success!');
+                if (method == "create") {
+                    toast.success("Create Success!");
+                } else if (method == "edit") {
+                    toast.success("Edit Success!");
                 } else {
-                    toast.success('Delete Success!');
+                    toast.success("Delete Success!");
                 }
-            }
+            },
         });
-    }
+    };
 
     const columns = useMemo(
         () => [
@@ -68,7 +69,10 @@ export default function Topic({ auth, topics }) {
                         <li>
                             <button
                                 onClick={() => {
-                                    setShowDialog({ ...showDialog, edit: true });
+                                    setShowDialog({
+                                        ...showDialog,
+                                        edit: true,
+                                    });
                                     setFormData({
                                         ...formData,
                                         id: cell.row.original.id,
@@ -81,14 +85,28 @@ export default function Topic({ auth, topics }) {
                             </button>
                         </li>
                         <li>
-                            <Link
-                                method="DELETE"
-                                href={`/admin/bimbingan/topic/${cell.getValue()}`}
-                                onSuccess={callback}
-                                as="button"
-                            >
-                                <FiTrash2 className="text-[1.2vw] text-danger-40" />
-                            </Link>
+                            <GoalsCupertinoButton
+                                className="text-[1vw] gap-[.4vw] cursor-pointer"
+                                label=""
+                                size="lg"
+                                isEnabled={cell.row.original.is_visible}
+                                disabled={cell.row.original.is_visible}
+                                onClick={() => {
+                                    router.put(
+                                        route(
+                                            "admin.bimbingan.topic.updateVisible",
+                                            { topic: cell.row.original.id }
+                                        ),
+                                        {
+                                            is_visible:
+                                                !cell.row.original.is_visible,
+                                        },
+                                        {
+                                            onSuccess: () => callback("edit"),
+                                        }
+                                    );
+                                }}
+                            />
                         </li>
                     </ul>
                 ),

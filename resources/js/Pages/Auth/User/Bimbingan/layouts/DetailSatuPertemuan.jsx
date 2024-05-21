@@ -1,10 +1,3 @@
-import useScrollBlock from "@/Hooks/useScrollBlock";
-import { useState } from "react";
-import { BsThreeDots } from "react-icons/bs";
-import { RxFileText } from "react-icons/rx";
-import { createPortal } from "react-dom";
-import { router } from "@inertiajs/react";
-import { truncateWithEllipsis } from "@/script/utils";
 import FileMediaItemBackdrop from "@/Components/fragments/FileMediaItemBackdrop";
 
 const DetailSatuPertemuan = ({ data, className = "" }) => {
@@ -18,7 +11,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
         city: "Kota Pelaksanaan",
         place: "Lokasi Pelaksanaan",
         // add_on: "Add On",
-        document: "Lampiran Dokumen",
+        // document: "Lampiran Dokumen",
         topic: "Topik Bimbingan",
     };
     const form_result = {
@@ -29,7 +22,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
         //     data?.add_ons?.map((item) => item["name"]).join(", ") != ""
         //         ? data?.add_ons?.map((item) => item["name"]).join(", ")
         //         : "Tidak Ada Add Ons",
-        document: "Lampiran Dokumen",
+        // document: "Lampiran Dokumen",
         schedule:
             new Date(data?.date).toLocaleDateString("id-ID", {
                 year: "numeric",
@@ -76,20 +69,20 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                         Informasi Tutor
                     </h2>
                     <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
-                        <li className="space-y-[.9vw] md:space-y-[.2vw]">
+                        {/* <li className="space-y-[.9vw] md:space-y-[.2vw]">
                             <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
                                 Lampiran Dokumen Hasil
                             </h3>
                             <button className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
                                 Ludi-Revisi.pdf
                             </button>
-                        </li>
+                        </li> */}
                         <li className="space-y-[.9vw] md:space-y-[.2vw]">
                             <h3 className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
                                 Catatan Dari Tutor
                             </h3>
                             <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
-                                mengganti poin a menjadi b
+                                {data.note ?? "Tidak ada catatan dari tutor"}
                             </p>
                         </li>
                     </ul>

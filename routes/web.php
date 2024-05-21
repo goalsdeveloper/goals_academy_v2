@@ -122,11 +122,17 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
     Route::get('/', [AdminOverviewController::class, 'index'])->name('index');
     Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
         Route::resource('category', CategoryController::class);
+        Route::put('category/{category}/updateVisible', [CategoryController::class, 'updateVisible'])->name('category.updateVisible');
         Route::resource('addon', AddOnController::class);
+        Route::put('addon/{addon}/updateVisible', [AddOnController::class, 'updateVisible'])->name('addon.updateVisible');
         Route::resource('place', PlaceController::class);
+        Route::put('place/{place}/updateVisible', [PlaceController::class, 'updateVisible'])->name('place.updateVisible');
         Route::resource('city', CityController::class);
+        Route::put('city/{city}/updateVisible', [CityController::class, 'updateVisible'])->name('city.updateVisible');
         Route::resource('topic', TopicController::class);
+        Route::put('topic/{topic}/updateVisible', [TopicController::class, 'updateVisible'])->name('topic.updateVisible');
         Route::resource('product', BimbinganController::class);
+        Route::put('product/{product}/updateVisible', [BimbinganController::class, 'updateVisible'])->name('product.updateVisible');
         Route::resource('order', AdminOrderBimbinganController::class);
     });
     Route::prefix('webinar')->name('webinar.')->group(function () {

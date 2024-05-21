@@ -8,14 +8,30 @@ import GoalsButton from "@/Components/GoalsButton";
 import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 import Dialog from "./User/Dialog";
 import toast, { Toaster } from "react-hot-toast";
+import { getPaginationPages } from "@/script/utils";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
+import { useEffect } from "react";
 
-export default function User({ auth,data }) {
-    // const data = [
-    //     { id: 1, name: "Hafiz Rizky 1", username: "hafizbaik", email: "hafizbaik@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: true },
-    //     { id: 2, name: "Hafiz Rizky 2", username: "hafizganteng", email: "hafizganteng@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: false },
-    //     { id: 3, name: "Hafiz Rizky 3", username: "hafizcute", email: "hafizcute@gmail.com", phone_number: "085123456789", university: "Universitas Brawijaya", major: "Sistem Informasi", status: true },
-    // ];
+export default function User({ auth, users }) {
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        users;
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(
+        new URLSearchParams(window.location.search).get("search")
+    );
 
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
+
+    const onSearchCallback = (search) => {
+        router.visit(
+            route("admin.manajemen_user.user.index", { search: search }),
+            {
+                only: ["users"],
+            }
+        );
+    };
     const [showDialog, setShowDialog] = useState({
         create: false,
         edit: false,
@@ -39,19 +55,19 @@ export default function User({ auth,data }) {
     });
 
     const callback = (method) => {
-        router.visit(route('admin.bimbingan.user.index'), {
-            only: ['data'],
+        router.visit(route("admin.bimbingan.user.index"), {
+            only: ["data"],
             onSuccess: () => {
-                if (method == 'create') {
-                    toast.success('Create Success!');
-                } else if (method == 'edit') {
-                    toast.success('Edit Success!');
+                if (method == "create") {
+                    toast.success("Create Success!");
+                } else if (method == "edit") {
+                    toast.success("Edit Success!");
                 } else {
-                    toast.success('Delete Success!');
+                    toast.success("Delete Success!");
                 }
-            }
+            },
         });
-    }
+    };
 
     const columns = useMemo(
         () => [
@@ -92,16 +108,25 @@ export default function User({ auth,data }) {
                                 <FiEye
                                     className="text-[1.2vw] text-gray-400"
                                     onClick={() => {
-                                        setShowDialog({ ...showDialog, show: true });
+                                        setShowDialog({
+                                            ...showDialog,
+                                            show: true,
+                                        });
                                         setFormData({
                                             ...formData,
                                             id: cell.row.original.id,
                                             name: cell.row.original.name,
-                                            username: cell.row.original.username,
+                                            username:
+                                                cell.row.original.username,
                                             email: cell.row.original.email,
-                                            phone_number: cell.row.original.profile.phone_number,
-                                            university: cell.row.original.profile.university,
-                                            major: cell.row.original.profile.major,
+                                            phone_number:
+                                                cell.row.original.profile
+                                                    .phone_number,
+                                            university:
+                                                cell.row.original.profile
+                                                    .university,
+                                            major: cell.row.original.profile
+                                                .major,
                                         });
                                     }}
                                 />
@@ -139,10 +164,25 @@ export default function User({ auth,data }) {
 
                 <GoalsDashboardTable
                     isHeadVisible
-                    isPaginated
                     isSortable
                     columns={columns}
-                    data={data}
+                    data={users.data}
+                    keyword={keyword}
+                    setKeyword={setKeyword}
+                    onSearch={(i) => {
+                        onSearchCallback(i);
+                    }}
+                />
+                <BottomPaginationTable
+                    {...{
+                        from,
+                        to,
+                        total,
+                        pages,
+                        per_page,
+                        current_page,
+                        keyword,
+                    }}
                 />
             </div>
         </DashboardLayout>

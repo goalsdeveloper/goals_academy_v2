@@ -19,8 +19,10 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { FaRegCheckCircle, FaRegTimesCircle } from "react-icons/fa";
+import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 
 export default function Product({ auth, bimbingan, categories }) {
+    bimbingan = bimbingan.data
     const isDesktop = useMediaQuery({ minWidth: 1024 });
     const [show, setShow] = useState(false);
     const [product, setProduct] = useState();
@@ -32,6 +34,20 @@ export default function Product({ auth, bimbingan, categories }) {
         setProduct(data);
     }
 
+    const callback = (method) => {
+        router.visit(route("admin.bimbingan.product.index"), {
+            only: ["bimbingan"],
+            onSuccess: () => {
+                if (method == "create") {
+                    toast.success("Create Success!");
+                } else if (method == "edit") {
+                    toast.success("Edit Success!");
+                } else {
+                    toast.success("Delete Success!");
+                }
+            },
+        });
+    };
 
     const columns = useMemo(
         () => [
@@ -61,13 +77,26 @@ export default function Product({ auth, bimbingan, categories }) {
                 header: "Visibilitas",
 
                 Cell: ({ cell }) => (
-                    <span>
-                        {cell.row.original.is_visible == 0 ? (
-                            <FaRegTimesCircle className="text-danger-40 text-[1.2vw]" />
-                        ) : (
-                            <FaRegCheckCircle className="text-success-50 text-[1.2vw]" />
-                        )}
-                    </span>
+                    <GoalsCupertinoButton
+                        className="text-[1vw] gap-[.4vw] cursor-pointer"
+                        label=""
+                        size="lg"
+                        isEnabled={cell.row.original.is_visible}
+                        disabled={cell.row.original.is_visible}
+                        onClick={() => {
+                            router.put(
+                                route("admin.bimbingan.product.updateVisible", {
+                                    product: cell.row.original.id,
+                                }),
+                                {
+                                    is_visible: !cell.row.original.is_visible,
+                                },
+                                {
+                                    onSuccess: () => callback("edit"),
+                                }
+                            );
+                        }}
+                    />
                 ),
             },
             {
@@ -90,31 +119,6 @@ export default function Product({ auth, bimbingan, categories }) {
                                     )}
                                 >
                                     <FiEdit2 className="text-[1.2vw] text-secondary" />
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    as="button"
-                                    method="DELETE"
-                                    onSuccess={() => {
-                                        router.visit(
-                                            route("admin.bimbingan.product.index"),
-                                            {
-                                                only: ['bimbingan'],
-                                                onSuccess: () => {
-                                                    toast.success(
-                                                        "Produk berhasil dihapus"
-                                                    );
-                                                },
-                                            }
-                                        );
-                                    }}
-                                    href={route(
-                                        "admin.bimbingan.product.destroy",
-                                        { product: cell.row.original }
-                                    )}
-                                >
-                                    <FiTrash2 className="text-[1.2vw] text-danger-40" />
                                 </Link>
                             </li>
                             <li>

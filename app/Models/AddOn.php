@@ -9,7 +9,7 @@ class AddOn extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'price'];
+    protected $fillable = ['name', 'slug', 'price', 'is_visible'];
     protected $hidden = ['created_at', 'updated_at'];
 
     public function products()

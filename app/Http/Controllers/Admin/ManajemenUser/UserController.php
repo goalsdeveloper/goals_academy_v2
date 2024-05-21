@@ -21,7 +21,7 @@ class UserController extends Controller
                 // $perPage = $request->input('perPage', 10);
                 // $search = $request->input('search');
 
-                $query = User::with('profile')->where("user_role", "user");
+                // $query = User::with('profile')->where("user_role", "user");
 
                 // if ($search) {
                 //     $query->where(function ($subquery) use ($search) {
@@ -30,13 +30,33 @@ class UserController extends Controller
                 //     });
                 // }
 
-                $users = $query->get();
+                // $users = $query->get();
 
                 return Inertia::render('Auth/Admin/ManajemenUser/User', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data user success',
-                    'data' => $users,
+                    'users' =>
+                    function () use ($request) {
+                        $search =  $request->input('search');
+                        $perPage = (int) $request->input('perPage', 25);
+
+                        $query = User::with('profile')->where("user_role", "user");
+
+                        if ($search) {
+                            $query->where(function ($subquery) use ($search) {
+                                $subquery->where('name', 'LIKE', "%$search%")
+                                    ->orWhere('username', 'LIKE', "%$search%")
+                                    ->orWhere('email', 'LIKE', "%$search%")
+                                    ->orWhereHas('profile', function ($profileQuery) use ($search) {
+                                        $profileQuery->where('phone_number', 'LIKE', "%$search%")
+                                            ->orWhere('university', 'LIKE', "%$search%");
+                                    });
+                            });
+                        }
+                        $users = $query->paginate($perPage);
+                        return $users;
+                    },
                 ], 200);
             } else {
                 abort(403);

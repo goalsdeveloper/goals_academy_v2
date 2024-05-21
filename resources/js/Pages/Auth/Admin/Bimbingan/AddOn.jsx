@@ -8,7 +8,7 @@ import Dialog from "./AddOn/Dialog";
 import { useState } from "react";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import toast, { Toaster } from "react-hot-toast";
-
+import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 
 export default function AddOn({ auth, data }) {
     const addons = data.data;
@@ -30,19 +30,19 @@ export default function AddOn({ auth, data }) {
     });
 
     const callback = (method) => {
-        router.visit(route('admin.bimbingan.addon.index'), {
-            only: ['data'],
+        router.visit(route("admin.bimbingan.addon.index"), {
+            only: ["data"],
             onSuccess: () => {
-                if (method == 'create') {
-                    toast.success('Create Success!');
-                } else if (method == 'edit') {
-                    toast.success('Edit Success!');
+                if (method == "create") {
+                    toast.success("Create Success!");
+                } else if (method == "edit") {
+                    toast.success("Edit Success!");
                 } else {
-                    toast.success('Delete Success!');
+                    toast.success("Delete Success!");
                 }
-            }
+            },
         });
-    }
+    };
 
     console.log(addons);
 
@@ -86,14 +86,28 @@ export default function AddOn({ auth, data }) {
                             </button>
                         </li>
                         <li>
-                            <Link
-                                method="DELETE"
-                                href={`/admin/bimbingan/addon/${cell.row.original.id}`}
-                                as="button"
-                                onSuccess={callback}
-                            >
-                                <FiTrash2 className="text-[1.2vw] text-danger-40" />
-                            </Link>
+                            <GoalsCupertinoButton
+                                className="text-[1vw] gap-[.4vw] cursor-pointer"
+                                label=""
+                                size="lg"
+                                isEnabled={cell.row.original.is_visible}
+                                disabled={cell.row.original.is_visible}
+                                onClick={() => {
+                                    router.put(
+                                        route(
+                                            "admin.bimbingan.addon.updateVisible",
+                                            { addon: cell.row.original.id }
+                                        ),
+                                        {
+                                            is_visible:
+                                                !cell.row.original.is_visible,
+                                        },
+                                        {
+                                            onSuccess: () => callback("edit"),
+                                        }
+                                    );
+                                }}
+                            />
                         </li>
                     </ul>
                 ),
@@ -137,7 +151,7 @@ export default function AddOn({ auth, data }) {
                         setFormData,
                         post,
                         put,
-                        callback
+                        callback,
                     }}
                 />
 
