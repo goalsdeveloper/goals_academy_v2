@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Profile;
 
 use App\Enums\CourseStatusEnum;
-use App\Enums\OrderEnum;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Course;
@@ -22,24 +21,16 @@ class BimbinganController extends Controller
     public function index(Request $request)
     {
         $user = User::where('id', Auth::user()->id)->with('profile')->first();
-        // dd($user);
-        $orderBimbingan = Order::where('user_id', $user->id)
-            ->where('status', OrderEnum::SUCCESS->value)
-            ->whereHas('products.productType', function ($query) {
-                $query->where('type', 'bimbingan');
+        $courses = $user->course()->whereNull('parent_id')
+            ->when($request['status'] == 'berjalan', function ($q) {
+                return $q->where('ongoing', CourseStatusEnum::ONGOING->value);
             })
-            ->whereHas('course', function ($q) use ($request) {
-                $q->when($request['status'] == 'berjalan', function ($q) {
-                    return $q->where('ongoing', CourseStatusEnum::ONGOING->value);
-                });
-                $q->when($request['status'] == 'selesai', function ($q) {
-                    return $q->where('ongoing', CourseStatusEnum::SUCCESS->value);
-                });
+            ->when($request['status'] == 'selesai', function ($q) {
+                return $q->where('ongoing', CourseStatusEnum::SUCCESS->value);
             })
-            ->with('products.category', 'course')
-            ->get();
+            ->orderBy('ongoing', 'asc')->with('order', 'products', 'products.category')->get();
         return Inertia::render('Auth/User/Bimbingan/Bimbingan', [
-            'orderBimbingan' => $orderBimbingan,
+            'orderBimbingan' => $courses,
         ]);
     }
 
@@ -51,7 +42,7 @@ class BimbinganController extends Controller
         })->whereHas('products.productType', function (Builder $query) {
             $query->where('type', 'like', '%bimbingan%');
         })
-            ->with('order', 'tutor:id,name', 'tutorNote', 'fileUploads', 'products:id,name,slug,product_image', 'place:id,place', 'place.city:id,city', 'addOns', 'topic:id,topic')
+            ->with('order', 'tutor:id,name', 'tutorNote', 'fileUploads', 'products:id,name,slug,product_image,contact_type', 'place:id,place', 'place.city:id,city', 'addOns', 'topic:id,topic')
             ->get();
         if ($course->isEmpty()) {
             return abort(404);
@@ -107,14 +98,8 @@ class BimbinganController extends Controller
         try {
             $courses = $order->courses()->update(['ongoing' => CourseStatusEnum::SUCCESS->value]);
         } catch (\Throwable $th) {
-            // return response()->json([
-            //     'message' => $th->getMessage(),
-            // ], 500);
             return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', $th->getMessage());
         }
-        // return response()->json([
-        //     'message' => 'success',
-        // ]);
 
         redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', 'Berhasil Menyelesaikan Bimbingan');
     }

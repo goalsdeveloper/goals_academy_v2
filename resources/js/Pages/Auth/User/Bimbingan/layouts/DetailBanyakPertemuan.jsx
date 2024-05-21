@@ -11,11 +11,10 @@ import {
     ProductItemCardHeader,
     ProductItemCardLayout,
 } from "@/Components/fragments/ProductItemCard";
-import { router, useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import { createTheme } from "@mui/material";
 import moment from "moment";
 import React, { useState } from "react";
-import { createPortal } from "react-dom";
 import { FiChevronDown, FiX } from "react-icons/fi";
 import DetailSatuPertemuan from "./DetailSatuPertemuan";
 import { datepickerStyle, mobileDatepickerStyle } from "./config";
@@ -29,7 +28,6 @@ const DetailBanyakPertemuan = ({ data, setIsAturJadwalShow }) => {
                 imageUrl={data[0].products.product_image}
                 className="hidden md:flex"
             >
-
                 <ProductItemCardHeader>
                     <GoalsBadge
                         title="Bimbingan Skripsi"
@@ -122,6 +120,9 @@ export const AturJadwalPopup = ({
     topics,
     order_code,
 }) => {
+    const { courseDetail } = usePage().props;
+    const contact_type = courseDetail[0].products.contact_type;
+
     const [showForm, setShowForm] = useState({
         date: false,
         city: false,
@@ -155,6 +156,26 @@ export const AturJadwalPopup = ({
         setShowForm(tempShowForm);
     };
 
+    function aturJadwalValidator(contact_type) {
+        switch (contact_type) {
+            case "online":
+                return data.date != "";
+            case "offline":
+                return (
+                    data.date != "" && data.city != "" && data.place_id != ""
+                );
+            case "hybrid":
+                return (
+                    data.date != "" &&
+                    data.city != "" &&
+                    data.place_id != "" &&
+                    data.topic != ""
+                );
+        }
+
+        return false;
+    }
+
     return (
         <GoalsPopup
             show={show}
@@ -170,137 +191,29 @@ export const AturJadwalPopup = ({
                 </button>
             </div>
             <div className="space-y-[.4vw]">
-                <GoalsDatePicker
-                    show={showForm.date}
-                    setShow={(i) => showFormHandler("date", i)}
-                    wrapperClassName="hidden md:block"
-                    label="Pilih Jadwal Bimbinganmu"
-                    data={data.date}
-                    setData={(i) => setData("date", i)}
-                    minDate={moment()}
-                    maxDate={moment().add(6, "days")}
-                    shouldDisableDate={unavailableDate}
-                    theme={theme}
-                    slotProps={datepickerStyle.slotProps}
-                    sx={datepickerStyle.sx}
-                />
-                <GoalsDatePicker
-                    show={showForm.date}
-                    setShow={(i) => showFormHandler("date", i)}
-                    wrapperClassName="md:hidden"
-                    label="Pilih Jadwal Bimbinganmu"
-                    data={data.date}
-                    setData={(i) => setData("date", i)}
-                    minDate={moment()}
-                    maxDate={moment().add(6, "days")}
-                    shouldDisableDate={unavailableDate}
-                    theme={theme}
-                    slotProps={mobileDatepickerStyle.slotProps}
-                    sx={mobileDatepickerStyle.sx}
-                />
-
-                <GoalsSelectInput
-                    show={showForm.city}
-                    setShow={(i) => showFormHandler("city", i)}
-                    label="Kota Bimbingan"
-                    placeholder="Pilih Kota"
-                    data={
-                        data.city != ""
-                            ? cities.filter((item) => item.id == data.city)[0]
-                                  .city
-                            : ""
-                    }
-                >
-                    {cities.map((item, index) => {
-                        return (
-                            <GoalsSelectInputItem
-                                key={index}
-                                onClick={() => {
-                                    if (data.place_id == "") {
-                                        setData("city", item.id);
-                                    } else {
-                                        setData({
-                                            ...data,
-                                            city: item.id,
-                                            place_id: "",
-                                        });
-                                    }
-                                }}
-                            >
-                                {item.city}
-                            </GoalsSelectInputItem>
-                        );
-                    })}
-                </GoalsSelectInput>
-                <GoalsSelectInput
-                    show={showForm.place_id}
-                    setShow={(i) => showFormHandler("place_id", i)}
-                    label="Lokasi Bimbingan"
-                    placeholder="Pilih Lokasi Bimbingan"
-                    data={
-                        data.place_id != ""
-                            ? cities
-                                  .filter((item) => item.id == data.city)[0]
-                                  .places.filter(
-                                      (item) => item.id == data.place_id
-                                  )[0].place
-                            : ""
-                    }
-                >
-                    {data.city != "" ? (
-                        cities
-                            .filter((item) => item.id == data.city)[0]
-                            .places.map((item, index) => {
-                                return (
-                                    <GoalsSelectInputItem
-                                        key={index}
-                                        onClick={() =>
-                                            setData("place_id", item.id)
-                                        }
-                                    >
-                                        {item.place}
-                                    </GoalsSelectInputItem>
-                                );
-                            })
-                    ) : (
-                        <GoalsSelectInputItem>
-                            Pilih kota terlebih dahulu
-                        </GoalsSelectInputItem>
-                    )}
-                </GoalsSelectInput>
-
-                {"topic" && topics.length && (
-                    <GoalsSelectInput
-                        show={showForm.topic}
-                        setShow={(i) => showFormHandler("topic", i)}
-                        label="Topik Bimbingan"
-                        placeholder="Pilih Topik Bimbingan"
-                        data={
-                            data.topic != ""
-                                ? topics.filter(
-                                      (item) => item.id == data.topic
-                                  )[0].topic
-                                : ""
-                        }
-                    >
-                        {topics.map((item, index) => {
-                            return (
-                                <GoalsSelectInputItem
-                                    key={index}
-                                    onClick={() => setData("topic", item.id)}
-                                >
-                                    {item.topic}
-                                </GoalsSelectInputItem>
-                            );
-                        })}
-                    </GoalsSelectInput>
+                {getInputBasedContactType(
+                    contact_type,
+                    data,
+                    setData,
+                    showForm,
+                    showFormHandler,
+                    cities,
+                    topics,
+                    theme,
+                    unavailableDate
                 )}
             </div>
 
             <GoalsButton
-                disabled={processing}
+                disabled={processing | !aturJadwalValidator(contact_type)}
                 className="w-full "
+                type="submit"
                 onClick={() => {
+                    if (!aturJadwalValidator(contact_type)) {
+                        alert("Harap isi semua data yang diperlukan");
+                        return;
+                    }
+
                     post(`/bimbingan/${order_code}/atur-jadwal`, {
                         onSuccess: () => {
                             reset(), setShow(setShow);
@@ -316,3 +229,355 @@ export const AturJadwalPopup = ({
         </GoalsPopup>
     );
 };
+
+function getInputBasedContactType(
+    contact_type,
+    data,
+    setData,
+    showForm,
+    showFormHandler,
+    cities,
+    topics,
+    theme,
+    unavailableDate
+) {
+    switch (contact_type) {
+        case "online":
+            return (
+                <>
+                    <GoalsDatePicker
+                        show={showForm.date}
+                        setShow={(i) => showFormHandler("date", i)}
+                        wrapperClassName="hidden md:block"
+                        label="Pilih Jadwal Bimbinganmu"
+                        data={data.date}
+                        setData={(i) => setData("date", i)}
+                        minDate={moment()}
+                        maxDate={moment().add(6, "days")}
+                        shouldDisableDate={unavailableDate}
+                        theme={theme}
+                        slotProps={datepickerStyle.slotProps}
+                        sx={datepickerStyle.sx}
+                        required
+                    />
+                    <GoalsDatePicker
+                        show={showForm.date}
+                        setShow={(i) => showFormHandler("date", i)}
+                        wrapperClassName="md:hidden"
+                        label="Pilih Jadwal Bimbinganmu"
+                        data={data.date}
+                        setData={(i) => setData("date", i)}
+                        minDate={moment()}
+                        maxDate={moment().add(6, "days")}
+                        shouldDisableDate={unavailableDate}
+                        theme={theme}
+                        slotProps={mobileDatepickerStyle.slotProps}
+                        sx={mobileDatepickerStyle.sx}
+                        required
+                    />
+
+                    {"topic" && topics.length && (
+                        <GoalsSelectInput
+                            show={showForm.topic}
+                            setShow={(i) => showFormHandler("topic", i)}
+                            label="Topik Bimbingan"
+                            placeholder="Pilih Topik Bimbingan"
+                            data={
+                                data.topic != ""
+                                    ? topics.filter(
+                                          (item) => item.id == data.topic
+                                      )[0].topic
+                                    : ""
+                            }
+                            required
+                        >
+                            {topics.map((item, index) => {
+                                return (
+                                    <GoalsSelectInputItem
+                                        key={index}
+                                        onClick={() =>
+                                            setData("topic", item.id)
+                                        }
+                                    >
+                                        {item.topic}
+                                    </GoalsSelectInputItem>
+                                );
+                            })}
+                        </GoalsSelectInput>
+                    )}
+                </>
+            );
+        case "offline":
+            return (
+                <>
+                    <GoalsDatePicker
+                        show={showForm.date}
+                        setShow={(i) => showFormHandler("date", i)}
+                        wrapperClassName="hidden md:block"
+                        label="Pilih Jadwal Bimbinganmu"
+                        data={data.date}
+                        setData={(i) => setData("date", i)}
+                        minDate={moment()}
+                        maxDate={moment().add(6, "days")}
+                        shouldDisableDate={unavailableDate}
+                        theme={theme}
+                        slotProps={datepickerStyle.slotProps}
+                        sx={datepickerStyle.sx}
+                        required
+                    />
+                    <GoalsDatePicker
+                        show={showForm.date}
+                        setShow={(i) => showFormHandler("date", i)}
+                        wrapperClassName="md:hidden"
+                        label="Pilih Jadwal Bimbinganmu"
+                        data={data.date}
+                        setData={(i) => setData("date", i)}
+                        minDate={moment()}
+                        maxDate={moment().add(6, "days")}
+                        shouldDisableDate={unavailableDate}
+                        theme={theme}
+                        slotProps={mobileDatepickerStyle.slotProps}
+                        sx={mobileDatepickerStyle.sx}
+                        required
+                    />
+
+                    {"topic" && topics.length && (
+                        <GoalsSelectInput
+                            show={showForm.topic}
+                            setShow={(i) => showFormHandler("topic", i)}
+                            label="Topik Bimbingan"
+                            placeholder="Pilih Topik Bimbingan"
+                            data={
+                                data.topic != ""
+                                    ? topics.filter(
+                                          (item) => item.id == data.topic
+                                      )[0].topic
+                                    : ""
+                            }
+                            required
+                        >
+                            {topics.map((item, index) => {
+                                return (
+                                    <GoalsSelectInputItem
+                                        key={index}
+                                        onClick={() =>
+                                            setData("topic", item.id)
+                                        }
+                                    >
+                                        {item.topic}
+                                    </GoalsSelectInputItem>
+                                );
+                            })}
+                        </GoalsSelectInput>
+                    )}
+                    <GoalsSelectInput
+                        show={showForm.city}
+                        setShow={(i) => showFormHandler("city", i)}
+                        label="Kota Bimbingan"
+                        placeholder="Pilih Kota"
+                        data={
+                            data.city != ""
+                                ? cities.filter(
+                                      (item) => item.id == data.city
+                                  )[0].city
+                                : ""
+                        }
+                        required
+                    >
+                        {cities.map((item, index) => {
+                            return (
+                                <GoalsSelectInputItem
+                                    key={index}
+                                    onClick={() => {
+                                        if (data.place_id == "") {
+                                            setData("city", item.id);
+                                        } else {
+                                            setData({
+                                                ...data,
+                                                city: item.id,
+                                                place_id: "",
+                                            });
+                                        }
+                                    }}
+                                >
+                                    {item.city}
+                                </GoalsSelectInputItem>
+                            );
+                        })}
+                    </GoalsSelectInput>
+                    <GoalsSelectInput
+                        show={showForm.place_id}
+                        setShow={(i) => showFormHandler("place_id", i)}
+                        label="Lokasi Bimbingan"
+                        placeholder="Pilih Lokasi Bimbingan"
+                        data={
+                            data.place_id != ""
+                                ? cities
+                                      .filter((item) => item.id == data.city)[0]
+                                      .places.filter(
+                                          (item) => item.id == data.place_id
+                                      )[0].place
+                                : ""
+                        }
+                        required
+                    >
+                        {data.city != "" ? (
+                            cities
+                                .filter((item) => item.id == data.city)[0]
+                                .places.map((item, index) => {
+                                    return (
+                                        <GoalsSelectInputItem
+                                            key={index}
+                                            onClick={() =>
+                                                setData("place_id", item.id)
+                                            }
+                                        >
+                                            {item.place}
+                                        </GoalsSelectInputItem>
+                                    );
+                                })
+                        ) : (
+                            <GoalsSelectInputItem>
+                                Pilih kota terlebih dahulu
+                            </GoalsSelectInputItem>
+                        )}
+                    </GoalsSelectInput>
+                </>
+            );
+        case "hybrid":
+            return (
+                <>
+                    <GoalsDatePicker
+                        show={showForm.date}
+                        setShow={(i) => showFormHandler("date", i)}
+                        wrapperClassName="hidden md:block"
+                        label="Pilih Jadwal Bimbinganmu"
+                        data={data.date}
+                        setData={(i) => setData("date", i)}
+                        minDate={moment()}
+                        maxDate={moment().add(6, "days")}
+                        shouldDisableDate={unavailableDate}
+                        theme={theme}
+                        slotProps={datepickerStyle.slotProps}
+                        sx={datepickerStyle.sx}
+                        required
+                    />
+                    <GoalsDatePicker
+                        show={showForm.date}
+                        setShow={(i) => showFormHandler("date", i)}
+                        wrapperClassName="md:hidden"
+                        label="Pilih Jadwal Bimbinganmu"
+                        data={data.date}
+                        setData={(i) => setData("date", i)}
+                        minDate={moment()}
+                        maxDate={moment().add(6, "days")}
+                        shouldDisableDate={unavailableDate}
+                        theme={theme}
+                        slotProps={mobileDatepickerStyle.slotProps}
+                        sx={mobileDatepickerStyle.sx}
+                        required
+                    />
+
+                    {"topic" && topics.length && (
+                        <GoalsSelectInput
+                            show={showForm.topic}
+                            setShow={(i) => showFormHandler("topic", i)}
+                            label="Topik Bimbingan"
+                            placeholder="Pilih Topik Bimbingan"
+                            data={
+                                data.topic != ""
+                                    ? topics.filter(
+                                          (item) => item.id == data.topic
+                                      )[0].topic
+                                    : ""
+                            }
+                            required
+                        >
+                            {topics.map((item, index) => {
+                                return (
+                                    <GoalsSelectInputItem
+                                        key={index}
+                                        onClick={() =>
+                                            setData("topic", item.id)
+                                        }
+                                    >
+                                        {item.topic}
+                                    </GoalsSelectInputItem>
+                                );
+                            })}
+                        </GoalsSelectInput>
+                    )}
+                    <GoalsSelectInput
+                        show={showForm.city}
+                        setShow={(i) => showFormHandler("city", i)}
+                        label="Kota Bimbingan"
+                        placeholder="Pilih Kota"
+                        data={
+                            data.city != ""
+                                ? cities.filter(
+                                      (item) => item.id == data.city
+                                  )[0].city
+                                : ""
+                        }
+                    >
+                        {cities.map((item, index) => {
+                            return (
+                                <GoalsSelectInputItem
+                                    key={index}
+                                    onClick={() => {
+                                        if (data.place_id == "") {
+                                            setData("city", item.id);
+                                        } else {
+                                            setData({
+                                                ...data,
+                                                city: item.id,
+                                                place_id: "",
+                                            });
+                                        }
+                                    }}
+                                >
+                                    {item.city}
+                                </GoalsSelectInputItem>
+                            );
+                        })}
+                    </GoalsSelectInput>
+                    <GoalsSelectInput
+                        show={showForm.place_id}
+                        setShow={(i) => showFormHandler("place_id", i)}
+                        label="Lokasi Bimbingan"
+                        placeholder="Pilih Lokasi Bimbingan"
+                        data={
+                            data.place_id != ""
+                                ? cities
+                                      .filter((item) => item.id == data.city)[0]
+                                      .places.filter(
+                                          (item) => item.id == data.place_id
+                                      )[0].place
+                                : ""
+                        }
+                    >
+                        {data.city != "" ? (
+                            cities
+                                .filter((item) => item.id == data.city)[0]
+                                .places.map((item, index) => {
+                                    return (
+                                        <GoalsSelectInputItem
+                                            key={index}
+                                            onClick={() =>
+                                                setData("place_id", item.id)
+                                            }
+                                        >
+                                            {item.place}
+                                        </GoalsSelectInputItem>
+                                    );
+                                })
+                        ) : (
+                            <GoalsSelectInputItem>
+                                Pilih kota terlebih dahulu
+                            </GoalsSelectInputItem>
+                        )}
+                    </GoalsSelectInput>
+                </>
+            );
+    }
+}

@@ -21,21 +21,21 @@ class PlaceController extends Controller
                 'statusCode' => 200,
                 'message' => 'get data success',
                 'places' => function () use($request) {
-                    $search = $request->input('placeSearch');
+                    $search = $request->input('searchPlace');
                     $perPage = $request->input('placePage', 10);
 
                     $places = Place::query()->when($search, function ($q, $search) {
                         $q->where('place', 'LIKE', "%$search%");
-                    })->with('city')->orderBy('is_visible', 'desc')->orderBy('city_id', 'asc')->paginate($perPage);
+                    })->with('city')->orderBy('is_visible', 'desc')->orderBy('city_id', 'asc')->get();
                     return $places;
                 },
                 'cities' => function () use($request) {
-                    $search = $request->input('citySearch');
+                    $search = $request->input('searchCity');
                     $perPage = $request->input('cityPage', 10);
 
                     $cities = City::query()->when($search, function ($q, $search) {
                         $q->where('city', 'LIKE', "%$search%");
-                    })->orderBy('is_visible', 'desc')->orderBy('city', 'asc')->paginate($perPage);
+                    })->orderBy('is_visible', 'desc')->orderBy('city', 'asc')->get();
                     return $cities;
                 },
             ], 200);
