@@ -10,8 +10,32 @@ import moment from "moment";
 import Dialog from "./Category/Dialog";
 import toast, { Toaster } from "react-hot-toast";
 import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
+import { useEffect } from "react";
+import { getPaginationPages } from "@/script/utils";
 
 export default function Category({ auth, categories, message }) {
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        categories;
+
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(
+        new URLSearchParams(window.location.search).get("search")
+    );
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
+
+    const onSearchCallback = (search) => {
+        router.visit(
+            route("admin.bimbingan.category.index", { search: search }),
+            {
+                only: ["categories"],
+            }
+        );
+    };
+
     const [showDialog, setShowDialog] = useState({
         create: false,
         edit: false,
@@ -73,7 +97,7 @@ export default function Category({ auth, categories, message }) {
                                 ),
                                 { is_visible: !cell.row.original.is_visible },
                                 {
-                                    onSuccess: () => callback('edit'),
+                                    onSuccess: () => callback("edit"),
                                 }
                             );
                         }}
@@ -142,8 +166,6 @@ export default function Category({ auth, categories, message }) {
         []
     );
 
-    categories = categories.data;
-
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -185,12 +207,30 @@ export default function Category({ auth, categories, message }) {
                 />
 
                 <GoalsDashboardTable
-                    isHeadVisible
-                    isPaginated
-                    isSortable
                     columns={columns}
-                    data={categories}
+                    data={data}
+                    isHeadVisible
+                    isSortable
+                    isPaginated
+                    keyword={keyword}
+                    setKeyword={setKeyword}
+                    onSearch={(i) => {
+                        onSearchCallback(i);
+                    }}
                 />
+                <div>
+                    <BottomPaginationTable
+                        {...{
+                            from,
+                            to,
+                            total,
+                            pages,
+                            per_page,
+                            current_page,
+                            keyword,
+                        }}
+                    />
+                </div>
             </div>
         </DashboardLayout>
     );
