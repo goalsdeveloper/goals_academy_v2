@@ -1,7 +1,7 @@
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { getPaginationPages } from "@/script/utils";
-import { Link } from "@inertiajs/react";
+import { getPaginationPages, updateSearchParams } from "@/script/utils";
+import { Link, router } from "@inertiajs/react";
 import {
     MaterialReactTable,
     useMaterialReactTable,
@@ -19,10 +19,8 @@ export default function History({ auth, order_history: res }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
         res;
     const [pages, setPages] = useState([]);
-    const [searchQuery, setSearchQuery] = useState(
-        new URLSearchParams(document.location.search).get("search") ?? ""
-    );
-    console.log(data);
+    const searchParams = new URLSearchParams(window.location.search);
+    const [keyword, setKeyword] = useState(searchParams.get("search") ?? "");
 
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
@@ -124,7 +122,7 @@ export default function History({ auth, order_history: res }) {
                         pages,
                         per_page,
                         current_page,
-                        searchQuery,
+                        keyword,
                     }}
                 />
             );
@@ -146,14 +144,19 @@ export default function History({ auth, order_history: res }) {
             auth={auth}
         >
             {/* {isLoading && <LoadingUI />} */}
-            <div className="space-y-[1.6vw] " >
+            <div className="space-y-[1.6vw] ">
                 <SubHeading title="History" />
-                <div className="text-[.8vw] bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]" >
+                <div className="text-[.8vw] bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
                     <GoalsTextInput
                         placeholder="🔍 Search"
                         className="max-w-[10.4vw] max-h-[2.4vw]"
-                        data={searchQuery}
-                        setData={(e) => setSearchQuery(e)}
+                        data={keyword}
+                        setData={(e) => setKeyword(e)}
+                        onKeyUp={(e) => {
+                            if (e.key === "Enter") {
+                                updateSearchParams("search", keyword)
+                            }
+                        }}
                     />
 
                     <MaterialReactTable table={table} />

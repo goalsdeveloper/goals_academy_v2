@@ -42,7 +42,7 @@ class ModeratorHistoryBimbinganController extends Controller
             //     $q->where('type', 'bimbingan');
             // })->with(['order.products:id,name', 'order.user:id,username', 'order.course.child', 'order.course.place']);
             if ($search) {
-                $query->whereHas('order.user', function ($userQuery) use ($search) {
+                $query->whereHas('user', function ($userQuery) use ($search) {
                     $userQuery->where('name', 'LIKE', "%$search%");
                 });
             }
