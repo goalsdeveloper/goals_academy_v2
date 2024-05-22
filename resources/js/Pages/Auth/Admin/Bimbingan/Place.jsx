@@ -237,7 +237,6 @@ export default function Place({ auth, places, cities }) {
                     <GoalsDashboardTable
                         className="md:p-[2vw]"
                         isHeadVisible
-                        isPaginated
                         isSortable
                         columns={columnsCity}
                         data={cities}
@@ -269,7 +268,6 @@ export default function Place({ auth, places, cities }) {
                     <GoalsDashboardTable
                         className="md:p-[2vw]"
                         isHeadVisible
-                        isPaginated
                         isSortable
                         columns={columnsLocation}
                         data={places}

@@ -182,7 +182,6 @@ export default function AddOn({ auth, addons }) {
                     data={data}
                     isHeadVisible
                     isSortable
-                    isPaginated
                     keyword={keyword}
                     setKeyword={setKeyword}
                     onSearch={(i) => {

@@ -211,7 +211,6 @@ export default function Category({ auth, categories, message }) {
                     data={data}
                     isHeadVisible
                     isSortable
-                    isPaginated
                     keyword={keyword}
                     setKeyword={setKeyword}
                     onSearch={(i) => {
