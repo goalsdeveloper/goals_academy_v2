@@ -25,67 +25,138 @@ class ModeratorOrderController extends Controller
     public function index(Request $request)
     {
         try {
-            $search = $request->input('search');
+            // $search = $request->input('search');
+            // $perPage = $request->input('perPage', 25);
 
-            $query = Order::with([
-                'user:id,username',
-                'products:id,product_type_id,category_id,name,total_meet,contact_type',
-                'products.category:id,name',
-                'products.productType:id,type',
-                'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id,place_id',
-                'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session',
-                'course.tutor',
-                'course.place',
-                'course.place.city'
-            ])
-                ->whereHas('products', function ($query) {
-                    $query->whereHas('productType', function ($subQuery) {
-                        $subQuery->where('type', 'LIKE', '%bimbingan%');
-                    });
-                })
-                ->whereHas('course', function ($courseQuery) {
-                    $courseQuery->where('ongoing', CourseStatusEnum::WAITING);
-                })
-                ->where('status', 'Success');
+            // $query = Order::with([
+            //     'user:id,username',
+            //     'products:id,product_type_id,category_id,name,total_meet,contact_type',
+            //     'products.category:id,name',
+            //     'products.productType:id,type',
+            //     'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id,place_id',
+            //     'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session',
+            //     'course.tutor',
+            //     'course.place',
+            //     'course.place.city'
+            // ])
+            //     ->whereHas('products', function ($query) {
+            //         $query->whereHas('productType', function ($subQuery) {
+            //             $subQuery->where('type', 'LIKE', '%bimbingan%');
+            //         });
+            //     })
+            //     ->whereHas('course', function ($courseQuery) {
+            //         $courseQuery->where('ongoing', CourseStatusEnum::WAITING);
+            //     })
+            //     ->where('status', 'Success');
 
-            if ($search) {
-                $query->whereHas('user', function ($userQuery) use ($search) {
-                    $userQuery->where('name', 'LIKE', "%$search%");
-                });
-            }
+            // if ($search) {
+            //     $query->whereHas('user', function ($userQuery) use ($search) {
+            //         $userQuery->where('name', 'LIKE', "%$search%");
+            //     });
+            // }
 
-            $query->orderBy('created_at', 'asc');
-            $orders = $query->get();
+            // $query->orderBy('created_at', 'asc');
+            // $orders = $query->paginate($perPage);
 
-            $orders->transform(function ($order) {
-                $totalFields = 4;
-                $completeFields = 0;
-                $course = $order->course;
-                if ($course->place_id) {
-                    $completeFields++;
-                }
+            // $orders->transform(function ($order) {
+            //     $totalFields = 4;
+            //     $completeFields = 0;
+            //     $course = $order->course;
+            //     if ($course->place_id) {
+            //         $completeFields++;
+            //     }
 
-                if ($course->date) {
-                    $completeFields++;
-                }
+            //     if ($course->date) {
+            //         $completeFields++;
+            //     }
 
-                if ($course->time) {
-                    $completeFields++;
-                }
+            //     if ($course->time) {
+            //         $completeFields++;
+            //     }
 
-                if ($course->tutor_id) {
-                    $completeFields++;
-                }
+            //     if ($course->tutor_id) {
+            //         $completeFields++;
+            //     }
 
-                $order->completeness_percentage = ($completeFields / $totalFields) * 100;
-                return $order;
-            });
+            //     $order->completeness_percentage = ($completeFields / $totalFields) * 100;
+            //     return $order;
+            // });
 
             return Inertia::render('Auth/Moderator/Bimbingan/RecentOrder', [
                 'status' => true,
                 'statusCode' => 200,
                 'message' => 'get data history success',
-                'orders' => $orders,
+                'orders' =>
+                function () use ($request) {
+                    $search = $request->input('search');
+                    $perPage = (int) $request->input('perPage', 25);
+
+                    $query = Order::with([
+                        'user:id,username',
+                        'products:id,product_type_id,category_id,name,total_meet,contact_type',
+                        'products.category:id,name',
+                        'products.productType:id,type',
+                        'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id,place_id',
+                        'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session',
+                        'course.tutor',
+                        'course.place',
+                        'course.place.city'
+                    ])
+                        ->whereHas('products', function ($query) {
+                            $query->whereHas('productType', function ($subQuery) {
+                                $subQuery->where('type', 'LIKE', '%bimbingan%');
+                            });
+                        })
+                        ->whereHas('course', function ($courseQuery) {
+                            $courseQuery->where('ongoing', CourseStatusEnum::WAITING);
+                        })
+                        ->where('status', 'Success');
+
+                    if ($search) {
+                        // $query->whereHas('user', function ($userQuery) use ($search) {
+                        //     $userQuery->where('name', 'LIKE', "%$search%");
+                        // });
+
+                        $query->where(function ($query) use ($search) {
+                            $query->where('order_code', 'LIKE', "%$search%")
+                                ->orWhere('status', 'LIKE', "%$search%")
+                                ->orWhereHas('user', function ($userQuery) use ($search) {
+                                    $userQuery->where('name', 'LIKE', "%$search%");
+                                })
+                                ->orWhereHas('products', function ($productQuery) use ($search) {
+                                    $productQuery->where('name', 'LIKE', "%$search%");
+                                });
+                        });
+                    }
+
+                    $query->orderBy('created_at', 'asc');
+                    $orders = $query->paginate($perPage);
+
+                    $orders->transform(function ($order) {
+                        $totalFields = 4;
+                        $completeFields = 0;
+                        $course = $order->course;
+                        if ($course->place_id) {
+                            $completeFields++;
+                        }
+
+                        if ($course->date) {
+                            $completeFields++;
+                        }
+
+                        if ($course->time) {
+                            $completeFields++;
+                        }
+
+                        if ($course->tutor_id) {
+                            $completeFields++;
+                        }
+
+                        $order->completeness_percentage = ($completeFields / $totalFields) * 100;
+                        return $order;
+                    });
+                    return $orders;
+                },
             ], 200);
         } catch (QueryException $e) {
             return response()->json([
