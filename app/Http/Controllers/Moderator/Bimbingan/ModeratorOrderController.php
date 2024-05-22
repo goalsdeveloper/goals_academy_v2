@@ -172,7 +172,7 @@ class ModeratorOrderController extends Controller
     // $order diambil dari course id(perhatikan name model)
     public function update(Request $request, Order $order)
     {
-        dd($request);
+        // dd($request);
         try {
             $order = $order->load('products');
 
@@ -182,14 +182,42 @@ class ModeratorOrderController extends Controller
                 ]);
                 $order->course()->update(array_merge($validateData, ['ongoing' => CourseStatusEnum::ONGOING]));
             } else {
-                $validateData = $request->validate([
-                    'tutor_id' => 'numeric',
-                    'date' => 'date',
-                    'time' => 'date_format:H:i',
-                    'place_id' => 'numeric',
-                ]);
-                $parent = Course::find($order->course->id);
-                $parent->update(array_merge($validateData, ['ongoing' => CourseStatusEnum::ONGOING]));
+                if ($order->products->contact_type == "online") {
+                    $validateData = $request->validate([
+                        'tutor_id' => 'numeric',
+                        'location' => 'string',
+                        'date' => 'date',
+                        'time' => 'date_format:H:i',
+                    ]);
+                    $order->course()->update(array_merge($validateData, ['ongoing' => CourseStatusEnum::ONGOING]));
+                }
+                if ($order->products->contact_type == "offline") {
+                    $validateData = $request->validate([
+                        'tutor_id' => 'numeric',
+                        'place_id' => 'numeric',
+                        'date' => 'date',
+                        'time' => 'date_format:H:i',
+                    ]);
+                    $order->course()->update(array_merge($validateData, ['ongoing' => CourseStatusEnum::ONGOING]));
+                }
+                if ($order->products->contact_type == "hybrid") {
+                    $validateData = $request->validate([
+                        'tutor_id' => 'numeric',
+                        'place_id' => 'numeric',
+                        'location' => 'string',
+                        'date' => 'date',
+                        'time' => 'date_format:H:i',
+                    ]);
+                    $order->course()->update(array_merge($validateData, ['ongoing' => CourseStatusEnum::ONGOING]));
+                }
+                // $validateData = $request->validate([
+                //     'tutor_id' => 'numeric',
+                //     'date' => 'date',
+                //     'time' => 'date_format:H:i',
+                //     'place_id' => 'numeric',
+                // ]);
+                // $parent = Course::find($order->course->id);
+                // $parent->update(array_merge($validateData, ['ongoing' => CourseStatusEnum::ONGOING]));
             }
 
             return response()->json([
