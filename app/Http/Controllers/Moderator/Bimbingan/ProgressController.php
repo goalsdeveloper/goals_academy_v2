@@ -210,17 +210,37 @@ class ProgressController extends Controller
                         $progress->update($validateData);
                     }
                 } else {
-                    $validateData = $request->validate([
-                        "tutor_id" => "required|numeric",
-                        "location" => "required|string",
-                        "date" => "required|date",
-                        "time" => "required|date_format:H:i",
-                        "record" => "mimes:pdf|nullable",
-                        // "is_moderator" => "in:0,1",
-                    ]);
-                    $progress->update($validateData);
+                    if ($progress->products->contact_type == "online") {
+                        $validateData = $request->validate([
+                            'tutor_id' => 'required|numeric',
+                            'location' => 'required|string',
+                            "date" => "required|date",
+                            "time" => "required|date_format:H:i",
+                            "record" => "mimes:pdf|nullable",
+                        ]);
+                        $progress->update($validateData);
+                    }
+                    if ($progress->products->contact_type == "offline") {
+                        $validateData = $request->validate([
+                            'tutor_id' => 'numeric',
+                            'place_id' => 'numeric',
+                            "date" => "required|date",
+                            "time" => "required|date_format:H:i",
+                        ]);
+                        $progress->update($validateData);
+                    }
+                    if ($progress->products->contact_type == "hybrid") {
+                        $validateData = $request->validate([
+                            'tutor_id' => 'numeric',
+                            'place_id' => 'nullable|numeric',
+                            'location' => 'nullable|string',
+                            "date" => "required|date",
+                            "time" => "required|date_format:H:i",
+                            "record" => "mimes:pdf|nullable",
+                        ]);
+                        $progress->update($validateData);
+                    }
                 }
-
 
                 if ($request->hasFile("record")) {
                     $uploadedFile = $request->file("record");
