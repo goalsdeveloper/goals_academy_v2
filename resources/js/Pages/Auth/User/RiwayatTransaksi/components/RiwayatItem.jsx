@@ -86,8 +86,25 @@ function RiwayatItem({ data }) {
                                 </GoalsButton>
                                 {data.status == "Berhasil" ||
                                     (data.status == "Success" && (
-                                        <GoalsButton isLink href={"/produk/"+ data.products.slug}>Beli Lagi</GoalsButton>
+                                        <GoalsButton
+                                            isLink
+                                            href={
+                                                "/produk/" + data.products.slug
+                                            }
+                                        >
+                                            Beli Lagi
+                                        </GoalsButton>
                                     ))}
+                                {data.status == "Pending" ? (
+                                    <GoalsButton
+                                        isLink
+                                        href={"/purchase/" + data.order_code}
+                                    >
+                                        Bayar
+                                    </GoalsButton>
+                                ) : (
+                                    ""
+                                )}
                             </div>
                         </ProductItemCardContent>
                     </div>
