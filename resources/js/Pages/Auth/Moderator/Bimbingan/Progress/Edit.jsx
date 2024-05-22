@@ -161,6 +161,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                     date: data.date,
                                     time: data.time,
                                     location: data.location,
+                                    place_id: data.place_id,
                                 }));
 
                                 post(
