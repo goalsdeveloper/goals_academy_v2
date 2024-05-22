@@ -15,6 +15,7 @@ class RiwayatTransaksiController extends Controller
         $user = Auth::user();
         $order = Order::where('user_id', $user->id)
             ->with('orderHistory', 'paymentMethod','products')
+            ->orderBy('created_at', 'desc')
             ->get();
         // dd($order);
         return Inertia::render('Auth/User/RiwayatTransaksi/RiwayatTransaksi',[

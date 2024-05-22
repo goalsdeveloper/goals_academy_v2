@@ -22,10 +22,20 @@ import { FaRegCheckCircle, FaRegTimesCircle } from "react-icons/fa";
 import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 
 export default function Product({ auth, bimbingan, categories }) {
-    bimbingan = bimbingan.data
+    bimbingan = bimbingan.data;
     const isDesktop = useMediaQuery({ minWidth: 1024 });
     const [show, setShow] = useState(false);
     const [product, setProduct] = useState();
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(
+        new URLSearchParams(window.location.search).get("search")
+    );
+
+    const onSearchCallback = (search) => {
+        router.visit(route("admin.bimbingan.product.index", { search: search }), {
+            only: ["bimbingan"],
+        });
+    };
 
     async function getBimbinganDetail(id) {
         setProduct(null);
@@ -179,6 +189,11 @@ export default function Product({ auth, bimbingan, categories }) {
                         data={bimbingan}
                         isSplitByCategory
                         isDraggable
+                        keyword={keyword}
+                        setKeyword={setKeyword}
+                        onSearch={(i) => {
+                            onSearchCallback(i);
+                        }}
                     />
                 </div>
             ) : (
