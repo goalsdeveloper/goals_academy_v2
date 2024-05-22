@@ -18,7 +18,6 @@ const GoalsButton = ({
         switch (isLink) {
             case true:
                 return {
-                    as: "button",
                     href: href,
                     method: method,
                     className: `${className}`,

@@ -139,10 +139,7 @@ export const AturJadwalPopup = ({
 
     const theme = createTheme({
         typography: {
-            fontSize: {
-                1: "1vw",
-                4: "4vw",
-            },
+            fontSize: 14,
         },
     });
 
