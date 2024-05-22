@@ -8,6 +8,7 @@ export default function GoalsDataTable ({
     const tableOptions = useMaterialReactTable({
         columns,
         data,
+        enablePagination: false,
         muiTablePaperProps: {
             className: 'border-none rounded-[.625vw]',
             elevation: 0,
@@ -24,6 +25,6 @@ export default function GoalsDataTable ({
         },
         ...options
     })
-    
+
     return <MaterialReactTable table={tableOptions} />;
 };

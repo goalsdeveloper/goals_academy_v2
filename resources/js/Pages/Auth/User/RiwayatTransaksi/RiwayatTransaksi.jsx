@@ -7,20 +7,13 @@ import { TransactionFilter } from "../constants";
 import RiwayatItem from "./components/RiwayatItem";
 
 export default function RiwayatTransaksi({ auth, dataOrder: data }) {
-
+console.log(data)
     return (
         <UserLayout auth={auth} title="Riwayat Transaksi">
             <div className="flex md:block justify-between items-center space-y-[1.2vw]">
                 <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-normal">
-                    {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
                     Riwayat Transaksi
                 </h1>
-                {/* <ProductListFilter
-                    data={data}
-                    setData={setData}
-                    type="transaction"
-                    filterList={TransactionFilter}
-                /> */}
             </div>
 
             {data.length == 0 ? (
