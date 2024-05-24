@@ -240,6 +240,17 @@ class ProgressController extends Controller
                         ]);
                         $progress->update($validateData);
                     }
+                    if ($progress->products->contact_type == "other") {
+                        $validateData = $request->validate([
+                            // 'tutor_id' => 'numeric',
+                            // 'place_id' => 'nullable|numeric',
+                            // 'location' => 'nullable|string',
+                            // "date" => "required|date",
+                            // "time" => "required|date_format:H:i",
+                            // "record" => "mimes:pdf|nullable",
+                        ]);
+                        $progress->update($validateData);
+                    }
                 }
 
                 if ($request->hasFile("record")) {
@@ -321,18 +332,30 @@ class ProgressController extends Controller
                     return redirect()->back()->with("error", "Progress sudah selesai dan tidak dapat diubah");
                 }
 
-                $validateData = request()->validate([
-                    "duration_per_meet" => "required",
-                ]);
+                if (!$progress->products->contact_type == "other") {
+                    $validateData = request()->validate([
+                        "duration_per_meet" => "required",
+                    ]);
 
-                $validateData["duration_per_meet"] = intval($validateData["duration_per_meet"]);
+                    $validateData["duration_per_meet"] = intval($validateData["duration_per_meet"]);
 
-                if ($progress->is_tutor == 1) {
-                    $progress->update(array_merge($validateData, ["ongoing" => "selesai", "is_moderator" => 1]));
+                    if ($progress->is_tutor == 1) {
+                        $progress->update(array_merge($validateData, ["ongoing" => "selesai", "is_moderator" => 1]));
+                    } else {
+                        $progress->update(array_merge($validateData, ["is_moderator" => 1]));
+                    }
                 } else {
-                    $progress->update(array_merge($validateData, ["is_moderator" => 1]));
+                    if ($progress->is_tutor == 1) {
+                        $progress->update([
+                            "ongoing" => "selesai",
+                            "is_moderator" => 1
+                        ]);
+                    } else {
+                        $progress->update([
+                            "is_moderator" => 1
+                        ]);
+                    }
                 }
-
                 // return response()->json(["status" => true, "statusCode" => 200, "message" => "Progress berhasil diperbarui menjadi selesai"], 200);
                 return redirect()->back()->with("success", "Progress berhasil diperbarui menjadi selesai");
             } else {
