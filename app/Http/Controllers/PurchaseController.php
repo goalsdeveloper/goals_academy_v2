@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\OrderEnum;
+use App\Models\Category;
 use App\Models\City;
 use App\Models\Course;
 use App\Models\Order;
@@ -44,10 +45,12 @@ class PurchaseController extends Controller
         $dataWebinar = Products::whereHas('productType', function ($query) {
             $query->where('slug', 'webinar');
         })->with('productType', 'category')->get();
+        $categories = Category::with(['productType'])->get();
         return Inertia::render('Main/Produk', [
             'dataDibimbing' => $dataDibimbing,
             'ebookData' => $dataEbook,
             'webinarData' => $dataWebinar,
+            'categories' => $categories,
         ]);
     }
 
