@@ -281,6 +281,12 @@ class ModeratorOrderController extends Controller
                     ]);
                     $order->course()->update(array_merge($validateData, ['ongoing' => CourseStatusEnum::ONGOING]));
                 }
+                if ($order->products->contact_type == "other") {
+                    $validateData = $request->validate([
+                        'tutor_id' => 'numeric',
+                    ]);
+                    $order->course()->update(array_merge($validateData, ['ongoing' => CourseStatusEnum::ONGOING]));
+                }
                 // $validateData = $request->validate([
                 //     'tutor_id' => 'numeric',
                 //     'date' => 'date',
