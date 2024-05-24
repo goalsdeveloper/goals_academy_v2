@@ -11,30 +11,25 @@ const Dialog = ({
     setFormData,
     post,
     put,
-    callback
+    callback,
 }) => {
+    const type = Object.keys(showDialog).find((key) => showDialog[key]);
+    const submitAction = type === "create" ? post : put;
+
+    console.log(type)
     return (
         <div>
             {createPortal(
                 <>
-                    <EditDialog
+                    <AddonDialog
                         {...{
+                            type,
                             showDialog,
                             setShowDialog,
                             formData,
                             setFormData,
-                            put,
-                            callback
-                        }}
-                    />
-                    <CreateDialog
-                        {...{
-                            showDialog,
-                            setShowDialog,
-                            formData,
-                            setFormData,
-                            post,
-                            callback
+                            submitAction,
+                            callback,
                         }}
                     />
                 </>,
@@ -46,107 +41,44 @@ const Dialog = ({
 
 export default Dialog;
 
-const CreateDialog = ({
+const AddonDialog = ({
+    type,
     showDialog,
     setShowDialog,
     formData,
     setFormData,
-    post,
-    callback
+    submitAction,
+    callback,
 }) => {
-    return (
-        <GoalsPopup
-            show={showDialog.create}
-            setShow={() => setShowDialog({ ...showDialog, create: false })}
-            className="max-w-[20.8vw]"
-        >
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    post(route("admin.bimbingan.addon.store"), {
-                        onFinish: () => callback('create')
-                    });
-                    setShowDialog({ ...showDialog, create: false });
-                }}
-                className="space-y-[1.2vw] w-full"
-            >
-                <h2 className="text-[1.25vw] text-center">Tambah Add-on</h2>
-                <div className="grid w-full gap-[.8vw]">
-                    <GoalsTextInput
-                        label="Name"
-                        required
-                        data={formData.name}
-                        onChange={(e) => setFormData("name", e.target.value)}
-                    />
-                    <GoalsTextInput
-                        label="Slug"
-                        data={(formData.slug = toSlug(formData.name))}
-                        disabled
-                        onChange={() =>
-                            setFormData((prevData) => ({
-                                ...prevData,
-                                slug: toSlug(prevData.name),
-                            }))
-                        }
-                    />
-                    <GoalsTextInput
-                        label="Harga"
-                        required
-                        data={formData.price}
-                        onChange={(e) => setFormData("price", e.target.value)}
-                        type="number"
-                    />
-                </div>
-                <div className="flex gap-[.8vw]">
-                    <GoalsButton
-                        size="sm"
-                        variant="success-bordered"
-                        className="w-full h-full text-[1vw]"
-                        onClick={() =>
-                            setShowDialog({ ...showDialog, create: false })
-                        }
-                    >
-                        Batal
-                    </GoalsButton>
-                    <GoalsButton
-                        size="sm"
-                        variant="success"
-                        type="submit"
-                        className="w-full h-full text-[1vw]"
-                    >
-                        Tambah
-                    </GoalsButton>
-                </div>
-            </form>
-        </GoalsPopup>
-    );
-};
+    const isCreate = type === "create";
 
-const EditDialog = ({
-    showDialog,
-    setShowDialog,
-    formData,
-    setFormData,
-    put,
-    callback
-}) => {
     return (
         <GoalsPopup
-            show={showDialog.edit}
-            setShow={() => setShowDialog({ ...showDialog, edit: false })}
+            show={showDialog[type]}
+            setShow={() => setShowDialog({ ...showDialog, [type]: false })}
             className="max-w-[20.8vw]"
         >
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
-                    put(route("admin.bimbingan.addon.update", formData.id), {
-                        onFinish: () => callback('edit')
-                    });
-                    setShowDialog({ ...showDialog, edit: false });
+                    submitAction(
+                        route(
+                            `admin.bimbingan.addon.${
+                                isCreate ? "store" : "update"
+                            }`,
+                            isCreate ? undefined : formData.id
+                        ),
+                        {
+                            onSuccess: () => callback(isCreate ? "create" : "edit"),
+                        }
+                    );
+                    setShowDialog({ ...showDialog, [type]: false });
                 }}
                 className="space-y-[1.2vw] w-full"
             >
-                <h2 className="text-[1.25vw] text-center">Edit Add-on</h2>
+                <h2 className="text-[1.25vw] text-center">
+                    {isCreate ? "Tambah Add-on" : "Edit Add-on"}
+                </h2>
                 <div className="grid w-full gap-[.8vw]">
                     <GoalsTextInput
                         label="Name"
@@ -177,10 +109,10 @@ const EditDialog = ({
                     <GoalsButton
                         size="sm"
                         variant="success-bordered"
-                        onClick={() =>
-                            setShowDialog({ ...showDialog, edit: false })
-                        }
                         className="w-full h-full text-[1vw]"
+                        onClick={() =>
+                            setShowDialog({ ...showDialog, [type]: false })
+                        }
                     >
                         Batal
                     </GoalsButton>
@@ -189,8 +121,9 @@ const EditDialog = ({
                         variant="success"
                         type="submit"
                         className="w-full h-full text-[1vw]"
+                        disabled={!formData.name || !formData.price}
                     >
-                        Edit
+                        {isCreate ? "Tambah" : "Edit"}
                     </GoalsButton>
                 </div>
             </form>
