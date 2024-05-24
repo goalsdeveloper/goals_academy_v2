@@ -156,16 +156,14 @@ export const AturJadwalPopup = ({
     function aturJadwalValidator(contact_type) {
         switch (contact_type) {
             case "online":
-                return data.date != "";
+                return data.date != "" && data.topic != "";
             case "offline":
                 return (
-                    data.date != "" && data.city != "" && data.place_id != ""
+                    data.date != "" && data.city != "" && data.place_id != "" && data.topic != ""
                 );
             case "hybrid":
                 return (
                     data.date != "" &&
-                    data.city != "" &&
-                    data.place_id != "" &&
                     data.topic != ""
                 );
         }
