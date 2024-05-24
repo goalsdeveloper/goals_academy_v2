@@ -8,10 +8,28 @@ import GoalsButton from "@/Components/GoalsButton";
 import Dialog from "./Topic/Dialog";
 import toast, { Toaster } from "react-hot-toast";
 import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
+import { useEffect } from "react";
+import { getPaginationPages } from "@/script/utils";
 
 export default function Topic({ auth, topics }) {
-    topics = topics.data;
-    console.log(topics);
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        topics;
+
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(
+        new URLSearchParams(window.location.search).get("search")
+    );
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
+
+    const onSearchCallback = (search) => {
+        router.visit(route("admin.bimbingan.topic.index", { search: search }), {
+            only: ["topics"],
+        });
+    };
 
     const [showDialog, setShowDialog] = useState({
         create: false,
@@ -156,11 +174,28 @@ export default function Topic({ auth, topics }) {
 
                 <GoalsDashboardTable
                     isHeadVisible
-                    isPaginated
                     isSortable
                     columns={columns}
-                    data={topics}
+                    data={data}
+                    keyword={keyword}
+                    setKeyword={setKeyword}
+                    onSearch={(i) => {
+                        onSearchCallback(i);
+                    }}
                 />
+                <div>
+                    <BottomPaginationTable
+                        {...{
+                            from,
+                            to,
+                            total,
+                            pages,
+                            per_page,
+                            current_page,
+                            keyword,
+                        }}
+                    />
+                </div>
             </div>
         </DashboardLayout>
     );

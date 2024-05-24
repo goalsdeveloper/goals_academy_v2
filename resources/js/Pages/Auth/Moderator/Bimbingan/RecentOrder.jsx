@@ -3,13 +3,33 @@ import DashboardLayout from "@/Layouts/DashboardLayout";
 import { useMemo } from "react";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { FiEdit2, FiEye } from "react-icons/fi";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
 import View from "./RecentOrder/View";
 import moment from "moment";
 import SubHeading from "../../Admin/components/SubHeading";
+import { useEffect } from "react";
+import { getPaginationPages } from "@/script/utils";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 
 export default function RecentOrder({ auth, orders }) {
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        orders;
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(
+        new URLSearchParams(window.location.search).get("search")
+    );
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
+
+    const onSearchCallback = (search) => {
+        router.visit(route("moderator.bimbingan.order.index", { search: search }), {
+            only: ["orders"],
+        });
+    };
+
     // const [isLoading, setIsLoading] = useState(false);
     const [isShow, setIsShow] = useState(false);
     // const [detailOrder, setDetailOrder] = useState({});
@@ -110,14 +130,30 @@ export default function RecentOrder({ auth, orders }) {
                 detailOrder={detailOrder}
             />
             <div className="space-y-[1.6vw]">
-                <SubHeading title='Recent Order'/>
+                <SubHeading title="Recent Order" />
                 <div className="text-[.8vw]">
                     <GoalsDashboardTable
                         columns={columns}
-                        data={orders}
                         isHeadVisible
                         isSortable
                         isPaginated={false}
+                        data={orders.data}
+                        keyword={keyword}
+                        setKeyword={setKeyword}
+                        onSearch={(i) => {
+                            onSearchCallback(i);
+                        }}
+                    />
+                    <BottomPaginationTable
+                        {...{
+                            from,
+                            to,
+                            total,
+                            pages,
+                            per_page,
+                            current_page,
+                            keyword,
+                        }}
                     />
                 </div>
             </div>
