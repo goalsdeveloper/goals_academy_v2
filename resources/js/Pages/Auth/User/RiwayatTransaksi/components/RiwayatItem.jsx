@@ -35,7 +35,7 @@ function RiwayatItem({ data }) {
                 onClick={() => isMobile && setIsVisible(true)}
                 className="cursor-pointer md:cursor-default"
             >
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                     <div className="space-y-[1.8vw] w-full">
                         <ProductItemCardHeader className="md:justify-between gap-[3.7vw]">
                             <div className="flex gap-[.5vw] items-center">
@@ -73,22 +73,33 @@ function RiwayatItem({ data }) {
                                 </p>
                             </div>
 
-                            <div className="hidden md:block space-x-[.5vw]">
-                                <GoalsButton
-                                    onClick={() => setIsVisible(!isVisible)}
-                                    variant={
-                                        data.status == "Berhasil" || "Success"
-                                            ? "bordered"
-                                            : "primary"
-                                    }
-                                >
-                                    Lihat Detail
-                                </GoalsButton>
-                                {data.status == "Berhasil" ||
-                                    (data.status == "Success" && (
-                                        <GoalsButton isLink href={"/produk/"+ data.products.slug}>Beli Lagi</GoalsButton>
-                                    ))}
-                            </div>
+                            {!isMobile && (
+                                <div className="block space-x-[.5vw]">
+                                    <GoalsButton
+                                        onClick={() => setIsVisible(!isVisible)}
+                                        variant={
+                                            data.status == "Berhasil" ||
+                                            "Success"
+                                                ? "bordered"
+                                                : "primary"
+                                        }
+                                    >
+                                        Lihat Detail
+                                    </GoalsButton>
+                                    {data.status == "Berhasil" ||
+                                        (data.status == "Success" && (
+                                            <GoalsButton
+                                                isLink
+                                                href={
+                                                    "/produk/" +
+                                                    data.products.slug
+                                                }
+                                            >
+                                                Beli Lagi
+                                            </GoalsButton>
+                                        ))}
+                                </div>
+                            )}
                         </ProductItemCardContent>
                     </div>
 

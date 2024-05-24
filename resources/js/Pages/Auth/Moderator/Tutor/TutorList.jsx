@@ -14,9 +14,22 @@ import Schedule from "./TutorList/ShowSchedule";
 import logo from "/resources/img/icon/goals-5.svg";
 import moment from "moment";
 import { createPortal } from "react-dom";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
+import { useEffect } from "react";
+import { getPaginationPages } from "@/script/utils";
 
 export default function TutorList({ auth, tutors, majors, skills }) {
-    tutors = tutors.data;
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        tutors;
+
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(
+        new URLSearchParams(window.location.search).get("search")
+    );
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
     const [isLoading, setIsLoading] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
     const [showSchedule, setShowSchedule] = useState(false);
@@ -51,7 +64,7 @@ export default function TutorList({ auth, tutors, majors, skills }) {
         major: new URLSearchParams(window.location.search).get("major") ?? "",
         skill: new URLSearchParams(window.location.search).get("skill") ?? "",
     });
-    const [data, setData] = useState(tutors);
+    // const [data, setData] = useState(tutors);
     const getDataSchedule = (tutor_id, start_date, end_date) => {
         setIsLoading(true);
         fetch(
@@ -268,6 +281,19 @@ export default function TutorList({ auth, tutors, majors, skills }) {
                         </GoalsButton>
                     </div>
                     <GoalsDataTable {...{ data, columns, options }} />
+                    <div>
+                        <BottomPaginationTable
+                            {...{
+                                from,
+                                to,
+                                total,
+                                pages,
+                                per_page,
+                                current_page,
+                                keyword,
+                            }}
+                        />
+                    </div>
                 </div>
                 <Show
                     show={showProfile}

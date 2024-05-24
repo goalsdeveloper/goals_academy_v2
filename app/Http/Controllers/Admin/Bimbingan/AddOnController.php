@@ -22,9 +22,9 @@ class AddOnController extends Controller
                 'statusCode' => 200,
                 'message' => 'get data category success',
                 // 'data' => $addons,
-                'data' => function () use ($request) {
+                'addons' => function () use ($request) {
                     $search = $request->input('search');
-                    $perPage = $request->input('perPage', 10);
+                    $perPage = (int) $request->input('perPage', 25);
                     $addons = AddOn::when($search, function ($q) use($search) {
                         $q->where('name', 'LIKE', "%$search%");
                     })->orderBy('is_visible', 'desc')->orderBy('name', 'asc')->paginate($perPage);

@@ -8,10 +8,45 @@ import GoalsButton from "@/Components/GoalsButton";
 import Dialog from "./Place/Dialog";
 import toast, { Toaster } from "react-hot-toast";
 import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
+import { useEffect } from "react";
+import { getPaginationPages } from "@/script/utils";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 
 export default function Place({ auth, places, cities }) {
-    places = places.data;
-    cities = cities.data;
+    // places = places.data;
+
+    // const [pages, setPages] = useState([]);
+    const [placeKeyword, setPlaceKeyword] = useState(
+        new URLSearchParams(window.location.search).get("searchPlace")
+    );
+    const [cityKeyword, setCityKeyword] = useState(
+        new URLSearchParams(window.location.search).get("searchCity")
+    );
+
+    const onPlaceSearchCallback = (search) => {
+        router.visit(
+            route("admin.bimbingan.place.index", {
+                searchPlace: search,
+                searchCity: cityKeyword,
+            }),
+            {
+                only: ["places", "cities"],
+            }
+        );
+    };
+
+    const onCitySearchCallback = (search) => {
+        router.visit(
+            route("admin.bimbingan.place.index", {
+                searchPlace: placeKeyword,
+                searchCity: search,
+            }),
+            {
+                only: ["places", "cities"],
+            }
+        );
+    };
+
     const [showDialog, setShowDialog] = useState({
         create: false,
         edit: false,
@@ -202,10 +237,14 @@ export default function Place({ auth, places, cities }) {
                     <GoalsDashboardTable
                         className="md:p-[2vw]"
                         isHeadVisible
-                        isPaginated
                         isSortable
                         columns={columnsCity}
                         data={cities}
+                        keyword={cityKeyword}
+                        setKeyword={setCityKeyword}
+                        onSearch={(i) => {
+                            onCitySearchCallback(i);
+                        }}
                     />
                 </div>
                 <div className="space-y-[1.6vw]">
@@ -229,10 +268,14 @@ export default function Place({ auth, places, cities }) {
                     <GoalsDashboardTable
                         className="md:p-[2vw]"
                         isHeadVisible
-                        isPaginated
                         isSortable
                         columns={columnsLocation}
                         data={places}
+                        keyword={placeKeyword}
+                        setKeyword={setPlaceKeyword}
+                        onSearch={(i) => {
+                            onPlaceSearchCallback(i);
+                        }}
                     />
                 </div>
             </div>

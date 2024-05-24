@@ -18,6 +18,7 @@ import { statusClassMap } from "../RiwayatTransaksi/components/TransactionStatus
 
 export default function Index({ auth, orderBimbingan }) {
     const [data, setData] = useState(orderBimbingan);
+    console.log(orderBimbingan)
 
     return (
         <UserLayout auth={auth} title="Bimbingan">
@@ -48,27 +49,27 @@ export default function Index({ auth, orderBimbingan }) {
 }
 
 function BimbinganItem({ data }) {
-    const start_time = data.course.time
-        ? moment(data?.course?.time, "HH:mm").format("HH:mm")
+    const start_time = data.time
+        ? moment(data?.time, "HH:mm").format("HH:mm")
         : "N/A";
-    const finish_time = data.course.time
+    const finish_time = data.time
         ? moment()
-              .hours(data?.course?.time.split(":")[0])
-              .minutes(data?.course?.time.split(":")[1])
+              .hours(data?.time.split(":")[0])
+              .minutes(data?.time.split(":")[1])
               .add(data?.products?.duration, "minutes")
               .format("HH:mm")
         : "N/A";
     const courseStatus =
-        data.course.ongoing.charAt(0).toUpperCase() +
-        data.course.ongoing.slice(1);
+        data.ongoing.charAt(0).toUpperCase() +
+        data.ongoing.slice(1);
 
     return (
         <ProductItemCardLayout
             isLink
             imageUrl={data.products.product_image}
-            href={`/bimbingan/${data.order_code}`}
+            href={`/bimbingan/${data.order.order_code}`}
         >
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
                 <div className="space-y-[1.8vw] w-full">
                     <ProductItemCardHeader>
                         <GoalsBadge
@@ -87,18 +88,18 @@ function BimbinganItem({ data }) {
                                 {data.products.name}
                             </h2>
                             <p className="text-neutral-40 md:text-neutral-60">
-                                {moment(data.form_result.schedule).format(
+                                {moment(data.order.form_result.schedule).format(
                                     "dddd, DD MMMM YYYY"
                                 )}
                             </p>
                             <p className="hidden md:block text-neutral-60">
-                                {data.course.time
+                                {data.time
                                     ? start_time + "-" + finish_time
                                     : "Waktu Belum Ditentukan"}
                             </p>
                         </div>
                         <Link
-                            href={`/bimbingan/${data.order_code}`}
+                            href={`/bimbingan/${data.order.order_code}`}
                             className="hidden md:block bg-secondary hover:bg-primary text-white font-medium text-[1vw] px-[2vw] py-[.8vw] rounded-[.4vw]"
                         >
                             Lihat Detail

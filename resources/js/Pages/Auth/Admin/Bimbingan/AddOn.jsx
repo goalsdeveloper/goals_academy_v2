@@ -9,9 +9,28 @@ import { useState } from "react";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import toast, { Toaster } from "react-hot-toast";
 import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
+import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
+import { getPaginationPages } from "@/script/utils";
+import { useEffect } from "react";
 
-export default function AddOn({ auth, data }) {
-    const addons = data.data;
+export default function AddOn({ auth, addons }) {
+    const { data, total, from, to, current_page, per_page, last_page, links } =
+        addons;
+
+    const [pages, setPages] = useState([]);
+    const [keyword, setKeyword] = useState(
+        new URLSearchParams(window.location.search).get("search")
+    );
+
+    useEffect(() => {
+        setPages(getPaginationPages({ links, current_page, last_page }));
+    }, [current_page]);
+
+    const onSearchCallback = (search) => {
+        router.visit(route("admin.bimbingan.addon.index", { search: search }), {
+            only: ["addons"],
+        });
+    };
     const [showDialog, setShowDialog] = useState({
         create: false,
         edit: false,
@@ -31,20 +50,12 @@ export default function AddOn({ auth, data }) {
 
     const callback = (method) => {
         router.visit(route("admin.bimbingan.addon.index"), {
-            only: ["data"],
+            only: ["addons"],
             onSuccess: () => {
-                if (method == "create") {
-                    toast.success("Create Success!");
-                } else if (method == "edit") {
-                    toast.success("Edit Success!");
-                } else {
-                    toast.success("Delete Success!");
-                }
-            },
+                toast.success(`Add-On berhasil di ${method.charAt(0).toUpperCase() + method.slice(1)}`);
+            }
         });
     };
-
-    console.log(addons);
 
     const columns = useMemo(
         () => [
@@ -103,7 +114,8 @@ export default function AddOn({ auth, data }) {
                                                 !cell.row.original.is_visible,
                                         },
                                         {
-                                            onSuccess: () => callback("edit"),
+                                            onSuccess: () =>
+                                                callback('edit')
                                         }
                                     );
                                 }}
@@ -113,7 +125,7 @@ export default function AddOn({ auth, data }) {
                 ),
             },
         ],
-        []
+        [addons]
     );
 
     return (
@@ -156,12 +168,29 @@ export default function AddOn({ auth, data }) {
                 />
 
                 <GoalsDashboardTable
-                    isHeadVisible
-                    isPaginated
-                    isSortable
                     columns={columns}
-                    data={addons}
+                    data={data}
+                    isHeadVisible
+                    isSortable
+                    keyword={keyword}
+                    setKeyword={setKeyword}
+                    onSearch={(i) => {
+                        onSearchCallback(i);
+                    }}
                 />
+                <div>
+                    <BottomPaginationTable
+                        {...{
+                            from,
+                            to,
+                            total,
+                            pages,
+                            per_page,
+                            current_page,
+                            keyword,
+                        }}
+                    />
+                </div>
             </div>
         </DashboardLayout>
     );

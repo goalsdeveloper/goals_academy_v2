@@ -13,7 +13,7 @@ const ProductListFilter = ({ data, setData, filterList, type = "product" }) => {
     function getFilterVars(item) {
         switch (type) {
             case "product":
-                return item.course.ongoing;
+                return item.ongoing;
             case "transaction":
                 return item.status.toLowerCase();
         }
