@@ -12,22 +12,38 @@ const Dialog = ({
     put,
     callback,
 }) => {
-    const status = showDialog.create ? 'Tambah' : showDialog.edit ? 'Ubah' : showDialog.show ? 'Detail' : ('')
+    const status = showDialog.create
+        ? "Tambah"
+        : showDialog.edit
+        ? "Ubah"
+        : showDialog.show
+        ? "Detail"
+        : "";
     return (
         <div>
             {createPortal(
                 <GoalsPopup
                     show={Object.values(showDialog).includes(true)}
-                    setShow={() => setShowDialog({ create: false, edit: false, show: false, delete: false })}
+                    setShow={() =>
+                        setShowDialog({
+                            create: false,
+                            edit: false,
+                            show: false,
+                            delete: false,
+                        })
+                    }
                     className="max-w-[20.8vw]"
                 >
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
                             if (showDialog.create) {
-                                post(route("admin.manajemen_user.tutor.store"), {
-                                    onFinish: () => callback('create')
-                                });
+                                post(
+                                    route("admin.manajemen_user.tutor.store"),
+                                    {
+                                        onFinish: () => callback("create"),
+                                    }
+                                );
                             } else if (showDialog.edit) {
                                 put(
                                     route(
@@ -39,7 +55,12 @@ const Dialog = ({
                                     }
                                 );
                             }
-                            setShowDialog({ create: false, edit: false, show: false, delete: false });
+                            setShowDialog({
+                                create: false,
+                                edit: false,
+                                show: false,
+                                delete: false,
+                            });
                         }}
                         className="space-y-[1.2vw] w-full"
                     >
@@ -52,7 +73,9 @@ const Dialog = ({
                                 required
                                 data={formData.name}
                                 placeholder=""
-                                onChange={(e) => setFormData("name", e.target.value)}
+                                onChange={(e) =>
+                                    setFormData("name", e.target.value)
+                                }
                                 disabled={showDialog.show}
                             />
                             <GoalsTextInput
@@ -60,33 +83,44 @@ const Dialog = ({
                                 required
                                 data={formData.email}
                                 placeholder=""
-                                onChange={(e) => setFormData("email", e.target.value)}
+                                onChange={(e) =>
+                                    setFormData("email", e.target.value)
+                                }
                                 disabled={showDialog.show}
                             />
                         </div>
-                        {showDialog.show ? (<></>) : (
-                            (
-                                <div className="flex gap-[.8vw]">
-                                    <GoalsButton
-                                        size="sm"
-                                        variant="success-bordered"
-                                        className="w-full h-full text-[1vw]"
-                                        onClick={() =>
-                                            setShowDialog({ create: false, edit: false, show: false, delete: false })
-                                        }
-                                    >
-                                        Batal
-                                    </GoalsButton>
-                                    <GoalsButton
-                                        size="sm"
-                                        variant="success"
-                                        type="submit"
-                                        className="w-full h-full text-[1vw]"
-                                    >
-                                        {status}
-                                    </GoalsButton>
-                                </div>
-                            )
+                        {showDialog.show ? (
+                            <></>
+                        ) : (
+                            <div className="flex gap-[.8vw]">
+                                <GoalsButton
+                                    size="sm"
+                                    variant="success-bordered"
+                                    className="w-full h-full text-[1vw]"
+                                    onClick={() =>
+                                        setShowDialog({
+                                            create: false,
+                                            edit: false,
+                                            show: false,
+                                            delete: false,
+                                        })
+                                    }
+                                >
+                                    Batal
+                                </GoalsButton>
+                                <GoalsButton
+                                    size="sm"
+                                    variant="success"
+                                    type="submit"
+                                    className="w-full h-full text-[1vw]"
+                                    disabled={
+                                        !formData.name ||
+                                        !formData.email
+                                    }
+                                >
+                                    {status}
+                                </GoalsButton>
+                            </div>
                         )}
                     </form>
                 </GoalsPopup>,
