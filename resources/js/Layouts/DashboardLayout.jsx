@@ -368,8 +368,7 @@ export default function DashboardLayout({
         }
     }, []);
 
-    const [showNotification, setShowNotification] = useState(false);
-    const [dataNotification, setDataNotification] = useState(
+    const [notificationData, setNotificationData] = useState(
         auth.notifications.filter((i) => i.data.category != "Transaksi")
     );
 
@@ -378,7 +377,7 @@ export default function DashboardLayout({
             .then(response => response.json())
             .then(response => {
                 // console.log(response.notifications)
-                setDataNotification(response.notifications);
+                setNotificationData(response.notifications);
                 setTimeout(() => getNotification(), 3000)
             })
     }
@@ -525,46 +524,7 @@ export default function DashboardLayout({
                         id="tools"
                         className="flex gap-[.5vw] text-[1.5vw] text-gray-400"
                     >
-                        <button className="flex justify-end">
-                            <FaRegBell
-                                onClick={() =>
-                                    setShowNotification(!showNotification)
-                                }
-                            />
-                            <TECollapse
-                                show={showNotification}
-                                className="absolute z-10 shadow-none p-1 translate-y-4"
-                            >
-                                {/* profile navbar */}
-                                <TECollapseItem className="w-[30vw] py-[2vw] px-[3vw] md:py-[1vw] md:px-[1.5vw] gap-[2vw] md:gap-[1vw] text-start bg-white shadow-centered rounded-xl">
-                                    <div className="flex justify-between items-center">
-                                        <span className="font-poppins text-[4vw] md:text-[1.25vw]">
-                                            Notifikasi
-                                        </span>
-                                        <Link
-                                            href="/notifikasi"
-                                            className="font-normal text-[4vw] md:text-[1vw] hover:text-secondary"
-                                        >
-                                            Lihat Semua
-                                        </Link>
-                                    </div>
-                                    {dataNotification.length ? (
-                                        dataNotification.map((item, index) => {
-                                            return (
-                                                <NotificationItem
-                                                    key={index}
-                                                    item={item}
-                                                />
-                                            );
-                                        })
-                                    ) : (
-                                        <div className="flex justify-center items-center h-[30vh]">
-                                            Oops.. belum ada notifikasi
-                                        </div>
-                                    )}
-                                </TECollapseItem>
-                            </TECollapse>
-                        </button>
+                        <Notification auth={auth} data={notificationData} />
                         <Link
                             href={route(`${auth.user.user_role}.setting.index`)}
                         >
@@ -596,30 +556,192 @@ function NavItem({ name, href, icon, isActive }) {
     );
 }
 
-function NotificationItem({ item }) {
+function Notification ({ auth, data }) {
+    const [show, setShow] = useState(false);
+
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
     return (
-        <Link
-            href=""
-            className="relative w-full flex justify-between items-center shadow-centered-spread rounded-[.25vw] p-[4vw] md:p-[1vw] hover:bg-soft"
+        <div
+            className={`font-poppins flex md:justify-center cursor-pointer`}
+            onMouseEnter={() => setShow(true)}
+            onMouseLeave={() => setShow(false)}
         >
-            <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
-                <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[2.5vw] md:text-[.75vw]">
-                    {item.data.category}
-                </span>
-                <div>
-                    <h4 className="text-secondary font-normal font-sans text-[2.5vw] md:text-[1vw] md:mb-[.5vw]">
-                        {item.data.title}
-                    </h4>
-                    <div className="text-[2vw] md:text-[.75vw]">
-                        {item.data.description}
-                    </div>
-                </div>
-            </div>
             <div
                 className={`${
-                    item.read_at ? "hidden" : ""
-                } bg-secondary rounded-full w-[3vw] h-[3vw] md:w-[.9vw] md:h-[.9vw]`}
-            ></div>
-        </Link>
-    );
+                    auth.user.user_role == "user" ? "" : "hidden"
+                } relative`}
+            >
+                <FaRegBell className="fa-regular fa-bell text-[8vw] md:text-[2vw]" onClick={() => isMobile && setShow(!show) } />
+                <div
+                    className={`${
+                        data.length > 0 ? "" : "hidden"
+                    } absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}
+                ></div>
+            </div>
+            {isMobile ? (
+                <div className={`${show ? '' : 'translate-x-[101%]'} absolute w-screen left-0 bottom-0 translate-y-full transition-all duration-500`}>
+                    <div className="h-[89vh] bg-white shadow-centered md:rounded-[.75vw] overflow-auto scrollbar-hidden pb-[1vw]">
+                        <div className="flex justify-between items-center py-[1.5vw] px-[3vw] md:px-[1.5vw]">
+                            <span className="font-poppins text-[4vw] md:text-[1.25vw]">
+                                Notifikasi
+                            </span>
+                            <button>
+                                <Link
+                                    href="#"
+                                    className="font-normal text-[4vw] md:text-[.9vw] hover:text-secondary"
+                                >
+                                    Tandai sudah dibaca
+                                </Link>
+                            </button>
+                        </div>
+                        <div>
+                            {data.length ? (
+                                data.map((item, index) => {
+                                    return (
+                                        <NotificationItem
+                                            key={index}
+                                            item={item}
+                                        />
+                                    );
+                                })
+                            ) : (
+                                <div className="flex justify-center items-center h-[30vh]">
+                                    Oops.. belum ada transaksi
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <TECollapse
+                    show={show}
+                    className="absolute left-0 w-screen h-[100vh] md:h-[80vh] z-10 shadow-none p-1 translate-y-[4vw] md:translate-y-[1vw]"
+                >
+                    {/* profile navbar */}
+                    <TECollapseItem className="w-screen md:w-[27vw] h-[80vh] bg-transparent">
+                        <div className="h-fit max-h-[80vh] bg-white shadow-centered rounded-[.75vw] overflow-auto scrollbar-hidden">
+                            <div className="flex justify-between items-center py-[1.5vw] px-[3vw] md:px-[1.5vw]">
+                                <span className="font-poppins text-[4vw] md:text-[1.25vw]">
+                                    Notifikasi
+                                </span>
+                                <button>
+                                    <Link
+                                        href="#"
+                                        className="font-normal text-[4vw] md:text-[.9vw] hover:text-secondary"
+                                    >
+                                        Tandai sudah dibaca
+                                    </Link>
+                                </button>
+                            </div>
+                            <div>
+                                {data.length ? (
+                                    data.map((item, index) => {
+                                        return (
+                                            <NotificationItem
+                                                key={index}
+                                                item={item}
+                                            />
+                                        );
+                                    })
+                                ) : (
+                                    <div className="flex justify-center items-center h-[30vh]">
+                                        Oops.. belum ada transaksi
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </TECollapseItem>
+                </TECollapse>
+            )}
+        </div>
+    )
+}
+
+function NotificationItem({ item }) {
+    if (item.data.category == "Transaksi") {
+        return (
+            <Link
+                href=""
+                className={`${item.read_at ? 'hover:bg-soft' : 'bg-soft'} relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
+            >
+                <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
+                    {/* <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[3vw] md:text-[.75vw]">
+                        {item.data.category}
+                    </span> */}
+                    <div className="flex items-center gap-[2vw] md:gap-[.5vw]">
+                        <img
+                            src={`/img/purchase/${item.data.payment_method.toLowerCase()}.png`}
+                            className="w-[8vw] h-[8vw] md:w-[3vw] md:h-[3vw]"
+                            alt={item.data.payment_method}
+                        />
+                        <div>
+                            <span className="text-light-grey text-[2.5vw] md:text-[.75vw] font-normal py-[.5vw] md:py-[.1vw]">
+                                {moment(item.created_at).fromNow()}
+                            </span>
+                            <h4 className="text-secondary font-normal font-sans text-[3.5vw] md:text-[1vw] md:mb-[.5vw]">
+                                {item.data.title}
+                            </h4>
+                            <table className="text-[2.5vw] md:text-[.75vw]">
+                                <tbody>
+                                    <tr>
+                                        <td>Bayar Sebelum</td>
+                                        <td className="ps-[2vw] pe-[.5vw]">
+                                            :
+                                        </td>
+                                        <td>
+                                            {moment(
+                                                item.data.expiry_time
+                                            ).format("DD MMMM YYYY, HH:mm")}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kode Pesanan</td>
+                                        <td className="ps-[2vw] pe-[.5vw]">
+                                            :
+                                        </td>
+                                        <td>{item.data.order_id}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    className={`${
+                        item.read_at ? "hidden" : ""
+                    } bg-secondary rounded-full w-[3vw] h-[3vw] md:w-[.9vw] md:h-[.9vw]`}
+                ></div>
+            </Link>
+        );
+    } else {
+        return (
+            <Link
+                href=""
+                className={`${item.read_at ? 'hover:bg-soft' : 'bg-soft'} relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
+            >
+                <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
+                    {/* <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[3vw] md:text-[.75vw]">
+                        {item.data.category}
+                    </span> */}
+                    <div>
+                        <span className="text-light-grey text-[3vw] md:text-[.75vw] font-normal py-[.5vw] md:py-[.1vw]">
+                            {moment(item.created_at).fromNow()}
+                        </span>
+                        <h4 className="text-secondary font-normal font-sans text-[3vw] md:text-[1vw] md:mb-[.5vw]">
+                            {item.data.title}
+                        </h4>
+                        <div className="text-[2vw] md:text-[.75vw]">
+                            {item.data.description}
+                        </div>
+                    </div>
+                </div>
+                <div
+                    className={`${
+                        item.read_at ? "hidden" : ""
+                    } bg-secondary rounded-full w-[3vw] h-[3vw] md:w-[.9vw] md:h-[.9vw]`}
+                ></div>
+            </Link>
+        );
+    }
 }

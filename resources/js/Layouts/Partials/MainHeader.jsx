@@ -88,7 +88,8 @@ export default function MainHeader({ auth, title, className }) {
                         {...{
                             auth,
                             title,
-                            profileImage
+                            profileImage,
+                            notificationData,
                         }}
                     />
                 ) : (
@@ -259,49 +260,47 @@ function NavbarExpand({ auth, title, profileImage, notificationData }) {
 function Notification ({ auth, data }) {
     const [show, setShow] = useState(false);
     const [activeDisplay, setActiveDisplay] = useState(0)
+
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
     return (
         <div
-            className={`font-poppins flex justify-center cursor-pointer`}
+            className={`font-poppins flex md:justify-center cursor-pointer`}
             onMouseEnter={() => setShow(true)}
             onMouseLeave={() => setShow(false)}
-            // onClick={() => setShow(!notificationDropdown) }
         >
             <div
                 className={`${
                     auth.user.user_role == "user" ? "" : "hidden"
                 } relative`}
             >
-                <i className="fa-regular fa-bell md:text-[2vw]"></i>
+                <i className="fa-regular fa-bell text-[8vw] md:text-[2vw]" onClick={() => isMobile && setShow(!show) }></i>
                 <div
                     className={`${
                         data.newTransaction.length > 0 ? "" : "hidden"
                     } absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}
                 ></div>
             </div>
-            <TECollapse
-                show={show}
-                className="absolute z-10 shadow-none p-1 translate-y-4 h-[80vh]"
-            >
-                {/* profile navbar */}
-                <TECollapseItem className="w-[27vw] h-[80vh] bg-transparent">
-                    <div className="h-fit max-h-[80vh] bg-white shadow-centered rounded-[.75vw] overflow-auto scrollbar-hidden">
-                        <div className="flex justify-between items-center py-[1.5vw] px-[3vw] md:px-[1.5vw]">
-                            <span className="font-poppins text-[4vw] md:text-[1.25vw]">
+            {isMobile ? (
+                <div className={`${show ? '' : 'translate-x-[101%]'} absolute w-screen left-0 bottom-0 translate-y-full transition-all duration-500`}>
+                    <div className="h-[89vh] bg-white shadow-centered md:rounded-[.75vw] overflow-auto scrollbar-hidden pb-[1vw]">
+                        <div className="flex justify-between items-center py-[6vw] md:py-[1.5vw] px-[3vw] md:px-[1.5vw]">
+                            <span className="font-poppins text-[5vw] md:text-[1.25vw]">
                                 Notifikasi
                             </span>
                             <button>
                                 <Link
                                     href="#"
-                                    className="font-normal text-[4vw] md:text-[.9vw] hover:text-secondary"
+                                    className="font-normal text-[3.6vw] md:text-[.9vw] hover:text-secondary"
                                 >
                                     Tandai sudah dibaca
                                 </Link>
                             </button>
                         </div>
-                        <div className="flex gap-[1vw] border-b-1 px-[3vw] md:px-[1.5vw] text-[.9vw] font-normal">
-                            <button className={`${activeDisplay == 0 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(0)}>Transaksi</button>
-                            <button className={`${activeDisplay == 1 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(1)}>Promo</button>
-                            <button className={`${activeDisplay == 2 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(2)}>Program</button>
+                        <div className="flex gap-[4vw] md:gap-[1vw] border-b-1 px-[3vw] md:px-[1.5vw] text-[3.6vw] md:text-[.9vw] font-normal">
+                            <button className={`${activeDisplay == 0 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[2vw] md:pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(0)}>Transaksi</button>
+                            <button className={`${activeDisplay == 1 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[2vw] md:pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(1)}>Promo</button>
+                            <button className={`${activeDisplay == 2 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[2vw] md:pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(2)}>Program</button>
                         </div>
                         {/* Transaksi */}
                         <div className={activeDisplay != 0 && 'hidden'}>
@@ -309,7 +308,7 @@ function Notification ({ auth, data }) {
                                 <>
                                     {data.newTransaction.length && (
                                         <>
-                                            <div className="px-[1.5vw] py-[.5vw] text-center">Baru</div>
+                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center">Baru</div>
                                             {data.newTransaction.map((item, index) => {
                                                 return (
                                                     <NotificationItem
@@ -322,7 +321,7 @@ function Notification ({ auth, data }) {
                                     )}
                                     {data.oldTransaction.length && (
                                         <>
-                                            <div className="px-[1.5vw] py-[.5vw] text-center">Terdahulu</div>
+                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center">Terdahulu</div>
                                             {data.oldTransaction.map((item, index) => {
                                                 return (
                                                     <NotificationItem
@@ -375,8 +374,108 @@ function Notification ({ auth, data }) {
                             )}
                         </div>
                     </div>
-                </TECollapseItem>
-            </TECollapse>
+                </div>
+            ) : (
+                <TECollapse
+                    show={show}
+                    className="absolute left-0 w-screen h-[100vh] md:h-[80vh] z-10 shadow-none p-1 translate-y-[4vw] md:translate-y-[1vw]"
+                >
+                    {/* profile navbar */}
+                    <TECollapseItem className="w-screen md:w-[27vw] h-[80vh] bg-transparent">
+                        <div className="h-fit max-h-[80vh] bg-white shadow-centered rounded-[.75vw] overflow-auto scrollbar-hidden">
+                            <div className="flex justify-between items-center py-[1.5vw] px-[3vw] md:px-[1.5vw]">
+                                <span className="font-poppins text-[4vw] md:text-[1.25vw]">
+                                    Notifikasi
+                                </span>
+                                <button>
+                                    <Link
+                                        href="#"
+                                        className="font-normal text-[4vw] md:text-[.9vw] hover:text-secondary"
+                                    >
+                                        Tandai sudah dibaca
+                                    </Link>
+                                </button>
+                            </div>
+                            <div className="flex gap-[1vw] border-b-1 px-[3vw] md:px-[1.5vw] text-[.9vw] font-normal">
+                                <button className={`${activeDisplay == 0 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(0)}>Transaksi</button>
+                                <button className={`${activeDisplay == 1 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(1)}>Promo</button>
+                                <button className={`${activeDisplay == 2 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(2)}>Program</button>
+                            </div>
+                            {/* Transaksi */}
+                            <div className={activeDisplay != 0 && 'hidden'}>
+                                {Number(data.newTransaction.length) + Number(data.oldTransaction.length) ? (
+                                    <>
+                                        {data.newTransaction.length && (
+                                            <>
+                                                <div className="px-[1.5vw] py-[.5vw] text-center">Baru</div>
+                                                {data.newTransaction.map((item, index) => {
+                                                    return (
+                                                        <NotificationItem
+                                                            key={index}
+                                                            item={item}
+                                                        />
+                                                    );
+                                                })}
+                                            </>
+                                        )}
+                                        {data.oldTransaction.length && (
+                                            <>
+                                                <div className="px-[1.5vw] py-[.5vw] text-center">Terdahulu</div>
+                                                {data.oldTransaction.map((item, index) => {
+                                                    return (
+                                                        <NotificationItem
+                                                            key={index}
+                                                            item={item}
+                                                        />
+                                                    );
+                                                })}
+                                            </>
+                                        )}
+                                    </>
+                                ) : (
+                                    <div className="flex justify-center items-center h-[30vh]">
+                                        Oops.. belum ada transaksi
+                                    </div>
+                                )}
+                            </div>
+                            {/* Promo */}
+                            <div className={activeDisplay != 1 && 'hidden'}>
+                                {data.promo.length ? (
+                                    data.promo.map((item, index) => {
+                                        return (
+                                            <NotificationItem
+                                                key={index}
+                                                item={item}
+                                            />
+                                        );
+                                    })
+                                ) : (
+                                    <div className="flex justify-center items-center h-[30vh]">
+                                        Oops.. belum ada transaksi
+                                    </div>
+                                )}
+                            </div>
+                            {/* Program */}
+                            <div className={activeDisplay != 2 && 'hidden'}>
+                                {data.program.length ? (
+                                    data.program.map((item, index) => {
+                                        return (
+                                            <NotificationItem
+                                                key={index}
+                                                item={item}
+                                            />
+                                        );
+                                    })
+                                ) : (
+                                    <div className="flex justify-center items-center h-[30vh]">
+                                        Oops.. belum ada transaksi
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </TECollapseItem>
+                </TECollapse>
+            )}
         </div>
     )
 }
@@ -389,7 +488,7 @@ function NotificationItem({ item }) {
                 className={`${item.read_at ? 'hover:bg-soft' : 'bg-soft'} relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
             >
                 <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
-                    {/* <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[2.5vw] md:text-[.75vw]">
+                    {/* <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[3vw] md:text-[.75vw]">
                         {item.data.category}
                     </span> */}
                     <div className="flex items-center gap-[2vw] md:gap-[.5vw]">
@@ -402,10 +501,10 @@ function NotificationItem({ item }) {
                             <span className="text-light-grey text-[2.5vw] md:text-[.75vw] font-normal py-[.5vw] md:py-[.1vw]">
                                 {moment(item.created_at).fromNow()}
                             </span>
-                            <h4 className="text-secondary font-normal font-sans text-[2.5vw] md:text-[1vw] md:mb-[.5vw]">
+                            <h4 className="text-secondary font-normal font-sans text-[3.5vw] md:text-[1vw] md:mb-[.5vw]">
                                 {item.data.title}
                             </h4>
-                            <table className="text-[2vw] md:text-[.75vw]">
+                            <table className="text-[2.5vw] md:text-[.75vw]">
                                 <tbody>
                                     <tr>
                                         <td>Bayar Sebelum</td>
@@ -444,14 +543,14 @@ function NotificationItem({ item }) {
                 className={`${item.read_at ? 'hover:bg-soft' : 'bg-soft'} relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
             >
                 <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
-                    {/* <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[2.5vw] md:text-[.75vw]">
+                    {/* <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[3vw] md:text-[.75vw]">
                         {item.data.category}
                     </span> */}
                     <div>
-                        <span className="text-light-grey text-[2.5vw] md:text-[.75vw] font-normal py-[.5vw] md:py-[.1vw]">
+                        <span className="text-light-grey text-[3vw] md:text-[.75vw] font-normal py-[.5vw] md:py-[.1vw]">
                             {moment(item.created_at).fromNow()}
                         </span>
-                        <h4 className="text-secondary font-normal font-sans text-[2.5vw] md:text-[1vw] md:mb-[.5vw]">
+                        <h4 className="text-secondary font-normal font-sans text-[3vw] md:text-[1vw] md:mb-[.5vw]">
                             {item.data.title}
                         </h4>
                         <div className="text-[2vw] md:text-[.75vw]">
