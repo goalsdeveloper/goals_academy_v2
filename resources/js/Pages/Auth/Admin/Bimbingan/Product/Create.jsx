@@ -119,6 +119,17 @@ const Create = ({ auth, categories, addons, topics }) => {
                             variant="success"
                             onClick={() => {}}
                             type="submit"
+                            disabled={
+                                !data.product_image ||
+                                !data.name ||
+                                !data.category_id ||
+                                !data.description ||
+                                !data.price ||
+                                !data.total_meet ||
+                                !data.active_period ||
+                                !data.contact_type||
+                                !data.duration
+                            }
                         >
                             Simpan
                         </GoalsButton>
@@ -208,27 +219,29 @@ const Create = ({ auth, categories, addons, topics }) => {
                                     </SelectInputItem>
                                 ))}
                             </SelectInput>
-                            
+
                             <SelectInput
                                 value={data.contact_type}
                                 filledClassName="capitalize"
                                 label="Tipe kontak"
                                 required
                             >
-                                {["online", "offline", "hybrid", "other"].map((option, i) => (
-                                    <SelectInputItem
-                                        key={i}
-                                        className="capitalize"
-                                        onClick={() =>
-                                            setData({
-                                                ...data,
-                                                contact_type: option,
-                                            })
-                                        }
-                                    >
-                                        {option}
-                                    </SelectInputItem>
-                                ))}
+                                {["online", "offline", "hybrid", "other"].map(
+                                    (option, i) => (
+                                        <SelectInputItem
+                                            key={i}
+                                            className="capitalize"
+                                            onClick={() =>
+                                                setData({
+                                                    ...data,
+                                                    contact_type: option,
+                                                })
+                                            }
+                                        >
+                                            {option}
+                                        </SelectInputItem>
+                                    )
+                                )}
                             </SelectInput>
 
                             <div className="space-y-[.5vw]">
