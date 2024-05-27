@@ -25,7 +25,7 @@ import { BsPerson } from "react-icons/bs";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import { Notification, NotificationItem } from "./MainHeader";
 
-const MobileHeader = ({ auth, notificationData }) => {
+const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
     const [authDropdown, setAuthDropdown] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -72,7 +72,7 @@ const MobileHeader = ({ auth, notificationData }) => {
                 </div>
                 {auth.user && (
                     <div className="flex gap-[2vw]">
-                        <Notification auth={auth} data={notificationData} />
+                        <Notification auth={auth} data={notificationData} loadMore={getOldNotification} />
                         <div
                             className={`relative font-poppins flex justify-center cursor-pointer`}
                             // onMouseEnter={() => setAuthDropdown(true)}

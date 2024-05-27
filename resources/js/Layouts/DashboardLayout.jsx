@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
+import { useMediaQuery } from "react-responsive";
 import logo from "/resources/img/icon/goals-6.svg";
 import GoalsButton from "@/Components/GoalsButton";
 import TECollapseItem from "@/Components/TECollapseItem";
@@ -14,6 +15,8 @@ import { GrTag, GrLocation } from "react-icons/gr";
 import { IoSettingsOutline } from "react-icons/io5";
 import { ImExit } from "react-icons/im";
 import { MdOutlineEventNote, MdHistory } from "react-icons/md";
+import moment from "moment";
+import '@/script/momentCustomLocale';
 
 export default function DashboardLayout({
     auth,
@@ -368,22 +371,23 @@ export default function DashboardLayout({
         }
     }, []);
 
-    const [notificationData, setNotificationData] = useState(
-        auth.notifications.filter((i) => i.data.category != "Transaksi")
-    );
+    const {data: notificationData, setData: setNotificationData} = useForm({
+        new: auth.notifications.filter((i) => i.data.category != "Transaksi").slice(0,4),
+        old: auth.notifications.filter((i) => i.data.category != "Transaksi").slice(4),
+        page: 1,
+        hasMore: true,
+    });
 
-    const getNotification = () => {
-        fetch(route('api.notification.get'))
-            .then(response => response.json())
-            .then(response => {
-                // console.log(response.notifications)
-                setNotificationData(response.notifications);
-                setTimeout(() => getNotification(), 3000)
-            })
+    const getNewNotification = () => {
+        // 
+    }
+
+    const getOldNotification = (page) => {
+        // 
     }
 
     useEffect(() => {
-        getNotification();
+        getNewNotification();
     }, [])
 
     return (
@@ -522,9 +526,9 @@ export default function DashboardLayout({
                     </h1>
                     <div
                         id="tools"
-                        className="flex gap-[.5vw] text-[1.5vw] text-gray-400"
+                        className="flex items-center gap-[.5vw] text-[1.5vw] text-gray-400"
                     >
-                        <Notification auth={auth} data={notificationData} />
+                        <Notification auth={auth} data={notificationData} loadMore={getOldNotification} />
                         <Link
                             href={route(`${auth.user.user_role}.setting.index`)}
                         >
@@ -556,55 +560,72 @@ function NavItem({ name, href, icon, isActive }) {
     );
 }
 
-function Notification ({ auth, data }) {
+function Notification ({ auth, data, loadMore }) {
     const [show, setShow] = useState(false);
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     return (
         <div
-            className={`font-poppins flex md:justify-center cursor-pointer`}
-            onMouseEnter={() => setShow(true)}
-            onMouseLeave={() => setShow(false)}
+            className={`font-poppins flex md:justify-end cursor-pointer`}
+            onMouseEnter={() => !isMobile && setShow(true)}
+            onMouseLeave={() => !isMobile && setShow(false)}
         >
-            <div
-                className={`${
-                    auth.user.user_role == "user" ? "" : "hidden"
-                } relative`}
-            >
-                <FaRegBell className="fa-regular fa-bell text-[8vw] md:text-[2vw]" onClick={() => isMobile && setShow(!show) } />
+            <div className='relative'>
+                <FaRegBell className="fa-regular fa-bell text-[6vw] md:text-[1.5vw]" onClick={() => isMobile && setShow(!show) } />
                 <div
                     className={`${
-                        data.length > 0 ? "" : "hidden"
+                        data.new.length > 0 ? "" : "hidden"
                     } absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}
                 ></div>
             </div>
             {isMobile ? (
                 <div className={`${show ? '' : 'translate-x-[101%]'} absolute w-screen left-0 bottom-0 translate-y-full transition-all duration-500`}>
-                    <div className="h-[89vh] bg-white shadow-centered md:rounded-[.75vw] overflow-auto scrollbar-hidden pb-[1vw]">
-                        <div className="flex justify-between items-center py-[1.5vw] px-[3vw] md:px-[1.5vw]">
-                            <span className="font-poppins text-[4vw] md:text-[1.25vw]">
+                    <div className="h-[89vh] bg-white shadow-centered md:rounded-[.75vw] overflow-auto scrollbar-hidden pb-[1vw]" >
+                        <div className="flex justify-between items-center py-[6vw] md:py-[1.5vw] px-[3vw] md:px-[1.5vw] border-b-1">
+                            <span className="font-poppins text-[5vw] md:text-[1.25vw]">
                                 Notifikasi
                             </span>
                             <button>
                                 <Link
                                     href="#"
-                                    className="font-normal text-[4vw] md:text-[.9vw] hover:text-secondary"
+                                    className="font-normal text-[3.6vw] md:text-[.9vw] hover:text-secondary"
                                 >
                                     Tandai sudah dibaca
                                 </Link>
                             </button>
                         </div>
                         <div>
-                            {data.length ? (
-                                data.map((item, index) => {
-                                    return (
-                                        <NotificationItem
-                                            key={index}
-                                            item={item}
-                                        />
-                                    );
-                                })
+                            {Number(data.new.length) + Number(data.old.length) ? (
+                                <>
+                                    {data.new.length && (
+                                        <>
+                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center text-[4vw] md:text-[1vw]">Baru</div>
+                                            {data.new.map((item, index) => {
+                                                return (
+                                                    <NotificationItem
+                                                        key={index}
+                                                        item={item}
+                                                    />
+                                                );
+                                            })}
+                                        </>
+                                    )}
+                                    {data.old.length && (
+                                        <>
+                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center text-[4vw] md:text-[1vw]">Terdahulu</div>
+                                            {data.old.map((item, index) => {
+                                                return (
+                                                    <NotificationItem
+                                                        key={index}
+                                                        item={item}
+                                                    />
+                                                );
+                                            })}
+                                            {data.hasMore && <GoalsButton activeClassName="bg-white hover:text-secondary text-[4vw] md:text-[1vw]" onClick={() => loadMore(data.page + 1)}>Load More</GoalsButton>}
+                                        </>
+                                    )}
+                                </>
                             ) : (
                                 <div className="flex justify-center items-center h-[30vh]">
                                     Oops.. belum ada transaksi
@@ -616,12 +637,12 @@ function Notification ({ auth, data }) {
             ) : (
                 <TECollapse
                     show={show}
-                    className="absolute left-0 w-screen h-[100vh] md:h-[80vh] z-10 shadow-none p-1 translate-y-[4vw] md:translate-y-[1vw]"
+                    className="absolute h-[100vh] md:h-[80vh] z-10 shadow-none p-1 translate-y-[4vw] md:translate-y-[1vw]"
                 >
                     {/* profile navbar */}
-                    <TECollapseItem className="w-screen md:w-[27vw] h-[80vh] bg-transparent">
-                        <div className="h-fit max-h-[80vh] bg-white shadow-centered rounded-[.75vw] overflow-auto scrollbar-hidden">
-                            <div className="flex justify-between items-center py-[1.5vw] px-[3vw] md:px-[1.5vw]">
+                    <TECollapseItem className="md:w-[27vw] h-[80vh] bg-transparent">
+                        <div className="h-fit max-h-[80vh] bg-white shadow-centered overflow-auto scrollbar-hidden">
+                            <div className="flex justify-between items-center py-[1.5vw] px-[3vw] md:px-[1.5vw] border-b-1">
                                 <span className="font-poppins text-[4vw] md:text-[1.25vw]">
                                     Notifikasi
                                 </span>
@@ -635,15 +656,36 @@ function Notification ({ auth, data }) {
                                 </button>
                             </div>
                             <div>
-                                {data.length ? (
-                                    data.map((item, index) => {
-                                        return (
-                                            <NotificationItem
-                                                key={index}
-                                                item={item}
-                                            />
-                                        );
-                                    })
+                                {Number(data.new.length) + Number(data.old.length) ? (
+                                    <>
+                                        {data.new.length && (
+                                            <>
+                                                <div className="px-[1.5vw] py-[.5vw] text-center text-[4vw] md:text-[1vw]">Baru</div>
+                                                {data.new.map((item, index) => {
+                                                    return (
+                                                        <NotificationItem
+                                                            key={index}
+                                                            item={item}
+                                                        />
+                                                    );
+                                                })}
+                                            </>
+                                        )}
+                                        {data.old.length && (
+                                            <>
+                                                <div className="px-[1.5vw] py-[.5vw] text-center text-[4vw] md:text-[1vw]">Terdahulu</div>
+                                                {data.old.map((item, index) => {
+                                                    return (
+                                                        <NotificationItem
+                                                            key={index}
+                                                            item={item}
+                                                        />
+                                                    );
+                                                })}
+                                                {data.hasMore && <GoalsButton activeClassName="bg-white hover:text-secondary text-[4vw] md:text-[1vw]" onClick={() => loadMore(data.page + 1)}>Load More</GoalsButton>}
+                                            </>
+                                        )}
+                                    </>
                                 ) : (
                                     <div className="flex justify-center items-center h-[30vh]">
                                         Oops.. belum ada transaksi

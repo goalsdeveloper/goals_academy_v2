@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import MobileHeader from "./MobileHeader";
 import "@/script/momentCustomLocale";
+import GoalsButton from "@/Components/GoalsButton";
 
 export default function MainHeader({ auth, title, className }) {
     let profileImage = "";
@@ -23,10 +24,16 @@ export default function MainHeader({ auth, title, className }) {
 
     // Notification Variable & Fetching Function
     const {data: notificationData, setData: setNotificationData} = useForm({
-        newTransaction: auth.notifications.filter(i => i.data.category == 'Transaksi').slice(0,4),
-        oldTransaction: auth.notifications.filter(i => i.data.category == 'Transaksi').slice(4),
-        promo: auth.notifications.filter(i => i.data.category == 'Pembelajaran'),
-        program: auth.notifications.filter(i => i.data.category == 'Pembelajaran').slice(0,1),
+        newTransaction: auth.user ? auth.notifications.filter(i => i.data.category == 'Transaksi').slice(0,4) : [],
+        oldTransaction: auth.user ? auth.notifications.filter(i => i.data.category == 'Transaksi').slice(4) : [],
+        promo: auth.user ? auth.notifications.filter(i => i.data.category == 'Pembelajaran') : [],
+        program: auth.user ? auth.notifications.filter(i => i.data.category == 'Pembelajaran').slice(0,1) : [],
+        pageTransaction: 1,
+        pagePromo: 1,
+        pageProgram: 1,
+        hasMoreTransaction: true,
+        hasMorePromo: true,
+        hasMoreProgram: true,
     });
 
     const getNewNotification = () => {
@@ -52,7 +59,7 @@ export default function MainHeader({ auth, title, className }) {
         // console.log(mergedArray);
     }
 
-    const getOldNotification = () => {
+    const getOldNotification = (category, page) => {
         // 1. Ambil Notification terhadulu dengan API Old Notification 
         // 2. Tambahkan data yang diperoleh ke belakang array notificationData.oldTransaction, notificationData.promo dan notificationData.program
         // Di bawah udah ada contoh nambah item pada array dari depan
@@ -72,6 +79,18 @@ export default function MainHeader({ auth, title, className }) {
         //     }, array1);
             
         // console.log(mergedArray);
+
+        switch (category) {
+            case 'transaction':
+                console.log(transaction+' = '+page)
+                break;
+            case 'promo':
+                console.log(transaction+' = '+page)
+                break;
+            case 'program':
+                console.log(transaction+' = '+page)
+                break;
+        }
     }
 
     // Jalankan getNewNotification
@@ -90,6 +109,7 @@ export default function MainHeader({ auth, title, className }) {
                             title,
                             profileImage,
                             notificationData,
+                            getOldNotification
                         }}
                     />
                 ) : (
@@ -109,7 +129,8 @@ export default function MainHeader({ auth, title, className }) {
                         auth,
                         title,
                         profileImage,
-                        notificationData
+                        notificationData,
+                        getOldNotification
                     }}
                 />
             </nav>
@@ -117,7 +138,7 @@ export default function MainHeader({ auth, title, className }) {
     );
 }
 
-function NavbarExpand({ auth, title, profileImage, notificationData }) {
+function NavbarExpand({ auth, title, profileImage, notificationData, getOldNotification }) {
     const [authDropdown, setAuthDropdown] = useState(false);
     const [profileDropdown, setProfileDropdown] = useState(false);
     return (
@@ -203,7 +224,7 @@ function NavbarExpand({ auth, title, profileImage, notificationData }) {
                 </div>
             ) : (
                 <div className="w-auto hidden md:flex flex-wrap justify-end items-center gap-[3vw] md:gap-[1vw] font-medium text-[4vw] md:text-[1vw]">
-                    <Notification auth={auth} data={notificationData} />
+                    <Notification auth={auth} data={notificationData} loadMore={getOldNotification} />
                     <div
                         className={`font-poppins flex justify-center cursor-pointer`}
                         onMouseEnter={() => setAuthDropdown(true)}
@@ -257,17 +278,29 @@ function NavbarExpand({ auth, title, profileImage, notificationData }) {
     );
 }
 
-function Notification ({ auth, data }) {
+function Notification ({ auth, data, loadMore }) {
     const [show, setShow] = useState(false);
     const [activeDisplay, setActiveDisplay] = useState(0)
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
+    const loadMoreTransaction = () => {
+        loadMore('transaction', data.pageTransaction + 1);
+    }
+
+    const loadMorePromo = () => {
+        loadMore('promo', data.pagePromo + 1);
+    }
+
+    const loadMoreProgram = () => {
+        loadMore('program', data.pageProgram + 1);
+    }
+
     return (
         <div
             className={`font-poppins flex md:justify-center cursor-pointer`}
-            onMouseEnter={() => setShow(true)}
-            onMouseLeave={() => setShow(false)}
+            onMouseEnter={() => !isMobile && setShow(true)}
+            onMouseLeave={() => !isMobile && setShow(false)}
         >
             <div
                 className={`${
@@ -283,7 +316,7 @@ function Notification ({ auth, data }) {
             </div>
             {isMobile ? (
                 <div className={`${show ? '' : 'translate-x-[101%]'} absolute w-screen left-0 bottom-0 translate-y-full transition-all duration-500`}>
-                    <div className="h-[89vh] bg-white shadow-centered md:rounded-[.75vw] overflow-auto scrollbar-hidden pb-[1vw]">
+                    <div className="h-[89vh] bg-white shadow-centered md:rounded-[.75vw] overflow-auto scrollbar-hidden pb-[1vw]" >
                         <div className="flex justify-between items-center py-[6vw] md:py-[1.5vw] px-[3vw] md:px-[1.5vw]">
                             <span className="font-poppins text-[5vw] md:text-[1.25vw]">
                                 Notifikasi
@@ -330,6 +363,7 @@ function Notification ({ auth, data }) {
                                                     />
                                                 );
                                             })}
+                                            {data.hasMoreTransaction && <GoalsButton activeClassName="bg-white hover:text-secondary" onClick={loadMoreTransaction}>Load More</GoalsButton>}
                                         </>
                                     )}
                                 </>
@@ -342,14 +376,17 @@ function Notification ({ auth, data }) {
                         {/* Promo */}
                         <div className={activeDisplay != 1 && 'hidden'}>
                             {data.promo.length ? (
-                                data.promo.map((item, index) => {
-                                    return (
-                                        <NotificationItem
-                                            key={index}
-                                            item={item}
-                                        />
-                                    );
-                                })
+                                <>
+                                    {data.promo.map((item, index) => {
+                                        return (
+                                            <NotificationItem
+                                                key={index}
+                                                item={item}
+                                            />
+                                        );
+                                    })}
+                                    {data.hasMorePromo && <GoalsButton activeClassName="bg-white hover:text-secondary" onClick={loadMorePromo}>Load More</GoalsButton>}
+                                </>
                             ) : (
                                 <div className="flex justify-center items-center h-[30vh]">
                                     Oops.. belum ada transaksi
@@ -359,14 +396,17 @@ function Notification ({ auth, data }) {
                         {/* Program */}
                         <div className={activeDisplay != 2 && 'hidden'}>
                             {data.program.length ? (
-                                data.program.map((item, index) => {
-                                    return (
-                                        <NotificationItem
-                                            key={index}
-                                            item={item}
-                                        />
-                                    );
-                                })
+                                <>
+                                    {data.program.map((item, index) => {
+                                        return (
+                                            <NotificationItem
+                                                key={index}
+                                                item={item}
+                                            />
+                                        );
+                                    })}
+                                    {data.hasMoreProgram && <GoalsButton activeClassName="bg-white hover:text-secondary" onClick={loadMoreProgram}>Load More</GoalsButton>}
+                                </>
                             ) : (
                                 <div className="flex justify-center items-center h-[30vh]">
                                     Oops.. belum ada transaksi
@@ -378,11 +418,11 @@ function Notification ({ auth, data }) {
             ) : (
                 <TECollapse
                     show={show}
-                    className="absolute left-0 w-screen h-[100vh] md:h-[80vh] z-10 shadow-none p-1 translate-y-[4vw] md:translate-y-[1vw]"
+                    className="absolute h-[100vh] md:h-[80vh] z-10 shadow-none p-1 translate-y-[4vw] md:translate-y-[1vw]"
                 >
                     {/* profile navbar */}
-                    <TECollapseItem className="w-screen md:w-[27vw] h-[80vh] bg-transparent">
-                        <div className="h-fit max-h-[80vh] bg-white shadow-centered rounded-[.75vw] overflow-auto scrollbar-hidden">
+                    <TECollapseItem className="md:w-[27vw] h-[80vh] bg-transparent">
+                        <div className="h-fit max-h-[80vh] bg-white shadow-centered overflow-auto scrollbar-hidden">
                             <div className="flex justify-between items-center py-[1.5vw] px-[3vw] md:px-[1.5vw]">
                                 <span className="font-poppins text-[4vw] md:text-[1.25vw]">
                                     Notifikasi
@@ -429,6 +469,7 @@ function Notification ({ auth, data }) {
                                                         />
                                                     );
                                                 })}
+                                                {data.hasMoreTransaction && <GoalsButton activeClassName="bg-white hover:text-secondary" onClick={loadMoreTransaction}>Load More</GoalsButton>}
                                             </>
                                         )}
                                     </>
@@ -441,14 +482,17 @@ function Notification ({ auth, data }) {
                             {/* Promo */}
                             <div className={activeDisplay != 1 && 'hidden'}>
                                 {data.promo.length ? (
-                                    data.promo.map((item, index) => {
-                                        return (
-                                            <NotificationItem
-                                                key={index}
-                                                item={item}
-                                            />
-                                        );
-                                    })
+                                    <>
+                                        {data.promo.map((item, index) => {
+                                            return (
+                                                <NotificationItem
+                                                    key={index}
+                                                    item={item}
+                                                />
+                                            );
+                                        })}
+                                        {data.hasMorePromo && <GoalsButton activeClassName="bg-white hover:text-secondary" onClick={loadMorePromo}>Load More</GoalsButton>}
+                                    </>
                                 ) : (
                                     <div className="flex justify-center items-center h-[30vh]">
                                         Oops.. belum ada transaksi
@@ -458,14 +502,17 @@ function Notification ({ auth, data }) {
                             {/* Program */}
                             <div className={activeDisplay != 2 && 'hidden'}>
                                 {data.program.length ? (
-                                    data.program.map((item, index) => {
-                                        return (
-                                            <NotificationItem
-                                                key={index}
-                                                item={item}
-                                            />
-                                        );
-                                    })
+                                    <>
+                                        {data.program.map((item, index) => {
+                                            return (
+                                                <NotificationItem
+                                                    key={index}
+                                                    item={item}
+                                                />
+                                            );
+                                        })}
+                                        {data.hasMoreProgram && <GoalsButton activeClassName="bg-white hover:text-secondary" onClick={loadMoreProgram}>Load More</GoalsButton>}
+                                    </>
                                 ) : (
                                     <div className="flex justify-center items-center h-[30vh]">
                                         Oops.. belum ada transaksi

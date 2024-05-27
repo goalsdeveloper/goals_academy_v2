@@ -1,4 +1,4 @@
-import FileMediaItemBackdrop from "@/Components/fragments/FileMediaItemBackdrop";
+ssimport FileMediaItemBackdrop from "@/Components/fragments/FileMediaItemBackdrop";
 
 function FileMediaPopup({ show, setShow, files }) {
     return (
