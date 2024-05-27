@@ -125,6 +125,16 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                             variant="success"
                             onClick={() => {}}
                             type="submit"
+                            disabled={
+                                !data.name ||
+                                !data.category_id ||
+                                !data.description ||
+                                !data.price ||
+                                !data.total_meet ||
+                                !data.active_period ||
+                                !data.contact_type ||
+                                !data.duration
+                            }
                         >
                             Perbarui
                         </GoalsButton>
