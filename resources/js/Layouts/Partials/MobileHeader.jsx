@@ -9,8 +9,10 @@ import {
     FiAirplay,
     FiBriefcase,
     FiChevronDown,
+    FiGrid,
     FiHome,
     FiMonitor,
+    FiSettings,
 } from "react-icons/fi";
 import user from "/resources/img/icon/user.png";
 import { LiaDropbox } from "react-icons/lia";
@@ -35,23 +37,67 @@ const MobileHeader = ({ auth }) => {
             : user;
     }
 
-    const links = [
-        { href: "/user", icon: <LuGraduationCap />, text: "Bimbingan" },
-        { href: "/webinar", icon: <FiMonitor />, text: "Webinar" },
-        {
-            href: "/riwayat_transaksi",
-            icon: <PiClockCounterClockwiseBold />,
-            text: "Riwayat Transaksi",
-        },
-        { href: "/obrolan", icon: <PiChatCenteredTextBold />, text: "Obrolan" },
-        {
-            href: "/pengaturan",
-            icon: (
-                <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
-            ),
-            text: "Pengaturan",
-        },
-    ];
+    const role = auth.user?.user_role ?? "";
+    const roleCheck = role != "user" || role != "" ? "non-user" : "user";
+
+    const links = auth.user && {
+        user: [
+            { href: "/user", icon: <LuGraduationCap />, text: "Bimbingan" },
+            { href: "/webinar", icon: <FiMonitor />, text: "Webinar" },
+            {
+                href: "/riwayat_transaksi",
+                icon: <PiClockCounterClockwiseBold />,
+                text: "Riwayat Transaksi",
+            },
+            {
+                href: "/obrolan",
+                icon: <PiChatCenteredTextBold />,
+                text: "Obrolan",
+            },
+            {
+                href: "/pengaturan",
+                icon: (
+                    <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
+                ),
+                text: "Edit Profile",
+            },
+            {
+                href: "/pengaturan/ubah_password",
+                icon: (
+                    <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
+                ),
+                text: "Ubah Password",
+            },
+            {
+                href: "/logout",
+                method: "post",
+                icon: (
+                    <i className="bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24 text-red-400"></i>
+                ),
+                text: <span className="text-red-400">Logout</span>,
+            },
+        ],
+        "non-user": [
+            {
+                href: role != "user" && route(`${role}.index`),
+                icon: <FiGrid />,
+                text: "Dashboard",
+            },
+            {
+                href: role != "user" && route(`${role}.setting.index`),
+                icon: <FiSettings />,
+                text: "Pengaturan",
+            },
+            {
+                href: "/logout",
+                method: "post",
+                icon: (
+                    <i className="bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24 text-red-400"></i>
+                ),
+                text: <span className="text-red-400">Logout</span>,
+            },
+        ],
+    };
 
     return (
         <>
@@ -89,20 +135,26 @@ const MobileHeader = ({ auth }) => {
                         >
                             {/* profile navbar */}
                             <TECollapseItem className="border-2 w-fit py-[1vw] text-start bg-white  rounded-xl">
-                                {links.map(({ href, icon, text }, index) => (
-                                    <Link
-                                        key={index}
-                                        className={`flex gap-2 py-[3.7vw] px-[7.4vw] items-center font-poppins hover:text-primary  ${
-                                            text == "Riwayat Transaksi"
-                                                ? "w-max"
-                                                : "w-full"
-                                        }`}
-                                        href={href}
-                                    >
-                                        {icon}
-                                        {text}
-                                    </Link>
-                                ))}
+                                {links[roleCheck].map(
+                                    (
+                                        { href, icon, text, method = "get" },
+                                        index
+                                    ) => (
+                                        <Link
+                                            method={method}
+                                            key={index}
+                                            className={`flex gap-2 py-[3.7vw] px-[7.4vw] items-center font-poppins hover:text-primary  ${
+                                                text == "Riwayat Transaksi"
+                                                    ? "w-max"
+                                                    : "w-full"
+                                            }`}
+                                            href={href}
+                                        >
+                                            {icon}
+                                            {text}
+                                        </Link>
+                                    )
+                                )}
                             </TECollapseItem>
                         </TECollapse>
                     </div>
