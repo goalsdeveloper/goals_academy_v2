@@ -201,7 +201,7 @@ export default function Overview({
                 accessorKey: "total",
                 header: "Total",
                 size: 150,
-                Cell: ({ cell }) => <span className="text-green-500">+ Rp {currency.format(cell.getValue())},00</span>
+                Cell: ({ cell }) => <span className="text-green-500">+ Rp {currency.format(cell.getValue())}</span>
             },
         ],
         []

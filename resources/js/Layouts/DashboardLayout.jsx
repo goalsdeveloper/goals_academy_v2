@@ -33,13 +33,13 @@ export default function DashboardLayout({
                 {
                     name: "Overview",
                     href: "/admin/overview",
-                    icon: <FiGrid className="text-[1vw]" />,
+                    icon: <FiGrid className="text-[4vw] md:text-[1vw]" />,
                     isActive: title == "Overview",
                 },
                 {
                     name: "Statistic",
                     href: "/admin/statistic",
-                    icon: <RiBarChart2Line className="text-[1vw]" />,
+                    icon: <RiBarChart2Line className="text-[4vw] md:text-[1vw]" />,
                     isActive: title == "Statistic",
                 },
                 {
@@ -51,42 +51,42 @@ export default function DashboardLayout({
                         {
                             name: "Category",
                             href: "/admin/bimbingan/category",
-                            icon: <GrTag className="text-[1vw]" />,
+                            icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Bimbingan" && subtitle == "Category",
                         },
                         {
                             name: "Add-On",
                             href: "/admin/bimbingan/addon",
-                            icon: <TbLayoutGridAdd className="text-[1vw]" />,
+                            icon: <TbLayoutGridAdd className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Bimbingan" && subtitle == "Add-On",
                         },
                         {
                             name: "Place",
                             href: "/admin/bimbingan/place",
-                            icon: <GrLocation className="text-[1vw]" />,
+                            icon: <GrLocation className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Bimbingan" && subtitle == "Place",
                         },
                         {
                             name: "Topic",
                             href: "/admin/bimbingan/topic",
-                            icon: <MdOutlineEventNote className="text-[1vw]" />,
+                            icon: <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Bimbingan" && subtitle == "Topic",
                         },
                         {
                             name: "Product",
                             href: "/admin/bimbingan/product",
-                            icon: <TfiDropbox className="text-[1vw]" />,
+                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Bimbingan" && subtitle == "Product",
                         },
                         {
                             name: "Order",
                             href: "/admin/bimbingan/order",
-                            icon: <FiShoppingCart className="text-[1vw]" />,
+                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Bimbingan" && subtitle == "Order",
                         },
@@ -102,14 +102,14 @@ export default function DashboardLayout({
                         {
                             name: "Product",
                             href: "/admin/webinar/product",
-                            icon: <TfiDropbox className="text-[1vw]" />,
+                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Webinar" && subtitle == "Product",
                         },
                         {
                             name: "Order",
                             href: "/admin/webinar/order",
-                            icon: <FiShoppingCart className="text-[1vw]" />,
+                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
                             isActive: title == "Webinar" && subtitle == "Order",
                         },
                     ],
@@ -124,21 +124,21 @@ export default function DashboardLayout({
                         {
                             name: "Category",
                             href: "/admin/ecourse/category",
-                            icon: <GrTag className="text-[1vw]" />,
+                            icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "E-course" && subtitle == "Category",
                         },
                         {
                             name: "Product",
                             href: "/admin/ecourse/product",
-                            icon: <TfiDropbox className="text-[1vw]" />,
+                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "E-course" && subtitle == "Product",
                         },
                         {
                             name: "Order",
                             href: "/admin/ecourse/order",
-                            icon: <FiShoppingCart className="text-[1vw]" />,
+                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "E-course" && subtitle == "Order",
                         },
@@ -154,14 +154,14 @@ export default function DashboardLayout({
                         {
                             name: "User",
                             href: "/admin/manajemen_user/user",
-                            icon: <FiUser className="text-[1vw]" />,
+                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Manajemen User" && subtitle == "User",
                         },
                         {
                             name: "Tutor",
                             href: "/admin/manajemen_user/tutor",
-                            icon: <FiUser className="text-[1vw]" />,
+                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Manajemen User" &&
                                 subtitle == "Tutor",
@@ -169,7 +169,7 @@ export default function DashboardLayout({
                         {
                             name: "Moderator",
                             href: "/admin/manajemen_user/moderator",
-                            icon: <FiUser className="text-[1vw]" />,
+                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Manajemen User" &&
                                 subtitle == "Moderator",
@@ -186,21 +186,21 @@ export default function DashboardLayout({
                         {
                             name: "Category",
                             href: "/admin/ebook/category",
-                            icon: <GrTag className="text-[1vw]" />,
+                            icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "E-book" && subtitle == "Category",
                         },
                         {
                             name: "Product",
                             href: "/admin/ebook/product",
-                            icon: <TfiDropbox className="text-[1vw]" />,
+                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "E-book" && subtitle == "Product",
                         },
                         {
                             name: "Order",
                             href: "/admin/ebook/order",
-                            icon: <FiShoppingCart className="text-[1vw]" />,
+                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
                             isActive: title == "E-book" && subtitle == "Order",
                         },
                     ],
@@ -215,14 +215,14 @@ export default function DashboardLayout({
                         {
                             name: "Affiliate",
                             href: "/admin/marketing/affiliate",
-                            icon: <TbLayoutGridAdd className="text-[1vw]" />,
+                            icon: <TbLayoutGridAdd className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Marketing" && subtitle == "Affiliate",
                         },
                         {
                             name: "Vouchers",
                             href: "/admin/marketing/vouchers",
-                            icon: <BiSolidDiscount className="text-[1vw]" />,
+                            icon: <BiSolidDiscount className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Marketing" && subtitle == "Vouchers",
                         },
@@ -238,13 +238,13 @@ export default function DashboardLayout({
                         {
                             name: "Job",
                             href: "/admin/career/job",
-                            icon: <FiBriefcase className="text-[1vw]" />,
+                            icon: <FiBriefcase className="text-[4vw] md:text-[1vw]" />,
                             isActive: title == "Career" && subtitle == "Job",
                         },
                         {
                             name: "Participant",
                             href: "/admin/career/participant",
-                            icon: <FiUser className="text-[1vw]" />,
+                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Career" && subtitle == "Participant",
                         },
@@ -258,7 +258,7 @@ export default function DashboardLayout({
                 {
                     name: "Overview",
                     href: "/moderator/overview",
-                    icon: <FiGrid className="text-[1vw]" />,
+                    icon: <FiGrid className="text-[4vw] md:text-[1vw]" />,
                     isActive: title == "Overview",
                 },
                 {
@@ -270,7 +270,7 @@ export default function DashboardLayout({
                         {
                             name: "Recent Order",
                             href: "/moderator/bimbingan/order",
-                            icon: <FiShoppingCart className="text-[1vw]" />,
+                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Bimbingan" &&
                                 subtitle == "Recent Order",
@@ -278,14 +278,14 @@ export default function DashboardLayout({
                         {
                             name: "Progress",
                             href: "/moderator/bimbingan/progress",
-                            icon: <MdHistory className="text-[1vw]" />,
+                            icon: <MdHistory className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Bimbingan" && subtitle == "Progress",
                         },
                         {
                             name: "History",
                             href: "/moderator/bimbingan/history",
-                            icon: <MdOutlineEventNote className="text-[1vw]" />,
+                            icon: <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Bimbingan" && subtitle == "History",
                         },
@@ -301,14 +301,14 @@ export default function DashboardLayout({
                         {
                             name: "Tutor List",
                             href: "/moderator/tutor/tutor_list",
-                            icon: <FiUser className="text-[1vw]" />,
+                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Tutor" && subtitle == "Tutor List",
                         },
                         {
                             name: "Schedule",
                             href: "/moderator/tutor/schedule",
-                            icon: <FaRegCalendar className="text-[1vw]" />,
+                            icon: <FaRegCalendar className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Tutor" && subtitle == "Schedule",
                         },
@@ -322,7 +322,7 @@ export default function DashboardLayout({
                 {
                     name: "Overview",
                     href: "/tutor/overview",
-                    icon: <FiGrid className="text-[1vw]" />,
+                    icon: <FiGrid className="text-[4vw] md:text-[1vw]" />,
                     isActive: title == "Overview",
                 },
                 {
@@ -334,14 +334,14 @@ export default function DashboardLayout({
                         {
                             name: "Progress",
                             href: "/tutor/bimbingan/progress",
-                            icon: <MdHistory className="text-[1vw]" />,
+                            icon: <MdHistory className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Bimbingan" && subtitle == "Progress",
                         },
                         {
                             name: "History",
                             href: "/tutor/bimbingan/history",
-                            icon: <MdOutlineEventNote className="text-[1vw]" />,
+                            icon: <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "Bimbingan" && subtitle == "History",
                         },
@@ -356,6 +356,9 @@ export default function DashboardLayout({
     }
 
     const [navState, setNavState] = useState({});
+    const [navShow, setNavShow] = useState(false);
+
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     const navToggleHandler = (index) => {
         setNavState((prevNavState) => ({
@@ -372,8 +375,8 @@ export default function DashboardLayout({
     }, []);
 
     const {data: notificationData, setData: setNotificationData} = useForm({
-        new: auth.notifications.filter((i) => i.data.category != "Transaksi").slice(0,4),
-        old: auth.notifications.filter((i) => i.data.category != "Transaksi").slice(4),
+        new: auth.notifications.filter((i) => i.data.category != "Transaksi").slice(0,2),
+        old: auth.notifications.filter((i) => i.data.category != "Transaksi").slice(2),
         page: 1,
         hasMore: true,
     });
@@ -393,17 +396,18 @@ export default function DashboardLayout({
     return (
         <main className="relative flex bg-gray-50 text-dark font-sans">
             <Head title={title} />
-            <aside className="w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer">
-                <div className="flex justify-center items-center pt-[2.5vw] pb-[1.75vw]">
+            <aside className={`${navShow ? '' : '-translate-x-full md:translate-x-0'} z-[200] absolute md:relative w-[60vw] md:w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[3.32vw] md:text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer duration-300`}>
+                <div className="flex justify-between md:justify-center items-center px-[5vw] md:px-0 pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw]">
                     <Link href="/">
                         <img
-                            className="w-[9vw]"
+                            className="w-[36vw] md:w-[9vw]"
                             src={logo}
                             alt="Goals Academy"
                         />
                     </Link>
+                    {isMobile && <NavigationBurgerButton isOpen={navShow} setIsOpen={setNavShow} />}
                 </div>
-                <nav className="flex flex-col gap-[1.25vw] py-[1.25vw] ps-[1.67vw] pe-[2.1vw]">
+                <nav className="flex flex-col gap-[5vw] md:gap-[1.25vw] py-[1.25vw] ps-[5vw] pe-[6.3vw] md:ps-[1.67vw] md:pe-[2.1vw]">
                     {navConfig.map(
                         (
                             { name, href, icon, isActive, branches, collapsed },
@@ -414,7 +418,7 @@ export default function DashboardLayout({
                                     {branches ? (
                                         <>
                                             <GoalsButton
-                                                className="justify-center md:justify-between rounded-[.5vw] ps-[1vw] pe-[.5vw] md:py-[.5vw]"
+                                                className="justify-between md:justify-between rounded-[.5vw] ps-[4vw] md:ps-[1vw] pe-[2vw] md:pe-[.5vw] md:py-[.5vw]"
                                                 activeClassName={
                                                     isActive &&
                                                     "bg-white text-dark-indigo"
@@ -424,12 +428,12 @@ export default function DashboardLayout({
                                                 }
                                             >
                                                 {icon}{" "}
-                                                <span className="text-[.7vw]">
+                                                <span className="text-[2.8vw] md:text-[.7vw]">
                                                     {name.toUpperCase()}
                                                 </span>
                                                 {collapsed && (
                                                     <FaChevronDown
-                                                        className={`hidden md:inline-block duration-300 ${
+                                                        className={`inline-block duration-300 ${
                                                             navState[index] &&
                                                             "-rotate-180"
                                                         }`}
@@ -520,13 +524,26 @@ export default function DashboardLayout({
                 </nav>
             </aside>
             <div className="relative w-full h-screen overflow-hidden bg-[#F8F8FC]">
-                <header className="absolute z-50 top-0 w-full h-[5.8vw] flex justify-between items-center bg-gray-50 px-[4.2vw] pt-[2.5vw] pb-[1.75vw] border-b-1">
-                    <h1 className="font-poppins font-semibold text-[1.2vw]">
-                        {title}
-                    </h1>
+                <header className="absolute z-[100] top-0 w-full h-[22.4vw] md:h-[5.8vw] flex justify-between items-center bg-dark-indigo md:bg-gray-50 px-[4.2vw] pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw] border-b-1">
+                    {isMobile ? (
+                        <div className="flex gap-[4vw] md:gap-[1vw]">
+                            <NavigationBurgerButton isOpen={navShow} setIsOpen={setNavShow} />
+                            <Link href="/">
+                                <img
+                                    className="w-[36vw] md:w-[9vw]"
+                                    src={logo}
+                                    alt="Goals Academy"
+                                />
+                            </Link>
+                        </div>
+                    ) : (
+                        <h1 className="font-poppins font-normal md:font-semibold text-[4.8vw] md:text-[1.2vw] text-white md:text-dark">
+                            {title}
+                        </h1>
+                    )}
                     <div
                         id="tools"
-                        className="flex items-center gap-[.5vw] text-[1.5vw] text-gray-400"
+                        className="flex items-center gap-[2vw] md:gap-[.5vw] text-[6vw] md:text-[1.5vw] text-white md:text-gray-400"
                     >
                         <Notification auth={auth} data={notificationData} loadMore={getOldNotification} />
                         <Link
@@ -539,7 +556,7 @@ export default function DashboardLayout({
                         </Link>
                     </div>
                 </header>
-                <div className="w-full h-screen pt-[7.5vw] pb-[2vw] px-[4.2vw] overflow-y-auto scrollbar-hidden">
+                <div className="w-full h-screen pt-[22vw] md:pt-[7.5vw] md:pb-[2vw] md:px-[4.2vw] overflow-y-auto scrollbar-hidden">
                     {children}
                 </div>
             </div>
@@ -550,7 +567,7 @@ export default function DashboardLayout({
 function NavItem({ name, href, icon, isActive }) {
     return (
         <GoalsButton
-            className="rounded-[.5vw] p-[1vw] gap-[.75vw] md:justify-start"
+            className="rounded-[2vw] md:rounded-[.5vw] p-[4vw] md:p-[1vw] gap-[3vw] md:gap-[.75vw] !justify-start"
             activeClassName={isActive && "bg-white text-dark-indigo"}
             isLink={true}
             href={href}
@@ -560,6 +577,32 @@ function NavItem({ name, href, icon, isActive }) {
     );
 }
 
+const NavigationBurgerButton = ({ isOpen, setIsOpen }) => {
+    return (
+        <button
+            aria-label="navigation-button"
+            className="md:hidden space-y-1 relative py-1"
+            onClick={() => setIsOpen(!isOpen)}
+        >
+            <span
+                className={`block w-5 h-0.5 rounded-full bg-white transform transition-transform duration-200 ${
+                    isOpen ? "rotate-45 translate-y-1.5" : "rotate-0 top-0"
+                }`}
+            ></span>
+            <span
+                className={`block w-5 h-0.5 rounded-full bg-white transform transition-all duration-200 ${
+                    isOpen ? "opacity-0" : "opacity-100 top-2"
+                }`}
+            ></span>
+            <span
+                className={`block w-5 h-0.5 rounded-full bg-white transform transition-transform duration-200 ${
+                    isOpen ? "-rotate-45 -translate-y-1.5" : "rotate-0 top-4"
+                }`}
+            ></span>
+        </button>
+    );
+};
+
 function Notification ({ auth, data, loadMore }) {
     const [show, setShow] = useState(false);
 
@@ -567,12 +610,12 @@ function Notification ({ auth, data, loadMore }) {
 
     return (
         <div
-            className={`font-poppins flex md:justify-end cursor-pointer`}
+            className={`font-poppins flex md:justify-end cursor-pointer text-dark`}
             onMouseEnter={() => !isMobile && setShow(true)}
             onMouseLeave={() => !isMobile && setShow(false)}
         >
             <div className='relative'>
-                <FaRegBell className="fa-regular fa-bell text-[6vw] md:text-[1.5vw]" onClick={() => isMobile && setShow(!show) } />
+                <FaRegBell className="fa-regular fa-bell text-[6vw] md:text-[1.5vw] text-white md:text-gray-400" onClick={() => isMobile && setShow(!show) } />
                 <div
                     className={`${
                         data.new.length > 0 ? "" : "hidden"
@@ -586,19 +629,17 @@ function Notification ({ auth, data, loadMore }) {
                             <span className="font-poppins text-[5vw] md:text-[1.25vw]">
                                 Notifikasi
                             </span>
-                            <button>
-                                <Link
-                                    href="#"
-                                    className="font-normal text-[3.6vw] md:text-[.9vw] hover:text-secondary"
-                                >
-                                    Tandai sudah dibaca
-                                </Link>
-                            </button>
+                            <Link
+                                href="#"
+                                className="font-normal text-[3.6vw] md:text-[.9vw] hover:text-secondary"
+                            >
+                                Tandai sudah dibaca
+                            </Link>
                         </div>
                         <div>
                             {Number(data.new.length) + Number(data.old.length) ? (
                                 <>
-                                    {data.new.length && (
+                                    {data.new.length > 0 && (
                                         <>
                                             <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center text-[4vw] md:text-[1vw]">Baru</div>
                                             {data.new.map((item, index) => {
@@ -611,7 +652,7 @@ function Notification ({ auth, data, loadMore }) {
                                             })}
                                         </>
                                     )}
-                                    {data.old.length && (
+                                    {data.old.length > 0 && (
                                         <>
                                             <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center text-[4vw] md:text-[1vw]">Terdahulu</div>
                                             {data.old.map((item, index) => {
@@ -658,7 +699,7 @@ function Notification ({ auth, data, loadMore }) {
                             <div>
                                 {Number(data.new.length) + Number(data.old.length) ? (
                                     <>
-                                        {data.new.length && (
+                                        {data.new.length > 0 && (
                                             <>
                                                 <div className="px-[1.5vw] py-[.5vw] text-center text-[4vw] md:text-[1vw]">Baru</div>
                                                 {data.new.map((item, index) => {
@@ -671,7 +712,7 @@ function Notification ({ auth, data, loadMore }) {
                                                 })}
                                             </>
                                         )}
-                                        {data.old.length && (
+                                        {data.old.length > 0 && (
                                             <>
                                                 <div className="px-[1.5vw] py-[.5vw] text-center text-[4vw] md:text-[1vw]">Terdahulu</div>
                                                 {data.old.map((item, index) => {
