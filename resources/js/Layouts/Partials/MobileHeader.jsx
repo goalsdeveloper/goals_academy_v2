@@ -23,8 +23,9 @@ import {
 import { HiOutlineBuildingOffice } from "react-icons/hi2";
 import { BsPerson } from "react-icons/bs";
 import GoalsButton from "@/Components/elements/GoalsButton";
+import { Notification, NotificationItem } from "./MainHeader";
 
-const MobileHeader = ({ auth }) => {
+const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
     const [authDropdown, setAuthDropdown] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -70,41 +71,44 @@ const MobileHeader = ({ auth }) => {
                     </Link>
                 </div>
                 {auth.user && (
-                    <div
-                        className={`relative font-poppins flex justify-center cursor-pointer`}
-                        // onMouseEnter={() => setAuthDropdown(true)}
-                        // onMouseLeave={() => setAuthDropdown(false)}
-                        onClick={() => setAuthDropdown(!authDropdown)}
-                    >
-                        <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
-                            <img
-                                className="w-full h-full"
-                                src={profileImage}
-                                alt="User Profile"
-                            />
-                        </div>
-                        <TECollapse
-                            show={authDropdown}
-                            className="absolute z-10 shadow-none translate-y-2 right-0"
+                    <div className="flex gap-[2vw]">
+                        <Notification auth={auth} data={notificationData} loadMore={getOldNotification} />
+                        <div
+                            className={`relative font-poppins flex justify-center cursor-pointer`}
+                            // onMouseEnter={() => setAuthDropdown(true)}
+                            // onMouseLeave={() => setAuthDropdown(false)}
+                            onClick={() => setAuthDropdown(!authDropdown)}
                         >
-                            {/* profile navbar */}
-                            <TECollapseItem className="border-2 w-fit py-[1vw] text-start bg-white  rounded-xl">
-                                {links.map(({ href, icon, text }, index) => (
-                                    <Link
-                                        key={index}
-                                        className={`flex gap-2 py-[3.7vw] px-[7.4vw] items-center font-poppins hover:text-primary  ${
-                                            text == "Riwayat Transaksi"
-                                                ? "w-max"
-                                                : "w-full"
-                                        }`}
-                                        href={href}
-                                    >
-                                        {icon}
-                                        {text}
-                                    </Link>
-                                ))}
-                            </TECollapseItem>
-                        </TECollapse>
+                            <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
+                                <img
+                                    className="w-full h-full"
+                                    src={profileImage}
+                                    alt="User Profile"
+                                />
+                            </div>
+                            <TECollapse
+                                show={authDropdown}
+                                className="absolute z-10 shadow-none translate-y-2 right-0"
+                            >
+                                {/* profile navbar */}
+                                <TECollapseItem className="border-2 w-fit py-[1vw] text-start bg-white  rounded-xl">
+                                    {links.map(({ href, icon, text }, index) => (
+                                        <Link
+                                            key={index}
+                                            className={`flex gap-2 py-[3.7vw] px-[7.4vw] items-center font-poppins hover:text-primary  ${
+                                                text == "Riwayat Transaksi"
+                                                    ? "w-max"
+                                                    : "w-full"
+                                            }`}
+                                            href={href}
+                                        >
+                                            {icon}
+                                            {text}
+                                        </Link>
+                                    ))}
+                                </TECollapseItem>
+                            </TECollapse>
+                        </div>
                     </div>
                 )}
             </div>
