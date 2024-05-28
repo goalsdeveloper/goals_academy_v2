@@ -603,7 +603,7 @@ const NavigationBurgerButton = ({ isOpen, setIsOpen }) => {
     );
 };
 
-function Notification ({ auth, data, loadMore }) {
+function Notification ({ data, loadMore }) {
     const [show, setShow] = useState(false);
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
