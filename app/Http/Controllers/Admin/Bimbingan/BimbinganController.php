@@ -347,9 +347,9 @@ class BimbinganController extends Controller
                     if (!Storage::disk('public')->exists('product/bimbingan')) {
                         Storage::disk('public')->makeDirectory('product/bimbingan');
                     }
-                    $image = $validateData['product_image'];
-                    $fileName = 'bimbingan' . time() . '.' . $image->extension();
-                    $path = Storage::disk('public')->putFileAs('product/bimbingan/' . $fileName, $image);
+                    $image = $request->file('product_image');
+                    $fileName = 'bimbingan' . time() . '.' . $image->getClientOriginalExtension();
+                    $path = $image->storeAs('product/bimbingan', $fileName, 'public');
                     $validateData['product_image'] = $path;
                 }
 
@@ -394,7 +394,6 @@ class BimbinganController extends Controller
             // }
             $product->update($validateData);
             return redirect()->back();
-
         } catch (\Exception $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }

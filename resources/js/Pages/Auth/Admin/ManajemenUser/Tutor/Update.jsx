@@ -2,7 +2,7 @@ import DashboardLayout from "@/Layouts/DashboardLayout";
 import React from "react";
 import { useState } from "react";
 import { router, useForm } from "@inertiajs/react";
-import GoalsButton from "@/Components/GoalsButton";
+import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import {
     GoalsSelectMultipleInput,
@@ -39,9 +39,13 @@ export default function Update({ auth, data }) {
         linkedin_url: data.tutor.profile.linkedin_url
             ? data.tutor.profile.linkedin_url
             : "",
-        skills: data.tutor.skills.map(i => i.id),
-        soft_skills: data.tutor.skills.filter((i) => i.category == 'soft_skill'),
-        hard_skills: data.tutor.skills.filter((i) => i.category == 'hard_skill'),
+        skills: data.tutor.skills.map((i) => i.id),
+        soft_skills: data.tutor.skills.filter(
+            (i) => i.category == "soft_skill"
+        ),
+        hard_skills: data.tutor.skills.filter(
+            (i) => i.category == "hard_skill"
+        ),
     });
 
     const { data: temp, setData: setTemp } = useForm({
@@ -53,9 +57,13 @@ export default function Update({ auth, data }) {
         faculty: "",
         major: "",
         linkedin_url: "",
-        skills: data.tutor.skills.map(i => i.id),
-        soft_skills:  data.tutor.skills.filter((i) => i.category == 'soft_skill'),
-        hard_skills: data.tutor.skills.filter((i) => i.category == 'hard_skill'),
+        skills: data.tutor.skills.map((i) => i.id),
+        soft_skills: data.tutor.skills.filter(
+            (i) => i.category == "soft_skill"
+        ),
+        hard_skills: data.tutor.skills.filter(
+            (i) => i.category == "hard_skill"
+        ),
     });
 
     const [showForm, setShowForm] = useState({
@@ -69,7 +77,7 @@ export default function Update({ auth, data }) {
                 id: data.tutor.id,
             }),
             {
-                onFinish: () => toast.success("Profile Updated!")
+                onFinish: () => toast.success("Profile Updated!"),
             }
         );
     };
@@ -90,6 +98,7 @@ export default function Update({ auth, data }) {
                         <GoalsButton
                             className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[1vw] md:rounded-[.5vw]"
                             activeClassName="bg-transparent border-2 border-green-500 text-green-500 hover:border-green-600"
+                            variant="success-bordered"
                         >
                             Batal
                         </GoalsButton>
@@ -97,6 +106,16 @@ export default function Update({ auth, data }) {
                             className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[1vw] md:rounded-[.5vw]"
                             activeClassName="bg-green-500 border-2 border-green-500 text-white hover:bg-green-600 hover:border-green-600"
                             onClick={handleClick}
+                            variant="success"
+                            disabled={
+                                !formData.username ||
+                                !formData.name ||
+                                !formData.phone_number ||
+                                !formData.university ||
+                                !formData.faculty ||
+                                !formData.major ||
+                                !formData.soft_skills
+                            }
                         >
                             Simpan
                         </GoalsButton>
@@ -238,7 +257,13 @@ export default function Update({ auth, data }) {
                                         setFormData({
                                             ...formData,
                                             soft_skills: temp.soft_skills,
-                                            skills: temp.soft_skills.map(i => i.id).concat(formData.hard_skills.map(i => i.id))
+                                            skills: temp.soft_skills
+                                                .map((i) => i.id)
+                                                .concat(
+                                                    formData.hard_skills.map(
+                                                        (i) => i.id
+                                                    )
+                                                ),
                                         });
                                     }
                                 }}
@@ -344,7 +369,13 @@ export default function Update({ auth, data }) {
                                         setFormData({
                                             ...formData,
                                             hard_skills: temp.hard_skills,
-                                            skills: temp.hard_skills.map(i => i.id).concat(formData.soft_skills.map(i => i.id)),
+                                            skills: temp.hard_skills
+                                                .map((i) => i.id)
+                                                .concat(
+                                                    formData.soft_skills.map(
+                                                        (i) => i.id
+                                                    )
+                                                ),
                                         });
                                     }
                                 }}
@@ -409,13 +440,17 @@ const ProfileImage = ({ auth, setIsLoading }) => {
 
     const submitHandler = (image) => {
         setIsLoading(true);
-        router.post("/profile_image", { image: image }, {
-            onFinish: () => {
-                setIsLoading(false);
-                toast.success("Profile Picture Updated!");
+        router.post(
+            "/profile_image",
+            { image: image },
+            {
+                onFinish: () => {
+                    setIsLoading(false);
+                    toast.success("Profile Picture Updated!");
+                },
             }
-        });
-    }
+        );
+    };
 
     return (
         <div className="relative flex flex-shrink-0 flex-col gap-[.5vw] self-center h-fit">
