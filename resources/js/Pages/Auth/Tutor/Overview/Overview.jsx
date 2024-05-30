@@ -265,9 +265,9 @@ export default function Overview({
                                 <p className="">Welcome, {user.name} 👋</p>
                                 <p className="text-gray-400">{user.email}</p>
                             </div>
-                            <div className="md:absolute md:left-0 max-w-full md:bottom-[1vw] px-[5vw] md:px-[1.25vw]">
+                            <div className="md:absolute md:left-0 max-w-full md:bottom-[1vw] px-[5vw] md:px-[1.25vw] text-center">
                                 <p className="font-medium">Total Earning</p>
-                                <p className="font-bold text-[5vw] md:text-[1.25vw]">Rp {currency.format(totalEarning)}</p>
+                                <p className="font-bold text-[8vw] md:text-[1.25vw]">Rp {currency.format(totalEarning)}</p>
                             </div>
                         </Card>
                         <div className="w-50 md:w-[12.25vw] grid grid-cols-2 md:grid-rows-2 md:gap-[.94vw] text-[.83vw]">

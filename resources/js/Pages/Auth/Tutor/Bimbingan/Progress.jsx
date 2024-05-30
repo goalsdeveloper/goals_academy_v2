@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Link, router } from "@inertiajs/react";
+import { useMediaQuery } from "react-responsive";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import SubHeading from "../../Admin/components/SubHeading";
@@ -18,6 +19,8 @@ export default function Progress({ auth, bimbingan }) {
     const [keyword, setKeyword] = useState(
         new URLSearchParams(window.location.search).get("search")
     );
+
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
@@ -48,12 +51,12 @@ export default function Progress({ auth, bimbingan }) {
             {
                 accessorKey: "topic.topic",
                 header: "Topik",
-                size: 100,
+                size: isMobile ? 200 : 100,
             },
             {
                 accessorFn: (row) => moment(row.date + " " + row.time),
                 header: "Tanggal & Waktu Bimbingan",
-                size: 170,
+                size: isMobile ? 250 : 170,
                 Cell: ({ cell }) => {
                     return (
                         <div className="flex justify-between">
@@ -66,17 +69,17 @@ export default function Progress({ auth, bimbingan }) {
             {
                 accessorFn: (row) => moment(row.date + " " + row.time),
                 header: "Status",
-                size: 150,
+                size: isMobile ? 120 : 150,
                 Cell: ({ cell }) => {
                     if (moment().diff(cell.getValue(), "s") > 0) {
                         return !cell.row.original.is_moderator && cell.row.original.is_tutor ? (
-                            <div className="text-[.9vw] text-center">
+                            <div className="text-[3.6vw] md:text-[.9vw] text-center">
                                 <span className="bg-green-100 text-green-500 rounded">
                                     Menunggu Konfirmasi
                                 </span>
                             </div>
                         ) : (
-                            <div className="text-[.9vw] text-center">
+                            <div className="text-[3.6vw] md:text-[.9vw] text-center">
                                 <span className="bg-yellow-100 text-yellow-500 py-[.2vw] px-[1vw] rounded">
                                     On Progress
                                 </span>
@@ -84,7 +87,7 @@ export default function Progress({ auth, bimbingan }) {
                         );
                     } else {
                         return (
-                            <div className="text-[.9vw] text-center text-blue-500">
+                            <div className="text-[3.6vw] md:text-[.9vw] text-center text-blue-500">
                                 Upcoming
                             </div>
                         );
@@ -97,7 +100,7 @@ export default function Progress({ auth, bimbingan }) {
                 size: 10,
                 Cell: ({ cell }) => {
                     return (
-                        <ul className="flex gap-[.8vw] w-fit">
+                        <ul className="flex gap-[3.2vw] md:gap-[.8vw] w-fit">
                             <li>
                                 <Link
                                     method="PATCH"
@@ -118,7 +121,7 @@ export default function Progress({ auth, bimbingan }) {
                                 >
                                     <FiThumbsUp
                                         className={
-                                            "text-[1.2vw] " +
+                                            "text-[4.8vw] md:text-[1.2vw] " +
                                             (cell.row.original.is_tutor
                                                 ? "text-success"
                                                 : "text-secondary")
@@ -134,7 +137,7 @@ export default function Progress({ auth, bimbingan }) {
                                         cell.row.original.id
                                     )}
                                 >
-                                    <FiEdit2 className="text-[1.2vw] text-secondary" />
+                                    <FiEdit2 className="text-[4.8vw] md:text-[1.2vw] text-secondary" />
                                 </Link>
                             </li>
                             <li>
@@ -145,7 +148,7 @@ export default function Progress({ auth, bimbingan }) {
                                         cell.row.original.id
                                     )}
                                 >
-                                    <FiEye className="text-[1.2vw] text-neutral-60" />
+                                    <FiEye className="text-[4.8vw] md:text-[1.2vw] text-neutral-60" />
                                 </Link>
                             </li>
                         </ul>
@@ -164,15 +167,13 @@ export default function Progress({ auth, bimbingan }) {
             auth={auth}
         >
             {/* {isLoading && <LoadingUI />} */}
-            <SubHeading title="Progress" />
-            <br />
+            {!isMobile && <><SubHeading title="Progress" /><br /></>}
             <div className="text-[.8vw]">
                 <GoalsDashboardTable
                     columns={columns}
                     data={data}
                     isHeadVisible
                     isSortable
-                    isPaginated
                     keyword={keyword}
                     setKeyword={setKeyword}
                     onSearch={(i) => {

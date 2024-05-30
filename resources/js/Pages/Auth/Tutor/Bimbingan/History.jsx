@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "@inertiajs/react";
+import { useMediaQuery } from "react-responsive";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import SubHeading from "../../Admin/components/SubHeading";
@@ -9,7 +10,8 @@ import moment from "moment";
 export default function History ({ auth, history }) {
     // const [isLoading, setIsLoading] = useState(false);
     history = history.data;
-    console.log(history)
+
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     const columns = useMemo(
         () => [
@@ -26,7 +28,7 @@ export default function History ({ auth, history }) {
             {
                 accessorFn: (row) => moment(row.date+' '+row.time, 'DD/MM/YYYY HH:mm'),
                 header: "Tanggal & Waktu Bimbingan",
-                size: 170,
+                size: isMobile ? 250 : 170,
                 Cell: ({ cell }) => {
                     return (
                         <div className="flex justify-between">
@@ -47,10 +49,10 @@ export default function History ({ auth, history }) {
                 size: 10,
                 Cell: ({ cell }) => {
                     return (
-                        <ul className="flex gap-[.8vw] w-fit">
+                        <ul className="flex gap-[3.2vw] md:gap-[.8vw] w-fit">
                             <li>
                                 <Link method="GET" href={route('tutor.bimbingan.history.show', cell.getValue())}>
-                                    <FiEye className="text-[1.2vw] text-neutral-60" />
+                                    <FiEye className="text-[4.8vw] md:text-[1.2vw] text-neutral-60" />
                                 </Link>
                             </li>
                         </ul>
@@ -64,7 +66,7 @@ export default function History ({ auth, history }) {
     return (
         <DashboardLayout title="Bimbingan" subtitle="History" role="tutor" auth={auth}>
             {/* {isLoading && <LoadingUI />} */}
-            <SubHeading title="History" /><br />
+            {!isMobile && <><SubHeading title="History" /><br /></>}
             <div className="text-[.8vw]">
                 <GoalsDashboardTable
                     columns={columns}
