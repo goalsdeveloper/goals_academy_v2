@@ -10,7 +10,7 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
                 <p className={`mb-[2vw] md:mb-[.5vw] ${labelClassName}`}>{label}{required ? <span className="text-red-600">*</span> : <></>}</p>
             ) : (<></>)}
             <ExpandedButton
-                className={`rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] cursor-pointer ${
+                className={`rounded-[2vw] md:rounded-[.4vw] h-[12vw] md:h-[3vw] leading-[2vw] md:px-[1.5vw] cursor-pointer text-[3.7vw] md:text-base ${
                     data.length > 0 ? filledClassName : emptyClassName
                 } ${className}`}
                 textClassName={placeholderClassName}
@@ -33,7 +33,7 @@ function GoalsSelectMultipleInput ({ show, setShow, label="", placeholder="Pilih
                         </div>
                         <hr />
                         <div className="flex justify-end mt-[2vw] p-[2vw] md:mt-[.5vw] md:p-[.5vw]">
-                            <GoalsButton className={`w-[30%] rounded-[2vw] md:rounded-[.5vw] ${submitButtonClassName}`} onClick={() => {
+                            <GoalsButton className={`w-[100%] text-[3.6vw] rounded-[2vw] md:rounded-[.5vw] ${submitButtonClassName}`} onClick={() => {
                                 onSubmit()
                                 setShow(false)
                             }}>Simpan</GoalsButton>
