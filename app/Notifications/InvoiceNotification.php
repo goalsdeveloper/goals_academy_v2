@@ -66,6 +66,7 @@ class InvoiceNotification extends Notification
             'expiry_time' => $paymentMethod['expiry_time'],
             'order_id' => $this->order->order_code,
             'payment_method' => $paymentType,
+            'link' => route('purchase.status', ['order' => $this->order->order_code])
         ];
     }
 }

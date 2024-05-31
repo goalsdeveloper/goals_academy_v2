@@ -34,7 +34,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $this->getUserWithProfile($request),
-                'notifications' => $this->getUserNotification($request),
+                // 'notifications' => $this->getUserNotification($request),
             ],
             'message' => fn () => $request->session()->get('message'),
             'ziggy' => fn () => [
@@ -61,14 +61,14 @@ class HandleInertiaRequests extends Middleware
         return $user;
     }
 
-    protected function getUserNotification(Request $request)
-    {
-        $user = $request->user();
+    // protected function getUserNotification(Request $request)
+    // {
+    //     $user = $request->user();
 
-        if ($user) {
-            return $user->notifications;
-        }
+    //     if ($user) {
+    //         return $user->notifications;
+    //     }
 
-        return null;
-    }
+    //     return null;
+    // }
 }
