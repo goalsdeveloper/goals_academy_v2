@@ -98,11 +98,9 @@ const Dialog = ({
                                 onChange={(e) =>
                                     formData.target == "city"
                                         ? setFormData("city", e.target.value)
-                                        : setFormData(
-                                              "place",
-                                              e.target.value
-                                          )
+                                        : setFormData("place", e.target.value)
                                 }
+                                z
                                 disabled={showDialog.show}
                             />
                             {formData.target == "location" ? (
@@ -117,9 +115,9 @@ const Dialog = ({
                                     {cities.map((i) => (
                                         <GoalsSelectInputItem
                                             onClick={() => {
-                                                formData.city = i.city
-                                                formData.city_id = i.id
-                                                setFormData(formData)
+                                                formData.city = i.city;
+                                                formData.city_id = i.id;
+                                                setFormData(formData);
                                             }}
                                         >
                                             {i.city}
@@ -154,6 +152,12 @@ const Dialog = ({
                                     variant="success"
                                     type="submit"
                                     className="w-full h-full text-[1vw]"
+                                    disabled={
+                                        (formData.target == "city" &&
+                                            !formData.city) ||
+                                        (formData.target == "location" &&
+                                            (!formData.city || !formData.place))
+                                    }
                                 >
                                     {status}
                                 </GoalsButton>

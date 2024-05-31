@@ -45,7 +45,7 @@ export default function View({ auth, progress, tutors }) {
         session: progress.session ?? "",
         date: progress.date ?? "",
         time: progress.time ?? "",
-        location: progress.locationv ?? "",
+        location: progress.location ?? "",
         place: progress.place?.place ?? "",
         city: progress.place?.city.city ?? "",
         number: progress.user.profile.phone_number ?? "",
@@ -61,20 +61,49 @@ export default function View({ auth, progress, tutors }) {
     const GetLocationData = () => {
         switch (progress.products.contact_type) {
             case "online":
-                return <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={data.location} labelClassName="font-medium" />
+                return (
+                    <GoalsTextInput
+                        disabled
+                        label="Meeting URL"
+                        placeholder="Meeting URL"
+                        data={data.location}
+                        labelClassName="font-medium"
+                    />
+                );
             case "offline":
-                return <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${data.place} | ${data.city}`} labelClassName="font-medium" />
+                return (
+                    <GoalsTextInput
+                        disabled
+                        label="Meeting Location"
+                        placeholder="Meeting Location"
+                        data={`${data.place} | ${data.city}`}
+                        labelClassName="font-medium"
+                    />
+                );
             case "hybrid":
                 return (
                     <>
-                        <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={data.location} labelClassName="font-medium" />
-                        <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${data.place} | ${data.city}`} labelClassName="font-medium" />
+                        <GoalsTextInput
+                            disabled
+                            label="Meeting URL"
+                            placeholder="Meeting URL"
+                            data={data.location}
+                            labelClassName="font-medium"
+                        />
+                        <GoalsTextInput
+                            disabled
+                            label="Meeting Location"
+                            placeholder="Meeting Location"
+                            data={`${data.place} | ${data.city}`}
+                            labelClassName="font-medium"
+                        />
                     </>
-                )
+                );
             default:
-                return <></>
+                return <></>;
         }
-    }
+    };
+    console.log(progress);
 
     return (
         <DashboardLayout

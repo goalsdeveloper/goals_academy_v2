@@ -1,28 +1,47 @@
 import FileMediaItemBackdrop from "@/Components/fragments/FileMediaItemBackdrop";
 
+function getFieldData(data) {
+    let title = {};
+    let desc = {};
+
+    if (data.contact_type === "offline" || data.contact_type === "hybrid") {
+        title = {
+            ...title,
+            city: "Kota Pelaksanaan",
+            place: "Lokasi Pelaksanaan",
+        };
+        desc = {
+            ...desc,
+            city: data?.location?.city?.city ?? "Kota Belum Diatur",
+            place: data?.place?.place ?? "Lokasi Belum Diatur",
+        };
+    } else if (data.contact_type === "online") {
+        title = {
+            ...title,
+            link: "Link Meet",
+        };
+        desc = {
+            ...desc,
+            link: data?.location ?? "Link meet Belum Diatur",
+        };
+    }
+
+    return { title, desc };
+}
+
 const DetailSatuPertemuan = ({ data, className = "" }) => {
-    //TODO DATA BELUM LENGKAP
     const gapSize = 1;
     console.log(data);
 
     const form_field = {
         schedule: "Jadwal Pelaksanaan",
         time: "Jam Pelaksanaan",
-        city: "Kota Pelaksanaan",
-        place: "Lokasi Pelaksanaan",
+        topic: "Topik Bimbingan",
+        ...getFieldData(data).title,
         // add_on: "Add On",
         // document: "Lampiran Dokumen",
-        topic: "Topik Bimbingan",
     };
     const form_result = {
-        city: data?.location?.city?.city ?? "Kota Belum Diatur",
-        place: data?.location ?? "Lokasi Belum Diatur",
-        topic: data?.topic?.topic ?? "Topik Belum Diatur",
-        // add_on:
-        //     data?.add_ons?.map((item) => item["name"]).join(", ") != ""
-        //         ? data?.add_ons?.map((item) => item["name"]).join(", ")
-        //         : "Tidak Ada Add Ons",
-        // document: "Lampiran Dokumen",
         schedule:
             new Date(data?.date).toLocaleDateString("id-ID", {
                 year: "numeric",
@@ -31,6 +50,13 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                 weekday: "long",
             }) ?? "Jadwal Belum Diatur",
         time: data?.time ?? "Jam Belum Diatur",
+        topic: data?.topic?.topic ?? "Topik Belum Diatur",
+        ...getFieldData(data).desc,
+        // add_on:
+        //     data?.add_ons?.map((item) => item["name"]).join(", ") != ""
+        //         ? data?.add_ons?.map((item) => item["name"]).join(", ")
+        //         : "Tidak Ada Add Ons",
+        // document: "Lampiran Dokumen",
     };
 
     return (
@@ -123,5 +149,3 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
 };
 
 export default DetailSatuPertemuan;
-
-

@@ -28,7 +28,7 @@ const ProductItemCardLayout = ({
 }) => {
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
-    return isMobile & isLink ? (
+    return isMobile && isLink ? (
         <Link href={href}>
             <ContentLayout imageUrl={imageUrl} {...rest}>
                 {children}
@@ -51,7 +51,7 @@ const ProductItemCardHeader = ({ children, className }) => {
 
 const ProductItemCardContent = ({ children }) => {
     return (
-        <div className="flex w-full justify-between items-center">
+        <div className="flex items-center justify-between w-full">
             {/* Content */}
             {children}
         </div>

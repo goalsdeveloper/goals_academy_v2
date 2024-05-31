@@ -18,6 +18,7 @@ import { statusClassMap } from "../RiwayatTransaksi/components/TransactionStatus
 
 export default function Index({ auth, orderBimbingan }) {
     const [data, setData] = useState(orderBimbingan);
+    console.log(orderBimbingan)
 
     return (
         <UserLayout auth={auth} title="Bimbingan">
@@ -68,7 +69,7 @@ function BimbinganItem({ data }) {
             imageUrl={data.products.product_image}
             href={`/bimbingan/${data.order.order_code}`}
         >
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
                 <div className="space-y-[1.8vw] w-full">
                     <ProductItemCardHeader>
                         <GoalsBadge
@@ -98,7 +99,7 @@ function BimbinganItem({ data }) {
                             </p>
                         </div>
                         <Link
-                            href={`/bimbingan/${data.order_code}`}
+                            href={`/bimbingan/${data.order.order_code}`}
                             className="hidden md:block bg-secondary hover:bg-primary text-white font-medium text-[1vw] px-[2vw] py-[.8vw] rounded-[.4vw]"
                         >
                             Lihat Detail
