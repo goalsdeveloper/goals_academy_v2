@@ -70,7 +70,7 @@ class ProgressController extends Controller
 
     public function show(Course $progress)
     {
-        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic");
+        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic", 'products');
         // $files = FileUpload::where('course_id', $progress->parent_id)->get();
         $files = $progress->fileUploads;
         return Inertia::render('Auth/Tutor/Bimbingan/Progress/Show', [
@@ -81,7 +81,7 @@ class ProgressController extends Controller
 
     public function edit(Course $progress)
     {
-        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic");
+        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic", 'products');
         // $files = FileUpload::where('course_id', $progress->parent_id)->get();
         $files = $progress->fileUploads;
         return Inertia::render('Auth/Tutor/Bimbingan/Progress/Update', [
