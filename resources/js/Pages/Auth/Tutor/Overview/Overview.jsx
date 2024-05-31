@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useMediaQuery } from "react-responsive";
 import GoalsButton from "@/Components/GoalsButton";
 import logo from "/resources/img/icon/goals-5.svg";
 import DashboardLayout from "@/Layouts/DashboardLayout";
@@ -18,23 +19,21 @@ import { Doughnut } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
 import { FaRegCalendar, FaGlobe } from "react-icons/fa6";
 import { FiTrendingUp, FiLoader } from "react-icons/fi";
-import Datepicker from "react-tailwindcss-datepicker";
 import "@/script/momentCustomLocale";
-import { router } from "@inertiajs/react";
 import userIcon from "/resources/img/icon/user.png";
 
 export default function Overview({
     auth, product_types, total_bimbingan, history
 }) {
-    console.log(total_bimbingan)
-    console.log(history)
     const user = auth.user;
     const currency = Intl.NumberFormat("id-ID");
     const [isLoading, setIsLoading] = useState(false);
 
     const [monthlyEarning, setMonthlyEarning] = useState(123);
-    const [onProgressCourse, setonProgressCourse] = useState(123);
+    const [onProgressCourse, setOnProgressCourse] = useState(123);
     const [totalEarning, setTotalEarning] = useState(1112750000);
+
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     // Product Type
     const [productTypeLabels, setProductTypeLabels] = useState(['Dibimbing Online', 'Dibimbing Offline', 'Desk Review']);
@@ -140,7 +139,7 @@ export default function Overview({
             sx: {
                 fontFamily:
                     'Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-                fontSize: ".83vw",
+                fontSize: isMobile ? "3.32vw" : ".83vw",
                 fontWeight: "medium",
                 color: "#404040",
                 backgroundColor: "#F8F8FC",
@@ -151,10 +150,10 @@ export default function Overview({
             sx: {
                 fontFamily:
                     'Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-                fontSize: ".83vw",
+                fontSize: isMobile ? "3.32vw" : ".83vw",
                 fontWeight: "medium",
                 color: "#404040",
-                padding: ".5vw 1.2vw",
+                padding: isMobile ? "2vw 4.8vw" : ".5vw 1.2vw",
                 border: "none",
             },
         },
@@ -201,7 +200,7 @@ export default function Overview({
                 accessorKey: "total",
                 header: "Total",
                 size: 150,
-                Cell: ({ cell }) => <span className="text-green-500">+ Rp {currency.format(cell.getValue())},00</span>
+                Cell: ({ cell }) => <span className="text-green-500">+ Rp {currency.format(cell.getValue())}</span>
             },
         ],
         []
@@ -224,7 +223,7 @@ export default function Overview({
             sx: {
                 fontFamily:
                     'Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-                fontSize: ".83vw",
+                fontSize: isMobile ? "3.32vw" : ".83vw",
                 fontWeight: "medium",
                 color: "#404040",
                 backgroundColor: "#F8F8FC",
@@ -235,10 +234,10 @@ export default function Overview({
             sx: {
                 fontFamily:
                     'Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-                fontSize: ".83vw",
+                fontSize: isMobile ? "3.32vw" : ".83vw",
                 fontWeight: "medium",
                 color: "#404040",
-                padding: ".5vw 1.2vw",
+                padding: isMobile ? "2vw 4.8vw" : ".5vw 1.2vw",
                 border: "none",
             },
         },
@@ -251,19 +250,27 @@ export default function Overview({
         <DashboardLayout title="Overview" role="tutor" auth={auth}>
             <div className="relative">
                 {isLoading && <LoadingUI />}
-                {/* <div className="flex justify-end mb-[2vw]">
-                    <DateRangePicker
-                        value={dateRange}
-                        onChange={dateRangeHandler}
-                    />
-                </div> */}
-                <div className="relative flex flex-col gap-[.73vw]">
-                    <div className="flex justify-between">
-                        <ProductTypeChart
-                            options={productTypeOptions}
-                            data={productTypeDataset}
-                        />
-                        <div className="w-[12.25vw] grid grid-rows-2 gap-[.94vw] text-[.83vw]">
+                {isMobile ? (
+                    <div className="relative flex flex-col">
+                        <Card className="relative w-full md:w-[12.5vw] md:h-[15.53vw] text-[2.92vw] md:text-[.73vw] font-poppins py-[0vw] px-[0vw] overflow-hidden">
+                            <div className="absolute top-0 left-0 w-full h-[20.84vw] md:h-[5.21vw] bg-[#5A6ACF]"></div>
+                            <div className="flex justify-center py-[4vw] md:py-[1vw]">
+                                <img
+                                    className="relative bg-white w-[22vw] h-[22vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread z-50 p-[.8vw] md:p-[.2vw]"
+                                    src={user.profile.profile_image ? user.profile.profile_image : userIcon}
+                                    alt="User"
+                                />
+                            </div>
+                            <div className="text-center mb-[4vw]">
+                                <p className="">Welcome, {user.name} 👋</p>
+                                <p className="text-gray-400">{user.email}</p>
+                            </div>
+                            <div className="md:absolute md:left-0 max-w-full md:bottom-[1vw] px-[5vw] md:px-[1.25vw] text-center">
+                                <p className="font-medium">Total Earning</p>
+                                <p className="font-bold text-[8vw] md:text-[1.25vw]">Rp {currency.format(totalEarning)}</p>
+                            </div>
+                        </Card>
+                        <div className="w-50 md:w-[12.25vw] grid grid-cols-2 md:grid-rows-2 md:gap-[.94vw] text-[.83vw]">
                             <InfoCard
                                 title="Monthly Earning (IDR)"
                                 data={currency.format(monthlyEarning)}
@@ -275,34 +282,65 @@ export default function Overview({
                                 data={onProgressCourse}
                                 percentage={5.6}
                                 grow={12}
-                                icon={<FaGlobe className="text-[1vw]" />}
+                                icon={<FaGlobe className="text-[4vw] md:text-[1vw]" />}
                             />
                         </div>
-                        <EarningTable options={earningTableOptions} />
-                        <Card className="relative w-[12.5vw] h-[15.53vw] text-[.73vw] font-poppins py-[0vw] px-[0vw] overflow-hidden">
-                            <div className="absolute top-0 left-0 w-full h-[5.21vw] bg-[#5A6ACF]"></div>
-                            <div className="flex justify-center py-[1vw]">
-                                <img
-                                    className="relative bg-white w-[16vw] h-[16vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread z-50 p-[.2vw]"
-                                    src={user.profile.profile_image ? user.profile.profile_image : userIcon}
-                                    alt="User"
-                                />
-                            </div>
-                            <div className="text-center">
-                                <p className="">Welcome, {user.name} 👋</p>
-                                <p className="text-gray-400">{user.email}</p>
-                            </div>
-                            <div className="absolute left-0 max-w-full bottom-[1vw] px-[1.25vw]">
-                                <p className="font-medium">Total Earning</p>
-                                <p className="font-bold text-[1.25vw]">Rp {currency.format(totalEarning)}</p>
-                            </div>
-                        </Card>
-                    </div>
-                    <div className="flex justify-between text-[.83vw]">
                         <HistoryTable options={historyTableOptions} />
+                        <ProductTypeChart
+                            options={productTypeOptions}
+                            data={productTypeDataset}
+                        />
+                        <EarningTable options={earningTableOptions} />
                         <TotalBimbinganInfo data={totalBimbinganData} />
                     </div>
-                </div>
+                ) : (
+                    <div className="relative flex flex-col gap-[2.92vw] md:gap-[.73vw]">
+                        <div className="flex justify-between">
+                            <ProductTypeChart
+                                options={productTypeOptions}
+                                data={productTypeDataset}
+                            />
+                            <div className="w-[12.25vw] grid grid-rows-2 gap-[3.76vw] md:gap-[.94vw] text-[3.32vw] md:text-[.83vw]">
+                                <InfoCard
+                                    title="Monthly Earning (IDR)"
+                                    data={currency.format(monthlyEarning)}
+                                    percentage={5.6}
+                                    grow={12}
+                                />
+                                <InfoCard
+                                    title="On Progress"
+                                    data={onProgressCourse}
+                                    percentage={5.6}
+                                    grow={12}
+                                    icon={<FaGlobe className="text-[4vw] md:text-[1vw]" />}
+                                />
+                            </div>
+                            <EarningTable options={earningTableOptions} />
+                            <Card className="relative w-[12.5vw] h-[15.53vw] text-[.73vw] font-poppins py-[0vw] px-[0vw] overflow-hidden">
+                                <div className="absolute top-0 left-0 w-full h-[5.21vw] bg-[#5A6ACF]"></div>
+                                <div className="flex justify-center py-[4vw] md:py-[1vw]">
+                                    <img
+                                        className="relative bg-white w-[16vw] h-[16vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread z-50 p-[.8vw] md:p-[.2vw]"
+                                        src={user.profile.profile_image ? user.profile.profile_image : userIcon}
+                                        alt="User"
+                                    />
+                                </div>
+                                <div className="text-center">
+                                    <p className="">Welcome, {user.name} 👋</p>
+                                    <p className="text-gray-400">{user.email}</p>
+                                </div>
+                                <div className="absolute left-0 max-w-full bottom-[4vw] md:bottom-[1vw] px-[5vw] md:px-[1.25vw]">
+                                    <p className="font-medium">Total Earning</p>
+                                    <p className="font-bold text-[1.25vw]">Rp {currency.format(totalEarning)}</p>
+                                </div>
+                            </Card>
+                        </div>
+                        <div className="flex justify-between text-[3.32vw] md:text-[.83vw]">
+                            <HistoryTable options={historyTableOptions} />
+                            <TotalBimbinganInfo data={totalBimbinganData} />
+                        </div>
+                    </div>
+                )}
             </div>
         </DashboardLayout>
     );
@@ -310,7 +348,7 @@ export default function Overview({
 
 function ProductTypeChart({ options, data }) {
     return (
-        <Card className="relative w-[21.2vw] h-[15.53vw]">
+        <Card className="relative w-full h-[73.25vw] md:w-[21.2vw] md:h-[15.53vw]">
             <Doughnut options={options} data={data} className="cursor-pointer" />
         </Card>
     );
@@ -318,13 +356,13 @@ function ProductTypeChart({ options, data }) {
 
 function EarningTable({ options }) {
     return (
-        <Card className="w-[28vw] h-[15.53vw] space-y-[1.5vw]">
+        <Card className="w-full h-fit md:w-[28vw] md:h-[15.53vw] space-y-[6vw] md:space-y-[1.5vw]">
             <div className="flex items-center justify-between">
-                <h4 className="font-sans font-medium text-[1vw]">
+                <h4 className="font-sans font-medium text-[4vw] md:text-[1vw]">
                     Earning
                 </h4>
                 <div>
-                    <FiLoader className="text-[1.25vw]" />
+                    <FiLoader className="text-[5vw] md:text-[1.25vw]" />
                 </div>
             </div>
             <MaterialReactTable table={options} />
@@ -334,13 +372,13 @@ function EarningTable({ options }) {
 
 function HistoryTable({ options }) {
     return (
-        <Card className="w-[52.4vw] space-y-[1.5vw]">
+        <Card className="w-full md:w-[52.4vw] space-y-[6vw] md:space-y-[1.5vw]">
             <div className="flex items-center justify-between">
-                <h4 className="font-sans font-medium text-[1vw]">
+                <h4 className="font-sans font-medium text-[4vw] md:text-[1vw]">
                     History
                 </h4>
                 <div>
-                    <FiLoader className="text-[1.25vw]" />
+                    <FiLoader className="text-[5vw] md:text-[1.25vw]" />
                 </div>
             </div>
             <MaterialReactTable table={options} />
@@ -350,24 +388,24 @@ function HistoryTable({ options }) {
 
 function TotalBimbinganInfo({ data }) {
     return (
-        <Card className="w-[23vw] space-y-[1.5vw]">
+        <Card className="w-full md:w-[23vw] space-y-[6vw] md:space-y-[1.5vw] pb-[8vw]">
             <div className="flex items-center justify-between">
-                <h4 className="font-sans font-medium text-[1vw]">
+                <h4 className="font-sans font-medium text-[4vw] md:text-[1vw]">
                     Total Bimbingan
                 </h4>
             </div>
-            <div className="grid gap-[1.5vw]">
+            <div className="grid gap-[6vw] md:gap-[1.5vw]">
                 {data.map(({ name, order_count }, index) => {
                     const highestCount = Math.max(
                         ...data.map((i) => i.order_count)
                     );
                     return (
-                        <div key={index} className="space-y-[.5vw]">
+                        <div key={index} className="space-y-[2vw] md:space-y-[.5vw]">
                             <div className="flex items-center justify-between">
                                 <span>{name}</span>
                                 <span>{order_count}</span>
                             </div>
-                            <div className="w-full h-[.6vw] bg-green-100 rounded-full overflow-hidden">
+                            <div className="w-full h-[2.4vw] md:h-[.6vw] bg-green-100 rounded-full overflow-hidden">
                                 <div
                                     style={{
                                         width:
@@ -389,13 +427,13 @@ function InfoCard({ title, data, percentage, grow, icon }) {
     return (
         <Card className="flex justify-between">
             <div className="h-full flex flex-col justify-between">
-                <p className="font-sans font-medium">{title}</p>
+                <p className="font-sans font-medium text-[3.32vw] md:text-[.83vw]">{title}</p>
                 <div>
-                    <p className="font-poppins font-bold text-[1.25vw]">
+                    <p className="font-poppins font-bold text-[5vw] md:text-[1.25vw]">
                         {data}
                     </p>
-                    <div className="flex items-center gap-[.25vw] text-[.625vw] text-green-500">
-                        <FiTrendingUp className="text-[1vw]" />
+                    <div className="flex items-center gap-[1vw] md:gap-[.25vw] text-[2.5vw] md:text-[.625vw] text-green-500">
+                        <FiTrendingUp className="text-[4vw] md:text-[1vw]" />
                         <span>{percentage}%</span>
                         <span className="text-light-grey">
                             {grow >= 0 ? "+" : "-"}
@@ -405,7 +443,7 @@ function InfoCard({ title, data, percentage, grow, icon }) {
                 </div>
             </div>
             {icon && (
-                <div className="w-[2.6vw] h-[2.6vw] rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
+                <div className="w-[10.4vw] h-[10.4vw] md:w-[2.6vw] md:h-[2.6vw] rounded-[2.5vw] md:rounded-[.625vw] flex items-center justify-center bg-dark-indigo text-white">
                     {icon}
                 </div>
             )}
@@ -413,33 +451,11 @@ function InfoCard({ title, data, percentage, grow, icon }) {
     );
 }
 
-function DateRangePicker({ value, onChange }) {
-    return (
-        <GoalsButton
-            variant="default"
-            className="relative w-[8.35vw] h-[2.1vw] md:px-[.1vw] md:py-[0vw] flex justify-center items-center gap-[.4vw] md:text-[.7vw] border-1 rounded-[.4vw]"
-            activeClassName=""
-        >
-            <Datepicker
-                value={value}
-                onChange={onChange}
-                showShortcuts={true}
-                primaryColor="indigo"
-                inputClassName="w-full bg-transparent border-transparent text-transparent placeholder:text-transparent focus:ring-0 focus:border-0 rounded-[.4vw] text-[.83vw] p-[.5vw] leading-tight cursor-pointer"
-                containerClassName="absolute"
-                toggleClassName="hidden"
-                popoverDirection="down"
-            />
-            <FaRegCalendar className="text-[1vw]" /> Select Date
-        </GoalsButton>
-    );
-}
-
 function Card({ className, ...props }) {
     return (
         <div
             {...props}
-            className={`bg-white shadow-bottom-right rounded-[.625vw] py-[1.25vw] px-[1.67vw] ${className}`}
+            className={`bg-white md:shadow-bottom-right md:rounded-[.625vw] py-[5vw] px-[6.68vw] md:py-[1.25vw] md:px-[1.67vw] border-1 md:border-0 ${className}`}
         ></div>
     );
 }

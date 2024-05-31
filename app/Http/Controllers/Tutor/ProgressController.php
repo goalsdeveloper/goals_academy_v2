@@ -28,24 +28,45 @@ class ProgressController extends Controller
                 $user = Auth::user();
                 $perPage = (int)$request->input('perPage', 10);
                 $search = $request->search;
-                $tutor = $user->tutor()->where('is_moderator', false)->where('ongoing', '!=', CourseStatusEnum::SUCCESS)
-                ->when($search, function ($q) use ($search) {
-                    $q->where(function ($q) use ($search) {
+
+                $query = $user->tutor()
+                    ->where('is_moderator', false)
+                    ->where('ongoing', '!=', CourseStatusEnum::SUCCESS);
+
+                $query->where(function ($q) {
+                    $q->whereNotNull('date')
+                        ->whereNotNull('time');
+                });
+
+
+                $query->orWhereHas('products', function ($q) {
+                    $q->where('contact_type', 'other');
+                });
+
+                if ($search) {
+                    $query->where(function ($q) use ($search) {
                         $q->where('time', 'LIKE', '%' . $search . '%')
                             ->orWhere('ongoing', 'LIKE', '%' . $search . '%')
                             ->orWhere('date', 'LIKE', '%' . $search . '%')
                             ->orWhereHas('user', function ($q) use ($search) {
                                 $q->where('username', 'LIKE', '%' . $search . '%');
                             })->orWhereHas('topic', function ($q) use ($search) {
-                            $q->where('topic', 'LIKE', '%' . $search . '%');
-                        });
+                                $q->where('topic', 'LIKE', '%' . $search . '%');
+                            });
                     });
-                })->with('topic:id,topic', 'user:id,username', 'products:id,name')->paginate($perPage);
-                // dd($tutor);
+                }
+
+                // Load related models
+                $query->with('topic:id,topic', 'user:id,username', 'products:id,name');
+
+                // Paginate results
+                $tutor = $query->paginate($perPage);
+
                 return $tutor;
             },
         ]);
     }
+
 
     public function tutorApprove(Course $progress)
     {
@@ -70,7 +91,7 @@ class ProgressController extends Controller
 
     public function show(Course $progress)
     {
-        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic");
+        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic", 'products');
         // $files = FileUpload::where('course_id', $progress->parent_id)->get();
         $files = $progress->fileUploads;
         return Inertia::render('Auth/Tutor/Bimbingan/Progress/Show', [
@@ -81,7 +102,7 @@ class ProgressController extends Controller
 
     public function edit(Course $progress)
     {
-        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic");
+        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic", 'products');
         // $files = FileUpload::where('course_id', $progress->parent_id)->get();
         $files = $progress->fileUploads;
         return Inertia::render('Auth/Tutor/Bimbingan/Progress/Update', [

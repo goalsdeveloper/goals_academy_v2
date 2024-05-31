@@ -60,10 +60,23 @@ export default function Edit({ auth, progress, tutors, places }) {
     const GetLocationForm = () => {
         switch (progress.products?.contact_type) {
             case "online":
-                return <GoalsTextInput label="Meeting URL" placeholder="Meeting URL" data={data.location} setData={(i) => setData("location", i)} required />
+                return (
+                    <GoalsTextInput
+                        label="Meeting URL"
+                        placeholder="Meeting URL"
+                        data={data.location}
+                        setData={(i) => setData("location", i)}
+                        required
+                    />
+                );
             case "offline":
                 return (
-                    <SelectInput label="Meeting Location" placeholder="Meeting Location" value={data.place} required>
+                    <SelectInput
+                        label="Meeting Location"
+                        placeholder="Meeting Location"
+                        value={data.place}
+                        required
+                    >
                         {places.map((option, i) => (
                             <SelectInputItem
                                 key={i}
@@ -79,13 +92,23 @@ export default function Edit({ auth, progress, tutors, places }) {
                             </SelectInputItem>
                         ))}
                     </SelectInput>
-                )
+                );
             case "hybrid":
                 return (
                     <>
-                        <GoalsTextInput label="Meeting URL" placeholder="Meeting URL" data={data.location} setData={(i) => setData("location", i)} />
-                        <SelectInput label="Meeting Location" placeholder="Meeting Location" value={data.place} labelClassName="font-medium">
-                        {places.map((option, i) => (
+                        <GoalsTextInput
+                            label="Meeting URL"
+                            placeholder="Meeting URL"
+                            data={data.location}
+                            setData={(i) => setData("location", i)}
+                        />
+                        <SelectInput
+                            label="Meeting Location"
+                            placeholder="Meeting Location"
+                            value={data.place}
+                            labelClassName="font-medium"
+                        >
+                            {places.map((option, i) => (
                                 <SelectInputItem
                                     key={i}
                                     onClick={() =>
@@ -101,11 +124,11 @@ export default function Edit({ auth, progress, tutors, places }) {
                             ))}
                         </SelectInput>
                     </>
-                )
+                );
             default:
-                return <></>
+                return <></>;
         }
-    }
+    };
 
     return (
         <DashboardLayout
@@ -152,6 +175,58 @@ export default function Edit({ auth, progress, tutors, places }) {
                         <GoalsButton
                             variant="success"
                             size="sm"
+                            disabled={
+                                (progress.products?.total_meet === 1 &&
+                                    progress.products?.contact_type ===
+                                        "online" &&
+                                    (!data.tutor_id ||
+                                        !data.location ||
+                                        !data.date ||
+                                        !data.time)) ||
+                                (progress.products?.total_meet === 1 &&
+                                    progress.products?.contact_type ===
+                                        "offline" &&
+                                    (!data.tutor_id ||
+                                        !data.place_id ||
+                                        !data.date ||
+                                        !data.time)) ||
+                                (progress.products?.total_meet === 1 &&
+                                    progress.products?.contact_type ===
+                                        "hybrid" &&
+                                    (!data.tutor_id ||
+                                        (!data.place_id && !data.location) ||
+                                        !data.date ||
+                                        !data.time)) ||
+                                (progress.products?.total_meet === 1 &&
+                                    progress.products?.contact_type ===
+                                        "other" &&
+                                    !data.tutor_id) ||
+                                (progress.products?.total_meet > 1 &&
+                                    progress.products?.contact_type ===
+                                        "online" &&
+                                    (!data.tutor_id ||
+                                        !data.location ||
+                                        !data.date ||
+                                        !data.time)) ||
+                                (progress.products?.total_meet > 1 &&
+                                    progress.products?.contact_type ===
+                                        "offline" &&
+                                    (!data.tutor_id ||
+                                        !data.place_id ||
+                                        !data.date ||
+                                        !data.time)) ||
+                                (progress.products?.total_meet > 1 &&
+                                    progress.products?.contact_type ===
+                                        "hybrid" &&
+                                    (!data.tutor_id ||
+                                        (!data.place_id && !data.location) ||
+                                        !data.date ||
+                                        !data.time)) ||
+                                (progress.products?.total_meet > 1 &&
+                                    progress.products?.contact_type ===
+                                        "other" &&
+                                    !data.tutor_id)
+                            }
                             onClick={() => {
                                 transform((data) => ({
                                     _method: "put",
@@ -161,6 +236,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                     date: data.date,
                                     time: data.time,
                                     location: data.location,
+                                    place_id: data.place_id,
                                 }));
 
                                 post(

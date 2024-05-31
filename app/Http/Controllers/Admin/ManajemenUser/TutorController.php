@@ -42,12 +42,12 @@ class TutorController extends Controller
                     if ($search) {
                         $query->where(function ($subquery) use ($search) {
                             $subquery->where('name', 'LIKE', "%$search%")
-                            ->orWhere('username', 'LIKE', "%$search%")
-                            ->orWhere('email', 'LIKE', "%$search%")
-                            ->orWhereHas('profile', function ($profileQuery) use ($search) {
-                                $profileQuery->where('phone_number', 'LIKE', "%$search%")
-                                    ->orWhere('university', 'LIKE', "%$search%");
-                            });
+                                ->orWhere('username', 'LIKE', "%$search%")
+                                ->orWhere('email', 'LIKE', "%$search%")
+                                ->orWhereHas('profile', function ($profileQuery) use ($search) {
+                                    $profileQuery->where('phone_number', 'LIKE', "%$search%")
+                                        ->orWhere('university', 'LIKE', "%$search%");
+                                });
                         });
                     }
                     $tutors = $query->paginate($perPage);
@@ -94,7 +94,6 @@ class TutorController extends Controller
             $userProfile->user_id = $user->id;
             $userProfile->save();
             return Inertia::location(route('admin.manajemen_user.tutor.index'));
-
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
@@ -125,7 +124,6 @@ class TutorController extends Controller
                 'message' => 'get data success',
                 'data' => $tutorWithProfile,
             ], 200);
-
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'User not found'], 404);
         } catch (\Exception $e) {
@@ -148,7 +146,6 @@ class TutorController extends Controller
                 'skill' => $skill,
             ],
         ]);
-
     }
 
     /**
@@ -165,7 +162,7 @@ class TutorController extends Controller
                 'university' => 'string',
                 'faculty' => 'string',
                 'major' => 'string',
-                'linkedin_url' => 'string',
+                'linkedin_url' => 'nullable|string',
                 'skills' => 'array',
                 'skills.*' => 'exists:skills,id',
                 'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -188,7 +185,6 @@ class TutorController extends Controller
             $tutor->skills()->attach($validatedData['skills']);
 
             return redirect()->route('admin.manajemen_user.tutor.index');
-
         } catch (ValidationException $e) {
             return response()->json(['status' => false, 'statusCode' => 422, 'message' => $e->validator->errors()], 422);
         } catch (\Exception $e) {

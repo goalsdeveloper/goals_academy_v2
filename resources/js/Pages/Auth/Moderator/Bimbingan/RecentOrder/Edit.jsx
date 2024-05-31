@@ -29,7 +29,7 @@ export default function Edit({
         patch,
     } = useForm({
         id: "",
-        place:`${order?.course?.place?.place} | ${order?.course?.place?.city.city}`,
+        place: `${order?.course?.place?.place} | ${order?.course?.place?.city.city}`,
         place_id: order?.course?.place?.id,
         location: order?.courser?.location,
         tutor: order?.course?.tutor?.name,
@@ -43,10 +43,25 @@ export default function Edit({
         if (order.products?.total_meet == 1) {
             switch (order.products?.contact_type) {
                 case "online":
-                    return <GoalsTextInput label="Meeting URL" placeholder="Meeting URL" data={formData.location} setData={(i) => setFormData("location", i)} labelClassName="font-medium" required />
+                    return (
+                        <GoalsTextInput
+                            label="Meeting URL"
+                            placeholder="Meeting URL"
+                            data={formData.location}
+                            setData={(i) => setFormData("location", i)}
+                            labelClassName="font-medium"
+                            required
+                        />
+                    );
                 case "offline":
                     return (
-                        <SelectInput label="Meeting Location" placeholder="Meeting Location" value={formData.place} labelClassName="font-medium" required>
+                        <SelectInput
+                            label="Meeting Location"
+                            placeholder="Meeting Location"
+                            value={formData.place}
+                            labelClassName="font-medium"
+                            required
+                        >
                             {places.map((option, i) => (
                                 <SelectInputItem
                                     key={i}
@@ -62,13 +77,24 @@ export default function Edit({
                                 </SelectInputItem>
                             ))}
                         </SelectInput>
-                    )
+                    );
                 case "hybrid":
                     return (
                         <>
-                            <GoalsTextInput label="Meeting URL" placeholder="Meeting URL" data={formData.location} setData={(i) => setFormData("location", i)} labelClassName="font-medium" />
-                            <SelectInput label="Meeting Location" placeholder="Meeting Location" value={formData.place} labelClassName="font-medium">
-                            {places.map((option, i) => (
+                            <GoalsTextInput
+                                label="Meeting URL"
+                                placeholder="Meeting URL"
+                                data={formData.location}
+                                setData={(i) => setFormData("location", i)}
+                                labelClassName="font-medium"
+                            />
+                            <SelectInput
+                                label="Meeting Location"
+                                placeholder="Meeting Location"
+                                value={formData.place}
+                                labelClassName="font-medium"
+                            >
+                                {places.map((option, i) => (
                                     <SelectInputItem
                                         key={i}
                                         onClick={() =>
@@ -84,13 +110,13 @@ export default function Edit({
                                 ))}
                             </SelectInput>
                         </>
-                    )
+                    );
                 default:
-                    return <></>
+                    return <></>;
             }
         }
-    }
-    
+    };
+
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -118,6 +144,33 @@ export default function Edit({
                         <GoalsButton
                             variant="success"
                             size="sm"
+                            disabled={
+                                (order.products?.total_meet === 1 &&
+                                    order.products?.contact_type === "online" &&
+                                    (!formData.tutor_id ||
+                                        !formData.location ||
+                                        !formData.date ||
+                                        !formData.time)) ||
+                                (order.products?.total_meet === 1 &&
+                                    order.products?.contact_type ===
+                                        "offline" &&
+                                    (!formData.tutor_id ||
+                                        !formData.place_id ||
+                                        !formData.date ||
+                                        !formData.time)) ||
+                                (order.products?.total_meet === 1 &&
+                                    order.products?.contact_type === "hybrid" &&
+                                    (!formData.tutor_id ||
+                                        (!formData.place_id &&
+                                            !formData.location) ||
+                                        !formData.date ||
+                                        !formData.time)) ||
+                                (order.products?.total_meet === 1 &&
+                                    order.products?.contact_type === "other" &&
+                                    !formData.tutor_id) ||
+                                (order.products?.total_meet > 1 &&
+                                    !formData.tutor_id)
+                            }
                             onClick={() =>
                                 patch(
                                     route("moderator.bimbingan.order.update", {
@@ -176,8 +229,7 @@ export default function Edit({
                             />
                             <a
                                 href={`wa.me/${
-                                    order.user.profile.phone_number ??
-                                    ""
+                                    order.user.profile.phone_number ?? ""
                                 }`}
                                 target="_blank"
                             >
@@ -241,7 +293,10 @@ export default function Edit({
                         <GoalsTextInput
                             label="Topic"
                             disabled
-                            data={order.course?.topic?.topic ?? "Topic belum diset"}
+                            data={
+                                order.course?.topic?.topic ??
+                                "Topic belum diset"
+                            }
                         />
                         {order.products.total_meet == 1 && (
                             <>

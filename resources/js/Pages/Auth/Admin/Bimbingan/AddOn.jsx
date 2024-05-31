@@ -27,12 +27,9 @@ export default function AddOn({ auth, addons }) {
     }, [current_page]);
 
     const onSearchCallback = (search) => {
-        router.visit(
-            route("admin.bimbingan.addon.index", { search: search }),
-            {
-                only: ["addons"],
-            }
-        );
+        router.visit(route("admin.bimbingan.addon.index", { search: search }), {
+            only: ["addons"],
+        });
     };
     const [showDialog, setShowDialog] = useState({
         create: false,
@@ -53,20 +50,12 @@ export default function AddOn({ auth, addons }) {
 
     const callback = (method) => {
         router.visit(route("admin.bimbingan.addon.index"), {
-            only: ["data"],
+            only: ["addons"],
             onSuccess: () => {
-                if (method == "create") {
-                    toast.success("Create Success!");
-                } else if (method == "edit") {
-                    toast.success("Edit Success!");
-                } else {
-                    toast.success("Delete Success!");
-                }
-            },
+                toast.success(`Add-On berhasil di ${method.charAt(0).toUpperCase() + method.slice(1)}`);
+            }
         });
     };
-
-    console.log(addons);
 
     const columns = useMemo(
         () => [
@@ -125,7 +114,8 @@ export default function AddOn({ auth, addons }) {
                                                 !cell.row.original.is_visible,
                                         },
                                         {
-                                            onSuccess: () => callback("edit"),
+                                            onSuccess: () =>
+                                                callback('edit')
                                         }
                                     );
                                 }}
@@ -135,7 +125,7 @@ export default function AddOn({ auth, addons }) {
                 ),
             },
         ],
-        []
+        [addons]
     );
 
     return (
@@ -182,7 +172,6 @@ export default function AddOn({ auth, addons }) {
                     data={data}
                     isHeadVisible
                     isSortable
-                    isPaginated
                     keyword={keyword}
                     setKeyword={setKeyword}
                     onSearch={(i) => {

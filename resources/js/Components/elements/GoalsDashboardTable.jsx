@@ -64,7 +64,7 @@ const GoalsDashboardTable = ({
         >
             <GoalsTextInput
                 placeholder="🔍 Search"
-                className="max-w-[10.4vw] max-h-[2.4vw]"
+                className=" md:max-w-[10.4vw] md:max-h-[2.4vw]"
                 data={keyword}
                 setData={(i)=> {
                     setKeyword(i)

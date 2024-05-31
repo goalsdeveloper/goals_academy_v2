@@ -30,9 +30,14 @@ export default function Produk({
     dataDibimbing,
     ebookData,
     webinarData,
+    categories,
 }) {
     const dataBimbingan = dataDibimbing;
-    const bimbinganCategories = ['Semua', 'Dibimbing Sekali', 'Dibimbing Sekali Online', 'Dibimbing Tuntas']
+    const categoriesBimbingan = ['Semua'].concat(
+        categories
+        .filter(i => i.product_type.type == 'Bimbingan')
+        .map(i => i.name)
+    )
     const dataEbook = ebookData;
     // const dataEbook = [
     //     {
@@ -87,7 +92,7 @@ export default function Produk({
     ];
 
     const [show, setShow] = useState(Array(3).fill(false));
-    const { data: searchKeyword, setData: setSearchKeyword } = useForm({keyword: ''})
+    const { data: searchKeyword, setData: setSearchKeyword } = useForm({keyword: ''});
     const [data1, setData1] = useState(dataBimbingan.slice());
     const [data2, setData2] = useState(dataEbook.slice());
     const [data3, setData3] = useState(dataWebinar.slice());
@@ -111,7 +116,7 @@ export default function Produk({
             temp1 = dataBimbingan
                 .slice()
                 .filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()))
-                .filter((item) => item.category.name == category1)
+                .filter((item) => item.category.name == category1);
         }
         const temp2 = dataEbook
             .slice()
@@ -128,6 +133,7 @@ export default function Produk({
     };
 
     const filterByCategory = (category, productType) => {
+        console.log(category);
         if (productType == "bimbingan") {
             let temp1
             if (category == 'Semua') {
@@ -138,7 +144,7 @@ export default function Produk({
                 temp1 = dataBimbingan
                     .slice()
                     .filter((item) => item.name.toLowerCase().includes(searchKeyword.keyword))
-                    .filter((item) => item.category.name == category1)
+                    .filter((item) => item.category.name == category)
             }
             setData1(temp1)
             setCategory1(category)
@@ -150,7 +156,7 @@ export default function Produk({
             <SearchBar searchHandler={searchHandler} className="md:hidden" data={searchKeyword} setData={setSearchKeyword} />
             <Filter show={show} showHandler={showHandler} />
             <SearchBar searchHandler={searchHandler} className="hidden md:block" data={searchKeyword} setData={setSearchKeyword} />
-            <Bimbingan data={data1} active={show[0]} status={status} categories={bimbinganCategories} category={category1} setCategory={setCategory1} filterHandler={filterByCategory} />
+            <Bimbingan data={data1} active={show[0]} status={status} categories={categoriesBimbingan} category={category1} setCategory={setCategory1} filterHandler={filterByCategory} />
             <Ebook data={data2} active={show[1]} status={status} />
             {/* <Webinar data={data3} active={show[2]} status={status} /> */}
             <Consultation />
