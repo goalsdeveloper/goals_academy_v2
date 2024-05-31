@@ -1,17 +1,16 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import React from "react";
 import { useForm } from "@inertiajs/react";
+import { useMediaQuery } from "react-responsive";
 import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
 import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import GoalsTextArea from "@/Components/elements/GoalsTextArea";
-import { FiFileText } from "react-icons/fi";
+import { FiChevronLeft, FiFileText } from "react-icons/fi";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
 import GoalsStarRating from "@/Components/elements/GoalsStarRating";
 
 export default function Show ({ auth, course }) {
-    console.log(course)
-    // console.log(data);
     const {data: formData, setData: setFormData} = useForm({
         username: course.user.username,
         university: course.user?.profile?.university,
@@ -48,6 +47,8 @@ export default function Show ({ auth, course }) {
         document_deleted: [],
     });
 
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
     const GetLocationData = () => {
         switch (course.products.contact_type) {
             case "online":
@@ -74,17 +75,31 @@ export default function Show ({ auth, course }) {
             role="tutor"
             auth={auth}
         >
-            <div className="space-y-[1.6vw]">
-                <Breadcrumb level={2} />
+            <div className="md:space-y-[1.6vw]">
+                {isMobile ? (
+                    <button className="flex items-center py-[5.6vw] px-[7.4vw] text-[4vw] font-medium border w-full" onClick={() => history.back()}>
+                        <FiChevronLeft />
+                        <p>Show Detail</p>
+                    </button>
+                ) : (
+                    <Breadcrumb level={2} />
+                )}
 
-                <div className="grid grid-cols-2 gap-[1.2vw]">
+                <div className="md:grid grid-cols-2 gap-[1.2vw]">
                     <FormSection
-                        className="md:!p-[2vw] h-fit"
-                        titleClassName="!font-semibold md:text-[1.1vw]"
+                        className="p-[7.4vw] md:!p-[2vw] h-fit"
+                        wrapperClassName="space-y-[4.8vw]"
+                        titleClassName="!font-semibold !text-[4vw] md:!text-[1.1vw]"
                         title="Order Details"
                         titleAction={
-                            <a href="#" className="text-secondary text-[.9vw] font-medium flex items-center gap-[.2vw]">File & Media <FiFileText /></a>
+                            <a 
+                                href="#" 
+                                className="text-secondary text-[3.6vw] md:text-[.9vw] font-medium flex items-center gap-[1vw] md:gap-[.2vw]"
+                            >
+                                File & Media <FiFileText />
+                            </a>
                         }
+                        bordered={isMobile}
                     >
                         <GoalsTextInput
                             disabled
@@ -126,10 +141,8 @@ export default function Show ({ auth, course }) {
                             </div>
                         </div>
                     </FormSection>
-                    <div className="space-y-[1.2vw] ">
-                        <FormSection
-                            className="md:!p-[2vw]"
-                        >
+                    <div className="md:space-y-[1.2vw]">
+                        <FormSection className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[.5vw]" bordered={isMobile}>
                             <GoalsTextArea
                                 disabled
                                 label="Note for User"
@@ -138,9 +151,7 @@ export default function Show ({ auth, course }) {
                                 labelClassName="font-medium"
                             />
                         </FormSection>
-                        <FormSection
-                            className="md:!p-[2vw]"
-                        >
+                        <FormSection className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[.5vw]" bordered={isMobile}>
                             <GoalsUploadFile
                                 disabled
                                 displayInput={false}
@@ -187,13 +198,13 @@ export default function Show ({ auth, course }) {
                                 }
                             />
                         </FormSection>
-                        <FormSection className="md:!p-[2vw]">
-                            <div className="flex items-center justify-between">
+                        <FormSection className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[.5vw]" bordered={isMobile}>
+                            <div className="flex items-center justify-between mb-[2vw] md:mb-0">
                                 <p className="font-medium">Review</p>
                                 <GoalsStarRating
                                     disabled
                                     className="text-right"
-                                    starClassName="!text-[2vw]"
+                                    starClassName="text-[8vw] md:!text-[2vw]"
                                     totalStars={5}
                                     data={formData.tutor_rating ?? 0}
                                     // setData={(i) => setFormData("tutor_rating", i)}
