@@ -54,13 +54,11 @@ export default function Topic({ auth, topics }) {
         router.visit(route("admin.bimbingan.topic.index"), {
             only: ["topics"],
             onSuccess: () => {
-                if (method == "create") {
-                    toast.success("Create Success!");
-                } else if (method == "edit") {
-                    toast.success("Edit Success!");
-                } else {
-                    toast.success("Delete Success!");
-                }
+                toast.success(
+                    `Topic berhasil di ${
+                        method.charAt(0).toUpperCase() + method.slice(1)
+                    }`
+                );
             },
         });
     };

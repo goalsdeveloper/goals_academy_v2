@@ -9,8 +9,10 @@ import {
     FiAirplay,
     FiBriefcase,
     FiChevronDown,
+    FiGrid,
     FiHome,
     FiMonitor,
+    FiSettings,
 } from "react-icons/fi";
 import user from "/resources/img/icon/user.png";
 import { LiaDropbox } from "react-icons/lia";
@@ -23,8 +25,9 @@ import {
 import { HiOutlineBuildingOffice } from "react-icons/hi2";
 import { BsPerson } from "react-icons/bs";
 import GoalsButton from "@/Components/elements/GoalsButton";
+import { Notification, NotificationItem } from "./MainHeader";
 
-const MobileHeader = ({ auth }) => {
+const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
     const [authDropdown, setAuthDropdown] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -35,23 +38,67 @@ const MobileHeader = ({ auth }) => {
             : user;
     }
 
-    const links = [
-        { href: "/user", icon: <LuGraduationCap />, text: "Bimbingan" },
-        { href: "/webinar", icon: <FiMonitor />, text: "Webinar" },
-        {
-            href: "/riwayat_transaksi",
-            icon: <PiClockCounterClockwiseBold />,
-            text: "Riwayat Transaksi",
-        },
-        { href: "/obrolan", icon: <PiChatCenteredTextBold />, text: "Obrolan" },
-        {
-            href: "/pengaturan",
-            icon: (
-                <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
-            ),
-            text: "Pengaturan",
-        },
-    ];
+    const role = auth.user?.user_role ?? "";
+    const roleCheck = role != "user" || role != "" ? "non-user" : "user";
+
+    const links = auth.user && {
+        user: [
+            { href: "/user", icon: <LuGraduationCap />, text: "Bimbingan" },
+            { href: "/webinar", icon: <FiMonitor />, text: "Webinar" },
+            {
+                href: "/riwayat_transaksi",
+                icon: <PiClockCounterClockwiseBold />,
+                text: "Riwayat Transaksi",
+            },
+            {
+                href: "/obrolan",
+                icon: <PiChatCenteredTextBold />,
+                text: "Obrolan",
+            },
+            {
+                href: "/pengaturan",
+                icon: (
+                    <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
+                ),
+                text: "Edit Profile",
+            },
+            {
+                href: "/pengaturan/ubah_password",
+                icon: (
+                    <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
+                ),
+                text: "Ubah Password",
+            },
+            {
+                href: "/logout",
+                method: "post",
+                icon: (
+                    <i className="bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24 text-red-400"></i>
+                ),
+                text: <span className="text-red-400">Logout</span>,
+            },
+        ],
+        "non-user": [
+            {
+                href: role != "user" && route(`${role}.index`),
+                icon: <FiGrid />,
+                text: "Dashboard",
+            },
+            {
+                href: role != "user" && route(`${role}.setting.index`),
+                icon: <FiSettings />,
+                text: "Pengaturan",
+            },
+            {
+                href: "/logout",
+                method: "post",
+                icon: (
+                    <i className="bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24 text-red-400"></i>
+                ),
+                text: <span className="text-red-400">Logout</span>,
+            },
+        ],
+    };
 
     return (
         <>
@@ -70,41 +117,47 @@ const MobileHeader = ({ auth }) => {
                     </Link>
                 </div>
                 {auth.user && (
-                    <div
-                        className={`relative font-poppins flex justify-center cursor-pointer`}
-                        // onMouseEnter={() => setAuthDropdown(true)}
-                        // onMouseLeave={() => setAuthDropdown(false)}
-                        onClick={() => setAuthDropdown(!authDropdown)}
-                    >
-                        <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
-                            <img
-                                className="w-full h-full"
-                                src={profileImage}
-                                alt="User Profile"
-                            />
-                        </div>
-                        <TECollapse
-                            show={authDropdown}
-                            className="absolute z-10 shadow-none translate-y-2 right-0"
+                    <div className="flex gap-[2vw]">
+                        <Notification auth={auth} data={notificationData} loadMore={getOldNotification} />
+                        <div
+                            className={`relative font-poppins flex justify-center cursor-pointer`}
+                            // onMouseEnter={() => setAuthDropdown(true)}
+                            // onMouseLeave={() => setAuthDropdown(false)}
+                            onClick={() => setAuthDropdown(!authDropdown)}
                         >
-                            {/* profile navbar */}
-                            <TECollapseItem className="border-2 w-fit py-[1vw] text-start bg-white  rounded-xl">
-                                {links.map(({ href, icon, text }, index) => (
-                                    <Link
-                                        key={index}
-                                        className={`flex gap-2 py-[3.7vw] px-[7.4vw] items-center font-poppins hover:text-primary  ${
-                                            text == "Riwayat Transaksi"
-                                                ? "w-max"
-                                                : "w-full"
-                                        }`}
-                                        href={href}
-                                    >
-                                        {icon}
-                                        {text}
-                                    </Link>
-                                ))}
-                            </TECollapseItem>
-                        </TECollapse>
+                            <div className="overflow-hidden rounded-full w-[8vw] h-[8vw] md:w-[2vw] md:h-[2vw]">
+                                <img
+                                    className="w-full h-full"
+                                    src={profileImage}
+                                    alt="User Profile"
+                                />
+                            </div>
+                            <TECollapse
+                                show={authDropdown}
+                                className="absolute z-10 shadow-none translate-y-2 right-0"
+                            >
+                                <TECollapseItem className="border-2 w-fit py-[1vw] text-start bg-white  rounded-xl">
+                                {links[roleCheck].map(
+                                    (
+                                        { href, icon, text, method = "get" },
+                                        index
+                                    ) => (
+                                        <Link
+                                            method={method}
+                                            className={`flex gap-2 py-[3.7vw] px-[7.4vw] items-center font-poppins hover:text-primary  ${
+                                                text == "Riwayat Transaksi"
+                                                    ? "w-max"
+                                                    : "w-full"
+                                            }`}
+                                            href={href}
+                                        >
+                                            {icon}
+                                            {text}
+                                        </Link>
+                                    ))}
+                                </TECollapseItem>
+                            </TECollapse>
+                        </div>
                     </div>
                 )}
             </div>
