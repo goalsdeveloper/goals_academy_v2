@@ -24,5 +24,8 @@ Route::get('/verifikasi_email', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/notification/get', [NotificationController::class, 'index'])->name('api.notification.get');
+    Route::get('/notification/getUserNotification', [NotificationController::class, 'userNotification'])->name('api.notification.userNotification');
+    Route::get('/notification/getMoreNotif', [NotificationController::class, 'getMoreNotif'])->name('api.notification.getMoreNotif');
     Route::get('/notification/read/{id}', [NotificationController::class, 'readNotification'])->name('api.notification.read');
+    Route::get('/notification/readAll', [NotificationController::class, 'readAll'])->name('api.notification.readAll');
 });

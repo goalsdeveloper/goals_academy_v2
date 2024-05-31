@@ -16,7 +16,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { ImExit } from "react-icons/im";
 import { MdOutlineEventNote, MdHistory } from "react-icons/md";
 import moment from "moment";
-import '@/script/momentCustomLocale';
+import "@/script/momentCustomLocale";
 
 export default function DashboardLayout({
     auth,
@@ -371,24 +371,92 @@ export default function DashboardLayout({
         }
     }, []);
 
-    const {data: notificationData, setData: setNotificationData} = useForm({
-        new: auth.notifications.filter((i) => i.data.category != "Transaksi").slice(0,4),
-        old: auth.notifications.filter((i) => i.data.category != "Transaksi").slice(4),
+    const { data: notificationData, setData: setNotificationData } = useForm({
+        new: [],
+        old: [],
         page: 1,
         hasMore: true,
     });
 
+    const getFirstNotification = () => {
+        axios
+            .get(route("api.notification.get"))
+            .then((res) => {
+                const data = res.data;
+                setNotificationData((n) => ({
+                    ...n,
+                    new: data.new_notifications,
+                    old: data.old_notifications.data,
+                    hasMore:
+                        data.old_notifications.current_page <
+                        data.old_notifications.last_page,
+                }));
+            })
+            .then(() => {
+                setTimeout(() => getNewNotification(), 10000);
+            });
+    };
+
     const getNewNotification = () => {
-        // 
-    }
+        const mergedNewNotif = (old, fromFetch) => {
+            const mergedArray = fromFetch.reduce((accumulator, item2) => {
+                if (!accumulator.some((item1) => item1.id === item2.id)) {
+                    accumulator.unshift(item2);
+                }
+                return accumulator;
+            }, old);
+            return mergedArray;
+        };
+        axios
+            .get(route("api.notification.get"))
+            .then((res) => {
+                const data = res.data;
+                setNotificationData((n) => ({
+                    ...n,
+                    new: mergedNewNotif(n.new, data.new_notifications),
+                }));
+            })
+            .then(setTimeout(() => getNewNotification(), 10000));
+    };
 
     const getOldNotification = (page) => {
-        // 
-    }
+        const updatedNotif = (old, fromFetch) => {
+            const mergedArray = fromFetch.reduce((accumulator, item2) => {
+                if (!accumulator.some((item1) => item1.id === item2.id)) {
+                    accumulator.push(item2);
+                }
+                return accumulator;
+            }, old);
+            return mergedArray;
+        };
+
+        const payload = {
+            params: {
+                page: page,
+            },
+        };
+        var notificationUpdate = {};
+        axios
+            .get(route("api.notification.getMoreNotif"), payload)
+            .then((res) => {
+                const current_page = res.data.notifications.current_page;
+                const last_page = res.data.notifications.last_page;
+                notificationUpdate = {
+                    ...notificationData,
+                    old: updatedNotif(
+                        notificationData.oldTransaction,
+                        res.data.notifications.data
+                    ),
+                    page: current_page,
+                    hasMoreTransaction: current_page < last_page,
+                };
+                setNotificationData(notificationUpdate);
+            });
+    };
 
     useEffect(() => {
-        getNewNotification();
-    }, [])
+        getFirstNotification();
+    }, []);
 
     return (
         <main className="relative flex bg-gray-50 text-dark font-sans">
@@ -528,7 +596,11 @@ export default function DashboardLayout({
                         id="tools"
                         className="flex items-center gap-[.5vw] text-[1.5vw] text-gray-400"
                     >
-                        <Notification auth={auth} data={notificationData} loadMore={getOldNotification} />
+                        <Notification
+                            auth={auth}
+                            data={notificationData}
+                            loadMore={getOldNotification}
+                        />
                         <Link
                             href={route(`${auth.user.user_role}.setting.index`)}
                         >
@@ -560,7 +632,7 @@ function NavItem({ name, href, icon, isActive }) {
     );
 }
 
-function Notification ({ auth, data, loadMore }) {
+function Notification({ auth, data, loadMore }) {
     const [show, setShow] = useState(false);
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
@@ -571,8 +643,11 @@ function Notification ({ auth, data, loadMore }) {
             onMouseEnter={() => !isMobile && setShow(true)}
             onMouseLeave={() => !isMobile && setShow(false)}
         >
-            <div className='relative'>
-                <FaRegBell className="fa-regular fa-bell text-[6vw] md:text-[1.5vw]" onClick={() => isMobile && setShow(!show) } />
+            <div className="relative">
+                <FaRegBell
+                    className="fa-regular fa-bell text-[6vw] md:text-[1.5vw]"
+                    onClick={() => isMobile && setShow(!show)}
+                />
                 <div
                     className={`${
                         data.new.length > 0 ? "" : "hidden"
@@ -580,15 +655,19 @@ function Notification ({ auth, data, loadMore }) {
                 ></div>
             </div>
             {isMobile ? (
-                <div className={`${show ? '' : 'translate-x-[101%]'} absolute w-screen left-0 bottom-0 translate-y-full transition-all duration-500`}>
-                    <div className="h-[89vh] bg-white shadow-centered md:rounded-[.75vw] overflow-auto scrollbar-hidden pb-[1vw]" >
+                <div
+                    className={`${
+                        show ? "" : "translate-x-[101%]"
+                    } absolute w-screen left-0 bottom-0 translate-y-full transition-all duration-500`}
+                >
+                    <div className="h-[89vh] bg-white shadow-centered md:rounded-[.75vw] overflow-auto scrollbar-hidden pb-[1vw]">
                         <div className="flex justify-between items-center py-[6vw] md:py-[1.5vw] px-[3vw] md:px-[1.5vw] border-b-1">
                             <span className="font-poppins text-[5vw] md:text-[1.25vw]">
                                 Notifikasi
                             </span>
                             <button>
                                 <Link
-                                    href="#"
+                                    href={route("api.notification.readAll")}
                                     className="font-normal text-[3.6vw] md:text-[.9vw] hover:text-secondary"
                                 >
                                     Tandai sudah dibaca
@@ -596,11 +675,14 @@ function Notification ({ auth, data, loadMore }) {
                             </button>
                         </div>
                         <div>
-                            {Number(data.new.length) + Number(data.old.length) ? (
+                            {Number(data.new.length) +
+                            Number(data.old.length) ? (
                                 <>
-                                    {data.new.length && (
+                                    {data.new.length > 0 && (
                                         <>
-                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center text-[4vw] md:text-[1vw]">Baru</div>
+                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center text-[4vw] md:text-[1vw]">
+                                                Baru
+                                            </div>
                                             {data.new.map((item, index) => {
                                                 return (
                                                     <NotificationItem
@@ -611,9 +693,11 @@ function Notification ({ auth, data, loadMore }) {
                                             })}
                                         </>
                                     )}
-                                    {data.old.length && (
+                                    {data.old.length > 0 && (
                                         <>
-                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center text-[4vw] md:text-[1vw]">Terdahulu</div>
+                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center text-[4vw] md:text-[1vw]">
+                                                Terdahulu
+                                            </div>
                                             {data.old.map((item, index) => {
                                                 return (
                                                     <NotificationItem
@@ -622,7 +706,16 @@ function Notification ({ auth, data, loadMore }) {
                                                     />
                                                 );
                                             })}
-                                            {data.hasMore && <GoalsButton activeClassName="bg-white hover:text-secondary text-[4vw] md:text-[1vw]" onClick={() => loadMore(data.page + 1)}>Load More</GoalsButton>}
+                                            {data.hasMore && (
+                                                <GoalsButton
+                                                    activeClassName="bg-white hover:text-secondary text-[4vw] md:text-[1vw]"
+                                                    onClick={() =>
+                                                        loadMore(data.page + 1)
+                                                    }
+                                                >
+                                                    Load More
+                                                </GoalsButton>
+                                            )}
                                         </>
                                     )}
                                 </>
@@ -648,7 +741,7 @@ function Notification ({ auth, data, loadMore }) {
                                 </span>
                                 <button>
                                     <Link
-                                        href="#"
+                                        href={route("api.notification.readAll")}
                                         className="font-normal text-[4vw] md:text-[.9vw] hover:text-secondary"
                                     >
                                         Tandai sudah dibaca
@@ -656,11 +749,14 @@ function Notification ({ auth, data, loadMore }) {
                                 </button>
                             </div>
                             <div>
-                                {Number(data.new.length) + Number(data.old.length) ? (
+                                {Number(data.new.length) +
+                                Number(data.old.length) ? (
                                     <>
-                                        {data.new.length && (
+                                        {data.new.length > 0 && (
                                             <>
-                                                <div className="px-[1.5vw] py-[.5vw] text-center text-[4vw] md:text-[1vw]">Baru</div>
+                                                <div className="px-[1.5vw] py-[.5vw] text-center text-[4vw] md:text-[1vw]">
+                                                    Baru
+                                                </div>
                                                 {data.new.map((item, index) => {
                                                     return (
                                                         <NotificationItem
@@ -671,9 +767,11 @@ function Notification ({ auth, data, loadMore }) {
                                                 })}
                                             </>
                                         )}
-                                        {data.old.length && (
+                                        {data.old.length > 0 && (
                                             <>
-                                                <div className="px-[1.5vw] py-[.5vw] text-center text-[4vw] md:text-[1vw]">Terdahulu</div>
+                                                <div className="px-[1.5vw] py-[.5vw] text-center text-[4vw] md:text-[1vw]">
+                                                    Terdahulu
+                                                </div>
                                                 {data.old.map((item, index) => {
                                                     return (
                                                         <NotificationItem
@@ -682,7 +780,18 @@ function Notification ({ auth, data, loadMore }) {
                                                         />
                                                     );
                                                 })}
-                                                {data.hasMore && <GoalsButton activeClassName="bg-white hover:text-secondary text-[4vw] md:text-[1vw]" onClick={() => loadMore(data.page + 1)}>Load More</GoalsButton>}
+                                                {data.hasMore && (
+                                                    <GoalsButton
+                                                        activeClassName="bg-white hover:text-secondary text-[4vw] md:text-[1vw]"
+                                                        onClick={() =>
+                                                            loadMore(
+                                                                data.page + 1
+                                                            )
+                                                        }
+                                                    >
+                                                        Load More
+                                                    </GoalsButton>
+                                                )}
                                             </>
                                         )}
                                     </>
@@ -697,7 +806,7 @@ function Notification ({ auth, data, loadMore }) {
                 </TECollapse>
             )}
         </div>
-    )
+    );
 }
 
 function NotificationItem({ item }) {
@@ -705,7 +814,9 @@ function NotificationItem({ item }) {
         return (
             <Link
                 href=""
-                className={`${item.read_at ? 'hover:bg-soft' : 'bg-soft'} relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
+                className={`${
+                    item.read_at ? "hover:bg-soft" : "bg-soft"
+                } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
             >
                 <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
                     {/* <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[3vw] md:text-[.75vw]">
@@ -760,7 +871,9 @@ function NotificationItem({ item }) {
         return (
             <Link
                 href=""
-                className={`${item.read_at ? 'hover:bg-soft' : 'bg-soft'} relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
+                className={`${
+                    item.read_at ? "hover:bg-soft" : "bg-soft"
+                } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
             >
                 <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
                     {/* <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[3vw] md:text-[.75vw]">
