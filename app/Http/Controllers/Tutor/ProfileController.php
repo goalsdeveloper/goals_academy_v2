@@ -8,8 +8,10 @@ use App\Models\Skill;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class ProfileController extends Controller
 {
@@ -19,8 +21,16 @@ class ProfileController extends Controller
         $profile = $user->load('profile', 'skills');
         $softSkills = Skill::where('category', SkillEnum::SOFTFKILL)->get();
         $hardSkills = Skill::where('category', SkillEnum::HARDSKILL)->get();
-        return response()->json([
+        // return response()->json([
+        //     'profile' => $profile,
+        //     'hardSkills' => $hardSkills,
+        //     'softSkills' => $softSkills,
+        // ]);
+        $skills = Skill::get();
+
+        return Inertia::render('Auth/Tutor/Setting/UbahProfil', [
             'profile' => $profile,
+            'skills' => $skills,
             'hardSkills' => $hardSkills,
             'softSkills' => $softSkills,
         ]);
@@ -57,6 +67,10 @@ class ProfileController extends Controller
             'status' => 'success',
             'messages' => 'Update Profile Berhasil',
         ]);
+    }
 
+    public function editPassword()
+    {
+        return Inertia::render('Auth/Tutor/Setting/UbahPassword');
     }
 }
