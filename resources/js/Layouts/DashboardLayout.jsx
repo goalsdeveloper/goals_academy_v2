@@ -14,20 +14,9 @@ import { MdHistory, MdOutlineEventNote } from "react-icons/md";
 import { RiBarChart2Line } from "react-icons/ri";
 import { TbLayoutGridAdd } from "react-icons/tb";
 import { TfiDropbox } from "react-icons/tfi";
-<<<<<<< HEAD
-import { BiSolidDiscount } from "react-icons/bi";
-import { RiBarChart2Line } from "react-icons/ri";
-import { GrTag, GrLocation } from "react-icons/gr";
-import { IoSettingsOutline } from "react-icons/io5";
-import { ImExit } from "react-icons/im";
-import { MdOutlineEventNote, MdHistory } from "react-icons/md";
-import moment from "moment";
-import "@/script/momentCustomLocale";
-=======
 import { useMediaQuery } from "react-responsive";
 import { TECollapse } from "tw-elements-react";
 import logo from "/resources/img/icon/goals-6.svg";
->>>>>>> 49a942db96d37740163fad13d09d5eb22b999a85
 
 export default function DashboardLayout({
     auth,
@@ -412,7 +401,6 @@ export default function DashboardLayout({
     };
 
     const getNewNotification = () => {
-<<<<<<< HEAD
         const mergedNewNotif = (old, fromFetch) => {
             const mergedArray = fromFetch.reduce((accumulator, item2) => {
                 if (!accumulator.some((item1) => item1.id === item2.id)) {
@@ -468,14 +456,6 @@ export default function DashboardLayout({
                 setNotificationData(notificationUpdate);
             });
     };
-=======
-        //
-    }
-
-    const getOldNotification = (page) => {
-        //
-    }
->>>>>>> 49a942db96d37740163fad13d09d5eb22b999a85
 
     useEffect(() => {
         getFirstNotification();
@@ -669,9 +649,6 @@ function NavItem({ name, href, icon, isActive }) {
     );
 }
 
-<<<<<<< HEAD
-function Notification({ auth, data, loadMore }) {
-=======
 export const NavigationBurgerButton = ({ isOpen, setIsOpen }) => {
     return (
         <button
@@ -699,7 +676,6 @@ export const NavigationBurgerButton = ({ isOpen, setIsOpen }) => {
 };
 
 function Notification ({ data, loadMore }) {
->>>>>>> 49a942db96d37740163fad13d09d5eb22b999a85
     const [show, setShow] = useState(false);
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
