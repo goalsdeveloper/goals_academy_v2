@@ -81,6 +81,7 @@ const Dialog = ({
                                         variant="success"
                                         type="submit"
                                         className="w-full h-full text-[1vw]"
+                                        disabled={formData.topic == ""}
                                     >
                                         {status}
                                     </GoalsButton>

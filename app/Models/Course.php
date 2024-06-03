@@ -102,4 +102,8 @@ class Course extends Model
     {
         return $this->belongsTo(Place::class);
     }
+    public function revenue_types()
+    {
+        return $this->hasMany(RevenueType::class);
+    }
 }
