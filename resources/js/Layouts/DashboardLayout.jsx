@@ -1,22 +1,22 @@
-import { useState, useEffect, useRef } from "react";
-import { Head, Link, useForm } from "@inertiajs/react";
-import { useMediaQuery } from "react-responsive";
-import logo from "/resources/img/icon/goals-6.svg";
 import GoalsButton from "@/Components/GoalsButton";
 import TECollapseItem from "@/Components/TECollapseItem";
-import { TECollapse } from "tw-elements-react";
+import '@/script/momentCustomLocale';
+import { Head, Link, useForm } from "@inertiajs/react";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import { BiSolidDiscount } from "react-icons/bi";
 import { FaChevronDown, FaRegBell, FaRegCalendar } from "react-icons/fa6";
-import { FiGrid, FiShoppingCart, FiUser, FiBriefcase } from "react-icons/fi";
+import { FiBriefcase, FiGrid, FiShoppingCart, FiUser } from "react-icons/fi";
+import { GrLocation, GrTag } from "react-icons/gr";
+import { ImExit } from "react-icons/im";
+import { IoSettingsOutline } from "react-icons/io5";
+import { MdHistory, MdOutlineEventNote } from "react-icons/md";
+import { RiBarChart2Line } from "react-icons/ri";
 import { TbLayoutGridAdd } from "react-icons/tb";
 import { TfiDropbox } from "react-icons/tfi";
-import { BiSolidDiscount } from "react-icons/bi";
-import { RiBarChart2Line } from "react-icons/ri";
-import { GrTag, GrLocation } from "react-icons/gr";
-import { IoSettingsOutline } from "react-icons/io5";
-import { ImExit } from "react-icons/im";
-import { MdOutlineEventNote, MdHistory } from "react-icons/md";
-import moment from "moment";
-import "@/script/momentCustomLocale";
+import { useMediaQuery } from "react-responsive";
+import { TECollapse } from "tw-elements-react";
+import logo from "/resources/img/icon/goals-6.svg";
 
 export default function DashboardLayout({
     auth,
@@ -462,9 +462,9 @@ export default function DashboardLayout({
     }, []);
 
     return (
-        <main className="relative flex bg-gray-50 text-dark font-sans">
+        <main className="relative flex font-sans bg-gray-50 text-dark">
             <Head title={title} />
-            <aside className={`${navShow ? '' : '-translate-x-full md:translate-x-0'} z-[200] absolute md:relative w-[60vw] md:w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[3.32vw] md:text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer duration-300`}>
+            <aside className={`${navShow ? '' : '-translate-x-full md:translate-x-0'} z-[200] md:z-50 absolute md:relative w-[60vw] md:w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[3.32vw] md:text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer duration-300`}>
                 <div className="flex justify-between md:justify-center items-center px-[5vw] md:px-0 pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw]">
                     <Link href="/">
                         <img
@@ -592,7 +592,7 @@ export default function DashboardLayout({
                 </nav>
             </aside>
             <div className="relative w-full h-screen overflow-hidden bg-[#F8F8FC]">
-                <header className="absolute z-[100] top-0 w-full h-[22.4vw] md:h-[5.8vw] flex justify-between items-center bg-dark-indigo md:bg-gray-50 px-[4.2vw] pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw] border-b-1">
+                <header className="absolute z-[100] md:z-50 top-0 w-full h-[22.4vw] md:h-[5.8vw] flex justify-between items-center bg-dark-indigo md:bg-gray-50 px-[4.2vw] pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw] border-b-1">
                     {isMobile ? (
                         <div className="flex gap-[4vw] md:gap-[1vw]">
                             <NavigationBurgerButton isOpen={navShow} setIsOpen={setNavShow} />
@@ -649,7 +649,33 @@ function NavItem({ name, href, icon, isActive }) {
     );
 }
 
-function Notification({ auth, data, loadMore }) {
+export const NavigationBurgerButton = ({ isOpen, setIsOpen }) => {
+    return (
+        <button
+            aria-label="navigation-button"
+            className="relative py-1 space-y-1 md:hidden"
+            onClick={() => setIsOpen(!isOpen)}
+        >
+            <span
+                className={`block w-5 h-0.5 rounded-full bg-white transform transition-transform duration-200 ${
+                    isOpen ? "rotate-45 translate-y-1.5" : "rotate-0 top-0"
+                }`}
+            ></span>
+            <span
+                className={`block w-5 h-0.5 rounded-full bg-white transform transition-all duration-200 ${
+                    isOpen ? "opacity-0" : "opacity-100 top-2"
+                }`}
+            ></span>
+            <span
+                className={`block w-5 h-0.5 rounded-full bg-white transform transition-transform duration-200 ${
+                    isOpen ? "-rotate-45 -translate-y-1.5" : "rotate-0 top-4"
+                }`}
+            ></span>
+        </button>
+    );
+};
+
+function Notification ({ data, loadMore }) {
     const [show, setShow] = useState(false);
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
