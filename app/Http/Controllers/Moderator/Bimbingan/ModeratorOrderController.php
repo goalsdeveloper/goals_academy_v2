@@ -9,6 +9,7 @@ use App\Models\Course;
 use App\Models\Order;
 use App\Models\Place;
 use App\Models\User;
+use App\Notifications\GeneralCourseNotification;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -243,7 +244,7 @@ class ModeratorOrderController extends Controller
     // $order diambil dari course id(perhatikan name model)
     public function update(Request $request, Order $order)
     {
-        // dd($request);
+        dd($request);
         try {
             $order = $order->load('products');
 
@@ -296,6 +297,9 @@ class ModeratorOrderController extends Controller
                 // $parent = Course::find($order->course->id);
                 // $parent->update(array_merge($validateData, ['ongoing' => CourseStatusEnum::ONGOING]));
             }
+
+            $order->user->notify(new GeneralCourseNotification("Tutor Sudah Ditemukan!", "Bimbingan $order->order_code terdapat update, yuk cek segera!", route('user.profile.detailPembelajaran', ['order_id' => $order->order_code])));
+            $order->course->tutor->notify(new GeneralCourseNotification("Bimbingan Baru Tersedia", "Terdapat bimbingan baru yang tersedia, cek sekarang!", route('tutor.bimbingan.progress.index')));
 
             return response()->json([
                 'status' => true,
