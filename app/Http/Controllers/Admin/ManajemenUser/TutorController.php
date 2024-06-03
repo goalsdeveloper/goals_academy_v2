@@ -33,6 +33,7 @@ class TutorController extends Controller
                 'status' => true,
                 'statusCode' => 200,
                 'message' => 'get data success',
+                'revenue_types'=> RevenueType::get(),
                 'tutors' =>
                 function () use ($request) {
                     $search =  $request->input('search');
