@@ -42,11 +42,9 @@ export default function MainHeader({ auth, title, className }) {
             .get(route("api.notification.userNotification"))
             .then((res) => {
                 const data = res.data;
-                var old_notif = [];
-                var new_notif = [];
                 setNotificationData((n) => ({
                     ...n,
-                    newTransaction: data.new_transaction_notifications.data,
+                    newTransaction: data.new_transaction_notifications,
                     oldTransaction: data.transaction_notifications.data,
                     program: data.program_notifications.data,
                     promo: data.promo_notifications.data,
@@ -133,7 +131,7 @@ export default function MainHeader({ auth, title, className }) {
                             hasMoreTransaction: current_page < last_page,
                         };
                         break;
-                    case "Program":
+                    case "Pembelajaran":
                         notificationUpdate = {
                             ...notificationData,
                             program: updatedNotif(
@@ -379,7 +377,7 @@ function Notification({ auth, data, loadMore }) {
     };
 
     const loadMoreProgram = () => {
-        loadMore("Program", data.pageProgram + 1);
+        loadMore("Pembelajaran", data.pageProgram + 1);
     };
 
     return (
@@ -813,7 +811,18 @@ function NotificationItem({ item }) {
     } else {
         return (
             <Link
-                href=""
+                onClick={(e) => {
+                    console.log(e);
+                    axios
+                        .get(route("api.notification.read", { id: item.id }))
+                        .then((res) => {
+                            if (item.data.link != undefined) {
+                                window.location = item.data.link;
+                                return;
+                            }
+                            location.reload();
+                        });
+                }}
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}

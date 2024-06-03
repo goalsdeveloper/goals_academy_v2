@@ -813,7 +813,18 @@ function NotificationItem({ item }) {
     if (item.data.category == "Transaksi") {
         return (
             <Link
-                href=""
+                onClick={(e) => {
+                    console.log(e);
+                    axios
+                        .get(route("api.notification.read", { id: item.id }))
+                        .then((res) => {
+                            if (item.data.link != undefined) {
+                                window.location = item.data.link;
+                                return;
+                            }
+                            location.reload();
+                        });
+                }}
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
@@ -870,7 +881,18 @@ function NotificationItem({ item }) {
     } else {
         return (
             <Link
-                href=""
+                onClick={(e) => {
+                    console.log(e);
+                    axios
+                        .get(route("api.notification.read", { id: item.id }))
+                        .then((res) => {
+                            if (item.data.link != undefined) {
+                                window.location = item.data.link;
+                                return;
+                            }
+                            location.reload();
+                        });
+                }}
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
