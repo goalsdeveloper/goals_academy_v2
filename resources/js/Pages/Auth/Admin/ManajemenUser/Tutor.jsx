@@ -20,6 +20,19 @@ export default function Tutor({ auth, tutors }) {
         new URLSearchParams(window.location.search).get("search")
     );
 
+    const revenueTypes = [
+        {
+            id: 0,
+            name: '40%',
+            percentage: 40
+        },
+        {
+            id: 0,
+            name: '50%',
+            percentage: 50
+        },
+    ]
+
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
     }, [current_page]);
@@ -53,6 +66,7 @@ export default function Tutor({ auth, tutors }) {
         phone_number: "",
         university: "",
         major: "",
+        revenue_type: "",
     });
 
     const callback = (method) => {
@@ -204,6 +218,7 @@ export default function Tutor({ auth, tutors }) {
                         post,
                         put,
                         callback,
+                        revenueTypes
                     }}
                 />
 

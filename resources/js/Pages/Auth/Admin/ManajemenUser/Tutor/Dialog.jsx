@@ -1,6 +1,8 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
+import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/elements/GoalsSelectInput";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 
 const Dialog = ({
@@ -11,7 +13,10 @@ const Dialog = ({
     post,
     put,
     callback,
+    revenueTypes,
 }) => {
+    const [showRevenueForm, setShowRevenueForm] = useState(false);
+
     const status = showDialog.create
         ? "Tambah"
         : showDialog.edit
@@ -88,6 +93,20 @@ const Dialog = ({
                                 }
                                 disabled={showDialog.show}
                             />
+                            <GoalsSelectInput 
+                                required
+                                show={showRevenueForm} 
+                                setShow={setShowRevenueForm} 
+                                data={formData.revenue_type?.name}
+                                label="Revenue Type"
+                                placeholderClassName="font-normal"
+                            >
+                                {revenueTypes.map((item, index) => (
+                                    <GoalsSelectInputItem key={index} onClick={() => setFormData("revenue_type", item)}>
+                                        {item.name}
+                                    </GoalsSelectInputItem>
+                                ))}
+                            </GoalsSelectInput>
                         </div>
                         {showDialog.show ? (
                             <></>
