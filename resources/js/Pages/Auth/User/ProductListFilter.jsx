@@ -6,7 +6,7 @@ import { useMediaQuery } from "react-responsive";
 
 const ProductListFilter = ({ data, setData, filterList, type = "product" }) => {
     const [initialData] = useState(data);
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
     const [selected, setSelected] = useState(filterList[0]);
     const [isShow, setIsShow] = useState(false);
 
