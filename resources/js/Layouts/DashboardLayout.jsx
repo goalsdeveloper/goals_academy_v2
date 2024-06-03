@@ -107,68 +107,58 @@ export default function DashboardLayout({
                     ],
                     collapsed: true,
                 },
-                {
-                    name: "Webinar",
-                    href: "",
-                    icon: "",
-                    isActive: false,
-                    branches: [
-                        {
-                            name: "Product",
-                            href: "/admin/webinar/product",
-                            icon: (
-                                <TfiDropbox className="text-[4vw] md:text-[1vw]" />
-                            ),
-                            isActive:
-                                title == "Webinar" && subtitle == "Product",
-                        },
-                        {
-                            name: "Order",
-                            href: "/admin/webinar/order",
-                            icon: (
-                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
-                            ),
-                            isActive: title == "Webinar" && subtitle == "Order",
-                        },
-                    ],
-                    collapsed: true,
-                },
-                {
-                    name: "E-course",
-                    href: "",
-                    icon: "",
-                    isActive: false,
-                    branches: [
-                        {
-                            name: "Category",
-                            href: "/admin/ecourse/category",
-                            icon: (
-                                <GrTag className="text-[4vw] md:text-[1vw]" />
-                            ),
-                            isActive:
-                                title == "E-course" && subtitle == "Category",
-                        },
-                        {
-                            name: "Product",
-                            href: "/admin/ecourse/product",
-                            icon: (
-                                <TfiDropbox className="text-[4vw] md:text-[1vw]" />
-                            ),
-                            isActive:
-                                title == "E-course" && subtitle == "Product",
-                        },
-                        {
-                            name: "Order",
-                            href: "/admin/ecourse/order",
-                            icon: (
-                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
-                            ),
-                            isActive:
-                                title == "E-course" && subtitle == "Order",
-                        },
-                    ],
-                    collapsed: true,
-                },
+                // {
+                //     name: "Webinar",
+                //     href: "",
+                //     icon: "",
+                //     isActive: false,
+                //     branches: [
+                //         {
+                //             name: "Product",
+                //             href: "/admin/webinar/product",
+                //             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "Webinar" && subtitle == "Product",
+                //         },
+                //         {
+                //             name: "Order",
+                //             href: "/admin/webinar/order",
+                //             icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                //             isActive: title == "Webinar" && subtitle == "Order",
+                //         },
+                //     ],
+                //     collapsed: true,
+                // },
+                // {
+                //     name: "E-course",
+                //     href: "",
+                //     icon: "",
+                //     isActive: false,
+                //     branches: [
+                //         {
+                //             name: "Category",
+                //             href: "/admin/ecourse/category",
+                //             icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-course" && subtitle == "Category",
+                //         },
+                //         {
+                //             name: "Product",
+                //             href: "/admin/ecourse/product",
+                //             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-course" && subtitle == "Product",
+                //         },
+                //         {
+                //             name: "Order",
+                //             href: "/admin/ecourse/order",
+                //             icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-course" && subtitle == "Order",
+                //         },
+                //     ],
+                //     collapsed: true,
+                // },
                 {
                     name: "Manajemen User",
                     href: "",
@@ -217,94 +207,80 @@ export default function DashboardLayout({
                     ],
                     collapsed: false,
                 },
-                {
-                    name: "E-book",
-                    href: "",
-                    icon: "",
-                    isActive: false,
-                    branches: [
-                        {
-                            name: "Category",
-                            href: "/admin/ebook/category",
-                            icon: (
-                                <GrTag className="text-[4vw] md:text-[1vw]" />
-                            ),
-                            isActive:
-                                title == "E-book" && subtitle == "Category",
-                        },
-                        {
-                            name: "Product",
-                            href: "/admin/ebook/product",
-                            icon: (
-                                <TfiDropbox className="text-[4vw] md:text-[1vw]" />
-                            ),
-                            isActive:
-                                title == "E-book" && subtitle == "Product",
-                        },
-                        {
-                            name: "Order",
-                            href: "/admin/ebook/order",
-                            icon: (
-                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
-                            ),
-                            isActive: title == "E-book" && subtitle == "Order",
-                        },
-                    ],
-                    collapsed: true,
-                },
-                {
-                    name: "Marketing",
-                    href: "",
-                    icon: "",
-                    isActive: false,
-                    branches: [
-                        {
-                            name: "Affiliate",
-                            href: "/admin/marketing/affiliate",
-                            icon: (
-                                <TbLayoutGridAdd className="text-[4vw] md:text-[1vw]" />
-                            ),
-                            isActive:
-                                title == "Marketing" && subtitle == "Affiliate",
-                        },
-                        {
-                            name: "Vouchers",
-                            href: "/admin/marketing/vouchers",
-                            icon: (
-                                <BiSolidDiscount className="text-[4vw] md:text-[1vw]" />
-                            ),
-                            isActive:
-                                title == "Marketing" && subtitle == "Vouchers",
-                        },
-                    ],
-                    collapsed: false,
-                },
-                {
-                    name: "Career",
-                    href: "",
-                    icon: "",
-                    isActive: false,
-                    branches: [
-                        {
-                            name: "Job",
-                            href: "/admin/career/job",
-                            icon: (
-                                <FiBriefcase className="text-[4vw] md:text-[1vw]" />
-                            ),
-                            isActive: title == "Career" && subtitle == "Job",
-                        },
-                        {
-                            name: "Participant",
-                            href: "/admin/career/participant",
-                            icon: (
-                                <FiUser className="text-[4vw] md:text-[1vw]" />
-                            ),
-                            isActive:
-                                title == "Career" && subtitle == "Participant",
-                        },
-                    ],
-                    collapsed: false,
-                },
+                // {
+                //     name: "E-book",
+                //     href: "",
+                //     icon: "",
+                //     isActive: false,
+                //     branches: [
+                //         {
+                //             name: "Category",
+                //             href: "/admin/ebook/category",
+                //             icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-book" && subtitle == "Category",
+                //         },
+                //         {
+                //             name: "Product",
+                //             href: "/admin/ebook/product",
+                //             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-book" && subtitle == "Product",
+                //         },
+                //         {
+                //             name: "Order",
+                //             href: "/admin/ebook/order",
+                //             icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                //             isActive: title == "E-book" && subtitle == "Order",
+                //         },
+                //     ],
+                //     collapsed: true,
+                // },
+                // {
+                //     name: "Marketing",
+                //     href: "",
+                //     icon: "",
+                //     isActive: false,
+                //     branches: [
+                //         {
+                //             name: "Affiliate",
+                //             href: "/admin/marketing/affiliate",
+                //             icon: <TbLayoutGridAdd className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "Marketing" && subtitle == "Affiliate",
+                //         },
+                //         {
+                //             name: "Vouchers",
+                //             href: "/admin/marketing/vouchers",
+                //             icon: <BiSolidDiscount className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "Marketing" && subtitle == "Vouchers",
+                //         },
+                //     ],
+                //     collapsed: false,
+                // },
+                // {
+                //     name: "Career",
+                //     href: "",
+                //     icon: "",
+                //     isActive: false,
+                //     branches: [
+                //         {
+                //             name: "Job",
+                //             href: "/admin/career/job",
+                //             icon: <FiBriefcase className="text-[4vw] md:text-[1vw]" />,
+                //             isActive: title == "Career" && subtitle == "Job",
+                //         },
+                //         {
+                //             name: "Participant",
+                //             href: "/admin/career/participant",
+                //             icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "Career" && subtitle == "Participant",
+                //         },
+                //     ],
+                //     collapsed: false,
+                // },
             ];
             break;
         case "moderator":
@@ -426,7 +402,7 @@ export default function DashboardLayout({
     const [navState, setNavState] = useState({});
     const [navShow, setNavShow] = useState(false);
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     const navToggleHandler = (index) => {
         setNavState((prevNavState) => ({
@@ -468,11 +444,7 @@ export default function DashboardLayout({
     return (
         <main className="relative flex font-sans bg-gray-50 text-dark">
             <Head title={title} />
-            <aside
-                className={`${
-                    navShow ? "" : "-translate-x-full md:translate-x-0"
-                } z-[200] absolute md:relative w-[60vw] md:w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[3.32vw] md:text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer duration-300`}
-            >
+            <aside className={`${navShow ? '' : '-translate-x-full md:translate-x-0'} z-[200] md:z-50 absolute md:relative w-[60vw] md:w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[3.32vw] md:text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer duration-300`}>
                 <div className="flex justify-between md:justify-center items-center px-[5vw] md:px-0 pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw]">
                     <Link href="/">
                         <img
@@ -605,7 +577,7 @@ export default function DashboardLayout({
                 </nav>
             </aside>
             <div className="relative w-full h-screen overflow-hidden bg-[#F8F8FC]">
-                <header className="absolute z-[100] top-0 w-full h-[22.4vw] md:h-[5.8vw] flex justify-between items-center bg-dark-indigo md:bg-gray-50 px-[4.2vw] pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw] border-b-1">
+                <header className="absolute z-[100] md:z-50 top-0 w-full h-[22.4vw] md:h-[5.8vw] flex justify-between items-center bg-dark-indigo md:bg-gray-50 px-[4.2vw] pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw] border-b-1">
                     {isMobile ? (
                         <div className="flex gap-[4vw] md:gap-[1vw]">
                             <NavigationBurgerButton
@@ -694,7 +666,7 @@ export const NavigationBurgerButton = ({ isOpen, setIsOpen }) => {
 function Notification({ data, loadMore }) {
     const [show, setShow] = useState(false);
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <div

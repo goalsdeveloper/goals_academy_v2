@@ -47,7 +47,7 @@ export default function Show ({ auth, course }) {
         document_deleted: [],
     });
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     const GetLocationData = () => {
         switch (course.products.contact_type) {

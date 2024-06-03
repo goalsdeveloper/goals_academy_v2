@@ -23,7 +23,7 @@ export default function Index({ auth }) {
         });
     };
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <PengaturanLayout auth={auth} title="Ubah Password">

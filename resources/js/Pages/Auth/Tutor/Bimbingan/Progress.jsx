@@ -20,7 +20,7 @@ export default function Progress({ auth, bimbingan }) {
         new URLSearchParams(window.location.search).get("search")
     );
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
