@@ -64,7 +64,8 @@ export default function Update({ auth, data }) {
         hard_skills: data.tutor.skills.filter(
             (i) => i.category == "hard_skill"
         ),
-        revenue_type: data.tutor.revenue_type,
+        revenue_type_id: data.tutor.revenue_type?.id,
+        revenue_type_type: data.tutor.revenue_type?.type,
     });
 
     const { data: temp, setData: setTemp } = useForm({
@@ -224,18 +225,22 @@ export default function Update({ auth, data }) {
                             setShow={(i) =>
                                 setShowForm({ ...showForm, revenue_type: i })
                             }
-                            data={formData.revenue_type?.name}
+                            data={formData.revenue_type_type+"%"}
                             label="Revenue Type"
                             placeholderClassName="font-normal"
                         >
-                            {revenueTypes.map((item, index) => (
+                            {data.revenue_types.map((item, index) => (
                                 <GoalsSelectInputItem
                                     key={index}
                                     onClick={() =>
-                                        setFormData("revenue_type", item)
+                                        setFormData({
+                                            ...formData,
+                                            revenue_type_id: item.id,
+                                            revenue_type_type: item.type,
+                                        })
                                     }
                                 >
-                                    {item.name}
+                                    {item.type}%
                                 </GoalsSelectInputItem>
                             ))}
                         </GoalsSelectInput>
