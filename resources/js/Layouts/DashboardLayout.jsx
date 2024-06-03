@@ -464,7 +464,7 @@ export default function DashboardLayout({
     return (
         <main className="relative flex font-sans bg-gray-50 text-dark">
             <Head title={title} />
-            <aside className={`${navShow ? '' : '-translate-x-full md:translate-x-0'} z-[200] absolute md:relative w-[60vw] md:w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[3.32vw] md:text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer duration-300`}>
+            <aside className={`${navShow ? '' : '-translate-x-full md:translate-x-0'} z-[200] md:z-50 absolute md:relative w-[60vw] md:w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[3.32vw] md:text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer duration-300`}>
                 <div className="flex justify-between md:justify-center items-center px-[5vw] md:px-0 pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw]">
                     <Link href="/">
                         <img
@@ -592,7 +592,7 @@ export default function DashboardLayout({
                 </nav>
             </aside>
             <div className="relative w-full h-screen overflow-hidden bg-[#F8F8FC]">
-                <header className="absolute z-[100] top-0 w-full h-[22.4vw] md:h-[5.8vw] flex justify-between items-center bg-dark-indigo md:bg-gray-50 px-[4.2vw] pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw] border-b-1">
+                <header className="absolute z-[100] md:z-50 top-0 w-full h-[22.4vw] md:h-[5.8vw] flex justify-between items-center bg-dark-indigo md:bg-gray-50 px-[4.2vw] pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw] border-b-1">
                     {isMobile ? (
                         <div className="flex gap-[4vw] md:gap-[1vw]">
                             <NavigationBurgerButton isOpen={navShow} setIsOpen={setNavShow} />

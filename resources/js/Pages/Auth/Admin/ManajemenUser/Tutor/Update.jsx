@@ -14,9 +14,23 @@ import FormSection from "../../components/layouts/FormSection";
 import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 import logo from "/resources/img/icon/goals-5.svg";
 import toast, { Toaster } from "react-hot-toast";
+import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/elements/GoalsSelectInput";
 
 export default function Update({ auth, data }) {
     const [isLoading, setIsLoading] = useState(false);
+
+    const revenueTypes = [
+        {
+            id: 0,
+            name: '40%',
+            percentage: 40
+        },
+        {
+            id: 0,
+            name: '50%',
+            percentage: 50
+        },
+    ]
 
     const {
         data: formData,
@@ -46,6 +60,7 @@ export default function Update({ auth, data }) {
         hard_skills: data.tutor.skills.filter(
             (i) => i.category == "hard_skill"
         ),
+        revenue_type: "",
     });
 
     const { data: temp, setData: setTemp } = useForm({
@@ -69,6 +84,7 @@ export default function Update({ auth, data }) {
     const [showForm, setShowForm] = useState({
         soft_skills: false,
         hard_skills: false,
+        revenue_type: false,
     });
 
     const handleClick = () => {
@@ -99,11 +115,12 @@ export default function Update({ auth, data }) {
                             className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[1vw] md:rounded-[.5vw]"
                             activeClassName="bg-transparent border-2 border-green-500 text-green-500 hover:border-green-600"
                             variant="success-bordered"
+                            onClick={() => history.back()}
                         >
                             Batal
                         </GoalsButton>
                         <GoalsButton
-                            className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[1vw] md:rounded-[.5vw]"
+                            className="md:!py-[0vw] md:!px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[1vw] md:rounded-[.5vw]"
                             activeClassName="bg-green-500 border-2 border-green-500 text-white hover:bg-green-600 hover:border-green-600"
                             onClick={handleClick}
                             variant="success"
@@ -196,6 +213,20 @@ export default function Update({ auth, data }) {
                             setData={(i) => setFormData("linkedin_url", i)}
                             labelClassName="font-medium"
                         />
+                        <GoalsSelectInput 
+                            required
+                            show={showForm.revenue_type} 
+                            setShow={(i) => setShowForm({...showForm, revenue_type: i})} 
+                            data={formData.revenue_type?.name}
+                            label="Revenue Type"
+                            placeholderClassName="font-normal"
+                        >
+                            {revenueTypes.map((item, index) => (
+                                <GoalsSelectInputItem key={index} onClick={() => setFormData("revenue_type", item)}>
+                                    {item.name}
+                                </GoalsSelectInputItem>
+                            ))}
+                        </GoalsSelectInput>
                         <div className="grid grid-cols-2 gap-[1.2vw]">
                             <GoalsSelectMultipleInput
                                 required
@@ -231,7 +262,7 @@ export default function Update({ auth, data }) {
                                 label="Soft Skills"
                                 className="text-[.8vw]"
                                 labelClassName="font-medium"
-                                placeholderClassName="font-normal"
+                                placeholderClassName="font-normal text-[.8vw]"
                                 submitButtonClassName="text-[.8vw] w-[5vw]"
                                 onSubmit={() => {
                                     if (
@@ -343,7 +374,7 @@ export default function Update({ auth, data }) {
                                 label="Hard Skills"
                                 className="text-[.8vw]"
                                 labelClassName="font-medium"
-                                placeholderClassName="font-normal"
+                                placeholderClassName="font-normal text-[.8vw]"
                                 submitButtonClassName="text-[.8vw] w-[5vw]"
                                 onSubmit={() => {
                                     if (

@@ -2,7 +2,7 @@ import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import GoalsButton from "../GoalsButton";
 
-function GoalsSelectInput ({ show, setShow, label="", placeholder="Pilih satu", data="", error="", icon="", chevronIcon="", required=false, className, labelClassName, filledClassName="border-2 border-secondary text-secondary", emptyClassName="border-1 border-light-grey text-light-grey", children }) {
+function GoalsSelectInput ({ show, setShow, label="", placeholder="Pilih satu", data="", error="", icon="", chevronIcon="", required=false, className, labelClassName, filledClassName="border-2 border-secondary text-secondary", emptyClassName="border-1 border-light-grey text-light-grey", placeholderClassName, children }) {
     return (
         <div className="text-inherit">
             {label != "" ? (
@@ -19,7 +19,9 @@ function GoalsSelectInput ({ show, setShow, label="", placeholder="Pilih satu", 
                         &nbsp;&nbsp;
                     </>
                 ) : (<></>)}
-                {data != "" ? data : placeholder}
+                <span className={placeholderClassName}>
+                    {data != "" ? data : placeholder}
+                </span>
                 <i className={chevronIcon != "" ? chevronIcon : `fa-solid fa-chevron-down duration-300 ${show != "" ? "-rotate-180" : ""}`}></i>
             </GoalsButton>
             <div className="relative">
