@@ -20,7 +20,7 @@ export default function MainHeader({ auth, title, className }) {
             : user;
     }
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     // Notification Variable & Fetching Function
     const {data: notificationData, setData: setNotificationData} = useForm({
@@ -152,7 +152,7 @@ function NavbarExpand({ auth, title, profileImage, notificationData, getOldNotif
                 >
                     Produk
                 </Link>
-                <Link
+                {/* <Link
                     href="/artikel"
                     className={`font-poppins hover:text-primary flex justify-center ${
                         title == "Artikel" ? "font" : ""
@@ -167,7 +167,7 @@ function NavbarExpand({ auth, title, profileImage, notificationData, getOldNotif
                     }`}
                 >
                     Diskusi
-                </Link>
+                </Link> */}
                 <Link
                     href="/karir"
                     className={`font-poppins hover:text-primary flex justify-center ${
@@ -282,7 +282,7 @@ function Notification ({ auth, data, loadMore }) {
     const [show, setShow] = useState(false);
     const [activeDisplay, setActiveDisplay] = useState(0)
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     const loadMoreTransaction = () => {
         loadMore('transaction', data.pageTransaction + 1);

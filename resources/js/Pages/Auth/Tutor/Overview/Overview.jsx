@@ -33,7 +33,7 @@ export default function Overview({
     const [onProgressCourse, setOnProgressCourse] = useState(123);
     const [totalEarning, setTotalEarning] = useState(1112750000);
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     // Product Type
     const [productTypeLabels, setProductTypeLabels] = useState(['Dibimbing Online', 'Dibimbing Offline', 'Desk Review']);

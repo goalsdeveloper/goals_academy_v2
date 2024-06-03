@@ -358,7 +358,7 @@ export default function DashboardLayout({
     const [navState, setNavState] = useState({});
     const [navShow, setNavShow] = useState(false);
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     const navToggleHandler = (index) => {
         setNavState((prevNavState) => ({
@@ -606,7 +606,7 @@ export const NavigationBurgerButton = ({ isOpen, setIsOpen }) => {
 function Notification ({ data, loadMore }) {
     const [show, setShow] = useState(false);
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <div
