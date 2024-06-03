@@ -1,6 +1,6 @@
 import GoalsButton from "@/Components/GoalsButton";
 import TECollapseItem from "@/Components/TECollapseItem";
-import '@/script/momentCustomLocale';
+import "@/script/momentCustomLocale";
 import { Head, Link, useForm } from "@inertiajs/react";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -39,7 +39,9 @@ export default function DashboardLayout({
                 {
                     name: "Statistic",
                     href: "/admin/statistic",
-                    icon: <RiBarChart2Line className="text-[4vw] md:text-[1vw]" />,
+                    icon: (
+                        <RiBarChart2Line className="text-[4vw] md:text-[1vw]" />
+                    ),
                     isActive: title == "Statistic",
                 },
                 {
@@ -51,42 +53,54 @@ export default function DashboardLayout({
                         {
                             name: "Category",
                             href: "/admin/bimbingan/category",
-                            icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <GrTag className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Category",
                         },
                         {
                             name: "Add-On",
                             href: "/admin/bimbingan/addon",
-                            icon: <TbLayoutGridAdd className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <TbLayoutGridAdd className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Add-On",
                         },
                         {
                             name: "Place",
                             href: "/admin/bimbingan/place",
-                            icon: <GrLocation className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <GrLocation className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Place",
                         },
                         {
                             name: "Topic",
                             href: "/admin/bimbingan/topic",
-                            icon: <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Topic",
                         },
                         {
                             name: "Product",
                             href: "/admin/bimbingan/product",
-                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <TfiDropbox className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Product",
                         },
                         {
                             name: "Order",
                             href: "/admin/bimbingan/order",
-                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Order",
                         },
@@ -154,14 +168,18 @@ export default function DashboardLayout({
                         {
                             name: "User",
                             href: "/admin/manajemen_user/user",
-                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FiUser className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Manajemen User" && subtitle == "User",
                         },
                         {
                             name: "Tutor",
                             href: "/admin/manajemen_user/tutor",
-                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FiUser className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Manajemen User" &&
                                 subtitle == "Tutor",
@@ -169,10 +187,22 @@ export default function DashboardLayout({
                         {
                             name: "Moderator",
                             href: "/admin/manajemen_user/moderator",
-                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FiUser className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Manajemen User" &&
                                 subtitle == "Moderator",
+                        },
+                        {
+                            name: "Revenue Type",
+                            href: "/admin/manajemen_user/revenue_type",
+                            icon: (
+                                <FiGrid className="text-[4vw] md:text-[1vw]" />
+                            ),
+                            isActive:
+                                title == "Manajemen User" &&
+                                subtitle == "Revenue Type",
                         },
                     ],
                     collapsed: false,
@@ -270,7 +300,9 @@ export default function DashboardLayout({
                         {
                             name: "Recent Order",
                             href: "/moderator/bimbingan/order",
-                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" &&
                                 subtitle == "Recent Order",
@@ -278,14 +310,18 @@ export default function DashboardLayout({
                         {
                             name: "Progress",
                             href: "/moderator/bimbingan/progress",
-                            icon: <MdHistory className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <MdHistory className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Progress",
                         },
                         {
                             name: "History",
                             href: "/moderator/bimbingan/history",
-                            icon: <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "History",
                         },
@@ -301,14 +337,18 @@ export default function DashboardLayout({
                         {
                             name: "Tutor List",
                             href: "/moderator/tutor/tutor_list",
-                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FiUser className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Tutor" && subtitle == "Tutor List",
                         },
                         {
                             name: "Schedule",
                             href: "/moderator/tutor/schedule",
-                            icon: <FaRegCalendar className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FaRegCalendar className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Tutor" && subtitle == "Schedule",
                         },
@@ -334,14 +374,18 @@ export default function DashboardLayout({
                         {
                             name: "Progress",
                             href: "/tutor/bimbingan/progress",
-                            icon: <MdHistory className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <MdHistory className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Progress",
                         },
                         {
                             name: "History",
                             href: "/tutor/bimbingan/history",
-                            icon: <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "History",
                         },
@@ -374,24 +418,28 @@ export default function DashboardLayout({
         }
     }, []);
 
-    const {data: notificationData, setData: setNotificationData} = useForm({
-        new: auth.notifications.filter((i) => i.data.category != "Transaksi").slice(0,2),
-        old: auth.notifications.filter((i) => i.data.category != "Transaksi").slice(2),
+    const { data: notificationData, setData: setNotificationData } = useForm({
+        new: auth.notifications
+            .filter((i) => i.data.category != "Transaksi")
+            .slice(0, 2),
+        old: auth.notifications
+            .filter((i) => i.data.category != "Transaksi")
+            .slice(2),
         page: 1,
         hasMore: true,
     });
 
     const getNewNotification = () => {
         //
-    }
+    };
 
     const getOldNotification = (page) => {
         //
-    }
+    };
 
     useEffect(() => {
         getNewNotification();
-    }, [])
+    }, []);
 
     return (
         <main className="relative flex font-sans bg-gray-50 text-dark">
@@ -405,7 +453,12 @@ export default function DashboardLayout({
                             alt="Goals Academy"
                         />
                     </Link>
-                    {isMobile && <NavigationBurgerButton isOpen={navShow} setIsOpen={setNavShow} />}
+                    {isMobile && (
+                        <NavigationBurgerButton
+                            isOpen={navShow}
+                            setIsOpen={setNavShow}
+                        />
+                    )}
                 </div>
                 <nav className="flex flex-col gap-[5vw] md:gap-[1.25vw] py-[1.25vw] ps-[5vw] pe-[6.3vw] md:ps-[1.67vw] md:pe-[2.1vw]">
                     {navConfig.map(
@@ -527,7 +580,10 @@ export default function DashboardLayout({
                 <header className="absolute z-[100] md:z-50 top-0 w-full h-[22.4vw] md:h-[5.8vw] flex justify-between items-center bg-dark-indigo md:bg-gray-50 px-[4.2vw] pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw] border-b-1">
                     {isMobile ? (
                         <div className="flex gap-[4vw] md:gap-[1vw]">
-                            <NavigationBurgerButton isOpen={navShow} setIsOpen={setNavShow} />
+                            <NavigationBurgerButton
+                                isOpen={navShow}
+                                setIsOpen={setNavShow}
+                            />
                             <Link href="/">
                                 <img
                                     className="w-[36vw] md:w-[9vw]"
@@ -545,7 +601,11 @@ export default function DashboardLayout({
                         id="tools"
                         className="flex items-center gap-[2vw] md:gap-[.5vw] text-[6vw] md:text-[1.5vw] text-white md:text-gray-400"
                     >
-                        <Notification auth={auth} data={notificationData} loadMore={getOldNotification} />
+                        <Notification
+                            auth={auth}
+                            data={notificationData}
+                            loadMore={getOldNotification}
+                        />
                         <Link
                             href={route(`${auth.user.user_role}.setting.index`)}
                         >
@@ -603,7 +663,7 @@ export const NavigationBurgerButton = ({ isOpen, setIsOpen }) => {
     );
 };
 
-function Notification ({ data, loadMore }) {
+function Notification({ data, loadMore }) {
     const [show, setShow] = useState(false);
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
@@ -614,8 +674,11 @@ function Notification ({ data, loadMore }) {
             onMouseEnter={() => !isMobile && setShow(true)}
             onMouseLeave={() => !isMobile && setShow(false)}
         >
-            <div className='relative'>
-                <FaRegBell className="fa-regular fa-bell text-[6vw] md:text-[1.5vw] text-white md:text-gray-400" onClick={() => isMobile && setShow(!show) } />
+            <div className="relative">
+                <FaRegBell
+                    className="fa-regular fa-bell text-[6vw] md:text-[1.5vw] text-white md:text-gray-400"
+                    onClick={() => isMobile && setShow(!show)}
+                />
                 <div
                     className={`${
                         data.new.length > 0 ? "" : "hidden"
@@ -623,8 +686,12 @@ function Notification ({ data, loadMore }) {
                 ></div>
             </div>
             {isMobile ? (
-                <div className={`${show ? '' : 'translate-x-[101%]'} absolute w-screen left-0 bottom-0 translate-y-full transition-all duration-500`}>
-                    <div className="h-[89vh] bg-white shadow-centered md:rounded-[.75vw] overflow-auto scrollbar-hidden pb-[1vw]" >
+                <div
+                    className={`${
+                        show ? "" : "translate-x-[101%]"
+                    } absolute w-screen left-0 bottom-0 translate-y-full transition-all duration-500`}
+                >
+                    <div className="h-[89vh] bg-white shadow-centered md:rounded-[.75vw] overflow-auto scrollbar-hidden pb-[1vw]">
                         <div className="flex justify-between items-center py-[6vw] md:py-[1.5vw] px-[3vw] md:px-[1.5vw] border-b-1">
                             <span className="font-poppins text-[5vw] md:text-[1.25vw]">
                                 Notifikasi
@@ -637,11 +704,14 @@ function Notification ({ data, loadMore }) {
                             </Link>
                         </div>
                         <div>
-                            {Number(data.new.length) + Number(data.old.length) ? (
+                            {Number(data.new.length) +
+                            Number(data.old.length) ? (
                                 <>
                                     {data.new.length > 0 && (
                                         <>
-                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center text-[4vw] md:text-[1vw]">Baru</div>
+                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center text-[4vw] md:text-[1vw]">
+                                                Baru
+                                            </div>
                                             {data.new.map((item, index) => {
                                                 return (
                                                     <NotificationItem
@@ -654,7 +724,9 @@ function Notification ({ data, loadMore }) {
                                     )}
                                     {data.old.length > 0 && (
                                         <>
-                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center text-[4vw] md:text-[1vw]">Terdahulu</div>
+                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center text-[4vw] md:text-[1vw]">
+                                                Terdahulu
+                                            </div>
                                             {data.old.map((item, index) => {
                                                 return (
                                                     <NotificationItem
@@ -663,7 +735,16 @@ function Notification ({ data, loadMore }) {
                                                     />
                                                 );
                                             })}
-                                            {data.hasMore && <GoalsButton activeClassName="bg-white hover:text-secondary text-[4vw] md:text-[1vw]" onClick={() => loadMore(data.page + 1)}>Load More</GoalsButton>}
+                                            {data.hasMore && (
+                                                <GoalsButton
+                                                    activeClassName="bg-white hover:text-secondary text-[4vw] md:text-[1vw]"
+                                                    onClick={() =>
+                                                        loadMore(data.page + 1)
+                                                    }
+                                                >
+                                                    Load More
+                                                </GoalsButton>
+                                            )}
                                         </>
                                     )}
                                 </>
@@ -697,11 +778,14 @@ function Notification ({ data, loadMore }) {
                                 </button>
                             </div>
                             <div>
-                                {Number(data.new.length) + Number(data.old.length) ? (
+                                {Number(data.new.length) +
+                                Number(data.old.length) ? (
                                     <>
                                         {data.new.length > 0 && (
                                             <>
-                                                <div className="px-[1.5vw] py-[.5vw] text-center text-[4vw] md:text-[1vw]">Baru</div>
+                                                <div className="px-[1.5vw] py-[.5vw] text-center text-[4vw] md:text-[1vw]">
+                                                    Baru
+                                                </div>
                                                 {data.new.map((item, index) => {
                                                     return (
                                                         <NotificationItem
@@ -714,7 +798,9 @@ function Notification ({ data, loadMore }) {
                                         )}
                                         {data.old.length > 0 && (
                                             <>
-                                                <div className="px-[1.5vw] py-[.5vw] text-center text-[4vw] md:text-[1vw]">Terdahulu</div>
+                                                <div className="px-[1.5vw] py-[.5vw] text-center text-[4vw] md:text-[1vw]">
+                                                    Terdahulu
+                                                </div>
                                                 {data.old.map((item, index) => {
                                                     return (
                                                         <NotificationItem
@@ -723,7 +809,18 @@ function Notification ({ data, loadMore }) {
                                                         />
                                                     );
                                                 })}
-                                                {data.hasMore && <GoalsButton activeClassName="bg-white hover:text-secondary text-[4vw] md:text-[1vw]" onClick={() => loadMore(data.page + 1)}>Load More</GoalsButton>}
+                                                {data.hasMore && (
+                                                    <GoalsButton
+                                                        activeClassName="bg-white hover:text-secondary text-[4vw] md:text-[1vw]"
+                                                        onClick={() =>
+                                                            loadMore(
+                                                                data.page + 1
+                                                            )
+                                                        }
+                                                    >
+                                                        Load More
+                                                    </GoalsButton>
+                                                )}
                                             </>
                                         )}
                                     </>
@@ -738,7 +835,7 @@ function Notification ({ data, loadMore }) {
                 </TECollapse>
             )}
         </div>
-    )
+    );
 }
 
 function NotificationItem({ item }) {
@@ -746,7 +843,9 @@ function NotificationItem({ item }) {
         return (
             <Link
                 href=""
-                className={`${item.read_at ? 'hover:bg-soft' : 'bg-soft'} relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
+                className={`${
+                    item.read_at ? "hover:bg-soft" : "bg-soft"
+                } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
             >
                 <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
                     {/* <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[3vw] md:text-[.75vw]">
@@ -801,7 +900,9 @@ function NotificationItem({ item }) {
         return (
             <Link
                 href=""
-                className={`${item.read_at ? 'hover:bg-soft' : 'bg-soft'} relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
+                className={`${
+                    item.read_at ? "hover:bg-soft" : "bg-soft"
+                } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
             >
                 <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
                     {/* <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[3vw] md:text-[.75vw]">

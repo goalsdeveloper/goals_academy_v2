@@ -155,6 +155,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::resource('tutor', TutorController::class);
         Route::put('tutor/{tutor}/updateActive', [TutorController::class, 'updateActive'])->name('tutor.updateActive');
         Route::resource('moderator', ModeratorController::class);
+        Route::get('revenue_type', function () {
+            return Inertia::render('Auth/Admin/ManajemenUser/RevenueType/Index');
+        });
     });
     Route::prefix('marketing')->name('marketing.')->group(function () {
         Route::resource('vouchers', VoucherController::class);
