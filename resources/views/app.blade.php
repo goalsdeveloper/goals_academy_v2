@@ -42,8 +42,9 @@
     @inertiaHead
 </head>
 
-<body class="antialiased text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20 font-sans">
+<body class="font-sans antialiased text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20">
     @inertia
+    <div id="modal-root"></div>
 </body>
 
 </html>
