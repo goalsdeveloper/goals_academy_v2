@@ -225,7 +225,11 @@ export default function Update({ auth, data }) {
                             setShow={(i) =>
                                 setShowForm({ ...showForm, revenue_type: i })
                             }
-                            data={formData.revenue_type_type+"%"}
+                            data={
+                                formData.revenue_type_type
+                                    ? formData.revenue_type_type + "%"
+                                    : ""
+                            }
                             label="Revenue Type"
                             placeholderClassName="font-normal"
                         >
