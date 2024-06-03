@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             TopicSeeder::class,
             ProductTypeSeeder::class,
             CategorySeeder::class,
+            RevenueTypeSeeder::class,
             UserSeeder::class,
             PaymentMethodSeeder::class,
             ProductSeeder::class,

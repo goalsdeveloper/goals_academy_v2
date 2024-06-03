@@ -36,14 +36,14 @@ class NotificationController extends Controller
         $transactions_notifications = $user->notifications()->where('data->category', 'Transaksi')->where('created_at', '<=', Carbon::now()->subHours(24)->toDateTimeString());
         $new_transactions_notifications = $user->notifications()->where('data->category', 'Transaksi')->where('created_at', '>=', Carbon::now()->subHours(24)->toDateTimeString());
         $promo_notifications = $user->notifications()->where('data->category', 'Promo');
-        $program_notifications = $user->notifications()->where('data->category', 'Program');
+        $program_notifications = $user->notifications()->where('data->category', 'Pembelajaran');
         if ($req['new'] == true) {
             $transactions_notifications = $new_transactions_notifications->get();
-            $promo_notifications = $promo_notifications->where('created_at', '>=', Carbon::now()->subHours(24)->toDateTimeString())->get();
-            $program_notifications = $program_notifications->where('created_at', '>=', Carbon::now()->subHours(24)->toDateTimeString())->get();
+            $promo_notifications = $promo_notifications->where('created_at', '>=', Carbon::now()->subHours(24)->toDateTimeString())->limit(5)->get();
+            $program_notifications = $program_notifications->where('created_at', '>=', Carbon::now()->subHours(24)->toDateTimeString())->limit(5)->get();
         } else {
             $transactions_notifications = $transactions_notifications->paginate(5);
-            $new_transactions_notifications = $new_transactions_notifications->paginate(5);
+            $new_transactions_notifications = $new_transactions_notifications->get();
             $promo_notifications = $promo_notifications->paginate(5);
             $program_notifications = $program_notifications->paginate(5);
         }

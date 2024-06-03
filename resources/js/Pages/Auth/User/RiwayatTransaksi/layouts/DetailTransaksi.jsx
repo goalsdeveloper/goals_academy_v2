@@ -5,7 +5,7 @@ import { useMediaQuery } from "react-responsive";
 import { Link } from "@inertiajs/react";
 
 const DetailTransaksi = ({ data, show, setShow }) => {
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <>

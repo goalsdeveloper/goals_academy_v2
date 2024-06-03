@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Place;
 use App\Models\User;
+use App\Notifications\GeneralCourseNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
@@ -270,19 +271,10 @@ class ProgressController extends Controller
                     $file->mime_type = $uploadedFile->getMimeType();
                     $file->name = $uploadedFile->getClientOriginalName();
                     $file->save();
-
-
-                    // $fileUpload = new FileUpload();
-                    // $fileUpload->filename = $file->getClientOriginalName();
-                    // $fileUpload->slug  = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    // $fileUpload->mime_type  = $file->getClientMimeType();
-                    // $fileUpload->file_path  = $filePath;
-                    // $fileUpload->size = $file->getSize();
-                    // $fileUpload->user_id = Auth::user()->id;
-                    // $fileUpload->save();
                 }
 
-                // return response()->json(["status" => true, "statusCode" => 200, "message" => "Update progress berhasil"], 200);
+                $progress->user->notify(new GeneralCourseNotification("Tutor Sudah Ditemukan!", "Bimbingan {$progress->order->order_code} sesi {$progress->session} terdapat update, yuk cek segera!", route('user.profile.detailPembelajaran', ['order_id' => $progress->order->order_code])));
+                $progress->course->tutor->notify(new GeneralCourseNotification("Update pada Bimbingan", "Bimbingan {$progress->order->order_code} sesi {$progress->session} terdapat update dari moderator, yuk cek segera!", route('tutor.bimbingan.progress.edit', ['progress' => $progress->order->order_code])));
                 return redirect()->route("moderator.bimbingan.progress.index")->with("success", "Update progress berhasil");
             } else {
                 abort(403);
@@ -357,6 +349,7 @@ class ProgressController extends Controller
                     }
                 }
                 // return response()->json(["status" => true, "statusCode" => 200, "message" => "Progress berhasil diperbarui menjadi selesai"], 200);
+                $progress->user->notify(new GeneralCourseNotification("Progress Bimbingan telah Diupdate!", "Bimbingan $progress->order->order_code sesi $progress->session telah ditandai selesai!", route('user.profile.detailPembelajaran', ['order_id' => $progress->order->order_code])));
                 return redirect()->back()->with("success", "Progress berhasil diperbarui menjadi selesai");
             } else {
                 abort(403);

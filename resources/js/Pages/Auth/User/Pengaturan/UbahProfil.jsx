@@ -30,7 +30,7 @@ export default function Index({ auth, userData, profileData }) {
         });
     };
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <PengaturanLayout auth={auth} title="Ubah Profil">
@@ -174,7 +174,7 @@ export const ProfileImage = ({ auth }) => {
             : userIcon
     );
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <div className="relative flex flex-shrink-0 flex-col justify-center items-center gap-[1vw] px-[1.6vw] self-center mb-[6vw] h-fit">

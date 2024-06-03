@@ -45,7 +45,7 @@ export default function DetailPesanan({
 
     const dataAturJadwalComp = { cities, date, topics };
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <MainLayout

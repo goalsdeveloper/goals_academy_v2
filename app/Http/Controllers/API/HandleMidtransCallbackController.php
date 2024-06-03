@@ -4,11 +4,13 @@ namespace App\Http\Controllers\API;
 
 use App\Enums\CourseStatusEnum;
 use App\Enums\OrderEnum;
+use App\Enums\UserRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\FileUpload;
 use App\Models\Order;
 use App\Models\OrderHistory;
+use App\Notifications\GeneralCourseNotification;
 use App\Notifications\MidtransNotifications\ExpireNotification;
 use App\Notifications\MidtransNotifications\SuccessNotification;
 use Illuminate\Http\Request;
@@ -71,11 +73,11 @@ class HandleMidtransCallbackController extends Controller
                     ];
                     $session = 1;
                     $form_result = $order->form_result;
-                    $parentCourse = Course::create(array_merge($dataCourse,[
+                    $parentCourse = Course::create(array_merge($dataCourse, [
                         'session' => $session, 'ongoing' => CourseStatusEnum::WAITING,
                         'date' => $form_result['schedule'] ?? null,
                         'place_id' => $form_result['place_id'] ?? null,
-                        'topic_id' => $form_result['topic'] ?? null
+                        'topic_id' => $form_result['topic'] ?? null,
                     ]));
                     $dataCourse['parent_id'] = $parentCourse->id;
                     if (array_key_exists('add_on', $form_result) && $form_result['add_on'] != null) {
@@ -107,6 +109,10 @@ class HandleMidtransCallbackController extends Controller
                                 'user_id' => $parentCourse->user_id,
                             ]);
                         }
+                    }
+                    $moderators = User::where('user_role', UserRoleEnum::MODERATOR)->get();
+                    foreach ($moderators as $moderator) {
+                        $moderator->notify(new GeneralCourseNotification("Ada Bimbingan Baru!", "Terdapat Bimbingan Baru yang Harus diproses!", route('moderator.bimbingan.order.edit', ['order' => $order->order_code])));
                     }
                 }
                 break;

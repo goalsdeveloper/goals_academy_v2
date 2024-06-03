@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Profile\UpdatePasswordController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Tutor\HistoryController;
@@ -18,9 +19,13 @@ Route::middleware(['auth', 'tutor'])->group(function () {
             Route::resource('progress', ProgressController::class)->except(['update']);
             Route::resource('history', HistoryController::class)->except(['update', 'edit']);
         });
-        Route::get('profile', [ProfileController::class, 'index'])->name('tutor.profile');
+        Route::get('profile', [ProfileController::class, 'index'])->name('profile');
         Route::put('profile', [ProfileController::class, 'update'])->name('tutor.update');
+
+        Route::get('ubah-password', [ProfileController::class, 'editPassword'])->name('password.update');
+        Route::put('ubah-password', [UpdatePasswordController::class, 'store'])->name('password.update.store');
         Route::resource('setting', SettingController::class);
+
     });
 
 });
