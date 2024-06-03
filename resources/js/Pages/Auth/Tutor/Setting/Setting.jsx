@@ -56,7 +56,7 @@ export default function Setting({ auth, user, skills }) {
         );
     };
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <DashboardLayout title="Setting" role="tutor" auth={auth}>

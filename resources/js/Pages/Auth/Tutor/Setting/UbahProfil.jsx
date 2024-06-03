@@ -47,7 +47,7 @@ export default function Profile({ auth, profile, skills }) {
         hard_skills: profile.skills.filter((i) => i.category == "hard_skill"),
     });
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     if (!isMobile) return router.visit(route("tutor.setting.index"));
 
@@ -366,7 +366,7 @@ const ProfileImage = ({ auth }) => {
             : "https://mura.cfbf.com/sites/cfbv2/cache/file/B44C718C-17B1-475D-BBDFFD8C4906BAB4.png"
     );
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     const submitHandler = (image) => {
         setIsLoading(true);

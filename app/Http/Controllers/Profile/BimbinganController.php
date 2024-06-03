@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Profile;
 
 use App\Enums\CourseStatusEnum;
+use App\Enums\UserRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Course;
@@ -10,6 +11,7 @@ use App\Models\Order;
 use App\Models\ProductReview;
 use App\Models\Topic;
 use App\Models\User;
+use App\Notifications\GeneralCourseNotification;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -107,6 +109,10 @@ class BimbinganController extends Controller
                 'topic_id' => $request['topic'],
             ];
 
+            $moderators = User::where('user_role', UserRoleEnum::MODERATOR)->get();
+            foreach ($moderators as $moderator) {
+                $moderator->notify(new GeneralCourseNotification("User Telah set Jadwal!", "Bimbingan {$order->order_code} sesi {$course->session} telah diset oleh pengguna, yuk cek segera!", route('moderator.bimbingan.progress.show', ['progress' => $course])));
+            }
             $course->update($data);
         } catch (\Throwable $th) {
 

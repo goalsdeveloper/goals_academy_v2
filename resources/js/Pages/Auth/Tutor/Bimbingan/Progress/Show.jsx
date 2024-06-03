@@ -27,7 +27,7 @@ export default function Show({ auth, order, files }) {
         document_deleted: [],
     });
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     const GetLocationData = () => {
         switch (order.products.contact_type) {

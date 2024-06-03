@@ -12,6 +12,7 @@ use App\Models\PaymentMethod;
 use App\Models\Products;
 use App\Models\User;
 use App\Notifications\InvoiceNotification;
+use App\Notifications\ReminderPurchaseNotification;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -165,6 +166,14 @@ class PurchaseController extends Controller
         ]);
 
         $user->notify(new InvoiceNotification($orderData));
+        if ($paymentMethod->category == 'bank_transfer') {
+            $delay = Carbon::now()->addHours(23)->addMinutes(55);
+        } else {
+            $delay = Carbon::now()->addMinutes(10);
+        }
+        $user->notify(new ReminderPurchaseNotification("Segera Lakukan Pembayaran", "Tersisa 5 menit sebelum pesananmu batal!", route('purchase.status', ['order' => $orderData->id])))->delay($delay);
+
+
         return redirect()->route('purchase.status', $orderData->order_code);
     }
 

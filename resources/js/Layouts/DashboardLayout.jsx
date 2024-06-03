@@ -1,6 +1,6 @@
 import GoalsButton from "@/Components/GoalsButton";
 import TECollapseItem from "@/Components/TECollapseItem";
-import '@/script/momentCustomLocale';
+import "@/script/momentCustomLocale";
 import { Head, Link, useForm } from "@inertiajs/react";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -39,7 +39,9 @@ export default function DashboardLayout({
                 {
                     name: "Statistic",
                     href: "/admin/statistic",
-                    icon: <RiBarChart2Line className="text-[4vw] md:text-[1vw]" />,
+                    icon: (
+                        <RiBarChart2Line className="text-[4vw] md:text-[1vw]" />
+                    ),
                     isActive: title == "Statistic",
                 },
                 {
@@ -51,100 +53,112 @@ export default function DashboardLayout({
                         {
                             name: "Category",
                             href: "/admin/bimbingan/category",
-                            icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <GrTag className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Category",
                         },
                         {
                             name: "Add-On",
                             href: "/admin/bimbingan/addon",
-                            icon: <TbLayoutGridAdd className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <TbLayoutGridAdd className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Add-On",
                         },
                         {
                             name: "Place",
                             href: "/admin/bimbingan/place",
-                            icon: <GrLocation className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <GrLocation className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Place",
                         },
                         {
                             name: "Topic",
                             href: "/admin/bimbingan/topic",
-                            icon: <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Topic",
                         },
                         {
                             name: "Product",
                             href: "/admin/bimbingan/product",
-                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <TfiDropbox className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Product",
                         },
                         {
                             name: "Order",
                             href: "/admin/bimbingan/order",
-                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Order",
                         },
                     ],
                     collapsed: true,
                 },
-                {
-                    name: "Webinar",
-                    href: "",
-                    icon: "",
-                    isActive: false,
-                    branches: [
-                        {
-                            name: "Product",
-                            href: "/admin/webinar/product",
-                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
-                            isActive:
-                                title == "Webinar" && subtitle == "Product",
-                        },
-                        {
-                            name: "Order",
-                            href: "/admin/webinar/order",
-                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
-                            isActive: title == "Webinar" && subtitle == "Order",
-                        },
-                    ],
-                    collapsed: true,
-                },
-                {
-                    name: "E-course",
-                    href: "",
-                    icon: "",
-                    isActive: false,
-                    branches: [
-                        {
-                            name: "Category",
-                            href: "/admin/ecourse/category",
-                            icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
-                            isActive:
-                                title == "E-course" && subtitle == "Category",
-                        },
-                        {
-                            name: "Product",
-                            href: "/admin/ecourse/product",
-                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
-                            isActive:
-                                title == "E-course" && subtitle == "Product",
-                        },
-                        {
-                            name: "Order",
-                            href: "/admin/ecourse/order",
-                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
-                            isActive:
-                                title == "E-course" && subtitle == "Order",
-                        },
-                    ],
-                    collapsed: true,
-                },
+                // {
+                //     name: "Webinar",
+                //     href: "",
+                //     icon: "",
+                //     isActive: false,
+                //     branches: [
+                //         {
+                //             name: "Product",
+                //             href: "/admin/webinar/product",
+                //             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "Webinar" && subtitle == "Product",
+                //         },
+                //         {
+                //             name: "Order",
+                //             href: "/admin/webinar/order",
+                //             icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                //             isActive: title == "Webinar" && subtitle == "Order",
+                //         },
+                //     ],
+                //     collapsed: true,
+                // },
+                // {
+                //     name: "E-course",
+                //     href: "",
+                //     icon: "",
+                //     isActive: false,
+                //     branches: [
+                //         {
+                //             name: "Category",
+                //             href: "/admin/ecourse/category",
+                //             icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-course" && subtitle == "Category",
+                //         },
+                //         {
+                //             name: "Product",
+                //             href: "/admin/ecourse/product",
+                //             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-course" && subtitle == "Product",
+                //         },
+                //         {
+                //             name: "Order",
+                //             href: "/admin/ecourse/order",
+                //             icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-course" && subtitle == "Order",
+                //         },
+                //     ],
+                //     collapsed: true,
+                // },
                 {
                     name: "Manajemen User",
                     href: "",
@@ -154,14 +168,18 @@ export default function DashboardLayout({
                         {
                             name: "User",
                             href: "/admin/manajemen_user/user",
-                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FiUser className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Manajemen User" && subtitle == "User",
                         },
                         {
                             name: "Tutor",
                             href: "/admin/manajemen_user/tutor",
-                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FiUser className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Manajemen User" &&
                                 subtitle == "Tutor",
@@ -169,88 +187,100 @@ export default function DashboardLayout({
                         {
                             name: "Moderator",
                             href: "/admin/manajemen_user/moderator",
-                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FiUser className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Manajemen User" &&
                                 subtitle == "Moderator",
                         },
-                    ],
-                    collapsed: false,
-                },
-                {
-                    name: "E-book",
-                    href: "",
-                    icon: "",
-                    isActive: false,
-                    branches: [
                         {
-                            name: "Category",
-                            href: "/admin/ebook/category",
-                            icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
+                            name: "Revenue Type",
+                            href: "/admin/manajemen_user/revenue_type",
+                            icon: (
+                                <FiGrid className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
-                                title == "E-book" && subtitle == "Category",
-                        },
-                        {
-                            name: "Product",
-                            href: "/admin/ebook/product",
-                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
-                            isActive:
-                                title == "E-book" && subtitle == "Product",
-                        },
-                        {
-                            name: "Order",
-                            href: "/admin/ebook/order",
-                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
-                            isActive: title == "E-book" && subtitle == "Order",
-                        },
-                    ],
-                    collapsed: true,
-                },
-                {
-                    name: "Marketing",
-                    href: "",
-                    icon: "",
-                    isActive: false,
-                    branches: [
-                        {
-                            name: "Affiliate",
-                            href: "/admin/marketing/affiliate",
-                            icon: <TbLayoutGridAdd className="text-[4vw] md:text-[1vw]" />,
-                            isActive:
-                                title == "Marketing" && subtitle == "Affiliate",
-                        },
-                        {
-                            name: "Vouchers",
-                            href: "/admin/marketing/vouchers",
-                            icon: <BiSolidDiscount className="text-[4vw] md:text-[1vw]" />,
-                            isActive:
-                                title == "Marketing" && subtitle == "Vouchers",
+                                title == "Manajemen User" &&
+                                subtitle == "Revenue Type",
                         },
                     ],
                     collapsed: false,
                 },
-                {
-                    name: "Career",
-                    href: "",
-                    icon: "",
-                    isActive: false,
-                    branches: [
-                        {
-                            name: "Job",
-                            href: "/admin/career/job",
-                            icon: <FiBriefcase className="text-[4vw] md:text-[1vw]" />,
-                            isActive: title == "Career" && subtitle == "Job",
-                        },
-                        {
-                            name: "Participant",
-                            href: "/admin/career/participant",
-                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
-                            isActive:
-                                title == "Career" && subtitle == "Participant",
-                        },
-                    ],
-                    collapsed: false,
-                },
+                // {
+                //     name: "E-book",
+                //     href: "",
+                //     icon: "",
+                //     isActive: false,
+                //     branches: [
+                //         {
+                //             name: "Category",
+                //             href: "/admin/ebook/category",
+                //             icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-book" && subtitle == "Category",
+                //         },
+                //         {
+                //             name: "Product",
+                //             href: "/admin/ebook/product",
+                //             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-book" && subtitle == "Product",
+                //         },
+                //         {
+                //             name: "Order",
+                //             href: "/admin/ebook/order",
+                //             icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                //             isActive: title == "E-book" && subtitle == "Order",
+                //         },
+                //     ],
+                //     collapsed: true,
+                // },
+                // {
+                //     name: "Marketing",
+                //     href: "",
+                //     icon: "",
+                //     isActive: false,
+                //     branches: [
+                //         {
+                //             name: "Affiliate",
+                //             href: "/admin/marketing/affiliate",
+                //             icon: <TbLayoutGridAdd className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "Marketing" && subtitle == "Affiliate",
+                //         },
+                //         {
+                //             name: "Vouchers",
+                //             href: "/admin/marketing/vouchers",
+                //             icon: <BiSolidDiscount className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "Marketing" && subtitle == "Vouchers",
+                //         },
+                //     ],
+                //     collapsed: false,
+                // },
+                // {
+                //     name: "Career",
+                //     href: "",
+                //     icon: "",
+                //     isActive: false,
+                //     branches: [
+                //         {
+                //             name: "Job",
+                //             href: "/admin/career/job",
+                //             icon: <FiBriefcase className="text-[4vw] md:text-[1vw]" />,
+                //             isActive: title == "Career" && subtitle == "Job",
+                //         },
+                //         {
+                //             name: "Participant",
+                //             href: "/admin/career/participant",
+                //             icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "Career" && subtitle == "Participant",
+                //         },
+                //     ],
+                //     collapsed: false,
+                // },
             ];
             break;
         case "moderator":
@@ -270,7 +300,9 @@ export default function DashboardLayout({
                         {
                             name: "Recent Order",
                             href: "/moderator/bimbingan/order",
-                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" &&
                                 subtitle == "Recent Order",
@@ -278,14 +310,18 @@ export default function DashboardLayout({
                         {
                             name: "Progress",
                             href: "/moderator/bimbingan/progress",
-                            icon: <MdHistory className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <MdHistory className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Progress",
                         },
                         {
                             name: "History",
                             href: "/moderator/bimbingan/history",
-                            icon: <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "History",
                         },
@@ -301,14 +337,18 @@ export default function DashboardLayout({
                         {
                             name: "Tutor List",
                             href: "/moderator/tutor/tutor_list",
-                            icon: <FiUser className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FiUser className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Tutor" && subtitle == "Tutor List",
                         },
                         {
                             name: "Schedule",
                             href: "/moderator/tutor/schedule",
-                            icon: <FaRegCalendar className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <FaRegCalendar className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Tutor" && subtitle == "Schedule",
                         },
@@ -334,14 +374,18 @@ export default function DashboardLayout({
                         {
                             name: "Progress",
                             href: "/tutor/bimbingan/progress",
-                            icon: <MdHistory className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <MdHistory className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Progress",
                         },
                         {
                             name: "History",
                             href: "/tutor/bimbingan/history",
-                            icon: <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <MdOutlineEventNote className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "History",
                         },
@@ -358,7 +402,7 @@ export default function DashboardLayout({
     const [navState, setNavState] = useState({});
     const [navShow, setNavShow] = useState(false);
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     const navToggleHandler = (index) => {
         setNavState((prevNavState) => ({
@@ -473,7 +517,12 @@ export default function DashboardLayout({
                             alt="Goals Academy"
                         />
                     </Link>
-                    {isMobile && <NavigationBurgerButton isOpen={navShow} setIsOpen={setNavShow} />}
+                    {isMobile && (
+                        <NavigationBurgerButton
+                            isOpen={navShow}
+                            setIsOpen={setNavShow}
+                        />
+                    )}
                 </div>
                 <nav className="flex flex-col gap-[5vw] md:gap-[1.25vw] py-[1.25vw] ps-[5vw] pe-[6.3vw] md:ps-[1.67vw] md:pe-[2.1vw]">
                     {navConfig.map(
@@ -595,7 +644,10 @@ export default function DashboardLayout({
                 <header className="absolute z-[100] md:z-50 top-0 w-full h-[22.4vw] md:h-[5.8vw] flex justify-between items-center bg-dark-indigo md:bg-gray-50 px-[4.2vw] pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw] border-b-1">
                     {isMobile ? (
                         <div className="flex gap-[4vw] md:gap-[1vw]">
-                            <NavigationBurgerButton isOpen={navShow} setIsOpen={setNavShow} />
+                            <NavigationBurgerButton
+                                isOpen={navShow}
+                                setIsOpen={setNavShow}
+                            />
                             <Link href="/">
                                 <img
                                     className="w-[36vw] md:w-[9vw]"
@@ -675,10 +727,10 @@ export const NavigationBurgerButton = ({ isOpen, setIsOpen }) => {
     );
 };
 
-function Notification ({ data, loadMore }) {
+function Notification({ data, loadMore }) {
     const [show, setShow] = useState(false);
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <div
@@ -688,7 +740,7 @@ function Notification ({ data, loadMore }) {
         >
             <div className="relative">
                 <FaRegBell
-                    className="fa-regular fa-bell text-[6vw] md:text-[1.5vw]"
+                    className="fa-regular fa-bell text-[6vw] md:text-[1.5vw] text-white md:text-gray-400"
                     onClick={() => isMobile && setShow(!show)}
                 />
                 <div
@@ -856,7 +908,18 @@ function NotificationItem({ item }) {
     if (item.data.category == "Transaksi") {
         return (
             <Link
-                href=""
+                onClick={(e) => {
+                    console.log(e);
+                    axios
+                        .get(route("api.notification.read", { id: item.id }))
+                        .then((res) => {
+                            if (item.data.link != undefined) {
+                                window.location = item.data.link;
+                                return;
+                            }
+                            location.reload();
+                        });
+                }}
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
@@ -913,7 +976,18 @@ function NotificationItem({ item }) {
     } else {
         return (
             <Link
-                href=""
+                onClick={(e) => {
+                    console.log(e);
+                    axios
+                        .get(route("api.notification.read", { id: item.id }))
+                        .then((res) => {
+                            if (item.data.link != undefined) {
+                                window.location = item.data.link;
+                                return;
+                            }
+                            location.reload();
+                        });
+                }}
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
