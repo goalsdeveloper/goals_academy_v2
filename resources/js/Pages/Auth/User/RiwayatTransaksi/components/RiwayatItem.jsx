@@ -15,7 +15,7 @@ import { useMediaQuery } from "react-responsive";
 function RiwayatItem({ data }) {
     const [isVisible, setIsVisible] = useState(false);
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     const { expiry_time } = JSON.parse(
         Number(data.order_history[0]?.payload) || 0

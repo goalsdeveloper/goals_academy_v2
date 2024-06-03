@@ -8,19 +8,21 @@ import { GoalsSelectMultipleInput, GoalsSelectMultipleInputItem } from "@/Compon
 import GoalsImageUploader from "@/Components/elements/GoalsImageUploader";
 import Breadcrumb from "../../components/Breadcrumb";
 import FormSection from "../../components/layouts/FormSection";
+import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/elements/GoalsSelectInput";
 
-export default function Show ({ auth, data }) {
-    console.log(data);
+export default function Show ({ auth, data }) {  
     const {data: formData, setData: setFormData, post} = useForm({
         name: data.name,
         username: data.username,
         phone_number: data.profile.phone_number,
         email: data.email,
         university: data.profile.university,
+        faculty: data.profile.faculty,
         major: data.profile.major,
         linkedin: data.profile.linkedin_url,
         soft_skills: data.skills.filter((item) => item.category == 'soft_skill'),
         hard_skills: data.skills.filter((item) => item.category == 'hard_skill'),
+        revenue_type: "",
     });
 
     const {data: temp, setData: setTemp} = useForm({
@@ -38,6 +40,7 @@ export default function Show ({ auth, data }) {
     const [showForm, setShowForm] = useState({
         soft_skills: false,
         hard_skills: false,
+        revenue_type: false,
     })
 
     return (
@@ -103,21 +106,40 @@ export default function Show ({ auth, data }) {
                             setData={(i) => setFormData('university', i)}
                             labelClassName="font-medium"
                         />
-                        <GoalsTextInput
-                            disabled
-                            required
-                            label="Major"
-                            placeholder="Major"
-                            data={formData.major}
-                            setData={(i) => setFormData('major', i)}
-                            labelClassName="font-medium"
-                        />
+                        <div className="grid grid-cols-2 gap-[1.2vw]">
+                            <GoalsTextInput
+                                required
+                                disabled
+                                label="Faculty"
+                                placeholder="Faculty"
+                                data={formData.faculty ?? ""}
+                                setData={(i) => setFormData("faculty", i)}
+                                labelClassName="font-medium"
+                            />
+                            <GoalsTextInput
+                                required
+                                disabled
+                                label="Major"
+                                placeholder="Major"
+                                data={formData.major ?? ""}
+                                setData={(i) => setFormData("major", i)}
+                                labelClassName="font-medium"
+                            />
+                        </div>
                         <GoalsTextInput
                             disabled
                             label="Linkedin"
                             placeholder="Linkedin"
                             data={formData.linkedin}
                             setData={(i) => setFormData('linkedin', i)}
+                            labelClassName="font-medium"
+                        />
+                        <GoalsTextInput
+                            required
+                            disabled
+                            label="Revenue Type"
+                            placeholder="Revenue Type"
+                            data={formData.revenue_type?.name}
                             labelClassName="font-medium"
                         />
                         <div className="grid grid-cols-2 gap-[1.2vw]">
@@ -149,7 +171,7 @@ export default function Show ({ auth, data }) {
                                 label="Soft Skills"
                                 className="text-[.8vw]"
                                 labelClassName="font-medium"
-                                placeholderClassName="font-normal"
+                                placeholderClassName="font-normal text-[.8vw]"
                                 submitButtonClassName="text-[.8vw] w-[5vw]"
                                 onSubmit={() => {
                                     if (
@@ -219,7 +241,7 @@ export default function Show ({ auth, data }) {
                                 label="Hard Skills"
                                 className="text-[.8vw]"
                                 labelClassName="font-medium"
-                                placeholderClassName="font-normal"
+                                placeholderClassName="font-normal text-[.8vw]"
                                 submitButtonClassName="text-[.8vw] w-[5vw]"
                                 onSubmit={() => {
                                     if (

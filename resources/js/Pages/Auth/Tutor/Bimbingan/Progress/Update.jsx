@@ -30,7 +30,7 @@ export default function Update({ auth, order, files }) {
         document_deleted: [],
     });
 
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     const submit = () => {
         post(route("tutor.bimbingan.progress.update", order.id));

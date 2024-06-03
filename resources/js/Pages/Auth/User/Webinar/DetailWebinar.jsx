@@ -25,7 +25,7 @@ const DetailWebinar = ({ auth, orderWebinar: data }) => {
         rate_product: 0,
         note_product: "",
     });
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
     const orderWebinar = data[0];
     const products = orderWebinar.products;
     const webinar_properties = products.webinar_properties;
