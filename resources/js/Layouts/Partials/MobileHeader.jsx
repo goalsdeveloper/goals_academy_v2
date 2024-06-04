@@ -38,8 +38,8 @@ const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
             : user;
     }
 
-    const role = auth.user?.user_role ?? "";
-    const roleCheck = role != "user" || role != "" ? "non-user" : "user";
+    const role = auth.user?.user_role ?? "user";
+    const roleCheck = role != "user" ? "non-user" : "user";
 
     const links = auth.user && {
         user: [
@@ -73,7 +73,7 @@ const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
                 href: "/logout",
                 method: "post",
                 icon: (
-                    <i className="bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24 text-red-400"></i>
+                    <i className="text-red-400 bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24"></i>
                 ),
                 text: <span className="text-red-400">Logout</span>,
             },
@@ -93,7 +93,7 @@ const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
                 href: "/logout",
                 method: "post",
                 icon: (
-                    <i className="bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24 text-red-400"></i>
+                    <i className="text-red-400 bi bi-box-arrow-in-left md:text-12 lg:text-20 3xl:text-24"></i>
                 ),
                 text: <span className="text-red-400">Logout</span>,
             },
@@ -102,7 +102,7 @@ const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
 
     return (
         <>
-            <div className="w-full flex justify-between">
+            <div className="flex justify-between w-full">
                 <div className="flex items-center gap-[5.5vw] w-7/12 md:w-2/12">
                     <NavigationBurgerButton
                         isOpen={isOpen}
@@ -134,7 +134,7 @@ const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
                             </div>
                             <TECollapse
                                 show={authDropdown}
-                                className="absolute z-10 shadow-none translate-y-2 right-0"
+                                className="absolute right-0 z-10 translate-y-2 shadow-none"
                             >
                                 <TECollapseItem className="border-2 w-fit py-[1vw] text-start bg-white  rounded-xl">
                                 {links[roleCheck].map(
@@ -173,7 +173,7 @@ const NavigationBurgerButton = ({ isOpen, setIsOpen }) => {
     return (
         <button
             aria-label="navigation-button"
-            className="md:hidden space-y-1 relative py-1"
+            className="relative py-1 space-y-1 md:hidden"
             onClick={() => setIsOpen(!isOpen)}
         >
             <span
