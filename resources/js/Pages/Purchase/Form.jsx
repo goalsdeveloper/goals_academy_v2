@@ -784,7 +784,7 @@ function SummaryCard({
     return (
         <>
             <div className={`fixed top-0 bottom-0 right-0 md:static w-full h-screen md:h-fit md:w-[30%] flex flex-col bg-white md:ms-[2vw] gap-[4vw] md:gap-[2vw] duration-500 ${showMobile ? '' : 'translate-x-full'} md:translate-x-0 md:text-[.9vw] overflow-auto`}>
-                <div className="relative h-screen md:h-fit border-1 md:rounded-[1vw] pt-20 xs:pt-24 md:pt-20 xl:pt-32 3xl:pt-48 md:p-[1.75vw] overflow-auto md:overflow-hidden">
+                <div className="relative h-screen md:h-fit border-1 md:rounded-[1vw] pt-20 xs:pt-24 md:p-[1.75vw] overflow-auto md:overflow-hidden">
                     <div className="md:hidden shadow-md">
                         <span className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins py-[4vw]" onClick={() => setShowMobile(false)}><FiChevronLeft className="text-[5vw]" /> Kembali</span>
                     </div>
