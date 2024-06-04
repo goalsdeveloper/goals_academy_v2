@@ -1,18 +1,27 @@
-import DashboardLayout from "@/Layouts/DashboardLayout";
-import React from "react";
-import SubHeading from "../../components/SubHeading";
 import GoalsButton from "@/Components/elements/GoalsButton";
-import { FiEdit2, FiEye, FiPlus, FiTrash2 } from "react-icons/fi";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
-import { useMemo } from "react";
-import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
-import { useForm } from "@inertiajs/react";
-import { createPortal } from "react-dom";
+import GoalsTextInput from "@/Components/elements/GoalsTextInput";
+import DashboardLayout from "@/Layouts/DashboardLayout";
+import { router, useForm } from "@inertiajs/react";
 import { useState } from "react";
+import { createPortal } from "react-dom";
+import toast from "react-hot-toast";
+import { FiEdit2, FiEye, FiPlus, FiTrash2 } from "react-icons/fi";
+import SubHeading from "../../components/SubHeading";
+import { useMemo } from "react";
 
-export default function RevenueType({ auth, revenueType }) {
-    const { data: formData, setData: setFormData } = useForm({
+export default function RevenueType({ auth, revenue_types }) {
+    revenue_types = revenue_types.data ?? [];
+
+    const {
+        data: formData,
+        setData: setFormData,
+        post,
+        put,
+        reset,
+        delete: destroy,
+    } = useForm({
         type: "",
     });
     const [showDialog, setShowDialog] = useState({
@@ -21,19 +30,45 @@ export default function RevenueType({ auth, revenueType }) {
         view: false,
     });
 
-    revenueType = revenueType
-        ? revenueType
-        : [
-              {
-                  type: 90,
-              },
-              {
-                  type: 80,
-              },
-              {
-                  type: 70,
-              },
-          ];
+    const callback = () =>
+        router.visit(route("admin.manajemen_user.revenue_type.index"), {
+            only: ["revenue_types"],
+        });
+
+    function createRevenueType() {
+        setShowDialog({});
+        post(route("admin.manajemen_user.revenue_type.store"), {
+            onSuccess: () => {
+                toast.success("Create Revenue Type Success");
+                callback();
+            },
+        });
+    }
+
+    function editRevenueType() {
+        setShowDialog({});
+        put(
+            route("admin.manajemen_user.revenue_type.update", {
+                revenue_type: formData.id,
+            }),
+            {
+                onSuccess: () => {
+                    toast.success("Edit Revenue Type Success");
+                    callback();
+                },
+            }
+        );
+    }
+
+    function deleteRevenueType(id) {
+        setShowDialog({});
+        destroy(route("admin.manajemen_user.revenue_type.destroy", id), {
+            onSuccess: () => {
+                toast.success("Delete Revenue Type Success");
+                callback();
+            },
+        });
+    }
 
     const columns = useMemo(
         () => [
@@ -49,20 +84,31 @@ export default function RevenueType({ auth, revenueType }) {
             {
                 accessorKey: "action",
                 header: "Action",
-                Cell: () => {
+                Cell: ({ row }) => {
                     return (
                         <div className="flex gap-4 w-fit">
                             <button
-                                onClick={() => setShowDialog({ edit: true })}
+                                onClick={() => {
+                                    setShowDialog({ edit: true });
+                                    setFormData({"type": row.original.type, id: row.original.id});
+                                    console.log(row.original);
+                                }}
                             >
                                 <FiEdit2 className="text-[1.2vw] text-secondary" />
                             </button>
                             <button
-                                onClick={() => setShowDialog({ view: true })}
+                                onClick={() => {
+                                    setShowDialog({ view: true });
+                                    setFormData("type", row.original.type);
+                                }}
                             >
                                 <FiEye className="text-[1.2vw] text-gray-400" />
                             </button>
-                            <button onClick={() => {}}>
+                            <button
+                                onClick={() =>
+                                    deleteRevenueType(row.original.id)
+                                }
+                            >
                                 <FiTrash2 className="text-[1.2vw] text-danger-40" />
                             </button>
                         </div>
@@ -83,7 +129,10 @@ export default function RevenueType({ auth, revenueType }) {
             <SubHeading title="Revenue Type">
                 <GoalsButton
                     className="flex items-center gap-4 py-[.6vw] px-[1.2vw] rounded-[.4vw] text-[.7vw]"
-                    onClick={() => setShowDialog({ create: true })}
+                    onClick={() => {
+                        setShowDialog({ create: true });
+                        reset();
+                    }}
                 >
                     <FiPlus className="text-[1vw]" />
                     Add Revenue Type
@@ -94,50 +143,56 @@ export default function RevenueType({ auth, revenueType }) {
                 <>
                     <RevenueTypeDialog
                         type="edit"
-                        formData={formData}
-                        setFormData={setFormData}
                         showDialog={showDialog}
                         setShowDialog={setShowDialog}
+                        formData={formData}
+                        setFormData={setFormData}
+                        handleSubmit={() => editRevenueType(formData.id)}
                     />
                     <RevenueTypeDialog
                         type="view"
-                        formData={formData}
-                        setFormData={setFormData}
                         showDialog={showDialog}
                         setShowDialog={setShowDialog}
+                        formData={formData}
+                        setFormData={setFormData}
                     />
                     <RevenueTypeDialog
                         type="create"
-                        formData={formData}
-                        setFormData={setFormData}
                         showDialog={showDialog}
                         setShowDialog={setShowDialog}
+                        formData={formData}
+                        setFormData={setFormData}
+                        handleSubmit={() => createRevenueType()}
                     />
                 </>,
                 document.getElementById("modal-root")
             )}
 
-            <GoalsDashboardTable
-                isHeadVisible
-                isSortable
-                columns={columns}
-                data={revenueType}
-                // keyword={keyword}
-                // setKeyword={setKeyword}
-                // onSearch={(i) => {
-                //     onSearchCallback(i);
-                // }}
-            />
+            <div className="mt-10">
+                <GoalsDashboardTable
+                    isSearchable={false}
+                    isHeadVisible
+                    isSortable
+                    columns={columns}
+                    data={revenue_types}
+                    // keyword={keyword}
+                    // setKeyword={setKeyword}
+                    // onSearch={(i) => {
+                    //     onSearchCallback(i);
+                    // }}
+                />
+            </div>
         </DashboardLayout>
     );
 }
 
 function RevenueTypeDialog({
-    formData,
-    setFormData,
     showDialog,
     setShowDialog,
     type,
+    formData,
+    setFormData,
+    handleSubmit,
 }) {
     return (
         <GoalsPopup
@@ -148,9 +203,13 @@ function RevenueTypeDialog({
         >
             <form
                 className="grid w-full gap-[.8vw]"
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmit();
+                }}
             >
                 <GoalsTextInput
+                    disabled={type === "view"}
                     type="number"
                     label="Revenue Type"
                     data={formData.type}
