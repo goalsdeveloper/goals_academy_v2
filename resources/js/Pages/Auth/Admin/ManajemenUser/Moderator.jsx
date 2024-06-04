@@ -178,17 +178,6 @@ export default function Moderator({ auth, moderators }) {
                             </button>
                         </li>
                         <li>
-                            <Link
-                                method="DELETE"
-                                href={route(
-                                    "admin.manajemen_user.moderator.destroy",
-                                    { moderator: cell.row.original.id }
-                                )}
-                            >
-                                <FiTrash2 className="text-[1.2vw] text-danger-40" />
-                            </Link>
-                        </li>
-                        <li>
                             <button>
                                 <FiEye
                                     className="text-[1.2vw] text-gray-400"
