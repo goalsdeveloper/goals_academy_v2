@@ -156,6 +156,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::resource('tutor', TutorController::class);
         Route::put('tutor/{tutor}/updateActive', [TutorController::class, 'updateActive'])->name('tutor.updateActive');
         Route::resource('moderator', ModeratorController::class);
+        Route::put('moderator/{moderator}/updateActive', [ModeratorController::class, 'updateActive'])->name('moderator.updateActive');
         Route::resource('revenue_type', RevenueTypeController::class);
         Route::get('revenue_type', function () {
             return Inertia::render('Auth/Admin/ManajemenUser/RevenueType/Index');
@@ -182,7 +183,7 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')-
         Route::get('order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('order.showOnline');
         Route::patch('order/{order:order_code}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('order.updateOnline');
         Route::resource('progress', ProgressController::class);
-        Route::put('progress/{progress}/confirm-bimbingan', [ProgressController::class,'confirmBimbingan'])->name('progress.confirmBimbingan');
+        Route::put('progress/{progress}/confirm-bimbingan', [ProgressController::class, 'confirmBimbingan'])->name('progress.confirmBimbingan');
         Route::resource('history', ModeratorHistoryBimbinganController::class);
     });
     Route::prefix('tutor')->name('tutor.')->group(function () {
