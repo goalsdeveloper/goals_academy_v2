@@ -419,26 +419,90 @@ export default function DashboardLayout({
     }, []);
 
     const { data: notificationData, setData: setNotificationData } = useForm({
-        new: auth.notifications
-            .filter((i) => i.data.category != "Transaksi")
-            .slice(0, 2),
-        old: auth.notifications
-            .filter((i) => i.data.category != "Transaksi")
-            .slice(2),
+        new: [],
+        old: [],
         page: 1,
         hasMore: true,
     });
 
+    const getFirstNotification = () => {
+        axios
+            .get(route("api.notification.get"))
+            .then((res) => {
+                const data = res.data;
+                setNotificationData((n) => ({
+                    ...n,
+                    new: data.new_notifications,
+                    old: data.old_notifications.data,
+                    hasMore:
+                        data.old_notifications.current_page <
+                        data.old_notifications.last_page,
+                }));
+            })
+            .then(() => {
+                setTimeout(() => getNewNotification(), 10000);
+            });
+    };
+
     const getNewNotification = () => {
-        //
+        const mergedNewNotif = (old, fromFetch) => {
+            const mergedArray = fromFetch.reduce((accumulator, item2) => {
+                if (!accumulator.some((item1) => item1.id === item2.id)) {
+                    accumulator.unshift(item2);
+                }
+                return accumulator;
+            }, old);
+            return mergedArray;
+        };
+        axios
+            .get(route("api.notification.get"))
+            .then((res) => {
+                const data = res.data;
+                setNotificationData((n) => ({
+                    ...n,
+                    new: mergedNewNotif(n.new, data.new_notifications),
+                }));
+            })
+            .then(setTimeout(() => getNewNotification(), 10000));
     };
 
     const getOldNotification = (page) => {
-        //
+        const updatedNotif = (old, fromFetch) => {
+            const mergedArray = fromFetch.reduce((accumulator, item2) => {
+                if (!accumulator.some((item1) => item1.id === item2.id)) {
+                    accumulator.push(item2);
+                }
+                return accumulator;
+            }, old);
+            return mergedArray;
+        };
+
+        const payload = {
+            params: {
+                page: page,
+            },
+        };
+        var notificationUpdate = {};
+        axios
+            .get(route("api.notification.getMoreNotif"), payload)
+            .then((res) => {
+                const current_page = res.data.notifications.current_page;
+                const last_page = res.data.notifications.last_page;
+                notificationUpdate = {
+                    ...notificationData,
+                    old: updatedNotif(
+                        notificationData.oldTransaction,
+                        res.data.notifications.data
+                    ),
+                    page: current_page,
+                    hasMoreTransaction: current_page < last_page,
+                };
+                setNotificationData(notificationUpdate);
+            });
     };
 
     useEffect(() => {
-        getNewNotification();
+        getFirstNotification();
     }, []);
 
     return (
@@ -696,12 +760,14 @@ function Notification({ data, loadMore }) {
                             <span className="font-poppins text-[5vw] md:text-[1.25vw]">
                                 Notifikasi
                             </span>
-                            <Link
-                                href="#"
-                                className="font-normal text-[3.6vw] md:text-[.9vw] hover:text-secondary"
-                            >
-                                Tandai sudah dibaca
-                            </Link>
+                            <button>
+                                <Link
+                                    href={route("api.notification.readAll")}
+                                    className="font-normal text-[3.6vw] md:text-[.9vw] hover:text-secondary"
+                                >
+                                    Tandai sudah dibaca
+                                </Link>
+                            </button>
                         </div>
                         <div>
                             {Number(data.new.length) +
@@ -770,7 +836,7 @@ function Notification({ data, loadMore }) {
                                 </span>
                                 <button>
                                     <Link
-                                        href="#"
+                                        href={route("api.notification.readAll")}
                                         className="font-normal text-[4vw] md:text-[.9vw] hover:text-secondary"
                                     >
                                         Tandai sudah dibaca
@@ -842,7 +908,18 @@ function NotificationItem({ item }) {
     if (item.data.category == "Transaksi") {
         return (
             <Link
-                href=""
+                onClick={(e) => {
+                    console.log(e);
+                    axios
+                        .get(route("api.notification.read", { id: item.id }))
+                        .then((res) => {
+                            if (item.data.link != undefined) {
+                                window.location = item.data.link;
+                                return;
+                            }
+                            location.reload();
+                        });
+                }}
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
@@ -899,7 +976,18 @@ function NotificationItem({ item }) {
     } else {
         return (
             <Link
-                href=""
+                onClick={(e) => {
+                    console.log(e);
+                    axios
+                        .get(route("api.notification.read", { id: item.id }))
+                        .then((res) => {
+                            if (item.data.link != undefined) {
+                                window.location = item.data.link;
+                                return;
+                            }
+                            location.reload();
+                        });
+                }}
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}

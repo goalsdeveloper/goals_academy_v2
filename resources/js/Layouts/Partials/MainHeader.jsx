@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useForm } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import moment from "moment";
@@ -11,6 +11,7 @@ import { useMediaQuery } from "react-responsive";
 import MobileHeader from "./MobileHeader";
 import "@/script/momentCustomLocale";
 import GoalsButton from "@/Components/GoalsButton";
+import axios from "axios";
 
 export default function MainHeader({ auth, title, className }) {
     let profileImage = "";
@@ -23,11 +24,11 @@ export default function MainHeader({ auth, title, className }) {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     // Notification Variable & Fetching Function
-    const {data: notificationData, setData: setNotificationData} = useForm({
-        newTransaction: auth.user ? auth.notifications.filter(i => i.data.category == 'Transaksi').slice(0,4) : [],
-        oldTransaction: auth.user ? auth.notifications.filter(i => i.data.category == 'Transaksi').slice(4) : [],
-        promo: auth.user ? auth.notifications.filter(i => i.data.category == 'Pembelajaran') : [],
-        program: auth.user ? auth.notifications.filter(i => i.data.category == 'Pembelajaran').slice(0,1) : [],
+    const { data: notificationData, setData: setNotificationData } = useForm({
+        newTransaction: [],
+        oldTransaction: [],
+        promo: [],
+        program: [],
         pageTransaction: 1,
         pagePromo: 1,
         pageProgram: 1,
@@ -36,70 +37,138 @@ export default function MainHeader({ auth, title, className }) {
         hasMoreProgram: true,
     });
 
-    const getNewNotification = () => {
-        // 1. Ambil Notification terbaru dengan API New Notification
-        // 2. Tambahkan data yang diperoleh ke depan array notificationData.newTransaction, notificationData.promo, dan notificationData.program
-        // 3. Jalankan ulang secara rekursif getNewNotification setelah fetch success
-        // Di bawah udah ada contoh nambah item pada array dari depan
-        // const array1 = [{ id: 1, name: 'John' },
-        // { id: 2, name: 'Jane' }];
-        // const array2 = [{ id: 2, name: 'Jane' },
-        // { id: 3, name: 'Doe' }];
+    const getFirstNotification = () => {
+        axios
+            .get(route("api.notification.userNotification"))
+            .then((res) => {
+                const data = res.data;
+                setNotificationData((n) => ({
+                    ...n,
+                    newTransaction: data.new_transaction_notifications,
+                    oldTransaction: data.transaction_notifications.data,
+                    program: data.program_notifications.data,
+                    promo: data.promo_notifications.data,
+                    hasMoreTransaction:
+                        data.transaction_notifications.current_page <
+                        data.transaction_notifications.last_page,
+                    hasMoreProgram:
+                        data.program_notifications.current_page <
+                        data.program_notifications.last_page,
+                    hasMorePromo:
+                        data.promo_notifications.current_page <
+                        data.promo_notifications.last_page,
+                }));
+            })
+            .then(() => {
+                setTimeout(() => getNewNotification(), 10000);
+            });
+    };
 
-        // // Merging arrays with unique values using reduce()
-        // const mergedArray = array2
-        //     .reduce((accumulator, item2) => {
-        //         if (!accumulator.some(item1 =>
-        //             item1.id === item2.id)) {
-        //             accumulator.unshift(item2);
-        //         }
-        //         return accumulator;
-        //     }, array1);
-            
-        // console.log(mergedArray);
-    }
+    const getNewNotification = () => {
+        const mergedNewNotif = (old, fromFetch) => {
+            const mergedArray = fromFetch.reduce((accumulator, item2) => {
+                if (!accumulator.some((item1) => item1.id === item2.id)) {
+                    accumulator.unshift(item2);
+                }
+                return accumulator;
+            }, old);
+            return mergedArray;
+        };
+        axios
+            .get(route("api.notification.userNotification"), {
+                params: { new: true },
+            })
+            .then((res) => {
+                const data = res.data;
+                setNotificationData((n) => ({
+                    ...n,
+                    newTransaction: mergedNewNotif(
+                        n.newTransaction,
+                        data.transaction_notifications
+                    ),
+                    program: mergedNewNotif(
+                        n.program,
+                        data.program_notifications
+                    ),
+                    promo: mergedNewNotif(n.promo, data.promo_notifications),
+                }));
+            })
+            .then(setTimeout(() => getNewNotification(), 10000));
+    };
 
     const getOldNotification = (category, page) => {
-        // 1. Ambil Notification terhadulu dengan API Old Notification 
-        // 2. Tambahkan data yang diperoleh ke belakang array notificationData.oldTransaction, notificationData.promo dan notificationData.program
-        // Di bawah udah ada contoh nambah item pada array dari depan
-        // const array1 = [{ id: 1, name: 'John' },
-        // { id: 2, name: 'Jane' }];
-        // const array2 = [{ id: 2, name: 'Jane' },
-        // { id: 3, name: 'Doe' }];
+        const updatedNotif = (old, fromFetch) => {
+            const mergedArray = fromFetch.reduce((accumulator, item2) => {
+                if (!accumulator.some((item1) => item1.id === item2.id)) {
+                    accumulator.push(item2);
+                }
+                return accumulator;
+            }, old);
+            return mergedArray;
+        };
 
-        // // Merging arrays with unique values using reduce()
-        // const mergedArray = array2
-        //     .reduce((accumulator, item2) => {
-        //         if (!accumulator.some(item1 =>
-        //             item1.id === item2.id)) {
-        //             accumulator.push(item2);
-        //         }
-        //         return accumulator;
-        //     }, array1);
-            
-        // console.log(mergedArray);
-
-        switch (category) {
-            case 'transaction':
-                console.log(transaction+' = '+page)
-                break;
-            case 'promo':
-                console.log(transaction+' = '+page)
-                break;
-            case 'program':
-                console.log(transaction+' = '+page)
-                break;
-        }
-    }
+        const payload = {
+            params: {
+                type: category,
+                page: page,
+            },
+        };
+        var notificationUpdate = {};
+        axios
+            .get(route("api.notification.getMoreNotif"), payload)
+            .then((res) => {
+                const current_page = res.data.notifications.current_page;
+                const last_page = res.data.notifications.last_page;
+                switch (category) {
+                    case "Transaksi":
+                        notificationUpdate = {
+                            ...notificationData,
+                            oldTransaction: updatedNotif(
+                                notificationData.oldTransaction,
+                                res.data.notifications.data
+                            ),
+                            pageTransaction: current_page,
+                            hasMoreTransaction: current_page < last_page,
+                        };
+                        break;
+                    case "Pembelajaran":
+                        notificationUpdate = {
+                            ...notificationData,
+                            program: updatedNotif(
+                                notificationData.program,
+                                res.data.notifications.data
+                            ),
+                            pageProgram: current_page,
+                            hasMoreProgram: current_page < last_page,
+                        };
+                        break;
+                    case "Promo":
+                        notificationUpdate = {
+                            ...notificationData,
+                            promo: updatedNotif(
+                                notificationData.promo,
+                                res.data.notifications.data
+                            ),
+                            pagePromo: current_page,
+                            hasMorePromo: current_page < last_page,
+                        };
+                        break;
+                    default:
+                        break;
+                }
+                setNotificationData(notificationUpdate);
+            });
+    };
 
     // Jalankan getNewNotification
     useEffect(() => {
-        getNewNotification()
-    }, [])
+        getFirstNotification();
+    }, []);
 
     return (
-        <header className={`overflow-y-visible overflow-x-clip sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50 ${className}`}>
+        <header
+            className={`overflow-y-visible overflow-x-clip sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50 ${className}`}
+        >
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">
                 {isMobile ? (
@@ -109,7 +178,7 @@ export default function MainHeader({ auth, title, className }) {
                             title,
                             profileImage,
                             notificationData,
-                            getOldNotification
+                            getOldNotification,
                         }}
                     />
                 ) : (
@@ -123,14 +192,13 @@ export default function MainHeader({ auth, title, className }) {
                         </Link>
                     </div>
                 )}
-
                 <NavbarExpand
                     {...{
                         auth,
                         title,
                         profileImage,
                         notificationData,
-                        getOldNotification
+                        getOldNotification,
                     }}
                 />
             </nav>
@@ -138,7 +206,13 @@ export default function MainHeader({ auth, title, className }) {
     );
 }
 
-function NavbarExpand({ auth, title, profileImage, notificationData, getOldNotification }) {
+function NavbarExpand({
+    auth,
+    title,
+    profileImage,
+    notificationData,
+    getOldNotification,
+}) {
     const [authDropdown, setAuthDropdown] = useState(false);
     const [profileDropdown, setProfileDropdown] = useState(false);
     return (
@@ -224,7 +298,11 @@ function NavbarExpand({ auth, title, profileImage, notificationData, getOldNotif
                 </div>
             ) : (
                 <div className="w-auto hidden md:flex flex-wrap justify-end items-center gap-[3vw] md:gap-[1vw] font-medium text-[4vw] md:text-[1vw]">
-                    <Notification auth={auth} data={notificationData} loadMore={getOldNotification} />
+                    <Notification
+                        auth={auth}
+                        data={notificationData}
+                        loadMore={getOldNotification}
+                    />
                     <div
                         className={`font-poppins flex justify-center cursor-pointer`}
                         onMouseEnter={() => setAuthDropdown(true)}
@@ -246,7 +324,7 @@ function NavbarExpand({ auth, title, profileImage, notificationData, getOldNotif
                             <TECollapseItem className="py-[2vw] px-[3vw] md:py-[1vw] md:px-[1.5vw] gap-[2vw] md:gap-[1vw] text-start bg-white shadow-centered rounded-xl">
                                 <Link
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
-                                    href={"/"+auth.user.user_role}
+                                    href={"/" + auth.user.user_role}
                                     method="GET"
                                 >
                                     <i className="fa-regular fa-circle-user md:text-12 lg:text-20 3xl:text-24"></i>
@@ -254,7 +332,13 @@ function NavbarExpand({ auth, title, profileImage, notificationData, getOldNotif
                                 </Link>
                                 <Link
                                     className="flex gap-2 items-center font-poppins hover:text-primary"
-                                    href={auth.user.user_role == "user" ? "/pengaturan" : route(`${auth.user.user_role}.setting.index`)}
+                                    href={
+                                        auth.user.user_role == "user"
+                                            ? "/pengaturan"
+                                            : route(
+                                                  `${auth.user.user_role}.setting.index`
+                                              )
+                                    }
                                     method="GET"
                                 >
                                     <i className="bi bi-gear md:text-12 lg:text-20 3xl:text-24"></i>
@@ -278,23 +362,23 @@ function NavbarExpand({ auth, title, profileImage, notificationData, getOldNotif
     );
 }
 
-function Notification ({ auth, data, loadMore }) {
+function Notification({ auth, data, loadMore }) {
     const [show, setShow] = useState(false);
-    const [activeDisplay, setActiveDisplay] = useState(0)
+    const [activeDisplay, setActiveDisplay] = useState(0);
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     const loadMoreTransaction = () => {
-        loadMore('transaction', data.pageTransaction + 1);
-    }
+        loadMore("Transaksi", data.pageTransaction + 1);
+    };
 
     const loadMorePromo = () => {
-        loadMore('promo', data.pagePromo + 1);
-    }
+        loadMore("Promo", data.pagePromo + 1);
+    };
 
     const loadMoreProgram = () => {
-        loadMore('program', data.pageProgram + 1);
-    }
+        loadMore("Pembelajaran", data.pageProgram + 1);
+    };
 
     return (
         <div
@@ -307,7 +391,10 @@ function Notification ({ auth, data, loadMore }) {
                     auth.user.user_role == "user" ? "" : "hidden"
                 } relative`}
             >
-                <i className="fa-regular fa-bell text-[8vw] md:text-[2vw]" onClick={() => isMobile && setShow(!show) }></i>
+                <i
+                    className="fa-regular fa-bell text-[8vw] md:text-[2vw]"
+                    onClick={() => isMobile && setShow(!show)}
+                ></i>
                 <div
                     className={`${
                         data.newTransaction.length > 0 ? "" : "hidden"
@@ -315,15 +402,19 @@ function Notification ({ auth, data, loadMore }) {
                 ></div>
             </div>
             {isMobile ? (
-                <div className={`${show ? '' : 'translate-x-[101%]'} absolute w-screen left-0 bottom-0 translate-y-full transition-all duration-500`}>
-                    <div className="h-[89vh] bg-white shadow-centered md:rounded-[.75vw] overflow-auto scrollbar-hidden pb-[1vw]" >
+                <div
+                    className={`${
+                        show ? "" : "translate-x-[101%]"
+                    } absolute w-screen left-0 bottom-0 translate-y-full transition-all duration-500`}
+                >
+                    <div className="h-[89vh] bg-white shadow-centered md:rounded-[.75vw] overflow-auto scrollbar-hidden pb-[1vw]">
                         <div className="flex justify-between items-center py-[6vw] md:py-[1.5vw] px-[3vw] md:px-[1.5vw]">
                             <span className="font-poppins text-[5vw] md:text-[1.25vw]">
                                 Notifikasi
                             </span>
                             <button>
                                 <Link
-                                    href="#"
+                                    href={route("api.notification.readAll")}
                                     className="font-normal text-[3.6vw] md:text-[.9vw] hover:text-secondary"
                                 >
                                     Tandai sudah dibaca
@@ -331,39 +422,86 @@ function Notification ({ auth, data, loadMore }) {
                             </button>
                         </div>
                         <div className="flex gap-[4vw] md:gap-[1vw] border-b-1 px-[3vw] md:px-[1.5vw] text-[3.6vw] md:text-[.9vw] font-normal">
-                            <button className={`${activeDisplay == 0 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[2vw] md:pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(0)}>Transaksi</button>
-                            <button className={`${activeDisplay == 1 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[2vw] md:pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(1)}>Promo</button>
-                            <button className={`${activeDisplay == 2 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[2vw] md:pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(2)}>Program</button>
+                            <button
+                                className={`${
+                                    activeDisplay == 0
+                                        ? "border-dark"
+                                        : "border-transparent text-light-grey"
+                                } pb-[2vw] md:pb-[.5vw] border-b-2`}
+                                onClick={() => setActiveDisplay(0)}
+                            >
+                                Transaksi
+                            </button>
+                            <button
+                                className={`${
+                                    activeDisplay == 1
+                                        ? "border-dark"
+                                        : "border-transparent text-light-grey"
+                                } pb-[2vw] md:pb-[.5vw] border-b-2`}
+                                onClick={() => setActiveDisplay(1)}
+                            >
+                                Promo
+                            </button>
+                            <button
+                                className={`${
+                                    activeDisplay == 2
+                                        ? "border-dark"
+                                        : "border-transparent text-light-grey"
+                                } pb-[2vw] md:pb-[.5vw] border-b-2`}
+                                onClick={() => setActiveDisplay(2)}
+                            >
+                                Program
+                            </button>
                         </div>
                         {/* Transaksi */}
-                        <div className={activeDisplay != 0 && 'hidden'}>
-                            {Number(data.newTransaction.length) + Number(data.oldTransaction.length) ? (
+                        <div className={activeDisplay != 0 && "hidden"}>
+                            {Number(data.newTransaction.length) +
+                                Number(data.oldTransaction.length) >
+                            0 ? (
                                 <>
-                                    {data.newTransaction.length && (
+                                    {data.newTransaction.length > 0 && (
                                         <>
-                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center">Baru</div>
-                                            {data.newTransaction.map((item, index) => {
-                                                return (
-                                                    <NotificationItem
-                                                        key={index}
-                                                        item={item}
-                                                    />
-                                                );
-                                            })}
+                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center">
+                                                Baru
+                                            </div>
+                                            {data.newTransaction.map(
+                                                (item, index) => {
+                                                    return (
+                                                        <NotificationItem
+                                                            key={index}
+                                                            item={item}
+                                                        />
+                                                    );
+                                                }
+                                            )}
                                         </>
                                     )}
-                                    {data.oldTransaction.length && (
+                                    {data.oldTransaction.length > 0 && (
                                         <>
-                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center">Terdahulu</div>
-                                            {data.oldTransaction.map((item, index) => {
-                                                return (
-                                                    <NotificationItem
-                                                        key={index}
-                                                        item={item}
-                                                    />
-                                                );
-                                            })}
-                                            {data.hasMoreTransaction && <GoalsButton activeClassName="bg-white hover:text-secondary" onClick={loadMoreTransaction}>Load More</GoalsButton>}
+                                            <div className="px-[6vw] py-[2vw] md:px-[1.5vw] md:py-[.5vw] text-center">
+                                                Terdahulu
+                                            </div>
+                                            {data.oldTransaction.map(
+                                                (item, index) => {
+                                                    return (
+                                                        <NotificationItem
+                                                            key={index}
+                                                            item={item}
+                                                        />
+                                                    );
+                                                }
+                                            )}
+                                            {data.hasMoreTransaction ==
+                                                true && (
+                                                <GoalsButton
+                                                    activeClassName="bg-white hover:text-secondary"
+                                                    onClick={
+                                                        loadMoreTransaction
+                                                    }
+                                                >
+                                                    Load More
+                                                </GoalsButton>
+                                            )}
                                         </>
                                     )}
                                 </>
@@ -374,7 +512,7 @@ function Notification ({ auth, data, loadMore }) {
                             )}
                         </div>
                         {/* Promo */}
-                        <div className={activeDisplay != 1 && 'hidden'}>
+                        <div className={activeDisplay != 1 && "hidden"}>
                             {data.promo.length ? (
                                 <>
                                     {data.promo.map((item, index) => {
@@ -385,7 +523,14 @@ function Notification ({ auth, data, loadMore }) {
                                             />
                                         );
                                     })}
-                                    {data.hasMorePromo && <GoalsButton activeClassName="bg-white hover:text-secondary" onClick={loadMorePromo}>Load More</GoalsButton>}
+                                    {data.hasMorePromo && (
+                                        <GoalsButton
+                                            activeClassName="bg-white hover:text-secondary"
+                                            onClick={loadMorePromo}
+                                        >
+                                            Load More
+                                        </GoalsButton>
+                                    )}
                                 </>
                             ) : (
                                 <div className="flex justify-center items-center h-[30vh]">
@@ -394,7 +539,7 @@ function Notification ({ auth, data, loadMore }) {
                             )}
                         </div>
                         {/* Program */}
-                        <div className={activeDisplay != 2 && 'hidden'}>
+                        <div className={activeDisplay != 2 && "hidden"}>
                             {data.program.length ? (
                                 <>
                                     {data.program.map((item, index) => {
@@ -405,7 +550,14 @@ function Notification ({ auth, data, loadMore }) {
                                             />
                                         );
                                     })}
-                                    {data.hasMoreProgram && <GoalsButton activeClassName="bg-white hover:text-secondary" onClick={loadMoreProgram}>Load More</GoalsButton>}
+                                    {data.hasMoreProgram && (
+                                        <GoalsButton
+                                            activeClassName="bg-white hover:text-secondary"
+                                            onClick={loadMoreProgram}
+                                        >
+                                            Load More
+                                        </GoalsButton>
+                                    )}
                                 </>
                             ) : (
                                 <div className="flex justify-center items-center h-[30vh]">
@@ -429,7 +581,7 @@ function Notification ({ auth, data, loadMore }) {
                                 </span>
                                 <button>
                                     <Link
-                                        href="#"
+                                        href={route("api.notification.readAll")}
                                         className="font-normal text-[4vw] md:text-[.9vw] hover:text-secondary"
                                     >
                                         Tandai sudah dibaca
@@ -437,39 +589,85 @@ function Notification ({ auth, data, loadMore }) {
                                 </button>
                             </div>
                             <div className="flex gap-[1vw] border-b-1 px-[3vw] md:px-[1.5vw] text-[.9vw] font-normal">
-                                <button className={`${activeDisplay == 0 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(0)}>Transaksi</button>
-                                <button className={`${activeDisplay == 1 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(1)}>Promo</button>
-                                <button className={`${activeDisplay == 2 ? 'border-dark' : 'border-transparent text-light-grey'} pb-[.5vw] border-b-2`} onClick={() => setActiveDisplay(2)}>Program</button>
+                                <button
+                                    className={`${
+                                        activeDisplay == 0
+                                            ? "border-dark"
+                                            : "border-transparent text-light-grey"
+                                    } pb-[.5vw] border-b-2`}
+                                    onClick={() => setActiveDisplay(0)}
+                                >
+                                    Transaksi
+                                </button>
+                                <button
+                                    className={`${
+                                        activeDisplay == 1
+                                            ? "border-dark"
+                                            : "border-transparent text-light-grey"
+                                    } pb-[.5vw] border-b-2`}
+                                    onClick={() => setActiveDisplay(1)}
+                                >
+                                    Promo
+                                </button>
+                                <button
+                                    className={`${
+                                        activeDisplay == 2
+                                            ? "border-dark"
+                                            : "border-transparent text-light-grey"
+                                    } pb-[.5vw] border-b-2`}
+                                    onClick={() => setActiveDisplay(2)}
+                                >
+                                    Program
+                                </button>
                             </div>
                             {/* Transaksi */}
-                            <div className={activeDisplay != 0 && 'hidden'}>
-                                {Number(data.newTransaction.length) + Number(data.oldTransaction.length) ? (
+                            <div className={activeDisplay != 0 && "hidden"}>
+                                {Number(data.newTransaction.length) +
+                                    Number(data.oldTransaction.length) >
+                                0 ? (
                                     <>
-                                        {data.newTransaction.length && (
+                                        {data.newTransaction.length > 0 && (
                                             <>
-                                                <div className="px-[1.5vw] py-[.5vw] text-center">Baru</div>
-                                                {data.newTransaction.map((item, index) => {
-                                                    return (
-                                                        <NotificationItem
-                                                            key={index}
-                                                            item={item}
-                                                        />
-                                                    );
-                                                })}
+                                                <div className="px-[1.5vw] py-[.5vw] text-center">
+                                                    Baru
+                                                </div>
+                                                {data.newTransaction.map(
+                                                    (item, index) => {
+                                                        return (
+                                                            <NotificationItem
+                                                                key={index}
+                                                                item={item}
+                                                            />
+                                                        );
+                                                    }
+                                                )}
                                             </>
                                         )}
-                                        {data.oldTransaction.length && (
+                                        {data.oldTransaction.length > 0 && (
                                             <>
-                                                <div className="px-[1.5vw] py-[.5vw] text-center">Terdahulu</div>
-                                                {data.oldTransaction.map((item, index) => {
-                                                    return (
-                                                        <NotificationItem
-                                                            key={index}
-                                                            item={item}
-                                                        />
-                                                    );
-                                                })}
-                                                {data.hasMoreTransaction && <GoalsButton activeClassName="bg-white hover:text-secondary" onClick={loadMoreTransaction}>Load More</GoalsButton>}
+                                                <div className="px-[1.5vw] py-[.5vw] text-center">
+                                                    Terdahulu
+                                                </div>
+                                                {data.oldTransaction.map(
+                                                    (item, index) => {
+                                                        return (
+                                                            <NotificationItem
+                                                                key={index}
+                                                                item={item}
+                                                            />
+                                                        );
+                                                    }
+                                                )}
+                                                {data.hasMoreTransaction && (
+                                                    <GoalsButton
+                                                        activeClassName="bg-white hover:text-secondary"
+                                                        onClick={
+                                                            loadMoreTransaction
+                                                        }
+                                                    >
+                                                        Load More
+                                                    </GoalsButton>
+                                                )}
                                             </>
                                         )}
                                     </>
@@ -480,7 +678,7 @@ function Notification ({ auth, data, loadMore }) {
                                 )}
                             </div>
                             {/* Promo */}
-                            <div className={activeDisplay != 1 && 'hidden'}>
+                            <div className={activeDisplay != 1 && "hidden"}>
                                 {data.promo.length ? (
                                     <>
                                         {data.promo.map((item, index) => {
@@ -491,7 +689,14 @@ function Notification ({ auth, data, loadMore }) {
                                                 />
                                             );
                                         })}
-                                        {data.hasMorePromo && <GoalsButton activeClassName="bg-white hover:text-secondary" onClick={loadMorePromo}>Load More</GoalsButton>}
+                                        {data.hasMorePromo == true && (
+                                            <GoalsButton
+                                                activeClassName="bg-white hover:text-secondary"
+                                                onClick={loadMorePromo}
+                                            >
+                                                Load More
+                                            </GoalsButton>
+                                        )}
                                     </>
                                 ) : (
                                     <div className="flex justify-center items-center h-[30vh]">
@@ -500,7 +705,7 @@ function Notification ({ auth, data, loadMore }) {
                                 )}
                             </div>
                             {/* Program */}
-                            <div className={activeDisplay != 2 && 'hidden'}>
+                            <div className={activeDisplay != 2 && "hidden"}>
                                 {data.program.length ? (
                                     <>
                                         {data.program.map((item, index) => {
@@ -511,7 +716,14 @@ function Notification ({ auth, data, loadMore }) {
                                                 />
                                             );
                                         })}
-                                        {data.hasMoreProgram && <GoalsButton activeClassName="bg-white hover:text-secondary" onClick={loadMoreProgram}>Load More</GoalsButton>}
+                                        {data.hasMoreProgram == true && (
+                                            <GoalsButton
+                                                activeClassName="bg-white hover:text-secondary"
+                                                onClick={loadMoreProgram}
+                                            >
+                                                Load More
+                                            </GoalsButton>
+                                        )}
                                     </>
                                 ) : (
                                     <div className="flex justify-center items-center h-[30vh]">
@@ -524,15 +736,28 @@ function Notification ({ auth, data, loadMore }) {
                 </TECollapse>
             )}
         </div>
-    )
+    );
 }
 
 function NotificationItem({ item }) {
     if (item.data.category == "Transaksi") {
         return (
             <Link
-                href=""
-                className={`${item.read_at ? 'hover:bg-soft' : 'bg-soft'} relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
+                onClick={(e) => {
+                    console.log(e);
+                    axios
+                        .get(route("api.notification.read", { id: item.id }))
+                        .then((res) => {
+                            if (item.data.link != undefined) {
+                                window.location = item.data.link;
+                                return;
+                            }
+                            location.reload();
+                        });
+                }}
+                className={`${
+                    item.read_at ? "hover:bg-soft" : "bg-soft"
+                } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
             >
                 <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
                     {/* <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[3vw] md:text-[.75vw]">
@@ -586,8 +811,21 @@ function NotificationItem({ item }) {
     } else {
         return (
             <Link
-                href=""
-                className={`${item.read_at ? 'hover:bg-soft' : 'bg-soft'} relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
+                onClick={(e) => {
+                    console.log(e);
+                    axios
+                        .get(route("api.notification.read", { id: item.id }))
+                        .then((res) => {
+                            if (item.data.link != undefined) {
+                                window.location = item.data.link;
+                                return;
+                            }
+                            location.reload();
+                        });
+                }}
+                className={`${
+                    item.read_at ? "hover:bg-soft" : "bg-soft"
+                } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
             >
                 <div className="flex flex-col w-11/12 gap-[2vw] md:gap-[.5vw]">
                     {/* <span className="bg-secondary text-white text-center rounded-[1vw] md:rounded-[.3vw] w-5/12 md:w-4/12 py-[.5vw] md:py-[.1vw] text-[3vw] md:text-[.75vw]">

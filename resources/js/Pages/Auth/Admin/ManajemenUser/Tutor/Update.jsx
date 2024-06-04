@@ -14,23 +14,27 @@ import FormSection from "../../components/layouts/FormSection";
 import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 import logo from "/resources/img/icon/goals-5.svg";
 import toast, { Toaster } from "react-hot-toast";
-import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/elements/GoalsSelectInput";
+import {
+    GoalsSelectInput,
+    GoalsSelectInputItem,
+} from "@/Components/elements/GoalsSelectInput";
 
 export default function Update({ auth, data }) {
     const [isLoading, setIsLoading] = useState(false);
+    console.log(data);
 
     const revenueTypes = [
         {
             id: 0,
-            name: '40%',
-            percentage: 40
+            name: "40%",
+            percentage: 40,
         },
         {
             id: 0,
-            name: '50%',
-            percentage: 50
+            name: "50%",
+            percentage: 50,
         },
-    ]
+    ];
 
     const {
         data: formData,
@@ -60,7 +64,8 @@ export default function Update({ auth, data }) {
         hard_skills: data.tutor.skills.filter(
             (i) => i.category == "hard_skill"
         ),
-        revenue_type: "",
+        revenue_type_id: data.tutor.revenue_type?.id,
+        revenue_type_type: data.tutor.revenue_type?.type,
     });
 
     const { data: temp, setData: setTemp } = useForm({
@@ -72,6 +77,7 @@ export default function Update({ auth, data }) {
         faculty: "",
         major: "",
         linkedin_url: "",
+        revenue_type_id: "",
         skills: data.tutor.skills.map((i) => i.id),
         soft_skills: data.tutor.skills.filter(
             (i) => i.category == "soft_skill"
@@ -213,17 +219,32 @@ export default function Update({ auth, data }) {
                             setData={(i) => setFormData("linkedin_url", i)}
                             labelClassName="font-medium"
                         />
-                        <GoalsSelectInput 
+                        <GoalsSelectInput
                             required
-                            show={showForm.revenue_type} 
-                            setShow={(i) => setShowForm({...showForm, revenue_type: i})} 
-                            data={formData.revenue_type?.name}
+                            show={showForm.revenue_type}
+                            setShow={(i) =>
+                                setShowForm({ ...showForm, revenue_type: i })
+                            }
+                            data={
+                                formData.revenue_type_type
+                                    ? formData.revenue_type_type + "%"
+                                    : ""
+                            }
                             label="Revenue Type"
                             placeholderClassName="font-normal"
                         >
-                            {revenueTypes.map((item, index) => (
-                                <GoalsSelectInputItem key={index} onClick={() => setFormData("revenue_type", item)}>
-                                    {item.name}
+                            {data.revenue_types.map((item, index) => (
+                                <GoalsSelectInputItem
+                                    key={index}
+                                    onClick={() =>
+                                        setFormData({
+                                            ...formData,
+                                            revenue_type_id: item.id,
+                                            revenue_type_type: item.type,
+                                        })
+                                    }
+                                >
+                                    {item.type}%
                                 </GoalsSelectInputItem>
                             ))}
                         </GoalsSelectInput>

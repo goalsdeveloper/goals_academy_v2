@@ -34,6 +34,7 @@ class UserSeeder extends Seeder
             'name' => 'Tutor Goals',
             'username' => 'dev.tutor',
             'email' => 'dev.tutor@goalsacademy.id',
+            'revenue_type_id' => 1,
             'password' => Hash::make('dev.tutor123'),
             'user_role' => 'tutor',
             'email_verified_at' => now(),

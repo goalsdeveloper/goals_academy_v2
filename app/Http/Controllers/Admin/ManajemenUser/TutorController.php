@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\ManajemenUser;
 
 use App\Http\Controllers\Controller;
+use App\Models\RevenueType;
 use App\Models\Skill;
 use App\Models\User;
 use App\Models\UserProfile;
@@ -32,6 +33,7 @@ class TutorController extends Controller
                 'status' => true,
                 'statusCode' => 200,
                 'message' => 'get data success',
+                'revenue_types'=> RevenueType::get(),
                 'tutors' =>
                 function () use ($request) {
                     $search =  $request->input('search');
@@ -66,9 +68,11 @@ class TutorController extends Controller
      */
     public function create()
     {
+        $revenue_types = RevenueType::get();
         $skill = Skill::get();
         return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
             'skill' => $skill,
+            'revenue_types'=> $revenue_types
         ]], 200);
     }
 
@@ -81,12 +85,14 @@ class TutorController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string',
                 'email' => 'required|email|unique:users,email',
+                'revenue_type_id' => 'required|exists:revenue_types,id',
             ]);
 
             $user = User::create([
                 'name' => $validatedData['name'],
                 'username' => $validatedData['name'],
                 'email' => $validatedData['email'],
+                'revenue_type_id' => $validatedData['revenue_type_id'],
                 'password' => bcrypt('password'),
                 'user_role' => 'tutor',
             ]);
@@ -116,7 +122,7 @@ class TutorController extends Controller
     {
         try {
             $tutorWithProfile = User::where("user_role", "tutor")->findOrFail($tutor->id);
-            $tutorWithProfile->load('profile', 'skills');
+            $tutorWithProfile->load('profile', 'skills', 'revenue_type');
 
             return Inertia::render('Auth/Admin/ManajemenUser/Tutor/Show', [
                 'status' => true,
@@ -137,13 +143,15 @@ class TutorController extends Controller
     public function edit(User $tutor)
     {
         $skill = Skill::get();
-        $tutor->load('profile', 'skills');
+        $revenue_types = RevenueType::get();
+        $tutor->load('profile', 'skills', 'revenue_type');
         return Inertia::render('Auth/Admin/ManajemenUser/Tutor/Update', [
             'status' => true,
             'statusCode' => 200,
             'data' => [
                 'tutor' => $tutor,
                 'skill' => $skill,
+                'revenue_types' => $revenue_types,
             ],
         ]);
     }
@@ -158,6 +166,7 @@ class TutorController extends Controller
             $validatedData = $request->validate([
                 'name' => 'string',
                 'username' => 'string',
+                'revenue_type_id' => 'exists:revenue_types,id',
                 'phone_number' => 'string',
                 'university' => 'string',
                 'faculty' => 'string',

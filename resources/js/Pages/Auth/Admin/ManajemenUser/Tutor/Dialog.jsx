@@ -1,6 +1,9 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
-import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/elements/GoalsSelectInput";
+import {
+    GoalsSelectInput,
+    GoalsSelectInputItem,
+} from "@/Components/elements/GoalsSelectInput";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import { useState } from "react";
 import { createPortal } from "react-dom";
@@ -13,7 +16,7 @@ const Dialog = ({
     post,
     put,
     callback,
-    revenueTypes,
+    revenue_types,
 }) => {
     const [showRevenueForm, setShowRevenueForm] = useState(false);
 
@@ -93,17 +96,30 @@ const Dialog = ({
                                 }
                                 disabled={showDialog.show}
                             />
-                            <GoalsSelectInput 
+                            <GoalsSelectInput
                                 required
-                                show={showRevenueForm} 
-                                setShow={setShowRevenueForm} 
-                                data={formData.revenue_type?.name}
+                                show={showRevenueForm}
+                                setShow={setShowRevenueForm}
+                                data={
+                                    formData.revenue_type_type
+                                        ? formData.revenue_type_type + "%"
+                                        : ""
+                                }
                                 label="Revenue Type"
                                 placeholderClassName="font-normal"
                             >
-                                {revenueTypes.map((item, index) => (
-                                    <GoalsSelectInputItem key={index} onClick={() => setFormData("revenue_type", item)}>
-                                        {item.name}
+                                {revenue_types.map((item, index) => (
+                                    <GoalsSelectInputItem
+                                        key={index}
+                                        onClick={() =>
+                                            setFormData({
+                                                ...formData,
+                                                revenue_type_id: item.id,
+                                                revenue_type_type: item.type,
+                                            })
+                                        }
+                                    >
+                                        {item.type}%
                                     </GoalsSelectInputItem>
                                 ))}
                             </GoalsSelectInput>
@@ -132,10 +148,7 @@ const Dialog = ({
                                     variant="success"
                                     type="submit"
                                     className="w-full h-full text-[1vw]"
-                                    disabled={
-                                        !formData.name ||
-                                        !formData.email
-                                    }
+                                    disabled={!formData.name || !formData.email}
                                 >
                                     {status}
                                 </GoalsButton>

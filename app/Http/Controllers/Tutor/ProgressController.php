@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\FileUpload;
 use App\Models\Place;
+use App\Notifications\GeneralCourseNotification;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,24 +29,45 @@ class ProgressController extends Controller
                 $user = Auth::user();
                 $perPage = (int)$request->input('perPage', 10);
                 $search = $request->search;
-                $tutor = $user->tutor()->where('is_moderator', false)->where('ongoing', '!=', CourseStatusEnum::SUCCESS)
-                ->when($search, function ($q) use ($search) {
-                    $q->where(function ($q) use ($search) {
+
+                $query = $user->tutor()
+                    ->where('is_moderator', false)
+                    ->where('ongoing', '!=', CourseStatusEnum::SUCCESS);
+
+                $query->where(function ($q) {
+                    $q->whereNotNull('date')
+                        ->whereNotNull('time');
+                });
+
+
+                $query->orWhereHas('products', function ($q) {
+                    $q->where('contact_type', 'other');
+                });
+
+                if ($search) {
+                    $query->where(function ($q) use ($search) {
                         $q->where('time', 'LIKE', '%' . $search . '%')
                             ->orWhere('ongoing', 'LIKE', '%' . $search . '%')
                             ->orWhere('date', 'LIKE', '%' . $search . '%')
                             ->orWhereHas('user', function ($q) use ($search) {
                                 $q->where('username', 'LIKE', '%' . $search . '%');
                             })->orWhereHas('topic', function ($q) use ($search) {
-                            $q->where('topic', 'LIKE', '%' . $search . '%');
-                        });
+                                $q->where('topic', 'LIKE', '%' . $search . '%');
+                            });
                     });
-                })->with('topic:id,topic', 'user:id,username', 'products:id,name')->paginate($perPage);
-                // dd($tutor);
+                }
+
+                // Load related models
+                $query->with('topic:id,topic', 'user:id,username', 'products:id,name');
+
+                // Paginate results
+                $tutor = $query->paginate($perPage);
+
                 return $tutor;
             },
         ]);
     }
+
 
     public function tutorApprove(Course $progress)
     {
@@ -130,6 +152,7 @@ class ProgressController extends Controller
                 $file->slug = $document['slug'];
                 $file->save();
             }
+            $progress->user->notify(new GeneralCourseNotification("Update Bimbingan!", "Bimbingan {$progress->order->order_code} sesi $progress->session terdapat update dari tutor, yuk cek segera!", route('user.profile.detailPembelajaran', ['order_id' => $progress->order->order_code])));
             return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress successfully'], 200);
         } catch (Exception $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => $e->getMessage()], 500);
