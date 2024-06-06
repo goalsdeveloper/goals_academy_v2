@@ -65,6 +65,8 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         add_on_price: 0,
     });
 
+    console.log(data);
+
     // Initialize product's category
     const category = "offline";
 
@@ -855,9 +857,9 @@ function SummaryCard({
                                 <table className="w-full border-separate border-spacing-y-[3vw] md:border-spacing-y-[.5vw] text-gray-500 my-1">
                                     <tbody>
                                         <tr>
-                                            <td>Dibimbing Sekali</td>
+                                            <td className="w-1/2">{dataProduct.name}</td>
                                             <td className="font-bold text-right">
-                                                {currency.format(data.init_price) >
+                                                {data.init_price >
                                                 0
                                                     ? `IDR ${currency.format(
                                                         data.init_price
