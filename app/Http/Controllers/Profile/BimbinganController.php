@@ -91,7 +91,7 @@ class BimbinganController extends Controller
     public function complete(Order $order)
     {
         try {
-            $courses = $order->courses()->update(['ongoing' => CourseStatusEnum::SUCCESS->value]);
+            $courses = $order->courses()->update(['is_user' => true]);
         } catch (\Throwable $th) {
             return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', $th->getMessage());
         }
@@ -111,7 +111,7 @@ class BimbinganController extends Controller
 
             $moderators = User::where('user_role', UserRoleEnum::MODERATOR)->get();
             foreach ($moderators as $moderator) {
-                $moderator->notify(new GeneralCourseNotification("User Telah set Jadwal!", "Bimbingan {$order->order_code} sesi {$course->session} telah diset oleh pengguna, yuk cek segera!", route('moderator.bimbingan.progress.show', ['progress' => $course])));
+                $moderator->notify(new GeneralCourseNotification("User Telah set Jadwal!", "Bimbingan {$order->order_code} sesi {$course->session} telah diset oleh pengguna, yuk cek segera!", route('moderator.bimbingan.progress.edit', ['progress' => $course])));
             }
             $course->update($data);
         } catch (\Throwable $th) {
