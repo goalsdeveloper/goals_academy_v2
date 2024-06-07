@@ -14,7 +14,7 @@ const BottomPaginationTable = ({
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
-        <div className="px-4 flex items-center justify-between mt-8 text-[3.5vw] md:text-[.8vw]">
+        <div className="px-4 flex items-center justify-between mt-8 text-[3.5vw] md:text-[1vw]">
             <p className="hidden md:block text-neutral-50">
                 Showing {from} to {to} of {total} results
             </p>
