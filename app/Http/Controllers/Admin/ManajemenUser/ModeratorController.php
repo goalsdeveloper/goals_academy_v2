@@ -31,12 +31,12 @@ class ModeratorController extends Controller
                         if ($search) {
                             $query->where(function ($subquery) use ($search) {
                                 $subquery->where('name', 'LIKE', "%$search%")
-                                ->orWhere('username', 'LIKE', "%$search%")
-                                ->orWhere('email', 'LIKE', "%$search%")
-                                ->orWhereHas('profile', function ($profileQuery) use ($search) {
-                                    $profileQuery->where('phone_number', 'LIKE', "%$search%")
-                                    ->orWhere('university', 'LIKE', "%$search%");
-                                });
+                                    ->orWhere('username', 'LIKE', "%$search%")
+                                    ->orWhere('email', 'LIKE', "%$search%")
+                                    ->orWhereHas('profile', function ($profileQuery) use ($search) {
+                                        $profileQuery->where('phone_number', 'LIKE', "%$search%")
+                                            ->orWhere('university', 'LIKE', "%$search%");
+                                    });
                             });
                         }
                         $moderators = $query->paginate($perPage);
@@ -213,5 +213,11 @@ class ModeratorController extends Controller
         } catch (\Exception $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => $e->getMessage()], 500);
         }
+    }
+    public function updateActive(Request $request, User $moderator)
+    {
+        // dd($request['is_active']);
+        $moderator->profile()->update(['is_active' => $request['is_active']]);
+        return redirect()->back();
     }
 }

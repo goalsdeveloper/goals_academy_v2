@@ -90,7 +90,10 @@ export default function RevenueType({ auth, revenue_types }) {
                             <button
                                 onClick={() => {
                                     setShowDialog({ edit: true });
-                                    setFormData({"type": row.original.type, id: row.original.id});
+                                    setFormData({
+                                        type: row.original.type,
+                                        id: row.original.id,
+                                    });
                                     console.log(row.original);
                                 }}
                             >
@@ -199,7 +202,7 @@ function RevenueTypeDialog({
             show={showDialog[type]}
             setShow={() => setShowDialog({ ...showDialog, [type]: false })}
             className="max-w-[20.8vw]"
-            header={type === "edit" ? "Edit Revenue Type" : "View Revenue Type"}
+            header={"Revenue Type"}
         >
             <form
                 className="grid w-full gap-[.8vw]"
@@ -209,6 +212,7 @@ function RevenueTypeDialog({
                 }}
             >
                 <GoalsTextInput
+                    required
                     disabled={type === "view"}
                     type="number"
                     label="Revenue Type"
@@ -216,7 +220,7 @@ function RevenueTypeDialog({
                     onChange={(e) => setFormData("type", e.target.value)}
                 />
                 {type != "view" && (
-                    <GoalsButton type="submit">
+                    <GoalsButton type="submit" disabled={formData.type == ''}>
                         {type === "edit" ? "Edit" : "Create"} Revenue Type
                     </GoalsButton>
                 )}

@@ -10,6 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 import { getPaginationPages } from "@/script/utils";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
+import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 
 export default function Moderator({ auth, moderators }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
@@ -84,7 +85,7 @@ export default function Moderator({ auth, moderators }) {
     });
 
     const callback = (method) => {
-        router.visit(route("admin.bimbingan.moderator.index"), {
+        router.visit(route("admin.manajemen_user.moderator.index"), {
             only: ["moderators"],
             onSuccess: () => {
                 if (method == "create") {
@@ -96,6 +97,24 @@ export default function Moderator({ auth, moderators }) {
                 }
             },
         });
+    };
+
+    const updateActive = (data) => {
+        // Update status tutor dengan menggunakan route
+        console.log("sedang fetching");
+        const is_active = !data.profile.is_active;
+        // console.log("is_active = ", is_active);
+        router.put(
+            route("admin.manajemen_user.moderator.updateActive", {
+                moderator: data.id,
+            }),
+            { is_active: is_active },
+            {
+                onSuccess: callback,
+                preserveScroll: true,
+            }
+        );
+        // callback
     };
 
     const columns = useMemo(
@@ -159,17 +178,6 @@ export default function Moderator({ auth, moderators }) {
                             </button>
                         </li>
                         <li>
-                            <Link
-                                method="DELETE"
-                                href={route(
-                                    "admin.manajemen_user.moderator.destroy",
-                                    { moderator: cell.row.original.id }
-                                )}
-                            >
-                                <FiTrash2 className="text-[1.2vw] text-danger-40" />
-                            </Link>
-                        </li>
-                        <li>
                             <button>
                                 <FiEye
                                     className="text-[1.2vw] text-gray-400"
@@ -197,6 +205,18 @@ export default function Moderator({ auth, moderators }) {
                                     }}
                                 />
                             </button>
+                        </li>
+                        <li>
+                            <GoalsCupertinoButton
+                                className="text-[1vw]"
+                                enabledClassName="bg-blue-600"
+                                label=""
+                                size="sm"
+                                isEnabled={cell.row.original.profile?.is_active}
+                                setIsEnabled={() =>
+                                    updateActive(cell.row.original)
+                                }
+                            />
                         </li>
                     </ul>
                 ),

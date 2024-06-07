@@ -162,8 +162,7 @@ class BimbinganController extends Controller
                 ]);
 
                 $form_config = json_decode(
-                    $validateData['form_config'],
-                    true
+                    $validateData['form_config']
                 );
 
                 $product = new Products();
@@ -334,8 +333,7 @@ class BimbinganController extends Controller
                 ]);
 
                 $form_config = json_decode(
-                    $validateData['form_config'],
-                    true
+                    $validateData['form_config']
                 );
                 $validateData['form_config'] = $form_config;
 
