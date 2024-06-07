@@ -412,7 +412,7 @@ function TotalBimbinganInfo({ data }) {
                                             (order_count / highestCount) * 100 +
                                             "%",
                                     }}
-                                    className="h-full bg-green-500 animate-slideRight duration-300"
+                                    className="h-full duration-300 bg-green-500 animate-slideRight"
                                 ></div>
                             </div>
                         </div>
@@ -426,7 +426,7 @@ function TotalBimbinganInfo({ data }) {
 function InfoCard({ title, data, percentage, grow, icon }) {
     return (
         <Card className="flex justify-between">
-            <div className="h-full flex flex-col justify-between">
+            <div className="flex flex-col justify-between h-full">
                 <p className="font-sans font-medium text-[3.32vw] md:text-[.83vw]">{title}</p>
                 <div>
                     <p className="font-poppins font-bold text-[5vw] md:text-[1.25vw]">
@@ -462,7 +462,7 @@ function Card({ className, ...props }) {
 
 function LoadingUI() {
     return (
-        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+        <div className="absolute top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-opacity-50 bg-gray-50">
             <img
                 src={logo}
                 alt="Goals Academy"
