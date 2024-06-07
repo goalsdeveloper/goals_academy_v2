@@ -128,7 +128,7 @@ export default function RevenueType({ auth, revenue_types }) {
         >
             <SubHeading title="Revenue Type">
                 <GoalsButton
-                    className="flex items-center gap-4 py-[.6vw] px-[1.2vw] rounded-[.4vw] text-[.7vw]"
+                    className="flex items-center gap-[.5vw] py-[.6vw] px-[1vw] rounded-[.4vw] !text-[.8vw]"
                     onClick={() => {
                         setShowDialog({ create: true });
                         reset();
