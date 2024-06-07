@@ -11,7 +11,7 @@ class Revenue extends Model
     protected $fillable = [
         'tutor_id',
         'course_id',
-        'revenue_id',
+        'revenue_type_id',
         'amount',
         'category',
 
