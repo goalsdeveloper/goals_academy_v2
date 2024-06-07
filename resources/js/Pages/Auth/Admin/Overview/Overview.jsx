@@ -37,17 +37,13 @@ export default function Overview({
     const [isLoading, setIsLoading] = useState(false);
     const currency = Intl.NumberFormat("id-ID");
 
-    // console.log(totalsByDate);
-    console.log(list_orders);
-
     const [totalEarning, setTotalEarning] = useState(total_earning);
     const [totalVisitor, setTotalVisitor] = useState(312);
     const [totalOrder, setTotalOrder] = useState(total_order);
     const [totalCheckout, setTotalCheckout] = useState(total_checkout);
 
     // Click & Views
-    // const [barLabels, setBarLabels] = useState(['29', '30', '31', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', ]);
-    const [barLabels, setBarLabels] = useState(Object.keys(totalsByDate));
+    const [barLabels, setBarLabels] = useState(Object.keys(totalsByDate).map(i => i.split('-')[2]));
 
     const [clickData, setClickData] = useState(
         Object.values(totalsByDate).map(
@@ -185,7 +181,7 @@ export default function Overview({
 
     const tableOptions = useMaterialReactTable({
         columns,
-        data: recentPaymentData, //must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+        data: recentPaymentData, //must be memorized or stable (useState, useMemo, defined outside of this component, etc.)
         enableTopToolbar: false,
         enableBottomToolbar: false,
         enableColumnActions: false,
@@ -234,60 +230,6 @@ export default function Overview({
             startDate: range.startDate,
             endDate: range.endDate,
         });
-        // const x = moment(range.startDate);
-        // const y = moment(range.endDate);
-        // const diff = x.diff(y, "days");
-
-        // if (diff >= -30) {
-        //     setIsLoading(true);
-
-        //     setTimeout(() => {
-        //         let tempBarLabels = [];
-        //         tempBarLabels.push(x.format("DD"));
-        //         if (diff) {
-        //             for (let i = 1; i <= -diff; i++) {
-        //                 tempBarLabels.push(x.add(1, "day").format("DD"));
-        //             }
-        //         }
-        //         console.log(tempBarLabels);
-
-        //         let tempTopSellingData = [
-        //             {
-        //                 name: "Dibimbing Sekali Online 30 Menit",
-        //                 order_count: Math.round(Math.random() * 100),
-        //             },
-        //             {
-        //                 name: "Dibimbing Sekali Offline 45 Menit",
-        //                 order_count: Math.round(Math.random() * 100),
-        //             },
-        //             {
-        //                 name: "Desk Review",
-        //                 order_count: Math.round(Math.random() * 100),
-        //             },
-        //             {
-        //                 name: "Dibimbing Tuntas",
-        //                 order_count: Math.round(Math.random() * 100),
-        //             },
-        //         ].sort((x, y) => (x.order_count > y.order_count ? -1 : 1));
-
-        //         setDateRange(range);
-        //         setBarLabels(tempBarLabels);
-        //         setClickData(
-        //             tempBarLabels.map((i) =>
-        //                 faker.datatype.number({ min: 50, max: 200 })
-        //             )
-        //         );
-        //         setViewsData(
-        //             tempBarLabels.map((i) =>
-        //                 faker.datatype.number({ min: 50, max: 200 })
-        //             )
-        //         );
-        //         setTopSellingData(tempTopSellingData);
-        //         setIsLoading(false);
-        //     }, 3000);
-        // } else {
-        //     alert("Range tanggal maksimum 1 bulan!");
-        // }
     };
 
     return (

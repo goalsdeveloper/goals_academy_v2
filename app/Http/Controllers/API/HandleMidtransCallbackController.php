@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Models\FileUpload;
 use App\Models\Order;
 use App\Models\OrderHistory;
+use App\Models\User;
 use App\Notifications\GeneralCourseNotification;
 use App\Notifications\MidtransNotifications\ExpireNotification;
 use App\Notifications\MidtransNotifications\SuccessNotification;

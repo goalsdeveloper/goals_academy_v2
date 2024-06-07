@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { getPaginationPages } from "@/script/utils";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 
-export default function Tutor({ auth, tutors }) {
+export default function Tutor({ auth, tutors, revenue_types }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
         tutors;
     const [pages, setPages] = useState([]);
@@ -23,15 +23,15 @@ export default function Tutor({ auth, tutors }) {
     const revenueTypes = [
         {
             id: 0,
-            name: '40%',
-            percentage: 40
+            name: "40%",
+            percentage: 40,
         },
         {
             id: 0,
-            name: '50%',
-            percentage: 50
+            name: "50%",
+            percentage: 50,
         },
-    ]
+    ];
 
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
@@ -66,7 +66,8 @@ export default function Tutor({ auth, tutors }) {
         phone_number: "",
         university: "",
         major: "",
-        revenue_type: "",
+        revenue_type_id: "",
+        revenue_type_type: "",
     });
 
     const callback = (method) => {
@@ -218,7 +219,7 @@ export default function Tutor({ auth, tutors }) {
                         post,
                         put,
                         callback,
-                        revenueTypes
+                        revenue_types,
                     }}
                 />
 

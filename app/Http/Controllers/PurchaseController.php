@@ -90,8 +90,7 @@ class PurchaseController extends Controller
         // charge midtrans
         $phoneNumber = $user->profile->phone_number ?? '';
         $form_result = ['add_on' => []];
-        $form_config = (array) Products::find($orderData->products_id)->form_config;
-        foreach ($form_config as $key => $value) {
+        foreach ($request->all() as $key => $value) {
             if ($key == 'add_on' && $key == 1 && $request->exists('add_on')) {
                 $add_on_result = [];
                 foreach ($request->add_on as $idx => $value) {
@@ -165,13 +164,13 @@ class PurchaseController extends Controller
             'payload' => $responseMidtrans,
         ]);
 
-        $user->notify(new InvoiceNotification($orderData));
-        if ($paymentMethod->category == 'bank_transfer') {
-            $delay = Carbon::now()->addHours(23)->addMinutes(55);
-        } else {
-            $delay = Carbon::now()->addMinutes(10);
-        }
-        $user->notify(new ReminderPurchaseNotification("Segera Lakukan Pembayaran", "Tersisa 5 menit sebelum pesananmu batal!", route('purchase.status', ['order' => $orderData->id])))->delay($delay);
+        // $user->notify(new InvoiceNotification($orderData));
+        // if ($paymentMethod->category == 'bank_transfer') {
+        //     $delay = Carbon::now()->addHours(23)->addMinutes(55);
+        // } else {
+        //     $delay = Carbon::now()->addMinutes(10);
+        // }
+        // $user->notify(new ReminderPurchaseNotification("Segera Lakukan Pembayaran", "Tersisa 5 menit sebelum pesananmu batal!", route('purchase.status', ['order' => $orderData->id])))->delay($delay);
 
 
         return redirect()->route('purchase.status', $orderData->order_code);
