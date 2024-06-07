@@ -216,6 +216,8 @@ function RevenueTypeDialog({
                     disabled={type === "view"}
                     type="number"
                     label="Revenue Type"
+                    min="0"
+                    max="100"
                     data={formData.type}
                     onChange={(e) => setFormData("type", e.target.value)}
                 />
