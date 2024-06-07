@@ -2,10 +2,12 @@ import { Link } from "@inertiajs/react";
 import { useMediaQuery } from "react-responsive";
 
 const ContentLayout = ({ children, className = "", imageUrl, ...rest }) => {
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
     return (
         <div
             {...rest}
-            className={`relative w-full flex shadow md:shadow-none md:border border-neutral-20 p-[1.2vw] gap-[2.9vw] rounded-[1.6vw] md:rounded-[.8vw] ${className}`}
+            className={`${isMobile && 'px-[7.4vw] py-[4vw] border-t-2'} relative w-full flex md:shadow-none md:border border-gray-200 p-[1.2vw] gap-[2.9vw] md:rounded-[.8vw] ${className}`}
         >
             <img
                 src={imageUrl}
@@ -29,6 +31,7 @@ const ProductItemCardLayout = ({
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return isMobile && isLink ? (
+        // TODO make link as child
         <Link href={href}>
             <ContentLayout imageUrl={imageUrl} {...rest}>
                 {children}
