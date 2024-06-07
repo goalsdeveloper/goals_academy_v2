@@ -167,10 +167,10 @@ export default function MainHeader({ auth, title, className }) {
 
     return (
         <header
-            className={`overflow-y-visible overflow-x-clip sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50 ${className}`}
+            className={`${isMobile && 'shadow'} overflow-y-visible overflow-x-clip sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50 ${className}`}
         >
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
-            <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 md:h-20 xl:h-32 3xl:h-48 duration-500">
+            <nav className="container flex flex-wrap items-center justify-between h-20 mx-auto duration-500 xs:h-24 md:h-20 xl:h-32 3xl:h-48">
                 {isMobile ? (
                     <MobileHeader
                         {...{
@@ -263,7 +263,7 @@ function NavbarExpand({
                     <span className="hover:text-primary">Profil</span>
                     <TECollapse
                         show={profileDropdown}
-                        className="absolute z-10 shadow-none p-1 translate-y-2"
+                        className="absolute z-10 p-1 translate-y-2 shadow-none"
                     >
                         <TECollapseItem className="py-[2vw] px-[3vw] md:py-[1vw] md:px-[1.5vw] gap-[2vw] md:gap-[1vw] text-start bg-white shadow-centered rounded-xl">
                             <Link
@@ -318,12 +318,12 @@ function NavbarExpand({
                         </div>
                         <TECollapse
                             show={authDropdown}
-                            className="absolute z-10 shadow-none p-1 translate-y-4"
+                            className="absolute z-10 p-1 translate-y-4 shadow-none"
                         >
                             {/* profile navbar */}
                             <TECollapseItem className="py-[2vw] px-[3vw] md:py-[1vw] md:px-[1.5vw] gap-[2vw] md:gap-[1vw] text-start bg-white shadow-centered rounded-xl">
                                 <Link
-                                    className="flex gap-2 items-center font-poppins hover:text-primary"
+                                    className="flex items-center gap-2 font-poppins hover:text-primary"
                                     href={"/" + auth.user.user_role}
                                     method="GET"
                                 >
@@ -331,7 +331,7 @@ function NavbarExpand({
                                     Dashboard
                                 </Link>
                                 <Link
-                                    className="flex gap-2 items-center font-poppins hover:text-primary"
+                                    className="flex items-center gap-2 font-poppins hover:text-primary"
                                     href={
                                         auth.user.user_role == "user"
                                             ? "/pengaturan"
@@ -346,7 +346,7 @@ function NavbarExpand({
                                 </Link>
                                 <Link
                                     as="button"
-                                    className="flex gap-2 items-center font-poppins text-red-500"
+                                    className="flex items-center gap-2 text-red-500 font-poppins"
                                     href="/logout"
                                     method="post"
                                 >

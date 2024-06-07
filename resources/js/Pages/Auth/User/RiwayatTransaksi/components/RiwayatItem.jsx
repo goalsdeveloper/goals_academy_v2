@@ -33,7 +33,9 @@ function RiwayatItem({ data }) {
             <ProductItemCardLayout
                 imageUrl={data.products.product_image}
                 onClick={() => isMobile && setIsVisible(true)}
-                className="cursor-pointer md:cursor-default"
+                className={`${
+                    isMobile && "border-t-2 last:border-y-2 cursor-pointer"
+                }`}
             >
                 <div className="flex items-center justify-between">
                     <div className="space-y-[1.8vw] w-full">
@@ -61,7 +63,7 @@ function RiwayatItem({ data }) {
                         </ProductItemCardHeader>
                         <ProductItemCardContent>
                             <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw]">
-                                <h2 className="text-[3.2vw] md:text-[1vw] line-clamp-1 font-medium mb-[.4vw]">
+                                <h2 className="text-[2.7vw] md:text-[1vw] line-clamp-1 font-medium mb-[.4vw]">
                                     {data.products.name}
                                 </h2>
                                 <p className="text-neutral-60">
@@ -103,7 +105,7 @@ function RiwayatItem({ data }) {
                         </ProductItemCardContent>
                     </div>
 
-                    <FiChevronRight className="md:hidden text-[4.5vw] text-secondary" />
+                    <FiChevronRight className="md:hidden text-[4.5vw] text-secondary absolute right-[3.2vw]" />
                 </div>
             </ProductItemCardLayout>
         </>

@@ -15,16 +15,21 @@ import ProductListFilter from "../ProductListFilter";
 import figure from "/resources/img/figure/8.svg";
 import { ProductFilter } from "../constants";
 import { statusClassMap } from "../RiwayatTransaksi/components/TransactionStatusBadge";
+import { useMediaQuery } from "react-responsive";
 
 export default function Index({ auth, orderBimbingan }) {
     const [data, setData] = useState(orderBimbingan);
-    console.log(orderBimbingan)
+    console.log(orderBimbingan);
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <UserLayout auth={auth} title="Bimbingan">
-            <div className="flex md:block justify-between items-center space-y-[1.2vw]">
+            <div
+                className={`${
+                    isMobile && "px-[7.4vw] w-full py-[1.2vw]"
+                } flex md:block justify-between items-center space-y-[1.2vw] `}
+            >
                 <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-normal">
-                    {/* {title == "Dashboard" ? "Pembelajaran Saya" : title} */}
                     Bimbingan
                 </h1>
                 <ProductListFilter
@@ -37,7 +42,7 @@ export default function Index({ auth, orderBimbingan }) {
                 <EmptyProductLayout />
             ) : (
                 <div className="space-y-[1vw]">
-                    <div className="md:min-h-[22vw] flex flex-col gap-[2vw] md:gap-[1vw]">
+                    <div className="md:min-h-[22vw] flex flex-col md:gap-[1vw]">
                         {data.map((item, index) => {
                             return <BimbinganItem key={index} data={item} />;
                         })}
@@ -60,14 +65,18 @@ function BimbinganItem({ data }) {
               .format("HH:mm")
         : "N/A";
     const courseStatus =
-        data.ongoing.charAt(0).toUpperCase() +
-        data.ongoing.slice(1);
+        data.ongoing.charAt(0).toUpperCase() + data.ongoing.slice(1);
+
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <ProductItemCardLayout
             isLink
             imageUrl={data.products.product_image}
             href={`/bimbingan/${data.order.order_code}`}
+            className={`${
+                isMobile && "cursor-pointer"
+            }`}
         >
             <div className="flex items-center justify-between">
                 <div className="space-y-[1.8vw] w-full">
@@ -106,7 +115,7 @@ function BimbinganItem({ data }) {
                         </Link>
                     </ProductItemCardContent>
                 </div>
-                <FiChevronRight className="md:hidden text-[4.5vw] text-secondary" />
+                <FiChevronRight className="md:hidden text-[4.5vw] text-secondary absolute right-[3.2vw]" />
             </div>
         </ProductItemCardLayout>
     );
