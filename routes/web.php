@@ -159,9 +159,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::resource('moderator', ModeratorController::class);
         Route::put('moderator/{moderator}/updateActive', [ModeratorController::class, 'updateActive'])->name('moderator.updateActive');
         Route::resource('revenue_type', RevenueTypeController::class);
-        Route::get('revenue_type', function () {
-            return Inertia::render('Auth/Admin/ManajemenUser/RevenueType/Index');
-        });
     });
     Route::prefix('marketing')->name('marketing.')->group(function () {
         Route::resource('vouchers', VoucherController::class);

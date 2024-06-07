@@ -72,7 +72,7 @@ const Create = ({ auth, categories, addons, topics }) => {
 
     const formConfigList = [
         { key: "city", label: "Kota" },
-        // { key: "document", label: "Dokumen / Berkas" },
+        { key: "document", label: "Dokumen / Berkas" },
         { key: "place", label: "Lokasi" },
         { key: "schedule", label: "Jadwal" },
         { key: "topic", label: "Topik" },

@@ -251,6 +251,7 @@ export default function Update({ auth, data }) {
                         <div className="grid grid-cols-2 gap-[1.2vw]">
                             <GoalsSelectMultipleInput
                                 required
+                                data={formData.soft_skills}
                                 show={showForm.soft_skills}
                                 setShow={(i) => {
                                     if (
@@ -363,6 +364,7 @@ export default function Update({ auth, data }) {
                                 )}
                             </GoalsSelectMultipleInput>
                             <GoalsSelectMultipleInput
+                                data={formData.hard_skills}
                                 show={showForm.hard_skills}
                                 setShow={(i) => {
                                     if (

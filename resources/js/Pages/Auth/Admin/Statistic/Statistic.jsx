@@ -129,7 +129,7 @@ export default function Statistic({ auth, product_type }) {
         )
             .then((response) => response.json())
             .then((response) => {
-                setUserGrowthLabels(Object.keys(response.totalPerDay));
+                setUserGrowthLabels(Object.keys(response.totalPerDay).map(i => i.split('-')[2]));
                 setUserData(
                     Object.values(response.totalPerDay).map((data) => data)
                 );
@@ -146,17 +146,6 @@ export default function Statistic({ auth, product_type }) {
         getDataUser("", "", "", "");
     }, []);
 
-    // const [moderatorData, setModeratorData] = useState(
-    //     userGrowthLabels.map((i) =>
-    //         faker.datatype.number({ min: 50, max: 200 })
-    //     )
-    // );
-    // const [tutorData, setTutorData] = useState(
-    //     userGrowthLabels.map((i) =>
-    //         faker.datatype.number({ min: 50, max: 200 })
-    //     )
-    // );
-
     const userGrowthData = {
         labels: userGrowthLabels,
         datasets: [
@@ -165,16 +154,6 @@ export default function Statistic({ auth, product_type }) {
                 data: userData,
                 backgroundColor: "#5A6ACF",
             },
-            // {
-            //     label: "Moderator",
-            //     data: moderatorData,
-            //     backgroundColor: "#FF8854",
-            // },
-            // {
-            //     label: "Tutor",
-            //     data: tutorData,
-            //     backgroundColor: "#F0F469",
-            // },
         ],
     };
 
@@ -200,7 +179,7 @@ export default function Statistic({ auth, product_type }) {
     // Click & Views
 
     console.log(data.totalsByDate);
-    const [barLabels, setBarLabels] = useState(Object.keys(data.totalsByDate));
+    const [barLabels, setBarLabels] = useState(Object.keys(data.totalsByDate).map(i => i.split('-')[2]));
 
     const [clickData, setClickData] = useState(
         Object.values(data.totalsByDate).map(
@@ -265,7 +244,7 @@ export default function Statistic({ auth, product_type }) {
             .then((response) => response.json())
             .then((response) => {
                 // setUserGrowthLabels(Object.keys(response.totalsByDate));
-                setBarLabels(Object.keys(response.totalsByDate));
+                setBarLabels(Object.keys(response.totalsByDate).map(i => i.split('-')[2]));
                 setClickData(
                     Object.values(response.totalsByDate).map(
                         ({ totalClicks }) => totalClicks
