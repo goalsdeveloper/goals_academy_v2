@@ -16,6 +16,21 @@ import SubHeading from "../../Admin/components/SubHeading";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 import { useRef } from "react";
 
+function getLocationByContactType(course, contact_type) {
+    const location = course?.location;
+    const place = course?.place?.place;
+
+    if (contact_type === "online") {
+        return location || "Lokasi Belum Diset";
+    }
+
+    if (contact_type === "offline") {
+        return place || "Lokasi Belum Diset";
+    }
+
+    return location && place ? `${location} | ${place}` : "Lokasi Belum Diset";
+}
+
 export default function History({ auth, order_history: res }) {
     const timeoutRef = useRef(null);
     const { data, total, from, to, current_page, per_page, last_page, links } =
@@ -23,6 +38,7 @@ export default function History({ auth, order_history: res }) {
     const [pages, setPages] = useState([]);
     const searchParams = new URLSearchParams(window.location.search);
     const [keyword, setKeyword] = useState(searchParams.get("search") ?? "");
+    const contact_type = data?.product?.contact_type;
 
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
@@ -75,7 +91,8 @@ export default function History({ auth, order_history: res }) {
             },
             {
                 accessorFn: (row) =>
-                    row.course?.place.place ?? "Lokasi Belum Diset",
+                    getLocationByContactType(row?.course, contact_type) ??
+                    "Lokasi Belum Diset",
                 header: "Lokasi",
             },
             {
@@ -179,17 +196,11 @@ export default function History({ auth, order_history: res }) {
 
 function HistoryDetailPanel({ row }) {
     const { course } = row.original;
+    const contact_type = row.original.products.contact_type;
 
     if (course && course.child && course.child.length > 0) {
         const firstSession = {
-            id: course.id,
-            date: course.date,
-            time: course.time,
-            ongoing: course.ongoing,
-            is_tutor: course.is_tutor,
-            is_user: course.is_user,
-            order_id: course.order_id,
-            session: course.session,
+            ...course,
         };
 
         const isPushed = course.child.find((x) => x.id == course.id);
@@ -228,7 +239,10 @@ function HistoryDetailPanel({ row }) {
                             location: {
                                 value: (
                                     <p className="">
-                                        {item.location ?? "Lokasi Belum Diset"}
+                                        {getLocationByContactType(
+                                            item,
+                                            contact_type
+                                        ) ?? "Lokasi Belum Diset"}
                                     </p>
                                 ),
                             },

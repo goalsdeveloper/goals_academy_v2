@@ -29,6 +29,7 @@ import { useEffect } from "react";
 import DateTimeComp from "./components/DateTimeComp";
 import SelectInput from "@mui/material/Select/SelectInput";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
+import { useRef } from "react";
 
 export default function Progress({ auth, data: recentOrder }) {
     const timeoutRef = useRef(null);
@@ -541,6 +542,7 @@ export const DropdownDetailPanel = ({
                                         {isActionDisabled == false && (
                                             <>
                                                 <button
+                                                    disabled={status == "Selesai"}
                                                     onClick={() => {
                                                         setIsShow({
                                                             ...isShow,
