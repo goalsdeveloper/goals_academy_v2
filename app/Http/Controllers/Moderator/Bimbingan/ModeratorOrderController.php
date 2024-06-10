@@ -94,6 +94,7 @@ class ModeratorOrderController extends Controller
 
                     $query = Order::with([
                         'user:id,username',
+                        'user.profile',
                         'products:id,product_type_id,category_id,name,total_meet,contact_type',
                         'products.category:id,name',
                         'products.productType:id,type',

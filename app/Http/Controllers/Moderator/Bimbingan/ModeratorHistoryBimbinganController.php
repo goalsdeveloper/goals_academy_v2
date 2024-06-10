@@ -35,7 +35,7 @@ class ModeratorHistoryBimbinganController extends Controller
             ->whereHas('course', function ($q) {
                 $q->where('ongoing', CourseStatusEnum::SUCCESS);
             })
-            ->with(['products:id,name', 'user:id,username', 'course.child', 'course.place']);
+            ->with(['products:id,name,contact_type', 'user:id,username', 'course.child.place', 'course.place']);
 
 
             // $query = OrderHistory::where('status', OrderEnum::SUCCESS)->whereHas('order.products.productType', function ($q) {
