@@ -14,8 +14,10 @@ import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 import DateTimeComp from "./components/DateTimeComp";
 import SubHeading from "../../Admin/components/SubHeading";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
+import { useRef } from "react";
 
 export default function History({ auth, order_history: res }) {
+    const timeoutRef = useRef(null);
     const { data, total, from, to, current_page, per_page, last_page, links } =
         res;
     const [pages, setPages] = useState([]);
@@ -116,6 +118,7 @@ export default function History({ auth, order_history: res }) {
             return (
                 <BottomPaginationTable
                     {...{
+                        keyword,
                         from,
                         to,
                         total,
@@ -151,10 +154,18 @@ export default function History({ auth, order_history: res }) {
                         placeholder="🔍 Search"
                         className="max-w-[10.4vw] max-h-[2.4vw]"
                         data={keyword}
-                        setData={(e) => setKeyword(e)}
+                        setData={(e) => {
+                            if (timeoutRef.current) {
+                                clearTimeout(timeoutRef.current);
+                            }
+                            setKeyword(e);
+                            timeoutRef.current = setTimeout(() => {
+                                updateSearchParams("search", keyword);
+                            }, 1000);
+                        }}
                         onKeyUp={(e) => {
                             if (e.key === "Enter") {
-                                updateSearchParams("search", keyword)
+                                updateSearchParams("search", keyword);
                             }
                         }}
                     />
