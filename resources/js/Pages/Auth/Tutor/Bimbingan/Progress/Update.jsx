@@ -1,6 +1,8 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import React from "react";
+import { useState } from "react";
 import { useForm } from "@inertiajs/react";
+import { createPortal } from "react-dom";
 import { useMediaQuery } from "react-responsive";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
@@ -9,6 +11,7 @@ import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import GoalsTextArea from "@/Components/elements/GoalsTextArea";
 import { FiChevronLeft, FiFileText } from "react-icons/fi";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
+import FileMediaPopup from "@/Pages/Auth/Moderator/Bimbingan/components/FileMediaPopup";
 
 export default function Update({ auth, order, files }) {
     const {
@@ -31,6 +34,8 @@ export default function Update({ auth, order, files }) {
     });
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
+    const [showDocuments, setShowDocuments] = useState(false);
 
     const submit = () => {
         post(route("tutor.bimbingan.progress.update", order.id));
@@ -89,6 +94,15 @@ export default function Update({ auth, order, files }) {
                     </div>
                 )}
 
+                {createPortal(
+                    <FileMediaPopup
+                        show={showDocuments}
+                        setShow={setShowDocuments}
+                        files={files}
+                    />,
+                    document.body
+                )}
+
                 <div className="md:grid grid-cols-2 gap-[1.2vw]">
                     <FormSection
                         className="p-[7.4vw] md:!p-[2vw] h-fit"
@@ -96,12 +110,12 @@ export default function Update({ auth, order, files }) {
                         titleClassName="!font-semibold !text-[4vw] md:!text-[1.1vw]"
                         title="Order Details"
                         titleAction={
-                            <a
-                                href="#"
+                            <button
                                 className="text-secondary text-[3.6vw] md:text-[.9vw] font-medium flex items-center gap-[1vw] md:gap-[.2vw]"
+                                onClick={() => setShowDocuments(true)}
                             >
                                 File & Media <FiFileText />
-                            </a>
+                            </button>
                         }
                         bordered={isMobile}
                     >

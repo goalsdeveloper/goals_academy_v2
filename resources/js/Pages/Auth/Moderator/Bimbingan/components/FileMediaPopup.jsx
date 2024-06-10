@@ -5,18 +5,18 @@ function FileMediaPopup({ show, setShow, files }) {
         <div
             className={`${
                 show ? "" : "opacity-0 pointer-events-none"
-            } z-50 fixed w-full h-full top-0 overflow-auto bg-dark focus:bg-red-400 bg-opacity-50 transition-all duration-300`}
+            } z-[999] fixed w-full h-full top-0 overflow-auto bg-dark focus:bg-red-400 bg-opacity-50 transition-all duration-300`}
             onClick={() => setShow()}
         >
             <div
                 onClick={(e) => e.stopPropagation()}
                 className={`${
                     show
-                        ? "md:top-0 bottom-0 scale-100"
-                        : "md:top-full -bottom-full scale-0"
-                } inset-0 mx-auto grid text-center gap-[1.6vw] w-[23vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.6vw] z-50 my-[8vh] `}
+                        ? "md:top-0 md:bottom-0 scale-100"
+                        : "md:top-full md:-bottom-full scale-0"
+                } inset-0 mx-auto grid text-center gap-[6.4vw] md:gap-[1.6vw] w-[92vw] md:w-[23vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-[4vw] md:rounded-[1vw] p-[8vw] md:p-[1.6vw] z-50 mt-[36vh] md:my-[8vh] `}
             >
-                <h2 className="text-[1vw] font-medium text-start">
+                <h2 className="text-[4vw] md:text-[1vw] font-medium text-start">
                     File & Media
                 </h2>
 
@@ -26,7 +26,7 @@ function FileMediaPopup({ show, setShow, files }) {
                     ))
                 ) : (
                     <div className="text-center">
-                        <p className="text-gray-400 ">Belum ada file media</p>
+                        <p className="text-gray-400 text-[4vw] md:text-[1vw]">Belum ada file media</p>
                     </div>
                 )}
             </div>
