@@ -36,6 +36,7 @@ class Products extends Model
         'facilities' => 'array',
         'form_config' => 'array',
         'webinar_properties' => 'array',
+        'is_visible' => 'bool'
     ];
 
     public function order()
