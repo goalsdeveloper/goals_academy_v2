@@ -58,6 +58,15 @@ export default function Overview({
         )
     );
 
+    const calculatePercentage = (yesterday, today) => {
+        if (yesterday == 0) {
+            return today;
+        }
+        var dif = today - yesterday;
+        percentage = (abs(dif) / yesterday) * 100;
+        return percentage;
+    };
+
     ChartJS.register(Title, ArcElement, Tooltip, Legend);
 
     const productTypeOptions = {
@@ -276,18 +285,20 @@ export default function Overview({
                             <InfoCard
                                 title="Monthly Earning (IDR)"
                                 data={currency.format(monthlyEarning)}
-                                percentage={todayEarnings - yesterdayEarnings}
-                                grow={(todayEarnings / yesterdayEarnings) * 100}
+                                percentage={calculatePercentage(
+                                    yesterdayEarnings,
+                                    todayEarnings
+                                )}
+                                grow={todayEarnings}
                             />
                             <InfoCard
                                 title="On Progress"
                                 data={onProgressCourse}
-                                percentage={
-                                    ((onProgressYesterday - onProgressCourse) /
-                                        onProgressYesterday) *
-                                    100
-                                }
-                                grow={onProgressYesterday - onProgressCourse}
+                                percentage={calculatePercentage(
+                                    onProgressYesterday,
+                                    onProgressCourse
+                                )}
+                                grow={onProgressCourse}
                                 icon={
                                     <FaGlobe className="text-[4vw] md:text-[1vw]" />
                                 }
@@ -312,25 +323,20 @@ export default function Overview({
                                 <InfoCard
                                     title="Monthly Earning (IDR)"
                                     data={currency.format(monthlyEarning)}
-                                    percentage={
-                                        ((yesterdayEarnings - todayEarnings) /
-                                            yesterdayEarnings) *
-                                        100
-                                    }
-                                    grow={yesterdayEarnings - todayEarnings}
+                                    percentage={calculatePercentage(
+                                        yesterdayEarnings,
+                                        todayEarnings
+                                    )}
+                                    grow={todayEarnings}
                                 />
                                 <InfoCard
                                     title="On Progress"
                                     data={onProgressCourse}
-                                    percentage={
-                                        ((onProgressYesterday -
-                                            onProgressCourse) /
-                                            onProgressYesterday) *
-                                        100
-                                    }
-                                    grow={
-                                        onProgressYesterday - onProgressCourse
-                                    }
+                                    percentage={calculatePercentage(
+                                        onProgressYesterday,
+                                        onProgressCourse
+                                    )}
+                                    grow={onProgressCourse}
                                     icon={
                                         <FaGlobe className="text-[4vw] md:text-[1vw]" />
                                     }
@@ -462,7 +468,7 @@ function TotalBimbinganInfo({ data }) {
 function InfoCard({ title, data, percentage, grow, icon }) {
     return (
         <Card className="flex justify-between">
-            <div className="h-full flex flex-col justify-between">
+            <div className="flex flex-col justify-between h-full">
                 <p className="font-sans font-medium text-[3.32vw] md:text-[.83vw]">
                     {title}
                 </p>

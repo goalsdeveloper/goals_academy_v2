@@ -388,10 +388,6 @@ class BimbinganController extends Controller
             $validateData = $request->validate([
                 'is_visible' => 'boolean',
             ]);
-            // if($validateData['is_visible'] == false){
-            //     Products::selectRaw('select max(number_list)')->where('category_id', $product->category_id);
-            //     $validateData['number_list'];
-            // }
             $product->update($validateData);
             return redirect()->back();
         } catch (\Exception $e) {
@@ -426,5 +422,13 @@ class BimbinganController extends Controller
             return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
             // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
+    }
+
+    public function updateOrderNumber(Request $req) {
+        // $asal =
+        $destination = $req;
+        return response()->json([
+
+        ]);
     }
 }
