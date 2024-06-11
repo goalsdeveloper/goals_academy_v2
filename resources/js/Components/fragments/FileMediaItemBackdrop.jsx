@@ -19,8 +19,9 @@ const FileMediaItemBackdrop = ({ item, isBackdropVisible = false }) => {
         }
     };
 
-    const downloadHandler = (id) => {
-        router.get("/unduhfile/" + id);
+    const downloadHandler = (filename) => {
+        // router.get(route('file.course.download', {fileName : filename}));
+        window.location = route('file.course.download', {fileName : filename})
         handleToggle();
     };
 
@@ -45,7 +46,7 @@ const FileMediaItemBackdrop = ({ item, isBackdropVisible = false }) => {
                 <>
                     <button
                         onClick={(e) =>
-                            downloadHandler(item?.path || item?.url)
+                            downloadHandler(item?.filename)
                         }
                         className={`text-[3.2vw] md:text-[.8vw] font-medium text-neutral-80 px-[5.5vw] py-[3.7vw] md:py-[.8vw] md:px-[1vw] rounded-[1.8vw] md:rounded-[.4vw] shadow-centered-spread absolute -bottom-[100%] md:-bottom-[70%] right-0 z-[60] bg-white transition-all ${
                             isVisible ? "translate-x-0" : "translate-x-5"

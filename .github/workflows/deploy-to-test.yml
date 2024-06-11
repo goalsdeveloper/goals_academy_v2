@@ -23,7 +23,7 @@ jobs:
           extensions: mbstring, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, xml
 
       - name: Install composer dependencies
-        run: composer install --prefer-dist --no-dev --no-interaction
+        run: composer install --prefer-dist --no-interaction
 
       - name: Create deployment artifact
         env:

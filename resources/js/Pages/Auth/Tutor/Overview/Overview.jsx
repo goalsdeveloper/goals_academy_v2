@@ -8,13 +8,7 @@ import {
     MaterialReactTable,
     useMaterialReactTable,
 } from "material-react-table";
-import {
-    Chart as ChartJS,
-    ArcElement,
-    Title,
-    Tooltip,
-    Legend,
-} from "chart.js";
+import { Chart as ChartJS, ArcElement, Title, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
 import { FaRegCalendar, FaGlobe } from "react-icons/fa6";
@@ -23,29 +17,48 @@ import "@/script/momentCustomLocale";
 import userIcon from "/resources/img/icon/user.png";
 
 export default function Overview({
-    auth, product_types, total_bimbingan, history
+    auth,
+    product_types,
+    total_bimbingan,
+    history,
+    total_earnings,
+    current_month_earnings,
+    earnings,
+    yesterday_earnings,
+    today_earnings,
+    progress_today,
+    progress_yesterday,
 }) {
     const user = auth.user;
     const currency = Intl.NumberFormat("id-ID");
     const [isLoading, setIsLoading] = useState(false);
 
-    const [monthlyEarning, setMonthlyEarning] = useState(123);
-    const [onProgressCourse, setOnProgressCourse] = useState(123);
-    const [totalEarning, setTotalEarning] = useState(1112750000);
-
+    const [monthlyEarning, setMonthlyEarning] = useState(
+        current_month_earnings
+    );
+    const [yesterdayEarnings, setYesterdayEarnings] =
+        useState(yesterday_earnings);
+    const [todayEarnings, setTodayEarnings] = useState(today_earnings);
+    const [onProgressCourse, setOnProgressCourse] = useState(progress_today);
+    const [onProgressYesterday, setOnProgressYesterday] =
+        useState(progress_yesterday);
+    const [totalEarning, setTotalEarning] = useState(total_earnings);
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     // Product Type
-    const [productTypeLabels, setProductTypeLabels] = useState(['Dibimbing Online', 'Dibimbing Offline', 'Desk Review']);
+    const [productTypeLabels, setProductTypeLabels] = useState([
+        "Dibimbing Online",
+        "Dibimbing Offline",
+        "Desk Review",
+    ]);
 
-    const [productTypeData, setProductTypeData] = useState(productTypeLabels.map((i) => faker.datatype.number({ min: 50, max: 200 })));
-
-    ChartJS.register(
-        Title,
-        ArcElement,
-        Tooltip,
-        Legend
+    const [productTypeData, setProductTypeData] = useState(
+        productTypeLabels.map((i) =>
+            faker.datatype.number({ min: 50, max: 200 })
+        )
     );
+
+    ChartJS.register(Title, ArcElement, Tooltip, Legend);
 
     const productTypeOptions = {
         plugins: {
@@ -56,13 +69,13 @@ export default function Overview({
                 align: "start",
                 color: "black",
                 font: {
-                    weight: 500
+                    weight: 500,
                 },
             },
             legend: {
                 labels: {
                     font: {
-                        size: 10
+                        size: 10,
                     },
                     boxWidth: 20,
                     boxHeight: 20,
@@ -71,10 +84,10 @@ export default function Overview({
                 },
                 align: "center",
                 reverse: true,
-                position: "left"
+                position: "left",
             },
         },
-        cutout: '60%',
+        cutout: "60%",
         aspectRatio: 1.394,
         responsive: true,
     };
@@ -84,13 +97,9 @@ export default function Overview({
         datasets: [
             {
                 data: product_types.map((item) => item.jumlah),
-                backgroundColor: [
-                    '#FF8854',
-                    '#5A6ACF',
-                    '#263238',
-                ],
-                hoverOffset: 5
-            }
+                backgroundColor: ["#FF8854", "#5A6ACF", "#263238"],
+                hoverOffset: 5,
+            },
         ],
     };
 
@@ -163,35 +172,18 @@ export default function Overview({
     });
 
     // Earning
-    const [earningData, setEarningData] = useState(
-        [
-            {
-                date: '2024-02-01',
-                total: 1200000
-            },
-            {
-                date: '2024-03-01',
-                total: 870000
-            },
-            {
-                date: '2024-01-01',
-                total: 1000000
-            },
-        ]
-    );
+    const [earningData, setEarningData] = useState(earnings);
 
     const earningColumns = useMemo(
         () => [
             {
-                accessorFn: (row) =>
-                    moment(row.date).format("DD/MM/YYYY"),
+                accessorFn: (row) => moment(row.date).format("DD/MM/YYYY"),
                 id: "date",
                 header: "Date",
                 size: 50,
             },
             {
-                accessorFn: (row) =>
-                    moment(row.date).format("MMMM"),
+                accessorFn: (row) => moment(row.date).format("MMMM"),
                 id: "month",
                 header: "Month",
                 size: 50,
@@ -200,7 +192,11 @@ export default function Overview({
                 accessorKey: "total",
                 header: "Total",
                 size: 150,
-                Cell: ({ cell }) => <span className="text-green-500">+ Rp {currency.format(cell.getValue())}</span>
+                Cell: ({ cell }) => (
+                    <span className="text-green-500">
+                        + Rp {currency.format(cell.getValue())}
+                    </span>
+                ),
             },
         ],
         []
@@ -257,7 +253,11 @@ export default function Overview({
                             <div className="flex justify-center py-[4vw] md:py-[1vw]">
                                 <img
                                     className="relative bg-white w-[22vw] h-[22vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread z-50 p-[.8vw] md:p-[.2vw]"
-                                    src={user.profile.profile_image ? user.profile.profile_image : userIcon}
+                                    src={
+                                        user.profile.profile_image
+                                            ? user.profile.profile_image
+                                            : userIcon
+                                    }
                                     alt="User"
                                 />
                             </div>
@@ -267,22 +267,30 @@ export default function Overview({
                             </div>
                             <div className="md:absolute md:left-0 max-w-full md:bottom-[1vw] px-[5vw] md:px-[1.25vw] text-center">
                                 <p className="font-medium">Total Earning</p>
-                                <p className="font-bold text-[8vw] md:text-[1.25vw]">Rp {currency.format(totalEarning)}</p>
+                                <p className="font-bold text-[8vw] md:text-[1.25vw]">
+                                    Rp {currency.format(totalEarning)}
+                                </p>
                             </div>
                         </Card>
                         <div className="w-50 md:w-[12.25vw] grid grid-cols-2 md:grid-rows-2 md:gap-[.94vw] text-[.83vw]">
                             <InfoCard
                                 title="Monthly Earning (IDR)"
                                 data={currency.format(monthlyEarning)}
-                                percentage={5.6}
-                                grow={12}
+                                percentage={todayEarnings - yesterdayEarnings}
+                                grow={(todayEarnings / yesterdayEarnings) * 100}
                             />
                             <InfoCard
                                 title="On Progress"
                                 data={onProgressCourse}
-                                percentage={5.6}
-                                grow={12}
-                                icon={<FaGlobe className="text-[4vw] md:text-[1vw]" />}
+                                percentage={
+                                    ((onProgressYesterday - onProgressCourse) /
+                                        onProgressYesterday) *
+                                    100
+                                }
+                                grow={onProgressYesterday - onProgressCourse}
+                                icon={
+                                    <FaGlobe className="text-[4vw] md:text-[1vw]" />
+                                }
                             />
                         </div>
                         <HistoryTable options={historyTableOptions} />
@@ -304,15 +312,28 @@ export default function Overview({
                                 <InfoCard
                                     title="Monthly Earning (IDR)"
                                     data={currency.format(monthlyEarning)}
-                                    percentage={5.6}
-                                    grow={12}
+                                    percentage={
+                                        ((yesterdayEarnings - todayEarnings) /
+                                            yesterdayEarnings) *
+                                        100
+                                    }
+                                    grow={yesterdayEarnings - todayEarnings}
                                 />
                                 <InfoCard
                                     title="On Progress"
                                     data={onProgressCourse}
-                                    percentage={5.6}
-                                    grow={12}
-                                    icon={<FaGlobe className="text-[4vw] md:text-[1vw]" />}
+                                    percentage={
+                                        ((onProgressYesterday -
+                                            onProgressCourse) /
+                                            onProgressYesterday) *
+                                        100
+                                    }
+                                    grow={
+                                        onProgressYesterday - onProgressCourse
+                                    }
+                                    icon={
+                                        <FaGlobe className="text-[4vw] md:text-[1vw]" />
+                                    }
                                 />
                             </div>
                             <EarningTable options={earningTableOptions} />
@@ -321,17 +342,25 @@ export default function Overview({
                                 <div className="flex justify-center py-[4vw] md:py-[1vw]">
                                     <img
                                         className="relative bg-white w-[16vw] h-[16vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread z-50 p-[.8vw] md:p-[.2vw]"
-                                        src={user.profile.profile_image ? user.profile.profile_image : userIcon}
+                                        src={
+                                            user.profile.profile_image
+                                                ? user.profile.profile_image
+                                                : userIcon
+                                        }
                                         alt="User"
                                     />
                                 </div>
                                 <div className="text-center">
                                     <p className="">Welcome, {user.name} 👋</p>
-                                    <p className="text-gray-400">{user.email}</p>
+                                    <p className="text-gray-400">
+                                        {user.email}
+                                    </p>
                                 </div>
                                 <div className="absolute left-0 max-w-full bottom-[4vw] md:bottom-[1vw] px-[5vw] md:px-[1.25vw]">
                                     <p className="font-medium">Total Earning</p>
-                                    <p className="font-bold text-[1.25vw]">Rp {currency.format(totalEarning)}</p>
+                                    <p className="font-bold text-[1.25vw]">
+                                        Rp {currency.format(totalEarning)}
+                                    </p>
                                 </div>
                             </Card>
                         </div>
@@ -349,7 +378,11 @@ export default function Overview({
 function ProductTypeChart({ options, data }) {
     return (
         <Card className="relative w-full h-[73.25vw] md:w-[21.2vw] md:h-[15.53vw]">
-            <Doughnut options={options} data={data} className="cursor-pointer" />
+            <Doughnut
+                options={options}
+                data={data}
+                className="cursor-pointer"
+            />
         </Card>
     );
 }
@@ -400,7 +433,10 @@ function TotalBimbinganInfo({ data }) {
                         ...data.map((i) => i.order_count)
                     );
                     return (
-                        <div key={index} className="space-y-[2vw] md:space-y-[.5vw]">
+                        <div
+                            key={index}
+                            className="space-y-[2vw] md:space-y-[.5vw]"
+                        >
                             <div className="flex items-center justify-between">
                                 <span>{name}</span>
                                 <span>{order_count}</span>
@@ -412,7 +448,7 @@ function TotalBimbinganInfo({ data }) {
                                             (order_count / highestCount) * 100 +
                                             "%",
                                     }}
-                                    className="h-full bg-green-500 animate-slideRight duration-300"
+                                    className="h-full duration-300 bg-green-500 animate-slideRight"
                                 ></div>
                             </div>
                         </div>
@@ -426,7 +462,7 @@ function TotalBimbinganInfo({ data }) {
 function InfoCard({ title, data, percentage, grow, icon }) {
     return (
         <Card className="flex justify-between">
-            <div className="h-full flex flex-col justify-between">
+            <div className="flex flex-col justify-between h-full">
                 <p className="font-sans font-medium text-[3.32vw] md:text-[.83vw]">{title}</p>
                 <div>
                     <p className="font-poppins font-bold text-[5vw] md:text-[1.25vw]">
@@ -434,7 +470,7 @@ function InfoCard({ title, data, percentage, grow, icon }) {
                     </p>
                     <div className="flex items-center gap-[1vw] md:gap-[.25vw] text-[2.5vw] md:text-[.625vw] text-green-500">
                         <FiTrendingUp className="text-[4vw] md:text-[1vw]" />
-                        <span>{percentage}%</span>
+                        <span>{isNaN(percentage) ? 0 : percentage}%</span>
                         <span className="text-light-grey">
                             {grow >= 0 ? "+" : "-"}
                             {grow} Today
@@ -462,7 +498,7 @@ function Card({ className, ...props }) {
 
 function LoadingUI() {
     return (
-        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+        <div className="absolute top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-opacity-50 bg-gray-50">
             <img
                 src={logo}
                 alt="Goals Academy"

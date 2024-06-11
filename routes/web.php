@@ -32,6 +32,7 @@ use App\Http\Controllers\DashboardUserController;
 // use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\Moderator\Bimbingan\ModeratorHistoryBimbinganController;
 use App\Http\Controllers\Moderator\Bimbingan\ModeratorOrderController;
 use App\Http\Controllers\Moderator\Bimbingan\ProgressController;
@@ -191,6 +192,9 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')-
     Route::resource('overview', ModeratorOverviewController::class);
     Route::resource('setting', ModeratorSettingController::class);
 });
+
+Route::get('files/course/download/{fileName}', [FileController::class, 'downloadFileCourse'])->name('file.course.download')->middleware('auth');
+
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';

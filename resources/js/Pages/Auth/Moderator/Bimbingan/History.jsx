@@ -73,7 +73,7 @@ export default function History({ auth, order_history: res }) {
             },
             {
                 accessorFn: (row) =>
-                    row.course?.place.place ?? "Lokasi Belum Diset",
+                    row.course?.place?.place ?? "Lokasi Belum Diset",
                 header: "Lokasi",
             },
             {

@@ -112,4 +112,8 @@ class User extends Authenticatable implements HasName, FilamentUser, MustVerifyE
     {
         return $this->belongsTo(RevenueType::class);
     }
+
+    public function revenue() {
+        return $this->hasMany(Revenue::class, 'tutor_id');
+    }
 }
