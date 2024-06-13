@@ -277,7 +277,7 @@ function MainCard({
                         <hr className="md:hidden mt-[3vw]" />
                     </div>
                     <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" />
-                    <div className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw] mb-[20vw]" id="lengkapi_profil">
+                    <div className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw] mb-[20vw] md:mb-0" id="lengkapi_profil">
                         {Object.keys(rules).length == 1 && "document" in rules ? (<></>) : (
                             <div className="w-full flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
                                 {"schedule" in rules ? (
