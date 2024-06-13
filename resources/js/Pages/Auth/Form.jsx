@@ -144,7 +144,7 @@ function FormRight({ activeForm, setActiveForm }) {
     return (
         <div
             id="form-right"
-            className="container mx-auto xl:w-[30%] h-fit xl:h-screen rounded-lg xl:rounded-none bg-white p-[8vw] md:p-[4vw] xl:p-[4vw] py-[16kvw] md:py-[8vw] xl:py-[10vh] relative"
+            className="container mx-auto xl:w-[30%] h-fit xl:h-screen rounded-lg xl:rounded-none bg-white p-[8vw] md:p-[4vw] xl:p-[4vw] py-[16vw] md:py-[8vw] xl:py-[10vh] relative"
         >
             <div className="grid gap-[8vw] md:gap-[4vw] xl:gap-[2vw] w-full flex-col">
                 <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-1 xl:border-2 border-secondary font-poppins rounded-[1vw] md:rounded-[.5vw]">
@@ -192,7 +192,7 @@ function RegisterForm({ active, registerData, setRegisterData, registerErrors, s
         <div
             className={`${
                 active == "register" ? "grid" : "hidden"
-            } gap-3 xl:gap-4 z-10 md:max-h-[65vh] md:overflow-auto scrollbar-hidden pt-[1vw] md:pt-[.5vw]`}
+            } gap-3 xl:gap-4 z-10 md:max-h-[65vh] md:overflow-auto scrollbar-hidden pt-[2vw] md:pt-[.5vw]`}
         >
             <form
                 onSubmit={onSubmit}
@@ -278,7 +278,7 @@ function LoginForm({ active, loginData, setLoginData, loginMessage, setLoginMess
         <div
             className={`${
                 active == "login" ? "grid" : "hidden"
-            } gap-3 xl:gap-4 z-10 md:max-h-[65vh] md:overflow-auto scrollbar-hidden pt-[1vw] md:pt-[.5vw]`}
+            } gap-3 xl:gap-4 z-10 md:max-h-[65vh] md:overflow-auto scrollbar-hidden pt-[2vw] md:pt-[.5vw]`}
         >
             <form
                 onSubmit={onSubmit}

@@ -277,7 +277,7 @@ function MainCard({
                         <hr className="md:hidden mt-[3vw]" />
                     </div>
                     <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" />
-                    <div className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw]" id="lengkapi_profil">
+                    <div className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw] mb-[20vw]" id="lengkapi_profil">
                         {Object.keys(rules).length == 1 && "document" in rules ? (<></>) : (
                             <div className="w-full flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
                                 {"schedule" in rules ? (
@@ -697,7 +697,7 @@ function MainCard({
                             </div>
                         ) : (<></>)}
                     </div>
-                    <div className="md:hidden rounded-t-[4vw] border-t-1 border-gray-300 py-[4vw]">
+                    <div className="fixed bottom-0 w-full bg-white md:hidden rounded-t-[4vw] border-t-1 border-gray-300 py-[4vw]">
                         <div className="container mx-auto flex justify-between">
                             <div className="flex flex-col justify-center gap-[1vw]">
                                 <p className="text-[3vw] font-medium">Total</p>
@@ -786,7 +786,7 @@ function SummaryCard({
     return (
         <>
             <div className={`fixed top-0 bottom-0 right-0 md:static w-full h-screen md:h-fit md:w-[30%] flex flex-col bg-white md:ms-[2vw] gap-[4vw] md:gap-[2vw] duration-500 ${showMobile ? '' : 'translate-x-full'} md:translate-x-0 md:text-[.9vw] overflow-auto`}>
-                <div className="relative h-screen md:h-fit border-1 md:rounded-[1vw] pt-20 xs:pt-24 md:p-[1.75vw] overflow-auto md:overflow-hidden">
+                <div className="relative h-screen md:h-fit border-1 md:rounded-[1vw] pt-[20vw] md:p-[1.75vw] overflow-auto md:overflow-hidden">
                     <div className="md:hidden shadow-md">
                         <span className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins py-[4vw]" onClick={() => setShowMobile(false)}><FiChevronLeft className="text-[5vw]" /> Kembali</span>
                     </div>
