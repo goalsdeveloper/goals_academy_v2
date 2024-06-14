@@ -225,7 +225,11 @@ export default function Update({ auth, data }) {
                             setShow={(i) =>
                                 setShowForm({ ...showForm, revenue_type: i })
                             }
-                            data={formData.revenue_type_type+"%"}
+                            data={
+                                formData.revenue_type_type
+                                    ? formData.revenue_type_type + "%"
+                                    : ""
+                            }
                             label="Revenue Type"
                             placeholderClassName="font-normal"
                         >
@@ -247,6 +251,7 @@ export default function Update({ auth, data }) {
                         <div className="grid grid-cols-2 gap-[1.2vw]">
                             <GoalsSelectMultipleInput
                                 required
+                                data={formData.soft_skills}
                                 show={showForm.soft_skills}
                                 setShow={(i) => {
                                     if (
@@ -359,6 +364,7 @@ export default function Update({ auth, data }) {
                                 )}
                             </GoalsSelectMultipleInput>
                             <GoalsSelectMultipleInput
+                                data={formData.hard_skills}
                                 show={showForm.hard_skills}
                                 setShow={(i) => {
                                     if (

@@ -454,7 +454,7 @@ function TotalBimbinganInfo({ data }) {
                                             (order_count / highestCount) * 100 +
                                             "%",
                                     }}
-                                    className="h-full bg-green-500 animate-slideRight duration-300"
+                                    className="h-full duration-300 bg-green-500 animate-slideRight"
                                 ></div>
                             </div>
                         </div>
@@ -506,7 +506,7 @@ function Card({ className, ...props }) {
 
 function LoadingUI() {
     return (
-        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+        <div className="absolute top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-opacity-50 bg-gray-50">
             <img
                 src={logo}
                 alt="Goals Academy"

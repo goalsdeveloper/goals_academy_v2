@@ -15,6 +15,7 @@ const GoalsDashboardTable = ({
     isPaginated = false,
     isHeadVisible = false,
     isSplitByCategory = false,
+    isSearchable = true,
     className = "",
     keyword,
     setKeyword,
@@ -63,15 +64,17 @@ const GoalsDashboardTable = ({
         <div
             className={`bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw] ${className}`}
         >
-            <GoalsTextInput
-                placeholder="🔍 Search"
-                className=" md:max-w-[10.4vw] md:max-h-[2.4vw]"
-                data={keyword}
-                setData={(i) => {
-                    setKeyword(i);
-                    onSearch(i);
-                }}
-            />
+            {isSearchable && (
+                <GoalsTextInput
+                    placeholder="🔍 Search"
+                    className=" md:max-w-[10.4vw] md:max-h-[2.4vw]"
+                    data={keyword}
+                    setData={(i) => {
+                        setKeyword(i);
+                        onSearch(i);
+                    }}
+                />
+            )}
             <div className="text-[.8vw]">
                 {isSplitByCategory && (
                     <MaterialReactTable table={dummyTOptions} />

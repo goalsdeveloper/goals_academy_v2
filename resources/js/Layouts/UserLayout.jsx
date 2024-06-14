@@ -25,16 +25,18 @@ export default function UserLayout({ auth, title, children }) {
     );
 }
 
-function DashboardContent({ title, children }) {
+function DashboardContent({ title, children, isContainered = true }) {
     return (
-        <div className="container mx-auto flex gap-[1.75vw]">
+        <div
+            className={`md:container mx-auto flex gap-[1.75vw]`}
+        >
             <DashboardSidebar
                 className={`sticky z-10 w-full md:w-3/12 h-fit ${
                     title == "Dashboard" ? "" : "hidden md:flex"
                 }`}
                 title={title}
             />
-            <div className={`w-full space-y-[1vw]`}>{children}</div>
+            <div className={`w-full md:space-y-[1vw]`}>{children}</div>
         </div>
     );
 }
@@ -96,7 +98,7 @@ function DashboardSidebar({ title, className }) {
 
 function UserLayoutTitle({ title }) {
     return (
-        <div className="flex md:block justify-between items-center">
+        <div className="flex items-center justify-between md:block">
             <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-[4vw]">
                 {title == "Dashboard" ? "Pembelajaran Saya" : title}
             </h1>
