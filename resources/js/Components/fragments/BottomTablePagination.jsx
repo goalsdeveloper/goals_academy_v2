@@ -13,6 +13,13 @@ const BottomPaginationTable = ({
 }) => {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
+    const searchQuery = new URLSearchParams(window.location.search).get(
+        "search"
+    );
+    const perPageQuery = new URLSearchParams(window.location.search).get(
+        "perPage"
+    );
+
     return (
         <div className="px-4 flex items-center justify-between mt-8 text-[3.5vw] md:text-[1vw]">
             <p className="hidden md:block text-neutral-50">
@@ -23,19 +30,24 @@ const BottomPaginationTable = ({
                     <button
                         key={index}
                         className=" text-neutral-60"
-                        disabled={link.url == null}
-                        onClick={() =>
+                        disabled={
+                            link.url == null || link.label == link.current_page
+                        }
+                        onClick={() => {
+                            const pageParams = new URL(
+                                link.url
+                            ).searchParams.get("page");
                             router.get(
-                                link.url +
+                                window.location.pathname +
+                                    `?page=${pageParams}` +
                                     (keyword != null
                                         ? `&search=${keyword}`
                                         : "") +
-                                    "&perPage=" +
-                                    new URLSearchParams(
-                                        window.location.search
-                                    ).get("perPage") ?? ""
-                            )
-                        }
+                                    (perPageQuery != null
+                                        ? `&perPage=${perPageQuery}`
+                                        : "")
+                            );
+                        }}
                     >
                         {link.label == "&laquo; Previous" ? (
                             <svg
@@ -92,10 +104,10 @@ const BottomPaginationTable = ({
                             onClick={() => {
                                 router.get(
                                     window.location.pathname +
-                                        (`?perPage=${item}` ||
-                                            new URLSearchParams(
-                                                window.location.search
-                                            ).get("perPage"))
+                                        (searchQuery != null
+                                            ? `?search=${searchQuery}`
+                                            : "") +
+                                        `&perPage=${item}`
                                 );
                             }}
                         >

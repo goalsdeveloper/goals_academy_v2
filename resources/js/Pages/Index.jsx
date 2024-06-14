@@ -31,17 +31,17 @@ export default function Index({ auth }) {
             slug: "dibimbing-sekali",
             img: program1,
             excerpt:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.",
+                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 60 menit, sesuai dengan permasalahan pada skripsimu.",
             description:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.",
+                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 60 menit, sesuai dengan permasalahan pada skripsimu.",
             features: {
                 times: 1,
-                duration: 30,
+                duration: 60,
                 category: "Online",
             },
-            price: 47000,
+            price: 95000,
             hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/baE8kEv",
+            link: "https://lynk.id/goalsacademy/n6GjmgN",
         },
         {
             id: 2,
@@ -53,13 +53,13 @@ export default function Index({ auth }) {
             description:
                 "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
             features: {
-                times: 7,
+                times: 8,
                 duration: 60,
                 category: "Online",
             },
-            price: 649000,
+            price: 988000,
             hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/7q7r96V",
+            link: "https://lynk.id/goalsacademy/vMQZXjR",
         },
         {
             id: 3,
@@ -75,9 +75,9 @@ export default function Index({ auth }) {
                 duration: 60,
                 category: "Online",
             },
-            price: 115000,
+            price: 155000,
             hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/DqqGx5x",
+            link: "https://lynk.id/goalsacademy/xmQ79ke",
         },
     ];
 
@@ -177,7 +177,7 @@ export default function Index({ auth }) {
             <Hero />
             <Preliminary />
             <Program data={data_program} />
-            <div className="relative bg-secondary md:bg-transparent overflow-hidden md:overflow-visible py-3 xs:py-6 md:py-0">
+            <div className="relative py-3 overflow-hidden bg-secondary md:bg-transparent md:overflow-visible xs:py-6 md:py-0">
                 <CornerWaveVector
                     className="md:hidden"
                     cornerClassName="w-10/12"

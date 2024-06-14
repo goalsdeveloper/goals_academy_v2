@@ -118,8 +118,7 @@ export default function Place({ auth, places, cities }) {
                                 label=""
                                 size="lg"
                                 isEnabled={cell.row.original.is_visible}
-                                disabled={cell.row.original.is_visible}
-                                onClick={() => {
+                                setIsEnabled={() => {
                                     router.put(
                                         route(
                                             "admin.bimbingan.city.updateVisible",
@@ -183,8 +182,7 @@ export default function Place({ auth, places, cities }) {
                                 label=""
                                 size="lg"
                                 isEnabled={cell.row.original.is_visible}
-                                disabled={cell.row.original.is_visible}
-                                onClick={() => {
+                                setIsEnabled={() => {
                                     router.put(
                                         route(
                                             "admin.bimbingan.place.updateVisible",
