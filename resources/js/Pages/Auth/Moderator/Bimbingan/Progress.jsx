@@ -2,7 +2,11 @@ import GoalsBadge from "@/Components/elements/GoalsBadge";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { getPaginationPages, updateSearchParams, upperCaseFirstLetter } from "@/script/utils";
+import {
+    getPaginationPages,
+    updateSearchParams,
+    upperCaseFirstLetter,
+} from "@/script/utils";
 import { Link, router, useForm } from "@inertiajs/react";
 import {
     MenuItem,
@@ -25,8 +29,10 @@ import { useEffect } from "react";
 import DateTimeComp from "./components/DateTimeComp";
 import SelectInput from "@mui/material/Select/SelectInput";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
+import { useRef } from "react";
 
 export default function Progress({ auth, data: recentOrder }) {
+    const timeoutRef = useRef(null);
     const { data, total, from, to, current_page, per_page, last_page, links } =
         recentOrder.recent_order;
     const searchParams = new URLSearchParams(window.location.search);
@@ -220,6 +226,7 @@ export default function Progress({ auth, data: recentOrder }) {
             return (
                 <BottomPaginationTable
                     {...{
+                        keyword,
                         from,
                         to,
                         total,
@@ -268,11 +275,11 @@ export default function Progress({ auth, data: recentOrder }) {
                         }
                         payloadData={payloadData}
                         confirmHandler={() => {
-                            put(
+                            router.put(
                                 route(
                                     "moderator.bimbingan.progress.confirmBimbingan",
                                     { progress: payloadData.id }
-                                )
+                                ), {duration_per_meet : payloadData.duration_per_meet}
                             );
                             setPayloadData({ duration_per_meet: "", id: "" });
                         }}
@@ -287,7 +294,15 @@ export default function Progress({ auth, data: recentOrder }) {
                         placeholder="🔍 Search"
                         className="max-w-[10.4vw] max-h-[2.4vw]"
                         data={keyword}
-                        setData={(e) => setKeyword(e)}
+                        setData={(e) => {
+                            if (timeoutRef.current) {
+                                clearTimeout(timeoutRef.current);
+                            }
+                            setKeyword(e);
+                            timeoutRef.current = setTimeout(() => {
+                                updateSearchParams("search", keyword);
+                            }, 1000);
+                        }}
                         onKeyUp={(e) => {
                             if (e.key === "Enter") {
                                 updateSearchParams("search", keyword);
@@ -527,7 +542,11 @@ export const DropdownDetailPanel = ({
                                         {isActionDisabled == false && (
                                             <>
                                                 <button
+                                                    disabled={status == "Selesai"}
                                                     onClick={() => {
+                                                        if(item.ongoing == 'selesai') {
+                                                            return;
+                                                        }
                                                         setIsShow({
                                                             ...isShow,
                                                             duration: true,
@@ -538,7 +557,7 @@ export const DropdownDetailPanel = ({
                                                         });
                                                     }}
                                                 >
-                                                    <FiThumbsUp className="text-[1.2vw] text-success-50" />
+                                                    <FiThumbsUp className={"text-[1.2vw] " + (item.ongoing == 'selesai' ? `cursor-default text-secondary` : `text-success-50`)} />
                                                 </button>
                                                 <Link
                                                     href={route(

@@ -67,9 +67,9 @@ const Dialog = ({
                                 className="text-[1vw] gap-[.4vw]"
                                 label="Visibilitas"
                                 size="lg"
-                                isEnabled={formData.is_visible}
+                                isEnabled={formData.is_visible == true}
                                 setIsEnabled={(i) => setFormData("is_visible", i)}
-                                disabled={showDialog.show}
+                                disabled={formData.show == false}
                             />
                         </div>
                         {showDialog.show ? (<></>) : (

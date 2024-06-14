@@ -14,6 +14,10 @@ class Topic extends Model
         'is_visible'
     ];
 
+    protected $casts = [
+        'is_visible' => 'bool',
+    ];
+
     public function products() {
         return $this->belongsToMany(Products::class);
     }

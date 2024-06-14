@@ -88,8 +88,7 @@ export default function Category({ auth, categories, message }) {
                         label=""
                         size="lg"
                         isEnabled={cell.row.original.is_visible}
-                        disabled={cell.row.original.is_visible}
-                        onClick={() => {
+                        setIsEnabled={() => {
                             router.put(
                                 route(
                                     "admin.bimbingan.category.updateVisible",

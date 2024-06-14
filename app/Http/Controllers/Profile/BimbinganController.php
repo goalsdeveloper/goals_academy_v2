@@ -30,7 +30,21 @@ class BimbinganController extends Controller
             ->when($request['status'] == 'selesai', function ($q) {
                 return $q->where('ongoing', CourseStatusEnum::SUCCESS->value);
             })
-            ->orderBy('ongoing', 'asc')->with('order', 'products', 'products.category')->get();
+            ->orderBy('created_at', 'desc')->with('order', 'products', 'products.category')->get();
+        foreach ($courses as $course) {
+            if ($course->child->count() > 0 && $course->ongoing == CourseStatusEnum::SUCCESS->value) {
+                foreach ($course->child as $child) {
+                    if ($child->ongoing != CourseStatusEnum::SUCCESS->value) {
+                        $course['progress'] = CourseStatusEnum::ONGOING->value;
+                        break;
+                    }
+                }
+                continue;
+            }
+            $course['progress'] = $course->ongoing;
+            // dd($course['progress']);
+
+        }
         return Inertia::render('Auth/User/Bimbingan/Bimbingan', [
             'orderBimbingan' => $courses,
         ]);

@@ -43,19 +43,19 @@ const View = ({ tipe = "bimbingan", detailOrder }) => {
                 <GoalsTextInput
                     label="Username"
                     disabled
-                    data={detailOrder?.user?.name}
+                    data={detailOrder?.user?.name ?? ''}
                     placeholder="Belum Diset"
                 />
                 <GoalsTextInput
                     label="University"
                     disabled
-                    data={detailOrder?.user?.profile?.university}
+                    data={detailOrder?.user?.profile?.university ?? ''}
                     placeholder="Belum Diset"
                 />
                 <GoalsTextInput
                     label="Major"
                     disabled
-                    data={detailOrder.user?.profile?.major}
+                    data={detailOrder.user?.profile?.major ?? ''}
                     placeholder="Belum Diset"
                 />
                 <div className="flex gap-[.4vw] w-full items-end">
@@ -63,10 +63,10 @@ const View = ({ tipe = "bimbingan", detailOrder }) => {
                         label="Number"
                         grow
                         disabled
-                        data={detailOrder.user?.profile?.phone_number}
+                        data={detailOrder.user?.profile?.phone_number ?? ''}
                         placeholder="Belum Diset"
                     />
-                    <a href="wa.me/" target="_blank">
+                    <a href="/wa.me/" target="_blank">
                         <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
                     </a>
                 </div>
@@ -75,10 +75,10 @@ const View = ({ tipe = "bimbingan", detailOrder }) => {
                         label="Tutor  Number"
                         grow
                         disabled
-                        data={detailOrder.course?.tutor?.profile?.phone_number}
+                        data={detailOrder.course?.tutor?.profile?.phone_number ?? ''}
                     />
                     <a
-                        href={`wa.me/${detailOrder.course?.tutor?.profile?.phone_number}`}
+                        href={`/wa.me/${detailOrder.course?.tutor?.profile?.phone_number}`}
                         target="_blank"
                     >
                         <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
@@ -100,17 +100,17 @@ const View = ({ tipe = "bimbingan", detailOrder }) => {
                 <GoalsTextInput
                     label="Order Id"
                     disabled
-                    data={detailOrder.order_code}
+                    data={detailOrder.order_code ?? ''}
                 />
                 <GoalsTextInput
                     label="Product"
                     disabled
-                    data={detailOrder.products?.name}
+                    data={detailOrder.products?.name ?? ''}
                 />
                 <GoalsTextInput
                     label="Topic"
                     disabled
-                    data={detailOrder.course?.topic?.topic}
+                    data={detailOrder.course?.topic?.topic ?? ''}
                 />
                 {GetLocationData()}
                 <div className="flex gap-[.4vw]">
@@ -118,13 +118,13 @@ const View = ({ tipe = "bimbingan", detailOrder }) => {
                         label="Date"
                         grow
                         disabled
-                        data={detailOrder.course?.date}
+                        data={detailOrder.course?.date ?? ''}
                     />
                     <GoalsTextInput
                         label="Time"
                         grow
                         disabled
-                        data={detailOrder.course?.time}
+                        data={detailOrder.course?.time ?? ''}
                     />
                 </div>
             </FormSection>
