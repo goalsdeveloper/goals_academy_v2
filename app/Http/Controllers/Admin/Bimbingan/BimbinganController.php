@@ -84,7 +84,7 @@ class BimbinganController extends Controller
                                         $query->where('name', 'LIKE', "%$search%");
                                     });
                             });
-                        })->with('category')->orderBy('number_list', 'asc')->paginate($perPage);
+                        })->with('category')->orderBy('category_id', 'asc')->orderBy('number_list', 'asc')->paginate($perPage);
                         return $bimbingan;
                     },
                     'categories' => Category::get(),
@@ -137,6 +137,7 @@ class BimbinganController extends Controller
      */
     public function store(Request $request)
     {
+        // dd('test');
         try {
             if (Auth::user()->user_role == "admin") {
                 $validateData = $request->validate([
@@ -180,6 +181,7 @@ class BimbinganController extends Controller
                 // $product->number_list = $validateData['number_list'];
                 $product->total_meet = $validateData['total_meet'];
                 $product->active_period = $validateData['active_period'];
+                $product->number_list = Products::newNumberList($product->category_id);
                 if (isset($validateData['duration'])) {
                     $product->duration = $validateData['duration'];
                 }
@@ -234,6 +236,9 @@ class BimbinganController extends Controller
                 abort(403);
             }
         } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ]);
             return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
             // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
         }
@@ -409,7 +414,6 @@ class BimbinganController extends Controller
                     Storage::delete($product->product_image);
                 }
                 $product->delete();
-
                 return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil dihapus');
                 // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete product success'], 200);
             } else {
@@ -424,11 +428,38 @@ class BimbinganController extends Controller
         }
     }
 
-    public function updateOrderNumber(Request $req) {
-        // $asal =
-        $destination = $req;
-        return response()->json([
-
-        ]);
+    public function updateOrderNumber(Request $req)
+    {
+        try {
+            $origin = $req['origin_id'];
+            $destination = $req['destination_id'];
+            $category_id = $req['category_id'];
+            $max = $destination;
+            $min = $origin;
+            if ($max < $min) {
+                $max = $origin;
+                $min = $destination;
+            }
+            $products = Products::where('category_id', $category_id)->whereBetween('number_list', [$min, $max])
+                ->orderBy('number_list', 'asc')->get();
+            foreach ($products as $product) {
+                if ($product->number_list == $origin) {
+                    $product->number_list = $destination;
+                    $product->update();
+                    continue;
+                }
+                if ($destination > $origin) {
+                    $product->number_list = $product->number_list - 1;
+                } else {
+                    $product->number_list = $product->number_list + 1;
+                }
+                $product->update();
+            }
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'gagal ordering,' . $th->getMessage(),
+            ], 500);
+        }
     }
 }

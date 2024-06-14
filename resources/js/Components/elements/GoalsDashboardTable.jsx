@@ -5,6 +5,7 @@ import {
 } from "material-react-table";
 import GoalsTextInput from "./GoalsTextInput";
 import { useState } from "react";
+import { router } from "@inertiajs/react";
 
 const GoalsDashboardTable = ({
     data,
@@ -17,7 +18,7 @@ const GoalsDashboardTable = ({
     className = "",
     keyword,
     setKeyword,
-    onSearch
+    onSearch,
 }) => {
     const [tableData, setTableData] = useState(
         isSplitByCategory ? splitTableByCategory(data) : data
@@ -66,11 +67,10 @@ const GoalsDashboardTable = ({
                 placeholder="🔍 Search"
                 className=" md:max-w-[10.4vw] md:max-h-[2.4vw]"
                 data={keyword}
-                setData={(i)=> {
-                    setKeyword(i)
-                    onSearch(i)
+                setData={(i) => {
+                    setKeyword(i);
+                    onSearch(i);
                 }}
-
             />
             <div className="text-[.8vw]">
                 {isSplitByCategory && (
@@ -194,14 +194,34 @@ const dataTableOptionsConfig = ({
         muiRowDragHandleProps: ({ table }) => ({
             onDragEnd: () => {
                 const { draggingRow, hoveredRow } = table.getState();
+                const dataPrevious = data;
                 if (hoveredRow && draggingRow) {
-                    data.splice(
-                        hoveredRow.index,
-                        0,
-                        data.splice(draggingRow.index, 1)[0]
+                    const originItem = data[draggingRow.index];
+                    const destinationItem = data[hoveredRow.index];
+                    console.log(originItem, destinationItem)
+                    // data.splice(
+                    //     hoveredRow.index,
+                    //     0,
+                    //     data.splice(draggingRow.index, 1)[0]
+                    // );
+                    router.post(
+                        route("admin.bimbingan.product.updateOrderNumber"),
+                        {
+                            origin_id: originItem.number_list,
+                            destination_id: destinationItem.number_list,
+                            category_id: originItem.category_id,
+                        },
+                        {
+                            onSuccess: () => {
+                                router.visit(
+                                    route("admin.bimbingan.product.index"),
+                                    {
+                                        only: ["bimbingan"],
+                                    }
+                                );
+                            },
+                        }
                     );
-                    console.log(...data);
-                    setData([...data]);
                 }
             },
         }),

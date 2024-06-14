@@ -67,4 +67,9 @@ class Products extends Model
     {
         return $this->hasMany(Course::class);
     }
+
+    static public function newNumberList(Int $category) {
+        $lastNumber = Products::where('category_id', $category)->orderBy('number_list', 'desc')->first();
+        return $lastNumber->number_list + 1;
+    }
 }
