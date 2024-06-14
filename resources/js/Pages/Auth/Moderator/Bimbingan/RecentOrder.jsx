@@ -30,11 +30,9 @@ export default function RecentOrder({ auth, orders }) {
         });
     };
 
-    // const [isLoading, setIsLoading] = useState(false);
     const [isShow, setIsShow] = useState(false);
-    // const [detailOrder, setDetailOrder] = useState({});
     const [detailOrder, setDetailOrder] = useState({});
-    // console.log(recent_order);
+
     const columns = useMemo(
         () => [
             {
@@ -100,6 +98,7 @@ export default function RecentOrder({ auth, orders }) {
                             <li>
                                 <button
                                     onClick={() => {
+                                        console.log(cell.row.original);
                                         setIsShow(!isShow);
                                         setDetailOrder(cell.row.original);
                                     }}

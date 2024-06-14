@@ -39,6 +39,8 @@ export default function Edit({
         time: order?.course?.time ?? "",
     });
 
+    console.log(order)
+
     const GetLocationForm = () => {
         if (order.products?.total_meet == 1) {
             switch (order.products?.contact_type) {
@@ -228,7 +230,7 @@ export default function Edit({
                                 }
                             />
                             <a
-                                href={`wa.me/${
+                                href={`/wa.me/${
                                     order.user.profile.phone_number ?? ""
                                 }`}
                                 target="_blank"
@@ -261,7 +263,7 @@ export default function Edit({
                                 ))}
                             </SelectInput>
                             <a
-                                href={`wa.me/${formData.tutor_phone}`}
+                                href={`/wa.me/${formData.tutor_phone}`}
                                 target="_blank"
                             >
                                 <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
