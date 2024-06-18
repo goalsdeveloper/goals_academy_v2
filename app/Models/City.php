@@ -11,6 +11,10 @@ class City extends Model
     protected $fillable = ['city', 'is_visible'];
     protected $hidden = ['updated_at', 'created_at'];
 
+    protected $casts = [
+        'is_visible' => 'bool',
+    ];
+
     public function places()
     {
         return $this->hasMany(Place::class);

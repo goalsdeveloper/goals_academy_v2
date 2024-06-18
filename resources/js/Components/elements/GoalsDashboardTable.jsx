@@ -5,6 +5,7 @@ import {
 } from "material-react-table";
 import GoalsTextInput from "./GoalsTextInput";
 import { useState } from "react";
+import { router } from "@inertiajs/react";
 
 const GoalsDashboardTable = ({
     data,
@@ -196,14 +197,34 @@ const dataTableOptionsConfig = ({
         muiRowDragHandleProps: ({ table }) => ({
             onDragEnd: () => {
                 const { draggingRow, hoveredRow } = table.getState();
+                const dataPrevious = data;
                 if (hoveredRow && draggingRow) {
-                    data.splice(
-                        hoveredRow.index,
-                        0,
-                        data.splice(draggingRow.index, 1)[0]
+                    const originItem = data[draggingRow.index];
+                    const destinationItem = data[hoveredRow.index];
+                    console.log(originItem, destinationItem)
+                    // data.splice(
+                    //     hoveredRow.index,
+                    //     0,
+                    //     data.splice(draggingRow.index, 1)[0]
+                    // );
+                    router.post(
+                        route("admin.bimbingan.product.updateOrderNumber"),
+                        {
+                            origin_id: originItem.number_list,
+                            destination_id: destinationItem.number_list,
+                            category_id: originItem.category_id,
+                        },
+                        {
+                            onSuccess: () => {
+                                router.visit(
+                                    route("admin.bimbingan.product.index"),
+                                    {
+                                        only: ["bimbingan"],
+                                    }
+                                );
+                            },
+                        }
                     );
-                    console.log(...data);
-                    setData([...data]);
                 }
             },
         }),

@@ -72,7 +72,7 @@ class ProductSeeder extends Seeder
             'duration' => 60,
             'total_meet' => 1,
             'active_period' => 1,
-            'number_list' => 2,
+            'number_list' => 3,
             'form_config' => [
                 'schedule' => 1,
                 'topic' => 1,
@@ -93,7 +93,7 @@ class ProductSeeder extends Seeder
             'duration' => 60,
             'total_meet' => 1,
             'active_period' => 90,
-            'number_list' => 2,
+            'number_list' => 1,
             'form_config' => [
                 'document' => 0,
             ],
@@ -133,7 +133,7 @@ class ProductSeeder extends Seeder
             'duration' => 60,
             'total_meet' => 4,
             'active_period' => 30,
-            'number_list' => 2,
+            'number_list' => 3,
             'form_config' => [
                 'document' => 0,
             ],
@@ -152,7 +152,7 @@ class ProductSeeder extends Seeder
             'duration' => 60,
             'total_meet' => 2,
             'active_period' => 7,
-            'number_list' => 2,
+            'number_list' => 4,
             'form_config' => [
                 'document' => 0,
             ],
@@ -171,7 +171,7 @@ class ProductSeeder extends Seeder
             'duration' => 60,
             'total_meet' => 8,
             'active_period' => 90,
-            'number_list' => 2,
+            'number_list' => 5,
             'form_config' => [
                 'document' => 0,
             ],
@@ -190,7 +190,7 @@ class ProductSeeder extends Seeder
             'duration' => 75,
             'total_meet' => 8,
             'active_period' => 90,
-            'number_list' => 2,
+            'number_list' => 6,
             'form_config' => [
                 'document' => 0,
             ],

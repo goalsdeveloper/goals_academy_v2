@@ -92,7 +92,7 @@ class TopicController extends Controller
             $validateData = $request->validate([
                 'topic' => 'string',
                 'slug' => 'string',
-
+                'is_visible' => 'boolean'
             ]);
 
             $topic->update($validateData);

@@ -245,7 +245,6 @@ class ModeratorOrderController extends Controller
     // $order diambil dari course id(perhatikan name model)
     public function update(Request $request, Order $order)
     {
-        dd($request);
         try {
             $order = $order->load('products');
 

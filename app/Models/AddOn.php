@@ -11,6 +11,9 @@ class AddOn extends Model
 
     protected $fillable = ['name', 'slug', 'price', 'is_visible'];
     protected $hidden = ['created_at', 'updated_at'];
+    protected $casts = [
+        'is_visible' => 'bool',
+    ];
 
     public function products()
     {

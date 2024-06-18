@@ -36,6 +36,7 @@ class Products extends Model
         'facilities' => 'array',
         'form_config' => 'array',
         'webinar_properties' => 'array',
+        'is_visible' => 'bool'
     ];
 
     public function order()
@@ -65,5 +66,10 @@ class Products extends Model
     public function course()
     {
         return $this->hasMany(Course::class);
+    }
+
+    static public function newNumberList(Int $category) {
+        $lastNumber = Products::where('category_id', $category)->orderBy('number_list', 'desc')->first();
+        return $lastNumber->number_list + 1;
     }
 }

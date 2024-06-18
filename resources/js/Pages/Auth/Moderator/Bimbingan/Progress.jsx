@@ -275,11 +275,11 @@ export default function Progress({ auth, data: recentOrder }) {
                         }
                         payloadData={payloadData}
                         confirmHandler={() => {
-                            put(
+                            router.put(
                                 route(
                                     "moderator.bimbingan.progress.confirmBimbingan",
                                     { progress: payloadData.id }
-                                )
+                                ), {duration_per_meet : payloadData.duration_per_meet}
                             );
                             setPayloadData({ duration_per_meet: "", id: "" });
                         }}
@@ -544,6 +544,9 @@ export const DropdownDetailPanel = ({
                                                 <button
                                                     disabled={status == "Selesai"}
                                                     onClick={() => {
+                                                        if(item.ongoing == 'selesai') {
+                                                            return;
+                                                        }
                                                         setIsShow({
                                                             ...isShow,
                                                             duration: true,
@@ -554,7 +557,7 @@ export const DropdownDetailPanel = ({
                                                         });
                                                     }}
                                                 >
-                                                    <FiThumbsUp className="text-[1.2vw] text-success-50" />
+                                                    <FiThumbsUp className={"text-[1.2vw] " + (item.ongoing == 'selesai' ? `cursor-default text-secondary` : `text-success-50`)} />
                                                 </button>
                                                 <Link
                                                     href={route(
