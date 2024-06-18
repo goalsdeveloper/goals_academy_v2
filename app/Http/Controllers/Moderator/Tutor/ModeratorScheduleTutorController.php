@@ -43,7 +43,6 @@ class ModeratorScheduleTutorController extends Controller
 
                 $courses = Course::with(['tutor:id,name', 'products:id,name,duration'])
                     ->select('id', 'tutor_id', 'date', 'time', 'products_id')
-                    ->where('ongoing', 'berjalan')
                     ->whereNotNull('tutor_id')
                     ->whereNotNull('date')
                     ->whereNotNull('time')
