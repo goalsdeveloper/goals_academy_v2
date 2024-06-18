@@ -6,7 +6,6 @@ use App\Enums\CourseStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\FileUpload;
-use App\Models\Place;
 use App\Notifications\GeneralCourseNotification;
 use Exception;
 use Illuminate\Http\Request;
@@ -27,7 +26,7 @@ class ProgressController extends Controller
         return Inertia::render('Auth/Tutor/Bimbingan/Progress', [
             'bimbingan' => function () use ($request) {
                 $user = Auth::user();
-                $perPage = (int)$request->input('perPage', 10);
+                $perPage = (int) $request->input('perPage', 10);
                 $search = $request->search;
 
                 $query = $user->tutor()
@@ -38,7 +37,6 @@ class ProgressController extends Controller
                     $q->whereNotNull('date')
                         ->whereNotNull('time');
                 });
-
 
                 $query->orWhereHas('products', function ($q) {
                     $q->where('contact_type', 'other');
@@ -52,8 +50,8 @@ class ProgressController extends Controller
                             ->orWhereHas('user', function ($q) use ($search) {
                                 $q->where('username', 'LIKE', '%' . $search . '%');
                             })->orWhereHas('topic', function ($q) use ($search) {
-                                $q->where('topic', 'LIKE', '%' . $search . '%');
-                            });
+                            $q->where('topic', 'LIKE', '%' . $search . '%');
+                        });
                     });
                 }
 
@@ -68,7 +66,6 @@ class ProgressController extends Controller
         ]);
     }
 
-
     public function tutorApprove(Course $progress)
     {
         $user = Auth::user();
@@ -79,6 +76,23 @@ class ProgressController extends Controller
             ], 403);
         }
         try {
+            $addons_price = $progress->addOns->sum('price');
+            if ($progress->is_moderator) {
+                $amount = 0;
+                if ($progress->products->contact_type == 'other') {
+                    $amount = floor((($progress->products->price + $addons_price) * $progress->tutor->revenue_type->type) / 100);
+                } else {
+                    $amount = floor(((($progress->products->price / $progress->products->total_meet) + $addons_price) * $progress->tutor->revenue_type->type) / 100);
+                }
+                $progress->ongoing = CourseStatusEnum::SUCCESS;
+                Revenue::create([
+                    'tutor_id' => $progress->tutor_id,
+                    'course_id' => $progress->id,
+                    'revenue_type_id' => $progress->tutor->revenue_type_id,
+                    'amount' => $amount,
+                    'category' => 'pemasukan',
+                ]);
+            }
             $progress->is_tutor = true;
             $progress->update();
             return redirect()->back();
@@ -153,7 +167,8 @@ class ProgressController extends Controller
                 $file->save();
             }
             $progress->user->notify(new GeneralCourseNotification("Update Bimbingan!", "Bimbingan {$progress->order->order_code} sesi $progress->session terdapat update dari tutor, yuk cek segera!", route('user.profile.detailPembelajaran', ['order_id' => $progress->order->order_code])));
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress successfully'], 200);
+            return redirect()->route('tutor.bimbingan.progress.index');
+            // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress successfully'], 200);
         } catch (Exception $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => $e->getMessage()], 500);
         }

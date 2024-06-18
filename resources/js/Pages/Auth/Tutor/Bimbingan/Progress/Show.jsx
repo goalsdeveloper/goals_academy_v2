@@ -1,6 +1,8 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import React from "react";
+import { useState } from "react";
 import { useForm } from "@inertiajs/react";
+import { createPortal } from "react-dom";
 import { useMediaQuery } from "react-responsive";
 import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
 import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
@@ -8,6 +10,7 @@ import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import GoalsTextArea from "@/Components/elements/GoalsTextArea";
 import { FiChevronLeft, FiFileText } from "react-icons/fi";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
+import FileMediaPopup from "@/Pages/Auth/Moderator/Bimbingan/components/FileMediaPopup";
 
 export default function Show({ auth, order, files }) {
     console.log(order);
@@ -22,12 +25,14 @@ export default function Show({ auth, order, files }) {
         city: order.place?.city?.city,
         note: order?.note,
         add_on: order?.add_ons,
-        document: [],
+        document: order?.file_uploads,
         document_meta: order?.file_uploads,
         document_deleted: [],
     });
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
+    const [showDocuments, setShowDocuments] = useState(false);
 
     const GetLocationData = () => {
         switch (order.products.contact_type) {
@@ -64,6 +69,15 @@ export default function Show({ auth, order, files }) {
                     <Breadcrumb level={2} />
                 )}
 
+                {createPortal(
+                    <FileMediaPopup
+                        show={showDocuments}
+                        setShow={setShowDocuments}
+                        files={formData.document}
+                    />,
+                    document.body
+                )}
+
                 <div className="md:grid grid-cols-2 gap-[1.2vw]">
                     <FormSection
                         className="p-[7.4vw] md:!p-[2vw] h-fit"
@@ -71,12 +85,12 @@ export default function Show({ auth, order, files }) {
                         titleClassName="!font-semibold !text-[4vw] md:!text-[1.1vw]"
                         title="Order Details"
                         titleAction={
-                            <a
-                                href="#"
+                            <button
                                 className="text-secondary text-[3.6vw] md:text-[.9vw] font-medium flex items-center gap-[1vw] md:gap-[.2vw]"
+                                onClick={() => setShowDocuments(true)}
                             >
                                 File & Media <FiFileText />
-                            </a>
+                            </button>
                         }
                         bordered={isMobile}
                     >

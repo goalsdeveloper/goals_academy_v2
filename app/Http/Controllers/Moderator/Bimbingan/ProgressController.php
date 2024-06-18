@@ -3,25 +3,24 @@
 namespace App\Http\Controllers\Moderator\Bimbingan;
 
 use App\Enums\CourseStatusEnum;
-use Exception;
-use Inertia\Inertia;
-use App\Models\Order;
+use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\FileUpload;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\Place;
+use App\Models\Revenue;
 use App\Models\User;
 use App\Notifications\GeneralCourseNotification;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Pagination\LengthAwarePaginator as PaginationLengthAwarePaginator;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 
 class ProgressController extends Controller
 {
@@ -42,7 +41,7 @@ class ProgressController extends Controller
                     "products.productType:id,type",
                     "course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id",
                     "course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session",
-                    "course.tutor"
+                    "course.tutor",
                 ])
                     ->whereHas("products", function ($query) {
                         $query->whereHas("productType", function ($subQuery) {
@@ -55,7 +54,6 @@ class ProgressController extends Controller
                     ->where("status", "Success");
 
                 $query->orderBy("updated_at", "desc");
-
 
                 if ($search) {
                     $query->whereHas("user", function ($userQuery) use ($search) {
@@ -127,7 +125,7 @@ class ProgressController extends Controller
 
                 return Inertia::render("Auth/Moderator/Bimbingan/Progress/View", [
                     "progress" => $progress_user,
-                    "tutors" => $tutors
+                    "tutors" => $tutors,
                 ]);
             } else {
                 abort(403);
@@ -163,7 +161,7 @@ class ProgressController extends Controller
         return Inertia::render("Auth/Moderator/Bimbingan/Progress/Edit", [
             "progress" => $progress,
             "tutors" => $tutors,
-            "places" => Place::with("city")->get()
+            "places" => Place::with("city")->get(),
         ]);
     }
 
@@ -262,9 +260,9 @@ class ProgressController extends Controller
 
                     $file = new FileUpload();
 
-                    $file->course_id  = $progress->id;
+                    $file->course_id = $progress->id;
                     $file->user_id = Auth::user()->id;
-                    $file->path  = $filePath;
+                    $file->path = $filePath;
                     $file->filename = $fileName;
                     $file->size = $uploadedFile->getSize();
                     $file->slug = Str::slug(pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME));
@@ -274,7 +272,7 @@ class ProgressController extends Controller
                 }
 
                 $progress->user->notify(new GeneralCourseNotification("Tutor Sudah Ditemukan!", "Bimbingan {$progress->order->order_code} sesi {$progress->session} terdapat update, yuk cek segera!", route('user.profile.detailPembelajaran', ['order_id' => $progress->order->order_code])));
-                $progress->course->tutor->notify(new GeneralCourseNotification("Update pada Bimbingan", "Bimbingan {$progress->order->order_code} sesi {$progress->session} terdapat update dari moderator, yuk cek segera!", route('tutor.bimbingan.progress.edit', ['progress' => $progress->order->order_code])));
+                $progress->tutor->notify(new GeneralCourseNotification("Update pada Bimbingan", "Bimbingan {$progress->order->order_code} sesi {$progress->session} terdapat update dari moderator, yuk cek segera!", route('tutor.bimbingan.progress.edit', ['progress' => $progress->id])));
                 return redirect()->route("moderator.bimbingan.progress.index")->with("success", "Update progress berhasil");
             } else {
                 abort(403);
@@ -323,7 +321,7 @@ class ProgressController extends Controller
                     // return response()->json(["status" => false, "statusCode" => 403, "message" => "Progress sudah selesai dan tidak dapat diubah"], 403);
                     return redirect()->back()->with("error", "Progress sudah selesai dan tidak dapat diubah");
                 }
-
+                $addons_price = $progress->addOns->sum('price');
                 if (!$progress->products->contact_type == "other") {
                     $validateData = request()->validate([
                         "duration_per_meet" => "required",
@@ -332,6 +330,13 @@ class ProgressController extends Controller
                     $validateData["duration_per_meet"] = intval($validateData["duration_per_meet"]);
 
                     if ($progress->is_tutor == 1) {
+                        Revenue::create([
+                            'tutor_id' => $progress->tutor_id,
+                            'course_id' => $progress->id,
+                            'revenue_type_id' => $progress->tutor->revenue_type_id,
+                            'amount' => floor(((($progress->products->price / $progress->products->total_meet) + $addons_price) * $progress->tutor->revenue_type->type) / 100),
+                            'category' => 'pemasukan',
+                        ]);
                         $progress->update(array_merge($validateData, ["ongoing" => "selesai", "is_moderator" => 1]));
                     } else {
                         $progress->update(array_merge($validateData, ["is_moderator" => 1]));
@@ -340,11 +345,18 @@ class ProgressController extends Controller
                     if ($progress->is_tutor == 1) {
                         $progress->update([
                             "ongoing" => "selesai",
-                            "is_moderator" => 1
+                            "is_moderator" => 1,
+                        ]);
+                        Revenue::create([
+                            'tutor_id' => $progress->tutor_id,
+                            'course_id' => $progress->id,
+                            'revenue_type_id' => $progress->tutor->revenue_type_id,
+                            'amount' => floor((($progress->products->price + $addons_price) * $progress->tutor->revenue_type->type) / 100),
+                            'category' => 'pemasukan',
                         ]);
                     } else {
                         $progress->update([
-                            "is_moderator" => 1
+                            "is_moderator" => 1,
                         ]);
                     }
                 }

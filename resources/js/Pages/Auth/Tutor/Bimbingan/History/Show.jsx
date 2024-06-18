@@ -1,6 +1,8 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import React from "react";
+import { useState } from "react";
 import { useForm } from "@inertiajs/react";
+import { createPortal } from "react-dom";
 import { useMediaQuery } from "react-responsive";
 import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
 import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
@@ -9,6 +11,7 @@ import GoalsTextArea from "@/Components/elements/GoalsTextArea";
 import { FiChevronLeft, FiFileText } from "react-icons/fi";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
 import GoalsStarRating from "@/Components/elements/GoalsStarRating";
+import FileMediaPopup from "@/Pages/Auth/Moderator/Bimbingan/components/FileMediaPopup";
 
 export default function Show ({ auth, course }) {
     const {data: formData, setData: setFormData} = useForm({
@@ -23,31 +26,14 @@ export default function Show ({ auth, course }) {
         add_on: course.add_ons,
         tutor_rating: course?.productReview?.rate_tutor,
         user_note: course?.productReview?.note_tutor,
-        document: [],
-        document_meta: [
-            {
-                path: 'asdf.pdf',
-                lastModified: '2024-12-02',
-                lastModifiedDate: '2024-12-02',
-                name: 'asdf.pdf',
-                size: 1000000,
-                type: 'document/pdf',
-                id: 1,
-            },
-            {
-                path: 'asdf1324.docx',
-                lastModified: '2024-12-02',
-                lastModifiedDate: '2024-12-02',
-                name: 'asdf1324.docx',
-                size: 3000000,
-                type: 'document/docx',
-                id: 2,
-            },
-        ],
+        document: course.file_uploads,
+        document_meta: course?.file_uploads,
         document_deleted: [],
     });
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
+    const [showDocuments, setShowDocuments] = useState(false);
 
     const GetLocationData = () => {
         switch (course.products.contact_type) {
@@ -85,6 +71,15 @@ export default function Show ({ auth, course }) {
                     <Breadcrumb level={2} />
                 )}
 
+                {createPortal(
+                    <FileMediaPopup
+                        show={showDocuments}
+                        setShow={setShowDocuments}
+                        files={formData.document}
+                    />,
+                    document.body
+                )}
+
                 <div className="md:grid grid-cols-2 gap-[1.2vw]">
                     <FormSection
                         className="p-[7.4vw] md:!p-[2vw] h-fit"
@@ -92,12 +87,12 @@ export default function Show ({ auth, course }) {
                         titleClassName="!font-semibold !text-[4vw] md:!text-[1.1vw]"
                         title="Order Details"
                         titleAction={
-                            <a 
-                                href="#" 
+                            <button
                                 className="text-secondary text-[3.6vw] md:text-[.9vw] font-medium flex items-center gap-[1vw] md:gap-[.2vw]"
+                                onClick={() => setShowDocuments(true)}
                             >
                                 File & Media <FiFileText />
-                            </a>
+                            </button>
                         }
                         bordered={isMobile}
                     >
