@@ -19,25 +19,17 @@ import { useMediaQuery } from "react-responsive";
 
 export default function Index({ auth, orderBimbingan }) {
     const [data, setData] = useState(orderBimbingan);
-    console.log(orderBimbingan);
-    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <UserLayout auth={auth} title="Bimbingan">
-            <div
-                className={`${
-                    isMobile && "px-[7.4vw] w-full py-[1.2vw]"
-                } flex md:block justify-between items-center space-y-[1.2vw] `}
-            >
-                <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-normal">
-                    Bimbingan
-                </h1>
+            <UserLayout.Header>
+                <UserLayout.Title title="Bimbingan" />
                 <ProductListFilter
                     data={data}
                     setData={setData}
                     filterList={ProductFilter}
                 />
-            </div>
+            </UserLayout.Header>
             {data.length == 0 ? (
                 <EmptyProductLayout />
             ) : (
@@ -74,9 +66,7 @@ function BimbinganItem({ data }) {
             isLink
             imageUrl={data.products.product_image}
             href={`/bimbingan/${data.order.order_code}`}
-            className={`${
-                isMobile && "cursor-pointer"
-            }`}
+            className={`${isMobile && "cursor-pointer"}`}
         >
             <div className="flex items-center justify-between">
                 <div className="space-y-[1.8vw] w-full">
@@ -128,7 +118,7 @@ export const EmptyProductLayout = ({
     buttonTxt = "Cari Program",
 }) => {
     return (
-        <div className="text-center flex flex-col justify-center items-center gap-[4vw] md:gap-[2vw] md:border border-neutral-20 rounded-[.8vw] w-full p-[2vw]">
+        <div className="text-center mt-[10vh] md:mt-0 flex flex-col justify-center items-center gap-[4vw] md:gap-[2vw] md:border border-neutral-20 rounded-[.8vw] w-full p-[2vw]">
             <img
                 src={figure}
                 alt={`image-${imgUrl}`}

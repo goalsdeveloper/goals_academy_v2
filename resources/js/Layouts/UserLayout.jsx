@@ -10,6 +10,7 @@ import {
 import MainHeader from "./Partials/MainHeader";
 import "/resources/css/main.css";
 import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 export default function UserLayout({ auth, title, children }) {
     // console.log();
@@ -25,11 +26,12 @@ export default function UserLayout({ auth, title, children }) {
     );
 }
 
+UserLayout.Title = UserDashboardTitle;
+UserLayout.Header = UserDashboardHeader;
+
 function DashboardContent({ title, children, isContainered = true }) {
     return (
-        <div
-            className={`md:container mx-auto flex gap-[1.75vw]`}
-        >
+        <div className={`md:container mx-auto flex gap-[1.75vw]`}>
             <DashboardSidebar
                 className={`sticky z-10 w-full md:w-3/12 h-fit ${
                     title == "Dashboard" ? "" : "hidden md:flex"
@@ -96,12 +98,23 @@ function DashboardSidebar({ title, className }) {
     );
 }
 
-function UserLayoutTitle({ title }) {
+function UserDashboardTitle({ title }) {
     return (
-        <div className="flex items-center justify-between md:block">
-            <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-[4vw]">
-                {title == "Dashboard" ? "Pembelajaran Saya" : title}
-            </h1>
+        <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-normal">
+            {title}
+        </h1>
+    );
+}
+
+function UserDashboardHeader({ children }) {
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
+    return (
+        <div
+            className={`${
+                isMobile && "px-[7.4vw] w-full py-[1.2vw]"
+            } flex md:block justify-between items-center space-y-[1.2vw]`}
+        >
             {children}
         </div>
     );
