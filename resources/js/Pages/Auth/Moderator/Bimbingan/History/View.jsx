@@ -110,12 +110,12 @@ export default function View({ auth, progress, tutors }) {
                     <div className="flex flex-col gap-[1.2vw]">
                         <FormSection
                             title="User Information"
-                            titleAction={
-                                <SliderButton
-                                    label="Moderator confirmation"
-                                    disabled
-                                />
-                            }
+                            // titleAction={
+                            //     <SliderButton
+                            //         label="Moderator confirmation"
+                            //         disabled
+                            //     />
+                            // }
                             className="h-fit"
                         >
                             <GoalsTextInput
