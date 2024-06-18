@@ -18,20 +18,16 @@ const Webinar = ({ auth, orderWebinar }) => {
 
     return (
         <UserLayout auth={auth} title="Webinar">
-            <div
-                className={`${
-                    isMobile && "px-[7.4vw] w-full py-[1.2vw]"
-                } flex md:block justify-between items-center space-y-[1.2vw] `}
-            >
-                <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-normal">
-                    Webinar
-                </h1>
+            <UserLayout.Header>
+                <UserLayout.Title title="Webinar" />
+
                 {/* <ProductListFilter
                     setData={setData}
                     data={data}
                     filterList={ProductFilter}
                 /> */}
-            </div>
+            </UserLayout.Header>
+
             {orderWebinar.length == 0 ? (
                 <EmptyProductLayout
                     description="Event belum tersedia"
