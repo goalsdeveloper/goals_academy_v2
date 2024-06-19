@@ -13,8 +13,11 @@ import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
 import FileMediaPopup from "@/Pages/Auth/Moderator/Bimbingan/components/FileMediaPopup";
 
 export default function Show({ auth, order, files }) {
-    console.log(order);
-    console.log(files);
+    const tutor_id = auth?.user?.profile?.user_id ?? 0;
+    const tutor_documents = order?.file_uploads.filter(
+        (file) => file.user_id == tutor_id
+    );
+
     const { data: formData, setData: setFormData } = useForm({
         username: order?.user?.username,
         university: order?.user?.profile?.university,
@@ -26,7 +29,7 @@ export default function Show({ auth, order, files }) {
         note: order?.note,
         add_on: order?.add_ons,
         document: order?.file_uploads,
-        document_meta: order?.file_uploads,
+        document_meta: tutor_documents,
         document_deleted: [],
     });
 
@@ -37,20 +40,48 @@ export default function Show({ auth, order, files }) {
     const GetLocationData = () => {
         switch (order.products.contact_type) {
             case "online":
-                return <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={formData.location} labelClassName="font-medium" />
+                return (
+                    <GoalsTextInput
+                        disabled
+                        label="Meeting URL"
+                        placeholder="Meeting URL"
+                        data={formData.location}
+                        labelClassName="font-medium"
+                    />
+                );
             case "offline":
-                return <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${formData.place} | ${formData.city}`} labelClassName="font-medium" />
+                return (
+                    <GoalsTextInput
+                        disabled
+                        label="Meeting Location"
+                        placeholder="Meeting Location"
+                        data={`${formData.place} | ${formData.city}`}
+                        labelClassName="font-medium"
+                    />
+                );
             case "hybrid":
                 return (
                     <>
-                        <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={formData.location} labelClassName="font-medium" />
-                        <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${formData.place} | ${formData.city}`} labelClassName="font-medium" />
+                        <GoalsTextInput
+                            disabled
+                            label="Meeting URL"
+                            placeholder="Meeting URL"
+                            data={formData.location}
+                            labelClassName="font-medium"
+                        />
+                        <GoalsTextInput
+                            disabled
+                            label="Meeting Location"
+                            placeholder="Meeting Location"
+                            data={`${formData.place} | ${formData.city}`}
+                            labelClassName="font-medium"
+                        />
                     </>
-                )
+                );
             default:
-                return <></>
+                return <></>;
         }
-    }
+    };
 
     return (
         <DashboardLayout
@@ -61,7 +92,10 @@ export default function Show({ auth, order, files }) {
         >
             <div className="md:space-y-[1.6vw]">
                 {isMobile ? (
-                    <button className="flex items-center py-[5.6vw] px-[7.4vw] text-[4vw] font-medium border w-full" onClick={() => history.back()}>
+                    <button
+                        className="flex items-center py-[5.6vw] px-[7.4vw] text-[4vw] font-medium border w-full"
+                        onClick={() => history.back()}
+                    >
                         <FiChevronLeft />
                         <p>Show Detail</p>
                     </button>
@@ -137,7 +171,10 @@ export default function Show({ auth, order, files }) {
                         </div>
                     </FormSection>
                     <div className="md:space-y-[1.2vw]">
-                        <FormSection className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[1vw]" bordered={isMobile}>
+                        <FormSection
+                            className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[1vw]"
+                            bordered={isMobile}
+                        >
                             <GoalsTextArea
                                 disabled
                                 label="Note for User"
@@ -146,7 +183,10 @@ export default function Show({ auth, order, files }) {
                                 labelClassName="font-medium"
                             />
                         </FormSection>
-                        <FormSection className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[1vw]" bordered={isMobile}>
+                        <FormSection
+                            className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[1vw]"
+                            bordered={isMobile}
+                        >
                             <GoalsUploadFile
                                 disabled
                                 displayInput={false}
