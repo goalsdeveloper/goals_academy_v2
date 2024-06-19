@@ -175,7 +175,7 @@ export const AturJadwalPopup = ({
         <GoalsPopup
             show={show}
             setShow={setShow}
-            className="space-y-[2vw] md:space-y-0"
+            className="max-h-screen overflow-x-auto space-y-[2vw] md:space-y-0"
         >
             <div className="flex justify-between text-black">
                 <p className="text-[4.6vw] md:text-[1.2vw] font-semibold">
@@ -185,7 +185,7 @@ export const AturJadwalPopup = ({
                     <FiX className="text-[3.7vw] md:text-[1.8vw]" />
                 </button>
             </div>
-            <div className="space-y-[.4vw]">
+            <div className="space-y-[1.6vw] md:space-y-[.4vw]">
                 {getInputBasedContactType(
                     contact_type,
                     data,

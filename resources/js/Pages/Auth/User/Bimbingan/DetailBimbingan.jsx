@@ -8,12 +8,11 @@ import { FiChevronLeft } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 
 // import { detailData as dataBimbingan } from "./data";
-import DetailSatuPertemuan from "./layouts/DetailSatuPertemuan";
+import { createPortal } from "react-dom";
 import DetailBanyakPertemuan, {
     AturJadwalPopup,
 } from "./layouts/DetailBanyakPertemuan";
-import { createPortal } from "react-dom";
-import UserLayout from "@/Layouts/UserLayout";
+import DetailSatuPertemuan from "./layouts/DetailSatuPertemuan";
 
 export default function DetailPesanan({
     auth,

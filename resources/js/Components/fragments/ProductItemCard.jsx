@@ -46,7 +46,7 @@ const ProductItemCardLayout = ({
 
 const ProductItemCardHeader = ({ children, className }) => {
     return (
-        <div className={`flex gap-[.5vw] items-center ${className}`}>
+        <div className={`flex gap-[.8vw] md:gap-[.5vw] items-center ${className}`}>
             {children}
         </div>
     );
