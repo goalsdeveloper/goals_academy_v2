@@ -220,11 +220,11 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
                 { href: "/produk", icon: <FiAirplay />, text: "E-Course" },
             ],
         },
-        {
-            href: "/artikel",
-            icon: <PiNotepad className="text-[4vw] -ml-[.2vw]" />,
-            text: "Artikel",
-        },
+        // {
+        //     href: "/artikel",
+        //     icon: <PiNotepad className="text-[4vw] -ml-[.2vw]" />,
+        //     text: "Artikel",
+        // },
         {
             href: "/karir",
             icon: <FiBriefcase className="text-[3.5vw]" />,
@@ -250,7 +250,7 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
 
     return (
         <div
-            className={`overflow-y-scroll absolute w-[74vw] flex flex-col justify-between z-[500] top-0 left-0 bg-white h-screen max-h-screen duration-300 border-2 text-neutral-80 text-[3.2vw] ${
+            className={`overflow-y-scroll absolute w-[74vw] grid z-[500] top-0 left-0 bg-white h-screen duration-300 border-2 text-neutral-80 text-[3.2vw] ${
                 isOpen ? "translate-x-[0%]" : "opacity-0 -translate-x-[100%]"
             }`}
         >
@@ -316,7 +316,7 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
             </div>
 
             {!auth.user && (
-                <div className="flex flex-col px-[7.4vw] w-full gap-[2vw] py-[3.7vw]">
+                <div className="flex flex-col px-[7.4vw] mt-auto w-full gap-[2vw] py-[3.7vw]">
                     <Link href="/login">
                         <GoalsButton variant="bordered" className="w-full">
                             Masuk
