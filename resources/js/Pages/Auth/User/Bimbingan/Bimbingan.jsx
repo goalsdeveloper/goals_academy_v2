@@ -75,9 +75,7 @@ function BimbinganItem({ data }) {
                 data.products.product_image
             }
             href={`/bimbingan/${data.order.order_code}`}
-            className={`${
-                isMobile && "cursor-pointer"
-            }`}
+            className={`${`isMobile` && "cursor-pointer"}`}
         >
             <div className="flex items-center justify-between">
                 <div className="space-y-[1.8vw] w-full">
