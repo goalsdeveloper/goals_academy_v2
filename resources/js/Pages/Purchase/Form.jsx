@@ -257,7 +257,7 @@ function MainCard({
                 <div className="flex flex-col gap-[4vw] md:gap-0">
                     <div className="md:hidden flex flex-col gap-[4vw]">
                         <Link href="/produk" className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins"><FiChevronLeft className="text-[5vw]" /> Kembali</Link>
-                        <img className="w-full h-[60vw]" src={dataProduct.product_image} alt="" />
+                        <img className="w-full h-[60vw]" src={'/storage/'+ dataProduct.product_image} alt="" />
                     </div>
                     <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw]">
                         <h3 className="w-full text-secondary font-semibold text-[5.5vw] md:text-[1.8vw]">

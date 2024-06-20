@@ -767,18 +767,27 @@ function NotificationItem({ item }) {
     if (item.data.category == "Transaksi") {
         return (
             <Link
-                onClick={(e) => {
-                    console.log(e);
-                    axios
-                        .get(route("api.notification.read", { id: item.id }))
-                        .then((res) => {
-                            if (item.data.link != undefined) {
-                                window.location = item.data.link;
-                                return;
-                            }
-                            location.reload();
-                        });
+                method="GET"
+                to={route("api.notification.read", { id: item.id })}
+                onSuccess={(res) => {
+                    if (item.data.link != undefined) {
+                        window.location = item.data.link;
+                        return;
+                    }
+                    location.reload();
                 }}
+                // onClick={(e) => {
+                //     console.log(e);
+                //     axios
+                //         .get(route("api.notification.read", { id: item.id }))
+                //         .then((res) => {
+                //             if (item.data.link != undefined) {
+                //                 window.location = item.data.link;
+                //                 return;
+                //             }
+                //             location.reload();
+                //         });
+                // }}
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
