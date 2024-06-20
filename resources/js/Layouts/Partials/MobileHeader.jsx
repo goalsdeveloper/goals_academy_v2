@@ -249,84 +249,87 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
     ];
 
     return (
-        <div
-            className={`overflow-y-scroll absolute w-[74vw] flex flex-col justify-between z-[500] top-0 left-0 bg-white h-screen max-h-screen duration-300 border-2 text-neutral-80 text-[3.2vw] ${
-                isOpen ? "translate-x-[0%]" : "opacity-0 -translate-x-[100%]"
-            }`}
-        >
-            <div>
-                <div className="flex items-center gap-[5.5vw] w-full p-[7.4vw] border-b border-neutral-20">
-                    <Link href="/">
-                        <img
-                            className="md:h-[2vw] mb-1 md:mb-2 w-10/12"
-                            src={logo}
-                            alt="Goals Academy"
+        <>
+            <div className={`${!isOpen && 'hidden'} absolute top-0 w-screen h-screen`} onClick={() => setIsOpen(false)}></div>
+            <div
+                className={`overflow-y-scroll absolute w-[74vw] flex flex-col justify-between z-[500] top-0 left-0 bg-white h-screen max-h-screen duration-300 border-2 text-neutral-80 text-[3.2vw] ${
+                    isOpen ? "translate-x-[0%]" : "opacity-0 -translate-x-[100%]"
+                }`}
+            >
+                <div>
+                    <div className="flex h-[20vw] items-center gap-[5.5vw] w-full px-[7.4vw] border-b border-neutral-20">
+                        <Link href="/">
+                            <img
+                                className="md:h-[2vw] mb-1 md:mb-2 w-10/12"
+                                src={logo}
+                                alt="Goals Academy"
+                            />
+                        </Link>
+                        <NavigationBurgerButton
+                            isOpen={isOpen}
+                            setIsOpen={setIsOpen}
                         />
-                    </Link>
-                    <NavigationBurgerButton
-                        isOpen={isOpen}
-                        setIsOpen={setIsOpen}
-                    />
-                </div>
+                    </div>
 
-                <div className="flex flex-col justify-between">
-                    {links.map(({ href, text, sublinks, icon }, index) => (
-                        <div
-                            key={index}
-                            className="w-full py-[1vw] text-start bg-white border-b border-neutral-20 h-fit"
-                        >
-                            {sublinks ? (
-                                <button
-                                    className="flex gap-2 py-[3.7vw] px-[7.4vw] justify-between items-center hover:text-primary w-full "
-                                    onClick={() => toggleSublinks(index)}
-                                >
-                                    <span className="flex gap-2">
-                                        {icon}
-                                        {text}
-                                    </span>
-                                    {sublinks && <FiChevronDown />}
-                                </button>
-                            ) : (
-                                <Link
-                                    className="flex gap-2 py-[3.7vw] px-[7.4vw] items-center hover:text-primary w-full"
-                                    href={href}
-                                >
-                                    {icon}
-                                    {text}
-                                </Link>
-                            )}
-
-                            {openSublinks[index] && sublinks && (
-                                <div className="ml-[5vw]">
-                                    {sublinks.map(({ href, icon, text }) => (
-                                        <Link
-                                            key={href}
-                                            className="flex gap-2 py-[3.7vw] px-[7.4vw] items-center hover:text-primary w-full"
-                                            href={href}
-                                        >
+                    <div className="flex flex-col justify-between">
+                        {links.map(({ href, text, sublinks, icon }, index) => (
+                            <div
+                                key={index}
+                                className="w-full py-[1vw] text-start bg-white border-b border-neutral-20 h-fit"
+                            >
+                                {sublinks ? (
+                                    <button
+                                        className="flex gap-2 py-[3.7vw] px-[7.4vw] justify-between items-center hover:text-primary w-full "
+                                        onClick={() => toggleSublinks(index)}
+                                    >
+                                        <span className="flex gap-2">
                                             {icon}
                                             {text}
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                </div>
-            </div>
+                                        </span>
+                                        {sublinks && <FiChevronDown />}
+                                    </button>
+                                ) : (
+                                    <Link
+                                        className="flex gap-2 py-[3.7vw] px-[7.4vw] items-center hover:text-primary w-full"
+                                        href={href}
+                                    >
+                                        {icon}
+                                        {text}
+                                    </Link>
+                                )}
 
-            {!auth.user && (
-                <div className="flex flex-col px-[7.4vw] w-full gap-[2vw] py-[3.7vw]">
-                    <Link href="/login">
-                        <GoalsButton variant="bordered" className="w-full">
-                            Masuk
-                        </GoalsButton>
-                    </Link>
-                    <Link href="/register">
-                        <GoalsButton className="w-full">Daftar</GoalsButton>
-                    </Link>
+                                {openSublinks[index] && sublinks && (
+                                    <div className="ml-[5vw]">
+                                        {sublinks.map(({ href, icon, text }) => (
+                                            <Link
+                                                key={href}
+                                                className="flex gap-2 py-[3.7vw] px-[7.4vw] items-center hover:text-primary w-full"
+                                                href={href}
+                                            >
+                                                {icon}
+                                                {text}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            )}
-        </div>
+
+                {!auth.user && (
+                    <div className="flex flex-col px-[7.4vw] w-full gap-[2vw] py-[3.7vw]">
+                        <Link href="/login">
+                            <GoalsButton variant="bordered" className="w-full">
+                                Masuk
+                            </GoalsButton>
+                        </Link>
+                        <Link href="/register">
+                            <GoalsButton className="w-full">Daftar</GoalsButton>
+                        </Link>
+                    </div>
+                )}
+            </div>
+        </>
     );
 };
