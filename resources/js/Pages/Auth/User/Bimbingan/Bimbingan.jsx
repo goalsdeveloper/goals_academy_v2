@@ -61,6 +61,8 @@ function BimbinganItem({ data }) {
         data.ongoing.charAt(0).toUpperCase() +
         data.ongoing.slice(1);
 
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
     return (
         <ProductItemCardLayout
             isLink
