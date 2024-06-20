@@ -23,7 +23,7 @@ import {
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { FiEdit2, FiEye, FiThumbsUp } from "react-icons/fi";
-import { statusClassMap } from "../../User/RiwayatTransaksi/components/TransactionStatusBadge";
+import { getStatusClass } from "../../User/RiwayatTransaksi/components/TransactionStatusBadge";
 import SubHeading from "../../Admin/components/SubHeading";
 import { useEffect } from "react";
 import DateTimeComp from "./components/DateTimeComp";
@@ -170,7 +170,7 @@ export default function Progress({ auth, data: recentOrder }) {
                         <div className="pl-1">
                             <GoalsBadge
                                 title={status}
-                                className={`${statusClassMap[status]} font-semibold`}
+                                className={`${getStatusClass(status)} font-semibold`}
                             />
                         </div>
                     );
@@ -499,7 +499,7 @@ export const DropdownDetailPanel = ({
                                 value: (
                                     <GoalsBadge
                                         title={status}
-                                        className={`${statusClassMap[status]} font-semibold`}
+                                        className={`${getStatusClass(status)} font-semibold`}
                                     />
                                 ),
                             },

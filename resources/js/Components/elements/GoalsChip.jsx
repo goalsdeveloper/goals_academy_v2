@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 
 const GoalsChip = ({ dataList, className, setSelected, selected, ...rest }) => {
     // pindahkan data ke dalam state
