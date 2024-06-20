@@ -257,7 +257,7 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
                 }`}
             >
                 <div>
-                    <div className="flex items-center gap-[5.5vw] w-full p-[7.4vw] border-b border-neutral-20">
+                    <div className="flex items-center gap-[5.5vw] w-full h-[20vw] px-[7.4vw] border-b border-neutral-20">
                         <Link href="/">
                             <img
                                 className="md:h-[2vw] mb-1 md:mb-2 w-10/12"
