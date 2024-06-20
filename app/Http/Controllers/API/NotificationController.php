@@ -16,6 +16,9 @@ class NotificationController extends Controller
         $notif = $user->notifications()->where('id', $id)->first();
         if ($notif) {
             $notif->markAsRead();
+            // if($notif->data) {
+
+            // }
             return response()->json([
                 'message' => 'Dibaca',
             ]);

@@ -65,6 +65,7 @@ class SuccessNotification extends Notification
             'expiry_time' => $paymentMethod['expiry_time'],
             'order_id' => $this->order->order_code,
             'payment_method' => $paymentType,
+            'link' => route('user.profile.detailPembelajaran', ['order_id' => $this->order->order_code]),
         ];
     }
 }
