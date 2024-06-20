@@ -164,7 +164,7 @@ class PurchaseController extends Controller
             'payload' => $responseMidtrans,
         ]);
 
-        // $user->notify(new InvoiceNotification($orderData));
+        $user->notify(new InvoiceNotification($orderData));
         // if ($paymentMethod->category == 'bank_transfer') {
         //     $delay = Carbon::now()->addHours(23)->addMinutes(55);
         // } else {
