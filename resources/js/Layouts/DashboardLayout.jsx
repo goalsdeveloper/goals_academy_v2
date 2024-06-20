@@ -509,10 +509,10 @@ export default function DashboardLayout({
         <main className="relative flex font-sans bg-gray-50 text-dark">
             <Head title={title} />
             <aside className={`${navShow ? '' : '-translate-x-full md:translate-x-0'} z-[200] md:z-50 absolute md:relative w-[60vw] md:w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[3.32vw] md:text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer duration-300`}>
-                <div className="flex justify-between md:justify-center items-center px-[5vw] md:px-0 pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw]">
+                <div className="flex justify-between md:justify-center items-center px-[5vw] md:px-0 md:pt-[2.5vw] md:pb-[1.75vw]">
                     <Link href="/">
                         <img
-                            className="w-[36vw] md:w-[9vw]"
+                            className="w-[36vw] h-[20vw] md:h-full md:w-[9vw]"
                             src={logo}
                             alt="Goals Academy"
                         />
@@ -641,21 +641,24 @@ export default function DashboardLayout({
                 </nav>
             </aside>
             <div className="relative w-full h-screen overflow-hidden bg-[#F8F8FC]">
-                <header className="absolute z-[100] md:z-50 top-0 w-full h-[11vh] md:h-[5.8vw] flex justify-between items-center bg-dark-indigo md:bg-gray-50 px-[4.2vw] pt-[10vw] md:pt-[2.5vw] pb-[7vw] md:pb-[1.75vw] border-b-1">
+                <header className="absolute z-[100] md:z-50 top-0 w-full h-[20vw] md:h-[5.8vw] flex justify-between items-center bg-dark-indigo md:bg-gray-50 px-[4.2vw] md:pt-[2.5vw] md:pb-[1.75vw] md:border-b-1">
                     {isMobile ? (
-                        <div className="flex gap-[4vw] md:gap-[1vw]">
-                            <NavigationBurgerButton
-                                isOpen={navShow}
-                                setIsOpen={setNavShow}
-                            />
-                            <Link href="/">
-                                <img
-                                    className="w-[36vw] md:w-[9vw]"
-                                    src={logo}
-                                    alt="Goals Academy"
+                        <>
+                            <div className={`${!navShow && 'hidden'} absolute top-0 w-screen h-screen z-20`} onClick={() => setNavShow(false)}></div>
+                            <div className="flex gap-[4vw] md:gap-[1vw]">
+                                <NavigationBurgerButton
+                                    isOpen={navShow}
+                                    setIsOpen={setNavShow}
                                 />
-                            </Link>
-                        </div>
+                                <Link href="/">
+                                    <img
+                                        className="w-[36vw] md:w-[9vw]"
+                                        src={logo}
+                                        alt="Goals Academy"
+                                    />
+                                </Link>
+                            </div>
+                        </>
                     ) : (
                         <h1 className="font-poppins font-normal md:font-semibold text-[4.8vw] md:text-[1.2vw] text-white md:text-dark">
                             {title}
@@ -680,7 +683,7 @@ export default function DashboardLayout({
                         </Link>
                     </div>
                 </header>
-                <div className="w-full h-screen pt-[22vw] md:pt-[7.5vw] md:pb-[2vw] md:px-[4.2vw] overflow-y-auto scrollbar-hidden">
+                <div className="w-full h-screen pt-[20vw] md:pt-[7.5vw] md:pb-[2vw] md:px-[4.2vw] overflow-y-auto scrollbar-hidden">
                     {children}
                 </div>
             </div>
