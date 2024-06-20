@@ -32,7 +32,7 @@ class OverviewController extends Controller
         $today_earnings = Revenue::where('tutor_id', $user->id)->where('category', 'pemasukan')->whereDate('created_at', Carbon::now())->sum('amount');
         $yesterday_earnings = Revenue::where('tutor_id', $user->id)->where('category', 'pemasukan')->whereDate('created_at', Carbon::yesterday())->sum('amount');
         $current_month_earnings = Revenue::where('tutor_id', $user->id)->where('category', 'pemasukan')->whereMonth('created_at', Carbon::now()->month)->sum('amount');
-        $progress_today = $user->tutor()->where('ongoing', CourseStatusEnum::ONGOING)->whereDate('created_at', Carbon::now())->count();
+        $progress_today = $user->tutor()->where('ongoing', CourseStatusEnum::ONGOING)->whereNotNull('date')->whereDate('created_at', Carbon::now())->count();
         $progress_yesterday = $user->tutor()->whereIn('ongoing', [CourseStatusEnum::ONGOING, CourseStatusEnum::SUCCESS ])->whereDate('updated_at', Carbon::yesterday())->count();
         return Inertia::render('Auth/Tutor/Overview/Overview', [
             'product_types' => $product_types,

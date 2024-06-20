@@ -25,7 +25,7 @@ const DetailBanyakPertemuan = ({ data, setIsAturJadwalShow }) => {
     return (
         <div className="relative space-y-[2vw]">
             <ProductItemCardLayout
-                imageUrl={data[0].products.product_image}
+                imageUrl={window.location.origin + '/storage/' + data[0].products.product_image}
                 className="hidden md:flex"
             >
                 <ProductItemCardHeader>

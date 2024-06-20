@@ -52,8 +52,12 @@ export default function AddOn({ auth, addons }) {
         router.visit(route("admin.bimbingan.addon.index"), {
             only: ["addons"],
             onSuccess: () => {
-                toast.success(`Add-On berhasil di ${method.charAt(0).toUpperCase() + method.slice(1)}`);
-            }
+                toast.success(
+                    `Add-On berhasil di ${
+                        method.charAt(0).toUpperCase() + method.slice(1)
+                    }`
+                );
+            },
         });
     };
 
@@ -102,8 +106,7 @@ export default function AddOn({ auth, addons }) {
                                 label=""
                                 size="lg"
                                 isEnabled={cell.row.original.is_visible}
-                                disabled={cell.row.original.is_visible}
-                                onClick={() => {
+                                setIsEnabled={() => {
                                     router.put(
                                         route(
                                             "admin.bimbingan.addon.updateVisible",
@@ -114,8 +117,7 @@ export default function AddOn({ auth, addons }) {
                                                 !cell.row.original.is_visible,
                                         },
                                         {
-                                            onSuccess: () =>
-                                                callback('edit')
+                                            onSuccess: () => callback("edit"),
                                         }
                                     );
                                 }}

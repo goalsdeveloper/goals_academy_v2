@@ -19,6 +19,7 @@ import { useMediaQuery } from "react-responsive";
 
 export default function Index({ auth, orderBimbingan }) {
     const [data, setData] = useState(orderBimbingan);
+    console.log(orderBimbingan)
 
     return (
         <UserLayout auth={auth} title="Bimbingan">
@@ -57,14 +58,16 @@ function BimbinganItem({ data }) {
               .format("HH:mm")
         : "N/A";
     const courseStatus =
-        data.ongoing.charAt(0).toUpperCase() + data.ongoing.slice(1);
-
-    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+        data.ongoing.charAt(0).toUpperCase() +
+        data.ongoing.slice(1);
 
     return (
         <ProductItemCardLayout
             isLink
-            imageUrl={data.products.product_image}
+            imageUrl={
+                `${window.location.origin}/storage/` +
+                data.products.product_image
+            }
             href={`/bimbingan/${data.order.order_code}`}
             className={`${isMobile && "cursor-pointer"}`}
         >

@@ -134,6 +134,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::resource('topic', TopicController::class);
         Route::put('topic/{topic}/updateVisible', [TopicController::class, 'updateVisible'])->name('topic.updateVisible');
         Route::resource('product', BimbinganController::class);
+        Route::post('product/updateNumberList', [BimbinganController::class, 'updateOrderNumber'])->name('product.updateOrderNumber');
         Route::put('product/{product}/updateVisible', [BimbinganController::class, 'updateVisible'])->name('product.updateVisible');
         Route::resource('order', AdminOrderBimbinganController::class);
     });

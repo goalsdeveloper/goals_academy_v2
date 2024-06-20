@@ -313,59 +313,52 @@ class ProgressController extends Controller
         //
     }
 
-    public function confirmBimbingan(Course $progress)
+    public function confirmBimbingan(Request $req, Course $progress)
     {
         try {
-            if (Auth::user()->user_role == "moderator") {
-                if ($progress->ongoing == "selesai") {
-                    // return response()->json(["status" => false, "statusCode" => 403, "message" => "Progress sudah selesai dan tidak dapat diubah"], 403);
-                    return redirect()->back()->with("error", "Progress sudah selesai dan tidak dapat diubah");
-                }
-                $addons_price = $progress->addOns->sum('price');
-                if (!$progress->products->contact_type == "other") {
-                    $validateData = request()->validate([
-                        "duration_per_meet" => "required",
-                    ]);
-
-                    $validateData["duration_per_meet"] = intval($validateData["duration_per_meet"]);
-
-                    if ($progress->is_tutor == 1) {
-                        Revenue::create([
-                            'tutor_id' => $progress->tutor_id,
-                            'course_id' => $progress->id,
-                            'revenue_type_id' => $progress->tutor->revenue_type_id,
-                            'amount' => floor(((($progress->products->price / $progress->products->total_meet) + $addons_price) * $progress->tutor->revenue_type->type) / 100),
-                            'category' => 'pemasukan',
-                        ]);
-                        $progress->update(array_merge($validateData, ["ongoing" => "selesai", "is_moderator" => 1]));
-                    } else {
-                        $progress->update(array_merge($validateData, ["is_moderator" => 1]));
-                    }
-                } else {
-                    if ($progress->is_tutor == 1) {
-                        $progress->update([
-                            "ongoing" => "selesai",
-                            "is_moderator" => 1,
-                        ]);
-                        Revenue::create([
-                            'tutor_id' => $progress->tutor_id,
-                            'course_id' => $progress->id,
-                            'revenue_type_id' => $progress->tutor->revenue_type_id,
-                            'amount' => floor((($progress->products->price + $addons_price) * $progress->tutor->revenue_type->type) / 100),
-                            'category' => 'pemasukan',
-                        ]);
-                    } else {
-                        $progress->update([
-                            "is_moderator" => 1,
-                        ]);
-                    }
-                }
-                // return response()->json(["status" => true, "statusCode" => 200, "message" => "Progress berhasil diperbarui menjadi selesai"], 200);
-                $progress->user->notify(new GeneralCourseNotification("Progress Bimbingan telah Diupdate!", "Bimbingan $progress->order->order_code sesi $progress->session telah ditandai selesai!", route('user.profile.detailPembelajaran', ['order_id' => $progress->order->order_code])));
-                return redirect()->back()->with("success", "Progress berhasil diperbarui menjadi selesai");
-            } else {
-                abort(403);
+            if ($progress->ongoing == "selesai") {
+                // return response()->json(["status" => false, "statusCode" => 403, "message" => "Progress sudah selesai dan tidak dapat diubah"], 403);
+                return redirect()->back()->with("error", "Progress sudah selesai dan tidak dapat diubah");
             }
+            $addons_price = $progress->addOns->sum('price');
+            if ($progress->products->contact_type != "other") {
+                $validateData = $req->validate([
+                    "duration_per_meet" => "required|numeric",
+                ]);
+                if ($progress->is_tutor == 1) {
+                    Revenue::create([
+                        'tutor_id' => $progress->tutor_id,
+                        'course_id' => $progress->id,
+                        'revenue_type_id' => $progress->tutor->revenue_type_id,
+                        'amount' => floor(((($progress->products->price / $progress->products->total_meet) + $addons_price) * $progress->tutor->revenue_type->type) / 100),
+                        'category' => 'pemasukan',
+                    ]);
+                    $progress->update(array_merge($validateData, ["ongoing" => "selesai", "is_moderator" => 1]));
+                } else {
+                    $progress->update(array_merge($validateData, ["is_moderator" => 1]));
+                }
+            } else {
+                if ($progress->is_tutor == 1) {
+                    $progress->update([
+                        "ongoing" => "selesai",
+                        "is_moderator" => 1,
+                    ]);
+                    Revenue::create([
+                        'tutor_id' => $progress->tutor_id,
+                        'course_id' => $progress->id,
+                        'revenue_type_id' => $progress->tutor->revenue_type_id,
+                        'amount' => floor((($progress->products->price + $addons_price) * $progress->tutor->revenue_type->type) / 100),
+                        'category' => 'pemasukan',
+                    ]);
+                } else {
+                    $progress->update([
+                        "is_moderator" => 1,
+                    ]);
+                }
+            }
+            // return response()->json(["status" => true, "statusCode" => 200, "message" => "Progress berhasil diperbarui menjadi selesai"], 200);
+            $progress->user->notify(new GeneralCourseNotification("Progress Bimbingan telah Diupdate!", "Bimbingan {$progress->order->order_code} sesi {$progress->session} telah ditandai selesai!", route('user.profile.detailPembelajaran', ['order_id' => $progress->order->order_code])));
+            return redirect()->back()->with("success", "Progress berhasil diperbarui menjadi selesai");
         } catch (ValidationException $e) {
             return response()->json([
                 "status" => false,

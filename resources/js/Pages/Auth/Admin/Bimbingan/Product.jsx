@@ -92,8 +92,7 @@ export default function Product({ auth, bimbingan, categories }) {
                         label=""
                         size="lg"
                         isEnabled={cell.row.original.is_visible}
-                        disabled={cell.row.original.is_visible}
-                        onClick={() => {
+                        setIsEnabled={() => {
                             router.put(
                                 route("admin.bimbingan.product.updateVisible", {
                                     product: cell.row.original.id,
