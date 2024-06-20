@@ -27,7 +27,7 @@ export default function Overview({
     yesterday_earnings,
     today_earnings,
     progress_today,
-    progress_yesterday,
+    progress_now,
 }) {
     const user = auth.user;
     const currency = Intl.NumberFormat("id-ID");
@@ -36,12 +36,10 @@ export default function Overview({
     const [monthlyEarning, setMonthlyEarning] = useState(
         current_month_earnings
     );
-    const [yesterdayEarnings, setYesterdayEarnings] =
-        useState(yesterday_earnings);
     const [todayEarnings, setTodayEarnings] = useState(today_earnings);
     const [onProgressCourse, setOnProgressCourse] = useState(progress_today);
-    const [onProgressYesterday, setOnProgressYesterday] =
-        useState(progress_yesterday);
+    const [onProgressNow, setOnProgressNow] =
+        useState(progress_now);
     const [totalEarning, setTotalEarning] = useState(total_earnings);
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
@@ -58,12 +56,20 @@ export default function Overview({
         )
     );
 
-    const calculatePercentage = (yesterday, today) => {
-        if (yesterday == 0) {
-            return today;
+    const calculatePercentage = (this_month, today) => {
+        if (this_month == 0 && today > 0) {
+            return 100;
         }
-        var dif = today - yesterday;
-        percentage = (Math.abs(dif) / yesterday) * 100;
+        console.log(today, this_month)
+        var percentage = (today / this_month) * 100;
+        return percentage;
+    };
+
+    const calculatePercentageProgress = (this_month, today) => {
+        if (this_month == 0) {
+            return 100;
+        }
+        var percentage = (today / this_month) * 100;
         return percentage;
     };
 
@@ -261,7 +267,7 @@ export default function Overview({
                             <div className="absolute top-0 left-0 w-full h-[20.84vw] md:h-[5.21vw] bg-[#5A6ACF]"></div>
                             <div className="flex justify-center py-[4vw] md:py-[1vw]">
                                 <img
-                                    className="relative bg-white w-[22vw] h-[22vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread z-50 p-[.8vw] md:p-[.2vw]"
+                                    className="relative bg-white w-[22vw] h-[22vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread z-10 p-[.8vw] md:p-[.2vw]"
                                     src={
                                         user.profile.profile_image
                                             ? user.profile.profile_image
@@ -286,19 +292,19 @@ export default function Overview({
                                 title="Monthly Earning (IDR)"
                                 data={currency.format(monthlyEarning)}
                                 percentage={calculatePercentage(
-                                    yesterdayEarnings,
+                                    monthlyEarning,
                                     todayEarnings
                                 )}
                                 grow={todayEarnings}
                             />
                             <InfoCard
                                 title="On Progress"
-                                data={onProgressCourse}
+                                data={onProgressNow}
                                 percentage={calculatePercentage(
-                                    onProgressYesterday,
+                                    onProgressNow,
                                     onProgressCourse
                                 )}
-                                grow={onProgressCourse}
+                                grow={onProgressNow}
                                 icon={
                                     <FaGlobe className="text-[4vw] md:text-[1vw]" />
                                 }
@@ -324,19 +330,19 @@ export default function Overview({
                                     title="Monthly Earning (IDR)"
                                     data={currency.format(monthlyEarning)}
                                     percentage={calculatePercentage(
-                                        yesterdayEarnings,
+                                        monthlyEarning,
                                         todayEarnings
                                     )}
                                     grow={todayEarnings}
                                 />
                                 <InfoCard
                                     title="On Progress"
-                                    data={onProgressCourse}
+                                    data={onProgressNow}
                                     percentage={calculatePercentage(
-                                        onProgressYesterday,
+                                        onProgressNow,
                                         onProgressCourse
                                     )}
-                                    grow={onProgressCourse}
+                                    grow={onProgressNow}
                                     icon={
                                         <FaGlobe className="text-[4vw] md:text-[1vw]" />
                                     }
@@ -347,7 +353,7 @@ export default function Overview({
                                 <div className="absolute top-0 left-0 w-full h-[5.21vw] bg-[#5A6ACF]"></div>
                                 <div className="flex justify-center py-[4vw] md:py-[1vw]">
                                     <img
-                                        className="relative bg-white w-[16vw] h-[16vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread z-50 p-[.8vw] md:p-[.2vw]"
+                                        className="relative bg-white w-[16vw] h-[16vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread z-10 p-[.8vw] md:p-[.2vw]"
                                         src={
                                             user.profile.profile_image
                                                 ? user.profile.profile_image
