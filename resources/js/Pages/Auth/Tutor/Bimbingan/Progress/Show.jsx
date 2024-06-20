@@ -1,6 +1,8 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import React from "react";
+import { useState } from "react";
 import { useForm } from "@inertiajs/react";
+import { createPortal } from "react-dom";
 import { useMediaQuery } from "react-responsive";
 import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
 import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
@@ -8,10 +10,14 @@ import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import GoalsTextArea from "@/Components/elements/GoalsTextArea";
 import { FiChevronLeft, FiFileText } from "react-icons/fi";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
+import FileMediaPopup from "@/Pages/Auth/Moderator/Bimbingan/components/FileMediaPopup";
 
 export default function Show({ auth, order, files }) {
-    console.log(order);
-    console.log(files);
+    const tutor_id = auth?.user?.profile?.user_id ?? 0;
+    const tutor_documents = order?.file_uploads.filter(
+        (file) => file.user_id == tutor_id
+    );
+
     const { data: formData, setData: setFormData } = useForm({
         username: order?.user?.username,
         university: order?.user?.profile?.university,
@@ -22,30 +28,60 @@ export default function Show({ auth, order, files }) {
         city: order.place?.city?.city,
         note: order?.note,
         add_on: order?.add_ons,
-        document: [],
-        document_meta: order?.file_uploads,
+        document: order?.file_uploads,
+        document_meta: tutor_documents,
         document_deleted: [],
     });
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
+    const [showDocuments, setShowDocuments] = useState(false);
+
     const GetLocationData = () => {
         switch (order.products.contact_type) {
             case "online":
-                return <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={formData.location} labelClassName="font-medium" />
+                return (
+                    <GoalsTextInput
+                        disabled
+                        label="Meeting URL"
+                        placeholder="Meeting URL"
+                        data={formData.location}
+                        labelClassName="font-medium"
+                    />
+                );
             case "offline":
-                return <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${formData.place} | ${formData.city}`} labelClassName="font-medium" />
+                return (
+                    <GoalsTextInput
+                        disabled
+                        label="Meeting Location"
+                        placeholder="Meeting Location"
+                        data={`${formData.place} | ${formData.city}`}
+                        labelClassName="font-medium"
+                    />
+                );
             case "hybrid":
                 return (
                     <>
-                        <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={formData.location} labelClassName="font-medium" />
-                        <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${formData.place} | ${formData.city}`} labelClassName="font-medium" />
+                        <GoalsTextInput
+                            disabled
+                            label="Meeting URL"
+                            placeholder="Meeting URL"
+                            data={formData.location}
+                            labelClassName="font-medium"
+                        />
+                        <GoalsTextInput
+                            disabled
+                            label="Meeting Location"
+                            placeholder="Meeting Location"
+                            data={`${formData.place} | ${formData.city}`}
+                            labelClassName="font-medium"
+                        />
                     </>
-                )
+                );
             default:
-                return <></>
+                return <></>;
         }
-    }
+    };
 
     return (
         <DashboardLayout
@@ -56,12 +92,24 @@ export default function Show({ auth, order, files }) {
         >
             <div className="md:space-y-[1.6vw]">
                 {isMobile ? (
-                    <button className="flex items-center py-[5.6vw] px-[7.4vw] text-[4vw] font-medium border w-full" onClick={() => history.back()}>
+                    <button
+                        className="flex items-center py-[5.6vw] px-[7.4vw] text-[4vw] font-medium border w-full"
+                        onClick={() => history.back()}
+                    >
                         <FiChevronLeft />
                         <p>Show Detail</p>
                     </button>
                 ) : (
                     <Breadcrumb level={2} />
+                )}
+
+                {createPortal(
+                    <FileMediaPopup
+                        show={showDocuments}
+                        setShow={setShowDocuments}
+                        files={formData.document}
+                    />,
+                    document.body
                 )}
 
                 <div className="md:grid grid-cols-2 gap-[1.2vw]">
@@ -71,12 +119,12 @@ export default function Show({ auth, order, files }) {
                         titleClassName="!font-semibold !text-[4vw] md:!text-[1.1vw]"
                         title="Order Details"
                         titleAction={
-                            <a
-                                href="#"
+                            <button
                                 className="text-secondary text-[3.6vw] md:text-[.9vw] font-medium flex items-center gap-[1vw] md:gap-[.2vw]"
+                                onClick={() => setShowDocuments(true)}
                             >
                                 File & Media <FiFileText />
-                            </a>
+                            </button>
                         }
                         bordered={isMobile}
                     >
@@ -123,7 +171,10 @@ export default function Show({ auth, order, files }) {
                         </div>
                     </FormSection>
                     <div className="md:space-y-[1.2vw]">
-                        <FormSection className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[1vw]" bordered={isMobile}>
+                        <FormSection
+                            className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[1vw]"
+                            bordered={isMobile}
+                        >
                             <GoalsTextArea
                                 disabled
                                 label="Note for User"
@@ -132,7 +183,10 @@ export default function Show({ auth, order, files }) {
                                 labelClassName="font-medium"
                             />
                         </FormSection>
-                        <FormSection className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[1vw]" bordered={isMobile}>
+                        <FormSection
+                            className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[1vw]"
+                            bordered={isMobile}
+                        >
                             <GoalsUploadFile
                                 disabled
                                 displayInput={false}

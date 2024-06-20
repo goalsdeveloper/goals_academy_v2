@@ -39,8 +39,6 @@ export default function Edit({
         time: order?.course?.time ?? "",
     });
 
-    console.log(order)
-
     const GetLocationForm = () => {
         if (order.products?.total_meet == 1) {
             switch (order.products?.contact_type) {
@@ -180,6 +178,12 @@ export default function Edit({
                                     }),
                                     {
                                         data: formData,
+                                        onSuccess: () =>
+                                            toast.success(
+                                                "Order berhasil diupdate"
+                                            ),
+                                        onError: () =>
+                                            toast.error("Order gagal diupdate"),
                                     }
                                 )
                             }

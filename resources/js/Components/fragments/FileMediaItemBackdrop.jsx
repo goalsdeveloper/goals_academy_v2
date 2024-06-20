@@ -48,7 +48,7 @@ const FileMediaItemBackdrop = ({ item, isBackdropVisible = false }) => {
                         onClick={(e) =>
                             downloadHandler(item?.filename)
                         }
-                        className={`text-[.8vw] font-medium text-neutral-80 px-[5.5vw] py-[3.7vw] md:py-[.8vw] md:px-[1vw] rounded-[1.8vw] md:rounded-[.4vw] shadow-centered-spread absolute -bottom-[70%] right-0 z-[60] bg-white transition-all ${
+                        className={`text-[3.7vw] md:text-[.8vw] font-medium text-neutral-80 px-[5.5vw] py-[3.7vw] md:py-[.8vw] md:px-[1vw] rounded-[1.8vw] md:rounded-[.4vw] shadow-centered-spread absolute -bottom-[70%] right-0 z-[60] bg-white transition-all ${
                             isVisible ? "translate-x-0" : "translate-x-5"
                         }`}
                     >

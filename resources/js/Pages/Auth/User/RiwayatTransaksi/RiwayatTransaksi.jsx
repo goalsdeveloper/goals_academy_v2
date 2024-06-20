@@ -12,16 +12,10 @@ export default function RiwayatTransaksi({ auth, dataOrder: data }) {
 
     return (
         <UserLayout auth={auth} title="Riwayat Transaksi">
-            <div
-                className={`${
-                    isMobile && "px-[7.4vw] w-full py-[1.2vw]"
-                } flex md:block justify-between items-center space-y-[1.2vw] `}
-            >
-                <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-normal">
-                    Riwayat Transaksi
-                </h1>
-            </div>
-
+            <UserLayout.Header>
+                <UserLayout.Title title="Riwayat Transaksi" />
+            </UserLayout.Header>
+            
             {data.length == 0 ? (
                 <EmptyProductLayout
                     description="Anda belum memiliki transaksi"

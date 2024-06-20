@@ -12,7 +12,6 @@ import { useState } from "react";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 
 export default function Progress({ auth, bimbingan }) {
-    // const [isLoading, setIsLoading] = useState(false);
     const { data, total, from, to, current_page, per_page, last_page, links } =
         bimbingan;
     const [pages, setPages] = useState([]);

@@ -1,6 +1,8 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import React from "react";
+import { useState } from "react";
 import { useForm } from "@inertiajs/react";
+import { createPortal } from "react-dom";
 import { useMediaQuery } from "react-responsive";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
@@ -9,8 +11,14 @@ import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import GoalsTextArea from "@/Components/elements/GoalsTextArea";
 import { FiChevronLeft, FiFileText } from "react-icons/fi";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
+import FileMediaPopup from "@/Pages/Auth/Moderator/Bimbingan/components/FileMediaPopup";
 
 export default function Update({ auth, order, files }) {
+    const tutor_id = auth?.user?.profile?.user_id ?? 0;
+    const tutor_documents = order?.file_uploads.filter(
+        (file) => file.user_id == tutor_id
+    );
+
     const {
         data: formData,
         setData: setFormData,
@@ -26,11 +34,13 @@ export default function Update({ auth, order, files }) {
         note: order.note,
         add_on: order.add_ons,
         document: [],
-        document_meta: files,
+        document_meta: tutor_documents,
         document_deleted: [],
     });
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
+    const [showDocuments, setShowDocuments] = useState(false);
 
     const submit = () => {
         post(route("tutor.bimbingan.progress.update", order.id));
@@ -39,20 +49,48 @@ export default function Update({ auth, order, files }) {
     const GetLocationData = () => {
         switch (order.products.contact_type) {
             case "online":
-                return <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={formData.location} labelClassName="font-medium" />
+                return (
+                    <GoalsTextInput
+                        disabled
+                        label="Meeting URL"
+                        placeholder="Meeting URL"
+                        data={formData.location}
+                        labelClassName="font-medium"
+                    />
+                );
             case "offline":
-                return <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${formData.place} | ${formData.city}`} labelClassName="font-medium" />
+                return (
+                    <GoalsTextInput
+                        disabled
+                        label="Meeting Location"
+                        placeholder="Meeting Location"
+                        data={`${formData.place} | ${formData.city}`}
+                        labelClassName="font-medium"
+                    />
+                );
             case "hybrid":
                 return (
                     <>
-                        <GoalsTextInput disabled label="Meeting URL" placeholder="Meeting URL" data={formData.location} labelClassName="font-medium" />
-                        <GoalsTextInput disabled label="Meeting Location" placeholder="Meeting Location" data={`${formData.place} | ${formData.city}`} labelClassName="font-medium" />
+                        <GoalsTextInput
+                            disabled
+                            label="Meeting URL"
+                            placeholder="Meeting URL"
+                            data={formData.location}
+                            labelClassName="font-medium"
+                        />
+                        <GoalsTextInput
+                            disabled
+                            label="Meeting Location"
+                            placeholder="Meeting Location"
+                            data={`${formData.place} | ${formData.city}`}
+                            labelClassName="font-medium"
+                        />
                     </>
-                )
+                );
             default:
-                return <></>
+                return <></>;
         }
-    }
+    };
 
     return (
         <DashboardLayout
@@ -63,30 +101,42 @@ export default function Update({ auth, order, files }) {
         >
             <div className="md:space-y-[1.6vw]">
                 {isMobile ? (
-                    <button className="flex items-center py-[5.6vw] px-[7.4vw] text-[4vw] font-medium border w-full" onClick={() => history.back()}>
+                    <button
+                        className="flex items-center py-[5.6vw] px-[7.4vw] text-[4vw] font-medium border w-full"
+                        onClick={() => history.back()}
+                    >
                         <FiChevronLeft />
                         <p>Edit Detail</p>
                     </button>
                 ) : (
                     <div className="flex justify-between">
                         <Breadcrumb level={2} except={1} isSlug />
-                            <div className="space-x-[.8vw]">
-                                <GoalsButton
-                                    className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[.75vw] md:rounded-[.5vw]"
-                                    variant="success-bordered"
-                                    onClick={() => history.back()}
-                                >
-                                    Batal
-                                </GoalsButton>
-                                <GoalsButton
-                                    className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[.75vw] md:rounded-[.5vw]"
-                                    variant="success"
-                                    onClick={submit}
-                                >
-                                    Simpan
-                                </GoalsButton>
-                            </div>
+                        <div className="space-x-[.8vw]">
+                            <GoalsButton
+                                className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[.75vw] md:rounded-[.5vw]"
+                                variant="success-bordered"
+                                onClick={() => history.back()}
+                            >
+                                Batal
+                            </GoalsButton>
+                            <GoalsButton
+                                className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[.75vw] md:rounded-[.5vw]"
+                                variant="success"
+                                onClick={submit}
+                            >
+                                Simpan
+                            </GoalsButton>
+                        </div>
                     </div>
+                )}
+
+                {createPortal(
+                    <FileMediaPopup
+                        show={showDocuments}
+                        setShow={setShowDocuments}
+                        files={files}
+                    />,
+                    document.body
                 )}
 
                 <div className="md:grid grid-cols-2 gap-[1.2vw]">
@@ -96,12 +146,12 @@ export default function Update({ auth, order, files }) {
                         titleClassName="!font-semibold !text-[4vw] md:!text-[1.1vw]"
                         title="Order Details"
                         titleAction={
-                            <a
-                                href="#"
+                            <button
                                 className="text-secondary text-[3.6vw] md:text-[.9vw] font-medium flex items-center gap-[1vw] md:gap-[.2vw]"
+                                onClick={() => setShowDocuments(true)}
                             >
                                 File & Media <FiFileText />
-                            </a>
+                            </button>
                         }
                         bordered={isMobile}
                     >
@@ -148,7 +198,10 @@ export default function Update({ auth, order, files }) {
                         </div>
                     </FormSection>
                     <div className="md:space-y-[1.2vw]">
-                        <FormSection className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[1vw]" bordered={isMobile}>
+                        <FormSection
+                            className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[1vw]"
+                            bordered={isMobile}
+                        >
                             <GoalsTextArea
                                 label="Note for User"
                                 placeholder="Note for User"
@@ -157,7 +210,10 @@ export default function Update({ auth, order, files }) {
                                 labelClassName="font-medium"
                             />
                         </FormSection>
-                        <FormSection className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[1vw]" bordered={isMobile}>
+                        <FormSection
+                            className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[1vw]"
+                            bordered={isMobile}
+                        >
                             <GoalsUploadFile
                                 label="File & Media"
                                 labelClassName="font-medium te"
@@ -225,7 +281,10 @@ export default function Update({ auth, order, files }) {
                         </FormSection>
                     </div>
                     {isMobile && (
-                        <FormSection className="pt-[0vw] pb-[2vw] px-[7.4vw]" wrapperClassName="grid grid-cols-2 gap-[2vw]">
+                        <FormSection
+                            className="pt-[0vw] pb-[2vw] px-[7.4vw]"
+                            wrapperClassName="grid grid-cols-2 gap-[2vw]"
+                        >
                             <GoalsButton
                                 className="md:py-[0vw] md:px-[0vw] md:h-[2.8vw] md:w-[6.5vw] md:text-[.75vw] md:rounded-[.5vw]"
                                 variant="success-bordered"

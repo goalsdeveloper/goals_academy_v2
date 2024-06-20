@@ -167,7 +167,8 @@ class ProgressController extends Controller
                 $file->save();
             }
             $progress->user->notify(new GeneralCourseNotification("Update Bimbingan!", "Bimbingan {$progress->order->order_code} sesi $progress->session terdapat update dari tutor, yuk cek segera!", route('user.profile.detailPembelajaran', ['order_id' => $progress->order->order_code])));
-            return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress successfully'], 200);
+            return redirect()->route('tutor.bimbingan.progress.index');
+            // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'Update progress successfully'], 200);
         } catch (Exception $e) {
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => $e->getMessage()], 500);
         }
