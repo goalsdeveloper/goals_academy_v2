@@ -63,7 +63,7 @@ export default function Overview({
             return today;
         }
         var dif = today - yesterday;
-        percentage = (abs(dif) / yesterday) * 100;
+        percentage = (Math.abs(dif) / yesterday) * 100;
         return percentage;
     };
 
