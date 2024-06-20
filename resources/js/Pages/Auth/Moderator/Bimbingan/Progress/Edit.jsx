@@ -21,7 +21,29 @@ import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 
+function isDisabledLocation(progress, data) {
+    const { products } = progress || {};
+    const { contact_type } = products || {};
+
+    const isOnline = contact_type === "online";
+    const isOffline = contact_type === "offline";
+    const isHybrid = contact_type === "hybrid";
+    const isOther = contact_type === "other";
+
+    const commonChecks = !data.tutor_id || !data.date || !data.time;
+
+    if (isOnline && (commonChecks || !data.location)) return true;
+    if (isOffline && (commonChecks || !data.place_id)) return true;
+    if (isHybrid && (commonChecks || (!data.place_id && !data.location)))
+        return true;
+    if (isOther && !data.tutor_id) return true;
+
+    return false;
+}
+
 export default function Edit({ auth, progress, tutors, places }) {
+    const product_category = progress.products.category.slug
+
     const item = [
         {
             url: "https://www.google.com",
@@ -56,6 +78,8 @@ export default function Edit({ auth, progress, tutors, places }) {
         record: "",
         tutor_id: progress.tutor_id,
     });
+
+    console.log(progress)
 
     const GetLocationForm = () => {
         switch (progress.products?.contact_type) {
@@ -153,7 +177,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 })
                             }
                             // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
-                            files={progress.file_uploads}
+                            files={product_category == "paket-pertemuan" ? progress.order.form_result.document : progress.course?.file_uploads}
                         />,
                         document.body
                     )}
@@ -175,58 +199,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                         <GoalsButton
                             variant="success"
                             size="sm"
-                            disabled={
-                                (progress.products?.total_meet === 1 &&
-                                    progress.products?.contact_type ===
-                                        "online" &&
-                                    (!data.tutor_id ||
-                                        !data.location ||
-                                        !data.date ||
-                                        !data.time)) ||
-                                (progress.products?.total_meet === 1 &&
-                                    progress.products?.contact_type ===
-                                        "offline" &&
-                                    (!data.tutor_id ||
-                                        !data.place_id ||
-                                        !data.date ||
-                                        !data.time)) ||
-                                (progress.products?.total_meet === 1 &&
-                                    progress.products?.contact_type ===
-                                        "hybrid" &&
-                                    (!data.tutor_id ||
-                                        (!data.place_id && !data.location) ||
-                                        !data.date ||
-                                        !data.time)) ||
-                                (progress.products?.total_meet === 1 &&
-                                    progress.products?.contact_type ===
-                                        "other" &&
-                                    !data.tutor_id) ||
-                                (progress.products?.total_meet > 1 &&
-                                    progress.products?.contact_type ===
-                                        "online" &&
-                                    (!data.tutor_id ||
-                                        !data.location ||
-                                        !data.date ||
-                                        !data.time)) ||
-                                (progress.products?.total_meet > 1 &&
-                                    progress.products?.contact_type ===
-                                        "offline" &&
-                                    (!data.tutor_id ||
-                                        !data.place_id ||
-                                        !data.date ||
-                                        !data.time)) ||
-                                (progress.products?.total_meet > 1 &&
-                                    progress.products?.contact_type ===
-                                        "hybrid" &&
-                                    (!data.tutor_id ||
-                                        (!data.place_id && !data.location) ||
-                                        !data.date ||
-                                        !data.time)) ||
-                                (progress.products?.total_meet > 1 &&
-                                    progress.products?.contact_type ===
-                                        "other" &&
-                                    !data.tutor_id)
-                            }
+                            disabled={isDisabledLocation(progress, data)}
                             onClick={() => {
                                 transform((data) => ({
                                     _method: "put",

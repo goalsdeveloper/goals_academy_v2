@@ -18,7 +18,7 @@ class HistoryController extends Controller
                 $user = Auth::user();
                 $paginate = $request->paginate ?? 10;
                 $history = $user->tutor()->whereHas('tutor', function ($query) {
-                    $query->where('is_tutor', true);
+                    $query->where('is_tutor', true)->where('is_moderator', true);
                 });
                 $search = $request->search;
                 $history = $history->when($search, function ($q) use ($search) {

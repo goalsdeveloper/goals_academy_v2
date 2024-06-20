@@ -8,7 +8,7 @@ moment.updateLocale("id", {
     relativeTime : {
         future : "%s yang akan datang",
         past : "%s yang lalu",
-        s: 'beberapa detik',
+        s: 'Beberapa detik',
         ss : '%d detik',
         m:  "1 menit",
         mm: "%d menit",

@@ -84,7 +84,7 @@ class ProgressController extends Controller
                 } else {
                     $amount = floor(((($progress->products->price / $progress->products->total_meet) + $addons_price) * $progress->tutor->revenue_type->type) / 100);
                 }
-                $progress->ongoing = CourseStatusEnum::SUCCESS;
+                $progress->ongoing = CourseStatusEnum::SUCCESS->value;
                 Revenue::create([
                     'tutor_id' => $progress->tutor_id,
                     'course_id' => $progress->id,
