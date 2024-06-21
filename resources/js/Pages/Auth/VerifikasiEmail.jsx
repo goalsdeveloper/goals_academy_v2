@@ -4,7 +4,8 @@ import iconMobile from "/resources/img/icon/goals-4.svg";
 import iconDesktop from "/resources/img/icon/goals-3.svg";
 import ButtonPill from "@/Components/ButtonPill";
 
-export default function SyaratDanKetentuan () {
+export default function SyaratDanKetentuan ({user}) {
+    console.log(user)
     return (
         <>
             <Head title="Verifikasi Email" />
@@ -17,13 +18,13 @@ export default function SyaratDanKetentuan () {
                         <h1 className="font-sans font-bold text-secondary text-[4.4vw] md:text-[2.5vw] leading-[4.2vw] md:leading-tight">Email Verifikasi Telah Dikirim!</h1>
                         <div>
                             <p>Email verifikasi telah dikirim ke:</p>
-                            <p className="font-bold text-[3.6vw] md:text-[1.5vw]">namapengguna@gmail.com</p>
+                            <p className="font-bold text-[3.6vw] md:text-[1.5vw]">{user.email}</p>
                         </div>
                         <p>
                             Silakan ikuti langkah yang tersedia pada email yang telah dikirimkan tersebut. Jika kamu tidak menemukannya, kamu mungkin bisa mencarinya di folder spam pada email-mu.
                         </p>
                         <p>Masih tidak dapat menemukannya? Silakan tekan tombol dibawah ini.</p>
-                        <ButtonPill className="w-[20%] mx-auto rounded-[.5vw] font-normal" activeStyle="text-secondary border-2 border-secondary hover:bg-secondary hover:text-white">Kirim Ulang</ButtonPill>
+                        <ButtonPill href={route('verification.resend')} isLink className="w-full md:w-[20%] mx-auto rounded-[.5vw] font-normal" activeStyle="text-secondary border-2 border-secondary hover:bg-secondary hover:text-white">Kirim Ulang</ButtonPill>
                     </div>
                 </div>
             </div>
