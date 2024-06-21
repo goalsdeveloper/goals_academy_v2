@@ -25,7 +25,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
         category_id: categories.find((item) => item.id == products.category_id),
         description: products.description,
         price: products.price,
-        promo: products.promo_price ?? "",
+        promo_price: products.promo_price ?? "",
         total_meet: products.total_meet,
         active_period: products.active_period,
         duration: products.duration,
@@ -52,7 +52,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
             category_id: Number(data.category_id.id),
             description: data.description,
             price: Number(data.price),
-            promo: Number(data.promo),
+            promo_price: Number(data.promo_price),
             total_meet: data.total_meet,
             active_period: data.active_period,
             duration: data.duration,
@@ -278,9 +278,9 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                 <GoalsTextInput
                                     label="Promo (Optional)"
                                     grow
-                                    data={data.promo}
+                                    data={data.promo_price}
                                     setData={(e) =>
-                                        setData({ ...data, promo: e })
+                                        setData({ ...data, promo_price: e })
                                     }
                                 />
                             </div>
