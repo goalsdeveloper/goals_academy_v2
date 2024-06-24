@@ -98,11 +98,12 @@ class ModeratorOrderController extends Controller
                         'products:id,product_type_id,category_id,name,total_meet,contact_type',
                         'products.category:id,name',
                         'products.productType:id,type',
-                        'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id,place_id',
+                        'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id,place_id,topic_id',
                         'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session',
                         'course.tutor',
                         'course.place',
-                        'course.place.city'
+                        'course.place.city',
+                        'course.topic',
                     ])
                         ->whereHas('products', function ($query) {
                             $query->whereHas('productType', function ($subQuery) {
