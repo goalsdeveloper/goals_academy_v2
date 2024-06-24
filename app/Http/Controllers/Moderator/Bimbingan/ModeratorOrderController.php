@@ -103,7 +103,8 @@ class ModeratorOrderController extends Controller
                         'course.tutor',
                         'course.place',
                         'course.place.city',
-                        'course.topic'
+                        'course.topic',
+                        'course.fileUploads'
                     ])
                         ->whereHas('products', function ($query) {
                             $query->whereHas('productType', function ($subQuery) {

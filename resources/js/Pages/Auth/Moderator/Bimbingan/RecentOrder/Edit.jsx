@@ -22,6 +22,7 @@ export default function Edit({
     places,
     tutors,
 }) {
+    console.log(order);
     const [isShow, setIsShow] = useState(false);
     const [showPlaces, setShowPlaces] = useState(false);
     const {
@@ -174,7 +175,7 @@ export default function Edit({
                     <FileMediaPopup
                         show={isShow}
                         setShow={() => setIsShow(!isShow)}
-                        items={order.file_uploads}
+                        files={order.course?.file_uploads}
                     />,
                     document.body
                 )}
