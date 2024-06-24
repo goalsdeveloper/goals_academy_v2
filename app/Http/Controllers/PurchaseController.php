@@ -60,7 +60,6 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $user = Auth::user();
         $order_code = 'GA' . str(now()->format('YmdHis'));
         $orderData = new Order();
@@ -81,12 +80,6 @@ class PurchaseController extends Controller
         $paymentMethod = PaymentMethod::where('name', $request['purchase_method']['name'])->first();
         $getProduct = Products::where('id', $request['product_id'])->first();
 
-        // cek date <NANTI>
-        // $cekDate = Course::where('date', $validateData['schedule'])->count();
-        // if ($cekDate > 7) {
-        //     return response()->json(['kuota telah habis']);
-        // }
-
         // charge midtrans
         $phoneNumber = $user->profile->phone_number ?? '';
         $form_result = ['add_on' => []];
@@ -101,11 +94,17 @@ class PurchaseController extends Controller
             }
             if ($key == 'place') {
                 $form_result['place_id'] = $request[$key];
+                continue;
             }
-            if ($value == 1 && $key != 'document') {
+            if ($key == 'schedule') {
+                $form_result['schedule'] = $request[$key];
+                continue;
+            }
+            if ($key != 'document') {
                 $form_result[$key] = $request[$key];
             }
         }
+        dd($form_result);
         $document = [];
         if ($request->hasFile('document')) {
             foreach ($request->file('document') as $idx => $file) {

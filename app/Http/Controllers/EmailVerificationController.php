@@ -6,13 +6,18 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class EmailVerificationController extends Controller
 {
     public function notice()
     {
+        $user = Auth::user();
         Session::flash('email-send', 'Selamat akun anda telah terdaftar! Silahkan cek email untuk verifikasi akun anda.');
-        return "email verif terkirim";
+        return Inertia::render('Auth/VerifikasiEmail', [
+            'user' => $user,
+        ]);
     }
 
 
