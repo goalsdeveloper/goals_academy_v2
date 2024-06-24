@@ -104,7 +104,6 @@ class PurchaseController extends Controller
                 $form_result[$key] = $request[$key];
             }
         }
-        dd($form_result);
         $document = [];
         if ($request->hasFile('document')) {
             foreach ($request->file('document') as $idx => $file) {
