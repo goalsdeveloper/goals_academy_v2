@@ -157,7 +157,7 @@ class ProgressController extends Controller
     public function edit(Course $progress)
     {
         $tutors = User::with("profile")->where("user_role", "tutor")->get();
-        $progress->load("user.profile", "order", "products", "topic", "productReview", "addOns", "place", "place.city", 'products.category');
+        $progress->load("user.profile", "order", "products", "topic", "productReview", "addOns", "place", "place.city", "fileUploads", 'products.category');
         return Inertia::render("Auth/Moderator/Bimbingan/Progress/Edit", [
             "progress" => $progress,
             "tutors" => $tutors,

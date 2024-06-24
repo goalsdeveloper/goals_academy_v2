@@ -216,10 +216,9 @@ const SelesaiProgram = ({ show, setShow, order_code }) => {
             show={show}
             setShow={setShow}
             className="h-fit md:max-w-[23.5vw]"
+            header="Selesaikan Bimbingan"
         >
             <div className="flex flex-col items-center gap-[7.4vw] md:gap-[2vw]">
-                <h3 className="font-semibold h4">Selesaikan Bimbingan</h3>
-
                 <p className="text-[3.7vw] md:text-[1vw] text-black text-center">
                     Apakah kamu ingin menyelesaikan bimbingan?
                 </p>
@@ -251,12 +250,13 @@ const SelesaiProgram = ({ show, setShow, order_code }) => {
 
 const UlasanTutor = ({ show, setShow, data, setData }) => {
     return (
-        <GoalsPopup show={show} setShow={setShow} className="md:max-w-[23.5vw]">
+        <GoalsPopup
+            show={show}
+            setShow={setShow}
+            className="md:max-w-[23.5vw]"
+            header="Beri Ulasan Tutor"
+        >
             <div className="flex flex-col items-center gap-[7.4vw] md:gap-[2vw]">
-                <h3 className="font-medium h4 md:font-semibold">
-                    Beri Ulasan Tutor
-                </h3>
-
                 <p className="text-[3.7vw] md:text-[1vw] text-black text-center">
                     Bagaimana kepuasan kamu setelah
                     <br />
@@ -287,20 +287,20 @@ const UlasanTutor = ({ show, setShow, data, setData }) => {
 
 const UlasanProgram = ({ show, setShow, data, setData, handleSubmit }) => {
     function checkFieldRequired() {
-        if (
-            data.rate_tutor == 0 ||
-            data.note_tutor == "" ||
-            data.note_tutor == null ||
-            data.note_tutor == undefined
-        ) {
-            return true;
-        }
+        // if (
+        //     data.rate_tutor == 0 ||
+        //     data.note_tutor == "" ||
+        //     data.note_tutor == null ||
+        //     data.note_tutor == undefined
+        // ) {
+        //     return true;
+        // }
 
         if (
             data.rate_product == 0 ||
-            data.note_product == "" ||
-            data.note_product == null ||
-            data.note_product == undefined
+            data.note_product == ""
+            // || data.note_product == null ||
+            // data.note_product == undefined
         ) {
             return true;
         }
@@ -309,10 +309,13 @@ const UlasanProgram = ({ show, setShow, data, setData, handleSubmit }) => {
     }
 
     return (
-        <GoalsPopup show={show} setShow={setShow} className="md:max-w-[23.5vw]">
+        <GoalsPopup
+            show={show}
+            setShow={setShow}
+            className="md:max-w-[23.5vw]"
+            header="Beri Ulasan Program"
+        >
             <div className="flex flex-col items-center gap-[4vw] md:gap-[2vw]">
-                <h3 className="font-semibold h4">Beri Ulasan Program</h3>
-
                 <p className="text-[3.7vw] md:text-[1vw] text-black text-center">
                     Bagaimana perasaan kamu setelah <br />
                     melakukan bimbingan?

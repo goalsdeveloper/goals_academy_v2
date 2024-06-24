@@ -20,28 +20,11 @@ import { createPortal } from "react-dom";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
-
-function isDisabledLocation(progress, data) {
-    const { products } = progress || {};
-    const { contact_type } = products || {};
-
-    const isOnline = contact_type === "online";
-    const isOffline = contact_type === "offline";
-    const isHybrid = contact_type === "hybrid";
-    const isOther = contact_type === "other";
-
-    const commonChecks = !data.tutor_id || !data.date || !data.time;
-
-    if (isOnline && (commonChecks || !data.location)) return true;
-    if (isOffline && (commonChecks || !data.place_id)) return true;
-    if (isHybrid && (commonChecks || (!data.place_id && !data.location)))
-        return true;
-    if (isOther && !data.tutor_id) return true;
-
-    return false;
-}
+import { isDisabledLocation } from "../utils";
 
 export default function Edit({ auth, progress, tutors, places }) {
+    console.log(progress)
+
     const product_category = progress.products.category.slug
 
     const item = [
@@ -78,8 +61,6 @@ export default function Edit({ auth, progress, tutors, places }) {
         record: "",
         tutor_id: progress.tutor_id,
     });
-
-    console.log(progress)
 
     const GetLocationForm = () => {
         switch (progress.products?.contact_type) {

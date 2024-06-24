@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
 import { useMediaQuery } from "react-responsive";
-import GoalsButton from "@/Components/GoalsButton";
 import logo from "/resources/img/icon/goals-5.svg";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import moment from "moment/moment";
@@ -270,7 +269,7 @@ export default function Overview({
                                     className="relative bg-white w-[22vw] h-[22vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread z-10 p-[.8vw] md:p-[.2vw]"
                                     src={
                                         user.profile.profile_image
-                                            ? user.profile.profile_image
+                                            ? "/storage/"+user.profile.profile_image
                                             : userIcon
                                     }
                                     alt="User"
@@ -356,7 +355,7 @@ export default function Overview({
                                         className="relative bg-white w-[16vw] h-[16vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread z-10 p-[.8vw] md:p-[.2vw]"
                                         src={
                                             user.profile.profile_image
-                                                ? user.profile.profile_image
+                                                ? "/storage/"+user.profile.profile_image
                                                 : userIcon
                                         }
                                         alt="User"

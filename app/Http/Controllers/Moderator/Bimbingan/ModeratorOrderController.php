@@ -103,7 +103,7 @@ class ModeratorOrderController extends Controller
                         'course.tutor',
                         'course.place',
                         'course.place.city',
-                        'course.topic',
+                        'course.topic'
                     ])
                         ->whereHas('products', function ($query) {
                             $query->whereHas('productType', function ($subQuery) {
@@ -199,7 +199,7 @@ class ModeratorOrderController extends Controller
     public function show(Order $order)
     {
         try {
-            $order = $order->load('products', 'user', 'user.profile', 'course.place', 'course.tutor', 'course.tutor.profile', 'course.topic');
+            $order = $order->load('products', 'user', 'user.profile', 'course.place', 'course.tutor', 'course.tutor.profile', 'course.topic', 'course.fileUploads');
             return response()->json([
                 'status' => true,
                 'statusCode' => 200,
