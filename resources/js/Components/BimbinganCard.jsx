@@ -20,11 +20,11 @@ export default function BimbinganCard({ item, className }) {
                     <h5 className="w-7/12 text-[3.32vw] md:text-[1vw] line-clamp-2">{item.name}</h5>
                     <div className="w-5/12 text-end font-bold">
                         <h5 className="text-primary text-[3.32vw] md:text-[1vw] 3xl:py-0.5">
-                            IDR {currency.format(parseFloat(item.price) - parseFloat(item.promo_price))}
+                            IDR {currency.format(parseFloat(item.price) - parseFloat(item.promo_price || 0))}
                         </h5>
                         {item.promo_price ? (
                             <p className="inline text-[3.32vw] md:text-[.83vw] text-light-grey line-through">
-                                IDR {currency.format(item.promo_price)}
+                                IDR {currency.format(item.price)}
                             </p>
                         ) : (
                             ""
