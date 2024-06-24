@@ -37,7 +37,7 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         place: "",
         document: [],
         topic: "",
-        init_price: dataProduct.price,
+        init_price: parseFloat(dataProduct.price) - parseFloat(dataProduct.promo_price || 0),
         promo: "",
         discount: 0,
         purchase_method: "",
@@ -45,7 +45,7 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         product_id: dataProduct.id,
         add_on: [],
         add_on_price: 0,
-        total_price: dataProduct.price,
+        total_price: parseFloat(dataProduct.price) - parseFloat(dataProduct.promo_price || 0),
     });
 
     // Code to input temp form data
@@ -55,7 +55,7 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         place: "",
         document: "",
         topic: "",
-        init_price: dataProduct.price,
+        init_price: parseFloat(dataProduct.price) - parseFloat(dataProduct.promo_price || 0),
         promo: "",
         discount: 0,
         purchase_method: "",
