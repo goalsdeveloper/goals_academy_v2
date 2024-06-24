@@ -199,7 +199,7 @@ class ModeratorOrderController extends Controller
     public function show(Order $order)
     {
         try {
-            $order = $order->load('products', 'user', 'user.profile', 'course.place', 'course.tutor', 'course.tutor.profile', 'course.topic');
+            $order = $order->load('products', 'user', 'user.profile', 'course.place', 'course.tutor', 'course.tutor.profile', 'course.topic', 'course.fileUploads');
             return response()->json([
                 'status' => true,
                 'statusCode' => 200,
