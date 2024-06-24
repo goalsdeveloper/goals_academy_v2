@@ -768,26 +768,7 @@ function NotificationItem({ item }) {
         return (
             <Link
                 method="GET"
-                to={route("api.notification.read", { id: item.id })}
-                onSuccess={(res) => {
-                    if (item.data.link != undefined) {
-                        window.location = item.data.link;
-                        return;
-                    }
-                    location.reload();
-                }}
-                // onClick={(e) => {
-                //     console.log(e);
-                //     axios
-                //         .get(route("api.notification.read", { id: item.id }))
-                //         .then((res) => {
-                //             if (item.data.link != undefined) {
-                //                 window.location = item.data.link;
-                //                 return;
-                //             }
-                //             location.reload();
-                //         });
-                // }}
+                href={route("api.notification.read", { id: item.id })}
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
