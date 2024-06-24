@@ -13,6 +13,7 @@ import { createPortal } from "react-dom";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
+import toast from "react-hot-toast";
 
 export default function Edit({
     auth,
@@ -145,31 +146,7 @@ export default function Edit({
                             variant="success"
                             size="sm"
                             disabled={
-                                (order.products?.total_meet === 1 &&
-                                    order.products?.contact_type === "online" &&
-                                    (!formData.tutor_id ||
-                                        !formData.location ||
-                                        !formData.date ||
-                                        !formData.time)) ||
-                                (order.products?.total_meet === 1 &&
-                                    order.products?.contact_type ===
-                                        "offline" &&
-                                    (!formData.tutor_id ||
-                                        !formData.place_id ||
-                                        !formData.date ||
-                                        !formData.time)) ||
-                                (order.products?.total_meet === 1 &&
-                                    order.products?.contact_type === "hybrid" &&
-                                    (!formData.tutor_id ||
-                                        (!formData.place_id &&
-                                            !formData.location) ||
-                                        !formData.date ||
-                                        !formData.time)) ||
-                                (order.products?.total_meet === 1 &&
-                                    order.products?.contact_type === "other" &&
-                                    !formData.tutor_id) ||
-                                (order.products?.total_meet > 1 &&
-                                    !formData.tutor_id)
+                               false // isDisabledLocation(progress, data)
                             }
                             onClick={() =>
                                 patch(

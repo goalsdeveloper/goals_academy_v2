@@ -307,7 +307,7 @@ class ModeratorOrderController extends Controller
             //     'message' => 'Update course success',
             // ], 200);
 
-            return redirect()->back();
+            return redirect()->route('moderator.bimbingan.index');
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
