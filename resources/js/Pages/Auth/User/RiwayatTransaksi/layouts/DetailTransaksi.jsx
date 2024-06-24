@@ -3,6 +3,7 @@ import GoalsPopup from "@/Components/elements/GoalsPopup";
 import { FiChevronLeft, FiX } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "@inertiajs/react";
+import GoalsButton from "@/Components/elements/GoalsButton";
 
 const DetailTransaksi = ({ data, show, setShow }) => {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
@@ -25,6 +26,9 @@ const DetailTransaksi = ({ data, show, setShow }) => {
                         <div className="grid grid-cols-2 gap-[1.8vw] md:gap-[1.25vw]">
                             <TransactionDetailContent data={data} />
                         </div>
+                        {data.status == "Pending" ?
+                            <GoalsButton href={`/purchase/${data.order_code}`} isLink className="w-full">Bayar Sekarang</GoalsButton>
+                        : <></>}
                     </div>
                 </div>
             ) : (
@@ -40,6 +44,9 @@ const DetailTransaksi = ({ data, show, setShow }) => {
                     <div className="grid grid-cols-2 gap-[1.8vw] md:gap-[1.25vw]">
                         <TransactionDetailContent data={data} />
                     </div>
+                    {data.status == "Pending" ?
+                        <GoalsButton href={`/purchase/${data.order_code}`} isLink className="w-full">Bayar Sekarang</GoalsButton>
+                    : <></>}
                 </GoalsPopup>
             )}
         </>
@@ -49,7 +56,7 @@ const DetailTransaksi = ({ data, show, setShow }) => {
 const TransactionDetailContent = ({ data }) => {
     const currency = Intl.NumberFormat("id-ID");
     const add_on = data.form_result.add_on;
-
+    
     const statusClassMap = {
         Berhasil: "text-success-50",
         Success: "text-success-50",
@@ -144,12 +151,7 @@ const TransactionDetailContent = ({ data }) => {
                 </h3>
                 <p className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium">
                     {add_on != ""
-                        ? `Rp. ${currency.format(
-                              add_on.reduce(
-                                  (total, addon) => total + addon.price,
-                                  0
-                              )
-                          )}`
+                        ? `Rp. ${currency.format(data.form_result.add_on_price)}`
                         : "-"}
                 </p>
             </div>
