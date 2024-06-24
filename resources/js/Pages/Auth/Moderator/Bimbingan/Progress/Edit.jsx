@@ -158,7 +158,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 })
                             }
                             // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
-                            files={product_category == "paket-pertemuan" ? progress.order.form_result.document : progress.course?.file_uploads}
+                            files={product_category == "paket-pertemuan" ? progress?.order?.form_result?.document : progress?.file_uploads}
                         />,
                         document.body
                     )}
