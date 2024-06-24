@@ -91,7 +91,7 @@ Route::get('/syarat_dan_ketentuan', function () {
 
 Route::resource('/produk', PurchaseController::class);
 
-Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status');
+Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status')->middleware(['auth', 'verified']);
 
 Route::resource('/profile', ProfileController::class);
 
