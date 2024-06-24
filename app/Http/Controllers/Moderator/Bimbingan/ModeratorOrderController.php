@@ -98,11 +98,12 @@ class ModeratorOrderController extends Controller
                         'products:id,product_type_id,category_id,name,total_meet,contact_type',
                         'products.category:id,name',
                         'products.productType:id,type',
-                        'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id,place_id',
+                        'course:id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session,tutor_id,place_id,topic_id',
                         'course.child:id,parent_id,order_id,is_user,is_tutor,is_moderator,date,time,location,ongoing,session',
                         'course.tutor',
                         'course.place',
-                        'course.place.city'
+                        'course.place.city',
+                        'course.topic'
                     ])
                         ->whereHas('products', function ($query) {
                             $query->whereHas('productType', function ($subQuery) {
@@ -198,7 +199,7 @@ class ModeratorOrderController extends Controller
     public function show(Order $order)
     {
         try {
-            $order = $order->load('products', 'user', 'user.profile', 'course.place', 'course.tutor', 'course.tutor.profile', 'course.topic');
+            $order = $order->load('products', 'user', 'user.profile', 'course.place', 'course.tutor', 'course.tutor.profile', 'course.topic', 'course.fileUploads');
             return response()->json([
                 'status' => true,
                 'statusCode' => 200,
@@ -298,14 +299,8 @@ class ModeratorOrderController extends Controller
                 // $parent->update(array_merge($validateData, ['ongoing' => CourseStatusEnum::ONGOING]));
             }
 
-            $order->user->notify(new GeneralCourseNotification("Tutor Sudah Ditemukan!", "Bimbingan $order->order_code terdapat update, yuk cek segera!", route('user.profile.detailPembelajaran', ['order_id' => $order->order_code])));
-            $order->course->tutor->notify(new GeneralCourseNotification("Bimbingan Baru Tersedia", "Terdapat bimbingan baru yang tersedia, cek sekarang!", route('tutor.bimbingan.progress.index')));
-
-            // return response()->json([
-            //     'status' => true,
-            //     'statusCode' => 200,
-            //     'message' => 'Update course success',
-            // ], 200);
+            $order->user->notify(new GeneralCourseNotification("Tutor Sudah Ditemukan!", "Bimbingan {$order->order_code} terdapat update, yuk cek segera!", route('user.profile.detailPembelajaran', ['order_id' => $order->order_code])));
+            $order->course->tutor->notify(new GeneralCourseNotification("Bimbingan Baru Tersedia", "Terdapat bimbingan baru dengan kode {$order->order_code}, cek sekarang!", route('tutor.bimbingan.progress.edit', ['progress' => $order->order_code])));
 
             return redirect()->route('moderator.bimbingan.order.index');
         } catch (ValidationException $e) {

@@ -8,7 +8,7 @@ use App\Http\Controllers\Profile\WebinarController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::middleware(['auth'])->name('user.profile.')->group(function () {
+Route::middleware(['auth', 'verified'])->name('user.profile.')->group(function () {
     Route::get('/user', function() {
         return redirect()->route('user.profile.bimbingan');
     })->name('user.profile');

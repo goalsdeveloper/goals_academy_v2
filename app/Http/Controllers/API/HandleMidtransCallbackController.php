@@ -113,7 +113,7 @@ class HandleMidtransCallbackController extends Controller
                     }
                     $moderators = User::where('user_role', UserRoleEnum::MODERATOR)->get();
                     foreach ($moderators as $moderator) {
-                        $moderator->notify(new GeneralCourseNotification("Ada Bimbingan Baru!", "Terdapat Bimbingan Baru yang Harus diproses!", route('moderator.bimbingan.order.edit', ['order' => $order->order_code])));
+                        $moderator->notify(new GeneralCourseNotification("Ada Bimbingan Baru!", "Terdapat Bimbingan Baru dengan kode {$order->order_code} yang Harus diproses!", route('moderator.bimbingan.order.edit', ['order' => $order->order_code])));
                     }
                 }
                 break;
