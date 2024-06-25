@@ -28,6 +28,13 @@ class CategorySeeder extends Seeder
             'description' => 'Dibimbing sekali online/offline',
             'product_type_id' => 1,
         ]);
+        Category::create([
+            'name' => 'Desk Review',
+            'slug' => 'desk-review',
+            'is_visible' => true,
+            'description' => 'Dibimbing sekali desk review',
+            'product_type_id' => 1,
+        ]);
         // Category::create([
         //     'name' => 'Dibimbing Sekali Online',
         //     'slug' => 'dibimbing-sekali-online',
