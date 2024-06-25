@@ -98,6 +98,7 @@ export default function Progress({ auth, bimbingan }) {
                 header: "Action",
                 size: 10,
                 Cell: ({ cell }) => {
+                    const courseTime = moment(cell.row.original.date + " " + cell.row.original.time);
                     return (
                         <ul className="flex gap-[3.2vw] md:gap-[.8vw] w-fit">
                             <li>
@@ -121,9 +122,12 @@ export default function Progress({ auth, bimbingan }) {
                                     <FiThumbsUp
                                         className={
                                             "text-[4.8vw] md:text-[1.2vw] " +
-                                            (cell.row.original.is_tutor
-                                                ? "text-success"
-                                                : "text-secondary")
+                                            (moment().diff(courseTime, "s") < 0 ? "text-gray-500" : (
+                                                    cell.row.original.is_tutor
+                                                    ? "text-success"
+                                                    : "text-secondary"
+                                                )
+                                            )
                                         }
                                     />
                                 </Link>

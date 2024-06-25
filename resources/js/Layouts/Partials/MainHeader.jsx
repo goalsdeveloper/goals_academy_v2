@@ -174,7 +174,9 @@ export default function MainHeader({ auth, title, className }) {
 
     return (
         <header
-            className={`${isMobile && 'shadow'} overflow-y-visible overflow-x-clip sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50 ${className}`}
+            className={`${
+                isMobile && "shadow"
+            } overflow-y-visible overflow-x-clip sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50 ${className}`}
         >
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <div className="md:h-[7.5vw] hidden"></div>
@@ -386,7 +388,7 @@ function Notification({ auth, data, loadMore }) {
     };
 
     const loadMoreProgram = () => {
-        console.log(1)
+        console.log(1);
         loadMore("Pembelajaran", data.pageProgram + 1, setIsLoading);
     };
 
@@ -407,7 +409,12 @@ function Notification({ auth, data, loadMore }) {
                 ></i>
                 <div
                     className={`${
-                        data.newTransaction.concat(data.promo).concat(data.program).filter(i => i.read_at == null).length > 0 ? "" : "hidden"
+                        data.newTransaction
+                            .concat(data.promo)
+                            .concat(data.program)
+                            .filter((i) => i.read_at == null).length > 0
+                            ? ""
+                            : "hidden"
                     } absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}
                 ></div>
             </div>
@@ -441,7 +448,15 @@ function Notification({ auth, data, loadMore }) {
                                 onClick={() => setActiveDisplay(0)}
                             >
                                 Transaksi
-                                <div className={`${data.newTransaction.filter(i => i.read_at == null).length > 0 ? "" : "hidden"} bg-secondary w-[2vw] h-[2vw] rounded-full`}></div>
+                                <div
+                                    className={`${
+                                        data.newTransaction.filter(
+                                            (i) => i.read_at == null
+                                        ).length > 0
+                                            ? ""
+                                            : "hidden"
+                                    } bg-secondary w-[2vw] h-[2vw] rounded-full`}
+                                ></div>
                             </button>
                             <button
                                 className={`${
@@ -452,7 +467,15 @@ function Notification({ auth, data, loadMore }) {
                                 onClick={() => setActiveDisplay(1)}
                             >
                                 Promo
-                                <div className={`${data.promo.filter(i => i.read_at == null).length > 0 ? "" : "hidden"} bg-secondary w-[2vw] h-[2vw] rounded-full`}></div>
+                                <div
+                                    className={`${
+                                        data.promo.filter(
+                                            (i) => i.read_at == null
+                                        ).length > 0
+                                            ? ""
+                                            : "hidden"
+                                    } bg-secondary w-[2vw] h-[2vw] rounded-full`}
+                                ></div>
                             </button>
                             <button
                                 className={`${
@@ -463,7 +486,15 @@ function Notification({ auth, data, loadMore }) {
                                 onClick={() => setActiveDisplay(2)}
                             >
                                 Program
-                                <div className={`${data.program.filter(i => i.read_at == null).length > 0 ? "" : "hidden"} bg-secondary w-[2vw] h-[2vw] rounded-full`}></div>
+                                <div
+                                    className={`${
+                                        data.program.filter(
+                                            (i) => i.read_at == null
+                                        ).length > 0
+                                            ? ""
+                                            : "hidden"
+                                    } bg-secondary w-[2vw] h-[2vw] rounded-full`}
+                                ></div>
                             </button>
                         </div>
                         {/* Transaksi */}
@@ -508,11 +539,17 @@ function Notification({ auth, data, loadMore }) {
                                                 true && (
                                                 <GoalsButton
                                                     activeClassName="bg-white hover:text-secondary"
-                                                    onClick={() => isLoading ? false : loadMoreTransaction()}
+                                                    onClick={() =>
+                                                        isLoading
+                                                            ? false
+                                                            : loadMoreTransaction()
+                                                    }
                                                 >
                                                     {isLoading ? (
                                                         <AiOutlineLoading3Quarters className="animate-spin" />
-                                                    ) : "Load More"}
+                                                    ) : (
+                                                        "Load More"
+                                                    )}
                                                 </GoalsButton>
                                             )}
                                         </>
@@ -539,11 +576,17 @@ function Notification({ auth, data, loadMore }) {
                                     {data.hasMorePromo && (
                                         <GoalsButton
                                             activeClassName="bg-white hover:text-secondary"
-                                            onClick={() => isLoading ? false : loadMorePromo()}
+                                            onClick={() =>
+                                                isLoading
+                                                    ? false
+                                                    : loadMorePromo()
+                                            }
                                         >
                                             {isLoading ? (
                                                 <AiOutlineLoading3Quarters className="animate-spin" />
-                                            ) : "Load More"}
+                                            ) : (
+                                                "Load More"
+                                            )}
                                         </GoalsButton>
                                     )}
                                 </>
@@ -568,11 +611,17 @@ function Notification({ auth, data, loadMore }) {
                                     {data.hasMoreProgram && (
                                         <GoalsButton
                                             activeClassName="bg-white hover:text-secondary"
-                                            onClick={() => isLoading ? false : loadMoreProgram()}
+                                            onClick={() =>
+                                                isLoading
+                                                    ? false
+                                                    : loadMoreProgram()
+                                            }
                                         >
                                             {isLoading ? (
                                                 <AiOutlineLoading3Quarters className="animate-spin" />
-                                            ) : "Load More"}
+                                            ) : (
+                                                "Load More"
+                                            )}
                                         </GoalsButton>
                                     )}
                                 </>
@@ -615,7 +664,15 @@ function Notification({ auth, data, loadMore }) {
                                     onClick={() => setActiveDisplay(0)}
                                 >
                                     Transaksi
-                                    <div className={`${data.newTransaction.filter(i => i.read_at == null).length > 0 ? "" : "hidden"} bg-secondary w-[.5vw] h-[.5vw] rounded-full`}></div>
+                                    <div
+                                        className={`${
+                                            data.newTransaction.filter(
+                                                (i) => i.read_at == null
+                                            ).length > 0
+                                                ? ""
+                                                : "hidden"
+                                        } bg-secondary w-[.5vw] h-[.5vw] rounded-full`}
+                                    ></div>
                                 </button>
                                 <button
                                     className={`${
@@ -626,7 +683,15 @@ function Notification({ auth, data, loadMore }) {
                                     onClick={() => setActiveDisplay(1)}
                                 >
                                     Promo
-                                    <div className={`${data.promo.filter(i => i.read_at == null).length > 0 ? "" : "hidden"} bg-secondary w-[.5vw] h-[.5vw] rounded-full`}></div>
+                                    <div
+                                        className={`${
+                                            data.promo.filter(
+                                                (i) => i.read_at == null
+                                            ).length > 0
+                                                ? ""
+                                                : "hidden"
+                                        } bg-secondary w-[.5vw] h-[.5vw] rounded-full`}
+                                    ></div>
                                 </button>
                                 <button
                                     className={`${
@@ -637,7 +702,15 @@ function Notification({ auth, data, loadMore }) {
                                     onClick={() => setActiveDisplay(2)}
                                 >
                                     Program
-                                    <div className={`${data.program.filter(i => i.read_at == null).length > 0 ? "" : "hidden"} bg-secondary w-[.5vw] h-[.5vw] rounded-full`}></div>
+                                    <div
+                                        className={`${
+                                            data.program.filter(
+                                                (i) => i.read_at == null
+                                            ).length > 0
+                                                ? ""
+                                                : "hidden"
+                                        } bg-secondary w-[.5vw] h-[.5vw] rounded-full`}
+                                    ></div>
                                 </button>
                             </div>
                             {/* Transaksi */}
@@ -681,11 +754,17 @@ function Notification({ auth, data, loadMore }) {
                                                 {data.hasMoreTransaction && (
                                                     <GoalsButton
                                                         activeClassName="bg-white hover:text-secondary"
-                                                        onClick={() => isLoading ? false : loadMoreTransaction()}
+                                                        onClick={() =>
+                                                            isLoading
+                                                                ? false
+                                                                : loadMoreTransaction()
+                                                        }
                                                     >
                                                         {isLoading ? (
                                                             <AiOutlineLoading3Quarters className="animate-spin" />
-                                                        ) : "Load More"}
+                                                        ) : (
+                                                            "Load More"
+                                                        )}
                                                     </GoalsButton>
                                                 )}
                                             </>
@@ -712,11 +791,17 @@ function Notification({ auth, data, loadMore }) {
                                         {data.hasMorePromo == true && (
                                             <GoalsButton
                                                 activeClassName="bg-white hover:text-secondary"
-                                                onClick={() => isLoading ? false : loadMorePromo()}
+                                                onClick={() =>
+                                                    isLoading
+                                                        ? false
+                                                        : loadMorePromo()
+                                                }
                                             >
                                                 {isLoading ? (
                                                     <AiOutlineLoading3Quarters className="animate-spin" />
-                                                ) : "Load More"}
+                                                ) : (
+                                                    "Load More"
+                                                )}
                                             </GoalsButton>
                                         )}
                                     </>
@@ -741,11 +826,17 @@ function Notification({ auth, data, loadMore }) {
                                         {data.hasMoreProgram == true && (
                                             <GoalsButton
                                                 activeClassName="bg-white hover:text-secondary"
-                                                onClick={() => isLoading ? false : loadMoreProgram()}
+                                                onClick={() =>
+                                                    isLoading
+                                                        ? false
+                                                        : loadMoreProgram()
+                                                }
                                             >
                                                 {isLoading ? (
                                                     <AiOutlineLoading3Quarters className="animate-spin" />
-                                                ) : "Load More"}
+                                                ) : (
+                                                    "Load More"
+                                                )}
                                             </GoalsButton>
                                         )}
                                     </>
@@ -768,7 +859,18 @@ function NotificationItem({ item }) {
         return (
             <Link
                 method="GET"
-                href={route("api.notification.read", { id: item.id })}
+                onClick={() => {
+                    axios
+                        .get(route("api.notification.read", { id: item.id }))
+                        .then((res) => {
+                            if(res.status == 200) {
+                                window.location = res.data.link
+                            } else {
+                                window.reload()
+                            }
+                        });
+                }}
+                as="button"
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
