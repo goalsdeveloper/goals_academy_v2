@@ -63,7 +63,7 @@ export default function Setting({ auth, user, skills }) {
             {isLoading && <LoadingUI />}
             <div className="space-y-[1.6vw]">
                 {!isMobile && (
-                    <div className="items-center justify-between hidden">
+                    <div className="flex items-center justify-between">
                         <p className="font-medium text-[1.2vw]">
                             Update Profile
                         </p>
@@ -95,7 +95,7 @@ export default function Setting({ auth, user, skills }) {
                                 <img
                                     src="/img/profile/bg-pengaturan.svg"
                                     alt="bg-pengaturan"
-                                    className="object-cover w-full h-full"
+                                    className="object-cover w-full s-full"
                                 />
                                 <div className="absolute w-fit flex flex-col items-center mx-auto -bottom-[25vw] left-0 right-0 z-10 space-y-[3vw]">
                                     <img
