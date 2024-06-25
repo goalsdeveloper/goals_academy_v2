@@ -195,6 +195,25 @@ class ProductSeeder extends Seeder
                 'document' => 0,
             ],
         ]);
+        Products::create([
+            'category_id' => 3,
+            'name' => '[Desk Review] Skripsi/Jurnal Semua Jurusan',
+            'slug' => Str::slug('[Desk Review] Skripsi/Jurnal Semua Jurusan'),
+            'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
+            'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
+            'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
+            'price' => 1488000,
+            'product_image' => 'resources/img/program/dibimbing-online-45.png',
+            'product_type_id' => 1,
+            'contact_type' => 'other',
+            'duration' => 60,
+            'total_meet' => 1,
+            'active_period' => 90,
+            'number_list' => 1,
+            'form_config' => [
+                'document' => 1,
+            ],
+        ]);
         // Products::create([
         //     'category_id' => 4,
         //     'name' => 'Dibimbing Offline 60 Menit',
