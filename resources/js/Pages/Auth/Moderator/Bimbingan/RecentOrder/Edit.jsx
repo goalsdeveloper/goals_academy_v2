@@ -10,19 +10,13 @@ import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
 import { router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import toast from "react-hot-toast";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
-import toast from "react-hot-toast";
-import { isDisabledLocation } from "../utils";
+import { canSubmitFormCheckerRecentOrder } from "../utils";
 
-export default function Edit({
-    auth,
-    order,
-    places,
-    tutors,
-}) {
-    console.log(order);
+export default function Edit({ auth, order, places, tutors }) {
     const [isShow, setIsShow] = useState(false);
     const [showPlaces, setShowPlaces] = useState(false);
     const {
@@ -40,8 +34,6 @@ export default function Edit({
         date: order?.course?.date ?? "",
         time: order?.course?.time ?? "",
     });
-
-    console.log(order)
 
     const GetLocationForm = () => {
         if (order.products?.total_meet == 1) {
@@ -121,13 +113,6 @@ export default function Edit({
         }
     };
 
-    function checkSelectInput() {
-        if (!formData.tutor) {
-            return true;
-        }
-        return false;
-    }
-
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -156,8 +141,7 @@ export default function Edit({
                             variant="success"
                             size="sm"
                             disabled={
-                                isDisabledLocation(order, formData) ||
-                                checkSelectInput()
+                                canSubmitFormCheckerRecentOrder(order, formData)
                             }
                             onClick={() =>
                                 patch(

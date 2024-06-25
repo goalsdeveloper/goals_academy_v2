@@ -20,7 +20,7 @@ import { createPortal } from "react-dom";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
-import { isDisabledLocation } from "../utils";
+import { canSubmitFormCheckerProgress } from "../utils";
 
 export default function Edit({ auth, progress, tutors, places }) {
     const product_category = progress.products.category.slug;
@@ -184,7 +184,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                         <GoalsButton
                             variant="success"
                             size="sm"
-                            disabled={isDisabledLocation(progress, data) || checkSelectInput()}
+                            disabled={canSubmitFormCheckerProgress(progress, data) || checkSelectInput()}
                             onClick={() => {
                                 transform((data) => ({
                                     _method: "put",
