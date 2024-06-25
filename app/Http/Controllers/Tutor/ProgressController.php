@@ -30,7 +30,6 @@ class ProgressController extends Controller
                 $search = $request->search;
 
                 $query = $user->tutor()
-                    ->where('is_moderator', false)
                     ->where('ongoing', '!=', CourseStatusEnum::SUCCESS);
 
                 $query->where(function ($q) {
