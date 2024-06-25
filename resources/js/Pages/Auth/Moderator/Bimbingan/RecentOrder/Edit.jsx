@@ -14,10 +14,10 @@ import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 import toast from "react-hot-toast";
+import { isDisabledLocation } from "../utils";
 
 export default function Edit({
     auth,
-    tipe = "bimbingan",
     order,
     places,
     tutors,
@@ -40,6 +40,8 @@ export default function Edit({
         date: order?.course?.date ?? "",
         time: order?.course?.time ?? "",
     });
+
+    console.log(order)
 
     const GetLocationForm = () => {
         if (order.products?.total_meet == 1) {
@@ -119,6 +121,13 @@ export default function Edit({
         }
     };
 
+    function checkSelectInput() {
+        if (!formData.tutor) {
+            return true;
+        }
+        return false;
+    }
+
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -147,7 +156,8 @@ export default function Edit({
                             variant="success"
                             size="sm"
                             disabled={
-                               false // isDisabledLocation(progress, data)
+                                isDisabledLocation(order, formData) ||
+                                checkSelectInput()
                             }
                             onClick={() =>
                                 patch(
@@ -179,6 +189,7 @@ export default function Edit({
                     />,
                     document.body
                 )}
+
                 <div className="flex gap-[1.2vw]">
                     <FormSection title="User Information">
                         <GoalsTextInput

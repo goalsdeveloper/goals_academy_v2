@@ -23,21 +23,13 @@ import FileMediaPopup from "../components/FileMediaPopup";
 import { isDisabledLocation } from "../utils";
 
 export default function Edit({ auth, progress, tutors, places }) {
-    console.log(progress)
-
-    const product_category = progress.products.category.slug
-
-    const item = [
-        {
-            url: "https://www.google.com",
-            name: "File Name",
-        },
-    ];
+    const product_category = progress.products.category.slug;
 
     const [isShow, setIsShow] = React.useState({
         orderDetails: false,
         tutorDetails: false,
     });
+
     const { data, setData, post, transform } = useForm({
         add_on: progress.add_ons ?? undefined,
         username: progress.user.username,
@@ -135,6 +127,13 @@ export default function Edit({ auth, progress, tutors, places }) {
         }
     };
 
+    function checkSelectInput() {
+        if (!data.tutor) {
+            return true;
+        }
+        return false;
+    }
+
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -158,7 +157,11 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 })
                             }
                             // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
-                            files={product_category == "paket-pertemuan" ? progress.order.form_result.document : progress.course?.file_uploads}
+                            files={
+                                product_category == "paket-pertemuan"
+                                    ? progress?.order?.form_result?.document
+                                    : progress?.file_uploads
+                            }
                         />,
                         document.body
                     )}
@@ -180,7 +183,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                         <GoalsButton
                             variant="success"
                             size="sm"
-                            disabled={isDisabledLocation(progress, data)}
+                            disabled={isDisabledLocation(progress, data) || checkSelectInput()}
                             onClick={() => {
                                 transform((data) => ({
                                     _method: "put",
@@ -400,6 +403,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                     grow
                                     data={data.date}
                                     setData={(i) => setData("date", i)}
+                                    required
                                 />
                                 <GoalsTextInput
                                     label="Time"
@@ -407,6 +411,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                     grow
                                     data={data.time}
                                     setData={(i) => setData("time", i)}
+                                    required
                                 />
                             </div>
 
