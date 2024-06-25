@@ -12,6 +12,7 @@ import { useState } from "react";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 
 export default function Progress({ auth, bimbingan }) {
+    console.log(bimbingan);
     const { data, total, from, to, current_page, per_page, last_page, links } =
         bimbingan;
     const [pages, setPages] = useState([]);
@@ -48,9 +49,17 @@ export default function Progress({ auth, bimbingan }) {
                 size: 150,
             },
             {
+                accessorKey: "products.name",
+                header: "Products Name",
+                size: 200,
+            },
+            {
                 accessorKey: "topic.topic",
                 header: "Topik",
                 size: isMobile ? 200 : 100,
+                Cell: ({ cell }) => {
+                    return cell.getValue() ?? "-"
+                }
             },
             {
                 accessorFn: (row) => moment(row.date + " " + row.time),
@@ -58,11 +67,13 @@ export default function Progress({ auth, bimbingan }) {
                 size: isMobile ? 250 : 170,
                 Cell: ({ cell }) => {
                     return (
-                        <div className="flex justify-between">
-                            <span>{cell.getValue().format("DD/MM/YYYY")}</span>
-                            <span>{cell.getValue().format("HH:mm")}</span>
-                        </div>
-                    );
+                        cell.getValue()._isValid ? (
+                            <div className="flex justify-between">
+                                <span>{cell.getValue().format("DD/MM/YYYY")}</span>
+                                <span>{cell.getValue().format("HH:mm")}</span>
+                            </div>
+                        ) : "-"
+                    )
                 },
             },
             {

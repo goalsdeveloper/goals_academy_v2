@@ -157,6 +157,13 @@ export default function Update({ auth, order, files }) {
                     >
                         <GoalsTextInput
                             disabled
+                            label="Products Name"
+                            placeholder="Products Name"
+                            data={order.products.name}
+                            labelClassName="font-medium"
+                        />
+                        <GoalsTextInput
+                            disabled
                             label="Username"
                             placeholder="Username"
                             data={formData.username}
