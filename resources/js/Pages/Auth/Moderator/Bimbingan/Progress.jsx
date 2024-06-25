@@ -188,6 +188,7 @@ export default function Progress({ auth, data: recentOrder }) {
         rowCount: per_page,
         renderRowActions: ({ row }) => {
             const { course } = row.original;
+            console.log(course);
 
             if (course?.child.length > 1)
                 return (
@@ -199,11 +200,13 @@ export default function Progress({ auth, data: recentOrder }) {
                 <div className="flex items-center gap-[.8vw]">
                     <button
                         onClick={() => {
-                            setIsShow({ ...isShow, duration: true });
-                            setPayloadData({ ...payloadData, id: course.id });
+                            if (!course.is_moderator) {
+                                setIsShow({ ...isShow, duration: true });
+                                setPayloadData({ ...payloadData, id: course.id });
+                            }
                         }}
                     >
-                        <FiThumbsUp className="text-[1.2vw] text-success-50" />
+                        <FiThumbsUp className={"text-[1.2vw] " + (!course.is_moderator ? `cursor-pointer text-secondary` : `cursor-default text-success-50`)} />
                     </button>
                     <Link
                         href={route("moderator.bimbingan.progress.edit", {
@@ -544,7 +547,7 @@ export const DropdownDetailPanel = ({
                                                 <button
                                                     disabled={status == "Selesai"}
                                                     onClick={() => {
-                                                        if(item.ongoing == 'selesai') {
+                                                        if(!item.is_moderator) {
                                                             return;
                                                         }
                                                         setIsShow({
@@ -557,7 +560,7 @@ export const DropdownDetailPanel = ({
                                                         });
                                                     }}
                                                 >
-                                                    <FiThumbsUp className={"text-[1.2vw] " + (item.ongoing == 'selesai' ? `cursor-default text-secondary` : `text-success-50`)} />
+                                                    <FiThumbsUp className={"text-[1.2vw] " + (!item.is_moderator ? `cursor-pointer text-secondary` : `cursor-default text-success-50`)} />
                                                 </button>
                                                 <Link
                                                     href={route(

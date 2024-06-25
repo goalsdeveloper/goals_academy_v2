@@ -10,19 +10,13 @@ import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
 import { router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import toast from "react-hot-toast";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
-import toast from "react-hot-toast";
+import { canSubmitFormCheckerRecentOrder } from "../utils";
 
-export default function Edit({
-    auth,
-    tipe = "bimbingan",
-    order,
-    places,
-    tutors,
-}) {
-    console.log(order);
+export default function Edit({ auth, order, places, tutors }) {
     const [isShow, setIsShow] = useState(false);
     const [showPlaces, setShowPlaces] = useState(false);
     const {
@@ -147,7 +141,7 @@ export default function Edit({
                             variant="success"
                             size="sm"
                             disabled={
-                               false // isDisabledLocation(progress, data)
+                                canSubmitFormCheckerRecentOrder(order, formData)
                             }
                             onClick={() =>
                                 patch(
@@ -179,6 +173,7 @@ export default function Edit({
                     />,
                     document.body
                 )}
+
                 <div className="flex gap-[1.2vw]">
                     <FormSection title="User Information">
                         <GoalsTextInput
