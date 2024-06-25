@@ -40,9 +40,9 @@ export default function Edit({ auth, progress, tutors, places }) {
         topic: progress.topic?.topic ?? "",
         session: progress.session ?? "",
         date: progress.date ?? "",
-        time: progress.time ?? "",
+        time: progress.time.substring(0, 5) ?? "",
         location: progress.location ?? "",
-        place: progress.place?.place ?? "",
+        place: `${progress.place?.place} | ${progress.place?.city?.city}` ?? "",
         city: progress.place?.city.city ?? "",
         number: progress.user.profile.phone_number ?? "",
         tutor: tutors?.find((item) => item.id == progress.tutor_id),
@@ -51,6 +51,7 @@ export default function Edit({ auth, progress, tutors, places }) {
         note: progress.note,
         is_moderator: progress.is_moderator,
         record: "",
+        place_id: progress.place?.id ?? "",
         tutor_id: progress.tutor_id,
     });
 
@@ -277,11 +278,11 @@ export default function Edit({ auth, progress, tutors, places }) {
                                             <SelectInputItem
                                                 key={item.id}
                                                 onClick={() => {
-                                                    setData("tutor", item);
-                                                    // setData(
-                                                    //     "tutor_id",
-                                                    //     item.id
-                                                    // );
+                                                    setData({
+                                                        ...data,
+                                                        tutor: item,
+                                                        tutor_id: item.id
+                                                    });
                                                 }}
                                             >
                                                 {item.name}
