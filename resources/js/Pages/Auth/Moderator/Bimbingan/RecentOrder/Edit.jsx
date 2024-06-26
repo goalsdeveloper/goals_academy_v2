@@ -207,9 +207,7 @@ export default function Edit({ auth, order, places, tutors }) {
                                 }
                             />
                             <a
-                                href={`/wa.me/${
-                                    order.user.profile.phone_number ?? ""
-                                }`}
+                                href={`https://wa.me/62${order.user.profile.phone_number ? order.user.profile.phone_number.substring(1) : ""}`}
                                 target="_blank"
                             >
                                 <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
@@ -240,7 +238,7 @@ export default function Edit({ auth, order, places, tutors }) {
                                 ))}
                             </SelectInput>
                             <a
-                                href={`/wa.me/${formData.tutor_phone}`}
+                                href={`https://wa.me/62${formData.tutor_phone ? formData.tutor_phone.substring(1) : ""}`}
                                 target="_blank"
                             >
                                 <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
@@ -277,7 +275,7 @@ export default function Edit({ auth, order, places, tutors }) {
                                 "Topic belum diset"
                             }
                         />
-                        {order.products.total_meet == 1 && (
+                        {(order.products.total_meet == 1 & order.products.contact_type != "other") == true && (
                             <>
                                 {GetLocationForm()}
                                 <div className="flex gap-[.4vw]">
