@@ -47,7 +47,8 @@ const Update = ({ auth, categories, topics, addons, products }) => {
         transform((data) => ({
             _method: "put",
             name: data.name,
-            product_image: data.product_image.file ?? undefined,
+            product_image: da
+            ta.product_image.file ?? undefined,
             slug: data.slug,
             category_id: Number(data.category_id.id),
             description: data.description,
