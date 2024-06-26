@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Notifications\GeneralCourseNotification;
 use App\Notifications\MidtransNotifications\ExpireNotification;
 use App\Notifications\MidtransNotifications\SuccessNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -74,12 +75,19 @@ class HandleMidtransCallbackController extends Controller
                     ];
                     $session = 1;
                     $form_result = $order->form_result;
-                    $parentCourse = Course::create(array_merge($dataCourse, [
-                        'session' => $session, 'ongoing' => CourseStatusEnum::WAITING,
+                    $dataParentCourse = [
+                        'session' => $session,
+                        'ongoing' => CourseStatusEnum::WAITING,
                         'date' => $form_result['schedule'] ?? null,
                         'place_id' => $form_result['place_id'] ?? null,
                         'topic_id' => $form_result['topic'] ?? null,
-                    ]));
+                    ];
+                    if($order->products->category->name == "Desk Review") {
+                        $now = Carbon::now();
+                        $dataParentCourse['date'] = $now->toDateString();
+                        $dataParentCourse['time'] = $now->toTimeString();
+                    }
+                    $parentCourse = Course::create(array_merge($dataCourse, $dataParentCourse));
                     $dataCourse['parent_id'] = $parentCourse->id;
                     if (array_key_exists('add_on', $form_result) && $form_result['add_on'] != null) {
                         foreach ($form_result['add_on'] as $key => $value) {
