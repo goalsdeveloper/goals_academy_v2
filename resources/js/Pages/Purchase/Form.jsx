@@ -37,7 +37,7 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         place: "",
         document: [],
         topic: "",
-        init_price: dataProduct.price,
+        init_price: parseFloat(dataProduct.price) - parseFloat(dataProduct.promo_price || 0),
         promo: "",
         discount: 0,
         purchase_method: "",
@@ -45,7 +45,7 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         product_id: dataProduct.id,
         add_on: [],
         add_on_price: 0,
-        total_price: dataProduct.price,
+        total_price: parseFloat(dataProduct.price) - parseFloat(dataProduct.promo_price || 0),
     });
 
     // Code to input temp form data
@@ -55,7 +55,7 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         place: "",
         document: "",
         topic: "",
-        init_price: dataProduct.price,
+        init_price: parseFloat(dataProduct.price) - parseFloat(dataProduct.promo_price || 0),
         promo: "",
         discount: 0,
         purchase_method: "",
@@ -257,7 +257,7 @@ function MainCard({
                 <div className="flex flex-col gap-[4vw] md:gap-0">
                     <div className="md:hidden flex flex-col gap-[4vw]">
                         <Link href="/produk" className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins"><FiChevronLeft className="text-[5vw]" /> Kembali</Link>
-                        <img className="w-full h-[60vw]" src={dataProduct.product_image} alt="" />
+                        <img className="w-full h-[60vw]" src={'/storage/'+ dataProduct.product_image} alt="" />
                     </div>
                     <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw]">
                         <h3 className="w-full text-secondary font-semibold text-[5.5vw] md:text-[1.8vw]">

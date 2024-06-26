@@ -67,11 +67,10 @@ function RiwayatItem({ data }) {
                                     {data.products.name}
                                 </h2>
                                 <p className="text-neutral-60">
-                                    Dibayar : Selasa, 24 Agustus 2023
+                                    Dibayar : {target.format("dddd, DD MMMM YYYY")}
                                 </p>
                                 <p className="text-neutral-60">
-                                    Metode Pembayaran -{" "}
-                                    {data.payment_method.name}
+                                    Metode Pembayaran : {data.payment_method.name}
                                 </p>
                             </div>
 

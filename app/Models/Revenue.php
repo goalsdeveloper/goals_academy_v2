@@ -28,4 +28,15 @@ class Revenue extends Model
     {
         return $this->belongsTo(RevenueType::class);
     }
+
+    public static function calculateAmount($contact_type, Course $course) {
+        $amount = 0;
+        $addons_price = $course->addOns->sum('price');
+        if($contact_type != 'other') {
+            $amount = floor(((($course->products->price / $course->products->total_meet) + $addons_price) * $course->tutor->revenue_type->type) / 100);
+        } else {
+            $amount = floor((($course->products->price + $addons_price) * $course->tutor->revenue_type->type) / 100);
+        }
+        return $amount;
+    }
 }

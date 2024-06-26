@@ -16,9 +16,14 @@ class NotificationController extends Controller
         $notif = $user->notifications()->where('id', $id)->first();
         if ($notif) {
             $notif->markAsRead();
+            if (!isset($notif->data['link'])) {
+                return response()->json([
+                    'message' => 'Notifikasi tidak ditemukan'
+                ], 404);
+            }
             return response()->json([
-                'message' => 'Dibaca',
-            ]);
+                'link' => $notif->data['link']
+            ], 200);
         }
         return response()->json([
             'message' => 'Notif Tidak Ditemukan',

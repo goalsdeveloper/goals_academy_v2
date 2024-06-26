@@ -66,7 +66,7 @@ const View = ({ tipe = "bimbingan", detailOrder }) => {
                         data={detailOrder.user?.profile?.phone_number ?? ''}
                         placeholder="Belum Diset"
                     />
-                    <a href="/wa.me/" target="_blank">
+                    <a href={`https://wa.me/62${detailOrder.user?.profile?.phone_number.slice(1) ?? ''}`} target="_blank">
                         <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />
                     </a>
                 </div>
@@ -78,7 +78,7 @@ const View = ({ tipe = "bimbingan", detailOrder }) => {
                         data={detailOrder.course?.tutor?.profile?.phone_number ?? ''}
                     />
                     <a
-                        href={`/wa.me/${detailOrder.course?.tutor?.profile?.phone_number}`}
+                        href={`https://wa.me/62${detailOrder.course?.tutor?.profile?.phone_number.slice(1) ?? ''}`}
                         target="_blank"
                     >
                         <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[5px]" />

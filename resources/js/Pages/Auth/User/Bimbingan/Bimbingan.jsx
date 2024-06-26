@@ -14,7 +14,7 @@ import { FiChevronRight } from "react-icons/fi";
 import ProductListFilter from "../ProductListFilter";
 import figure from "/resources/img/figure/8.svg";
 import { ProductFilter } from "../constants";
-import { statusClassMap } from "../RiwayatTransaksi/components/TransactionStatusBadge";
+import { getStatusClass } from "../RiwayatTransaksi/components/TransactionStatusBadge";
 import { useMediaQuery } from "react-responsive";
 
 export default function Index({ auth, orderBimbingan }) {
@@ -60,6 +60,8 @@ function BimbinganItem({ data }) {
         data.ongoing.charAt(0).toUpperCase() +
         data.ongoing.slice(1);
 
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
     return (
         <ProductItemCardLayout
             isLink
@@ -79,7 +81,7 @@ function BimbinganItem({ data }) {
                         />
                         <GoalsBadge
                             title={courseStatus}
-                            className={`hidden md:block ${statusClassMap[courseStatus]}`}
+                            className={`${getStatusClass(courseStatus)}`}
                         />
                     </ProductItemCardHeader>
                     <ProductItemCardContent>

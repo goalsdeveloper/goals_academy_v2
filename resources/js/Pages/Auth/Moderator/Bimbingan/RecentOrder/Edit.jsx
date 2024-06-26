@@ -10,17 +10,13 @@ import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
 import { router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import toast from "react-hot-toast";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
+import { canSubmitFormCheckerRecentOrder } from "../utils";
 
-export default function Edit({
-    auth,
-    tipe = "bimbingan",
-    order,
-    places,
-    tutors,
-}) {
+export default function Edit({ auth, order, places, tutors }) {
     const [isShow, setIsShow] = useState(false);
     const [showPlaces, setShowPlaces] = useState(false);
     const {
@@ -38,8 +34,6 @@ export default function Edit({
         date: order?.course?.date ?? "",
         time: order?.course?.time ?? "",
     });
-
-    console.log(order)
 
     const GetLocationForm = () => {
         if (order.products?.total_meet == 1) {
@@ -147,31 +141,7 @@ export default function Edit({
                             variant="success"
                             size="sm"
                             disabled={
-                                (order.products?.total_meet === 1 &&
-                                    order.products?.contact_type === "online" &&
-                                    (!formData.tutor_id ||
-                                        !formData.location ||
-                                        !formData.date ||
-                                        !formData.time)) ||
-                                (order.products?.total_meet === 1 &&
-                                    order.products?.contact_type ===
-                                        "offline" &&
-                                    (!formData.tutor_id ||
-                                        !formData.place_id ||
-                                        !formData.date ||
-                                        !formData.time)) ||
-                                (order.products?.total_meet === 1 &&
-                                    order.products?.contact_type === "hybrid" &&
-                                    (!formData.tutor_id ||
-                                        (!formData.place_id &&
-                                            !formData.location) ||
-                                        !formData.date ||
-                                        !formData.time)) ||
-                                (order.products?.total_meet === 1 &&
-                                    order.products?.contact_type === "other" &&
-                                    !formData.tutor_id) ||
-                                (order.products?.total_meet > 1 &&
-                                    !formData.tutor_id)
+                                canSubmitFormCheckerRecentOrder(order, formData)
                             }
                             onClick={() =>
                                 patch(
@@ -180,6 +150,12 @@ export default function Edit({
                                     }),
                                     {
                                         data: formData,
+                                        onSuccess: () =>
+                                            toast.success(
+                                                "Order berhasil diupdate"
+                                            ),
+                                        onError: () =>
+                                            toast.error("Order gagal diupdate"),
                                     }
                                 )
                             }
@@ -193,10 +169,11 @@ export default function Edit({
                     <FileMediaPopup
                         show={isShow}
                         setShow={() => setIsShow(!isShow)}
-                        items={order.file_uploads}
+                        files={order.course?.file_uploads}
                     />,
                     document.body
                 )}
+
                 <div className="flex gap-[1.2vw]">
                     <FormSection title="User Information">
                         <GoalsTextInput

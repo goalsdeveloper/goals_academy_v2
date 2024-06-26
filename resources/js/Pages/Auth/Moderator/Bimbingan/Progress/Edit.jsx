@@ -20,19 +20,16 @@ import { createPortal } from "react-dom";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
+import { canSubmitFormCheckerProgress } from "../utils";
 
 export default function Edit({ auth, progress, tutors, places }) {
-    const item = [
-        {
-            url: "https://www.google.com",
-            name: "File Name",
-        },
-    ];
+    const product_category = progress.products.category.slug;
 
     const [isShow, setIsShow] = React.useState({
         orderDetails: false,
         tutorDetails: false,
     });
+
     const { data, setData, post, transform } = useForm({
         add_on: progress.add_ons ?? undefined,
         username: progress.user.username,
@@ -43,9 +40,9 @@ export default function Edit({ auth, progress, tutors, places }) {
         topic: progress.topic?.topic ?? "",
         session: progress.session ?? "",
         date: progress.date ?? "",
-        time: progress.time ?? "",
+        time: progress.time.substring(0, 5) ?? "",
         location: progress.location ?? "",
-        place: progress.place?.place ?? "",
+        place: `${progress.place?.place} | ${progress.place?.city?.city}` ?? "",
         city: progress.place?.city.city ?? "",
         number: progress.user.profile.phone_number ?? "",
         tutor: tutors?.find((item) => item.id == progress.tutor_id),
@@ -54,6 +51,7 @@ export default function Edit({ auth, progress, tutors, places }) {
         note: progress.note,
         is_moderator: progress.is_moderator,
         record: "",
+        place_id: progress.place?.id ?? "",
         tutor_id: progress.tutor_id,
     });
 
@@ -130,6 +128,13 @@ export default function Edit({ auth, progress, tutors, places }) {
         }
     };
 
+    function checkSelectInput() {
+        if (!data.tutor) {
+            return true;
+        }
+        return false;
+    }
+
     return (
         <DashboardLayout
             title="Bimbingan"
@@ -153,7 +158,11 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 })
                             }
                             // files={isShow.orderDetails ? progress.order.files : progress.tutor.files}
-                            files={progress.file_uploads}
+                            files={
+                                product_category == "paket-pertemuan"
+                                    ? progress?.order?.form_result?.document
+                                    : progress?.file_uploads
+                            }
                         />,
                         document.body
                     )}
@@ -175,58 +184,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                         <GoalsButton
                             variant="success"
                             size="sm"
-                            disabled={
-                                (progress.products?.total_meet === 1 &&
-                                    progress.products?.contact_type ===
-                                        "online" &&
-                                    (!data.tutor_id ||
-                                        !data.location ||
-                                        !data.date ||
-                                        !data.time)) ||
-                                (progress.products?.total_meet === 1 &&
-                                    progress.products?.contact_type ===
-                                        "offline" &&
-                                    (!data.tutor_id ||
-                                        !data.place_id ||
-                                        !data.date ||
-                                        !data.time)) ||
-                                (progress.products?.total_meet === 1 &&
-                                    progress.products?.contact_type ===
-                                        "hybrid" &&
-                                    (!data.tutor_id ||
-                                        (!data.place_id && !data.location) ||
-                                        !data.date ||
-                                        !data.time)) ||
-                                (progress.products?.total_meet === 1 &&
-                                    progress.products?.contact_type ===
-                                        "other" &&
-                                    !data.tutor_id) ||
-                                (progress.products?.total_meet > 1 &&
-                                    progress.products?.contact_type ===
-                                        "online" &&
-                                    (!data.tutor_id ||
-                                        !data.location ||
-                                        !data.date ||
-                                        !data.time)) ||
-                                (progress.products?.total_meet > 1 &&
-                                    progress.products?.contact_type ===
-                                        "offline" &&
-                                    (!data.tutor_id ||
-                                        !data.place_id ||
-                                        !data.date ||
-                                        !data.time)) ||
-                                (progress.products?.total_meet > 1 &&
-                                    progress.products?.contact_type ===
-                                        "hybrid" &&
-                                    (!data.tutor_id ||
-                                        (!data.place_id && !data.location) ||
-                                        !data.date ||
-                                        !data.time)) ||
-                                (progress.products?.total_meet > 1 &&
-                                    progress.products?.contact_type ===
-                                        "other" &&
-                                    !data.tutor_id)
-                            }
+                            disabled={canSubmitFormCheckerProgress(progress, data) || checkSelectInput()}
                             onClick={() => {
                                 transform((data) => ({
                                     _method: "put",
@@ -320,11 +278,11 @@ export default function Edit({ auth, progress, tutors, places }) {
                                             <SelectInputItem
                                                 key={item.id}
                                                 onClick={() => {
-                                                    setData("tutor", item);
-                                                    // setData(
-                                                    //     "tutor_id",
-                                                    //     item.id
-                                                    // );
+                                                    setData({
+                                                        ...data,
+                                                        tutor: item,
+                                                        tutor_id: item.id
+                                                    });
                                                 }}
                                             >
                                                 {item.name}
@@ -446,6 +404,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                     grow
                                     data={data.date}
                                     setData={(i) => setData("date", i)}
+                                    required
                                 />
                                 <GoalsTextInput
                                     label="Time"
@@ -453,6 +412,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                     grow
                                     data={data.time}
                                     setData={(i) => setData("time", i)}
+                                    required
                                 />
                             </div>
 
