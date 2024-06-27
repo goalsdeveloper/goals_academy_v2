@@ -187,11 +187,7 @@ export default function View({ auth, progress, tutors }) {
                                 <SelectInput
                                     label="Tutor"
                                     disabled
-                                    value={
-                                        (tutors ?? [])?.find(
-                                            (item) => item.id == data.tutor.id
-                                        ).name
-                                    }
+                                    value={data.tutor?.name}
                                     className="w-full"
                                 >
                                     {(tutors ?? [])?.map((item, index) => {
