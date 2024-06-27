@@ -4,7 +4,9 @@ export function canSubmitFormCheckerProgress(progress, data) {
     const { products } = progress || {};
     const { contact_type } = products || {};
     const bimbingan_sekali_cat_id = 2;
+    const desk_review_cat_id = 6;
     const cat_id = products.category_id;
+    console.log(cat_id);
 
     const isOnline = contact_type === "online";
     const isOffline = contact_type === "offline";
@@ -13,8 +15,8 @@ export function canSubmitFormCheckerProgress(progress, data) {
 
     let commonChecks = !data.tutor_id;
 
-    if (cat_id === bimbingan_sekali_cat_id) {
-        commonChecks = !data.date || !data.time;
+    if (cat_id == bimbingan_sekali_cat_id) {
+        commonChecks = commonChecks || !data.date || !data.time;
     }
 
     if (isOnline && (commonChecks || !data.location)) return true;
@@ -33,8 +35,8 @@ export function canSubmitFormCheckerRecentOrder(order, data) {
 
     let commonChecks = !data.tutor_id;
 
-    if (cat_id === bimbingan_sekali_cat_id) {
-        commonChecks = !data.date || !data.time;
+    if (cat_id == bimbingan_sekali_cat_id) {
+        commonChecks = commonChecks || !data.date || !data.time;
     }
 
     if (commonChecks) return true;
