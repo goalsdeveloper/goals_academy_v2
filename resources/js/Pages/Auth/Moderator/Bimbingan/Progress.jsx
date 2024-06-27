@@ -188,7 +188,6 @@ export default function Progress({ auth, data: recentOrder }) {
         rowCount: per_page,
         renderRowActions: ({ row }) => {
             const { course } = row.original;
-            console.log(course);
 
             if (course?.child.length > 1)
                 return (
@@ -445,7 +444,7 @@ export const DropdownDetailPanel = ({
     setPayloadData,
 }) => {
     const { course } = row.original;
-
+    
     if (course && course.child && course.child.length > 0) {
         const firstSession = {
             id: course.id,
@@ -453,6 +452,7 @@ export const DropdownDetailPanel = ({
             time: course.time,
             ongoing: course.ongoing,
             is_tutor: course.is_tutor,
+            is_moderator: course.is_moderator,
             is_user: course.is_user,
             order_id: course.order_id,
             session: course.session,
@@ -548,16 +548,9 @@ export const DropdownDetailPanel = ({
                                                     disabled={status == "Selesai"}
                                                     onClick={() => {
                                                         if(!item.is_moderator) {
-                                                            return;
+                                                            setIsShow({...isShow, duration: true,});
+                                                            setPayloadData({...payloadData, id: item.id,});
                                                         }
-                                                        setIsShow({
-                                                            ...isShow,
-                                                            duration: true,
-                                                        });
-                                                        setPayloadData({
-                                                            ...payloadData,
-                                                            id: item.id,
-                                                        });
                                                     }}
                                                 >
                                                     <FiThumbsUp className={"text-[1.2vw] " + (!item.is_moderator ? `cursor-pointer text-secondary` : `cursor-default text-success-50`)} />

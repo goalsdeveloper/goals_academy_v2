@@ -227,9 +227,9 @@ export default function Edit({ auth, progress, tutors, places }) {
                     <div className="flex flex-col gap-[1.2vw]">
                         <FormSection
                             title="User Information"
-                            titleAction={
-                                <SliderButton label="Moderator confirmation" />
-                            }
+                            // titleAction={
+                            //     <SliderButton label="Moderator confirmation" />
+                            // }
                             className="h-fit"
                         >
                             <GoalsTextInput
