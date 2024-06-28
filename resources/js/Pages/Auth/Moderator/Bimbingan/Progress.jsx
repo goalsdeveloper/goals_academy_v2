@@ -30,6 +30,7 @@ import DateTimeComp from "./components/DateTimeComp";
 import SelectInput from "@mui/material/Select/SelectInput";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 import { useRef } from "react";
+import moment from "moment";
 
 export default function Progress({ auth, data: recentOrder }) {
     const timeoutRef = useRef(null);
@@ -137,7 +138,7 @@ export default function Progress({ auth, data: recentOrder }) {
                 header: "User Confirm",
                 enableSorting: false,
                 Cell: ({ cell }) => {
-                    const course = cell.row.original.course;
+                    const course = cell.row.original?.course;
                     if (course?.is_user == null || course?.child.length > 1) {
                         return;
                     } else
@@ -188,6 +189,8 @@ export default function Progress({ auth, data: recentOrder }) {
         rowCount: per_page,
         renderRowActions: ({ row }) => {
             const { course } = row.original;
+            const courseTime = moment(course.date + " " + course.time);
+            const isPassed = moment().diff(courseTime, "s") > 0;
 
             if (course?.child.length > 1)
                 return (
@@ -199,13 +202,14 @@ export default function Progress({ auth, data: recentOrder }) {
                 <div className="flex items-center gap-[.8vw]">
                     <button
                         onClick={() => {
-                            if (!course.is_moderator) {
+                            if (!course.is_moderator && (courseTime._isValid && isPassed)) {
                                 setIsShow({ ...isShow, duration: true });
                                 setPayloadData({ ...payloadData, id: course.id });
                             }
                         }}
                     >
-                        <FiThumbsUp className={"text-[1.2vw] " + (!course.is_moderator ? `cursor-pointer text-secondary` : `cursor-default text-success-50`)} />
+                        <FiThumbsUp className={"text-[1.2vw] " + (course.is_moderator ? `cursor-default text-success-50` : (courseTime._isValid && isPassed ? `cursor-pointer text-secondary` : `cursor-default text-neutral-60`))}
+                        />
                     </button>
                     <Link
                         href={route("moderator.bimbingan.progress.edit", {
@@ -444,7 +448,7 @@ export const DropdownDetailPanel = ({
     setPayloadData,
 }) => {
     const { course } = row.original;
-    
+
     if (course && course.child && course.child.length > 0) {
         const firstSession = {
             id: course.id,
@@ -466,6 +470,8 @@ export const DropdownDetailPanel = ({
             <Table>
                 <TableBody>
                     {course.child.map((item, index) => {
+                        const courseTime = moment(item.date + " " + item.time);
+                        const isPassed = moment().diff(courseTime, "s") > 0;
                         const status = upperCaseFirstLetter(item.ongoing);
                         const cellData = {
                             session: {
@@ -547,13 +553,13 @@ export const DropdownDetailPanel = ({
                                                 <button
                                                     disabled={status == "Selesai"}
                                                     onClick={() => {
-                                                        if(!item.is_moderator) {
+                                                        if(!item.is_moderator && (courseTime._isValid && isPassed)) {
                                                             setIsShow({...isShow, duration: true,});
                                                             setPayloadData({...payloadData, id: item.id,});
                                                         }
                                                     }}
                                                 >
-                                                    <FiThumbsUp className={"text-[1.2vw] " + (!item.is_moderator ? `cursor-pointer text-secondary` : `cursor-default text-success-50`)} />
+                                                    <FiThumbsUp className={"text-[1.2vw] " + (item.is_moderator ? `cursor-default text-success-50` : (courseTime._isValid && isPassed ? `cursor-pointer text-secondary` : `cursor-default text-neutral-60`))} />
                                                 </button>
                                                 <Link
                                                     href={route(
