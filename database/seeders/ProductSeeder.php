@@ -202,7 +202,7 @@ class ProductSeeder extends Seeder
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'facilities' => [['icon' => 'icon-text', 'text' => 'text-description']],
-            'price' => 1488000,
+            'price' => 148800,
             'product_image' => 'resources/img/program/dibimbing-online-45.png',
             'product_type_id' => 1,
             'contact_type' => 'other',
