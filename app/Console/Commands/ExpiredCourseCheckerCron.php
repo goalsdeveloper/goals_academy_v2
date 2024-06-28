@@ -46,12 +46,13 @@ class ExpiredCourseCheckerCron extends Command
                 $tanggal_beli = Carbon::parse($course->order->created_at)->addDays($active_periode);
                 if ($tanggal_beli < $day_now) {
                     $course->is_moderator = true;
-                    if ($course->products->total_meet == 1
-                    ) {
+                    // if (
+                    //     $course->products->total_meet == 1
+                    // ) {
                         $course->ongoing = "selesai";
-                    }
+                    // }
                     $course->update();
-                    $course->child()->update(["is_moderator", true]);
+                    $course->child()->update(["is_moderator" => true]);
                 };
             }
             Log::info('mantap');

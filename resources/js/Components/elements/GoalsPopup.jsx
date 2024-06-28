@@ -39,7 +39,9 @@ const GoalsPopup = ({
                         : "md:top-full -bottom-full md:scale-0"
                 } fixed md:inset-0 mx-auto flex flex-col gap-[2vw] w-full md:w-[30vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-[100] md:mt-[8vh] ${className}`}
             >
-                <h2 className="text-[1.25vw] text-center">{header}</h2>
+                {header && (
+                    <h2 className="text-[1.25vw] text-center">{header}</h2>
+                )}
                 {children}
             </div>
         </>
