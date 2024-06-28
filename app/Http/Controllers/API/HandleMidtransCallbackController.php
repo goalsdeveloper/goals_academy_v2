@@ -60,6 +60,7 @@ class HandleMidtransCallbackController extends Controller
                 'message' => 'Invalid Order / Order not found!',
             ], 400);
         }
+        $status = OrderEnum::PENDING->value;
 
         switch ($transactionStatus) {
             case 'settlement':
