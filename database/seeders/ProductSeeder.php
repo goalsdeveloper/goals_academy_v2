@@ -27,7 +27,7 @@ class ProductSeeder extends Seeder
             'contact_type' => 'online',
             'duration' => 60,
             'total_meet' => 1,
-            'active_period' => 1,
+            'active_period' => 99,
             'number_list' => 1,
             'form_config' => [
                 'schedule' => 1,
@@ -48,7 +48,7 @@ class ProductSeeder extends Seeder
             'contact_type' => 'offline',
             'duration' => 75,
             'total_meet' => 1,
-            'active_period' => 1,
+            'active_period' => 99,
             'number_list' => 2,
             'form_config' => [
                 'schedule' => 1,
@@ -71,7 +71,7 @@ class ProductSeeder extends Seeder
             'contact_type' => 'online',
             'duration' => 60,
             'total_meet' => 1,
-            'active_period' => 1,
+            'active_period' => 99,
             'number_list' => 3,
             'form_config' => [
                 'schedule' => 1,
