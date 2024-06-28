@@ -98,6 +98,10 @@ export default function Progress({ auth, data: recentOrder }) {
                 Cell: ({ renderedCellValue, cell }) => {
                     const course = cell.row.original.course;
 
+                    if (course.child.length > 0) {
+                        return;
+                    }
+
                     if (course?.date == null && course?.time == null)
                         return "-";
                     return (
@@ -157,13 +161,17 @@ export default function Progress({ auth, data: recentOrder }) {
                 accessorKey: "status",
                 header: "Status",
                 Cell: ({ cell }) => {
-                    if (cell.row.original.course?.ongoing == null) return;
+                    const course = cell.row.original.course;
+                    if (course?.ongoing == null) return;
+
+                    // const status = upperCaseFirstLetter(course?.ongoing);
+
                     const status =
-                        cell.row.original.course?.child.find(
+                        course?.child.find(
                             (x) => x.ongoing == "berjalan"
-                        ) == null || cell.row.original.course?.child.length < 1
+                        ) == null || course?.child.length < 1
                             ? upperCaseFirstLetter(
-                                  cell.row.original.course?.ongoing
+                                  course?.ongoing
                               )
                             : "Berjalan";
 
@@ -192,12 +200,30 @@ export default function Progress({ auth, data: recentOrder }) {
             const courseTime = moment(course.date + " " + course.time);
             const isPassed = moment().diff(courseTime, "s") > 0;
 
-            if (course?.child.length > 1)
-                return (
-                    <div className="text-nowrap">
-                        <span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
+            if (course?.child.length > 1) {
+                // if (course.ongoing == "selesai") {
+                //     return (
+                //         <div className="text-nowrap">
+                //             <button
+                //                 onClick={() => {
+                //                     if (course.ongoing == "selesai") {
+                //                         setIsShow({ ...isShow, duration: true });
+                //                         setPayloadData({ ...payloadData, id: course.id });
+                //                     }
+                //                 }}
+                //             >
+                //                 <FiThumbsUp className="text-[1.2vw] cursor-pointer text-secondary" />
+                //             </button>
+                //             &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                //         </div>
+                //     );
+                // } else {
+                    return <div className="text-nowrap">
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                     </div>
-                );
+                // }
+            }
+
             return (
                 <div className="flex items-center gap-[.8vw]">
                     <button
@@ -473,6 +499,7 @@ export const DropdownDetailPanel = ({
                         const courseTime = moment(item.date + " " + item.time);
                         const isPassed = moment().diff(courseTime, "s") > 0;
                         const status = upperCaseFirstLetter(item.ongoing);
+                        // const status = (item.is_moderator && item.is_tutor) ? "Selesai" : "Berjalan";
                         const cellData = {
                             session: {
                                 label: (
