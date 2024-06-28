@@ -175,7 +175,7 @@ export const AturJadwalPopup = ({
         <GoalsPopup
             show={show}
             setShow={setShow}
-            className="max-h-screen overflow-y-auto space-y-[2vw] md:space-y-0 scrollbar-hidden"
+            className="max-h-screen overflow-visible space-y-[2vw] md:space-y-0 scrollbar-hidden"
         >
             <div className="flex justify-between text-black">
                 <p className="text-[4.6vw] md:text-[1.2vw] font-semibold">

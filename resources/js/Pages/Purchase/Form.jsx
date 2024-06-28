@@ -1047,7 +1047,6 @@ function SummaryCard({
 
 const LengkapiProfilAlert = ({ userProfile, setUserProfile, data, setData }) => {
     const [showLengkapiProfilForm, setShowLengkapiProfilForm] = useState(false);
-
     return (
         <div className="hidden md:block">
             <LengkapiProfilForm

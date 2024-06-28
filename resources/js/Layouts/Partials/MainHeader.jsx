@@ -885,7 +885,7 @@ function NotificationItem({ item }) {
                             className="w-[8vw] h-[8vw] md:w-[3vw] md:h-[3vw]"
                             alt={item.data.payment_method}
                         />
-                        <div>
+                        <div className="text-left">
                             <span className="text-light-grey !text-[3vw] md:!text-[.75vw] font-normal py-[.5vw] md:py-[.1vw]">
                                 {moment(item.created_at).fromNow()}
                             </span>
