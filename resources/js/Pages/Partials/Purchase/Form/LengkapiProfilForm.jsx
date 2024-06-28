@@ -43,10 +43,7 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                 .then(response => response.json())
                 .then(response => {
                     if (response.message == 'success') {
-                        toast('Profil berhasil dilengkapi!', {
-                            position: 'top-center',
-                            icon: '✅'
-                        })
+                        toast.success('Profil berhasil dilengkapi!', { position: 'top-center' })
                         setUserProfile(data)
                         setIsLoading(false)
                     }
@@ -80,7 +77,6 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                 >
                     <div className="space-y-[3.2vw] md:space-y-[.8vw]">
                         <GoalsTextInput
-                            className="capitalize"
                             type="number"
                             label="Nomor Telepon"
                             placeholder="Masukkan nomor telepon disini"
@@ -92,7 +88,6 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                             onChange={(e) => setData("phone_number", e.target.value)}
                         />
                         <GoalsTextInput
-                            className="capitalize"
                             type="text"
                             label="Universitas"
                             placeholder="Masukkan universitas disini"
@@ -104,7 +99,6 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                             onChange={(e) => setData("university", e.target.value)}
                         />
                         <GoalsTextInput
-                            className="capitalize"
                             type="text"
                             label="Fakultas"
                             placeholder="Masukkan fakultas disini"
@@ -116,7 +110,6 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                             onChange={(e) => setData("faculty", e.target.value)}
                         />
                         <GoalsTextInput
-                            className="capitalize"
                             type="text"
                             label="Jurusan"
                             placeholder="Masukkan jurusan disini"

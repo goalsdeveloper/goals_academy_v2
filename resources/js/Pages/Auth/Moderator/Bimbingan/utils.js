@@ -13,8 +13,8 @@ export function canSubmitFormCheckerProgress(progress, data) {
 
     let commonChecks = !data.tutor_id;
 
-    if (cat_id === bimbingan_sekali_cat_id) {
-        commonChecks = !data.date || !data.time;
+    if (cat_id == bimbingan_sekali_cat_id) {
+        commonChecks = commonChecks || !data.date || !data.time;
     }
 
     if (isOnline && (commonChecks || !data.location)) return true;
@@ -33,8 +33,8 @@ export function canSubmitFormCheckerRecentOrder(order, data) {
 
     let commonChecks = !data.tutor_id;
 
-    if (cat_id === bimbingan_sekali_cat_id) {
-        commonChecks = !data.date || !data.time;
+    if (cat_id == bimbingan_sekali_cat_id) {
+        commonChecks = commonChecks || !data.date || !data.time;
     }
 
     if (commonChecks) return true;

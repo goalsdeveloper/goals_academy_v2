@@ -240,12 +240,13 @@ class ProgressController extends Controller
                         $progress->update($validateData);
                     }
                     if ($progress->products->contact_type == "other") {
+                        // dd($request);
                         $validateData = $request->validate([
-                            // 'tutor_id' => 'numeric',
+                            'tutor_id' => 'numeric',
                             // 'place_id' => 'nullable|numeric',
                             // 'location' => 'nullable|string',
-                            // "date" => "required|date",
-                            // "time" => "required|date_format:H:i",
+                            "date" => "required|date",
+                            "time" => "required|date_format:H:i",
                             // "record" => "mimes:pdf|nullable",
                         ]);
                         $progress->update($validateData);
