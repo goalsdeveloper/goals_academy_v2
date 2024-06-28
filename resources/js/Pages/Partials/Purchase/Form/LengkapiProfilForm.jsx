@@ -43,10 +43,7 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                 .then(response => response.json())
                 .then(response => {
                     if (response.message == 'success') {
-                        toast('Profil berhasil dilengkapi!', {
-                            position: 'top-center',
-                            icon: '✅'
-                        })
+                        toast.success('Profil berhasil dilengkapi!', { position: 'top-center' })
                         setUserProfile(data)
                         setIsLoading(false)
                     }
