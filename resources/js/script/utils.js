@@ -88,9 +88,9 @@ export function phoneNumberFormat(x) {
     return x;
 }
 
-
 export const truncateWithEllipsis = (str) => {
-    if (str?.length > 40 && str) {
+    const maxLength = 40;
+    if (str?.length > maxLength && str) {
         return str.slice(0, maxLength) + '...';
     }
     return str;

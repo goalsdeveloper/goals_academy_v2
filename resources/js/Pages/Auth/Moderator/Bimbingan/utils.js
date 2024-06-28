@@ -4,9 +4,7 @@ export function canSubmitFormCheckerProgress(progress, data) {
     const { products } = progress || {};
     const { contact_type } = products || {};
     const bimbingan_sekali_cat_id = 2;
-    const desk_review_cat_id = 6;
     const cat_id = products.category_id;
-    console.log(cat_id);
 
     const isOnline = contact_type === "online";
     const isOffline = contact_type === "offline";
