@@ -4,7 +4,10 @@ function getFieldData(data) {
     let title = {};
     let desc = {};
 
-    if (data.contact_type === "offline" || data.contact_type === "hybrid") {
+    if (
+        data.products.contact_type === "offline" ||
+        data.products.contact_type === "hybrid"
+    ) {
         title = {
             ...title,
             city: "Kota Pelaksanaan",
@@ -15,7 +18,7 @@ function getFieldData(data) {
             city: data?.location?.city?.city ?? "Kota Belum Diatur",
             place: data?.place?.place ?? "Lokasi Belum Diatur",
         };
-    } else if (data.contact_type === "online") {
+    } else if (data.products.contact_type === "online") {
         title = {
             ...title,
             link: "Link Meet",
@@ -75,9 +78,20 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                             <label className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
                                 {form_field[key]}
                             </label>
-                            <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
-                                {form_result[key]}
-                            </p>
+                            {key === "link" ? (
+                                <a
+                                    href={form_result[key]}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-[3.7vw] md:text-[1.25vw] text-primary font-medium"
+                                >
+                                    {form_result[key]}
+                                </a>
+                            ) : (
+                                <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
+                                    {form_result[key]}
+                                </p>
+                            )}
                         </li>
                     ))}
                 </ul>
