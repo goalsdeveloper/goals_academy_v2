@@ -3,7 +3,6 @@ import ButtonPill from "./ButtonPill";
 export default function BimbinganCard({ item, className }) {
     // const features = item.features[0];
     const currency = Intl.NumberFormat("id-ID");
-
     return (
         <div
             className={`shadow-centered rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden ${className}`}
@@ -22,7 +21,7 @@ export default function BimbinganCard({ item, className }) {
                         <h5 className="text-primary text-[3.32vw] md:text-[1vw] 3xl:py-0.5">
                             IDR {currency.format(parseFloat(item.price) - parseFloat(item.promo_price || 0))}
                         </h5>
-                        {item.promo_price || (item.promo_price != 0) ? (
+                        {Boolean(Number(item.promo_price)) ? (
                             <p className="inline text-[3.32vw] md:text-[.83vw] text-light-grey line-through">
                                 IDR {currency.format(item.price)}
                             </p>

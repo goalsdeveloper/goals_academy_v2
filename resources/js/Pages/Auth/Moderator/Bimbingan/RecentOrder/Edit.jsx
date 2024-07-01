@@ -15,6 +15,7 @@ import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 import { canSubmitFormCheckerRecentOrder } from "../utils";
+import moment from "moment";
 
 export default function Edit({ auth, order, places, tutors }) {
     const [isShow, setIsShow] = useState(false);
@@ -300,7 +301,7 @@ export default function Edit({ auth, order, places, tutors }) {
                                         setData={(e) =>
                                             setFormData({
                                                 ...formData,
-                                                time: e,
+                                                time: moment(e).format("HH:mm"),
                                             })
                                         }
                                         grow
