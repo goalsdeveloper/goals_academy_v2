@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\FileUpload;
 use App\Notifications\GeneralCourseNotification;
+use App\Models\Revenue;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,7 +56,7 @@ class ProgressController extends Controller
                 }
 
                 // Load related models
-                $query->with('topic:id,topic', 'user:id,username', 'products:id,name');
+                $query->with('topic:id,topic', 'user:id,username', 'products:id,name')->where('tutor_id', $user->id)->where('ongoing', '!=', CourseStatusEnum::SUCCESS);
 
                 // Paginate results
                 $tutor = $query->paginate($perPage);
