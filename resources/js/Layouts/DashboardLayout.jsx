@@ -748,7 +748,7 @@ function Notification({ data, loadMore }) {
                 />
                 <div
                     className={`${
-                        data.new.length > 0 ? "" : "hidden"
+                        data.new.filter((i) => i.read_at == null).length > 0 ? "" : "hidden"
                     } absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}
                 ></div>
             </div>
