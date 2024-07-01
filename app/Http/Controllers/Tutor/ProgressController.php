@@ -30,7 +30,8 @@ class ProgressController extends Controller
                 $search = $request->search;
 
                 $query = $user->tutor()
-                    ->where('ongoing', '!=', CourseStatusEnum::SUCCESS);
+                ->where('tutor_id', $user->id) 
+                ->where('ongoing', '!=', CourseStatusEnum::SUCCESS);
 
                 $query->where(function ($q) {
                     $q->whereNotNull('date')
