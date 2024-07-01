@@ -30,12 +30,15 @@ class ProgressController extends Controller
                 $search = $request->search;
 
                 $query = $user->tutor()
-                ->where('tutor_id', $user->id) 
-                ->where('ongoing', '!=', CourseStatusEnum::SUCCESS);
+                    ->where('ongoing', '!=', CourseStatusEnum::SUCCESS);
 
                 $query->where(function ($q) {
                     $q->whereNotNull('date')
                         ->whereNotNull('time');
+                });
+                $query->where(function ($q) {
+                    $user = Auth::user();
+                    $q->where('tutor_id', $user->id);
                 });
 
                 $query->orWhereHas('products', function ($q) {
@@ -50,8 +53,8 @@ class ProgressController extends Controller
                             ->orWhereHas('user', function ($q) use ($search) {
                                 $q->where('username', 'LIKE', '%' . $search . '%');
                             })->orWhereHas('topic', function ($q) use ($search) {
-                            $q->where('topic', 'LIKE', '%' . $search . '%');
-                        });
+                                $q->where('topic', 'LIKE', '%' . $search . '%');
+                            });
                     });
                 }
 
