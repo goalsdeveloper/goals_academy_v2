@@ -201,6 +201,7 @@ export default function Edit({ auth, order, places, tutors }) {
                             <GoalsTextInput
                                 label="Number"
                                 grow
+                                disabled
                                 data={
                                     order.user?.profile?.phone_number ??
                                     "Belum Ada Nomor Telepon"

@@ -2,7 +2,7 @@ import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
 import MainLayout from "@/Layouts/MainLayout";
 import "@/script/momentCustomLocale";
-import { Link, useForm } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
@@ -13,6 +13,7 @@ import DetailBanyakPertemuan, {
     AturJadwalPopup,
 } from "./layouts/DetailBanyakPertemuan";
 import DetailSatuPertemuan from "./layouts/DetailSatuPertemuan";
+import toast from "react-hot-toast";
 
 export default function DetailPesanan({
     auth,
@@ -40,7 +41,14 @@ export default function DetailPesanan({
     });
 
     function handleSubmit() {
-        post(`/bimbingan/${dataBimbingan[0].order.order_code}/review`);
+        post(`/bimbingan/${dataBimbingan[0].order.order_code}/review`, {
+            onSuccess: () => {
+                toast.success("Ulasan berhasil disimpan");
+            },
+            onError: () => {
+                toast.error("Ulasan gagal disimpan");
+            },
+        });
     }
 
     const dataAturJadwalComp = { cities, date, topics };
@@ -152,13 +160,15 @@ export default function DetailPesanan({
                             className={`
                     fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center items-center pb-[3.7vw] pt-[3.4vw] bg-white md:p-0 z-[40] md:z-0 px-[6vw]`}
                         >
+                            {console.log(dataBimbingan)}
                             <GoalsButton
                                 disabled={
                                     (dataBimbingan.length > 1 &&
                                         !!dataBimbingan.find(
                                             (item) => item.date == null
                                         )) ||
-                                    dataBimbingan[0].ongoing == "berjalan"
+                                    dataBimbingan[0].ongoing != "selesai" ||
+                                    dataBimbingan[0].product_review != null
                                 }
                                 variant="bordered"
                                 onClick={() =>
@@ -176,7 +186,8 @@ export default function DetailPesanan({
                                         !!dataBimbingan.find(
                                             (item) => item.date == null
                                         )) ||
-                                    dataBimbingan[0].ongoing != "berjalan"
+                                    // dataBimbingan[0].ongoing != "berjalan"
+                                    dataBimbingan[0].is_user
                                 }
                                 onClick={() =>
                                     setShowPopUp({
@@ -225,11 +236,20 @@ const SelesaiProgram = ({ show, setShow, order_code }) => {
 
                 <div className="grid space-y-[2vw] md:space-y-[.8vw] w-full">
                     <GoalsButton
-                        isLink
-                        method="PUT"
-                        href={`/bimbingan/${order_code}/selesai-bimbingan`}
+                        // isLink
+                        // method="PUT"
+                        // href={`/bimbingan/${order_code}/selesai-bimbingan`}
                         onClick={() => {
                             setShow();
+                            router.put(
+                                `/bimbingan/${order_code}/selesai-bimbingan`,
+                                {},
+                                {
+                                    onSuccess: () => {
+                                        toast.success("Bimbingan selesai");
+                                    },
+                                }
+                            );
                         }}
                         className="w-full"
                     >
