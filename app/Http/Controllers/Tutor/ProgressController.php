@@ -55,7 +55,7 @@ class ProgressController extends Controller
                 }
 
                 // Load related models
-                $query->with('topic:id,topic', 'user:id,username', 'products:id,name')->where('tutor_id', $user->id);
+                $query->with('topic:id,topic', 'user:id,username', 'products:id,name')->where('tutor_id', $user->id)->where('ongoing', '!=', CourseStatusEnum::SUCCESS);
 
                 // Paginate results
                 $tutor = $query->paginate($perPage);
