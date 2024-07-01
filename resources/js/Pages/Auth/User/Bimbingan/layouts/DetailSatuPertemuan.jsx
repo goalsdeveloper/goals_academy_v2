@@ -25,7 +25,7 @@ function getFieldData(data) {
         };
         desc = {
             ...desc,
-            link: data?.location ?? "Link meet Belum Diatur",
+            link: data?.location ?? "Link Meet Belum Diatur",
         };
     }
 
@@ -34,7 +34,6 @@ function getFieldData(data) {
 
 const DetailSatuPertemuan = ({ data, className = "" }) => {
     const gapSize = 1;
-    console.log(data);
 
     const form_field = {
         schedule: "Jadwal Pelaksanaan",
@@ -78,7 +77,7 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                             <label className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
                                 {form_field[key]}
                             </label>
-                            {key === "link" ? (
+                            {key == "link" && form_result[key] != 'Link Meet Belum Diatur' ? (
                                 <a
                                     href={form_result[key]}
                                     target="_blank"

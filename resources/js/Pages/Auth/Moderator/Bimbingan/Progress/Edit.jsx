@@ -181,6 +181,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                         >
                             Batal
                         </GoalsButton>
+                        {console.log(progress)}
                         <GoalsButton
                             variant="success"
                             size="sm"

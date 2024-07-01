@@ -25,7 +25,11 @@ const DetailBanyakPertemuan = ({ data, setIsAturJadwalShow }) => {
     return (
         <div className="relative space-y-[2vw]">
             <ProductItemCardLayout
-                imageUrl={window.location.origin + '/storage/' + data[0].products.product_image}
+                imageUrl={
+                    window.location.origin +
+                    "/storage/" +
+                    data[0].products.product_image
+                }
                 className="hidden md:flex"
             >
                 <ProductItemCardHeader>
@@ -159,13 +163,13 @@ export const AturJadwalPopup = ({
                 return data.date != "" && data.topic != "";
             case "offline":
                 return (
-                    data.date != "" && data.city != "" && data.place_id != "" && data.topic != ""
-                );
-            case "hybrid":
-                return (
                     data.date != "" &&
+                    data.city != "" &&
+                    data.place_id != "" &&
                     data.topic != ""
                 );
+            case "hybrid":
+                return data.date != "" && data.topic != "";
         }
 
         return false;
@@ -209,12 +213,15 @@ export const AturJadwalPopup = ({
                         return;
                     }
 
-                    post(`/bimbingan/${order_code}/atur-jadwal`, {
+                    post(`/bimbingan/${order_code}/atur-jadwal`,
+                     {
                         onSuccess: () => {
-                            reset(), setShow(setShow);
+                            reset(),
+                                setShow(setShow),
+                                toast.success("Berhasil mengatur jadwal");
                         },
                         onError: () => {
-                            alert("Gagal mengatur jadwal");
+                            toast.error("Gagal mengatur jadwal");
                         },
                     });
                 }}
