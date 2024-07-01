@@ -36,10 +36,6 @@ class ProgressController extends Controller
                     $q->whereNotNull('date')
                         ->whereNotNull('time');
                 });
-                $query->where(function ($q) {
-                    $user = Auth::user();
-                    $q->where('tutor_id', $user->id);
-                });
 
                 $query->orWhereHas('products', function ($q) {
                     $q->where('contact_type', 'other');
@@ -53,13 +49,13 @@ class ProgressController extends Controller
                             ->orWhereHas('user', function ($q) use ($search) {
                                 $q->where('username', 'LIKE', '%' . $search . '%');
                             })->orWhereHas('topic', function ($q) use ($search) {
-                                $q->where('topic', 'LIKE', '%' . $search . '%');
-                            });
+                            $q->where('topic', 'LIKE', '%' . $search . '%');
+                        });
                     });
                 }
 
                 // Load related models
-                $query->with('topic:id,topic', 'user:id,username', 'products:id,name');
+                $query->with('topic:id,topic', 'user:id,username', 'products:id,name')->where('tutor_id', $user->id);
 
                 // Paginate results
                 $tutor = $query->paginate($perPage);
