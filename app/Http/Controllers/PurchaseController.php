@@ -155,6 +155,7 @@ class PurchaseController extends Controller
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
+        $responseMidtrans->provider_name = strtolower($paymentMethod->name);
 
         OrderHistory::create([
             'order_id' => $orderData->id,
