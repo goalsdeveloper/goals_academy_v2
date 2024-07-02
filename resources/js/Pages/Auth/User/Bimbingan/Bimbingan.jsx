@@ -92,7 +92,7 @@ function BimbinganItem({ data }) {
                                 {data.products.name}
                             </h2>
                             <p className="text-neutral-40 md:text-neutral-60">
-                                {moment(data.order.form_result.schedule).format(
+                                {moment(data?.order?.form_result?.schedule).format(
                                     "dddd, DD MMMM YYYY"
                                 )}
                             </p>

@@ -17,7 +17,7 @@ export default function Status({
     paymentName,
     bankName,
 }) {
-    // console.log(orderHistory.actions[0].url);
+    const vaNumber = orderHistory.va_numbers ? orderHistory.va_numbers[0].va_number : orderHistory.permata_va_number
     const [countdown, setCountdown] = useState(
         moment().hours(0).minutes(0).seconds(0)
     );
@@ -213,28 +213,16 @@ export default function Status({
                                                 <h2
                                                     className="leading-loose cursor-pointer text-[6vw] md:text-[2.3vw]"
                                                     onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                            orderHistory
-                                                                .va_numbers[0]
-                                                                .va_number
-                                                        );
+                                                        navigator.clipboard.writeText(vaNumber);
                                                         toast.success("Text copied!");
                                                     }}
                                                 >
-                                                    {orderHistory.va_numbers
-                                                        ? orderHistory
-                                                              .va_numbers[0]
-                                                              .va_number
-                                                        : orderHistory.permata_va_number}
+                                                    {vaNumber}
                                                 </h2>
                                                 <p
                                                     className="font-medium hover:text-primary cursor-pointer"
                                                     onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                            orderHistory
-                                                                .va_numbers[0]
-                                                                .va_number
-                                                        );
+                                                        navigator.clipboard.writeText(vaNumber);
                                                         toast.success("Text copied!");
                                                     }}
                                                 >
