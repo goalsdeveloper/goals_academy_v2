@@ -32,7 +32,7 @@ export default function Edit({ auth, order, places, tutors }) {
         tutor_id: order?.course?.tutor?.id,
         tutor_phone: order?.course?.tutor?.profile?.phone_number,
         date: order?.course?.date ?? "",
-        time: order?.course?.time ?? "",
+        time: order?.course?.time ? order?.course?.time.substring(0,5) : "",
     });
 
     const GetLocationForm = () => {
@@ -297,12 +297,12 @@ export default function Edit({ auth, order, places, tutors }) {
                                         type="time"
                                         label="Time"
                                         data={formData.time}
-                                        setData={(e) =>
+                                        setData={(e) => {
                                             setFormData({
                                                 ...formData,
                                                 time: e,
                                             })
-                                        }
+                                        }}
                                         grow
                                         required
                                     />

@@ -818,7 +818,7 @@ function Notification({ data, loadMore }) {
                                     )}
                                 </>
                             ) : (
-                                <div className="flex justify-center items-center h-[30vh]">
+                                <div className="flex justify-center items-center h-[30vh] text-[3.32vw] md:text-[.83vw]">
                                     Oops.. belum ada transaksi
                                 </div>
                             )}
@@ -894,7 +894,7 @@ function Notification({ data, loadMore }) {
                                         )}
                                     </>
                                 ) : (
-                                    <div className="flex justify-center items-center h-[30vh]">
+                                    <div className="flex justify-center items-center h-[30vh] text-[3.32vw] md:text-[.83vw]">
                                         Oops.. belum ada transaksi
                                     </div>
                                 )}
