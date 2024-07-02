@@ -42,7 +42,9 @@ export default function Edit({ auth, progress, tutors, places }) {
         date: progress.date ?? "",
         time: progress.time ? progress.time.substring(0, 5) : "",
         location: progress.location ?? "",
-        place: progress.place ? `${progress.place?.place} | ${progress.place?.city?.city}` : "",
+        place: progress.place
+            ? `${progress.place?.place} | ${progress.place?.city?.city}`
+            : "",
         city: progress.place?.city.city ?? "",
         number: progress.user.profile.phone_number ?? "",
         tutor: tutors?.find((item) => item.id == progress.tutor_id),
@@ -64,6 +66,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                         placeholder="Meeting URL"
                         data={data.location}
                         setData={(i) => setData("location", i)}
+                        type="url"
                         required
                     />
                 );
@@ -99,6 +102,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                             placeholder="Meeting URL"
                             data={data.location}
                             setData={(i) => setData("location", i)}
+                            type="url"
                         />
                         <SelectInput
                             label="Meeting Location"
@@ -143,7 +147,40 @@ export default function Edit({ auth, progress, tutors, places }) {
             auth={auth}
         >
             {/* {isLoading && <LoadingUI />} */}
-            <div className="space-y-[1.6vw]">
+            <form
+                className="space-y-[1.6vw]"
+                onSubmit={(e) => {
+                    e.preventDefault();
+
+                    transform((data) => ({
+                        _method: "put",
+                        tutor_id: data.tutor.id,
+                        record: data.record,
+                        is_moderator: data.is_moderator,
+                        date: data.date,
+                        time: data.time,
+                        location: data.location,
+                        place_id: data.place_id,
+                    }));
+
+                    post(
+                        route("moderator.bimbingan.progress.update", {
+                            progress: progress.id,
+                        }),
+                        {
+                            preserveScroll: true,
+                            onSuccess: () => {
+                                toast.success("Data berhasil diubah");
+                            },
+                            onError: (errors) => {
+                                if (errors.record) {
+                                    toast.error(errors.record[0]);
+                                }
+                            },
+                        }
+                    );
+                }}
+            >
                 <div className="flex items-center justify-between">
                     <Breadcrumb level={2} isSlug />
 
@@ -185,39 +222,11 @@ export default function Edit({ auth, progress, tutors, places }) {
                         <GoalsButton
                             variant="success"
                             size="sm"
-                            disabled={canSubmitFormCheckerProgress(progress, data) || checkSelectInput()}
-                            onClick={() => {
-                                transform((data) => ({
-                                    _method: "put",
-                                    tutor_id: data.tutor.id,
-                                    record: data.record,
-                                    is_moderator: data.is_moderator,
-                                    date: data.date,
-                                    time: data.time,
-                                    location: data.location,
-                                    place_id: data.place_id,
-                                }));
-
-                                post(
-                                    route(
-                                        "moderator.bimbingan.progress.update",
-                                        { progress: progress.id }
-                                    ),
-                                    {
-                                        preserveScroll: true,
-                                        onSuccess: () => {
-                                            toast.success(
-                                                "Data berhasil diubah"
-                                            );
-                                        },
-                                        onError: (errors) => {
-                                            if (errors.record) {
-                                                toast.error(errors.record[0]);
-                                            }
-                                        },
-                                    }
-                                );
-                            }}
+                            type="submit"
+                            disabled={
+                                canSubmitFormCheckerProgress(progress, data) ||
+                                checkSelectInput()
+                            }
                         >
                             Simpan
                         </GoalsButton>
@@ -282,7 +291,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                                     setData({
                                                         ...data,
                                                         tutor: item,
-                                                        tutor_id: item.id
+                                                        tutor_id: item.id,
                                                     });
                                                 }}
                                             >
@@ -454,7 +463,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                         </FormSection>
                     </div>
                 </div>
-            </div>
+            </form>
         </DashboardLayout>
     );
 }
