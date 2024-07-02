@@ -15,7 +15,6 @@ import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 import { canSubmitFormCheckerRecentOrder } from "../utils";
-import moment from "moment";
 
 export default function Edit({ auth, order, places, tutors }) {
     const [isShow, setIsShow] = useState(false);
@@ -33,7 +32,7 @@ export default function Edit({ auth, order, places, tutors }) {
         tutor_id: order?.course?.tutor?.id,
         tutor_phone: order?.course?.tutor?.profile?.phone_number,
         date: order?.course?.date ?? "",
-        time: order?.course?.time ?? "",
+        time: order?.course?.time ? order?.course?.time.substring(0,5) : "",
     });
 
     const GetLocationForm = () => {
@@ -298,12 +297,12 @@ export default function Edit({ auth, order, places, tutors }) {
                                         type="time"
                                         label="Time"
                                         data={formData.time}
-                                        setData={(e) =>
+                                        setData={(e) => {
                                             setFormData({
                                                 ...formData,
-                                                time: moment(e).format("HH:mm"),
+                                                time: e,
                                             })
-                                        }
+                                        }}
                                         grow
                                         required
                                     />
