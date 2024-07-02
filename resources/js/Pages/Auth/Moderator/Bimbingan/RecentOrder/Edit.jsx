@@ -32,7 +32,7 @@ export default function Edit({ auth, order, places, tutors }) {
         tutor_id: order?.course?.tutor?.id,
         tutor_phone: order?.course?.tutor?.profile?.phone_number,
         date: order?.course?.date ?? "",
-        time: order?.course?.time ? order?.course?.time.substring(0,5) : "",
+        time: order?.course?.time ? order?.course?.time.substring(0, 5) : "",
     });
 
     const GetLocationForm = () => {
@@ -43,6 +43,7 @@ export default function Edit({ auth, order, places, tutors }) {
                         <GoalsTextInput
                             label="Meeting URL"
                             placeholder="Meeting URL"
+                            type="url"
                             data={formData.location}
                             setData={(i) => setFormData("location", i)}
                             labelClassName="font-medium"
@@ -80,6 +81,7 @@ export default function Edit({ auth, order, places, tutors }) {
                             <GoalsTextInput
                                 label="Meeting URL"
                                 placeholder="Meeting URL"
+                                type="url"
                                 data={formData.location}
                                 setData={(i) => setFormData("location", i)}
                                 labelClassName="font-medium"
@@ -121,7 +123,23 @@ export default function Edit({ auth, order, places, tutors }) {
             auth={auth}
         >
             {/* {isLoading && <LoadingUI />} */}
-            <div className="space-y-[1.6vw]">
+            <form
+                className="space-y-[1.6vw]"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    patch(
+                        route("moderator.bimbingan.order.update", {
+                            order: order.order_code,
+                        }),
+                        {
+                            data: formData,
+                            onSuccess: () =>
+                                toast.success("Order berhasil diupdate"),
+                            onError: () => toast.error("Order gagal diupdate"),
+                        }
+                    );
+                }}
+            >
                 <div className="flex items-center justify-between">
                     <Breadcrumb level={3} isLastHidden />
 
@@ -140,25 +158,11 @@ export default function Edit({ auth, order, places, tutors }) {
                         <GoalsButton
                             variant="success"
                             size="sm"
-                            disabled={
-                                canSubmitFormCheckerRecentOrder(order, formData)
-                            }
-                            onClick={() =>
-                                patch(
-                                    route("moderator.bimbingan.order.update", {
-                                        order: order.order_code,
-                                    }),
-                                    {
-                                        data: formData,
-                                        onSuccess: () =>
-                                            toast.success(
-                                                "Order berhasil diupdate"
-                                            ),
-                                        onError: () =>
-                                            toast.error("Order gagal diupdate"),
-                                    }
-                                )
-                            }
+                            disabled={canSubmitFormCheckerRecentOrder(
+                                order,
+                                formData
+                            )}
+                            type="submit"
                         >
                             Simpan
                         </GoalsButton>
@@ -208,7 +212,13 @@ export default function Edit({ auth, order, places, tutors }) {
                                 }
                             />
                             <a
-                                href={`https://wa.me/62${order.user.profile.phone_number ? order.user.profile.phone_number.substring(1) : ""}`}
+                                href={`https://wa.me/62${
+                                    order.user.profile.phone_number
+                                        ? order.user.profile.phone_number.substring(
+                                              1
+                                          )
+                                        : ""
+                                }`}
                                 target="_blank"
                             >
                                 <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
@@ -239,7 +249,11 @@ export default function Edit({ auth, order, places, tutors }) {
                                 ))}
                             </SelectInput>
                             <a
-                                href={`https://wa.me/62${formData.tutor_phone ? formData.tutor_phone.substring(1) : ""}`}
+                                href={`https://wa.me/62${
+                                    formData.tutor_phone
+                                        ? formData.tutor_phone.substring(1)
+                                        : ""
+                                }`}
                                 target="_blank"
                             >
                                 <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
@@ -276,7 +290,9 @@ export default function Edit({ auth, order, places, tutors }) {
                                 "Topic belum diset"
                             }
                         />
-                        {(order.products.total_meet == 1 & order.products.contact_type != "other") == true && (
+                        {((order.products.total_meet == 1) &
+                            (order.products.contact_type != "other")) ==
+                            true && (
                             <>
                                 {GetLocationForm()}
                                 <div className="flex gap-[.4vw]">
@@ -301,7 +317,7 @@ export default function Edit({ auth, order, places, tutors }) {
                                             setFormData({
                                                 ...formData,
                                                 time: e,
-                                            })
+                                            });
                                         }}
                                         grow
                                         required
@@ -311,7 +327,7 @@ export default function Edit({ auth, order, places, tutors }) {
                         )}
                     </FormSection>
                 </div>
-            </div>
+            </form>
         </DashboardLayout>
     );
 }
