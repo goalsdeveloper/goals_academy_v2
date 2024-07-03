@@ -118,7 +118,11 @@ const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
                 </div>
                 {auth.user && (
                     <div className="flex gap-[2vw]">
-                        <Notification auth={auth} data={notificationData} loadMore={getOldNotification} />
+                        <Notification
+                            auth={auth}
+                            data={notificationData}
+                            loadMore={getOldNotification}
+                        />
                         <div
                             className={`relative font-poppins flex justify-center cursor-pointer`}
                             // onMouseEnter={() => setAuthDropdown(true)}
@@ -137,24 +141,30 @@ const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
                                 className="absolute right-0 z-10 translate-y-2 shadow-none"
                             >
                                 <TECollapseItem className="border-2 w-fit py-[1vw] text-start bg-white  rounded-xl">
-                                {links[roleCheck].map(
-                                    (
-                                        { href, icon, text, method = "get" },
-                                        index
-                                    ) => (
-                                        <Link
-                                            method={method}
-                                            className={`flex gap-2 py-[3.7vw] px-[7.4vw] items-center font-poppins hover:text-primary  ${
-                                                text == "Riwayat Transaksi"
-                                                    ? "w-max"
-                                                    : "w-full"
-                                            }`}
-                                            href={href}
-                                        >
-                                            {icon}
-                                            {text}
-                                        </Link>
-                                    ))}
+                                    {links[roleCheck].map(
+                                        (
+                                            {
+                                                href,
+                                                icon,
+                                                text,
+                                                method = "get",
+                                            },
+                                            index
+                                        ) => (
+                                            <Link
+                                                method={method}
+                                                className={`flex gap-2 py-[3.7vw] px-[7.4vw] items-center font-poppins hover:text-primary  ${
+                                                    text == "Riwayat Transaksi"
+                                                        ? "w-max"
+                                                        : "w-full"
+                                                }`}
+                                                href={href}
+                                            >
+                                                {icon}
+                                                {text}
+                                            </Link>
+                                        )
+                                    )}
                                 </TECollapseItem>
                             </TECollapse>
                         </div>
@@ -250,10 +260,17 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
 
     return (
         <>
-            <div className={`${!isOpen && 'hidden'} absolute top-0 w-screen h-screen`} onClick={() => setIsOpen(false)}></div>
             <div
-                className={`overflow-y-scroll absolute w-[74vw] flex flex-col justify-between z-[500] top-0 left-0 bg-white h-screen max-h-screen duration-300 border-2 text-neutral-80 text-[3.2vw] ${
-                    isOpen ? "translate-x-[0%]" : "opacity-0 -translate-x-[100%]"
+                className={`${
+                    !isOpen && "hidden"
+                } absolute top-0 w-screen h-screen`}
+                onClick={() => setIsOpen(false)}
+            ></div>
+            <div
+                className={`overflow-y-scroll absolute w-[74vw] flex flex-col justify-between z-[500] top-0 left-0 bg-white duration-300 h-[calc(100dvh)] border-2 text-neutral-80 text-[3.2vw] ${
+                    isOpen
+                        ? "translate-x-[0%]"
+                        : "opacity-0 -translate-x-[100%]"
                 }`}
             >
                 <div>
@@ -271,36 +288,37 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
                         />
                     </div>
 
-                        <div className="flex flex-col justify-between">
-                            {links.map(({ href, text, sublinks, icon }, index) => (
-                                <div
-                                    key={index}
-                                    className="w-full py-[1vw] text-start bg-white border-b border-neutral-20 h-fit"
-                                >
-                                    {sublinks ? (
-                                        <button
-                                            className="flex gap-2 py-[3.7vw] px-[7.4vw] justify-between items-center hover:text-primary w-full "
-                                            onClick={() => toggleSublinks(index)}
-                                        >
-                                            <span className="flex gap-2">
-                                                {icon}
-                                                {text}
-                                            </span>
-                                            {sublinks && <FiChevronDown />}
-                                        </button>
-                                    ) : (
-                                        <Link
-                                            className="flex gap-2 py-[3.7vw] px-[7.4vw] items-center hover:text-primary w-full"
-                                            href={href}
-                                        >
+                    <div className="flex flex-col justify-between">
+                        {links.map(({ href, text, sublinks, icon }, index) => (
+                            <div
+                                key={index}
+                                className="w-full py-[1vw] text-start bg-white border-b border-neutral-20 h-fit"
+                            >
+                                {sublinks ? (
+                                    <button
+                                        className="flex gap-2 py-[3.7vw] px-[7.4vw] justify-between items-center hover:text-primary w-full "
+                                        onClick={() => toggleSublinks(index)}
+                                    >
+                                        <span className="flex gap-2">
                                             {icon}
                                             {text}
-                                        </Link>
-                                    )}
+                                        </span>
+                                        {sublinks && <FiChevronDown />}
+                                    </button>
+                                ) : (
+                                    <Link
+                                        className="flex gap-2 py-[3.7vw] px-[7.4vw] items-center hover:text-primary w-full"
+                                        href={href}
+                                    >
+                                        {icon}
+                                        {text}
+                                    </Link>
+                                )}
 
-                                    {openSublinks[index] && sublinks && (
-                                        <div className="ml-[5vw]">
-                                            {sublinks.map(({ href, icon, text }) => (
+                                {openSublinks[index] && sublinks && (
+                                    <div className="ml-[5vw]">
+                                        {sublinks.map(
+                                            ({ href, icon, text }) => (
                                                 <Link
                                                     key={href}
                                                     className="flex gap-2 py-[3.7vw] px-[7.4vw] items-center hover:text-primary w-full"
@@ -309,13 +327,14 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
                                                     {icon}
                                                     {text}
                                                 </Link>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
+                                            )
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
                     </div>
+                </div>
 
                 {!auth.user && (
                     <div className="flex flex-col px-[7.4vw] mt-auto w-full gap-[2vw] py-[3.7vw]">

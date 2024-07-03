@@ -21,6 +21,7 @@ import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 import { canSubmitFormCheckerProgress } from "../utils";
+import { Autocomplete, TextField } from "@mui/material";
 
 export default function Edit({ auth, progress, tutors, places }) {
     const product_category = progress.products.category.slug;
@@ -37,6 +38,7 @@ export default function Edit({ auth, progress, tutors, places }) {
         major: progress.user.profile.major ?? "",
         order_code: progress.order.order_code,
         product: progress.products.name,
+        duration: progress.products.duration,
         topic: progress.topic?.topic ?? "",
         session: progress.session ?? "",
         date: progress.date ?? "",
@@ -227,6 +229,38 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 canSubmitFormCheckerProgress(progress, data) ||
                                 checkSelectInput()
                             }
+                            onClick={() => {
+                                transform((data) => ({
+                                    _method: "put",
+                                    tutor_id: data.tutor.id,
+                                    record: data.record,
+                                    is_moderator: data.is_moderator,
+                                    date: data.date,
+                                    time: data.time,
+                                    location: data.location,
+                                    place_id: data.place_id,
+                                }));
+
+                                post(
+                                    route(
+                                        "moderator.bimbingan.progress.update",
+                                        { progress: progress.id }
+                                    ),
+                                    {
+                                        preserveScroll: true,
+                                        onSuccess: () => {
+                                            toast.success(
+                                                "Data berhasil diubah"
+                                            );
+                                        },
+                                        onError: (errors) => {
+                                            if (errors.record) {
+                                                toast.error(errors.record[0]);
+                                            }
+                                        },
+                                    }
+                                );
+                            }}
                         >
                             Simpan
                         </GoalsButton>
@@ -278,28 +312,30 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 </a>
                             </div>
                             <div className="flex gap-[.4vw] w-full items-end">
-                                <SelectInput
-                                    label="Tutor"
-                                    value={data.tutor?.name}
-                                    className="w-full"
+                                <label
+                                    htmlFor="tutor"
+                                    className="w-full grid items-center gap-[.4vw]"
                                 >
-                                    {tutors.map((item, index) => {
-                                        return (
-                                            <SelectInputItem
-                                                key={item.id}
-                                                onClick={() => {
-                                                    setData({
-                                                        ...data,
-                                                        tutor: item,
-                                                        tutor_id: item.id,
-                                                    });
-                                                }}
-                                            >
-                                                {item.name}
-                                            </SelectInputItem>
-                                        );
-                                    })}
-                                </SelectInput>
+                                    Tutor
+                                    <Autocomplete
+                                        id="tutor"
+                                        disablePortal
+                                        options={tutors}
+                                        getOptionLabel={(option) => option.name}
+                                        style={{ width: "100%" , height: '100%'}}
+                                        inputValue={data.tutor?.name}
+                                        renderInput={(params) => (
+                                            <TextField {...params} placeholder="Select tutor" />
+                                        )}
+                                        onChange={(e, value) => {
+                                            setData({
+                                                ...data,
+                                                tutor: value,
+                                                tutor_id: value.id,
+                                            });
+                                        }}
+                                    />
+                                </label>
                                 <a
                                     href={`https://wa.me/${phoneNumberFormat(
                                         data?.tutor?.profile?.phone_number
@@ -357,6 +393,14 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 data={data.product}
                                 setData={(i) => setData("product", i)}
                             />
+                            {progress.products.contact_type != "other" && (
+                                <GoalsTextInput
+                                    label="Duration"
+                                    disabled
+                                    data={data.duration}
+                                    setData={(i) => setData("duration", i)}
+                                />
+                            )}
                             <GoalsTextInput
                                 label="Topic"
                                 disabled
