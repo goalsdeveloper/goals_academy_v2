@@ -161,9 +161,6 @@ export default function Progress({ auth, data: recentOrder }) {
                     if (course?.ongoing == null) return;
 
                     // const status = upperCaseFirstLetter(course?.ongoing);
-                    if (course?.child.length > 0) {
-                        return;
-                    }
 
                     const status =
                         course?.child.find(
