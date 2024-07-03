@@ -524,7 +524,7 @@ function DateRangePicker({ value, onChange }) {
                 onChange={onChange}
                 showShortcuts={true}
                 primaryColor="indigo"
-                inputClassName="w-full bg-transparent border-transparent text-transparent placeholder:text-transparent focus:ring-0 focus:border-0 rounded-[.4vw] text-[.83vw] p-[.5vw] leading-tight cursor-pointer"
+                inputClassName="w-full bg-transparent border-transparent text-transparent placeholder:text-transparent focus:ring-0 focus:border-0 focus:outline-none rounded-[.4vw] text-[.83vw] p-[.5vw] leading-tight cursor-pointer"
                 containerClassName="absolute"
                 toggleClassName="hidden"
                 popoverDirection="down"

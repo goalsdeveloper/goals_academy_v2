@@ -47,7 +47,7 @@ const Show = ({ show, setShow, data }) => {
                                     <p className="font-medium text-[.83vw]">
                                         Skills
                                     </p>
-                                    <div className="w-full grid grid-cols-2 gap-[.5vw] text-[3.7vw] md:text-[.8vw] focus:ring-0 py-[.75vw] px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[8.3vw] border placeholder:text-light-grey bg-gray-100 border-gray-300">
+                                    <div className="w-full grid grid-cols-2 gap-[.5vw] text-[3.7vw] md:text-[.8vw] focus:ring-0 focus:outline-none py-[.75vw] px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[8.3vw] border placeholder:text-light-grey bg-gray-100 border-gray-300">
                                         <div>
                                             <p className="mb-[.3vw]">
                                                 Soft Skills:

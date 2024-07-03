@@ -44,7 +44,7 @@ const GoalsTextArea = ({
                         placeholder={placeholder}
                         value={data}
                         onChange={(e) => setData(e.target.value)}
-                        className={`w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark border placeholder:text-light-grey ${
+                        className={`w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 focus:outline-none p-[3vw] md:p-[1vw] rounded-md text-dark border placeholder:text-light-grey ${
                             disabled ? "bg-gray-100 border-gray-300" : "border-neutral-50 focus:border-neutral-50"
                         } ${
                             cancelButton ? "pe-[9vw] md:pe-[2.6vw]" : ""
