@@ -41,6 +41,7 @@ export default function View({ auth, progress, tutors }) {
         major: progress.user.profile.major ?? "",
         order_code: progress.order.order_code,
         product: progress.products.name,
+        duration: progress.products.duration,
         topic: progress.topic?.topic ?? "",
         session: progress.session ?? "",
         date: progress.date ?? "",
@@ -264,6 +265,15 @@ export default function View({ auth, progress, tutors }) {
                                 data={data.product}
                                 setData={(i) => setData("product", i)}
                             />
+                            {progress?.products?.contact_type != "other" && (
+                                <GoalsTextInput
+                                    label="Duration"
+                                    disabled
+                                    data={data?.duration}
+                                    setData={(i) => setData("duration", i)}
+                                />
+                            )}
+
                             <GoalsTextInput
                                 label="Topic"
                                 disabled
