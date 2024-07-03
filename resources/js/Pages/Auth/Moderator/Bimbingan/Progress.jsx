@@ -98,11 +98,7 @@ export default function Progress({ auth, data: recentOrder }) {
                 Cell: ({ renderedCellValue, cell }) => {
                     const course = cell.row.original.course;
 
-                    if (course.child.length > 0) {
-                        return;
-                    }
-
-                    if (course?.date == null && course?.time == null)
+                    if ((course?.date == null && course?.time == null) || course.child.length > 0)
                         return "-";
                     return (
                         <div className="flex items-center justify-between text-[.8vw]">
@@ -124,7 +120,7 @@ export default function Progress({ auth, data: recentOrder }) {
                 Cell: ({ cell }) => {
                     const course = cell.row.original.course;
 
-                    if (course?.is_tutor == null || course?.child.length > 1)
+                    if (course?.is_tutor == null || course?.child.length > 0)
                         return;
                     return (
                         <span className="items-center justify-center w-full">
@@ -143,7 +139,7 @@ export default function Progress({ auth, data: recentOrder }) {
                 enableSorting: false,
                 Cell: ({ cell }) => {
                     const course = cell.row.original?.course;
-                    if (course?.is_user == null || course?.child.length > 1) {
+                    if (course?.is_user == null || course?.child.length > 0) {
                         return;
                     } else
                         return (
@@ -165,6 +161,9 @@ export default function Progress({ auth, data: recentOrder }) {
                     if (course?.ongoing == null) return;
 
                     // const status = upperCaseFirstLetter(course?.ongoing);
+                    if (course?.child.length > 0) {
+                        return;
+                    }
 
                     const status =
                         course?.child.find(
@@ -200,7 +199,7 @@ export default function Progress({ auth, data: recentOrder }) {
             const courseTime = moment(course.date + " " + course.time);
             const isPassed = moment().diff(courseTime, "s") > 0;
 
-            if (course?.child.length > 1) {
+            if (course.child.length > 0) {
                 // if (course.ongoing == "selesai") {
                 //     return (
                 //         <div className="text-nowrap">
