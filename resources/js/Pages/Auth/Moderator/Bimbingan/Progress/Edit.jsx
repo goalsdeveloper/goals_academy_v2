@@ -290,8 +290,9 @@ export default function Edit({ auth, progress, tutors, places }) {
                                         options={tutors}
                                         getOptionLabel={(option) => option.name}
                                         style={{ width: "100%" , height: '100%'}}
+                                        inputValue={data.tutor?.name}
                                         renderInput={(params) => (
-                                            <TextField {...params} placeholder="Select tutor"/>
+                                            <TextField {...params} placeholder="Select tutor" />
                                         )}
                                         onChange={(e, value) => {
                                             setData({

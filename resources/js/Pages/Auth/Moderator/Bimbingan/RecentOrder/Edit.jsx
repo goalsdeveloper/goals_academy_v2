@@ -237,6 +237,7 @@ export default function Edit({ auth, order, places, tutors }) {
                                     options={tutors}
                                     getOptionLabel={(option) => option.name}
                                     style={{ width: "100%", height: "100%" }}
+                                    inputValue={formData.tutor}
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
