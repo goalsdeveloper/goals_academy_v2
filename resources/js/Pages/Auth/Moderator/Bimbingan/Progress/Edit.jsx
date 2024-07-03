@@ -21,6 +21,7 @@ import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 import { canSubmitFormCheckerProgress } from "../utils";
+import { Autocomplete, TextField } from "@mui/material";
 
 export default function Edit({ auth, progress, tutors, places }) {
     const product_category = progress.products.category.slug;
@@ -278,28 +279,30 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 </a>
                             </div>
                             <div className="flex gap-[.4vw] w-full items-end">
-                                <SelectInput
-                                    label="Tutor"
-                                    value={data.tutor?.name}
-                                    className="w-full"
+                                <label
+                                    htmlFor="tutor"
+                                    className="w-full grid items-center gap-[.4vw]"
                                 >
-                                    {tutors.map((item, index) => {
-                                        return (
-                                            <SelectInputItem
-                                                key={item.id}
-                                                onClick={() => {
-                                                    setData({
-                                                        ...data,
-                                                        tutor: item,
-                                                        tutor_id: item.id,
-                                                    });
-                                                }}
-                                            >
-                                                {item.name}
-                                            </SelectInputItem>
-                                        );
-                                    })}
-                                </SelectInput>
+                                    Tutor
+                                    <Autocomplete
+                                        id="tutor"
+                                        disablePortal
+                                        options={tutors}
+                                        getOptionLabel={(option) => option.name}
+                                        style={{ width: "100%" , height: '100%'}}
+                                        inputValue={data.tutor?.name}
+                                        renderInput={(params) => (
+                                            <TextField {...params} placeholder="Select tutor" />
+                                        )}
+                                        onChange={(e, value) => {
+                                            setData({
+                                                ...data,
+                                                tutor: value,
+                                                tutor_id: value.id,
+                                            });
+                                        }}
+                                    />
+                                </label>
                                 <a
                                     href={`https://wa.me/${phoneNumberFormat(
                                         data?.tutor?.profile?.phone_number
