@@ -37,12 +37,15 @@ export default function Edit({ auth, progress, tutors, places }) {
         major: progress.user.profile.major ?? "",
         order_code: progress.order.order_code,
         product: progress.products.name,
+        duration: progress.products.duration,
         topic: progress.topic?.topic ?? "",
         session: progress.session ?? "",
         date: progress.date ?? "",
         time: progress.time ? progress.time.substring(0, 5) : "",
         location: progress.location ?? "",
-        place: progress.place ? `${progress.place?.place} | ${progress.place?.city?.city}` : "",
+        place: progress.place
+            ? `${progress.place?.place} | ${progress.place?.city?.city}`
+            : "",
         city: progress.place?.city.city ?? "",
         number: progress.user.profile.phone_number ?? "",
         tutor: tutors?.find((item) => item.id == progress.tutor_id),
@@ -185,7 +188,10 @@ export default function Edit({ auth, progress, tutors, places }) {
                         <GoalsButton
                             variant="success"
                             size="sm"
-                            disabled={canSubmitFormCheckerProgress(progress, data) || checkSelectInput()}
+                            disabled={
+                                canSubmitFormCheckerProgress(progress, data) ||
+                                checkSelectInput()
+                            }
                             onClick={() => {
                                 transform((data) => ({
                                     _method: "put",
@@ -282,7 +288,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                                     setData({
                                                         ...data,
                                                         tutor: item,
-                                                        tutor_id: item.id
+                                                        tutor_id: item.id,
                                                     });
                                                 }}
                                             >
@@ -348,6 +354,14 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 data={data.product}
                                 setData={(i) => setData("product", i)}
                             />
+                            {progress.products.contact_type != "other" && (
+                                <GoalsTextInput
+                                    label="Duration"
+                                    disabled
+                                    data={data.duration}
+                                    setData={(i) => setData("duration", i)}
+                                />
+                            )}
                             <GoalsTextInput
                                 label="Topic"
                                 disabled
