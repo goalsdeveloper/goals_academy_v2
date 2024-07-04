@@ -34,7 +34,7 @@ export default function Hero() {
                     >
                         <input
                             type="text"
-                            className="w-7/12 md:w-7/12 bg-transparent rounded-full border-none focus:ring-0 focus:outline-none xl:leading-6 py-2 px-3 xl:py-2 xl:px-3 3xl:py-3"
+                            className="w-7/12 md:w-7/12 bg-transparent rounded-full border-none focus:ring-0 xl:leading-6 py-2 px-3 xl:py-2 xl:px-3 3xl:py-3"
                             placeholder="Masukkan emailmu disini ..."
                             value={data.email}
                             onChange={(e) =>
