@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\CourseStatusEnum;
 use App\Models\Course;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -52,7 +53,7 @@ class ExpiredCourseCheckerCron extends Command
                         $course->ongoing = "selesai";
                     // }
                     $course->update();
-                    $course->child()->update(["is_moderator" => true]);
+                    $course->child()->update(["is_moderator" => true, "ongoing" => CourseStatusEnum::SUCCESS->value]);
                 };
             }
             Log::info('mantap');
