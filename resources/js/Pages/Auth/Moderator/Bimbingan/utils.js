@@ -12,9 +12,7 @@ export function canSubmitFormCheckerProgress(progress, data) {
 
     let commonChecks = !data.tutor_id;
 
-    if (total_meet == 1) {
-        commonChecks = commonChecks || !data.date || !data.time;
-    }
+    commonChecks = commonChecks || !data.date || !data.time;
 
     if (isOnline && (commonChecks || !data.location)) return true;
     if (isOffline && (commonChecks || !data.place_id)) return true;

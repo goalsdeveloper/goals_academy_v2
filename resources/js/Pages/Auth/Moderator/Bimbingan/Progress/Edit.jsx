@@ -31,6 +31,9 @@ export default function Edit({ auth, progress, tutors, places }) {
         tutorDetails: false,
     });
 
+    const currentTutor = tutors?.find((item) => item.id == progress.tutor_id);
+
+    const [inputValueTutor, setInputValueTutor] = React.useState("");
     const { data, setData, post, transform } = useForm({
         add_on: progress.add_ons ?? undefined,
         username: progress.user.username,
@@ -49,7 +52,7 @@ export default function Edit({ auth, progress, tutors, places }) {
             : "",
         city: progress.place?.city.city ?? "",
         number: progress.user.profile.phone_number ?? "",
-        tutor: tutors?.find((item) => item.id == progress.tutor_id),
+        tutor: currentTutor,
         rate_product: progress.product_review?.rate_product,
         note_product: progress.product_review?.note_product,
         note: progress.note,
@@ -220,7 +223,6 @@ export default function Edit({ auth, progress, tutors, places }) {
                         >
                             Batal
                         </GoalsButton>
-                        {console.log(progress)}
                         <GoalsButton
                             variant="success"
                             size="sm"
@@ -318,15 +320,39 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 >
                                     Tutor
                                     <Autocomplete
+                                        disableClearable
                                         id="tutor"
-                                        disablePortal
                                         options={tutors}
+                                        style={{ width: "100%" }}
+                                        renderInput={(params) => {
+                                            const { className, ...props } =
+                                                params.inputProps;
+                                            return (
+                                                <div
+                                                    ref={params.InputProps.ref}
+                                                >
+                                                    <input
+                                                        className={
+                                                            "w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[3vw] border placeholder:text-light-grey"
+                                                        }
+                                                        type="text"
+                                                        {...props}
+                                                    />
+                                                </div>
+                                            );
+                                        }}
+                                        inputValue={
+                                            inputValueTutor == ""
+                                                ? currentTutor.name
+                                                : inputValueTutor
+                                        }
+                                        onInputChange={(
+                                            event,
+                                            newInputValue
+                                        ) => {
+                                            setInputValueTutor(newInputValue);
+                                        }}
                                         getOptionLabel={(option) => option.name}
-                                        style={{ width: "100%" , height: '100%'}}
-                                        inputValue={data.tutor?.name}
-                                        renderInput={(params) => (
-                                            <TextField {...params} placeholder="Select tutor" />
-                                        )}
                                         onChange={(e, value) => {
                                             setData({
                                                 ...data,

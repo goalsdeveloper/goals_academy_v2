@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\CourseStatusEnum;
 use App\Models\Course;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -42,7 +43,7 @@ class ExpiredCourseCheckerCron extends Command
             $day_now = Carbon::now();
             $courses = Course::whereNull('parent_id')->where("ongoing", "!=", "selesai")->get();
             foreach ($courses as $course) {
-                $active_periode = $course->active_period;
+                $active_periode = $course->products->active_period;
                 $tanggal_beli = Carbon::parse($course->order->created_at)->addDays($active_periode);
                 if ($tanggal_beli < $day_now) {
                     $course->is_moderator = true;
@@ -52,7 +53,7 @@ class ExpiredCourseCheckerCron extends Command
                         $course->ongoing = "selesai";
                     // }
                     $course->update();
-                    $course->child()->update(["is_moderator" => true]);
+                    $course->child()->update(["is_moderator" => true, "ongoing" => CourseStatusEnum::SUCCESS->value]);
                 };
             }
             Log::info('mantap');

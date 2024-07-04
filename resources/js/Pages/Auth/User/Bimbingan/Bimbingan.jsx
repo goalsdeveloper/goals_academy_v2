@@ -118,7 +118,7 @@ function BimbinganItem({ data }) {
 
 export const EmptyProductLayout = ({
     imgUrl = figure,
-    redirectUrl = "/",
+    redirectUrl = "/produk",
     description = "Kamu belum punya program yang aktif nih",
     buttonTxt = "Cari Program",
 }) => {
