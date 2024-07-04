@@ -16,10 +16,12 @@ import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 import { canSubmitFormCheckerRecentOrder } from "../utils";
 import { Autocomplete, TextField } from "@mui/material";
+import React from "react";
 
 export default function Edit({ auth, order, places, tutors }) {
     const [isShow, setIsShow] = useState(false);
     const [showPlaces, setShowPlaces] = useState(false);
+    const [inputValueTutor, setInputValueTutor] = React.useState("");
     const {
         data: formData,
         setData: setFormData,
@@ -27,11 +29,11 @@ export default function Edit({ auth, order, places, tutors }) {
     } = useForm({
         id: "",
         place: `${order?.course?.place?.place} | ${order?.course?.place?.city.city}`,
-        place_id: order?.course?.place?.id,
-        location: order?.courser?.location,
-        tutor: order?.course?.tutor?.name,
-        tutor_id: order?.course?.tutor?.id,
-        tutor_phone: order?.course?.tutor?.profile?.phone_number,
+        place_id: order?.course?.place?.id ?? "",
+        location: order?.courser?.location ?? "",
+        tutor: order?.course?.tutor?.name ?? "",
+        tutor_id: order?.course?.tutor?.id ?? "",
+        tutor_phone: order?.course?.tutor?.profile?.phone_number ?? "",
         date: order?.course?.date ?? "",
         time: order?.course?.time ? order?.course?.time.substring(0, 5) : "",
     });
@@ -225,6 +227,7 @@ export default function Edit({ auth, order, places, tutors }) {
                                 <FaWhatsappSquare className="text-[#00D95F] text-[3.5vw] -m-[.3vw]" />
                             </a>
                         </div>
+
                         <div className="flex gap-[.4vw] w-full items-end">
                             <label
                                 htmlFor="tutor"
@@ -232,25 +235,40 @@ export default function Edit({ auth, order, places, tutors }) {
                             >
                                 Tutor
                                 <Autocomplete
+                                    disableClearable
                                     id="tutor"
-                                    disablePortal
                                     options={tutors}
+                                    renderInput={(params) => {
+                                        const { className, ...props } =
+                                            params.inputProps;
+                                        return (
+                                            <div ref={params.InputProps.ref}>
+                                                <input
+                                                    className={
+                                                        "w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[3vw] border placeholder:text-light-grey"
+                                                    }
+                                                    type="text"
+                                                    {...props}
+                                                />
+                                            </div>
+                                        );
+                                    }}
                                     getOptionLabel={(option) => option.name}
-                                    style={{ width: "100%", height: "100%" }}
-                                    inputValue={formData.tutor}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            placeholder="Select tutor"
-                                        />
-                                    )}
+                                    inputValue={
+                                        inputValueTutor == ""
+                                            ? formData.tutor
+                                            : inputValueTutor
+                                    }
+                                    onInputChange={(event, newInputValue) => {
+                                        setInputValueTutor(newInputValue);
+                                    }}
                                     onChange={(e, value) => {
                                         setFormData({
                                             ...formData,
-                                            tutor_id: value.id,
-                                            tutor: value.name,
+                                            tutor_id: value?.id,
+                                            tutor: value?.name,
                                             tutor_phone:
-                                                value.profile?.phone_number ??
+                                                value?.profile?.phone_number ??
                                                 "",
                                         });
                                     }}
@@ -339,3 +357,5 @@ export default function Edit({ auth, order, places, tutors }) {
         </DashboardLayout>
     );
 }
+
+function SearchableInput() {}
