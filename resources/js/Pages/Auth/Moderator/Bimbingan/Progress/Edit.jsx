@@ -41,6 +41,7 @@ export default function Edit({ auth, progress, tutors, places }) {
         major: progress.user.profile.major ?? "",
         order_code: progress.order.order_code,
         product: progress.products.name,
+        duration: progress.products.duration,
         topic: progress.topic?.topic ?? "",
         session: progress.session ?? "",
         date: progress.date ?? "",
@@ -230,6 +231,38 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 canSubmitFormCheckerProgress(progress, data) ||
                                 checkSelectInput()
                             }
+                            onClick={() => {
+                                transform((data) => ({
+                                    _method: "put",
+                                    tutor_id: data.tutor.id,
+                                    record: data.record,
+                                    is_moderator: data.is_moderator,
+                                    date: data.date,
+                                    time: data.time,
+                                    location: data.location,
+                                    place_id: data.place_id,
+                                }));
+
+                                post(
+                                    route(
+                                        "moderator.bimbingan.progress.update",
+                                        { progress: progress.id }
+                                    ),
+                                    {
+                                        preserveScroll: true,
+                                        onSuccess: () => {
+                                            toast.success(
+                                                "Data berhasil diubah"
+                                            );
+                                        },
+                                        onError: (errors) => {
+                                            if (errors.record) {
+                                                toast.error(errors.record[0]);
+                                            }
+                                        },
+                                    }
+                                );
+                            }}
                         >
                             Simpan
                         </GoalsButton>
@@ -386,6 +419,14 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 data={data.product}
                                 setData={(i) => setData("product", i)}
                             />
+                            {progress.products.contact_type != "other" && (
+                                <GoalsTextInput
+                                    label="Duration"
+                                    disabled
+                                    data={data.duration}
+                                    setData={(i) => setData("duration", i)}
+                                />
+                            )}
                             <GoalsTextInput
                                 label="Topic"
                                 disabled

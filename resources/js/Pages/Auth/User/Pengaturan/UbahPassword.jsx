@@ -101,7 +101,7 @@ function Input({ type, id, label, value, onChange }) {
                 onChange={onChange}
                 id={id}
                 type={type}
-                className="w-full border-1 xl:border-2 border-dark placeholder-shown:border-light-grey font-poppins rounded-[1vw] md:rounded-[.5vw] pt-[3vw] pb-[1.5vw] px-[3vw] md:pt-[1vw] md:pb-[.5vw] md:px-[1.75vw] focus:outline-none focus:border-dark peer"
+                className="w-full border-1 xl:border-2 border-dark placeholder-shown:border-light-grey font-poppins rounded-[1vw] md:rounded-[.5vw] pt-[3vw] pb-[1.5vw] px-[3vw] md:pt-[1vw] md:pb-[.5vw] md:px-[1.75vw] focus:border-dark peer"
                 placeholder=" "
             />
             <label

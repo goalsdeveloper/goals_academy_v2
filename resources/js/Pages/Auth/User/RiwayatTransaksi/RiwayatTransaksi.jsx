@@ -9,7 +9,6 @@ import { useMediaQuery } from "react-responsive";
 
 export default function RiwayatTransaksi({ auth, dataOrder }) {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
-    console.log(dataOrder[0].form_result);
     
     return (
         <UserLayout auth={auth} title="Riwayat Transaksi">

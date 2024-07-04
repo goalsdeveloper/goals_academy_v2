@@ -162,6 +162,15 @@ export default function Update({ auth, order, files }) {
                             data={order.products.name}
                             labelClassName="font-medium"
                         />
+                        {order.products.contact_type != "other" && (
+                            <GoalsTextInput
+                                disabled
+                                label="Duration"
+                                placeholder="Duration"
+                                data={order.products.duration}
+                                labelClassName="font-medium"
+                            />
+                        )}
                         <GoalsTextInput
                             disabled
                             label="Username"
