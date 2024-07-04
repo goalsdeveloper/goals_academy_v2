@@ -259,8 +259,9 @@ export default function Setting({ auth, user, skills }) {
                                             soft_skills: i,
                                         });
                                     }}
+                                    data={formData.soft_skills}
                                     label="Soft Skills"
-                                    className="text-[.8vw]"
+                                    className="!text-[.83vw]"
                                     labelClassName="font-medium"
                                     placeholderClassName="font-normal"
                                     submitButtonClassName="text-[.8vw] w-[5vw]"
@@ -339,7 +340,6 @@ export default function Setting({ auth, user, skills }) {
                                                             );
                                                         }
                                                     }}
-                                                    // className="text-[.8vw]"
                                                 >
                                                     {item.name}
                                                 </GoalsSelectMultipleInputItem>
@@ -376,8 +376,9 @@ export default function Setting({ auth, user, skills }) {
                                             hard_skills: i,
                                         });
                                     }}
+                                    data={formData.hard_skills}
                                     label="Hard Skills"
-                                    className="text-[.8vw]"
+                                    className="!text-[.83vw]"
                                     labelClassName="font-medium"
                                     placeholderClassName="font-normal"
                                     submitButtonClassName="text-[.8vw] w-[5vw]"
@@ -456,7 +457,6 @@ export default function Setting({ auth, user, skills }) {
                                                             );
                                                         }
                                                     }}
-                                                    // className="text-[.8vw]"
                                                 >
                                                     {item.name}
                                                 </GoalsSelectMultipleInputItem>
