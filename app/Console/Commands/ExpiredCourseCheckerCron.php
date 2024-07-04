@@ -42,7 +42,7 @@ class ExpiredCourseCheckerCron extends Command
             $day_now = Carbon::now();
             $courses = Course::whereNull('parent_id')->where("ongoing", "!=", "selesai")->get();
             foreach ($courses as $course) {
-                $active_periode = $course->active_period;
+                $active_periode = $course->products->active_period;
                 $tanggal_beli = Carbon::parse($course->order->created_at)->addDays($active_periode);
                 if ($tanggal_beli < $day_now) {
                     $course->is_moderator = true;
