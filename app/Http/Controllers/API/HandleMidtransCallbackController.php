@@ -61,6 +61,7 @@ class HandleMidtransCallbackController extends Controller
             ], 400);
         }
         $status = OrderEnum::PENDING->value;
+        $notificationInstance = new SuccessNotification($order);
 
         switch ($transactionStatus) {
             case 'settlement':
