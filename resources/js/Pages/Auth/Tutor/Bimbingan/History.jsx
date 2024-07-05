@@ -50,7 +50,7 @@ export default function History({ auth, history: historyResponse}) {
                 size: 150,
             },
             {
-                accessorFn: (row) => row?.topic?.topic ?? "No Topic",
+                accessorFn: (row) => row?.topic?.topic ?? "-",
                 header: "Topik",
                 size: 100,
             },
@@ -69,7 +69,7 @@ export default function History({ auth, history: historyResponse}) {
                 },
             },
             {
-                accessorFn: (row) => row?.place?.place ?? "No Place",
+                accessorFn: (row) => row?.place?.place ?? "-",
                 header: "Lokasi",
                 size: 100,
             },

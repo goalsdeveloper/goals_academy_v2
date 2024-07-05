@@ -33,7 +33,7 @@ class HistoryController extends Controller
                             ->orWhere('date', 'LIKE', "%$search%")
                             ->orWhere('time', 'LIKE', "%$search%");
                     });
-                })->with('user:id,username', 'products:id,name', 'place:id,place')->paginate($paginate);
+                })->with('user:id,username', 'products:id,name', 'place:id,place', 'topic')->paginate($paginate);
                 return $history;
             },
         ]);
