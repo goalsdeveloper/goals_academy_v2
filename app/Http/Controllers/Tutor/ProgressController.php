@@ -49,9 +49,11 @@ class ProgressController extends Controller
                             ->orWhere('date', 'LIKE', '%' . $search . '%')
                             ->orWhereHas('user', function ($q) use ($search) {
                                 $q->where('username', 'LIKE', '%' . $search . '%');
+                            })->orWhereHas('products', function ($q) use ($search) {
+                                $q->where('name', 'LIKE', '%' . $search . '%');
                             })->orWhereHas('topic', function ($q) use ($search) {
-                            $q->where('topic', 'LIKE', '%' . $search . '%');
-                        });
+                                $q->where('topic', 'LIKE', '%' . $search . '%');
+                            });
                     });
                 }
 
