@@ -142,7 +142,6 @@ export default function History({ auth, order_history: res }) {
                         pages,
                         per_page,
                         current_page,
-                        keyword,
                     }}
                 />
             );

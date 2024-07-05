@@ -5,7 +5,6 @@ import { createPortal } from "react-dom";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
-import { useEffect } from "react";
 
 const View = ({ tipe = "bimbingan", detailOrder }) => {
     const [isShow, setIsShow] = useState(false);
