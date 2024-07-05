@@ -105,9 +105,9 @@ const BottomPaginationTable = ({
                                 router.get(
                                     window.location.pathname +
                                         (searchQuery != null
-                                            ? `?search=${searchQuery}`
-                                            : "") +
-                                        `&perPage=${item}`
+                                            ? `?search=${searchQuery}&`
+                                            : "?") +
+                                        `perPage=${item}`
                                 );
                             }}
                         >

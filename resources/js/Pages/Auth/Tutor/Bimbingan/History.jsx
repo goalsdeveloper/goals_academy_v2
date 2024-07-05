@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Link } from "@inertiajs/react";
+import { Link,router } from "@inertiajs/react";
 import { useMediaQuery } from "react-responsive";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
@@ -33,9 +33,9 @@ export default function History({ auth, history: historyResponse}) {
 
     const onSearchCallback = (search) => {
         router.visit(
-            route("tutor.bimbingan.progress.index", { search: search }),
+            route("tutor.bimbingan.history.index", { search: search }),
             {
-                only: ["bimbingan"],
+                only: ["history"],
             }
         );
     };
@@ -50,7 +50,7 @@ export default function History({ auth, history: historyResponse}) {
                 size: 150,
             },
             {
-                accessorFn: (row) => row?.topic?.topic ?? "No Topic",
+                accessorFn: (row) => row?.topic?.topic ?? "-",
                 header: "Topik",
                 size: 100,
             },
@@ -69,7 +69,7 @@ export default function History({ auth, history: historyResponse}) {
                 },
             },
             {
-                accessorFn: (row) => row?.place?.place ?? "No Place",
+                accessorFn: (row) => row?.place?.place ?? "-",
                 header: "Lokasi",
                 size: 100,
             },
