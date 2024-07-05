@@ -254,13 +254,11 @@ export default function Edit({ auth, order, places, tutors }) {
                                         );
                                     }}
                                     getOptionLabel={(option) => option.name}
-                                    inputValue={
-                                        inputValueTutor == ""
-                                            ? formData.tutor
-                                            : inputValueTutor
-                                    }
+                                    inputValue={inputValueTutor}
                                     onInputChange={(event, newInputValue) => {
-                                        setInputValueTutor(newInputValue);
+                                        if (event != null) {
+                                            setInputValueTutor(newInputValue);
+                                        }
                                     }}
                                     onChange={(e, value) => {
                                         setFormData({
