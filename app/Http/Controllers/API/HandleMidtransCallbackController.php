@@ -61,7 +61,6 @@ class HandleMidtransCallbackController extends Controller
             ], 400);
         }
         $status = OrderEnum::PENDING->value;
-        $notificationInstance = new SuccessNotification($order);
 
         switch ($transactionStatus) {
             case 'settlement':
@@ -84,7 +83,7 @@ class HandleMidtransCallbackController extends Controller
                         'place_id' => $form_result['place_id'] ?? null,
                         'topic_id' => $form_result['topic'] ?? null,
                     ];
-                    if($order->products->category->name == "Desk Review") {
+                    if ($order->products->category->name == "Desk Review") {
                         $now = Carbon::now();
                         $dataParentCourse['date'] = $now->toDateString();
                         $dataParentCourse['time'] = $now->toTimeString();
@@ -122,6 +121,7 @@ class HandleMidtransCallbackController extends Controller
                         }
                     }
                     $moderators = User::where('user_role', UserRoleEnum::MODERATOR)->get();
+                    $order->user->notify($notificationInstance);
                     foreach ($moderators as $moderator) {
                         $moderator->notify(new GeneralCourseNotification("Ada Bimbingan Baru!", "Terdapat Bimbingan Baru dengan kode {$order->order_code} yang Harus diproses!", route('moderator.bimbingan.order.edit', ['order' => $order->order_code])));
                     }
@@ -130,6 +130,7 @@ class HandleMidtransCallbackController extends Controller
             case 'expire':
                 $status = OrderEnum::FAILED->value;
                 $notificationInstance = new ExpireNotification($order);
+                $order->user->notify($notificationInstance);
                 Log::info("Transaksi {$order->order_code} telah gagal pada " . now());
                 break;
             case 'cancel':
@@ -138,7 +139,6 @@ class HandleMidtransCallbackController extends Controller
                 break;
         }
         $order->status = $status;
-        $order->user->notify($notificationInstance);
         $order->save();
         OrderHistory::create([
             'order_id' => $order->id,
