@@ -146,12 +146,13 @@ export default function Update({ auth, order, files }) {
                         titleClassName="!font-semibold !text-[4vw] md:!text-[1.1vw]"
                         title="Order Details"
                         titleAction={
-                            <button
+                            <a
+                                role="button"
                                 className="text-secondary text-[3.6vw] md:text-[.9vw] font-medium flex items-center gap-[1vw] md:gap-[.2vw]"
                                 onClick={() => setShowDocuments(true)}
                             >
                                 File & Media <FiFileText />
-                            </button>
+                            </a>
                         }
                         bordered={isMobile}
                     >
@@ -167,7 +168,7 @@ export default function Update({ auth, order, files }) {
                                 disabled
                                 label="Duration"
                                 placeholder="Duration"
-                                data={order.products.duration}
+                                data={order.products.duration + " menit"}
                                 labelClassName="font-medium"
                             />
                         )}
