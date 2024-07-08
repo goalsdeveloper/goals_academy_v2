@@ -112,13 +112,13 @@ class UserSeeder extends Seeder
         //     'user_role' => 'admin',
         //     'email_verified_at' => now(),
         // ]);
-        // User::factory()
-        //     ->count(20)
-        //     ->state(new Sequence(
-        //         ['user_role' => 'tutor'],
-        //         ['user_role' => 'moderator'],
-        //         ['user_role' => 'user'],
-        //     ))
-        //     ->create();
+        User::factory()
+            ->count(15)
+            ->state(new Sequence(
+                ['user_role' => 'tutor'],
+                // ['user_role' => 'moderator'],
+                // ['user_role' => 'user'],
+            ))
+            ->create();
     }
 }
