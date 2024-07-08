@@ -65,7 +65,6 @@ class HandleMidtransCallbackController extends Controller
         switch ($transactionStatus) {
             case 'settlement':
                 $status = OrderEnum::SUCCESS->value;
-                $notificationInstance = new SuccessNotification($order);
                 Log::info("Transaksi {$order->order_code} telah berhasil pada " . now());
                 if ($order->products->productType->type == "Bimbingan") {
                     $count_course = $order->products->total_meet;
@@ -121,7 +120,7 @@ class HandleMidtransCallbackController extends Controller
                         }
                     }
                     $moderators = User::where('user_role', UserRoleEnum::MODERATOR)->get();
-                    $order->user->notify($notificationInstance);
+                    $order->user->notify(new SuccessNotification($order));
                     foreach ($moderators as $moderator) {
                         $moderator->notify(new GeneralCourseNotification("Ada Bimbingan Baru!", "Terdapat Bimbingan Baru dengan kode {$order->order_code} yang Harus diproses!", route('moderator.bimbingan.order.edit', ['order' => $order->order_code])));
                     }
@@ -129,8 +128,7 @@ class HandleMidtransCallbackController extends Controller
                 break;
             case 'expire':
                 $status = OrderEnum::FAILED->value;
-                $notificationInstance = new ExpireNotification($order);
-                $order->user->notify($notificationInstance);
+                $order->user->notify(new ExpireNotification($order));
                 Log::info("Transaksi {$order->order_code} telah gagal pada " . now());
                 break;
             case 'cancel':
