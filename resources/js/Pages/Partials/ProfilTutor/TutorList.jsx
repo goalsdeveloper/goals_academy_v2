@@ -5,34 +5,106 @@ import CornerWaveVector from "@/Components/CornerWaveVector";
 import TutorCardNew from "@/Components/TutorCardNew";
 import GoalsButton from "@/Components/GoalsButton";
 import { router } from "@inertiajs/react";
+import { useState } from "react";
 
-export default function TutorList({ data }) {
+export default function TutorList({ data, skillSearch }) {
+    const [dataTutor, setDataTutor] = useState(data.data);
+    const [nextPageUrl, setNextPageUrl] = useState(data.next_page_url);
+    const [nextPage, setNextPage] = useState(++data.current_page);
+    const [totalTutor, setTotalTutor] = useState(data.total);
     const handleSearch = (skill) => {
-        router.visit(route('profilTutor', {skill: skill}), {
-            only: ['tutors'],
+        router.visit(route("profilTutor", { skill: skill }), {
+            only: ["tutors", "skill"],
             preserveScroll: true,
-        })
-    }
+        });
+    };
+
+    const handleLoadMore = (skill, page) => {
+        router.visit(route("profilTutor", { skill: skill, page: page }), {
+            only: ['skill', 'tutors'],
+            preserveScroll: true,
+            replace: false,
+            // preserveState: true,
+            onSuccess: (res) => {
+                // console.log(res.props.tutors.data);
+                setDataTutor((n) => ([...n, res.props.tutors.data]))
+                console.log(dataTutor, res.props.tutors.data)
+            },
+        });
+    };
 
     return (
         <section id="tutor_list" className="">
             <div className="mx-[7vw] pb-[13vw] md:pb-[5vw]">
-                {/* <div className="flex gap-3">
-                    <GoalsButton isActive className={"py-4 px-6 rounded-lg"} onClick={() => handleSearch('')}>
-                        Semua
-                    </GoalsButton>
-                    <GoalsButton className={"py-4 px-6 rounded-lg border bg-white !text-black hover:!text-white "} onClick={() => handleSearch('kualitatif')}>
-                        Kualitatif
-                    </GoalsButton>
-                    <GoalsButton className={"py-4 px-6 rounded-lg border bg-white !text-black hover:!text-white"}>
-                        Kuantitatif
-                    </GoalsButton>
-                    <GoalsButton className={"py-4 px-6 rounded-lg border bg-white !text-black hover:!text-white"}>
-                        Ilmu Sosial
-                    </GoalsButton>
-                </div> */}
+                <Swiper
+                    modules={[Navigation, Pagination, A11y, FreeMode]}
+                    slidesPerView={"auto"}
+                    grabCursor={true}
+                    freeMode={true}
+                >
+                    <SwiperSlide
+                        style={{ width: "fit-content" }}
+                        className="p-1 md:p-2 lg:p-3 xl:p-4"
+                    >
+                        <GoalsButton
+                            className={`py-4 px-6 rounded-lg border  ${
+                                skillSearch == ""
+                                    ? "bg-secondary text-white"
+                                    : "bg-white !text-black hover:!text-white"
+                            }`}
+                            onClick={() => handleSearch("")}
+                        >
+                            Semua
+                        </GoalsButton>
+                    </SwiperSlide>
+                    <SwiperSlide
+                        style={{ width: "fit-content" }}
+                        className="p-1 md:p-2 lg:p-3 xl:p-4"
+                    >
+                        <GoalsButton
+                            className={`py-4 px-6 rounded-lg border  ${
+                                skillSearch == "kualitatif"
+                                    ? "bg-secondary text-white"
+                                    : "bg-white !text-black hover:!text-white"
+                            }`}
+                            onClick={() => handleSearch("kualitatif")}
+                        >
+                            Kualitatif
+                        </GoalsButton>
+                    </SwiperSlide>
+                    <SwiperSlide
+                        style={{ width: "fit-content" }}
+                        className="p-1 md:p-2 lg:p-3 xl:p-4"
+                    >
+                        <GoalsButton
+                            className={`py-4 px-6 rounded-lg border  ${
+                                skillSearch == "kuantitatif"
+                                    ? "bg-secondary text-white"
+                                    : "bg-white !text-black hover:!text-white"
+                            }`}
+                            onClick={() => handleSearch("kuantitatif")}
+                        >
+                            Kuantitatif
+                        </GoalsButton>
+                    </SwiperSlide>
+                    <SwiperSlide
+                        style={{ width: "fit-content" }}
+                        className="p-1 md:p-2 lg:p-3 xl:p-4"
+                    >
+                        <GoalsButton
+                            className={`py-4 px-6 rounded-lg border  ${
+                                skillSearch == "ilmu sosial"
+                                    ? "bg-secondary text-white"
+                                    : "bg-white !text-black hover:!text-white"
+                            }`}
+                            onClick={() => handleSearch("ilmu sosial")}
+                        >
+                            Ilmu Sosial
+                        </GoalsButton>
+                    </SwiperSlide>
+                </Swiper>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-4 my-5">
-                    {data.map(({ name, profile, skills }, index) => {
+                    {dataTutor.map(({ name, profile, skills }, index) => {
                         return (
                             <TutorCardNew
                                 key={index}
@@ -43,10 +115,20 @@ export default function TutorList({ data }) {
                         );
                     })}
                 </div>
-                <p className="text-center pt-12 pb-3">Menampilkan <strong>12</strong> dari <strong>28</strong></p>
-                <GoalsButton className={"rounded-md w-1/2 md:w-1/4 mx-auto"}>
-                    Tampilkan Lebih Banyak
-                </GoalsButton>
+                <p className="text-center pt-12 pb-3">
+                    Menampilkan <strong>{dataTutor.length}</strong> dari{" "}
+                    <strong>{totalTutor}</strong>
+                </p>
+                {nextPageUrl ? (
+                    <GoalsButton
+                        className={"rounded-md w-1/2 md:w-1/4 mx-auto"}
+                        onClick={() => handleLoadMore(skillSearch, nextPage)}
+                    >
+                        Tampilkan Lebih Banyak
+                    </GoalsButton>
+                ) : (
+                    ""
+                )}
             </div>
         </section>
     );
