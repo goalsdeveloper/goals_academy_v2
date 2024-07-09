@@ -1,42 +1,135 @@
-import 'swiper/css';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, A11y, FreeMode } from 'swiper/modules';
-import TutorCard from "@/Components/TutorCard";
-import CornerWaveVector from '@/Components/CornerWaveVector';
+import "swiper/css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, A11y, FreeMode } from "swiper/modules";
+import CornerWaveVector from "@/Components/CornerWaveVector";
+import TutorCardNew from "@/Components/TutorCardNew";
+import GoalsButton from "@/Components/GoalsButton";
+import { router } from "@inertiajs/react";
+import { useState } from "react";
 
-export default function TutorList ({ data }) {
+export default function TutorList({ data, skillSearch }) {
+    const [dataTutor, setDataTutor] = useState(data.data);
+    const [nextPageUrl, setNextPageUrl] = useState(data.next_page_url);
+    const [nextPage, setNextPage] = useState(++data.current_page);
+    const [totalTutor, setTotalTutor] = useState(data.total);
+    const handleSearch = (skill) => {
+        router.visit(route("profilTutor", { skill: skill }), {
+            only: ["tutors", "skill"],
+            preserveScroll: true,
+        });
+    };
+
+    const handleLoadMore = (skill, page) => {
+        router.visit(route("profilTutor", { skill: skill, page: page }), {
+            only: ['skill', 'tutors'],
+            preserveScroll: true,
+            replace: false,
+            // preserveState: true,
+            onSuccess: (res) => {
+                // console.log(res.props.tutors.data);
+                setDataTutor((n) => ([...n, res.props.tutors.data]))
+                console.log(dataTutor, res.props.tutors.data)
+            },
+        });
+    };
+
     return (
-        <section id="tutor_list" className="my-16 xs:my-20 md:my-16 lg:my-20 xl:my-24 3xl:my-32 overflow-hidden relative bg-secondary md:rounded-t-[15%] py-16 md:py-12 xl:py-24">
-            <CornerWaveVector cornerClassName="w-8/12 md:w-5/12" corner2ClassName="hidden md:block w-5/12" />
-            <div className="container mx-auto text-white">
-                <div className="text-center mb-8 md:mb-8 lg:mb-12 xl:mb-16 2xl:mb-20 3xl:mb-24">
-                    <h2 className="text-white">Tutor Goals Academy</h2>
-                    <p>Mari Kenalan Dulu Sama Tutor di Goals Academy</p>
-                </div>
-                <div className="hidden md:grid md:grid-cols-3 gap-16 md:gap-4 lg:gap-5 xl:gap-6 2xl:gap-8 3xl:gap-10">
-                    {data.map(({name, headline, image, description, linkedin, instagram}, index) => {
-                        return (
-                            <TutorCard key={index} name={name} headline={headline} image={image} description={description} linkedin={linkedin} instagram={instagram} />
-                        )
-                    })}
-                </div>
+        <section id="tutor_list" className="">
+            <div className="mx-[7vw] pb-[13vw] md:pb-[5vw]">
                 <Swiper
-                modules={[Navigation, Pagination, A11y, FreeMode]}
-                className='swiper-mobile'
-                wrapperClass="swiper-wrapper -ms-2"
-                slidesPerView={1}
-                grabCursor={true}
-                freeMode={true}
+                    modules={[Navigation, Pagination, A11y, FreeMode]}
+                    slidesPerView={"auto"}
+                    grabCursor={true}
+                    freeMode={true}
                 >
-                    {data.map(({name, headline, image, description, linkedin, instagram}, index) => {
-                        return (
-                            <SwiperSlide key={index} style={{ width: "fit-content" }} className="p-4 md:p-2 lg:p-3 xl:p-4">
-                                <TutorCard key={index} name={name} headline={headline} image={image} description={description} linkedin={linkedin} instagram={instagram} />
-                            </SwiperSlide>
-                        )
-                    })}
+                    <SwiperSlide
+                        style={{ width: "fit-content" }}
+                        className="p-1 md:p-2 lg:p-3 xl:p-4"
+                    >
+                        <GoalsButton
+                            className={`py-4 px-6 rounded-lg border  ${
+                                skillSearch == ""
+                                    ? "bg-secondary text-white"
+                                    : "bg-white !text-black hover:!text-white"
+                            }`}
+                            onClick={() => handleSearch("")}
+                        >
+                            Semua
+                        </GoalsButton>
+                    </SwiperSlide>
+                    <SwiperSlide
+                        style={{ width: "fit-content" }}
+                        className="p-1 md:p-2 lg:p-3 xl:p-4"
+                    >
+                        <GoalsButton
+                            className={`py-4 px-6 rounded-lg border  ${
+                                skillSearch == "kualitatif"
+                                    ? "bg-secondary text-white"
+                                    : "bg-white !text-black hover:!text-white"
+                            }`}
+                            onClick={() => handleSearch("kualitatif")}
+                        >
+                            Kualitatif
+                        </GoalsButton>
+                    </SwiperSlide>
+                    <SwiperSlide
+                        style={{ width: "fit-content" }}
+                        className="p-1 md:p-2 lg:p-3 xl:p-4"
+                    >
+                        <GoalsButton
+                            className={`py-4 px-6 rounded-lg border  ${
+                                skillSearch == "kuantitatif"
+                                    ? "bg-secondary text-white"
+                                    : "bg-white !text-black hover:!text-white"
+                            }`}
+                            onClick={() => handleSearch("kuantitatif")}
+                        >
+                            Kuantitatif
+                        </GoalsButton>
+                    </SwiperSlide>
+                    <SwiperSlide
+                        style={{ width: "fit-content" }}
+                        className="p-1 md:p-2 lg:p-3 xl:p-4"
+                    >
+                        <GoalsButton
+                            className={`py-4 px-6 rounded-lg border  ${
+                                skillSearch == "ilmu sosial"
+                                    ? "bg-secondary text-white"
+                                    : "bg-white !text-black hover:!text-white"
+                            }`}
+                            onClick={() => handleSearch("ilmu sosial")}
+                        >
+                            Ilmu Sosial
+                        </GoalsButton>
+                    </SwiperSlide>
                 </Swiper>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-4 my-5">
+                    {dataTutor.map(({ name, profile, skills }, index) => {
+                        return (
+                            <TutorCardNew
+                                key={index}
+                                name={name}
+                                image={profile.profile_image}
+                                skills={skills}
+                            />
+                        );
+                    })}
+                </div>
+                <p className="text-center pt-12 pb-3">
+                    Menampilkan <strong>{dataTutor.length}</strong> dari{" "}
+                    <strong>{totalTutor}</strong>
+                </p>
+                {nextPageUrl ? (
+                    <GoalsButton
+                        className={"rounded-md w-1/2 md:w-1/4 mx-auto"}
+                        onClick={() => handleLoadMore(skillSearch, nextPage)}
+                    >
+                        Tampilkan Lebih Banyak
+                    </GoalsButton>
+                ) : (
+                    ""
+                )}
             </div>
         </section>
-    )
+    );
 }

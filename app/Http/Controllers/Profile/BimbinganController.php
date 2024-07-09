@@ -58,7 +58,7 @@ class BimbinganController extends Controller
         })->whereHas('products.productType', function (Builder $query) {
             $query->where('type', 'like', '%bimbingan%');
         })
-            ->with('order', 'tutor:id,name', 'tutorNote', 'fileUploads', 'products:id,name,slug,product_image,contact_type', 'place:id,place', 'place.city:id,city', 'addOns', 'topic:id,topic', 'productReview')
+            ->with('order', 'tutor:id,name', 'tutorNote', 'fileUploads', 'products:id,name,slug,product_image,contact_type,active_period', 'place:id,place', 'place.city:id,city', 'addOns', 'topic:id,topic', 'productReview')
             ->get();
         if ($course->isEmpty()) {
             return abort(404);
@@ -130,6 +130,7 @@ class BimbinganController extends Controller
             foreach ($moderators as $moderator) {
                 $moderator->notify(new GeneralCourseNotification("User Telah set Jadwal!", "Bimbingan {$order->order_code} sesi {$course->session} telah diset oleh pengguna, yuk cek segera!", route('moderator.bimbingan.progress.edit', ['progress' => $course])));
             }
+            $course->tutor->notify(new GeneralCourseNotification("User Telah set Jadwal!", "Bimbingan {$order->order_code} sesi {$course->session} telah diset oleh pengguna, yuk cek segera!", route('moderator.bimbingan.progress.edit', ['progress' => $course])));
             $course->update($data);
         } catch (\Throwable $th) {
 

@@ -123,6 +123,8 @@ export const AturJadwalPopup = ({
     date,
     topics,
     order_code,
+    purchased_date,
+    active_period,
 }) => {
     const { courseDetail } = usePage().props;
     const contact_type = courseDetail[0].products.contact_type;
@@ -189,7 +191,7 @@ export const AturJadwalPopup = ({
                     <FiX className="text-[3.7vw] md:text-[1.8vw]" />
                 </button>
             </div>
-            <div className="space-y-[1.6vw] md:space-y-[.4vw]">
+            <div className="space-y-[4vw] md:space-y-[1vw]">
                 {getInputBasedContactType(
                     contact_type,
                     data,
@@ -199,7 +201,9 @@ export const AturJadwalPopup = ({
                     cities,
                     topics,
                     theme,
-                    unavailableDate
+                    unavailableDate,
+                    purchased_date,
+                    active_period,
                 )}
             </div>
 
@@ -241,7 +245,9 @@ function getInputBasedContactType(
     cities,
     topics,
     theme,
-    unavailableDate
+    unavailableDate,
+    purchased_date,
+    active_period
 ) {
     switch (contact_type) {
         case "online":
@@ -255,7 +261,7 @@ function getInputBasedContactType(
                         data={data.date}
                         setData={(i) => setData("date", i)}
                         minDate={moment()}
-                        maxDate={moment().add(6, "days")}
+                        maxDate={moment(purchased_date).add(active_period, "days")}
                         shouldDisableDate={unavailableDate}
                         theme={theme}
                         slotProps={datepickerStyle.slotProps}
@@ -270,7 +276,7 @@ function getInputBasedContactType(
                         data={data.date}
                         setData={(i) => setData("date", i)}
                         minDate={moment()}
-                        maxDate={moment().add(6, "days")}
+                        maxDate={moment(purchased_date).add(active_period, "days")}
                         shouldDisableDate={unavailableDate}
                         theme={theme}
                         slotProps={mobileDatepickerStyle.slotProps}
@@ -320,7 +326,7 @@ function getInputBasedContactType(
                         data={data.date}
                         setData={(i) => setData("date", i)}
                         minDate={moment()}
-                        maxDate={moment().add(6, "days")}
+                        maxDate={moment(purchased_date).add(active_period, "days")}
                         shouldDisableDate={unavailableDate}
                         theme={theme}
                         slotProps={datepickerStyle.slotProps}
@@ -335,7 +341,7 @@ function getInputBasedContactType(
                         data={data.date}
                         setData={(i) => setData("date", i)}
                         minDate={moment()}
-                        maxDate={moment().add(6, "days")}
+                        maxDate={moment(purchased_date).add(active_period, "days")}
                         shouldDisableDate={unavailableDate}
                         theme={theme}
                         slotProps={mobileDatepickerStyle.slotProps}
@@ -457,7 +463,7 @@ function getInputBasedContactType(
                         data={data.date}
                         setData={(i) => setData("date", i)}
                         minDate={moment()}
-                        maxDate={moment().add(6, "days")}
+                        maxDate={moment(purchased_date).add(active_period, "days")}
                         shouldDisableDate={unavailableDate}
                         theme={theme}
                         slotProps={datepickerStyle.slotProps}
@@ -472,7 +478,7 @@ function getInputBasedContactType(
                         data={data.date}
                         setData={(i) => setData("date", i)}
                         minDate={moment()}
-                        maxDate={moment().add(6, "days")}
+                        maxDate={moment(purchased_date).add(active_period, "days")}
                         shouldDisableDate={unavailableDate}
                         theme={theme}
                         slotProps={mobileDatepickerStyle.slotProps}

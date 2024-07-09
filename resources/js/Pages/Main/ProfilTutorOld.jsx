@@ -1,7 +1,7 @@
 import MainLayout from "@/Layouts/MainLayout";
-import Hero from "../Partials/ProfilTutor/Hero";
-import TutorList from "../Partials/ProfilTutor/TutorList";
-import Consultation from "../Partials/ProfilTutor/Consultation";
+import Hero from "../Partials/ProfilTutorOld/Hero";
+import TutorList from "../Partials/ProfilTutorOld/TutorList";
+import Consultation from "../Partials/ProfilTutorOld/Consultation";
 
 import tutor1 from "/resources/img/tutor/1.png";
 import tutor2 from "/resources/img/tutor/2.png";
@@ -9,10 +9,9 @@ import tutor3 from "/resources/img/tutor/3.png";
 import tutor4 from "/resources/img/tutor/4.png";
 import tutor5 from "/resources/img/tutor/5.png";
 import tutor6 from "/resources/img/tutor/6.png";
-import TutorListOld from "../Partials/ProfilTutor/TutorList";
+import TutorListOld from "../Partials/ProfilTutorOld/TutorList";
 
-export default function ProfilTutor({ auth, tutors, skill }) {
-    console.log(tutors)
+export default function ProfilTutorOld({ auth }) {
     const data_tutor = [
         {
             name: "Widyana Rahma Cahyani",
@@ -69,9 +68,8 @@ export default function ProfilTutor({ auth, tutors, skill }) {
 
     return (
         <MainLayout auth={auth} title="Profil Tutor">
-        {/* <div className="absolute w-[523px] h-[523px] rounded-full right-[-20vw] border-dashed border-8 -z-10 border-secondary"></div> */}
             <Hero />
-            <TutorList data={tutors} skillSearch={skill} />
+            <TutorListOld data={data_tutor} />
             <Consultation />
         </MainLayout>
     );

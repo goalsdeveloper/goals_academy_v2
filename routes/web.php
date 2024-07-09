@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarContr
 use App\Http\Controllers\Admin\Webinar\WebinarController;
 use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\DashboardUserController;
+use App\Http\Controllers\MainController;
 // use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
@@ -81,8 +82,9 @@ Route::get('/profil_perusahaan', function () {
     return Inertia::render('Main/ProfilPerusahaan');
 });
 
+Route::get('/profil_tutor_new', [MainController::class, 'profilTutor'])->name('profilTutor');
 Route::get('/profil_tutor', function () {
-    return Inertia::render('Main/ProfilTutor');
+    return Inertia::render('Main/ProfilTutorOld');
 });
 
 Route::get('/syarat_dan_ketentuan', function () {
