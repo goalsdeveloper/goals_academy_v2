@@ -18,8 +18,12 @@ class MainController extends Controller
                     return $q->whereHas('skills', function($q) use($skill_query) {
                         $q->where('name', 'like', "%$skill_query%");
                     });
-                })->with('skills', 'profile')->get();
+                })->with('skills', 'profile')->paginate(5);
+                // dd($tutors);
                 return $tutors;
+            },
+            'skill' => function () use($req){
+                return $req->skill ?? "";
             }
         ]);
     }

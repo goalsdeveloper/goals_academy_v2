@@ -82,8 +82,8 @@ Route::get('/profil_perusahaan', function () {
     return Inertia::render('Main/ProfilPerusahaan');
 });
 
-Route::get('/profil_tutor', [MainController::class, 'profilTutor'])->name('profilTutor');
-Route::get('/profil_tutor_old', function () {
+Route::get('/profil_tutor_new', [MainController::class, 'profilTutor'])->name('profilTutor');
+Route::get('/profil_tutor', function () {
     return Inertia::render('Main/ProfilTutorOld');
 });
 
