@@ -11,7 +11,7 @@ import tutor5 from "/resources/img/tutor/5.png";
 import tutor6 from "/resources/img/tutor/6.png";
 import TutorListOld from "../Partials/ProfilTutor/TutorList";
 
-export default function ProfilTutor({ auth, tutors,  }) {
+export default function ProfilTutor({ auth, tutors, skill }) {
     console.log(tutors)
     const data_tutor = [
         {
@@ -69,8 +69,9 @@ export default function ProfilTutor({ auth, tutors,  }) {
 
     return (
         <MainLayout auth={auth} title="Profil Tutor">
+        {/* <div className="absolute w-[523px] h-[523px] rounded-full right-[-20vw] border-dashed border-8 -z-10 border-secondary"></div> */}
             <Hero />
-            <TutorList data={tutors} />
+            <TutorList data={tutors} skillSearch={skill} />
             <Consultation />
         </MainLayout>
     );
