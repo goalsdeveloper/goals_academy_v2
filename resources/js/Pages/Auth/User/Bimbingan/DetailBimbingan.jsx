@@ -98,6 +98,8 @@ export default function DetailPesanan({
                         />
                         <AturJadwalPopup
                             order_code={dataBimbingan[0].order.order_code}
+                            purchased_date={dataBimbingan[0].order.created_at}
+                            active_period={Number(dataBimbingan[0].products.active_period) - 1}
                             {...dataAturJadwalComp}
                             show={showPopUp.aturJadwalPopup}
                             setShow={() =>
@@ -160,7 +162,7 @@ export default function DetailPesanan({
                             className={`
                     fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center items-center pb-[3.7vw] pt-[3.4vw] bg-white md:p-0 z-[40] md:z-0 px-[6vw]`}
                         >
-                            {console.log(dataBimbingan)}
+                            {/* {console.log(dataBimbingan)} */}
                             <GoalsButton
                                 disabled={
                                     (dataBimbingan.length > 1 &&

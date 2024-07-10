@@ -81,6 +81,9 @@ Route::get('/karir', function () {
 Route::get('/profil_perusahaan', function () {
     return Inertia::render('Main/ProfilPerusahaan');
 });
+Route::get('/profil_perusahaan2', function () {
+    return Inertia::render('Main/ProfilPerusahaanBaru');
+});
 
 Route::get('/profil_tutor_new', [MainController::class, 'profilTutor'])->name('profilTutor');
 Route::get('/profil_tutor', function () {

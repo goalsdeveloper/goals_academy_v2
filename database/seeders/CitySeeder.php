@@ -14,8 +14,8 @@ class CitySeeder extends Seeder
     {
         City::insert([
             ['city' => 'Malang'],
-            ['city' => 'Surabaya'],
-            ['city' => 'Jakarta'],
+            // ['city' => 'Surabaya'],
+            // ['city' => 'Jakarta'],
         ]);
     }
 }

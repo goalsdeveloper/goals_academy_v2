@@ -5,6 +5,9 @@ import {
     ProductItemCardHeader,
     ProductItemCardLayout,
 } from "@/Components/fragments/ProductItemCard";
+import {
+    upperCaseFirstLetter,
+} from "@/script/utils";
 import UserLayout from "@/Layouts/UserLayout";
 import "@/script/momentCustomLocale";
 import { Link } from "@inertiajs/react";
@@ -57,9 +60,15 @@ function BimbinganItem({ data }) {
               .add(data?.products?.duration, "minutes")
               .format("HH:mm")
         : "N/A";
-    const courseStatus =
-        data.ongoing.charAt(0).toUpperCase() +
-        data.ongoing.slice(1);
+    const courseStatus = data.child.find((x) => x.ongoing == "berjalan") == null || data?.child.length < 1
+                        ? upperCaseFirstLetter(data?.ongoing)
+                        : "Berjalan"
+
+    // const courseStatus =
+    //     data.ongoing.charAt(0).toUpperCase() +
+    //     data.ongoing.slice(1);
+
+    console.log(courseStatus);
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
