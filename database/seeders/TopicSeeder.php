@@ -14,21 +14,21 @@ class TopicSeeder extends Seeder
     public function run(): void
     {
         Topic::create([
-            'topic' => 'topic 1',
-            'slug' => Str::slug('topic 1'),
+            'topic' => 'Sesuai Permintaan',
+            'slug' => Str::slug('Sesuai Permintaan'),
         ]);
-        Topic::create([
-            'topic' => 'topic 2',
-            'slug' => Str::slug('topic 2'),
-        ]);
-        Topic::create([
-            'topic' => 'topic 3',
-            'slug' => Str::slug('topic 3'),
-        ]);
-        Topic::create([
-            'topic' => 'topic 4',
-            'slug' => Str::slug('topic 4'),
-        ]);
+        // Topic::create([
+        //     'topic' => 'topic 2',
+        //     'slug' => Str::slug('topic 2'),
+        // ]);
+        // Topic::create([
+        //     'topic' => 'topic 3',
+        //     'slug' => Str::slug('topic 3'),
+        // ]);
+        // Topic::create([
+        //     'topic' => 'topic 4',
+        //     'slug' => Str::slug('topic 4'),
+        // ]);
 
     }
 }

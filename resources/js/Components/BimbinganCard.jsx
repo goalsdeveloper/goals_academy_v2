@@ -31,16 +31,18 @@ export default function BimbinganCard({ item, className }) {
                     </div>
                 </div>
                 <p className="my-[3vw] md:my-[1vw] md:h-[6vw] md:overflow-hidden">
-                    {item.description}
+                    {item.excerpt}{item.description.length > 128 ? "..." : ""}
                 </p>
-                <div className="flex flex-col gap-[2vw] md:gap-[.5vw] mb-[8vw] md:mb-[2vw]">
-                    <p>Layanan :</p>
-                    {item.facilities.map(({icon, text}, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                            <i className={`${icon} text-secondary`}></i>
-                            <p>{text}</p>
-                        </div>
-                    ))}
+                <div className="flex flex-col gap-[2vw] md:gap-[.5vw] mb-[6vw] md:mb-[2vw]">
+                    <p>Fasilitas :</p>
+                    <div className="flex flex-col gap-[2vw] md:gap-[.5vw] h-[18vw] md:h-[4.75vw] overflow-y-auto scrollbar-hidden">
+                        {item.facilities.map(({icon, text}, index) => (
+                            <div key={index} className="flex items-center gap-2">
+                                <i className={`${icon} text-secondary`}></i>
+                                <p>{text}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <ButtonPill href={`/produk/${item.slug}`} className={"w-full"} isLink>
                     Daftar Sekarang

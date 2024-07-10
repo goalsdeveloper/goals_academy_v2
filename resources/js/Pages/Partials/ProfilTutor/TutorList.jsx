@@ -6,6 +6,7 @@ import TutorCardNew from "@/Components/TutorCardNew";
 import GoalsButton from "@/Components/GoalsButton";
 import { router } from "@inertiajs/react";
 import { useState } from "react";
+import axios from "axios";
 
 export default function TutorList({ data, skillSearch }) {
     const [dataTutor, setDataTutor] = useState(data.data);
@@ -20,17 +21,14 @@ export default function TutorList({ data, skillSearch }) {
     };
 
     const handleLoadMore = (skill, page) => {
-        router.visit(route("profilTutor", { skill: skill, page: page }), {
-            only: ['skill', 'tutors'],
-            preserveScroll: true,
-            replace: false,
-            // preserveState: true,
-            onSuccess: (res) => {
-                // console.log(res.props.tutors.data);
-                setDataTutor((n) => ([...n, res.props.tutors.data]))
-                console.log(dataTutor, res.props.tutors.data)
-            },
-        });
+        axios
+            .get(route("profilTutor", { skill: skill, page: page }))
+            .then((res) => {
+                console.log(res);
+                setDataTutor([...dataTutor, ...res.data.tutors.data]);
+                setNextPage(++res.data.tutors.current_page);
+                setNextPageUrl(res.data.tutors.next_page_url);
+            });
     };
 
     return (
