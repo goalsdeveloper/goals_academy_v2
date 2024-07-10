@@ -61,7 +61,7 @@ class ProductSeeder extends Seeder
             'webinar_properties' => null,
             'facilities' => [
                 ["icon" => "fa-solid fa-location-dot", "text" => "Offline"],
-                ["icon" => "fa-regular fa-calendar", "text" => "1x Pertemuan"],
+                ["icon" => "fa-solid fa-calendar", "text" => "1x Pertemuan"],
                 ["icon" => "fa-solid fa-clock", "text" => "75 Menit"],
             ],
             'product_type_id' => '1',
@@ -90,7 +90,7 @@ class ProductSeeder extends Seeder
             'webinar_properties' => null,
             'facilities' => [
                 ["icon" => "fa-solid fa-location-dot", "text" => "Online"],
-                ["icon" => "fa-regular fa-calendar", "text" => "1x Pertemuan"],
+                ["icon" => "fa-solid fa-calendar", "text" => "1x Pertemuan"],
                 ["icon" => "fa-solid fa-clock", "text" => "60 Menit"],
             ],
             'product_type_id' => '1',
@@ -119,13 +119,13 @@ class ProductSeeder extends Seeder
             'webinar_properties' => null,
             'facilities' => [
                 ["icon" => "fa-solid fa-location-dot", "text" => "Online"],
-                ["icon" => "fa-regular fa-calendar", "text" => "9x Pertemuan"],
+                ["icon" => "fa-solid fa-calendar", "text" => "9x Pertemuan"],
                 ["icon" => "fa-solid fa-clock", "text" => "60 Menit"],
                 ["icon" => "fa-solid fa-gift", "text" => "Hampers Special"],
                 ["icon" => "fa-solid fa-comment", "text" => "Private Group Chat 24jam Selama 3 bulan"],
                 ["icon" => "fa-solid fa-layer-group", "text" => "Bisa Bahas Mulai dari Perumusan Judul Skripsi"],
                 ["icon" => "fa-solid fa-gears", "text" => "Bisa Bahas Penyusunan Proposal Skripsi"],
-                ["icon" => "fa-solid fa-magnifying-glass", "text" => "Review Draft Skripsi Perbab"],
+                ["icon" => "fa-solid file-circle-check", "text" => "Review Draft Skripsi Perbab"],
                 ["icon" => "fa-solid fa-star", "text" => "Rekomendasi Penulisan"],
                 ["icon" => "fa-solid fa-file-circle-check", "text" => "Bisa Bahas Revisi dari Dosen"],
                 ["icon" => "fa-solid fa-person-chalkboard", "text" => "Persiapan Seminar Proposal dan Simulasi Sidang Akhir"],
@@ -156,10 +156,10 @@ class ProductSeeder extends Seeder
             'webinar_properties' => null,
             'facilities' => [
                 ["icon" => "fa-solid fa-location-dot", "text" => "Online"],
-                ["icon" => "fa-regular fa-calendar", "text" => "2x Pertemuan"],
+                ["icon" => "fa-solid fa-calendar", "text" => "2x Pertemuan"],
                 ["icon" => "fa-solid fa-clock", "text" => "60 Menit"],
                 ["icon" => "fa-solid fa-comment", "text" => "Konsultasi via private group chat dengan Tutor selama 7 hari"],
-                ["icon" => "fa-solid fa-magnifying-glass", "text" => "Review Metode Penelitian"],
+                ["icon" => "fa-solid file-circle-check", "text" => "Review Metode Penelitian"],
                 ["icon" => "fa-solid fa-star", "text" => "Rekomendasi Penyajian Data"],
                 ["icon" => "fa-solid fa-screwdriver-wrench", "text" => "Teknis Tools Olah Data"],
             ],
@@ -189,7 +189,7 @@ class ProductSeeder extends Seeder
             'webinar_properties' => null,
             'facilities' => [
                 ["icon" => "fa-solid fa-location-dot", "text" => "Online"],
-                ["icon" => "fa-regular fa-calendar", "text" => "4x Pertemuan"],
+                ["icon" => "fa-solid fa-calendar", "text" => "4x Pertemuan"],
                 ["icon" => "fa-solid fa-clock", "text" => "60 Menit"],
                 ["icon" => "fa-solid fa-comment", "text" => "Konsultasi via private group chat dengan Tutor selama 30 hari"],
                 ["icon" => "fa-solid fa-gears", "text" => "Bisa Bahas Penyusunan & Perumusan Judul Skripsi"],
@@ -199,7 +199,7 @@ class ProductSeeder extends Seeder
                 ["icon" => "fa-solid fa-person-chalkboard", "text" => " Persiapan Simulasi Sidang Skripsi"],
                 ["icon" => "fa-solid fa-file-circle-check", "text" => "Bahas Revisi dari Dosen"],
                 ["icon" => "fa-solid fa-book", "text" => "Referensi artikel ilmiah/jurnal yang relevan"],
-                ["icon" => "fa-solid fa-magnifying-glass", "text" => "Review draft dan rekomendasi penulisan skripsi keseluruhan yang udah kamu susun"],
+                ["icon" => "fa-solid file-circle-check", "text" => "Review draft dan rekomendasi penulisan skripsi keseluruhan yang udah kamu susun"],
             ],
             'product_type_id' => '1',
             'category_id' => '1',
@@ -227,18 +227,18 @@ class ProductSeeder extends Seeder
             'webinar_properties' => null,
             'facilities' => [
                 ["icon" => "fa-solid fa-location-dot", "text" => "Online"],
-                ["icon" => "fa-regular fa-calendar", "text" => "2x Pertemuan"],
+                ["icon" => "fa-solid fa-calendar", "text" => "2x Pertemuan"],
                 ["icon" => "fa-solid fa-clock", "text" => "60 Menit"],
                 ["icon" => "fa-solid fa-comment", "text" => "Konsultasi via private group chat dengan Tutor selama 7 hari"],
                 ["icon" => "fa-solid fa-comment-medical", "text" => "+3 hari tambahan private group chat (total 10 hari)"],
                 ["icon" => "fa-solid fa-gears", "text" => "Bisa Bahas Penyusunan & Perumusan Judul Skripsi"],
-                ["icon" => "fa-solid fa-magnifying-glass", "text" => "Review outline atau Bab 1"],
-                ["icon" => "fa-solid fa-magnifying-glass", "text" => "Review draft Bab 2 atau Kajian Teori"],
-                ["icon" => "fa-solid fa-magnifying-glass", "text" => "Review draft Bab 3 atau Metode Penelitian"],
-                ["icon" => "fa-solid fa-magnifying-glass", "text" => "Review draft Bab 4 atau Analisa Pembahasan"],
+                ["icon" => "fa-solid file-circle-check", "text" => "Review outline atau Bab 1"],
+                ["icon" => "fa-solid file-circle-check", "text" => "Review draft Bab 2 atau Kajian Teori"],
+                ["icon" => "fa-solid file-circle-check", "text" => "Review draft Bab 3 atau Metode Penelitian"],
+                ["icon" => "fa-solid file-circle-check", "text" => "Review draft Bab 4 atau Analisa Pembahasan"],
                 ["icon" => "fa-solid fa-file-circle-check", "text" => "Bahas Revisi dari Dosen"],
                 ["icon" => "fa-solid fa-book", "text" => "Referensi artikel ilmiah/jurnal yang relevan"],
-                ["icon" => "fa-solid fa-magnifying-glass", "text" => "Review draft dan rekomendasi penulisan skripsi keseluruhan yang udah kamu susun"],
+                ["icon" => "fa-solid file-circle-check", "text" => "Review draft dan rekomendasi penulisan skripsi keseluruhan yang udah kamu susun"],
             ],
             'product_type_id' => '1',
             'category_id' => '1',
@@ -266,12 +266,12 @@ class ProductSeeder extends Seeder
             'webinar_properties' => null,
             'facilities' => [
                 ["icon" => "fa-solid fa-location-dot", "text" => "Online"],
-                ["icon" => "fa-regular fa-calendar", "text" => "8x Pertemuan"],
+                ["icon" => "fa-solid fa-calendar", "text" => "8x Pertemuan"],
                 ["icon" => "fa-solid fa-clock", "text" => "60 Menit"],
                 ["icon" => "fa-solid fa-comment", "text" => "Private Group Chat 24jam Selama 3 bulan"],
                 ["icon" => "fa-solid fa-layer-group", "text" => "Bisa Bahas Mulai dari Perumusan Judul Skripsi"],
                 ["icon" => "fa-solid fa-gears", "text" => "Bisa Bahas Penyusunan Proposal Skripsi"],
-                ["icon" => "fa-solid fa-magnifying-glass", "text" => "Review Draft Skripsi Perbab"],
+                ["icon" => "fa-solid file-circle-check", "text" => "Review Draft Skripsi Perbab"],
                 ["icon" => "fa-solid fa-star", "text" => "Rekomendasi Penulisan"],
                 ["icon" => "fa-solid fa-file-circle-check", "text" => "Bisa Bahas Revisi dari Dosen"],
                 ["icon" => "fa-solid fa-person-chalkboard", "text" => "Persiapan Seminar Proposal dan Simulasi Sidang Akhir"],
@@ -302,12 +302,12 @@ class ProductSeeder extends Seeder
             'webinar_properties' => null,
             'facilities' => [
                 ["icon" => "fa-solid fa-location-dot", "text" => "Offline / Online"],
-                ["icon" => "fa-regular fa-calendar", "text" => "8x Pertemuan"],
+                ["icon" => "fa-solid fa-calendar", "text" => "8x Pertemuan"],
                 ["icon" => "fa-solid fa-clock", "text" => "75 Menit"],
                 ["icon" => "fa-solid fa-comment", "text" => "Private Group Chat 24jam Selama 3 bulan"],
                 ["icon" => "fa-solid fa-layer-group", "text" => "Bisa Bahas Mulai dari Perumusan Judul Skripsi"],
                 ["icon" => "fa-solid fa-gears", "text" => "Bisa Bahas Penyusunan Proposal Skripsi"],
-                ["icon" => "fa-solid fa-magnifying-glass", "text" => "Review Draft Skripsi Perbab"],
+                ["icon" => "fa-solid file-circle-check", "text" => "Review Draft Skripsi Perbab"],
                 ["icon" => "fa-solid fa-star", "text" => "Rekomendasi Penulisan"],
                 ["icon" => "fa-solid fa-file-circle-check", "text" => "Bisa Bahas Revisi dari Dosen"],
                 ["icon" => "fa-solid fa-person-chalkboard", "text" => "Persiapan Seminar Proposal dan Simulasi Sidang Akhir"],
@@ -338,7 +338,7 @@ class ProductSeeder extends Seeder
             'webinar_properties' => null,
             'facilities' => [
                 ["icon" => "fa-solid fa-location-dot", "text" => "Offline / Online"],
-                ["icon" => "fa-regular fa-calendar", "text" => "1x Pertemuan"],
+                ["icon" => "fa-solid fa-calendar", "text" => "1x Pertemuan"],
                 ["icon" => "fa-solid fa-star", "text" => "Tutor akan memberikan rekomendasi dan gambaran penulisan skripsi/jurnalmu"],
                 ["icon" => "fa-solid fa-comment", "text" => "Kamu bisa melakukan diskusi dengan Tutor melalui program Add On +group chat / +virtual meet"],
                 ["icon" => "fa-solid fa-note-sticky", "text" => "Tutor akan beri catatan/notes di skripsi/jurnal yang udah kamu tulis"],
@@ -349,15 +349,15 @@ class ProductSeeder extends Seeder
             'promo_price' => '30000',
         ]);
 
-        DB::insert('insert into category_products (category_id, products_id) values (2, 1)');
-        DB::insert('insert into category_products (category_id, products_id) values (3, 1)');
+        // DB::insert('insert into category_products (category_id, products_id) values (2, 1)');
+        // DB::insert('insert into category_products (category_id, products_id) values (3, 1)');
 
-        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 1]);
-        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 2]);
-        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 3]);
-        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 1]);
-        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 2]);
-        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 3]);
+        // DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 1]);
+        // DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 2]);
+        // DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 3]);
+        // DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 1]);
+        // DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 2]);
+        // DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 3]);
 
     }
 }
