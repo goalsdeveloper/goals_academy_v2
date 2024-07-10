@@ -380,7 +380,8 @@ class BimbinganController extends Controller
                 abort(403);
             }
         } catch (\Exception $e) {
-            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            dd($e->getMessage());
+            // return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
             // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while updating category', 'error' => $e->getMessage()], 500);
         }
     }

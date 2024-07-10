@@ -264,11 +264,11 @@ function MainCard({
                             {dataProduct.name}
                         </h3>
                         <p>{dataProduct.description}</p>
-                        <div className="flex flex-wrap items-center gap-[3vw] md:gap-[1.5vw]">
+                        <div className="flex flex-col md:flex-row flex-wrap items-start gap-[3vw] md:gap-[1vw] multi-column">
                             {dataProduct.facilities.map((item, index) => {
                                 return (
-                                    <div key={index} className="flex items-center gap-[3vw] md:gap-[.5vw]">
-                                        <i className={`${item.icon} text-primary`}></i>
+                                    <div key={index} className="flex items-center gap-[3vw] md:gap-[.5vw] md:border md:border-secondary md:px-[.5vw] md:py-[.25vw] md:rounded-full">
+                                        <i className={`${item.icon} text-primary text-center w-[4vw] md:w-[1vw]`}></i>
                                         <p>{item.text}</p>
                                     </div>
                                 )

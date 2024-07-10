@@ -1,6 +1,5 @@
 import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
-import GoalsButton from "@/Components/GoalsButton";
 import { useState } from "react";
 
 function SelectInput({
@@ -17,6 +16,7 @@ function SelectInput({
     emptyClassName = "border-1 border-light-grey text-light-grey font-normal",
     children,
     onChange, // New prop for handling value change
+    cols=1
 }) {
     const [show, setShow] = useState(false);
 
@@ -26,6 +26,23 @@ function SelectInput({
             onChange(!show ? value : ""); // Toggle value
         }
     };
+
+    const getClassByCols = () => {
+        switch (cols) {
+            case 2: return ["w-[200%]", "grid-cols-2"];
+            case 3: return ["w-[300%]", "grid-cols-3"];
+            case 4: return ["w-[400%]", "grid-cols-4"];
+            case 5: return ["w-[500%]", "grid-cols-5"];
+            case 6: return ["w-[600%]", "grid-cols-6"];
+            case 7: return ["w-[700%]", "grid-cols-7"];
+            case 8: return ["w-[800%]", "grid-cols-8"];
+            case 9: return ["w-[900%]", "grid-cols-9"];
+            case 10: return ["w-[1000%]", "grid-cols-10"];
+            case 11: return ["w-[1100%]", "grid-cols-11"];
+            case 12: return ["w-[1200%]", "grid-cols-12"];
+            default: return ["w-full", "grid-cols-1"];
+        }
+    }
 
     return (
         <div className={`text-inherit ${className}`}>
@@ -66,19 +83,19 @@ function SelectInput({
                     }
                 ></i>
             </button>
-            <div className="relative text-[.83vw]">
+            <div className="relative text-[3.32vw] md:text-[.83vw]">
                 <TECollapse
                     show={show}
                     className={`${
                         show ? "" : "md:hidden"
-                    } md:absolute z-30 w-full md:w-[120%] md:shadow-none md:-translate-x-[8.25%] pt-0 md:-translate-y-[1.5vw] md:px-[10%] pb-[.5vw]`}
+                    } absolute z-30 ${getClassByCols()[0]} md:shadow-none pt-0 md:-translate-y-[1.5vw]`}
                     onClick={() => setShow(false)}
                 >
                     <TECollapseItem
-                        className="bg-white w-full border-1 rounded-[2vw] md:rounded-[.5vw] shadow-md"
+                        className="bg-white w-fit border-1 rounded-[2vw] md:rounded-[.5vw] shadow-md overflow-visible"
                         breakClassName="hidden md:inline"
                     >
-                        <div className="h-full max-h-[52vw] md:max-h-[16vw] overflow-y-auto">
+                        <div className={`h-full max-h-[48vw] md:max-h-[12vw] overflow-auto scrollbar-hidden grid ${getClassByCols()[1]}`}>
                             {children}
                         </div>
                     </TECollapseItem>
@@ -97,7 +114,7 @@ function SelectInputItem({ className, onClick, children }) {
     return (
         <div
             onClick={onClick}
-            className={`hover:bg-skin cursor-pointer p-[4vw] md:p-[1vw] ${className}`}
+            className={`hover:bg-skin cursor-pointer p-[2vw] md:p-[1vw] text-center ${className}`}
         >
             {children}
         </div>
