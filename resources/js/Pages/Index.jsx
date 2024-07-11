@@ -1,11 +1,13 @@
 import MainLayout from "@/Layouts/MainLayout";
-import Hero from "./Partials/Home/Hero";
+// import Hero from "./Partials/Home/Hero";
 import Preliminary from "./Partials/Home/Preliminary";
 import Program from "./Partials/Home/Program";
 import Video from "./Partials/Home/Video";
 import Testimony from "./Partials/Home/Testimony";
 import FAQ from "./Partials/Home/FAQ";
 import Consultation from "./Partials/Home/Consultation";
+
+import Hero from "./Partials/HomeRevamp/Hero";
 
 import CornerWaveVector from "@/Components/CornerWaveVector";
 
