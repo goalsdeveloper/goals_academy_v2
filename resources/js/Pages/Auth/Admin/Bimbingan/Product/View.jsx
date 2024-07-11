@@ -6,6 +6,8 @@ import SliderButton from "./Components/SliderButton";
 import sampleImage from "/resources/img/program/sample image.png";
 
 const View = ({ products, categories }) => {
+    const currency = Intl.NumberFormat("id-ID");
+
     const data = {
         name: products.name,
         product_image: products.product_image,
@@ -14,7 +16,7 @@ const View = ({ products, categories }) => {
         description: products.description,
         excerpt: products.excerpt,
         price: products.price,
-        promo: products.promo_price ?? "",
+        promo_price: products.promo_price ?? "",
         total_meet: products.total_meet,
         active_period: products.active_period,
         duration: products.duration,
@@ -131,10 +133,10 @@ const View = ({ products, categories }) => {
                                     data={data.price}
                                 />
                                 <GoalsTextInput
-                                    label="Promo (Optional)"
+                                    label="Diskon Gimmick (Opsional)"
                                     disabled
                                     grow
-                                    data={data.promo}
+                                    data={data.promo_price}
                                 />
                             </div>
                         </FormSection>
@@ -167,7 +169,7 @@ const View = ({ products, categories }) => {
 
                             <SelectMultiTag
                                 value={data.topics}
-                                label="Topic"
+                                label="Topik"
                                 disabled
                             ></SelectMultiTag>
                         </FormSection>

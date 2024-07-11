@@ -31,6 +31,8 @@ export default function Product({ auth, bimbingan, categories }) {
         new URLSearchParams(window.location.search).get("search")
     );
 
+    const currency = Intl.NumberFormat("id-ID");
+
     const onSearchCallback = (search) => {
         router.visit(route("admin.bimbingan.product.index", { search: search }), {
             only: ["bimbingan"],
@@ -109,7 +111,7 @@ export default function Product({ auth, bimbingan, categories }) {
                 ),
             },
             {
-                accessorKey: "price",
+                accessorFn: (row) => "Rp."+currency.format(Number(row.price) - Number(row.promo_price)),
                 header: "Harga",
             },
             {
