@@ -20,7 +20,7 @@ class ProductSeeder extends Seeder
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.',
             'contact_type' => 'online',
-            'price' => '155000',
+            'price' => '200000',
             'product_image' => 'product/bimbingan/bimbingan1720598418.png',
             'is_visible' => '1',
             'is_facilities' => '0',
@@ -38,7 +38,7 @@ class ProductSeeder extends Seeder
             'product_type_id' => '1',
             'category_id' => '2',
             'form_config' => ["schedule" => 1, "topic" => 1, "document" => 1],
-            'promo_price' => '0',
+            'promo_price' => '45000',
         ]);
 
         Products::create([
@@ -48,7 +48,7 @@ class ProductSeeder extends Seeder
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'contact_type' => 'offline',
-            'price' => '165000',
+            'price' => '175000',
             'product_image' => 'product/bimbingan/bimbingan1720598428.png',
             'is_visible' => '1',
             'is_facilities' => '0',
@@ -67,7 +67,7 @@ class ProductSeeder extends Seeder
             'product_type_id' => '1',
             'category_id' => '2',
             'form_config' => ["schedule" => 1, "city" => 1, "place" => 1, "topic" => 1, "document" => 0],
-            'promo_price' => '0',
+            'promo_price' => '10000',
         ]);
 
         Products::create([
@@ -77,7 +77,7 @@ class ProductSeeder extends Seeder
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'contact_type' => 'online',
-            'price' => '95000',
+            'price' => '128000',
             'product_image' => 'product/bimbingan/bimbingan1720598439.png',
             'is_visible' => '1',
             'is_facilities' => '0',
@@ -96,7 +96,7 @@ class ProductSeeder extends Seeder
             'product_type_id' => '1',
             'category_id' => '2',
             'form_config' => ["schedule" => 1, "topic" => 1, "document" => 0],
-            'promo_price' => '0',
+            'promo_price' => '33000',
         ]);
 
         Products::create([
@@ -125,7 +125,7 @@ class ProductSeeder extends Seeder
                 ["icon" => "fa-solid fa-comment", "text" => "Private Group Chat 24jam Selama 3 bulan"],
                 ["icon" => "fa-solid fa-layer-group", "text" => "Bisa Bahas Mulai dari Perumusan Judul Skripsi"],
                 ["icon" => "fa-solid fa-gears", "text" => "Bisa Bahas Penyusunan Proposal Skripsi"],
-                ["icon" => "fa-solid file-circle-check", "text" => "Review Draft Skripsi Perbab"],
+                ["icon" => "fa-solid fa-file-circle-check", "text" => "Review Draft Skripsi Perbab"],
                 ["icon" => "fa-solid fa-star", "text" => "Rekomendasi Penulisan"],
                 ["icon" => "fa-solid fa-file-circle-check", "text" => "Bisa Bahas Revisi dari Dosen"],
                 ["icon" => "fa-solid fa-person-chalkboard", "text" => "Persiapan Seminar Proposal dan Simulasi Sidang Akhir"],
@@ -143,7 +143,7 @@ class ProductSeeder extends Seeder
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'contact_type' => 'online',
-            'price' => '348000',
+            'price' => '500000',
             'product_image' => 'product/bimbingan/bimbingan1720598310.png',
             'is_visible' => '1',
             'is_facilities' => '0',
@@ -159,14 +159,14 @@ class ProductSeeder extends Seeder
                 ["icon" => "fa-solid fa-calendar", "text" => "2x Pertemuan"],
                 ["icon" => "fa-solid fa-clock", "text" => "60 Menit"],
                 ["icon" => "fa-solid fa-comment", "text" => "Konsultasi via private group chat dengan Tutor selama 7 hari"],
-                ["icon" => "fa-solid file-circle-check", "text" => "Review Metode Penelitian"],
+                ["icon" => "fa-solid fa-file-circle-check", "text" => "Review Metode Penelitian"],
                 ["icon" => "fa-solid fa-star", "text" => "Rekomendasi Penyajian Data"],
                 ["icon" => "fa-solid fa-screwdriver-wrench", "text" => "Teknis Tools Olah Data"],
             ],
             'product_type_id' => '1',
             'category_id' => '1',
             'form_config' => ["topic" => 1, "document" => 1],
-            'promo_price' => '0',
+            'promo_price' => '152000',
         ]);
 
         Products::create([
@@ -199,12 +199,12 @@ class ProductSeeder extends Seeder
                 ["icon" => "fa-solid fa-person-chalkboard", "text" => " Persiapan Simulasi Sidang Skripsi"],
                 ["icon" => "fa-solid fa-file-circle-check", "text" => "Bahas Revisi dari Dosen"],
                 ["icon" => "fa-solid fa-book", "text" => "Referensi artikel ilmiah/jurnal yang relevan"],
-                ["icon" => "fa-solid file-circle-check", "text" => "Review draft dan rekomendasi penulisan skripsi keseluruhan yang udah kamu susun"],
+                ["icon" => "fa-solid fa-file-circle-check", "text" => "Review draft dan rekomendasi penulisan skripsi keseluruhan yang udah kamu susun"],
             ],
             'product_type_id' => '1',
             'category_id' => '1',
             'form_config' => ["document" => 0],
-            'promo_price' => '0',
+            'promo_price' => '102000',
         ]);
 
         Products::create([
@@ -214,7 +214,7 @@ class ProductSeeder extends Seeder
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'contact_type' => 'online',
-            'price' => '318000',
+            'price' => '448000',
             'product_image' => 'product/bimbingan/bimbingan1720598385.png',
             'is_visible' => '1',
             'is_facilities' => '0',
@@ -232,18 +232,18 @@ class ProductSeeder extends Seeder
                 ["icon" => "fa-solid fa-comment", "text" => "Konsultasi via private group chat dengan Tutor selama 7 hari"],
                 ["icon" => "fa-solid fa-comment-medical", "text" => "+3 hari tambahan private group chat (total 10 hari)"],
                 ["icon" => "fa-solid fa-gears", "text" => "Bisa Bahas Penyusunan & Perumusan Judul Skripsi"],
-                ["icon" => "fa-solid file-circle-check", "text" => "Review outline atau Bab 1"],
-                ["icon" => "fa-solid file-circle-check", "text" => "Review draft Bab 2 atau Kajian Teori"],
-                ["icon" => "fa-solid file-circle-check", "text" => "Review draft Bab 3 atau Metode Penelitian"],
-                ["icon" => "fa-solid file-circle-check", "text" => "Review draft Bab 4 atau Analisa Pembahasan"],
+                ["icon" => "fa-solid fa-file-circle-check", "text" => "Review outline atau Bab 1"],
+                ["icon" => "fa-solid fa-file-circle-check", "text" => "Review draft Bab 2 atau Kajian Teori"],
+                ["icon" => "fa-solid fa-file-circle-check", "text" => "Review draft Bab 3 atau Metode Penelitian"],
+                ["icon" => "fa-solid fa-file-circle-check", "text" => "Review draft Bab 4 atau Analisa Pembahasan"],
                 ["icon" => "fa-solid fa-file-circle-check", "text" => "Bahas Revisi dari Dosen"],
                 ["icon" => "fa-solid fa-book", "text" => "Referensi artikel ilmiah/jurnal yang relevan"],
-                ["icon" => "fa-solid file-circle-check", "text" => "Review draft dan rekomendasi penulisan skripsi keseluruhan yang udah kamu susun"],
+                ["icon" => "fa-solid fa-file-circle-check", "text" => "Review draft dan rekomendasi penulisan skripsi keseluruhan yang udah kamu susun"],
             ],
             'product_type_id' => '1',
             'category_id' => '1',
             'form_config' => ["document" => 0],
-            'promo_price' => '0',
+            'promo_price' => '130000',
         ]);
 
         Products::create([
@@ -271,7 +271,7 @@ class ProductSeeder extends Seeder
                 ["icon" => "fa-solid fa-comment", "text" => "Private Group Chat 24jam Selama 3 bulan"],
                 ["icon" => "fa-solid fa-layer-group", "text" => "Bisa Bahas Mulai dari Perumusan Judul Skripsi"],
                 ["icon" => "fa-solid fa-gears", "text" => "Bisa Bahas Penyusunan Proposal Skripsi"],
-                ["icon" => "fa-solid file-circle-check", "text" => "Review Draft Skripsi Perbab"],
+                ["icon" => "fa-solid fa-file-circle-check", "text" => "Review Draft Skripsi Perbab"],
                 ["icon" => "fa-solid fa-star", "text" => "Rekomendasi Penulisan"],
                 ["icon" => "fa-solid fa-file-circle-check", "text" => "Bisa Bahas Revisi dari Dosen"],
                 ["icon" => "fa-solid fa-person-chalkboard", "text" => "Persiapan Seminar Proposal dan Simulasi Sidang Akhir"],
@@ -307,7 +307,7 @@ class ProductSeeder extends Seeder
                 ["icon" => "fa-solid fa-comment", "text" => "Private Group Chat 24jam Selama 3 bulan"],
                 ["icon" => "fa-solid fa-layer-group", "text" => "Bisa Bahas Mulai dari Perumusan Judul Skripsi"],
                 ["icon" => "fa-solid fa-gears", "text" => "Bisa Bahas Penyusunan Proposal Skripsi"],
-                ["icon" => "fa-solid file-circle-check", "text" => "Review Draft Skripsi Perbab"],
+                ["icon" => "fa-solid fa-file-circle-check", "text" => "Review Draft Skripsi Perbab"],
                 ["icon" => "fa-solid fa-star", "text" => "Rekomendasi Penulisan"],
                 ["icon" => "fa-solid fa-file-circle-check", "text" => "Bisa Bahas Revisi dari Dosen"],
                 ["icon" => "fa-solid fa-person-chalkboard", "text" => "Persiapan Seminar Proposal dan Simulasi Sidang Akhir"],
@@ -349,15 +349,15 @@ class ProductSeeder extends Seeder
             'promo_price' => '30000',
         ]);
 
-        // DB::insert('insert into category_products (category_id, products_id) values (2, 1)');
-        // DB::insert('insert into category_products (category_id, products_id) values (3, 1)');
+        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 1]);
+        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 1]);
+        DB::table('products_topic')->insert(['products_id' => 3, 'topic_id' => 1]);
+        DB::table('products_topic')->insert(['products_id' => 5, 'topic_id' => 1]);
 
-        // DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 1]);
-        // DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 2]);
-        // DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 3]);
-        // DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 1]);
-        // DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 2]);
-        // DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 3]);
+        Products::find(10)->addOns()->attach(4);
+        for ($i = 1; $i < 10; $i++) {
+            Products::find($i)->addOns()->attach([1, 2, 3]);
+        }
 
     }
 }

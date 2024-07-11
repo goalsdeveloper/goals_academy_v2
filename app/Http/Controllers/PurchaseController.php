@@ -197,10 +197,11 @@ class PurchaseController extends Controller
             ->with('category')
             ->with('addOns')
             ->first();
-        // dd($product);
-        $addOns = $product->addOns;
-        $cities = City::with('places')->get();
-        $topics = $product->topics;
+        $addOns = $product->addOns()->where('is_visible', true)->get();
+        $cities = City::where('is_visible', true)->with(['places' => function($q) {
+            $q->where('is_visible', true);
+        }])->get();
+        $topics = $product->topics()->where('is_visible', true)->get();
         return Inertia::render('Purchase/Form', [
             'date' => $counts,
             'addOns' => $addOns,

@@ -9,12 +9,12 @@ export default function TutorCardNew({ name, image, skills }) {
                     alt={name}
                 />
             </div>
-            <div className="px-4 md:px-0">
+            <div className="px-0">
                 <div className="flex gap-2 md:gap-1 lg:gap-2 2xl:gap-3 my-2">
                     <h5 className="text-black">{name}</h5>
                 </div>
             </div>
-            <div className="flex flex-wrap gap-1 h-[12vw] md:h-[5vw] overflow-auto">
+            <div className="flex flex-wrap gap-1 h-[12vw] md:h-[5vw] overflow-auto scrollbar-hidden">
                 {skills.map((e, index) => {
                     return (
                         <div className="border-black border-1 py-1 px-2 rounded-full h-min" key={index}>

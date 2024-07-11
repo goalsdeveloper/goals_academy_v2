@@ -17,7 +17,7 @@ class MainController extends Controller
                 return $q->whereHas('skills', function ($q) use ($skill_query) {
                     $q->where('name', 'like', "%$skill_query%");
                 });
-            })->with('skills', 'profile')->paginate(5);
+            })->with('skills', 'profile')->paginate(8);
         if ($req->wantsJson()) {
             return response()->json([
                 'tutors' => $tutors,

@@ -31,6 +31,8 @@ export default function Product({ auth, bimbingan, categories }) {
         new URLSearchParams(window.location.search).get("search")
     );
 
+    const currency = Intl.NumberFormat("id-ID");
+
     const onSearchCallback = (search) => {
         router.visit(route("admin.bimbingan.product.index", { search: search }), {
             only: ["bimbingan"],
@@ -109,7 +111,7 @@ export default function Product({ auth, bimbingan, categories }) {
                 ),
             },
             {
-                accessorKey: "price",
+                accessorFn: (row) => "Rp."+currency.format(Number(row.price) - Number(row.promo_price)),
                 header: "Harga",
             },
             {
@@ -218,7 +220,7 @@ const ViewDialog = ({ show, setShow, product, categories }) => {
                     show
                         ? "md:top-0 bottom-0 md:scale-100"
                         : "md:top-full -bottom-full md:scale-0"
-                } inset-0 focus:bg-red-400 mx-auto flex gap-[2vw] w-[76vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 my-[8vh] `}
+                } inset-0 focus:bg-red-400 mx-auto flex gap-[2vw] w-[90vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 my-[8vh] `}
             >
                 <View products={product} categories={categories} />
             </div>

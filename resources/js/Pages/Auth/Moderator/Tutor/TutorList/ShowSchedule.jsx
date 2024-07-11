@@ -13,64 +13,64 @@ const ShowSchedule = ({
     dateRange,
     handleDateChange,
 }) => {
-    const data = [
-        {
-            "2024-01-01": [
-                {
-                    time: "13:00",
-                    duration: 60,
-                    products: "Dibimbing Online 60 Menit",
-                },
-                {
-                    time: "15:00",
-                    duration: 90,
-                    products: "Dibimbing Offline 90 Menit",
-                },
-            ],
-            "2024-01-02": [
-                {
-                    time: "08:00",
-                    duration: 60,
-                    products: "Dibimbing Online 60 Menit",
-                },
-            ],
-            "2024-01-03": [
-                {
-                    time: "08:00",
-                    duration: 60,
-                    products: "Dibimbing Online 60 Menit",
-                },
-            ],
-            "2024-01-04": [
-                {
-                    time: "08:00",
-                    duration: 60,
-                    products: "Dibimbing Online 60 Menit",
-                },
-            ],
-            "2024-01-05": [
-                {
-                    time: "08:00",
-                    duration: 60,
-                    products: "Dibimbing Online 60 Menit",
-                },
-            ],
-            "2024-01-06": [
-                {
-                    time: "08:00",
-                    duration: 60,
-                    products: "Dibimbing Online 60 Menit",
-                },
-            ],
-            "2024-01-07": [
-                {
-                    time: "08:00",
-                    duration: 60,
-                    products: "Dibimbing Online 60 Menit",
-                },
-            ],
-        },
-    ];
+    // const data = [
+    //     {
+    //         "2024-01-01": [
+    //             {
+    //                 time: "13:00",
+    //                 duration: 60,
+    //                 products: "Dibimbing Online 60 Menit",
+    //             },
+    //             {
+    //                 time: "15:00",
+    //                 duration: 90,
+    //                 products: "Dibimbing Offline 90 Menit",
+    //             },
+    //         ],
+    //         "2024-01-02": [
+    //             {
+    //                 time: "08:00",
+    //                 duration: 60,
+    //                 products: "Dibimbing Online 60 Menit",
+    //             },
+    //         ],
+    //         "2024-01-03": [
+    //             {
+    //                 time: "08:00",
+    //                 duration: 60,
+    //                 products: "Dibimbing Online 60 Menit",
+    //             },
+    //         ],
+    //         "2024-01-04": [
+    //             {
+    //                 time: "08:00",
+    //                 duration: 60,
+    //                 products: "Dibimbing Online 60 Menit",
+    //             },
+    //         ],
+    //         "2024-01-05": [
+    //             {
+    //                 time: "08:00",
+    //                 duration: 60,
+    //                 products: "Dibimbing Online 60 Menit",
+    //             },
+    //         ],
+    //         "2024-01-06": [
+    //             {
+    //                 time: "08:00",
+    //                 duration: 60,
+    //                 products: "Dibimbing Online 60 Menit",
+    //             },
+    //         ],
+    //         "2024-01-07": [
+    //             {
+    //                 time: "08:00",
+    //                 duration: 60,
+    //                 products: "Dibimbing Online 60 Menit",
+    //             },
+    //         ],
+    //     },
+    // ];
 
     const columns = useMemo(
         () =>
@@ -127,7 +127,7 @@ const ShowSchedule = ({
     return (
         <div>
             {createPortal(
-                <GoalsPopup {...{ show, setShow }} className="min-w-[80vw]">
+                <GoalsPopup {...{ show, setShow }} className="min-w-[80vw] max-h-[85vh] overflow-auto scrollbar-hidden">
                     <div className="space-y-[1.67vw] w-full">
                         <h2 className="text-[1.25vw] text-center">
                             Tutor Schedule
