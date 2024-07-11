@@ -25,7 +25,7 @@ const Create = ({ auth, categories, addons, topics }) => {
         category_id: "",
         description: "",
         price: "",
-        promo: "",
+        promo_price: "",
         total_meet: "",
         active_period: "",
         duration: "",
@@ -38,6 +38,8 @@ const Create = ({ auth, categories, addons, topics }) => {
     });
 
     function handleSubmit() {
+        const currency = Intl.NumberFormat("id-ID");
+
         router.post(
             route("admin.bimbingan.product.store"),
             {
@@ -47,7 +49,7 @@ const Create = ({ auth, categories, addons, topics }) => {
                 category_id: Number(data.category_id.id),
                 description: data.description,
                 price: Number(data.price),
-                promo: Number(data.promo),
+                promo_price: Number(data.promo_price),
                 total_meet: data.total_meet,
                 active_period: data.active_period,
                 duration: data.duration,
@@ -129,7 +131,8 @@ const Create = ({ auth, categories, addons, topics }) => {
                                 !data.total_meet ||
                                 !data.active_period ||
                                 !data.contact_type||
-                                !data.duration
+                                !data.duration ||
+                                (("topic" in data.form_config) && !data.topics.length)
                             }
                         >
                             Simpan
@@ -285,11 +288,11 @@ const Create = ({ auth, categories, addons, topics }) => {
                                     }
                                 />
                                 <GoalsTextInput
-                                    label="Promo (Optional)"
+                                    label="Diskon Gimmick (Opsional)"
                                     grow
-                                    data={data.promo}
+                                    data={data.promo_price}
                                     setData={(e) =>
-                                        setData({ ...data, promo: e })
+                                        setData({ ...data, promo_price: e })
                                     }
                                 />
                             </div>
@@ -298,21 +301,13 @@ const Create = ({ auth, categories, addons, topics }) => {
 
                     <div className="flex flex-col w-full gap-[.8vw]">
                         <FormSection title="Informasi">
-                            <div className="flex gap-[1.2vw]">
+                            <div className="grid grid-cols-2 gap-[1.2vw]">
                                 <GoalsTextInput
                                     label="Total Pertemuan"
                                     required
                                     data={data.total_meet}
                                     setData={(e) =>
                                         setData({ ...data, total_meet: e })
-                                    }
-                                />
-                                <GoalsTextInput
-                                    label="Masa Aktif"
-                                    required
-                                    data={data.active_period}
-                                    setData={(e) =>
-                                        setData({ ...data, active_period: e })
                                     }
                                 />
                                 <GoalsTextInput
@@ -327,7 +322,14 @@ const Create = ({ auth, categories, addons, topics }) => {
                                     }
                                 />
                             </div>
-
+                            <GoalsTextInput
+                                label="Durasi Private Chat"
+                                required
+                                data={data.active_period}
+                                setData={(e) =>
+                                    setData({ ...data, active_period: e })
+                                }
+                            />
                             <SelectMultiTag
                                 value={data.add_on}
                                 label="Add on"
@@ -364,11 +366,11 @@ const Create = ({ auth, categories, addons, topics }) => {
 
                             <SelectMultiTag
                                 value={data.topics}
-                                label="Topic"
+                                label="Topik"
                                 handleClearTag={() =>
                                     setData({ ...data, topics: [] })
                                 }
-                                required
+                                required={"topic" in data.form_config}
                             >
                                 {topics.map((option, i) => (
                                     <SelectMultiTagItem
