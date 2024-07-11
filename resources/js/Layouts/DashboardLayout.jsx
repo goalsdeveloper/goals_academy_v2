@@ -438,10 +438,8 @@ export default function DashboardLayout({
                         data.old_notifications.current_page <
                         data.old_notifications.last_page,
                 }));
-            })
-            .then(() => {
                 setTimeout(() => getNewNotification(), 10000);
-            });
+            })
     };
 
     const getNewNotification = () => {
@@ -462,8 +460,8 @@ export default function DashboardLayout({
                     ...n,
                     new: mergedNewNotif(n.new, data.new_notifications),
                 }));
+                setTimeout(() => getNewNotification(), 10000)
             })
-            .then(setTimeout(() => getNewNotification(), 10000));
     };
 
     const getOldNotification = (page) => {
