@@ -3,14 +3,16 @@ import FormSection from "../../components/layouts/FormSection";
 import { SelectInput } from "./Components/SelectInput";
 import { SelectMultiTag } from "./Components/SelectMultiTag";
 import SliderButton from "./Components/SliderButton";
+import sampleImage from "/resources/img/program/sample image.png";
 
 const View = ({ products, categories }) => {
     const data = {
         name: products.name,
-        product_image: "",
+        product_image: products.product_image,
         slug: products.slug,
         category_id: categories.find((item) => item.id == products.category_id),
         description: products.description,
+        excerpt: products.excerpt,
         price: products.price,
         promo: products.promo_price ?? "",
         total_meet: products.total_meet,
@@ -60,22 +62,10 @@ const View = ({ products, categories }) => {
                                 />
                             }
                         >
-                            <input
-                                type="file"
-                                value={data.product_image.url}
-                                onChange={(e) =>
-                                    setData({
-                                        ...data,
-                                        product_image: {
-                                            url: e.target.value,
-                                            file: e.target.files[0],
-                                        },
-                                    })
-                                }
-                            />
-
                             <div className="flex gap-[1.2vw]">
-                                <div className="h-40 aspect-square border-2 rounded-"></div>
+                                <div className="flex items-center justify-center w-[29vw] h-[11vw] aspect-square shadow-md rounded-[.5vw] overflow-hidden">
+                                    <img src={data.product_image ? `/storage/${data.product_image}` : sampleImage} className={`w-full h-full object-cover ${data.product_image ? "" : "grayscale"}`} alt={data.product_image} />
+                                </div>
                                 <div className="w-full space-y-[1.2vw]">
                                     <GoalsTextInput
                                         label="Nama"
@@ -186,7 +176,7 @@ const View = ({ products, categories }) => {
                             className="border"
                             title="Fasilitas Program"
                         >
-                            <div className="flex flex-wrap gap-[1.6vw]">
+                            <div className="flex flex-wrap gap-x-[.5vw] gap-y-[1vw]">
                                 {data.facilities.length == 0 ? (
                                     <p className="text-[.83vw] w-full text-center">
                                         Belum diatur
@@ -195,15 +185,12 @@ const View = ({ products, categories }) => {
                                     data.facilities.map((item) => (
                                         <div
                                             key={item.icon}
-                                            className="flex gap-[.6vw] items-center group cursor-pointer"
+                                            className="flex gap-[.4vw] items-center group cursor-pointer border border-secondary rounded-full py-[.25vw] px-[.5vw]"
                                         >
                                             <i
-                                                className={`${item.icon} text-secondary`}
+                                                className={`${item.icon} text-secondary text-center w-[1vw]`}
                                             ></i>
                                             <p>{item.text}</p>
-                                            <button type="button">
-                                                <i className="fa-solid fa-xmark opacity-0 transition-all"></i>
-                                            </button>
                                         </div>
                                     ))
                                 )}

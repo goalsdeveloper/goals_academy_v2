@@ -157,8 +157,8 @@ export default function Produk({
             <Filter show={show} showHandler={showHandler} />
             <SearchBar searchHandler={searchHandler} className="hidden md:block" data={searchKeyword} setData={setSearchKeyword} />
             <Bimbingan data={data1} active={show[0]} status={status} categories={categoriesBimbingan} category={category1} setCategory={setCategory1} filterHandler={filterByCategory} />
-            <Ebook data={data2} active={show[1]} status={status} />
-            <Webinar data={data3} active={show[2]} status={status} />
+            {/* <Ebook data={data2} active={show[1]} status={status} /> */}
+            {/* <Webinar data={data3} active={show[2]} status={status} /> */}
             <Consultation />
         </MainLayout>
     );
