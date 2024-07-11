@@ -59,10 +59,8 @@ export default function MainHeader({ auth, title, className }) {
                         data.promo_notifications.current_page <
                         data.promo_notifications.last_page,
                 }));
-            })
-            .then(() => {
                 setTimeout(() => getNewNotification(), 10000);
-            });
+            })
     };
 
     const getNewNotification = () => {
@@ -93,8 +91,8 @@ export default function MainHeader({ auth, title, className }) {
                     ),
                     promo: mergedNewNotif(n.promo, data.promo_notifications),
                 }));
+                setTimeout(() => getNewNotification(), 10000)
             })
-            .then(setTimeout(() => getNewNotification(), 10000));
     };
 
     const getOldNotification = (category, page, setIsLoading) => {
