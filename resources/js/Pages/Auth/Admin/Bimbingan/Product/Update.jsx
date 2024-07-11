@@ -311,21 +311,13 @@ const Update = ({ auth, categories, topics, addons, products }) => {
 
                     <div className="flex flex-col w-full gap-[.8vw]">
                         <FormSection title="Informasi">
-                            <div className="flex gap-[1.2vw]">
+                            <div className="grid grid-cols-2 gap-[1.2vw]">
                                 <GoalsTextInput
                                     label="Total Pertemuan"
                                     required
                                     data={data.total_meet}
                                     setData={(e) =>
                                         setData({ ...data, total_meet: e })
-                                    }
-                                />
-                                <GoalsTextInput
-                                    label="Durasi Private Chat"
-                                    required
-                                    data={data.active_period}
-                                    setData={(e) =>
-                                        setData({ ...data, active_period: e })
                                     }
                                 />
                                 <GoalsTextInput
@@ -340,7 +332,14 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                     }
                                 />
                             </div>
-
+                            <GoalsTextInput
+                                label="Durasi Private Chat"
+                                required
+                                data={data.active_period}
+                                setData={(e) =>
+                                    setData({ ...data, active_period: e })
+                                }
+                            />
                             <SelectMultiTag
                                 value={data.add_on}
                                 label="Add on"

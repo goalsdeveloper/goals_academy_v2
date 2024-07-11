@@ -144,16 +144,11 @@ const View = ({ products, categories }) => {
 
                     <div className="flex flex-col w-full gap-[.8vw]">
                         <FormSection className="border" title="Informasi">
-                            <div className="flex gap-[1.2vw]">
+                            <div className="grid grid-cols-2 gap-[1.2vw]">
                                 <GoalsTextInput
                                     label="Total Pertemuan"
                                     disabled
                                     data={data.total_meet}
-                                />
-                                <GoalsTextInput
-                                    label="Durasi Private Chat"
-                                    disabled
-                                    data={data.active_period}
                                 />
                                 <GoalsTextInput
                                     label="Durasi Pertemuan"
@@ -161,6 +156,11 @@ const View = ({ products, categories }) => {
                                     data={data.duration}
                                 />
                             </div>
+                            <GoalsTextInput
+                                label="Durasi Private Chat"
+                                disabled
+                                data={data.active_period}
+                            />
                             <SelectMultiTag
                                 disabled
                                 value={data.add_on}
