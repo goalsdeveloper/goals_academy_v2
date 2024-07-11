@@ -20,7 +20,7 @@ class ProductSeeder extends Seeder
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.',
             'contact_type' => 'online',
-            'price' => '155000',
+            'price' => '200000',
             'product_image' => 'product/bimbingan/bimbingan1720598418.png',
             'is_visible' => '1',
             'is_facilities' => '0',
@@ -38,7 +38,7 @@ class ProductSeeder extends Seeder
             'product_type_id' => '1',
             'category_id' => '2',
             'form_config' => ["schedule" => 1, "topic" => 1, "document" => 1],
-            'promo_price' => '0',
+            'promo_price' => '45000',
         ]);
 
         Products::create([
@@ -48,7 +48,7 @@ class ProductSeeder extends Seeder
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'contact_type' => 'offline',
-            'price' => '165000',
+            'price' => '175000',
             'product_image' => 'product/bimbingan/bimbingan1720598428.png',
             'is_visible' => '1',
             'is_facilities' => '0',
@@ -67,7 +67,7 @@ class ProductSeeder extends Seeder
             'product_type_id' => '1',
             'category_id' => '2',
             'form_config' => ["schedule" => 1, "city" => 1, "place" => 1, "topic" => 1, "document" => 0],
-            'promo_price' => '0',
+            'promo_price' => '10000',
         ]);
 
         Products::create([
@@ -77,7 +77,7 @@ class ProductSeeder extends Seeder
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'contact_type' => 'online',
-            'price' => '95000',
+            'price' => '128000',
             'product_image' => 'product/bimbingan/bimbingan1720598439.png',
             'is_visible' => '1',
             'is_facilities' => '0',
@@ -96,7 +96,7 @@ class ProductSeeder extends Seeder
             'product_type_id' => '1',
             'category_id' => '2',
             'form_config' => ["schedule" => 1, "topic" => 1, "document" => 0],
-            'promo_price' => '0',
+            'promo_price' => '33000',
         ]);
 
         Products::create([
@@ -143,7 +143,7 @@ class ProductSeeder extends Seeder
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'contact_type' => 'online',
-            'price' => '348000',
+            'price' => '500000',
             'product_image' => 'product/bimbingan/bimbingan1720598310.png',
             'is_visible' => '1',
             'is_facilities' => '0',
@@ -166,7 +166,7 @@ class ProductSeeder extends Seeder
             'product_type_id' => '1',
             'category_id' => '1',
             'form_config' => ["topic" => 1, "document" => 1],
-            'promo_price' => '0',
+            'promo_price' => '152000',
         ]);
 
         Products::create([
@@ -204,7 +204,7 @@ class ProductSeeder extends Seeder
             'product_type_id' => '1',
             'category_id' => '1',
             'form_config' => ["document" => 0],
-            'promo_price' => '0',
+            'promo_price' => '102000',
         ]);
 
         Products::create([
@@ -214,7 +214,7 @@ class ProductSeeder extends Seeder
             'excerpt' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'description' => 'Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 45 menit, sesuai dengan permasalahan pada skripsimu.',
             'contact_type' => 'online',
-            'price' => '318000',
+            'price' => '448000',
             'product_image' => 'product/bimbingan/bimbingan1720598385.png',
             'is_visible' => '1',
             'is_facilities' => '0',
@@ -243,7 +243,7 @@ class ProductSeeder extends Seeder
             'product_type_id' => '1',
             'category_id' => '1',
             'form_config' => ["document" => 0],
-            'promo_price' => '0',
+            'promo_price' => '130000',
         ]);
 
         Products::create([
