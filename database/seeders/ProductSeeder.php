@@ -349,15 +349,15 @@ class ProductSeeder extends Seeder
             'promo_price' => '30000',
         ]);
 
-        // DB::insert('insert into category_products (category_id, products_id) values (2, 1)');
-        // DB::insert('insert into category_products (category_id, products_id) values (3, 1)');
+        DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 1]);
+        DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 1]);
+        DB::table('products_topic')->insert(['products_id' => 3, 'topic_id' => 1]);
+        DB::table('products_topic')->insert(['products_id' => 5, 'topic_id' => 1]);
 
-        // DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 1]);
-        // DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 2]);
-        // DB::table('products_topic')->insert(['products_id' => 1, 'topic_id' => 3]);
-        // DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 1]);
-        // DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 2]);
-        // DB::table('products_topic')->insert(['products_id' => 2, 'topic_id' => 3]);
+        Products::find(10)->addOns()->attach(4);
+        for ($i = 1; $i < 10; $i++) {
+            Products::find($i)->addOns()->attach([1, 2, 3]);
+        }
 
     }
 }
