@@ -151,7 +151,7 @@ const View = ({ products, categories }) => {
                                     data={data.total_meet}
                                 />
                                 <GoalsTextInput
-                                    label="Masa Aktif"
+                                    label="Durasi Private Chat"
                                     disabled
                                     data={data.active_period}
                                 />

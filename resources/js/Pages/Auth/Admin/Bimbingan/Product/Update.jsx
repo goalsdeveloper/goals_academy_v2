@@ -321,7 +321,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                     }
                                 />
                                 <GoalsTextInput
-                                    label="Masa Aktif"
+                                    label="Durasi Private Chat"
                                     required
                                     data={data.active_period}
                                     setData={(e) =>
