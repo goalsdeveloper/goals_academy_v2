@@ -19,6 +19,8 @@ import sampleImage from "/resources/img/program/sample image.png";
 
 const Update = ({ auth, categories, topics, addons, products }) => {
     const [show, setShow] = useState(false);
+    const currency = Intl.NumberFormat("id-ID");
+    
     const { data, setData, post, transform } = useForm({
         name: products.name,
         product_image: products.product_image,
@@ -135,7 +137,19 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                 !data.total_meet ||
                                 !data.active_period ||
                                 !data.contact_type ||
-                                !data.duration
+                                !data.duration ||
+                                (("topic" in data.form_config) && !data.topics.length)
+                                //  ? (
+                                // ) : (
+                                //     !data.name ||
+                                //     !data.category_id ||
+                                //     !data.description ||
+                                //     !data.price ||
+                                //     !data.total_meet ||
+                                //     !data.active_period ||
+                                //     !data.contact_type ||
+                                //     !data.duration
+                                // )
                             }
                         >
                             Perbarui
@@ -284,7 +298,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                     }
                                 />
                                 <GoalsTextInput
-                                    label="Promo (Optional)"
+                                    label="Diskon Gimmick (Opsional)"
                                     grow
                                     data={data.promo_price}
                                     setData={(e) =>
@@ -297,21 +311,13 @@ const Update = ({ auth, categories, topics, addons, products }) => {
 
                     <div className="flex flex-col w-full gap-[.8vw]">
                         <FormSection title="Informasi">
-                            <div className="flex gap-[1.2vw]">
+                            <div className="grid grid-cols-2 gap-[1.2vw]">
                                 <GoalsTextInput
                                     label="Total Pertemuan"
                                     required
                                     data={data.total_meet}
                                     setData={(e) =>
                                         setData({ ...data, total_meet: e })
-                                    }
-                                />
-                                <GoalsTextInput
-                                    label="Masa Aktif"
-                                    required
-                                    data={data.active_period}
-                                    setData={(e) =>
-                                        setData({ ...data, active_period: e })
                                     }
                                 />
                                 <GoalsTextInput
@@ -326,7 +332,14 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                     }
                                 />
                             </div>
-
+                            <GoalsTextInput
+                                label="Durasi Private Chat"
+                                required
+                                data={data.active_period}
+                                setData={(e) =>
+                                    setData({ ...data, active_period: e })
+                                }
+                            />
                             <SelectMultiTag
                                 value={data.add_on}
                                 label="Add on"
@@ -362,11 +375,11 @@ const Update = ({ auth, categories, topics, addons, products }) => {
 
                             <SelectMultiTag
                                 value={data.topics}
-                                label="Topic"
+                                label="Topik"
                                 handleClearTag={() =>
                                     setData({ ...data, topics: [] })
                                 }
-                                required
+                                required={"topic" in data.form_config}
                             >
                                 {topics.map((option, i) => (
                                     // <SelectInputItem

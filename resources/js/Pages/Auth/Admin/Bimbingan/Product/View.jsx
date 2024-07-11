@@ -6,6 +6,8 @@ import SliderButton from "./Components/SliderButton";
 import sampleImage from "/resources/img/program/sample image.png";
 
 const View = ({ products, categories }) => {
+    const currency = Intl.NumberFormat("id-ID");
+
     const data = {
         name: products.name,
         product_image: products.product_image,
@@ -14,7 +16,7 @@ const View = ({ products, categories }) => {
         description: products.description,
         excerpt: products.excerpt,
         price: products.price,
-        promo: products.promo_price ?? "",
+        promo_price: products.promo_price ?? "",
         total_meet: products.total_meet,
         active_period: products.active_period,
         duration: products.duration,
@@ -131,10 +133,10 @@ const View = ({ products, categories }) => {
                                     data={data.price}
                                 />
                                 <GoalsTextInput
-                                    label="Promo (Optional)"
+                                    label="Diskon Gimmick (Opsional)"
                                     disabled
                                     grow
-                                    data={data.promo}
+                                    data={data.promo_price}
                                 />
                             </div>
                         </FormSection>
@@ -142,16 +144,11 @@ const View = ({ products, categories }) => {
 
                     <div className="flex flex-col w-full gap-[.8vw]">
                         <FormSection className="border" title="Informasi">
-                            <div className="flex gap-[1.2vw]">
+                            <div className="grid grid-cols-2 gap-[1.2vw]">
                                 <GoalsTextInput
                                     label="Total Pertemuan"
                                     disabled
                                     data={data.total_meet}
-                                />
-                                <GoalsTextInput
-                                    label="Masa Aktif"
-                                    disabled
-                                    data={data.active_period}
                                 />
                                 <GoalsTextInput
                                     label="Durasi Pertemuan"
@@ -159,6 +156,11 @@ const View = ({ products, categories }) => {
                                     data={data.duration}
                                 />
                             </div>
+                            <GoalsTextInput
+                                label="Durasi Private Chat"
+                                disabled
+                                data={data.active_period}
+                            />
                             <SelectMultiTag
                                 disabled
                                 value={data.add_on}
@@ -167,7 +169,7 @@ const View = ({ products, categories }) => {
 
                             <SelectMultiTag
                                 value={data.topics}
-                                label="Topic"
+                                label="Topik"
                                 disabled
                             ></SelectMultiTag>
                         </FormSection>
