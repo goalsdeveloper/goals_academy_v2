@@ -24,7 +24,6 @@ export default function TutorList({ data, skillSearch }) {
         axios
             .get(route("profilTutor", { skill: skill, page: page }))
             .then((res) => {
-                console.log(res);
                 setDataTutor([...dataTutor, ...res.data.tutors.data]);
                 setNextPage(++res.data.tutors.current_page);
                 setNextPageUrl(res.data.tutors.next_page_url);

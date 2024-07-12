@@ -22,7 +22,6 @@ import { useMediaQuery } from "react-responsive";
 
 export default function Index({ auth, orderBimbingan }) {
     const [data, setData] = useState(orderBimbingan);
-    console.log(orderBimbingan)
 
     return (
         <UserLayout auth={auth} title="Bimbingan">
@@ -67,8 +66,6 @@ function BimbinganItem({ data }) {
     // const courseStatus =
     //     data.ongoing.charAt(0).toUpperCase() +
     //     data.ongoing.slice(1);
-
-    console.log(courseStatus);
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 

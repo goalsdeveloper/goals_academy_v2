@@ -388,7 +388,6 @@ function Notification({ auth, data, loadMore }) {
     };
 
     const loadMoreProgram = () => {
-        console.log(1);
         loadMore("Pembelajaran", data.pageProgram + 1, setIsLoading);
     };
 
@@ -928,7 +927,6 @@ function NotificationItem({ item }) {
         return (
             <Link
                 onClick={(e) => {
-                    console.log(e);
                     axios
                         .get(route("api.notification.read", { id: item.id }))
                         .then((res) => {

@@ -26,7 +26,6 @@ export default function DashboardLayout({
     children,
 }) {
     let navConfig;
-    // console.log(auth);
     switch (role) {
         case "admin":
             navConfig = [
@@ -912,7 +911,6 @@ function NotificationItem({ item }) {
         return (
             <Link
                 onClick={(e) => {
-                    console.log(e);
                     axios
                         .get(route("api.notification.read", { id: item.id }))
                         .then((res) => {
@@ -980,7 +978,6 @@ function NotificationItem({ item }) {
         return (
             <Link
                 onClick={(e) => {
-                    console.log(e);
                     axios
                         .get(route("api.notification.read", { id: item.id }))
                         .then((res) => {

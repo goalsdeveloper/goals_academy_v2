@@ -170,8 +170,6 @@ export default function Index({ auth }) {
         },
     ];
 
-    // console.log(auth);
-
     return (
         <MainLayout auth={auth} title="Home">
             <Hero />

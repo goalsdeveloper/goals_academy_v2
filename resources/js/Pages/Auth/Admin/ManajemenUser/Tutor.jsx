@@ -74,7 +74,6 @@ export default function Tutor({ auth, tutors, revenue_types }) {
         router.visit(route("admin.manajemen_user.tutor.index"), {
             only: ["data"],
             onSuccess: () => {
-                console.log("berhasil");
                 if (method == "create") {
                     toast.success("Create Success!");
                 } else if (method == "edit") {
@@ -88,9 +87,7 @@ export default function Tutor({ auth, tutors, revenue_types }) {
 
     const updateActive = (data) => {
         // Update status tutor dengan menggunakan route
-        console.log("sedang fetching");
         const is_active = !data.profile.is_active;
-        // console.log("is_active = ", is_active);
         router.put(
             route("admin.manajemen_user.tutor.updateActive", {
                 tutor: data.id,

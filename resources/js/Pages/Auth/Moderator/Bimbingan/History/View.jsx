@@ -21,7 +21,6 @@ import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 
 export default function View({ auth, progress, tutors }) {
-    console.log(progress)
     const item = [
         {
             url: "https://www.google.com",

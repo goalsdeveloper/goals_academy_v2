@@ -8,7 +8,6 @@ import GoalsPopup from "@/Components/elements/GoalsPopup";
 import logo from "/resources/img/icon/goals-5.svg";
 
 export default function Schedule({ auth, data }) {
-    console.log(data);
     const [isLoading, setIsLoading] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
     const [dataDetail, setDataDetail] = useState([]);

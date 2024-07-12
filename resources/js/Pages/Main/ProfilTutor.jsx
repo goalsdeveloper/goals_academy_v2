@@ -12,7 +12,6 @@ import tutor6 from "/resources/img/tutor/6.png";
 import TutorListOld from "../Partials/ProfilTutor/TutorList";
 
 export default function ProfilTutor({ auth, tutors, skill }) {
-    console.log(tutors)
     const data_tutor = [
         {
             name: "Widyana Rahma Cahyani",
