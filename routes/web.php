@@ -45,6 +45,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Http\Controllers\Tutor\OverviewController;
+use App\Models\Products;
 use App\Models\TutorNote;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
@@ -58,7 +59,8 @@ Route::get('/token', function () {
 });
 
 Route::get('/', function () {
-    return Inertia::render('Index');
+    $products = Products::with('category')->whereIn("id", [3,8,1])->get();
+    return Inertia::render('Index', ['products' => $products]);
 });
 
 Route::get('/dashboard/user/webinar', [DashboardUserController::class, 'webinar']);

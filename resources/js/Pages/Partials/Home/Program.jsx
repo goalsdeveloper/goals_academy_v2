@@ -11,8 +11,8 @@ export default function Program ({ data }) {
         <section id="program" className="my-16 xs:my-20 md:my-16 lg:my-20 xl:my-24 3xl:my-32 md:pb-10 lg:pb-20 relative overflow-hidden">
             <img src={tree3} className="absolute bottom-0 w-screen h-[95%] -z-10 hidden md:block" />
             <img src={tree4} className="absolute bottom-0 w-screen h-[100%] -z-10 md:hidden" />
-            <ProgramExpand data={data} />
-            <ProgramMobile data={data} />
+            <ProgramExpand data={[data[1], data[2], data[0]]} />
+            <ProgramMobile data={[data[1], data[2], data[0]]} />
         </section>
     )
 }
@@ -93,29 +93,29 @@ function ProgramCard ({ item, priority, className }) {
         <div className={`relative flex flex-col text-center bg-white overflow-hidden rounded-xl shadow-centered px-6 3xl:px-8 py-8 xs:py-12 md:py-8 xl:py-12 3xl:py-16 gap-[6vw] md:gap-[2.4vw] 3xl:gap-[2vw]  ${className}`}>
             <p className={`absolute top-[4%] -right-[12%] rotate-[35deg] bg-secondary text-white w-1/2 py-1 ${priority ? '' : 'hidden'}`}>Terlaris</p>
             <CornerWaveVector2 cornerClassName="w-8/12" />
-            <h3 className="font-semibold text-[5vw] md:text-[1.5vw]">{item.title}</h3>
+            <h3 className="font-semibold text-[5vw] md:text-[1.5vw]">{item.name}</h3>
             <div className="text-secondary">
                 <p className="font-poppins font-bold text-[3vw] md:text-[0.8vw]">Harga Mulai Dari</p>
-                <h2 className="text-secondary py-1 text-[6vw] md:text-[2vw]">IDR {currency.format(item.price)}</h2>
+                <h2 className="text-secondary py-1 text-[6vw] md:text-[2vw]">IDR {currency.format(Number(item.price) - Number(item.promo_price || 0))}</h2>
                 <span className="font-semibold text-[3vw] md:text-[0.8vw] bg-red-100 px-1 lg:py-0.5">Diskon Tersedia</span>
             </div>
             <div className="flex flex-col text-start gap-2 md:gap-1 lg:gap-2 3xl:gap-4 text-[3.5vw] md:text-[1.2vw]">
                 <p>Layanan :</p>
                 <div className="flex items-center gap-2 3xl:gap-4">
                     <i className="fa-regular fa-calendar"></i>
-                    <p>{item.features.times}x Pertemuan</p>
+                    <p>{item.total_meet}x Pertemuan</p>
                 </div>
                 <div className="flex items-center gap-2 3xl:gap-4">
                     <i className="fa-solid fa-clock text-12 md:text-8 lg:text-10 xl:text-12 3xl:text-18"></i>
-                    <p>{item.features.duration} Menit</p>
+                    <p>{item.duration} Menit</p>
                 </div>
                 <div className="flex items-center gap-2 3xl:gap-4">
                     <i className="fa-solid fa-location-dot"></i>
-                    <p>{item.features.category}</p>
+                    <p>{item.category.name}</p>
                 </div>
             </div>
             <div className="relative text-start h-full">
-                <ButtonPill href={item.link} className="absolute w-full bottom-0 text-[3.5vw] md:text-[1.2vw]">Daftar Sekarang</ButtonPill>
+                <ButtonPill href={`/produk/${item.slug}`} className="absolute w-full bottom-0 text-[3.5vw] md:text-[1.2vw]">Daftar Sekarang</ButtonPill>
             </div>
         </div>
     )
