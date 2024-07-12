@@ -275,7 +275,6 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                     value={data.description}
                                     required
                                     onChange={(e) =>{
-                                        console.log(e.target.value)
                                         setData({
                                             ...data,
                                             description: e.target.value,

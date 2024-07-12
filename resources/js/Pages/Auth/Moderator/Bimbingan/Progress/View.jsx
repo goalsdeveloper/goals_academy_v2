@@ -104,7 +104,6 @@ export default function View({ auth, progress, tutors }) {
                 return <></>;
         }
     };
-    console.log(progress);
 
     return (
         <DashboardLayout

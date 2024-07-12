@@ -146,7 +146,6 @@ const ShowSchedule = ({
                                         )
                                             .subtract(6, "days")
                                             .format("YYYY-MM-DD");
-                                            console.log(start_date,end_date)
                                         handleDateChange(start_date, end_date);
                                     }}
                                 >
@@ -173,7 +172,6 @@ const ShowSchedule = ({
                                         )
                                             .add(6, "days")
                                             .format("YYYY-MM-DD");
-                                            console.log(start_date, end_date)
                                         handleDateChange(start_date, end_date);
                                     }}
                                 >

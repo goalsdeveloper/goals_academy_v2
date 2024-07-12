@@ -94,7 +94,6 @@ export default function RevenueType({ auth, revenue_types }) {
                                         type: row.original.type,
                                         id: row.original.id,
                                     });
-                                    console.log(row.original);
                                 }}
                             >
                                 <FiEdit2 className="text-[1.2vw] text-secondary" />

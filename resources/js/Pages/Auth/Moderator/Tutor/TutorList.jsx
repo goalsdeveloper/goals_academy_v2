@@ -48,7 +48,6 @@ export default function TutorList({ auth, tutors, majors, skills }) {
         start_date: moment().format("YYYY-MM-DD"),
         end_date: moment().add(6, "days").format("YYYY-MM-DD"),
     });
-    console.log(dateRange);
 
     const [showForm, setShowForm] = useState({
         major: false,
@@ -78,13 +77,11 @@ export default function TutorList({ auth, tutors, majors, skills }) {
                 return res.json();
             })
             .then((res) => {
-                console.log(res.schedules[0]);
                 setDataSchedule(res.schedules);
                 setIsLoading(false);
             });
     };
     const handleDateChange = (start_date, end_date) => {
-        console.log(start_date, end_date);
         setDateRange({
             ...{ start_date, end_date },
         });

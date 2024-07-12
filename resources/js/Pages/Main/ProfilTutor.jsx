@@ -14,7 +14,6 @@ import bgGradient2 from "/resources/img/vector/gradient-bg-2.svg";
 import TutorListOld from "../Partials/ProfilTutor/TutorList";
 
 export default function ProfilTutor({ auth, tutors, skill }) {
-    console.log(tutors);
     const data_tutor = [
         {
             name: "Widyana Rahma Cahyani",
