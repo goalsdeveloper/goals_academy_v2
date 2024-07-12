@@ -316,7 +316,6 @@ const ProfileImage = ({ auth }) => {
                 setShow={setShowImageUploader}
                 profileImage={profileImage}
                 setProfileImage={setProfileImage}
-                onSubmit={(i) => console.log(i)}
             />
         </div>
     );

@@ -25,7 +25,6 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useEffect } from "react";
 
 export default function Edit({ auth, progress, tutors, places }) {
-    console.log("rerender");
     const [isInitialRender, setIsInitialRender] = React.useState(true);
     const product_category = progress.products.category.slug;
     const [isShow, setIsShow] = React.useState({
@@ -360,7 +359,6 @@ export default function Edit({ auth, progress, tutors, places }) {
                                         }}
                                         getOptionLabel={(option) => option.name}
                                         onChange={(e, value) => {
-                                            console.log(value);
                                             setData({
                                                 ...data,
                                                 tutor: value,

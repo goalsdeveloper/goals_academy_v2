@@ -69,7 +69,6 @@ function WebinarCard ({ item, className }) {
     const startCountdown = () => {
         countdownInterval.current = setInterval(() => {
             const difference = target.diff(moment());
-            console.log(difference)
             if (difference <= 1) {
                 setCountdown("00:00:00:00");
                 clearInterval(countdownInterval.current)
