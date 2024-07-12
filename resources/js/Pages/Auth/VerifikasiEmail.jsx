@@ -5,7 +5,6 @@ import iconDesktop from "/resources/img/icon/goals-3.svg";
 import ButtonPill from "@/Components/ButtonPill";
 
 export default function SyaratDanKetentuan ({user}) {
-    console.log(user)
     return (
         <>
             <Head title="Verifikasi Email" />

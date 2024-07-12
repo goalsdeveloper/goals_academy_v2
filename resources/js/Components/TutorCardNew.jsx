@@ -1,5 +1,4 @@
 export default function TutorCardNew({ name, image, skills }) {
-    // console.log(skills)
     return (
         <div className=" text-black border rounded-xl shadow-md px-2 py-4 h-[52vw] md:h-[21vw]">
             <div className="h-[23vw] md:h-[11vw]">

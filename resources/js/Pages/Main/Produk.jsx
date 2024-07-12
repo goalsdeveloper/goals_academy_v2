@@ -133,7 +133,6 @@ export default function Produk({
     };
 
     const filterByCategory = (category, productType) => {
-        console.log(category);
         if (productType == "bimbingan") {
             let temp1
             if (category == 'Semua') {
