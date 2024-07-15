@@ -43,7 +43,9 @@ export default function Overview({
     const [totalCheckout, setTotalCheckout] = useState(total_checkout);
 
     // Click & Views
-    const [barLabels, setBarLabels] = useState(Object.keys(totalsByDate).map(i => i.split('-')[2]));
+    const [barLabels, setBarLabels] = useState(
+        Object.keys(totalsByDate).map((i) => i.split("-")[2])
+    );
 
     const [clickData, setClickData] = useState(
         Object.values(totalsByDate).map(
@@ -264,14 +266,14 @@ export default function Overview({
                             />
                             <InfoCard
                                 title="Total Order"
-                                data={totalOrder}
+                                data={totalCheckout}
                                 percentage={5.6}
                                 grow={12}
                                 icon={<FaCartShopping className="text-[1vw]" />}
                             />
                             <InfoCard
                                 title="Checkout User"
-                                data={totalCheckout}
+                                data={totalOrder}
                                 percentage={5.6}
                                 grow={12}
                                 icon={<FaGlobe className="text-[1vw]" />}
