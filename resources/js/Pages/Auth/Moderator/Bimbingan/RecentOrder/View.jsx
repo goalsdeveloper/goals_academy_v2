@@ -42,7 +42,7 @@ const View = ({ tipe = "bimbingan", detailOrder }) => {
                 <GoalsTextInput
                     label="Username"
                     disabled
-                    data={detailOrder?.user?.name ?? ''}
+                    data={detailOrder?.user?.username ?? ''}
                     placeholder="Belum Diset"
                 />
                 <GoalsTextInput
