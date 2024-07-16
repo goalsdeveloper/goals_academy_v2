@@ -21,13 +21,6 @@ class PaymentMethodSeeder extends Seeder
             'is_price' => false,
         ]);
         PaymentMethod::create([
-            'name' => 'Gopay',
-            'category' => 'ewallet',
-            'payment_type' => 'gopay',
-            'admin_fee' => 2,
-            'is_price' => false,
-        ]);
-        PaymentMethod::create([
             'name' => 'BNI',
             'category' => 'bank_transfer',
             'payment_type' => 'bni',

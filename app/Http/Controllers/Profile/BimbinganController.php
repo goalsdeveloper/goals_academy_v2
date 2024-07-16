@@ -89,10 +89,10 @@ class BimbinganController extends Controller
     {
         $course = $order->courses()->where('session', 1)->first();
         $validate = $request->validate([
-            'rate_tutor' => 'integer|min:1|max:5',
-            'rate_product' => 'integer|min:1|max:5',
-            'note_tutor' => 'string',
-            'note_product' => 'string',
+            'rate_tutor' => 'integer|min:0|max:5|nullable',
+            'rate_product' => 'integer|min:0|max:5|nullable',
+            'note_tutor' => 'string|nullable',
+            'note_product' => 'string|nullable',
         ]);
         try {
             ProductReview::create(array_merge($validate, ['course_id' => $course->id]));

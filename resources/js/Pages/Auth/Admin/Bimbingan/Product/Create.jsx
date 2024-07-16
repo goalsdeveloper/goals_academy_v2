@@ -182,11 +182,21 @@ const Create = ({ auth, categories, addons, topics }) => {
                             />
 
                             <div className="flex gap-[1.2vw]">
-                                <div className="flex items-center justify-center w-[29vw] h-[11vw] aspect-square shadow-md rounded-[.5vw] overflow-hidden">
-                                    {typeof(data.product_image) == "string" 
-                                        ? <img src={data.product_image ? `/storage/${data.product_image}` : sampleImage} className={`w-full h-full object-cover ${data.product_image ? "" : "grayscale"}`} alt={data.product_image} />
-                                        : <img src={URL.createObjectURL(data.product_image.file)} className={`w-full h-full object-cover ${data.product_image ? "" : "grayscale"}`} alt={data.product_image.url} />
-                                    }
+                                <div className="w-[29vw]">
+                                    <div className="flex items-center justify-center w-full h-[11vw] aspect-square shadow-md rounded-[.5vw] overflow-hidden">
+                                        {typeof(data.product_image) == "string"
+                                            ? <img src={data.product_image ? `/storage/${data.product_image}` : sampleImage} className={`w-full h-full object-cover ${data.product_image ? "" : "grayscale"}`} alt={data.product_image} />
+                                            : <img src={URL.createObjectURL(data.product_image.file)} className={`w-full h-full object-cover ${data.product_image ? "" : "grayscale"}`} alt={data.product_image.url} />
+                                        }
+                                    </div>
+                                    <div className="">
+                                        <small
+                                            htmlFor="picture"
+                                            className="text-red-500 text-[.83vw]"
+                                        >
+                                            *Ukuran foto (402 x 295 px)
+                                        </small>
+                                    </div>
                                 </div>
                                 <div className="w-full space-y-[1.2vw]">
                                     <GoalsTextInput
