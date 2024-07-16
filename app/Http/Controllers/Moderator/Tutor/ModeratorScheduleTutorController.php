@@ -27,7 +27,7 @@ class ModeratorScheduleTutorController extends Controller
 
                 $formattedCourses = [];
 
-                for ($hour = 8; $hour <= 19; $hour++) {
+                for ($hour = 8; $hour <= 23; $hour++) {
                     $time = str_pad($hour, 2, "0", STR_PAD_LEFT) . ":00:00";
                     $schedule = [
                         'time' => $time
