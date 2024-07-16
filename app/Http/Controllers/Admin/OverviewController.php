@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\OrderEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Products;
@@ -30,6 +31,7 @@ class OverviewController extends Controller
                     $oneMonthAgo = now()->subMonth();
                     $order =  Order::where('created_at', '>=', $oneMonthAgo)
                         ->orderBy('created_at', 'desc')
+                        ->where('status', OrderEnum::SUCCESS)
                         ->with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])->take(5)
                         ->get();
 
@@ -104,6 +106,7 @@ class OverviewController extends Controller
                 } else {
                     $order = Order::query()
                         ->whereBetween('created_at', [$startDateString, Carbon::createFromDate($endDateString)->addDays(1)])
+                        ->where('status', OrderEnum::SUCCESS)
                         ->orderBy('created_at', 'desc')
                         ->with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])->take(5)
                         ->get();

@@ -20,7 +20,7 @@ import sampleImage from "/resources/img/program/sample image.png";
 const Update = ({ auth, categories, topics, addons, products }) => {
     const [show, setShow] = useState(false);
     const currency = Intl.NumberFormat("id-ID");
-    
+
     const { data, setData, post, transform } = useForm({
         name: products.name,
         product_image: products.product_image,
@@ -138,7 +138,8 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                 !data.active_period ||
                                 !data.contact_type ||
                                 !data.duration ||
-                                (("topic" in data.form_config) && !data.topics.length)
+                                ("topic" in data.form_config &&
+                                    !data.topics.length)
                                 //  ? (
                                 // ) : (
                                 //     !data.name ||
@@ -176,23 +177,55 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                         >
                             <input
                                 type="file"
-                                onChange={(e) =>{
+                                id="picture"
+                                onChange={(e) => {
                                     setData({
                                         ...data,
                                         product_image: {
                                             url: e.target.value,
                                             file: e.target.files[0],
                                         },
-                                    })
+                                    });
                                 }}
                             />
-
                             <div className="flex gap-[1.2vw]">
-                                <div className="flex items-center justify-center w-[29vw] h-[11vw] aspect-square shadow-md rounded-[.5vw] overflow-hidden">
-                                    {typeof(data.product_image) == "string" 
-                                        ? <img src={data.product_image ? `/storage/${data.product_image}` : sampleImage} className={`w-full h-full object-cover ${data.product_image ? "" : "grayscale"}`} alt={data.product_image} />
-                                        : <img src={URL.createObjectURL(data.product_image.file)} className={`w-full h-full object-cover ${data.product_image ? "" : "grayscale"}`} alt={data.product_image.url} />
-                                    }
+                                <div className="w-[29vw]">
+                                    <div className="flex items-center justify-center w-full h-[11vw] aspect-square shadow-md rounded-[.5vw] overflow-hidden">
+                                        {typeof data.product_image ==
+                                        "string" ? (
+                                            <img
+                                                src={
+                                                    data.product_image
+                                                        ? `/storage/${data.product_image}`
+                                                        : sampleImage
+                                                }
+                                                className={`w-full h-full object-cover ${
+                                                    data.product_image
+                                                        ? ""
+                                                        : "grayscale"
+                                                }`}
+                                                alt={data.product_image}
+                                            />
+                                        ) : (
+                                            <img
+                                                src={URL.createObjectURL(
+                                                    data.product_image.file
+                                                )}
+                                                className={`w-full h-full object-cover ${
+                                                    data.product_image
+                                                        ? ""
+                                                        : "grayscale"
+                                                }`}
+                                                alt={data.product_image.url}
+                                            />
+                                        )}
+                                    </div>
+                                    <small
+                                        htmlFor="picture"
+                                        className="text-red-500 text-[.83vw]"
+                                    >
+                                        *Ukuran foto (402 x 295 px)
+                                    </small>
                                 </div>
                                 <div className="w-full space-y-[1.2vw]">
                                     <GoalsTextInput
@@ -274,11 +307,11 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                     placeholder="Deskripsi singkat tentang program ini"
                                     value={data.description}
                                     required
-                                    onChange={(e) =>{
+                                    onChange={(e) => {
                                         setData({
                                             ...data,
                                             description: e.target.value,
-                                        })
+                                        });
                                     }}
                                     className=" w-full h-[7.8vw] border border-neutral-50 text-[.83vw] rounded-[.4vw] px-[1.2vw] md:py-[1vw] resize-none "
                                 ></textarea>
@@ -447,7 +480,10 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                                 onClick={() => {
                                                     setData({
                                                         ...data,
-                                                        facilities: data.facilities.filter(i => i != item),
+                                                        facilities:
+                                                            data.facilities.filter(
+                                                                (i) => i != item
+                                                            ),
                                                         // facilities:
                                                         //     data.facilities.filter(
                                                         //         (i) => {
@@ -457,8 +493,8 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                                         //                     item.text;
                                                         //         }
                                                         //     ),
-                                                    })
-                                               }}
+                                                    });
+                                                }}
                                             >
                                                 <i className="transition-all opacity-0 fa-solid fa-xmark group-hover:opacity-100"></i>
                                             </button>
