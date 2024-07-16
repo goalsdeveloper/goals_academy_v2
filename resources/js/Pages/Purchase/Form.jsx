@@ -123,7 +123,7 @@ export default function Form({
                 position: "top-center",
                 icon: "⚠️",
             });
-            location.href = `/produk/${dataProduct.slug}#lengkapi_profil`;
+            window.scrollTo(0, 0);
         } else {
             setIsProcessed(true);
             post("/produk", {
@@ -291,6 +291,21 @@ function MainCard({
 
     return (
         <div className="md:w-[72%] flex flex-col gap-[1vw]">
+            {Object.keys(userProfile)
+                .map((i) => userProfile[i])
+                .includes("") ||
+            Object.keys(userProfile)
+                .map((i) => userProfile[i])
+                .includes(null) ? (
+                <LengkapiProfilAlert
+                    userProfile={userProfile}
+                    setUserProfile={setUserProfile}
+                    data={data}
+                    setData={setData}
+                />
+            ) : (
+                <></>
+            )}
             <div className="md:border-1 md:rounded-[.8vw] md:p-[1.75vw] h-fit">
                 <div className="flex flex-col gap-[4vw] md:gap-0">
                     <div className="md:hidden flex flex-col gap-[4vw]">
@@ -322,7 +337,6 @@ function MainCard({
                     <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" />
                     <div
                         className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw] mb-[20vw] md:mb-0"
-                        id="lengkapi_profil"
                     >
                         {Object.keys(rules).length == 1 &&
                         "document" in rules ? (
@@ -1105,21 +1119,6 @@ function MainCard({
                     </div>
                 </div>
             </div>
-            {Object.keys(userProfile)
-                .map((i) => userProfile[i])
-                .includes("") ||
-            Object.keys(userProfile)
-                .map((i) => userProfile[i])
-                .includes(null) ? (
-                <LengkapiProfilAlert
-                    userProfile={userProfile}
-                    setUserProfile={setUserProfile}
-                    data={data}
-                    setData={setData}
-                />
-            ) : (
-                <></>
-            )}
         </div>
     );
 }

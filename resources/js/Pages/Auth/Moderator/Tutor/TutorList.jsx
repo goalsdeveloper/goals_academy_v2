@@ -83,7 +83,7 @@ export default function TutorList({ auth, tutors, majors, skills }) {
     };
     const handleDateChange = (start_date, end_date) => {
         setDateRange({
-            ...{ start_date, end_date },
+            ...{ start_date, end_date }
         });
         getDataSchedule(tutorId, start_date, end_date);
     };
