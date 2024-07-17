@@ -33,6 +33,7 @@ export default function Form({
     paymentMethods,
     dataProduct,
 }) {
+    console.log(addOns);
     const userId = auth.user.id;
     const [isProcessed, setIsProcessed] = useState(false);
     const [showMobileSummaryCard, setShowMobileSummaryCard] = useState(false);
@@ -309,8 +310,17 @@ function MainCard({
             <div className="md:border-1 md:rounded-[.8vw] md:p-[1.75vw] h-fit">
                 <div className="flex flex-col gap-[4vw] md:gap-0">
                     <div className="md:hidden flex flex-col gap-[4vw]">
-                        <Link href="/produk" className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins"><FiChevronLeft className="text-[5vw]" /> Kembali</Link>
-                        <img className="w-full h-[60vw] object-cover" src={"/storage/"+ dataProduct.product_image} alt="" />
+                        <Link
+                            href="/produk"
+                            className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins"
+                        >
+                            <FiChevronLeft className="text-[5vw]" /> Kembali
+                        </Link>
+                        <img
+                            className="w-full h-[60vw] object-cover"
+                            src={"/storage/" + dataProduct.product_image}
+                            alt=""
+                        />
                     </div>
                     <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw]">
                         <h3 className="w-full text-secondary font-semibold text-[5.5vw] md:text-[1.8vw]">
@@ -1014,7 +1024,12 @@ function MainCard({
                                                         }
                                                     }}
                                                 >
-                                                    {item.name}
+                                                    {item.name +
+                                                        " - " +
+                                                        "Rp " +
+                                                        currency.format(
+                                                            item.price
+                                                        )}
                                                 </GoalsSelectMultipleInputItem>
                                             );
                                         })}
@@ -1164,7 +1179,14 @@ function SummaryCard({
                         <div className="container mx-auto space-y-[4vw]">
                             <div className="flex items-center gap-[4vw]">
                                 <div className="w-5/12 rounded-[2vw] overflow-hidden">
-                                    <img className="w-full h-full object-cover" src={ "/storage/" + dataProduct.product_image } alt="" />
+                                    <img
+                                        className="w-full h-full object-cover"
+                                        src={
+                                            "/storage/" +
+                                            dataProduct.product_image
+                                        }
+                                        alt=""
+                                    />
                                 </div>
                                 <div className="w-full">
                                     <p className="font-semibold text-secondary text-[3vw]">
