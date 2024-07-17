@@ -507,7 +507,7 @@ function MainCard({
                                                         }
                                                     }}
                                                 >
-                                                    {item.name}
+                                                    {item.name + " - IDR " + currency.format(item.price)}
                                                 </GoalsSelectMultipleInputItem>
                                             );
                                         })}
@@ -1024,12 +1024,7 @@ function MainCard({
                                                         }
                                                     }}
                                                 >
-                                                    {item.name +
-                                                        " - " +
-                                                        "Rp " +
-                                                        currency.format(
-                                                            item.price
-                                                        )}
+                                                    {item.name + " - IDR " + currency.format(item.price)}
                                                 </GoalsSelectMultipleInputItem>
                                             );
                                         })}

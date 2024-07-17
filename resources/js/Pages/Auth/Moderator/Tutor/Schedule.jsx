@@ -227,13 +227,15 @@ function CellDetail({ show, setShow, data }) {
                     Cell: ({ cell }) => {
                         return (
                             <div className="flex items-center gap-[.8vw]">
-                                <Link
-                                    href={route("moderator.bimbingan.progress.edit", {
-                                        progress: cell.getValue(),
-                                    })}
-                                >
-                                    <FiEdit2 className="text-[1.2vw] text-secondary" />
-                                </Link>
+                                {cell.row.original.course.ongoing != "selesai" && (
+                                    <Link
+                                        href={route("moderator.bimbingan.progress.edit", {
+                                            progress: cell.getValue(),
+                                        })}
+                                    >
+                                        <FiEdit2 className="text-[1.2vw] text-secondary" />
+                                    </Link>
+                                )}
                                 <Link
                                     href={route("moderator.bimbingan.progress.show", {
                                         progress: cell.getValue(),
@@ -254,6 +256,7 @@ function CellDetail({ show, setShow, data }) {
         // enableSorting: false,
         enableColumnActions: false,
         enableFullScreenToggle: false,
+        enableDensityToggle: false,
         muiTableHeadCellProps: {
             sx: {
                 fontFamily: "Poppins",

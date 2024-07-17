@@ -12,6 +12,7 @@ const SelectMultiTag = ({
     chevronIcon = "",
     required = false,
     className = "",
+    labelClassName = "",
     filledClassName = "border-1 border-light-grey text-light-grey font-semibold",
     emptyClassName = "border-1 border-light-grey text-light-grey font-normal",
     handleClearTag = () => {},
@@ -30,7 +31,7 @@ const SelectMultiTag = ({
     return (
         <div className="text-inherit">
             {label !== "" && (
-                <p className="mb-[2vw] md:mb-[.5vw]">
+                <p className={`mb-[2vw] md:mb-[.5vw] ${labelClassName}`}>
                     {label}
                     <sup
                         className={`${
