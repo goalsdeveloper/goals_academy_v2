@@ -33,12 +33,13 @@ export default function Overview({
     list_orders,
     top_selling,
     totalsByDate,
+    totalViewsKeseluruhan,
 }) {
     const [isLoading, setIsLoading] = useState(false);
     const currency = Intl.NumberFormat("id-ID");
 
     const [totalEarning, setTotalEarning] = useState(total_earning);
-    const [totalVisitor, setTotalVisitor] = useState(312);
+    const [totalVisitor, setTotalVisitor] = useState(totalViewsKeseluruhan);
     const [totalOrder, setTotalOrder] = useState(total_order);
     const [totalCheckout, setTotalCheckout] = useState(total_checkout);
 
