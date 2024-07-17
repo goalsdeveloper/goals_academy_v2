@@ -15,9 +15,9 @@ const Show = ({ show, setShow, data }) => {
                             <div className="flex flex-col gap-[.8vw]">
                                 <GoalsTextInput
                                     disabled
-                                    label="Id"
+                                    label="Username"
                                     labelClassName="font-medium text-[.83vw]"
-                                    data={data.id}
+                                    data={data.username}
                                     placeholder=""
                                 />
                                 <GoalsTextInput
@@ -52,33 +52,37 @@ const Show = ({ show, setShow, data }) => {
                                             <p className="mb-[.3vw]">
                                                 Soft Skills:
                                             </p>
-                                            <ul className="list-disc list-inside">
-                                                {data.skills.map(
-                                                    (item, index) =>
-                                                        item.category ==
-                                                            "soft_skill" && (
-                                                            <li key={index}>
-                                                                {item.name}
-                                                            </li>
-                                                        )
-                                                )}
-                                            </ul>
+                                            <div className="max-h-[5.5vw] overflow-auto scrollbar-hidden">
+                                                <ul className="list-disc ms-[1.2vw]">
+                                                    {data?.skills?.map(
+                                                        (item, index) =>
+                                                            item.category ==
+                                                                "soft_skill" && (
+                                                                <li key={index}>
+                                                                    {item.name}
+                                                                </li>
+                                                            )
+                                                    )}
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div>
                                             <p className="mb-[.3vw]">
                                                 Hard Skills:
                                             </p>
-                                            <ul className="list-disc list-inside">
-                                                {data.skills.map(
-                                                    (item, index) =>
-                                                        item.category ==
-                                                            "hard_skill" && (
-                                                            <li key={index}>
-                                                                {item.name}
-                                                            </li>
-                                                        )
-                                                )}
-                                            </ul>
+                                            <div className="max-h-[5.5vw] overflow-auto scrollbar-hidden">
+                                                <ul className="list-disc ms-[1.2vw]">
+                                                    {data?.skills?.map(
+                                                        (item, index) =>
+                                                            item.category ==
+                                                                "hard_skill" && (
+                                                                <li key={index}>
+                                                                    {item.name}
+                                                                </li>
+                                                            )
+                                                    )}
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -90,15 +94,15 @@ const Show = ({ show, setShow, data }) => {
                                     Bimbingan Berjalan
                                 </p>
                                 <div className="grid grid-cols-2 text-center text-[.83vw]">
-                                    <ul className="space-y-[1.5vw] py-[1vw] rounded-[.5vw] bg-yellow-50">
-                                        {data.ongoing_category?.map(
+                                    <ul className={`space-y-[1.5vw] py-[1vw] rounded-[.5vw] ${data?.ongoing_category?.length && "bg-yellow-50"}`}>
+                                        {data?.ongoing_category?.map(
                                             (item, index) => (
                                                 <li key={index}>{item.name}</li>
                                             )
                                         )}
                                     </ul>
                                     <ul className="space-y-[1.5vw] py-[1vw] rounded-[.5vw]">
-                                        {data.ongoing_category?.map(
+                                        {data?.ongoing_category?.map(
                                             (item, index) => (
                                                 <li key={index}>
                                                     {item.jumlah_bimbingan}
@@ -113,22 +117,22 @@ const Show = ({ show, setShow, data }) => {
                                     Bimbingan Selesai
                                 </p>
                                 <div className="grid grid-cols-2 text-center text-[.83vw]">
-                                    <ul className="space-y-[1.5vw] py-[1vw] rounded-[.5vw] bg-green-50">
-                                        {data.finished_category?.map(
-                                            (item, index) => {
+                                    <ul className={`space-y-[1.5vw] py-[1vw] rounded-[.5vw] ${data?.finished_category?.length > 0 && "bg-green-50"}`}>
+                                        {data?.finished_category?.map(
+                                            (item, index) => (
                                                 <li key={index}>
                                                     {item.name}
-                                                </li>;
-                                            }
+                                                </li>
+                                            )
                                         )}
                                     </ul>
                                     <ul className="space-y-[1.5vw] py-[1vw] rounded-[.5vw]">
-                                        {data.finished_category?.map(
-                                            (item, index) => {
+                                        {data?.finished_category?.map(
+                                            (item, index) => (
                                                 <li key={index}>
                                                     {item.jumlah_bimbingan}
-                                                </li>;
-                                            }
+                                                </li>
+                                            )
                                         )}
                                     </ul>
                                 </div>

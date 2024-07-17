@@ -8,6 +8,7 @@ use App\Http\Controllers\API\HandleMidtransCallbackController;
 use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\PurchaseController;
 use App\Http\Controllers\API\TutorScheduleController;
+use App\Http\Controllers\API\TutorSheduleController;
 use App\Models\Order;
 use App\Models\User;
 // use App\Http\Controllers\Api\RegisterController;
@@ -73,6 +74,6 @@ Route::post('/lengkapi_profil', function (Request $request) {
 });
 Route::get('views_sales', [ViewsClickAndSalesAmountController::class, 'index']);
 Route::get('user_growth', [ViewsClickAndSalesAmountController::class, 'userGrowth']);
-Route::get('tutor_schedule', [TutorScheduleController::class, 'index']);
+Route::get('tutor_schedule', [TutorSheduleController::class, 'index']);
 
 Route::put('check_expired', [ExpiredCourseCheckerController::class, 'index'])->name("check_expired");
