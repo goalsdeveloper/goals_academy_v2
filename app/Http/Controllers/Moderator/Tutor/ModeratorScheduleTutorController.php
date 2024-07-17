@@ -27,7 +27,7 @@ class ModeratorScheduleTutorController extends Controller
 
                 $formattedCourses = [];
 
-                for ($hour = 8; $hour <= 23; $hour++) {
+                for ($hour = 5; $hour <= 23; $hour++) {
                     $time = str_pad($hour, 2, "0", STR_PAD_LEFT) . ":00:00";
                     $schedule = [
                         'time' => $time
@@ -48,17 +48,22 @@ class ModeratorScheduleTutorController extends Controller
                     ->whereNotNull('time')
                     ->get();
 
+                    // dd($courses);
                 foreach ($courses as $course) {
+
                     $durationInHours = ceil($course->products->duration / 60);
-                    $startTime = Carbon::createFromFormat('H:i:s', $course->time);
-                    $endTime = $startTime->copy()->addHours($durationInHours);
+                    $startTime = Carbon::parse($course->time)->format('H');
+                    // $jam = Carbon::createFromFormat('H', $course->time);
+                    // $endTime = $startTime->copy()->addHours($durationInHours);
 
                     foreach ($formattedCourses as &$schedule) {
-                        $time = Carbon::createFromFormat('H:i:s', $schedule['time']);
-                        if ($time >= $startTime && $time < $endTime) {
+                        $time = Carbon::parse($schedule['time'])->format('H');
+                        // dd($time);
+                        if ($time == $startTime) {
                             $dateKey = $course->date;
                             if (isset($schedule[$dateKey])) {
-                                $schedule[$dateKey][] = $course->tutor->name;
+                                $schedule[$dateKey][] = ['name' => $course->tutor->name, 'time' => $course->time];
+                                // $schedule[$dateKey][] = $course->time;
                             }
                         }
                     }
