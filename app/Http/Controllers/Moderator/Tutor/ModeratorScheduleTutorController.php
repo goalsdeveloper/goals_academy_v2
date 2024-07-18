@@ -27,7 +27,7 @@ class ModeratorScheduleTutorController extends Controller
 
                 $formattedCourses = [];
 
-                for ($hour = 8; $hour <= 19; $hour++) {
+                for ($hour = 5; $hour <= 23; $hour++) {
                     $time = str_pad($hour, 2, "0", STR_PAD_LEFT) . ":00:00";
                     $schedule = [
                         'time' => $time
@@ -41,24 +41,29 @@ class ModeratorScheduleTutorController extends Controller
                     $formattedCourses[] = $schedule;
                 }
 
-                $courses = Course::with(['tutor:id,name', 'products:id,name,duration'])
-                    ->select('id', 'tutor_id', 'date', 'time', 'products_id')
+                $courses = Course::with(['user:id,name', 'tutor:id,username,name', 'products:id,name,duration', 'order:id,order_code'])
+                    ->select('id', 'user_id', 'tutor_id', 'order_id', 'date', 'time', 'products_id', 'ongoing', 'session')
                     ->whereNotNull('tutor_id')
                     ->whereNotNull('date')
                     ->whereNotNull('time')
                     ->get();
 
+                    // dd($courses);
                 foreach ($courses as $course) {
+
                     $durationInHours = ceil($course->products->duration / 60);
-                    $startTime = Carbon::createFromFormat('H:i:s', $course->time);
-                    $endTime = $startTime->copy()->addHours($durationInHours);
+                    $startTime = Carbon::parse($course->time)->format('H');
+                    // $jam = Carbon::createFromFormat('H', $course->time);
+                    // $endTime = $startTime->copy()->addHours($durationInHours);
 
                     foreach ($formattedCourses as &$schedule) {
-                        $time = Carbon::createFromFormat('H:i:s', $schedule['time']);
-                        if ($time >= $startTime && $time < $endTime) {
+                        $time = Carbon::parse($schedule['time'])->format('H');
+                        // dd($time);
+                        if ($time == $startTime) {
                             $dateKey = $course->date;
                             if (isset($schedule[$dateKey])) {
-                                $schedule[$dateKey][] = $course->tutor->name;
+                                $schedule[$dateKey][] = ['course' => $course];
+                                // $schedule[$dateKey][] = $course->time;
                             }
                         }
                     }

@@ -103,6 +103,15 @@ export default function DashboardLayout({
                             isActive:
                                 title == "Bimbingan" && subtitle == "Order",
                         },
+                        {
+                            name: "Kode Promo",
+                            href: route('admin.bimbingan.promo-code.index'),
+                            icon: (
+                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
+                            ),
+                            isActive:
+                                title == "Bimbingan" && subtitle == "Kode Promo",
+                        },
                     ],
                     collapsed: true,
                 },

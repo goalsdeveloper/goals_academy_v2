@@ -443,7 +443,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                             <SelectMultiTag
                                 disabled
                                 value={data.add_on}
-                                label="Add on"
+                                label="Add-On"
                                 handleClearTag={() =>
                                     setData({ ...data, add_on: [] })
                                 }

@@ -1,11 +1,15 @@
 import { useState, useMemo } from "react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiEdit2, FiEye } from "react-icons/fi";
 import GoalsDataTable from "@/Components/elements/GoalsDataTable";
 import moment from "moment";
 import { createPortal } from "react-dom";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
 import logo from "/resources/img/icon/goals-5.svg";
+import GoalsBadge from "@/Components/elements/GoalsBadge";
+import { getStatusClass } from "../../User/RiwayatTransaksi/components/TransactionStatusBadge";
+import { upperCaseFirstLetter } from "@/script/utils";
+import { Link } from "@inertiajs/react";
 
 export default function Schedule({ auth, data }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -45,49 +49,6 @@ export default function Schedule({ auth, data }) {
             });
     };
 
-    // const [dataSchedule, setDataSchedule] = useState([
-    //     {
-    //         time: "08:00",
-    //         "2024-04-01": ["Timo", "Hafiz"],
-    //         "2024-04-02": ["Hafiz"],
-    //         "2024-04-03": ["Hafiz"],
-    //         "2024-04-04": [],
-    //         "2024-04-05": [],
-    //         "2024-04-06": ["Hafiz"],
-    //         "2024-04-07": ["Hafiz", "Timo"],
-    //     },
-    //     {
-    //         time: "09:00",
-    //         "2024-04-01": ["Timo", "Hafiz"],
-    //         "2024-04-02": ["Hafiz"],
-    //         "2024-04-03": ["Hafiz"],
-    //         "2024-04-04": ["Hafiz"],
-    //         "2024-04-05": ["Hafiz"],
-    //         "2024-04-06": ["Hafiz"],
-    //         "2024-04-07": ["Hafiz", "Timo"],
-    //     },
-    //     {
-    //         time: "10:00",
-    //         "2024-04-01": ["Timo", "Hafiz"],
-    //         "2024-04-02": ["Hafiz"],
-    //         "2024-04-03": ["Hafiz"],
-    //         "2024-04-04": ["Hafiz"],
-    //         "2024-04-05": ["Hafiz"],
-    //         "2024-04-06": ["Hafiz"],
-    //         "2024-04-07": ["Hafiz", "Timo"],
-    //     },
-    //     {
-    //         time: "11:00",
-    //         "2024-04-01": ["Timo", "Hafiz"],
-    //         "2024-04-02": ["Hafiz"],
-    //         "2024-04-03": ["Hafiz"],
-    //         "2024-04-04": ["Hafiz"],
-    //         "2024-04-05": ["Hafiz"],
-    //         "2024-04-06": ["Hafiz"],
-    //         "2024-04-07": ["Hafiz", "Timo"],
-    //     },
-    // ]);
-
     const columns = useMemo(
         () =>
             [
@@ -117,13 +78,14 @@ export default function Schedule({ auth, data }) {
                                 <button
                                     className="w-full flex items-center justify-center gap-[1vw] py-[1.5vw] px-[1.2vw]"
                                     onClick={() => {
-                                        if (value.length > 1) {
+                                        if (value.length >= 1) {
+                                            console.log(value)
                                             setDataDetail(value);
                                             setShowDetail(true);
                                         }
                                     }}
                                 >
-                                    <span>{value[0]}</span>
+                                    <span>{value[0]?.course?.tutor?.name}</span>
                                     {value.length > 1 && (
                                         <span className="flex items-center justify-center bg-skin rounded-full w-[2vw] h-[2vw]">
                                             {value.length}
@@ -206,13 +168,122 @@ export default function Schedule({ auth, data }) {
 }
 
 function CellDetail({ show, setShow, data }) {
+    const columns = useMemo(
+        () =>
+            [
+                {
+                    accessorKey: "course.order.order_code",
+                    header: "Order Code",
+                    size: 50,
+                },
+                {
+                    accessorKey: "course.user.name",
+                    header: "Customer Name",
+                    size: 50,
+                },
+                {
+                    accessorKey: "course.tutor.username",
+                    header: "Username",
+                    size: 50,
+                },
+                {
+                    accessorKey: "course.tutor.name",
+                    header: "Name",
+                    size: 50,
+                },
+                {
+                    accessorKey: "course.products.name",
+                    header: "Product",
+                    size: 200,
+                },
+                {
+                    accessorKey: "course.session",
+                    header: "Session",
+                    size: 50,
+                },
+                {
+                    accessorFn: (row) => moment(`${row.course?.date} ${row.course?.time}`).format("dddd, DD MMMM YYYY HH:mm"),
+                    header: "Date & Time",
+                    size: 200,
+                },
+                {
+                    accessorKey: "course.ongoing",
+                    header: "Status",
+                    size: 50,
+                    Cell: ({ cell }) => {
+                        const status = upperCaseFirstLetter(cell.getValue());
+                        return (
+                            <GoalsBadge
+                                title={status}
+                                className={`${getStatusClass(status)} font-semibold`}
+                            />
+                        )
+                    }
+                },
+                {
+                    accessorKey: "course.id",
+                    header: "Actions",
+                    size: 50,
+                    Cell: ({ cell }) => {
+                        return (
+                            <div className="flex items-center gap-[.8vw]">
+                                {cell.row.original.course.ongoing != "selesai" && (
+                                    <Link
+                                        href={route("moderator.bimbingan.progress.edit", {
+                                            progress: cell.getValue(),
+                                        })}
+                                    >
+                                        <FiEdit2 className="text-[1.2vw] text-secondary" />
+                                    </Link>
+                                )}
+                                <Link
+                                    href={route("moderator.bimbingan.progress.show", {
+                                        progress: cell.getValue(),
+                                    })}
+                                >
+                                    <FiEye className="text-[1.2vw] text-neutral-60" />
+                                </Link>
+                            </div>
+                        );
+                    }
+                }
+            ]
+        , [data]
+    );
+
+    const options = {
+        // enableTopToolbar: false,
+        // enableSorting: false,
+        enableColumnActions: false,
+        enableFullScreenToggle: false,
+        enableDensityToggle: false,
+        muiTableHeadCellProps: {
+            sx: {
+                fontFamily: "Poppins",
+                fontWeight: 600,
+                backgroundColor: "#F8F8FC",
+                // padding: 0,
+                ">.Mui-TableHeadCell-Content": {
+                    alignItems: "center",
+                },
+            },
+        },
+        // muiTableBodyCellProps: {
+        //     sx: {
+        //         textAlign: "center",
+        //     },
+        // },
+    };
+
     return (
         <div>
             {createPortal(
-                <GoalsPopup {...{ show, setShow }} className="max-w-[9vw]">
-                    {data.map((i) => (
-                        <div className="text-center">{i}</div>
-                    ))}
+                <GoalsPopup {...{ show, setShow }} className="!w-[90vw] min-h-[85vh]">
+                    <GoalsDataTable
+                        data={data}
+                        columns={columns}
+                        options={options}
+                    />
                 </GoalsPopup>,
                 document.body
             )}

@@ -12,6 +12,7 @@ import { FiChevronLeft, FiFileText } from "react-icons/fi";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
 import GoalsStarRating from "@/Components/elements/GoalsStarRating";
 import FileMediaPopup from "@/Pages/Auth/Moderator/Bimbingan/components/FileMediaPopup";
+import { SelectMultiTag, SelectMultiTagItem } from "@/Pages/Auth/Admin/Bimbingan/Product/Components/SelectMultiTag";
 
 export default function Show ({ auth, course }) {
     const {data: formData, setData: setFormData} = useForm({
@@ -126,16 +127,41 @@ export default function Show ({ auth, course }) {
                             data={formData.topic ?? ""}
                             labelClassName="font-medium"
                         />
-                        <div className="space-y-[.3vw]">
-                            <label className="font-medium">Add-On</label>
-                            <div className="flex items-center gap-[.5vw] bg-gray-100 border border-gray-300 rounded-md h-[12vw] md:h-[3vw] p-[1vw] text-[.8vw]">
-                                {formData.add_on.map((item, index) => {
-                                    return (
-                                        <span className="text-white bg-neutral-400 rounded-[.3vw] p-[.9vw] py-[.2vw]">{item.name}</span>
-                                    )
-                                })}
-                            </div>
-                        </div>
+                        <SelectMultiTag
+                            disabled
+                            value={formData.add_on}
+                            label="Add-On"
+                            labelClassName="font-medium"
+                            handleClearTag={() =>
+                                setData({ ...formData, add_on: [] })
+                            }
+                        >
+                            {(formData.add_on ?? []).map((option, i) => {
+                                return (
+                                    <SelectMultiTagItem
+                                        key={i}
+                                        onClick={() => {
+                                            if (
+                                                !formData.add_on.some(
+                                                    (item) =>
+                                                        item === option
+                                                )
+                                            ) {
+                                                setData({
+                                                    ...data,
+                                                    add_on: [
+                                                        ...formData.add_on,
+                                                        option,
+                                                    ],
+                                                });
+                                            }
+                                        }}
+                                    >
+                                        {option.name}
+                                    </SelectMultiTagItem>
+                                );
+                            })}
+                        </SelectMultiTag>
                     </FormSection>
                     <div className="md:space-y-[1.2vw]">
                         <FormSection className="pt-[0vw] pb-[2vw] px-[7.4vw] md:!p-[2vw] md:!pt-[.5vw]" bordered={isMobile}>

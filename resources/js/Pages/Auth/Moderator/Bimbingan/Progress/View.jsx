@@ -284,7 +284,7 @@ export default function View({ auth, progress, tutors }) {
                             <SelectMultiTag
                                 disabled
                                 value={data.add_on}
-                                label="Add on"
+                                label="Add-On"
                                 handleClearTag={() =>
                                     setData({ ...data, add_on: [] })
                                 }
