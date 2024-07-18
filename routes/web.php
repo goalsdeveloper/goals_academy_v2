@@ -42,6 +42,7 @@ use App\Http\Controllers\Moderator\SettingController as ModeratorSettingControll
 use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
 use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Http\Controllers\Tutor\OverviewController;
@@ -144,6 +145,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::post('product/updateNumberList', [BimbinganController::class, 'updateOrderNumber'])->name('product.updateOrderNumber');
         Route::put('product/{product}/updateVisible', [BimbinganController::class, 'updateVisible'])->name('product.updateVisible');
         Route::resource('order', AdminOrderBimbinganController::class);
+        Route::resource('promo-code', PromoCodeController::class)->parameter('promo-code', 'promo_code');
     });
     Route::prefix('webinar')->name('webinar.')->group(function () {
         Route::resource('category', AdminCategoryWebinarController::class);
