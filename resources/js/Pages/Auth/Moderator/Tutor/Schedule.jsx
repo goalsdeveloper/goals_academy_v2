@@ -45,49 +45,6 @@ export default function Schedule({ auth, data }) {
             });
     };
 
-    // const [dataSchedule, setDataSchedule] = useState([
-    //     {
-    //         time: "08:00",
-    //         "2024-04-01": ["Timo", "Hafiz"],
-    //         "2024-04-02": ["Hafiz"],
-    //         "2024-04-03": ["Hafiz"],
-    //         "2024-04-04": [],
-    //         "2024-04-05": [],
-    //         "2024-04-06": ["Hafiz"],
-    //         "2024-04-07": ["Hafiz", "Timo"],
-    //     },
-    //     {
-    //         time: "09:00",
-    //         "2024-04-01": ["Timo", "Hafiz"],
-    //         "2024-04-02": ["Hafiz"],
-    //         "2024-04-03": ["Hafiz"],
-    //         "2024-04-04": ["Hafiz"],
-    //         "2024-04-05": ["Hafiz"],
-    //         "2024-04-06": ["Hafiz"],
-    //         "2024-04-07": ["Hafiz", "Timo"],
-    //     },
-    //     {
-    //         time: "10:00",
-    //         "2024-04-01": ["Timo", "Hafiz"],
-    //         "2024-04-02": ["Hafiz"],
-    //         "2024-04-03": ["Hafiz"],
-    //         "2024-04-04": ["Hafiz"],
-    //         "2024-04-05": ["Hafiz"],
-    //         "2024-04-06": ["Hafiz"],
-    //         "2024-04-07": ["Hafiz", "Timo"],
-    //     },
-    //     {
-    //         time: "11:00",
-    //         "2024-04-01": ["Timo", "Hafiz"],
-    //         "2024-04-02": ["Hafiz"],
-    //         "2024-04-03": ["Hafiz"],
-    //         "2024-04-04": ["Hafiz"],
-    //         "2024-04-05": ["Hafiz"],
-    //         "2024-04-06": ["Hafiz"],
-    //         "2024-04-07": ["Hafiz", "Timo"],
-    //     },
-    // ]);
-
     const columns = useMemo(
         () =>
             [
@@ -117,13 +74,13 @@ export default function Schedule({ auth, data }) {
                                 <button
                                     className="w-full flex items-center justify-center gap-[1vw] py-[1.5vw] px-[1.2vw]"
                                     onClick={() => {
-                                        if (value.length > 1) {
+                                        if (value.length >= 1) {
                                             setDataDetail(value);
                                             setShowDetail(true);
                                         }
                                     }}
                                 >
-                                    <span>{value[0]}</span>
+                                    <span>{value[0]?.name}</span>
                                     {value.length > 1 && (
                                         <span className="flex items-center justify-center bg-skin rounded-full w-[2vw] h-[2vw]">
                                             {value.length}
@@ -209,9 +166,15 @@ function CellDetail({ show, setShow, data }) {
     return (
         <div>
             {createPortal(
-                <GoalsPopup {...{ show, setShow }} className="max-w-[9vw]">
+                <GoalsPopup {...{ show, setShow }} className="max-w-[20vw]">
                     {data.map((i) => (
-                        <div className="text-center">{i}</div>
+                        <table>
+                        <thead>
+                            <th className="text-left">{i.name}</th>
+                            <th className="text-right">{i.time}</th>
+                        </thead>
+                        </table>
+
                     ))}
                 </GoalsPopup>,
                 document.body
