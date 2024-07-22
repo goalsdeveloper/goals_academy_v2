@@ -7,10 +7,16 @@ import Icon from "/resources/img/profil_perusahaan/Union.svg";
 import Tim1 from "/resources/img/profil_perusahaan/yordan.svg";
 import Tim2 from "/resources/img/profil_perusahaan/rian.svg";
 import Tim3 from "/resources/img/profil_perusahaan/timo.svg";
+import Card from "/resources/img/profil_perusahaan/card.svg";
 
 import tim1 from "/resources/img/tim/rian.png";
 import tim2 from "/resources/img/tim/timo.png";
 import tim3 from "/resources/img/tim/oka.png";
+import { A11y, Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FaChevronRight } from "react-icons/fa6";
+import { FaChevronLeft } from "react-icons/fa6";
+import "swiper/css";
 
 export default function ProfilPerusahaan({ auth }) {
     const data_team = [
@@ -98,33 +104,134 @@ export default function ProfilPerusahaan({ auth }) {
                     Nilai - Nilai{" "}
                     <span className="text-primary">Goals Academy</span>
                 </h2>
-                <div className="grid grid-cols-12 gap-x-10 mt-10">
-                    <div className="col-span-4 shadow-3 rounded-xl py-10 px-9">
-                        <img src={Icon} alt="" className="mx-auto w-24" />
-                        <h3 className="text-center mt-8">Value</h3>
-                        <p className="text-center mt-3 text-sm md:text-base">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam
+                {/* <div className="grid grid-cols-12 gap-x-10 mt-10"> */}
+                <Swiper
+                    modules={[Navigation, Pagination, A11y]}
+                    slidesPerView={3}
+                    spaceBetween={20}
+                    grabCursor={true}
+                    draggable={true}
+                    loop={true}
+                    navigation={{
+                        nextEl: ".next",
+                        prevEl: ".prev",
+                    }}
+                    pagination={{
+                        el: ".testimony-pagination",
+                        clickable: true,
+                        type: "bullets",
+                        renderBullet: (index, className) => {
+                            return `<button class="${className} !bg-primary"></button>`;
+                        },
+                    }}
+                >
+                    <SwiperSlide>
+                        <div className="shadow-3 rounded-xl py-10 px-9">
+                            <img src={Icon} alt="" className="mx-auto w-24" />
+                            <h3 className="text-center mt-8">Value</h3>
+                            <p className="text-center mt-3 text-sm md:text-base">
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam
+                            </p>
+                        </div>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <div className="shadow-3 rounded-xl py-10 px-9">
+                            <img src={Icon} alt="" className="mx-auto w-24" />
+                            <h3 className="text-center mt-8">Value</h3>
+                            <p className="text-center mt-3 text-sm md:text-base">
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam
+                            </p>
+                        </div>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <div className="shadow-3 rounded-xl py-10 px-9">
+                            <img src={Icon} alt="" className="mx-auto w-24" />
+                            <h3 className="text-center mt-8">Value</h3>
+                            <p className="text-center mt-3 text-sm md:text-base">
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam
+                            </p>
+                        </div>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <div className="shadow-3 rounded-xl py-10 px-9">
+                            <img src={Icon} alt="" className="mx-auto w-24" />
+                            <h3 className="text-center mt-8">Value</h3>
+                            <p className="text-center mt-3 text-sm md:text-base">
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam
+                            </p>
+                        </div>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <div className="shadow-3 rounded-xl py-10 px-9">
+                            <img src={Icon} alt="" className="mx-auto w-24" />
+                            <h3 className="text-center mt-8">Value</h3>
+                            <p className="text-center mt-3 text-sm md:text-base">
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam
+                            </p>
+                        </div>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <div className="shadow-3 rounded-xl py-10 px-9">
+                            <img src={Icon} alt="" className="mx-auto w-24" />
+                            <h3 className="text-center mt-8">Value</h3>
+                            <p className="text-center mt-3 text-sm md:text-base">
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam
+                            </p>
+                        </div>
+                    </SwiperSlide>
+                </Swiper>
+                <div className="flex items-center justify-between">
+                    <div className="testimony-pagination flex flex-wrap justify-left my-4"></div>
+                    <div className="flex gap-x-5 text-primary">
+                        <button className="prev ">
+                            <FaChevronLeft size={25} />
+                        </button>
+                        <button className="next">
+                            <FaChevronRight size={25} />
+                        </button>
+                    </div>
+                </div>
+                {/* </div> */}
+            </div>
+            <div className="my-14 md:my-20 px-8 md:px-20 bg-primary py-20 text-white">
+                <h2 className="text-[4.6vw] md:text-[2.5vw] text-center text-white">
+                    Perjalanan Kami
+                </h2>
+                <div className="flex justify-center items-center my-10">
+                    <div className="flex flex-col gap-y-5 text-white w-1/2 pr-20">
+                        <h3 className="text-white">2019</h3>
+                        <p className="text-justify">
+                            Banyak keluhan dari teman-teman Founder Goals
+                            Academy selama kuliah tentang permasalahan di
+                            skripsi, mulai dari judul yang selalu ditolak,
+                            revisi yang ga tau harus diapakan sampai
+                            kekhawatiran saat sidang skripsi. Dari situlah CEO
+                            sekaligus Tutor Pertama Goals Academy bergerak untuk
+                            membantu teman-temannya, solusi demi solusi
+                            diberikan hingga skripsi mereka layak diajukan ke
+                            dosen pembimbing.
                         </p>
                     </div>
-                    <div className="col-span-4 shadow-3 rounded-xl py-10 px-9">
-                        <img src={Icon} alt="" className="mx-auto w-24" />
-                        <h3 className="text-center mt-8">Value</h3>
-                        <p className="text-center mt-3 text-sm md:text-base">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam
-                        </p>
-                    </div>
-                    <div className="col-span-4 shadow-3 rounded-xl py-10 px-9">
-                        <img src={Icon} alt="" className="mx-auto w-24" />
-                        <h3 className="text-center mt-8">Value</h3>
-                        <p className="text-center mt-3 text-sm md:text-base">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam
-                        </p>
+                    <div>
+                        <img src={Card} alt="" />
                     </div>
                 </div>
             </div>
