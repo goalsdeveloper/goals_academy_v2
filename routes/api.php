@@ -65,6 +65,7 @@ Route::post('/lengkapi_profil', function (Request $request) {
             'university' => $request->university,
             'faculty' => $request->faculty,
             'major' => $request->major,
+            'rumpun' => $request->rumpun,
         ]);
         return response()->json(['message' => 'success']);
     } catch (\Exception $e) {
