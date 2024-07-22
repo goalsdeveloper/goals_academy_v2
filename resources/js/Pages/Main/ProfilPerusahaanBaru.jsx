@@ -7,6 +7,7 @@ import Icon from "/resources/img/profil_perusahaan/Union.svg";
 import Tim1 from "/resources/img/profil_perusahaan/yordan.svg";
 import Tim2 from "/resources/img/profil_perusahaan/rian.svg";
 import Tim3 from "/resources/img/profil_perusahaan/timo.svg";
+import Card from "/resources/img/profil_perusahaan/card.svg";
 
 import tim1 from "/resources/img/tim/rian.png";
 import tim2 from "/resources/img/tim/timo.png";
@@ -209,6 +210,30 @@ export default function ProfilPerusahaan({ auth }) {
                     </div>
                 </div>
                 {/* </div> */}
+            </div>
+            <div className="my-14 md:my-20 px-8 md:px-20 bg-primary py-20 text-white">
+                <h2 className="text-[4.6vw] md:text-[2.5vw] text-center text-white">
+                    Perjalanan Kami
+                </h2>
+                <div className="flex justify-center items-center my-10">
+                    <div className="flex flex-col gap-y-5 text-white w-1/2 pr-20">
+                        <h3 className="text-white">2019</h3>
+                        <p className="text-justify">
+                            Banyak keluhan dari teman-teman Founder Goals
+                            Academy selama kuliah tentang permasalahan di
+                            skripsi, mulai dari judul yang selalu ditolak,
+                            revisi yang ga tau harus diapakan sampai
+                            kekhawatiran saat sidang skripsi. Dari situlah CEO
+                            sekaligus Tutor Pertama Goals Academy bergerak untuk
+                            membantu teman-temannya, solusi demi solusi
+                            diberikan hingga skripsi mereka layak diajukan ke
+                            dosen pembimbing.
+                        </p>
+                    </div>
+                    <div>
+                        <img src={Card} alt="" />
+                    </div>
+                </div>
             </div>
             <div className="my-14 md:my-20 px-8 md:px-20">
                 <h2 className=" text-[4.6vw] md:text-[2.5vw] text-center mb-5 md:mb-0">
