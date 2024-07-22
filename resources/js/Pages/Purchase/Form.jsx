@@ -33,7 +33,6 @@ export default function Form({
     paymentMethods,
     dataProduct,
 }) {
-    console.log(addOns);
     const userId = auth.user.id;
     const [isProcessed, setIsProcessed] = useState(false);
     const [showMobileSummaryCard, setShowMobileSummaryCard] = useState(false);
@@ -43,6 +42,7 @@ export default function Form({
         "university",
         "faculty",
         "major",
+        "rumpun",
     ].reduce((out, i) => {
         out[i] = auth.user.profile[i];
         return out;

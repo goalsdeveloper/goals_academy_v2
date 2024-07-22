@@ -357,6 +357,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                                 );
                                             }
                                         }}
+                                        onBlur={() => setInputValueTutor(data.tutor)}
                                         getOptionLabel={(option) => option.name}
                                         onChange={(e, value) => {
                                             setData({
