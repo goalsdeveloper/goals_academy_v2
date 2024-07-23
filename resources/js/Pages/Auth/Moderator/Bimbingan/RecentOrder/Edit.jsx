@@ -260,6 +260,7 @@ export default function Edit({ auth, order, places, tutors }) {
                                             setInputValueTutor(newInputValue);
                                         }
                                     }}
+                                    onBlur={() => setInputValueTutor(data.tutor)}
                                     onChange={(e, value) => {
                                         setFormData({
                                             ...formData,

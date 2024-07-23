@@ -110,7 +110,7 @@ export default function PromoCode({ auth, promo_code, message }) {
             // },
             {
                 accessorFn: (row) => {
-                    if (row.is_price) {
+                    if (Number(row.is_price)) {
                         return `IDR ${currency.format(row.value)}`;
                     }
                     return `${row.value}%`;
