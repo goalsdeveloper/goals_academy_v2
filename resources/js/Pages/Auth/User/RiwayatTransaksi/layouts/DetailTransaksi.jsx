@@ -27,7 +27,7 @@ const DetailTransaksi = ({ data, show, setShow }) => {
                             <TransactionDetailContent data={data} />
                         </div>
                         {data.status == "Pending" ?
-                            <GoalsButton href={`/purchase/${data.order_code}`} isLink className="w-full">Bayar Sekarang</GoalsButton>
+                            <GoalsButton isLink href={`/purchase/${data.order_code}`} className="w-full" onClick={() => setShow(false)}>Bayar Sekarang</GoalsButton>
                         : <></>}
                     </div>
                 </div>
@@ -45,7 +45,7 @@ const DetailTransaksi = ({ data, show, setShow }) => {
                         <TransactionDetailContent data={data} />
                     </div>
                     {data.status == "Pending" ?
-                        <GoalsButton href={`/purchase/${data.order_code}`} isLink className="w-full">Bayar Sekarang</GoalsButton>
+                        <GoalsButton isLink href={`/purchase/${data.order_code}`} className="w-full" onClick={() => setShow(false)}>Bayar Sekarang</GoalsButton>
                     : <></>}
                 </GoalsPopup>
             )}

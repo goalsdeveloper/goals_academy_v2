@@ -18,6 +18,7 @@ class UserProfile extends Model
         'linkedin_url',
         'profile_image',
         'is_active',
+        'rumpun'
     ];
 
     protected $casts = [

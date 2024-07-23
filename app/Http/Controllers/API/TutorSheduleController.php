@@ -22,15 +22,17 @@ class TutorSheduleController extends Controller
                 $now = now();
                 $period = CarbonPeriod::create($now, $now->copy()->addDays(6));
             }
-
-            
+            // return response()->json([
+            //     'start_date' => $start_date,
+            //     'end_date' => $end_date,
+            // ]);
 
             $formattedCourses = [];
 
-            for ($hour = 8; $hour <= 19; $hour++) {
+            for ($hour = 5; $hour <= 23; $hour++) {
                 $time = str_pad($hour, 2, "0", STR_PAD_LEFT) . ":00:00";
                 $schedule = [
-                    'time' => $time
+                    'time' => $time,
                 ];
 
                 foreach ($period as $date) {
@@ -41,30 +43,33 @@ class TutorSheduleController extends Controller
                 $formattedCourses[] = $schedule;
             }
 
-            $courses = Course::with(['tutor:id,name', 'products:id,name,duration'])
-                ->select('id', 'tutor_id', 'date', 'time', 'products_id')
-                ->where('ongoing', 'berjalan')
+            $courses = Course::with(['user:id,name', 'tutor:id,username,name', 'products:id,name,duration', 'order:id,order_code'])
+                ->select('id', 'user_id', 'tutor_id', 'order_id', 'date', 'time', 'products_id', 'ongoing', 'session')
+            // ->where('ongoing', 'berjalan')
+                ->whereBetween('date', [$start_date, $end_date])
                 ->whereNotNull('tutor_id')
                 ->whereNotNull('date')
                 ->whereNotNull('time')
                 ->get();
-
+            // return response()->json([
+            // 'data' => $courses
+            // ]);
             foreach ($courses as $course) {
                 $durationInHours = ceil($course->products->duration / 60);
-                $startTime = Carbon::createFromFormat('H:i:s', $course->time);
-                $endTime = $startTime->copy()->addHours($durationInHours);
+                $startTime = Carbon::parse($course->time)->format('H');
+                // $jam = Carbon::createFromFormat('H', $course->time);
+                // $endTime = $startTime->copy()->addHours($durationInHours);
 
                 foreach ($formattedCourses as &$schedule) {
-                    $time = Carbon::createFromFormat('H:i:s', $schedule['time']);
-                    if ($time >= $startTime && $time < $endTime) {
+                    $time = Carbon::parse($schedule['time'])->format('H');
+                    if ($time == $startTime) {
                         $dateKey = $course->date;
                         if (isset($schedule[$dateKey])) {
-                            $schedule[$dateKey][] = $course->tutor->name;
+                            $schedule[$dateKey][] = ['course' => $course];
                         }
                     }
                 }
             }
-
 
             return response()->json([
                 'status' => true,

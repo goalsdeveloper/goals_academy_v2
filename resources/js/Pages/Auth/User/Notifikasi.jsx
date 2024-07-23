@@ -5,44 +5,7 @@ import figure from "/resources/img/figure/8.svg";
 import "@/script/momentCustomLocale";
 
 export default function Index({ auth, notifications }) {
-    // const dataNotif = notifications.map((item, index) => {
-    //     console.log(item.data.category);
-    // });
     const data = notifications;
-    // const data = [
-    //     {
-    //         id: 1,
-    //         category: "Transaksi",
-    //         title: "Mari Selesaikan Pembayaranmu!",
-    //         description: "",
-    //         is_read: false,
-    //         expiry_time: "2023-12-28 13:20",
-    //         order_id: "GA12345678",
-    //         payment_method: "Gopay",
-    //     },
-    //     {
-    //         id: 2,
-    //         category: "Pembelajaran",
-    //         title: "Jadwal Pada Pelaksanaan Programmu!",
-    //         description: "Jadwal pelaksanaan programmu telah keluar.",
-    //         is_read: false,
-    //     },
-    //     {
-    //         id: 3,
-    //         category: "Pembelajaran",
-    //         title: "Jadwal Pada Pelaksanaan Programmu!",
-    //         description: "Tutormu telah ditentukan.",
-    //         is_read: false,
-    //     },
-    //     {
-    //         id: 4,
-    //         category: "Diskon",
-    //         title: "Diskon Merdeka!",
-    //         description:
-    //             "Dapatkan diskon s/d max. IDR 19.000 dengan melakukan pembayaran menggunakan OVO!",
-    //         is_read: true,
-    //     },
-    // ];
 
     return (
         <UserLayout auth={auth} title="Notifikasi">

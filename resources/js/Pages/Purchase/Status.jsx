@@ -122,7 +122,6 @@ export default function Status({
                     )
                 );
 
-                // console.log(remaining.format("HH:mm:ss"));
                 setCountdown(remaining);
             }
         }, 1000);

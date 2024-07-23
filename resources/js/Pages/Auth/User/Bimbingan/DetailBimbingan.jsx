@@ -54,7 +54,6 @@ export default function DetailPesanan({
     const dataAturJadwalComp = { cities, date, topics };
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
-
     return (
         <MainLayout
             withFooter={false}
@@ -98,6 +97,8 @@ export default function DetailPesanan({
                         />
                         <AturJadwalPopup
                             order_code={dataBimbingan[0].order.order_code}
+                            purchased_date={dataBimbingan[0].order.created_at}
+                            active_period={Number(dataBimbingan[0].products.active_period) - 1}
                             {...dataAturJadwalComp}
                             show={showPopUp.aturJadwalPopup}
                             setShow={() =>
@@ -160,7 +161,6 @@ export default function DetailPesanan({
                             className={`
                     fixed md:relative w-full md:w-auto bottom-0 left-0 flex gap-[1vw] md:gap-[.5vw] justify-center items-center pb-[3.7vw] pt-[3.4vw] bg-white md:p-0 z-[40] md:z-0 px-[6vw]`}
                         >
-                            {console.log(dataBimbingan)}
                             <GoalsButton
                                 disabled={
                                     (dataBimbingan.length > 1 &&
@@ -236,9 +236,6 @@ const SelesaiProgram = ({ show, setShow, order_code }) => {
 
                 <div className="grid space-y-[2vw] md:space-y-[.8vw] w-full">
                     <GoalsButton
-                        // isLink
-                        // method="PUT"
-                        // href={`/bimbingan/${order_code}/selesai-bimbingan`}
                         onClick={() => {
                             setShow();
                             router.put(
@@ -307,20 +304,8 @@ const UlasanTutor = ({ show, setShow, data, setData }) => {
 
 const UlasanProgram = ({ show, setShow, data, setData, handleSubmit }) => {
     function checkFieldRequired() {
-        // if (
-        //     data.rate_tutor == 0 ||
-        //     data.note_tutor == "" ||
-        //     data.note_tutor == null ||
-        //     data.note_tutor == undefined
-        // ) {
-        //     return true;
-        // }
-
         if (
-            data.rate_product == 0 ||
-            data.note_product == ""
-            // || data.note_product == null ||
-            // data.note_product == undefined
+            data.rate_product == 0
         ) {
             return true;
         }

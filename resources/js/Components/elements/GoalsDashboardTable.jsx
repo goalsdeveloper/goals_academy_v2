@@ -201,7 +201,6 @@ const dataTableOptionsConfig = ({
                 if (hoveredRow && draggingRow) {
                     const originItem = data[draggingRow.index];
                     const destinationItem = data[hoveredRow.index];
-                    console.log(originItem, destinationItem)
                     // data.splice(
                     //     hoveredRow.index,
                     //     0,

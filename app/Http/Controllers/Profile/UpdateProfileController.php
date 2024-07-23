@@ -52,7 +52,8 @@ class UpdateProfileController extends Controller
             $user->profile->phone_number === $request['phone_number'] &&
             $user->profile->university === $request['university'] &&
             $user->profile->faculty === $request['faculty'] &&
-            $user->profile->major === $request['major']
+            $user->profile->major === $request['major'] &&
+            $user->profile->rumpun === $request['rumpun']
         ) {
             return back();
         }
@@ -65,7 +66,8 @@ class UpdateProfileController extends Controller
             'phone_number' => $request['phone_number'],
             'university' => $request['university'],
             'faculty' => $request['faculty'],
-            'major' => $request['major']
+            'major' => $request['major'],
+            'rumpun' => $request['rumpun']
         ]);
 
         return redirect()->back();

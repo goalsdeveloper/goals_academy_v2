@@ -101,9 +101,7 @@ export default function Moderator({ auth, moderators }) {
 
     const updateActive = (data) => {
         // Update status tutor dengan menggunakan route
-        console.log("sedang fetching");
         const is_active = !data.profile.is_active;
-        // console.log("is_active = ", is_active);
         router.put(
             route("admin.manajemen_user.moderator.updateActive", {
                 moderator: data.id,

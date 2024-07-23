@@ -12,6 +12,7 @@ import GoalsTextArea from "@/Components/elements/GoalsTextArea";
 import { FiChevronLeft, FiFileText } from "react-icons/fi";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
 import FileMediaPopup from "@/Pages/Auth/Moderator/Bimbingan/components/FileMediaPopup";
+import { SelectMultiTag, SelectMultiTagItem } from "@/Pages/Auth/Admin/Bimbingan/Product/Components/SelectMultiTag";
 
 export default function Update({ auth, order, files }) {
     const tutor_id = auth?.user?.profile?.user_id ?? 0;
@@ -32,7 +33,7 @@ export default function Update({ auth, order, files }) {
         place: order.place?.place,
         city: order.place?.city?.city,
         note: order.note,
-        add_on: order.add_ons,
+        add_on: order.order.form_result.add_on,
         document: [],
         document_meta: tutor_documents,
         document_deleted: [],
@@ -146,12 +147,13 @@ export default function Update({ auth, order, files }) {
                         titleClassName="!font-semibold !text-[4vw] md:!text-[1.1vw]"
                         title="Order Details"
                         titleAction={
-                            <button
+                            <a
+                                role="button"
                                 className="text-secondary text-[3.6vw] md:text-[.9vw] font-medium flex items-center gap-[1vw] md:gap-[.2vw]"
                                 onClick={() => setShowDocuments(true)}
                             >
                                 File & Media <FiFileText />
-                            </button>
+                            </a>
                         }
                         bordered={isMobile}
                     >
@@ -167,7 +169,7 @@ export default function Update({ auth, order, files }) {
                                 disabled
                                 label="Duration"
                                 placeholder="Duration"
-                                data={order.products.duration}
+                                data={order.products.duration + " menit"}
                                 labelClassName="font-medium"
                             />
                         )}
@@ -200,18 +202,41 @@ export default function Update({ auth, order, files }) {
                             data={formData.topic}
                             labelClassName="font-medium"
                         />
-                        <div className="space-y-[.3vw]">
-                            <label className="font-medium">Add-On</label>
-                            <div className="flex items-center gap-[.5vw] bg-gray-100 border border-gray-300 rounded-md h-[12vw] md:h-[3vw] p-[1vw] text-[.8vw]">
-                                {formData.add_on.map((item, index) => {
-                                    return (
-                                        <span className="text-white bg-neutral-400 rounded-[.3vw] p-[.9vw] py-[.2vw]">
-                                            {item.name}
-                                        </span>
-                                    );
-                                })}
-                            </div>
-                        </div>
+                        <SelectMultiTag
+                            disabled
+                            value={formData.add_on}
+                            label="Add-On"
+                            labelClassName="font-medium"
+                            handleClearTag={() =>
+                                setData({ ...formData, add_on: [] })
+                            }
+                        >
+                            {(formData.add_on ?? []).map((option, i) => {
+                                return (
+                                    <SelectMultiTagItem
+                                        key={i}
+                                        onClick={() => {
+                                            if (
+                                                !formData.add_on.some(
+                                                    (item) =>
+                                                        item === option
+                                                )
+                                            ) {
+                                                setData({
+                                                    ...data,
+                                                    add_on: [
+                                                        ...formData.add_on,
+                                                        option,
+                                                    ],
+                                                });
+                                            }
+                                        }}
+                                    >
+                                        {option.name}
+                                    </SelectMultiTagItem>
+                                );
+                            })}
+                        </SelectMultiTag>
                     </FormSection>
                     <div className="md:space-y-[1.2vw]">
                         <FormSection

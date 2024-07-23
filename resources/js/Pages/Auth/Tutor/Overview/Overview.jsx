@@ -59,7 +59,6 @@ export default function Overview({
         if (this_month == 0 && today > 0) {
             return 100;
         }
-        console.log(today, this_month)
         var percentage = (today / this_month) * 100;
         return percentage;
     };

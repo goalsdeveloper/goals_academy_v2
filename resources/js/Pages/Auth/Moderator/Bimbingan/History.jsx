@@ -210,7 +210,6 @@ function HistoryDetailPanel({ row }) {
             <Table>
                 <TableBody>
                     {course.child.map((item, index) => {
-                        console.log(item);
                         const cellData = {
                             session: {
                                 label: (

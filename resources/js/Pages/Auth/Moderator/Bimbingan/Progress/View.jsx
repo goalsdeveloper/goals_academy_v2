@@ -104,7 +104,6 @@ export default function View({ auth, progress, tutors }) {
                 return <></>;
         }
     };
-    console.log(progress);
 
     return (
         <DashboardLayout
@@ -242,7 +241,8 @@ export default function View({ auth, progress, tutors }) {
                         <FormSection
                             title="Order Details"
                             titleAction={
-                                <button
+                                <a
+                                    role="button"
                                     onClick={() =>
                                         setIsShow({ orderDetails: true })
                                     }
@@ -250,7 +250,7 @@ export default function View({ auth, progress, tutors }) {
                                 >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
-                                </button>
+                                </a>
                             }
                         >
                             <GoalsTextInput
@@ -269,7 +269,7 @@ export default function View({ auth, progress, tutors }) {
                                 <GoalsTextInput
                                     label="Duration"
                                     disabled
-                                    data={data?.duration}
+                                    data={data?.duration + " menit"}
                                     setData={(i) => setData("duration", i)}
                                 />
                             )}
@@ -284,7 +284,7 @@ export default function View({ auth, progress, tutors }) {
                             <SelectMultiTag
                                 disabled
                                 value={data.add_on}
-                                label="Add on"
+                                label="Add-On"
                                 handleClearTag={() =>
                                     setData({ ...data, add_on: [] })
                                 }
@@ -357,7 +357,8 @@ export default function View({ auth, progress, tutors }) {
                         <FormSection
                             title="Tutor Information"
                             titleAction={
-                                <button
+                                <a
+                                    role="button"
                                     onClick={() =>
                                         setIsShow({ tutorDetails: true })
                                     }
@@ -365,7 +366,7 @@ export default function View({ auth, progress, tutors }) {
                                 >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
-                                </button>
+                                </a>
                             }
                         >
                             <textarea

@@ -33,17 +33,20 @@ export default function Overview({
     list_orders,
     top_selling,
     totalsByDate,
+    totalViewsKeseluruhan,
 }) {
     const [isLoading, setIsLoading] = useState(false);
     const currency = Intl.NumberFormat("id-ID");
 
     const [totalEarning, setTotalEarning] = useState(total_earning);
-    const [totalVisitor, setTotalVisitor] = useState(312);
+    const [totalVisitor, setTotalVisitor] = useState(totalViewsKeseluruhan);
     const [totalOrder, setTotalOrder] = useState(total_order);
     const [totalCheckout, setTotalCheckout] = useState(total_checkout);
 
     // Click & Views
-    const [barLabels, setBarLabels] = useState(Object.keys(totalsByDate).map(i => i.split('-')[2]));
+    const [barLabels, setBarLabels] = useState(
+        Object.keys(totalsByDate).map((i) => i.split("-")[2])
+    );
 
     const [clickData, setClickData] = useState(
         Object.values(totalsByDate).map(
@@ -264,14 +267,14 @@ export default function Overview({
                             />
                             <InfoCard
                                 title="Total Order"
-                                data={totalOrder}
+                                data={totalCheckout}
                                 percentage={5.6}
                                 grow={12}
                                 icon={<FaCartShopping className="text-[1vw]" />}
                             />
                             <InfoCard
                                 title="Checkout User"
-                                data={totalCheckout}
+                                data={totalOrder}
                                 percentage={5.6}
                                 grow={12}
                                 icon={<FaGlobe className="text-[1vw]" />}
