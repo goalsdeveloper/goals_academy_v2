@@ -357,6 +357,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                                 );
                                             }
                                         }}
+                                        onBlur={() => setInputValueTutor(data.tutor)}
                                         getOptionLabel={(option) => option.name}
                                         onChange={(e, value) => {
                                             setData({
@@ -443,7 +444,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                             <SelectMultiTag
                                 disabled
                                 value={data.add_on}
-                                label="Add on"
+                                label="Add-On"
                                 handleClearTag={() =>
                                     setData({ ...data, add_on: [] })
                                 }

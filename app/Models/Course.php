@@ -83,7 +83,7 @@ class Course extends Model
 
     public function addOns()
     {
-        return $this->belongsToMany(AddOn::class);
+        return $this->belongsToMany(AddOn::class, 'add_on_course', 'course_id', 'add_on_id');
     }
     public function parent(): BelongsTo
     {

@@ -62,7 +62,7 @@ function RiwayatItem({ data }) {
                                 ))}
                         </ProductItemCardHeader>
                         <ProductItemCardContent>
-                            <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw]">
+                            <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw] w-1/2">
                                 <h2 className="text-[2.7vw] md:text-[1vw] line-clamp-1 font-medium mb-[.4vw]">
                                     {data.products.name}
                                 </h2>

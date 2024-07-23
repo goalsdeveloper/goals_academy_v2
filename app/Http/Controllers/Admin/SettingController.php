@@ -32,7 +32,7 @@ class SettingController extends Controller
                 'university' => 'string',
                 'faculty' => 'string',
                 'major' => 'string',
-                'linkedin_url' => 'string',
+                'linkedin_url' => 'string|nullable',
                 'skills' => 'array',
                 'skills.*' => 'exists:skills,id',
                 'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',

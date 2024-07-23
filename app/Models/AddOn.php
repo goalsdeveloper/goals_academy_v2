@@ -22,6 +22,6 @@ class AddOn extends Model
 
     public function course()
     {
-        return $this->belongsToMany(Course::class);
+        return $this->belongsToMany(Course::class, 'add_on_course', 'add_on_id', 'course_id');
     }
 }
