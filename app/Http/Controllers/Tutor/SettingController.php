@@ -32,6 +32,7 @@ class SettingController extends Controller
                 'university' => 'string',
                 'faculty' => 'string',
                 'major' => 'string',
+                'rumpun' => 'string',
                 'linkedin_url' => 'string',
                 'skills' => 'array',
                 'skills.*' => 'exists:skills,id',
