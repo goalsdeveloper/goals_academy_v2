@@ -13,14 +13,14 @@ import { useMediaQuery } from "react-responsive";
 import { PiPencilSimpleLight } from "react-icons/pi";
 import GoalsImageUploader from "@/Components/elements/GoalsImageUploader";
 import toast from "react-hot-toast";
+import { Autocomplete } from "@mui/material";
+import { universities, majorFamilies } from "@/Hooks/data";
 
 export default function Profile({ auth, profile, skills }) {
     const [showForm, setShowForm] = useState({
         soft_skills: false,
         hard_skills: false,
     });
-
-    console.log;
 
     const {
         data: formData,
@@ -40,6 +40,9 @@ export default function Profile({ auth, profile, skills }) {
         soft_skills: profile.skills.filter((i) => i.category == "soft_skill"),
         hard_skills: profile.skills.filter((i) => i.category == "hard_skill"),
     });
+
+    const [university, setUniversity] = React.useState(formData.university);
+    const [rumpun, setRumpun] = React.useState(formData.rumpun);
 
     const { data: temp, setData: setTemp } = useForm({
         skills: profile.skills.map((i) => i.id),
@@ -101,14 +104,54 @@ export default function Profile({ auth, profile, skills }) {
                     setData={(i) => setFormData("email", i)}
                     labelClassName="font-medium"
                 />
-                <GoalsTextInput
+                <label
+                    htmlFor="university"
+                    className="w-full grid items-center gap-[.4vw]"
+                >
+                    University
+                    <Autocomplete
+                        disableClearable
+                        id="university"
+                        options={universities}
+                        renderInput={(params) => {
+                            const { className, ...props } =
+                                params.inputProps;
+                            return (
+                                <div ref={params.InputProps.ref}>
+                                    <input
+                                        className={
+                                            "w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[3vw] border placeholder:text-light-grey"
+                                        }
+                                        type="text"
+                                        {...props}
+                                    />
+                                </div>
+                            );
+                        }}
+                        getOptionLabel={(option) => option}
+                        inputValue={university}
+                        onInputChange={(event, newInputValue) => {
+                            if (event != null) {
+                                setUniversity(newInputValue);
+                            }
+                        }}
+                        onBlur={() => setUniversity(formData.university)}
+                        onChange={(e, value) => {
+                            setFormData({
+                                ...formData,
+                                university: value
+                            });
+                        }}
+                    />
+                </label>
+                {/* <GoalsTextInput
                     required
                     label="University"
                     placeholder="University"
                     data={formData.university ?? ""}
                     setData={(i) => setFormData("university", i)}
                     labelClassName="font-medium"
-                />
+                /> */}
                 <GoalsTextInput
                     required
                     label="Faculty"
@@ -125,6 +168,46 @@ export default function Profile({ auth, profile, skills }) {
                     setData={(i) => setFormData("major", i)}
                     labelClassName="font-medium"
                 />
+                <label
+                    htmlFor="major_family"
+                    className="w-full grid items-center gap-[.4vw]"
+                >
+                    Rumpun Jurusan
+                    <Autocomplete
+                        disableClearable
+                        id="major_family"
+                        options={majorFamilies}
+                        renderInput={(params) => {
+                            const { className, ...props } =
+                                params.inputProps;
+                            return (
+                                <div ref={params.InputProps.ref}>
+                                    <input
+                                        className={
+                                            "w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[3vw] border placeholder:text-light-grey"
+                                        }
+                                        type="text"
+                                        {...props}
+                                    />
+                                </div>
+                            );
+                        }}
+                        getOptionLabel={(option) => option}
+                        inputValue={rumpun}
+                        onInputChange={(event, newInputValue) => {
+                            if (event != null) {
+                                setRumpun(newInputValue);
+                            }
+                        }}
+                        onBlur={() => setRumpun(formData.rumpun)}
+                        onChange={(e, value) => {
+                            setFormData({
+                                ...formData,
+                                rumpun: value
+                            });
+                        }}
+                    />
+                </label>
                 <GoalsTextInput
                     label="Linkedin"
                     placeholder="Linkedin"

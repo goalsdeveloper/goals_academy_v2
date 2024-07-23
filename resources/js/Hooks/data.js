@@ -3513,7 +3513,7 @@ const majorFamilies = [
     "Keagamaan, Teologi, Filsafat Ketuhanan",
     "Komunikasi, Hubungan Masyarakat, Jurnalistik, Multimedia, Desain Komunikasi Visual, Desain Produk",
     "Seni Visual, Seni Teatrikal, Seni Musik, Seni Pertunjukan",
-    "Filsafat Ilmu, Filsafat Moral, Filsafat Kejuruan (cth. Filsafat Pendidikan)"
+    "Filsafat Ilmu, Filsafat Moral, Filsafat Kejuruan"
 ]
 
 export { universities, majorFamilies };
