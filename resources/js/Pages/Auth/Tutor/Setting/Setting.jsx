@@ -23,18 +23,21 @@ export default function Setting({ auth, user, skills }) {
         put,
     } = useForm({
         id: user.id,
-        name: user.name,
-        username: user.username,
-        phone_number: user.profile.phone_number,
-        email: user.email,
-        university: user.profile.university,
-        faculty: user.profile.faculty,
-        major: user.profile.major,
-        linkedin_url: user.profile.linkedin_url,
+        name: user.name ?? "",
+        username: user.username ?? "",
+        phone_number: user.profile.phone_number ?? "",
+        email: user.email ?? "",
+        university: user.profile.university ?? "",
+        faculty: user.profile.faculty ?? "",
+        major: user.profile.major ?? "",
+        rumpun: user.profile.rumpun ?? "",
+        linkedin_url: user.profile.linkedin_url ? user.profile.linkedin_url : "",
         skills: user.skills.map((i) => i.id),
         soft_skills: user.skills.filter((i) => i.category == "soft_skill"),
         hard_skills: user.skills.filter((i) => i.category == "hard_skill"),
     });
+
+    console.log(formData)
 
     const [university, setUniversity] = React.useState(formData.university);
     const [rumpun, setRumpun] = React.useState(formData.rumpun);

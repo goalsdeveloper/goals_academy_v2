@@ -28,14 +28,15 @@ export default function Profile({ auth, profile, skills }) {
         put,
     } = useForm({
         id: profile.id,
-        name: profile.name,
-        username: profile.username,
-        phone_number: profile.profile.phone_number,
-        email: profile.email,
-        university: profile.profile.university,
-        faculty: profile.profile.faculty,
-        major: profile.profile.major,
-        linkedin_url: profile.profile.linkedin_url,
+        name: profile.name ?? "",
+        username: profile.username ?? "",
+        phone_number: profile.profile.phone_number ?? "",
+        email: profile.email ?? "",
+        university: profile.profile.university ?? "",
+        faculty: profile.profile.faculty ?? "",
+        major: profile.profile.major ?? "",
+        rumpun: profile.profile.rumpun ?? "",
+        linkedin_url: profile.profile.linkedin_url ?? "",
         skills: profile.skills.map((i) => i.id),
         soft_skills: profile.skills.filter((i) => i.category == "soft_skill"),
         hard_skills: profile.skills.filter((i) => i.category == "hard_skill"),
@@ -244,11 +245,12 @@ export default function Profile({ auth, profile, skills }) {
                             soft_skills: i,
                         });
                     }}
+                    data={formData.soft_skills}
                     label="Soft Skills"
                     className="text-[.8vw]"
                     labelClassName="font-medium"
                     placeholderClassName="font-normal"
-                    submitButtonClassName="text-[.8vw] w-[5vw]"
+                    submitButtonClassName="md:text-[.8vw] md:w-[5vw]"
                     onSubmit={() => {
                         if (
                             !(
@@ -345,11 +347,12 @@ export default function Profile({ auth, profile, skills }) {
                             hard_skills: i,
                         });
                     }}
+                    data={formData.hard_skills}
                     label="Hard Skills"
                     className="text-[.8vw]"
                     labelClassName="font-medium"
                     placeholderClassName="font-normal"
-                    submitButtonClassName="text-[.8vw] w-[5vw]"
+                    submitButtonClassName="md:text-[.8vw] md:w-[5vw]"
                     onSubmit={() => {
                         if (
                             !(
