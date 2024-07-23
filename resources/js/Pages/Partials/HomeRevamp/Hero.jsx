@@ -6,7 +6,7 @@ import GoalsButton from "@/Components/elements/GoalsButton";
 
 export default function Hero() {
     return (
-        <section className="relative py-[8vw] w-[80vw] mx-auto space-y-[2vw]">
+        <section className="relative py-[4vw] w-[80vw] mx-auto space-y-[2vw]">
             <div className="mx-auto w-[60vw] space-y-[2vw]">
                 <h1 className="before:icon-primary sm:before:w-0 md:before:w-10 md:before:h-10 md:before:-ms-8 md:before:-mt-5 xl:before:w-20 xl:before:h-20 xl:before:-ms-16 xl:before:-mt-10 text-[2.5vw] text-center">
                     Ceritakan Kendala Skripsimu dan Temukan Solusinya Bersama{" "}
@@ -50,33 +50,29 @@ export default function Hero() {
             </div>
 
             <div
-                className="-z-20 absolute top-[2vw] -right-[2vw] w-48 h-48 rounded-full"
+                className="-z-20 absolute top-[2vw] -right-[2vw] w-72 h-72 rounded-full"
                 style={{
-                    background: "rgb(255,217,201)",
                     background:
-                        "radial-gradient(circle, rgba(255,217,201,.8) 0%, rgba(255,227,216,0) 80%)",
+                        "radial-gradient(circle, rgba(255,217,201,.8) 0%, rgba(255,227,216,0) 70%)",
                 }}
             />
             <div
-                className="-z-20 absolute top-[11vw] right-[6vw] w-48 h-48 rounded-full"
+                className="-z-20 absolute top-[9vw] right-[5vw] w-72 h-72 rounded-full"
                 style={{
-                    background: "rgb(255,217,201)",
                     background:
-                        "radial-gradient(circle, rgba(255,217,201,.8) 0%, rgba(255,227,216,0) 80%)",
+                        "radial-gradient(circle, rgba(255,217,201,.8) 0%, rgba(255,227,216,0) 70%)",
                 }}
             />
             <div
-                className="-z-20 absolute top-[13vw] -right-[5vw] w-48 h-48 rounded-full"
+                className="-z-20 absolute top-[11vw] -right-[5vw] w-72 h-72 rounded-full"
                 style={{
-                    background: "rgb(255,217,201)",
                     background:
-                        "radial-gradient(circle, rgba(255,217,201,.8) 0%, rgba(255,227,216,0) 80%)",
+                        "radial-gradient(circle, rgba(255,217,201,.8) 0%, rgba(255,227,216,0) 70%)",
                 }}
             />
             {/* <div
                 className="-z-20 absolute top-[22vw] right-[3vw] w-36 h-36 rounded-full"
                 style={{
-                    background: "rgb(255,217,201)",
                     background:
                         "radial-gradient(circle, rgba(255,217,201,1) 0%, rgba(255,227,216,0) 80%)",
                 }}
@@ -84,7 +80,6 @@ export default function Hero() {
             <div
                 className="-z-20 absolute top-[18vw] right-[12vw] w-36 h-36 rounded-full"
                 style={{
-                    background: "rgb(255,217,201)",
                     background:
                         "radial-gradient(circle, rgba(255,217,201,1) 0%, rgba(255,227,216,0) 80%)",
                 }}

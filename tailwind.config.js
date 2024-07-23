@@ -151,6 +151,10 @@ export default {
                 '1': '1',
             },
             keyframes: {
+                'scroll': {
+                        'from': { 'transform': 'translateX(0)' },
+                        'to': { 'transform': 'translateX(calc(-100% - 2vw))'}
+                },
                 'slideRight': {
                     'from': { 'transform': 'translateX(-100%)' },
                     'to': { 'transform': 'translateX(0)' }
@@ -175,6 +179,7 @@ export default {
                 }
             },
             animation: {
+                scroll: 'scroll 20s infinite linear',
                 slideRight: 'slideRight 3s',
                 fadeIn: 'fadeIn 3s',
                 autoplayY: 'autoplayY 20s infinite linear',
