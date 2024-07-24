@@ -28,13 +28,13 @@ export default function Hero() {
                         Percepat kelulusanmu bersama tutor yang solutif dan
                         friendly dimana saja dan kapanpun kalian berada.
                     </p>
-                    <form
+                    {/* <form
                         onSubmit={sendPromo}
                         className="md:w-11/12 3xl:w-10/12 flex justify-between border-1 xl:border-2 border-primary rounded-full p-1 3xl:p-2 -z-20"
                     >
                         <input
                             type="text"
-                            className="w-7/12 md:w-7/12 bg-transparent border-none active:border-none focus:outline-none xl:leading-6 py-2 px-3 xl:py-2 xl:px-3 3xl:py-3"
+                            className="w-7/12 md:w-7/12 bg-transparent rounded-full border-none focus:ring-0 xl:leading-6 py-2 px-3 xl:py-2 xl:px-3 3xl:py-3"
                             placeholder="Masukkan emailmu disini ..."
                             value={data.email}
                             onChange={(e) =>
@@ -45,7 +45,7 @@ export default function Hero() {
                         <button type="submit" className="w-5/12">
                             <ButtonHoverSlide className="h-full md:before:p-0.5 lg:before:p-1 xl:before:p-0.5 3xl:before:p-2 before:content-mail-20 xs:before:content-mail-32 md:before:content-mail-20 xl:before:content-mail-32 after:content-discount after:text-primary after:font-medium border-1 xl:border-2 border-primary rounded-full before:w-[160%] before:-ms-[160%] before:duration-300 after:w-full after:duration-300 hover:before:-ms-[30%] hover:after:-me-[100%] before:bg-sweep-primary"></ButtonHoverSlide>
                         </button>
-                    </form>
+                    </form> */}
                 </div>
                 <div className="w-full sm:w-10/12 md:w-6/12">
                     <img

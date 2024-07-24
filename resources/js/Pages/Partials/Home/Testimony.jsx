@@ -46,8 +46,14 @@ function TestimonyCard ({data}) {
 }
 
 function TestimonyMainPartial ({data, className}) {
+
     return (
         <div className={"flex flex-col " + className}>
+            <div className="flex flex-col animate-autoplayY">
+                {data.map((item, index) => {
+                    return <TestimonyCard key={index} data={item} />
+                })}
+            </div>
             <div className="flex flex-col animate-autoplayY">
                 {data.map((item, index) => {
                     return <TestimonyCard key={index} data={item} />

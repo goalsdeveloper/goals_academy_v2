@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -34,11 +33,7 @@ class CourseNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        if ($notifiable->user_role == 'user') {
-            return ['mail', 'database'];
-        } else {
-            return ['mail'];
-        }
+        return ['mail', 'database'];
     }
 
     /**

@@ -1,6 +1,11 @@
 import PengaturanLayout from "@/Layouts/PengaturanLayout";
-import { useForm } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import "@/script/momentCustomLocale";
+import GoalsTextInput from "@/Components/elements/GoalsTextInput";
+import GoalsButton from "@/Components/elements/GoalsButton";
+import { useMediaQuery } from "react-responsive";
+import { FiChevronLeft } from "react-icons/fi";
+import toast from "react-hot-toast";
 
 export default function Index({ auth }) {
     const { data, setData, post } = useForm({
@@ -11,47 +16,79 @@ export default function Index({ auth }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post("/pengaturan/ubah_password");
+        post("/pengaturan/ubah_password", {
+            onSuccess: () => {
+                toast.success("Password berhasil diubah");
+            },
+        });
     };
+
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <PengaturanLayout auth={auth} title="Ubah Password">
-            <form
-                onSubmit={submit}
-                className="md:min-h-[22vw] flex flex-col gap-[6vw] md:gap-[2vw]"
-            >
-                <Input
-                    value={data.old_password}
-                    onChange={(e) =>
-                        setData("old_password", e.target.value)
-                    }
-                    type="password"
-                    id="old_password"
-                    label="Password Lama"
-                />
-                <Input
-                    value={data.new_password}
-                    onChange={(e) => setData("new_password", e.target.value)}
-                    type="password"
-                    id="new_password"
-                    label="Password Baru"
-                />
-                <Input
-                    value={data.validation_password}
-                    onChange={(e) =>
-                        setData("validation_password", e.target.value)
-                    }
-                    type="password"
-                    id="validation_password"
-                    label="Ulangi Password Baru"
-                />
-                <button
-                    type="submit"
-                    className="w-4/12 md:w-2/12 mx-auto md:ms-auto md:me-0 border-1 xl:border-2 border-light-grey text-light-grey hover:text-white hover:bg-secondary hover:border-secondary font-poppins font-medium rounded-full md:rounded-[.5vw] p-[2vw] md:p-[.75vw]"
+            <div className="w-full md:border border-neutral-20 rounded-[.8vw] p-[1.6vw] space-y-[3.7vw]">
+                {isMobile ? (
+                    <Link
+                        href="/pengaturan"
+                        className="flex items-center gap-[1.5vw] text-black"
+                    >
+                        <FiChevronLeft className="md:hidden text-[4vw]" />
+                        <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-[4vw]">
+                            Ubah Password
+                        </h1>
+                    </Link>
+                ) : (
+                    <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-[4vw] text-center">
+                        Ubah Password
+                    </h1>
+                )}
+
+                <form
+                    onSubmit={submit}
+                    className="md:min-h-[22vw] flex flex-col gap-[1.8vw] md:gap-[1.2vw]"
                 >
-                    Simpan
-                </button>
-            </form>
+                    <GoalsTextInput
+                        required
+                        value={data.old_password}
+                        onChange={(e) =>
+                            setData("old_password", e.target.value)
+                        }
+                        placeholder="Masukkan Password Lama"
+                        type="password"
+                        id="old_password"
+                        label="Password Lama"
+                    />
+                    <GoalsTextInput
+                        required
+                        value={data.new_password}
+                        onChange={(e) =>
+                            setData("new_password", e.target.value)
+                        }
+                        placeholder="Masukkan Password Baru"
+                        type="password"
+                        id="new_password"
+                        label="Password Baru"
+                    />
+                    <GoalsTextInput
+                        required
+                        value={data.validation_password}
+                        onChange={(e) =>
+                            setData("validation_password", e.target.value)
+                        }
+                        placeholder="Masukkan Ulang Password Baru"
+                        type="password"
+                        id="validation_password"
+                        label="Ulangi Password Baru"
+                    />
+                    <GoalsButton
+                        type="submit"
+                        className="md:self-end mt-[1.8vw] md:mt-0"
+                    >
+                        Simpan
+                    </GoalsButton>
+                </form>
+            </div>
         </PengaturanLayout>
     );
 }
@@ -64,7 +101,7 @@ function Input({ type, id, label, value, onChange }) {
                 onChange={onChange}
                 id={id}
                 type={type}
-                className="w-full border-1 xl:border-2 border-dark placeholder-shown:border-light-grey font-poppins rounded-[1vw] md:rounded-[.5vw] pt-[3vw] pb-[1.5vw] px-[3vw] md:pt-[1vw] md:pb-[.5vw] md:px-[1.75vw] focus:outline-none focus:border-dark peer"
+                className="w-full border-1 xl:border-2 border-dark placeholder-shown:border-light-grey font-poppins rounded-[1vw] md:rounded-[.5vw] pt-[3vw] pb-[1.5vw] px-[3vw] md:pt-[1vw] md:pb-[.5vw] md:px-[1.75vw] focus:border-dark peer"
                 placeholder=" "
             />
             <label

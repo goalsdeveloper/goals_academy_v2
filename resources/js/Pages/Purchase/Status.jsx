@@ -6,6 +6,7 @@ import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import { Link } from "@inertiajs/react";
 import { useRef } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import "@/script/momentCustomLocale";
 
 export default function Status({
@@ -16,7 +17,7 @@ export default function Status({
     paymentName,
     bankName,
 }) {
-    // console.log(orderHistory.actions[0].url);
+    const vaNumber = orderHistory.va_numbers ? orderHistory.va_numbers[0].va_number : orderHistory.permata_va_number
     const [countdown, setCountdown] = useState(
         moment().hours(0).minutes(0).seconds(0)
     );
@@ -103,7 +104,7 @@ export default function Status({
                 clearInterval(countdownInterval.current);
                 setCountdown(moment().hours(0).minutes(0).seconds(0));
                 location.href = "/";
-                alert("Waktu Pembayaran Telah Habis!");
+                toast.error("Waktu Pembayaran Telah Habis!");
             }
             if (purchaseStatus.toLowerCase() == "success") {
                 clearInterval(countdownInterval.current);
@@ -121,7 +122,6 @@ export default function Status({
                     )
                 );
 
-                // console.log(remaining.format("HH:mm:ss"));
                 setCountdown(remaining);
             }
         }, 1000);
@@ -136,6 +136,7 @@ export default function Status({
 
     return (
         <MainLayout auth={auth} title="Purchase">
+            <Toaster />
             <section
                 id="purchase-form"
                 className="mb-16 xs:mb-20 md:mb-16 lg:mb-20 xl:mb-24 3xl:mb-32"
@@ -211,29 +212,17 @@ export default function Status({
                                                 <h2
                                                     className="leading-loose cursor-pointer text-[6vw] md:text-[2.3vw]"
                                                     onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                            orderHistory
-                                                                .va_numbers[0]
-                                                                .va_number
-                                                        );
-                                                        alert("Text copied!");
+                                                        navigator.clipboard.writeText(vaNumber);
+                                                        toast.success("Text copied!");
                                                     }}
                                                 >
-                                                    {orderHistory.va_numbers
-                                                        ? orderHistory
-                                                              .va_numbers[0]
-                                                              .va_number
-                                                        : orderHistory.permata_va_number}
+                                                    {vaNumber}
                                                 </h2>
                                                 <p
                                                     className="font-medium hover:text-primary cursor-pointer"
                                                     onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                            orderHistory
-                                                                .va_numbers[0]
-                                                                .va_number
-                                                        );
-                                                        alert("Text copied!");
+                                                        navigator.clipboard.writeText(vaNumber);
+                                                        toast.success("Text copied!");
                                                     }}
                                                 >
                                                     <i className="bi bi-copy"></i>{" "}
@@ -355,12 +344,11 @@ function PaymentSteps ({ steps }) {
     return (
         <div className="w-full block my-[2vw] md:my-0">
             <ExpandedButton
-                borderClassName="border-1 border-dark"
                 textClassName="font-medium text-dark"
                 icon={`fa-solid fa-chevron-down duration-500 ${
                     show ? "-rotate-180" : ""
                 }`}
-                className="h-[9vw] md:h-[3vw]"
+                className="h-[9vw] md:h-[3vw] border-1 border-dark"
                 onClick={() =>
                     setShow(!show)
                 }

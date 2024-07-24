@@ -15,7 +15,14 @@ class UserProfile extends Model
         'university',
         'faculty',
         'major',
+        'linkedin_url',
         'profile_image',
+        'is_active',
+        'rumpun'
+    ];
+
+    protected $casts = [
+        'is_active' => 'bool'
     ];
 
     public function user()

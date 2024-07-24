@@ -9,7 +9,11 @@ class AddOn extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'price'];
+    protected $fillable = ['name', 'slug', 'price', 'is_visible'];
+    protected $hidden = ['created_at', 'updated_at'];
+    protected $casts = [
+        'is_visible' => 'bool',
+    ];
 
     public function products()
     {
@@ -18,6 +22,6 @@ class AddOn extends Model
 
     public function course()
     {
-        return $this->belongsToMany(Course::class);
+        return $this->belongsToMany(Course::class, 'add_on_course', 'add_on_id', 'course_id');
     }
 }

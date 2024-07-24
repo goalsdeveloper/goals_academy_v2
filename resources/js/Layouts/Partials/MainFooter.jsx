@@ -1,9 +1,9 @@
 import { Link } from "@inertiajs/react";
 import logo from "/resources/img/icon/goals-3.svg";
 
-export default function MainFooter() {
+export default function MainFooter({ className }) {
     return (
-        <footer className="bg-grey w-full text-white">
+        <footer className={`bg-grey w-full text-white ${className}`}>
             <div className="container mx-auto flex flex-col md:flex-row flex-wrap justify-between py-12 xs:py-16 md:py-8 lg:py-16 gap-12 xs:gap-16 md:gap-0">
                 <div className="w-8/12 md:w-3/12">
                     <div className="w-6/12 md:w-5/12">

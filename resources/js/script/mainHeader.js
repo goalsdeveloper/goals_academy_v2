@@ -2,11 +2,11 @@ const headerScroll = () => {
     const headerContainer = document.querySelector('header .container');
 
     if (window.scrollY == 0) {
-        headerContainer.classList.remove('xl:h-24', '3xl:h-36')
-        headerContainer.classList.add('xl:h-32', '3xl:h-48')
+        headerContainer.classList.remove('md:h-[7.5vw]')
+        headerContainer.classList.add('md:h-[10vw]')
     } else {
-        headerContainer.classList.remove('xl:h-32', '3xl:h-48')
-        headerContainer.classList.add('xl:h-24', '3xl:h-36')
+        headerContainer.classList.remove('md:h-[10vw]')
+        headerContainer.classList.add('md:h-[7.5vw]')
     }
 }
 

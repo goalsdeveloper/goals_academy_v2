@@ -13,9 +13,56 @@ import rectangle from "/resources/img/vector/rectangle-1.svg";
 import { TECollapse } from "tw-elements-react";
 import icon from "/resources/img/icon/goals-4.svg";
 
-export default function Form ({ title, message }) {
-    const [active, setActive] = useState(title);
-    console.log(message)
+export default function Form ({ title }) {
+    const [activeForm, setActiveForm] = useState(title);
+
+    return (
+        <div
+            id="form"
+            className="relative xl:flex flex-wrap min-h-screen xl:h-screen bg-secondary text-[3vw] md:text-[2vw] xl:text-[1vw] pb-20 xs:pb-24 xl:p-0 overflow-hidden"
+        >
+            <Head title={activeForm == "register" ? "Register" : "Login"} />
+            <Header title={title} />
+            <CornerWaveVector className="xl:hidden z-0" cornerClassName="w-8/12" />
+            <FormLeft />
+            <FormRight activeForm={activeForm} setActiveForm={setActiveForm} />
+        </div>
+    );
+}
+
+function FormLeft() {
+    return (
+        <div
+            id="form-left"
+            className="w-[70%] relative hidden xl:flex items-end justify-center select-none"
+        >
+            <CornerWaveVector
+                rightCornerClassName="w-6/12"
+                leftCornerClassName="w-10/12"
+            />
+            <div className="w-full flex flex-col justify-center items-center gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw] z-10 text-white">
+                <img className="w-[9vw]" src={logo} alt="Goals Academy" />
+                <div className="text-center mb-[8vh]">
+                    <h2 className="text-white">Selamat Datang</h2>
+                    <p className="tracking-wider xl:text-16 3xl:text-24">
+                        di{" "}
+                        <span className="font-semibold">
+                            Platform Bimbingan Skripsi Pertama
+                        </span>{" "}
+                        di Indonesia
+                    </p>
+                </div>
+                <img className="w-5/12" src={figure7} alt="Figure 7" />
+            </div>
+        </div>
+    )
+}
+
+function FormRight({ activeForm, setActiveForm }) {
+    const [loginMessage, setLoginMessage] = useState("");
+    const [loginLoading, setLoginLoading] = useState(false);
+    const [registerLoading, setRegisterLoading] = useState(false);
+
     const {
         data: loginData,
         setData: setLoginData,
@@ -28,6 +75,8 @@ export default function Form ({ title, message }) {
         data: registerData,
         setData: setRegisterData,
         post: registerSubmit,
+        errors: registerErrors,
+        setError: setRegisterError
     } = useForm({
         username: "",
         email: "",
@@ -38,229 +87,259 @@ export default function Form ({ title, message }) {
 
     const switchForm = (request) => {
         if (request == "login") {
-            setActive("login");
+            setActiveForm("login");
             history.replaceState({}, "", "/login");
         } else {
-            setActive("register");
+            setActiveForm("register");
             history.replaceState({}, "", "/register");
         }
     };
 
-    const login = (e) => {
+    const loginHandler = (e) => {
         e.preventDefault();
-        // alert(loginData.email);
-        loginSubmit(route("auth.login"));
+        setLoginLoading(true)
+        fetch("/api/login-validation", {
+            method: "post",
+            headers: {
+                accept: "application.json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(loginData),
+        })
+            .then((response) => response.json())
+            .then((response) => {
+                if ("success" in response) {
+                    loginSubmit(route("auth.login"))
+                } else {
+                    setLoginLoading(false)
+                    setLoginMessage(response.message)
+                }
+            })
     };
 
-    const register = (e) => {
+    const registerHandler = (e) => {
         e.preventDefault();
-        // alert(registerData.email);
-        registerSubmit(route("auth.register"));
+        setRegisterLoading(true)
+        fetch("/api/register-validation", {
+            method: "post",
+            headers: {
+                accept: "application.json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(registerData),
+        })
+            .then((response) => response.json())
+            .then((response) => {
+                if ("success" in response) {
+                    registerSubmit(route("auth.register"))
+                } else {
+                    setRegisterLoading(false)
+                    Object.keys(response).forEach((item) => {
+                        setRegisterError(item, response[item][0])
+                    })
+                }
+            })
     };
 
     return (
         <div
-            id="form"
-            className="relative xl:flex flex-wrap min-h-screen xl:h-screen bg-secondary text-[3vw] md:text-[2vw] xl:text-[1vw] pb-20 xs:pb-24 xl:p-0 overflow-hidden"
+            id="form-right"
+            className="container mx-auto xl:w-[30%] h-fit xl:h-screen rounded-lg xl:rounded-none bg-white p-[8vw] md:p-[4vw] xl:p-[4vw] py-[16vw] md:py-[8vw] xl:py-[10vh] relative"
         >
-            <Head title={active == "register" ? "Register" : "Login"} />
-            <Header title={title} />
-            <CornerWaveVector className="xl:hidden" cornerClassName="w-8/12" />
-            <div
-                id="form-left"
-                className="w-[70%] relative hidden xl:flex items-end justify-center select-none"
-            >
-                <CornerWaveVector
-                    rightCornerClassName="w-6/12"
-                    leftCornerClassName="w-10/12"
-                />
-                <div className="w-full flex flex-col justify-center items-center gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw] z-10 text-white">
-                    <img className="w-[9vw]" src={logo} alt="Goals Academy" />
-                    <div className="text-center mb-[8vh]">
-                        <h2 className="text-white">Selamat Datang</h2>
-                        <p className="tracking-wider xl:text-16 3xl:text-24">
-                            di{" "}
-                            <span className="font-semibold">
-                                Platform Bimbingan Skripsi Pertama
-                            </span>{" "}
-                            di Indonesia
-                        </p>
-                    </div>
-                    <img className="w-5/12" src={figure7} alt="Figure 7" />
+            <div className="grid gap-[8vw] md:gap-[4vw] xl:gap-[2vw] w-full flex-col">
+                <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-1 xl:border-2 border-secondary font-poppins rounded-[1vw] md:rounded-[.5vw]">
+                    <SwitchButton
+                        switchForm={switchForm}
+                        target={"login"}
+                        active={activeForm}
+                    />
+                    <SwitchButton
+                        switchForm={switchForm}
+                        target={"register"}
+                        active={activeForm}
+                    />
                 </div>
-            </div>
-            <div
-                id="form-right"
-                className="container mx-auto xl:w-[30%] h-fit xl:h-screen rounded-lg xl:rounded-none bg-white flex flex-col p-6 xl:p-16 py-20 xl:py-[10vh] relative"
-            >
-                <div className="grid gap-6 xl:gap-8 w-full">
-                    <div className="z-10 w-full overflow-hidden grid grid-cols-2 border-1 xl:border-2 border-secondary font-poppins rounded-[1vw] md:rounded-[.5vw]">
-                        <SwitchButton
-                            switchForm={switchForm}
-                            target={"login"}
-                            active={active}
-                        />
-                        <SwitchButton
-                            switchForm={switchForm}
-                            target={"register"}
-                            active={active}
-                        />
-                    </div>
-                    <div
-                        className={`${
-                            active == "register" ? "grid" : "hidden"
-                        } gap-3 xl:gap-4 z-10`}
-                    >
-                        <form
-                            onSubmit={register}
-                            className="w-full grid gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw]"
-                        >
-                            <Input
-                                value={registerData.username}
-                                onChange={(e) =>
-                                    setRegisterData("username", e.target.value)
-                                }
-                                type="text"
-                                id="username"
-                                label="Username"
-                            />
-                            <Input
-                                value={registerData.email}
-                                onChange={(e) =>
-                                    setRegisterData("email", e.target.value)
-                                }
-                                type="email"
-                                id="email"
-                                label="Email"
-                            />
-                            <Input
-                                value={registerData.password}
-                                onChange={(e) =>
-                                    setRegisterData("password", e.target.value)
-                                }
-                                type="password"
-                                id="password"
-                                label="Password"
-                            />
-                            <Input
-                                value={registerData.confirmation_password}
-                                onChange={(e) =>
-                                    setRegisterData(
-                                        "confirmation_password",
-                                        e.target.value
-                                    )
-                                }
-                                type="password"
-                                id="confirmation_password"
-                                label="Ulangi Password"
-                            />
-                            <div className="flex justify-center items-center gap-[2vw] md:gap-[1vw] xl:gap-[.5vw]">
-                                <input type="checkbox" className="w-[5vw] md:w-[2vw] xl:w-[3vw]" checked={registerData.agreement} onChange={() => setRegisterData("agreement", !registerData.agreement)} />
-                                <p className="text-[3vw] md:text-[1.8vw] xl:text-[.95vw]">Saya setuju dengan <a target="_blank" href="/syarat_dan_ketentuan" className="text-secondary font-medium">Syarat dan Ketentuan</a> yang berlaku di Goals Academy</p>
-                            </div>
-                            <SubmitButton
-                                className="w-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw]"
-                                disabled={Object.keys(registerData).map(i => registerData[i]).includes("") || !registerData.agreement || !(registerData.password == registerData.confirmation_password)}
-                            >Daftar</SubmitButton>
-                        </form>
-                        <p className="text-center">atau</p>
-                        <div className="w-full grid gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw] text-dark">
-                            <a
-                                as="button"
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] p-[2vw] md:p-[1.5vw] xl:p-[.75vw]"
-                                href="/auth/google"
-                            >
-                                Daftar dengan Google
-                            </a>
-                            <a
-                                as="button"
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] p-[2vw] md:p-[1.5vw] xl:p-[.75vw]"
-                                href="/auth/facebook"
-                            >
-                                Daftar dengan Facebook
-                            </a>
-                        </div>
-                    </div>
-                    <div
-                        className={`${
-                            active == "login" ? "grid" : "hidden"
-                        } gap-3 xl:gap-4 z-10`}
-                    >
-                        <form
-                            onSubmit={login}
-                            className="w-full grid gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw]"
-                        >
-                            <Input
-                                value={loginData.email}
-                                onChange={(e) =>
-                                    setLoginData("email", e.target.value)
-                                }
-                                type="email"
-                                id="login_email"
-                                label="Email"
-                            />
-                            <div className="relative pb-2">
-                                <Input
-                                    value={loginData.password}
-                                    onChange={(e) =>
-                                        setLoginData("password", e.target.value)
-                                    }
-                                    type="password"
-                                    id="login_password"
-                                    label="Password"
-                                />
-                                <Link href="/lupa_password" className="absolute text-[3vw] md:text-[1.75vw] xl:text-[.95vw] -bottom-[2.5vw] md:-bottom-[2vw] xl:-bottom-[1vw] right-0 text-blue-500">
-                                    Lupa password?
-                                </Link>
-                            </div>
-                            <SubmitButton
-                                className="w-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw]"
-                                disabled={Object.keys(loginData).map(i => loginData[i]).includes("")}
-                            >Masuk</SubmitButton>
-                        </form>
-                        <p className="text-center">atau</p>
-                        <div className="w-full grid gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw] text-dark">
-                            <a
-                                as="button"
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] p-[2vw] md:p-[1.5vw] xl:p-[.75vw]"
-                                href="/auth/google"
-                            >
-                                Masuk dengan Google
-                            </a>
-                            <a
-                                as="button"
-                                className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] p-[2vw] md:p-[1.5vw] xl:p-[.75vw]"
-                                href="/auth/facebook"
-                            >
-                                Masuk dengan Facebook
-                            </a>
-                        </div>
-                    </div>
-                    <div className="absolute w-full h-full top-0 left-0 z-0 select-none">
-                        <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] top-6 left-6"></div>
-                        <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] top-6 right-3"></div>
-                        <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] bottom-6 left-6"></div>
-                        <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] bottom-4 right-5"></div>
-                        <img
-                            className="absolute w-12 xl:w-[3.6vw] top-11 right-12 3xl:top-14"
-                            src={rectangle}
-                            alt="vector"
-                        />
-                        <img
-                            className="absolute w-12 xl:w-[3.6vw] bottom-11 left-12 3xl:bottom-14"
-                            src={rectangle}
-                            alt="vector"
-                        />
-                        <img
-                            className="absolute w-12 xl:w-[3.6vw] bottom-12 right-8 3xl:bottom-20"
-                            src={rectangle}
-                            alt="vector"
-                        />
-                    </div>
+                <RegisterForm active={activeForm} registerData={registerData} setRegisterData={setRegisterData} registerErrors={registerErrors} setRegisterError={setRegisterError} registerLoading={registerLoading} onSubmit={registerHandler} />
+                <LoginForm active={activeForm} loginData={loginData} setLoginData={setLoginData} loginMessage={loginMessage} setLoginMessage={setLoginMessage} loginLoading={loginLoading} onSubmit={loginHandler} />
+                <div className="absolute w-full h-full top-0 left-0 z-0 select-none">
+                    <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] top-[2.5vw] left-[2.5vw] md:top-[1.5vw] md:left-[1.5vw] xl:top-[1vw] xl:left-[1vw]"></div>
+                    <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] top-[2.5vw] right-[2.5vw] md:top-[1.5vw] md:right-[1.2vw] xl:top-[1vw] xl:right-[.8vw]"></div>
+                    <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] bottom-[2.5vw] left-[2.5vw] md:bottom-[1.5vw] md:left-[1.5vw] xl:bottom-[1vw] xl:left-[1vw]"></div>
+                    <div className="absolute w-12 xl:w-[3.6vw] h-4 xl:h-[1.2vw] bg-secondary rounded-[.2vw] bottom-[2.5vw] right-[2.5vw] md:bottom-[1.5vw] md:right-[1.2vw] xl:bottom-[1vw] xl:right-[.8vw]"></div>
+                    <img
+                        className="absolute w-12 xl:w-[3.6vw] top-[6vw] right-[5.5vw] md:top-[3vw] md:right-[2.8vw] xl:top-[2.4vw] xl:right-[2.2vw]"
+                        src={rectangle}
+                        alt="vector"
+                    />
+                    <img
+                        className="absolute w-12 xl:w-[3.6vw] bottom-[6vw] left-[5.5vw] md:bottom-[3vw] md:left-[2.8vw] xl:bottom-[2.4vw] xl:left-[2.2vw]"
+                        src={rectangle}
+                        alt="vector"
+                    />
+                    <img
+                        className="absolute w-12 xl:w-[3.6vw] bottom-[6vw] right-[6vw] md:bottom-[3vw] md:right-[3vw] xl:bottom-[2.4vw] xl:right-[2.4vw]"
+                        src={rectangle}
+                        alt="vector"
+                    />
                 </div>
             </div>
         </div>
-    );
+    )
+}
+
+function RegisterForm({ active, registerData, setRegisterData, registerErrors, setRegisterError, registerLoading, onSubmit }) {
+    return (
+        <div
+            className={`${
+                active == "register" ? "grid" : "hidden"
+            } gap-3 xl:gap-4 z-10 md:max-h-[65vh] md:overflow-auto scrollbar-hidden pt-[2vw] md:pt-[.5vw]`}
+        >
+            <form
+                onSubmit={onSubmit}
+                className="w-full grid gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw]"
+            >
+                <Input
+                    value={registerData.username}
+                    onChange={(e) => {
+                        setRegisterData("username", e.target.value)
+                        setRegisterError("username", "")
+                    }}
+                    type="text"
+                    id="username"
+                    label="Username"
+                    error={registerErrors.username}
+                />
+                <Input
+                    value={registerData.email}
+                    onChange={(e) => {
+                        setRegisterData("email", e.target.value)
+                        setRegisterError("email", "")
+                    }}
+                    type="email"
+                    id="email"
+                    label="Email"
+                    error={registerErrors.email}
+                />
+                <Input
+                    value={registerData.password}
+                    onChange={(e) => {
+                        setRegisterData("password", e.target.value)
+                        setRegisterError("password", "")
+                    }}
+                    type="password"
+                    id="password"
+                    label="Password"
+                    error={registerErrors.password}
+                />
+                <Input
+                    value={registerData.confirmation_password}
+                    onChange={(e) => {
+                        setRegisterData("confirmation_password", e.target.value)
+                        setRegisterError("confirmation_password", "")
+                    }}
+                    type="password"
+                    id="confirmation_password"
+                    label="Ulangi Password"
+                    error={registerErrors.confirmation_password}
+                />
+                <div className="flex justify-center items-center gap-[2vw] md:gap-[1vw] xl:gap-[.5vw] md:px-[1vw]">
+                    <input type="checkbox" className="w-[5vw] h-[5vw] md:w-[1vw] md:h-[1vw]" checked={registerData.agreement} onChange={() => setRegisterData("agreement", !registerData.agreement)} />
+                    <p className="text-[3vw] md:text-[1.8vw] xl:text-[.95vw]">Saya setuju dengan <a target="_blank" href="/syarat_dan_ketentuan" className="text-secondary font-medium">Syarat dan Ketentuan</a> yang berlaku di Goals Academy</p>
+                </div>
+                <SubmitButton
+                    className="w-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw]"
+                    disabled={registerLoading || Object.keys(registerData).map(i => registerData[i]).includes("") || !registerData.agreement || !(registerData.password == registerData.confirmation_password)}
+                    isLoading={registerLoading}
+                >Daftar</SubmitButton>
+            </form>
+            <p className="text-center">atau</p>
+            <div className="w-full grid gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw] text-dark">
+                <a
+                    as="button"
+                    className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] p-[2vw] md:p-[1.5vw] xl:p-[.75vw]"
+                    href="/auth/google"
+                >
+                    Daftar dengan Google
+                </a>
+                <a
+                    as="button"
+                    className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] p-[2vw] md:p-[1.5vw] xl:p-[.75vw]"
+                    href="/auth/facebook"
+                >
+                    Daftar dengan Facebook
+                </a>
+            </div>
+        </div>
+    )
+}
+
+function LoginForm({ active, loginData, setLoginData, loginMessage, setLoginMessage, loginLoading, onSubmit }) {
+    return (
+        <div
+            className={`${
+                active == "login" ? "grid" : "hidden"
+            } gap-3 xl:gap-4 z-10 md:max-h-[65vh] md:overflow-auto scrollbar-hidden pt-[2vw] md:pt-[.5vw]`}
+        >
+            <form
+                onSubmit={onSubmit}
+                className="w-full grid gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw]"
+            >
+                {
+                    loginMessage != "" ? (
+                        <div className={`${loginMessage != "" ? "" : "hidden"} w-full flex justify-between items-center border-1 xl:border-2 font-poppins rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] pt-2 pb-1 px-3 md:pt-[1.75vw] md:pb-[1vw] md:px-[2vw] xl:pt-[.75vw] xl:pb-[.5vw] xl:px-[1vw] bg-red-500 border-red-500 text-white`}>
+                            Email atau password Anda salah
+                            <i onClick={() => setLoginMessage("")} className="fa-solid fa-times cursor-pointer"></i>
+                        </div>
+                    ) : (<></>)
+                }
+                <Input
+                    value={loginData.email}
+                    onChange={(e) =>
+                        setLoginData("email", e.target.value)
+                    }
+                    type="email"
+                    id="login_email"
+                    label="Email"
+                />
+                <div className="relative pb-[1.5vw]">
+                    <Input
+                        value={loginData.password}
+                        onChange={(e) =>
+                            setLoginData("password", e.target.value)
+                        }
+                        type="password"
+                        id="login_password"
+                        label="Password"
+                    />
+                    <Link href="/lupa_password" className="absolute text-[3vw] md:text-[1.75vw] xl:text-[.95vw] xl:mt-[.5vw] right-0 text-blue-500">
+                        Lupa password?
+                    </Link>
+                </div>
+                <SubmitButton
+                    className="w-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw]"
+                    disabled={Object.keys(loginData).map(i => loginData[i]).includes("") || loginLoading}
+                    isLoading={loginLoading}
+                >Masuk</SubmitButton>
+            </form>
+            <p className="text-center">atau</p>
+            <div className="w-full grid gap-[6vw] md:gap-[4vw] xl:gap-[1.5vw] text-dark">
+                <a
+                    as="button"
+                    className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-google before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] p-[2vw] md:p-[1.5vw] xl:p-[.75vw]"
+                    href="/auth/google"
+                >
+                    Masuk dengan Google
+                </a>
+                <a
+                    as="button"
+                    className="w-full relative overflow-hidden border-1 xl:border-2 border-secondary bg-white hover:bg-skin text-center font-medium before:absolute before:left-0 before:top-0 before:bg-facebook before:bg-no-repeat before:w-2/12 before:h-full rounded-[1vw] md:rounded-[.8vw] xl:rounded-[.4vw] p-[2vw] md:p-[1.5vw] xl:p-[.75vw]"
+                    href="/auth/facebook"
+                >
+                    Masuk dengan Facebook
+                </a>
+            </div>
+        </div>
+    )
 }
 
 function SwitchButton({ switchForm, target, active }) {
@@ -282,7 +361,7 @@ function Header({ title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false);
 
     return (
-        <header className="xl:hidden w-screen text-dark lg:text-base z-50">
+        <header className="xl:hidden w-screen text-dark lg:text-base relative z-50">
             <div className="hidden xl:h-24 3xl:h-36"></div>{" "}
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <nav className="container flex flex-wrap justify-between items-center mx-auto h-20 xs:h-24 duration-500">
@@ -319,7 +398,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
     return (
         <>
             <div
-                className={`xl:hidden w-full absolute z-50 top-0 bottom-0 right-0 bg-white font-bold text-white py-6 xs:py-8 duration-500 ${
+                className={`xl:hidden w-full absolute h-screen z-50 top-0 bottom-0 right-0 bg-white font-bold text-white py-6 xs:py-8 duration-500 ${
                     mobileNavbar ? "" : "opacity-0 translate-x-[110%]"
                 }`}
             >
@@ -331,7 +410,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                             ></i>
                         </button>
                     </div>
-                    <div className="grid gap-8">
+                    <div className="grid gap-[8vw] md:gap-[4vw]">
                         <Link
                             href="/produk"
                             className={`relative font-poppins flex justify-between items-center rounded-lg bg-secondary hover:bg-secondary p-4 ${
@@ -340,7 +419,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                         >
                             Produk
                             <CornerWaveVector cornerClassName="w-4/12" />
-                            <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                            <i className="fa-solid fa-arrow-up rotate-45 text-[6vw] md:text-[4vw]"></i>
                         </Link>
                         <Link
                             href="/artikel"
@@ -350,7 +429,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                         >
                             Artikel
                             <CornerWaveVector cornerClassName="w-4/12" />
-                            <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                            <i className="fa-solid fa-arrow-up rotate-45 text-[6vw] md:text-[4vw]"></i>
                         </Link>
                         <Link
                             href="/diskusi"
@@ -360,7 +439,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                         >
                             Diskusi
                             <CornerWaveVector cornerClassName="w-4/12" />
-                            <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                            <i className="fa-solid fa-arrow-up rotate-45 text-[6vw] md:text-[4vw]"></i>
                         </Link>
                         <Link
                             href="/karir"
@@ -370,7 +449,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                         >
                             Karir
                             <CornerWaveVector cornerClassName="w-4/12" />
-                            <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                            <i className="fa-solid fa-arrow-up rotate-45 text-[6vw] md:text-[4vw]"></i>
                         </Link>
                         <button
                             className={`w-full relative font-poppins flex flex-col justify-center`}
@@ -391,7 +470,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                                 Profil
                                 <CornerWaveVector cornerClassName="w-4/12" />
                                 <i
-                                    className={`fa-solid fa-chevron-down text-20 xs:text-24 duration-300 ${
+                                    className={`fa-solid fa-chevron-down text-[6vw] md:text-[4vw] duration-300 ${
                                         profileDropdownMobile
                                             ? "rotate-180"
                                             : ""
@@ -400,9 +479,9 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                             </span>
                             <TECollapse
                                 show={profileDropdownMobile}
-                                className="shadow-none text-secondary w-full"
+                                className="shadow-none text-secondary w-[104%] -translate-x-[2%] px-[2%] pb-[2%]"
                             >
-                                <TECollapseItem className="gap-8">
+                                <TECollapseItem className="gap-[8vw] md:gap-[4vw]">
                                     <Link
                                         href="/profil_perusahaan"
                                         className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 overflow-hidden ${
@@ -411,7 +490,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                                     >
                                         Profil Perusahaan
                                         <CornerWaveVector2 cornerClassName="w-4/12" />
-                                        <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                                        <i className="fa-solid fa-arrow-up rotate-45 text-[6vw] md:text-[4vw]"></i>
                                     </Link>
                                     <Link
                                         href="/profil_tutor"
@@ -421,7 +500,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                                     >
                                         Profil Tutor
                                         <CornerWaveVector2 cornerClassName="w-4/12" />
-                                        <i className="fa-solid fa-arrow-up rotate-45 text-20 xs:text-24"></i>
+                                        <i className="fa-solid fa-arrow-up rotate-45 text-[6vw] md:text-[4vw]"></i>
                                     </Link>
                                 </TECollapseItem>
                             </TECollapse>

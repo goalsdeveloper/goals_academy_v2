@@ -8,6 +8,7 @@ import MainHeader from "./Partials/MainHeader";
 import wave7 from "/resources/img/vector/wave-7.svg";
 import userIcon from "/resources/img/icon/user.png";
 import "@/script/mainHeader";
+import { Toaster } from "react-hot-toast";
 
 export default function UserLayout({ auth, title, children }) {
     const [showImageUploader, setShowImageUploader] = useState(false);
@@ -20,13 +21,14 @@ export default function UserLayout({ auth, title, children }) {
         <>
             <Head title={title} />
             <MainHeader auth={auth} title="Dashboard" />
-            <main className="text-dark pt-20 xs:pt-20 md:pt-20 xl:pt-32 3xl:pt-48 pb-[8vw] md:pb-[3vw] text-[3vw] md:text-[1.15vw] overflow-visible">
-                <Preliminary
+            <main className="text-dark pb-[8vw] md:pb-[3vw] text-[3vw] md:text-[1.15vw] overflow-visible">
+                <Toaster />
+                {/* <Preliminary
                     auth={auth}
                     title={title}
                     profileImage={profileImage}
                     setShowImageUploader={setShowImageUploader}
-                />
+                /> */}
                 <DashboardContent
                     auth={auth}
                     title={title}
@@ -35,12 +37,12 @@ export default function UserLayout({ auth, title, children }) {
                 >
                     {children}
                 </DashboardContent>
-                <ImageUploader
+                {/* <ImageUploader
                     show={showImageUploader}
                     setShow={setShowImageUploader}
                     profileImage={profileImage}
                     setProfileImage={setProfileImage}
-                />
+                /> */}
             </main>
         </>
     );
@@ -88,17 +90,18 @@ function DashboardContent({
     children,
 }) {
     return (
-        <div className="container mx-auto flex gap-[3vw] md:mt-[3vw]">
+        <div className="container mx-auto flex gap-[1.6vw] mt-[2vw] md:mt-0">
             <DashboardNavbar
                 auth={auth}
-                className={`sticky top-24 xs:top-28 md:top-24 xl:top-28 3xl:top-40 z-10 w-full md:w-3/12 h-fit ${
+                className={`sticky hidden md:block z-10 w-full md:w-3/12 h-fit ${
                     title == "Pengaturan" ? "" : "hidden md:flex"
                 }`}
                 title={title}
                 profileImage={profileImage}
                 setShowImageUploader={setShowImageUploader}
             />
-            <div
+            <div className={`w-full space-y-[1vw]`}>{children}</div>
+            {/* <div
                 className={`w-full md:w-9/12 h-fit md:p-[2.5vw] md:shadow-centered-spread md:rounded-md ${
                     title == "Pengaturan" ? "hidden md:block" : ""
                 }`}
@@ -110,7 +113,7 @@ function DashboardContent({
                     <hr className="border-1 border-secondary" />
                 </div>
                 {children}
-            </div>
+            </div> */}
         </div>
     );
 }
@@ -124,9 +127,9 @@ function DashboardNavbar({
 }) {
     return (
         <div
-            className={`flex flex-col gap-[5.5vw] md:gap-[1.5vw] ${className}`}
+            className={`flex flex-col ${className} border border-neutral-20 py-[1vw] rounded-[.8vw]`}
         >
-            <div className="hidden md:flex items-center gap-[1vw]">
+            {/* <div className="hidden md:flex items-center gap-[1vw]">
                 <img
                     className="w-[22vw] h-[22vw] md:w-[5vw] md:h-[5vw] rounded-full shadow-centered-spread"
                     src={profileImage ? profileImage : userIcon}
@@ -141,7 +144,7 @@ function DashboardNavbar({
                         <i className="bi bi-pen"></i> Ubah Foto
                     </button>
                 </div>
-            </div>
+            </div> */}
             <DashboardNavbarItem
                 className={`${
                     title == "Pengaturan" ? "hidden md:inline-block" : ""
@@ -171,6 +174,7 @@ function DashboardNavbar({
                 href="/logout"
                 method="post"
                 active={title == "Keluar"}
+                className={`text-danger`}
             >
                 <i className="bi bi-box-arrow-right"></i>
                 <span>Keluar</span>
@@ -179,7 +183,7 @@ function DashboardNavbar({
     );
 }
 
-function ImageUploader({ show, setShow, profileImage, setProfileImage }) {
+export function ImageUploader({ show, setShow, profileImage, setProfileImage }) {
     const [tempImage, setTempImage] = useState(profileImage);
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);

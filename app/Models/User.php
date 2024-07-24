@@ -36,6 +36,7 @@ class User extends Authenticatable implements HasName, FilamentUser, MustVerifyE
         'username',
         'email',
         'user_role',
+        'revenue_type_id',
         'email_verified_at',
         'password',
     ];
@@ -102,5 +103,17 @@ class User extends Authenticatable implements HasName, FilamentUser, MustVerifyE
     public function user_role()
     {
         return $this->user_role;
+    }
+
+    public function skills() {
+        return $this->belongsToMany(Skill::class, 'user_skills');
+    }
+    public function revenue_type()
+    {
+        return $this->belongsTo(RevenueType::class);
+    }
+
+    public function revenue() {
+        return $this->hasMany(Revenue::class, 'tutor_id');
     }
 }

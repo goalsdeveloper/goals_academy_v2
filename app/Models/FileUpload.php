@@ -10,11 +10,11 @@ class FileUpload extends Model
     use HasFactory;
 
     protected $fillable = [
-        'course_id', 'slug', 'filename', 'mem_type', 'path'
+        'course_id', 'slug', 'filename', 'mime_type', 'path', 'size', 'user_id', 'name'
     ];
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class);
+        return $this->belongsTo(Course::class);
     }
 }

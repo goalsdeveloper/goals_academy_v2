@@ -23,63 +23,63 @@ import testimony7 from "/resources/img/testimony/herinda.jpg";
 import testimony8 from "/resources/img/testimony/khafidh.jpg";
 import testimony9 from "/resources/img/testimony/ludi.jpg";
 
-export default function Index({ auth }) {
-    const data_program = [
-        {
-            id: 1,
-            title: "Dibimbing Sekali",
-            slug: "dibimbing-sekali",
-            img: program1,
-            excerpt:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.",
-            description:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 30 menit, sesuai dengan permasalahan pada skripsimu.",
-            features: {
-                times: 1,
-                duration: 30,
-                category: "Online",
-            },
-            price: 47000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/baE8kEv",
-        },
-        {
-            id: 2,
-            title: "Dibimbing Tuntas",
-            slug: "dibimbing-tuntas",
-            img: program2,
-            excerpt:
-                "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
-            description:
-                "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
-            features: {
-                times: 7,
-                duration: 60,
-                category: "Online",
-            },
-            price: 649000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/7q7r96V",
-        },
-        {
-            id: 3,
-            title: "Dibimbing Olah Data",
-            slug: "dibimbing-olah-data",
-            img: program3,
-            excerpt:
-                "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
-            description:
-                "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
-            features: {
-                times: 1,
-                duration: 60,
-                category: "Online",
-            },
-            price: 115000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/DqqGx5x",
-        },
-    ];
+export default function Index({ auth, products: data_program }) {
+    // const data_program = [
+    //     {
+    //         id: 1,
+    //         title: "Dibimbing Sekali",
+    //         slug: "dibimbing-sekali",
+    //         img: program1,
+    //         excerpt:
+    //             "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 60 menit, sesuai dengan permasalahan pada skripsimu.",
+    //         description:
+    //             "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 60 menit, sesuai dengan permasalahan pada skripsimu.",
+    //         features: {
+    //             times: 1,
+    //             duration: 60,
+    //             category: "Online",
+    //         },
+    //         price: 95000,
+    //         hasDiscount: false,
+    //         link: "https://lynk.id/goalsacademy/n6GjmgN",
+    //     },
+    //     {
+    //         id: 2,
+    //         title: "Dibimbing Tuntas",
+    //         slug: "dibimbing-tuntas",
+    //         img: program2,
+    //         excerpt:
+    //             "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
+    //         description:
+    //             "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
+    //         features: {
+    //             times: 8,
+    //             duration: 60,
+    //             category: "Online",
+    //         },
+    //         price: 988000,
+    //         hasDiscount: false,
+    //         link: "https://lynk.id/goalsacademy/vMQZXjR",
+    //     },
+    //     {
+    //         id: 3,
+    //         title: "Dibimbing Olah Data",
+    //         slug: "dibimbing-olah-data",
+    //         img: program3,
+    //         excerpt:
+    //             "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
+    //         description:
+    //             "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
+    //         features: {
+    //             times: 1,
+    //             duration: 60,
+    //             category: "Online",
+    //         },
+    //         price: 155000,
+    //         hasDiscount: false,
+    //         link: "https://lynk.id/goalsacademy/xmQ79ke",
+    //     },
+    // ];
 
     const data_testimony = [
         {
@@ -170,14 +170,12 @@ export default function Index({ auth }) {
         },
     ];
 
-    // console.log(auth);
-
     return (
         <MainLayout auth={auth} title="Home">
             <Hero />
             <Preliminary />
             <Program data={data_program} />
-            <div className="relative bg-secondary md:bg-transparent overflow-hidden md:overflow-visible py-3 xs:py-6 md:py-0">
+            <div className="relative py-3 overflow-hidden bg-secondary md:bg-transparent md:overflow-visible xs:py-6 md:py-0">
                 <CornerWaveVector
                     className="md:hidden"
                     cornerClassName="w-10/12"

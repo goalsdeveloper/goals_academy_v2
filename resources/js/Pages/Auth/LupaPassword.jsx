@@ -33,14 +33,14 @@ export default function LupaPassword () {
                         </div>
                         <form
                             onSubmit={submit}
-                            className="w-full grid gap-[2vw] md:gap-[3vw] xl:gap-[1.5vw]"
+                            className="w-full grid gap-[4vw] md:gap-[3vw] xl:gap-[1.5vw]"
                         >
                             <Input
                                 type="email"
                                 id="email"
                                 label="Email"
                                 value={data["email"]}
-                                className="md:pt-[2.5vw] md:pb-[1.5vw] md:px-[2.5vw] md:rounded-[1vw]"
+                                className="pb-[1.5vw] md:pt-[2.6vw] md:pb-[1.7vw] md:px-[3.2vw] md:rounded-[1vw]"
                                 labelClassName="md:ms-6 md:-mt-3 md:px-[1vw]"
                                 onChange={(e) => setData("email", e.target.value)}
                             />

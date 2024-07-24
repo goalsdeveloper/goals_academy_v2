@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
-use Carbon\Carbon;
-use App\Models\User;
-use Inertia\Inertia;
-use Midtrans\Config;
-use App\Models\Order;
-use Midtrans\CoreApi;
-use App\Models\Course;
 use App\Enums\OrderEnum;
 use App\Models\Category;
-use App\Models\Products;
-use App\Models\PromoCode;
-use App\Models\FileUpload;
-use Illuminate\Support\Str;
+use App\Models\City;
+use App\Models\Course;
+use App\Models\Order;
 use App\Models\OrderHistory;
-use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
+use App\Models\Products;
+use App\Models\User;
 use App\Notifications\InvoiceNotification;
+use App\Notifications\ReminderPurchaseNotification;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
+use Midtrans\Config;
+use Midtrans\CoreApi;
 
 class PurchaseController extends Controller
 {
@@ -34,34 +35,24 @@ class PurchaseController extends Controller
     public function index(Products $products)
     {
         // $dataDibimbing = Category::where('slug', 'like', 'dibimbing%')->first()->products;
-        $dataDibimbing = Products::whereHas('categories', function ($query) {
-            $query->where('slug', 'LIKE', 'dibimbing%');
+        $dataDibimbing = Products::whereHas('productType', function ($query) {
+            $query->where('type', 'bimbingan');
         })
             ->where('is_visible', true)
-            ->with('categories')->get();
-        $dataEbook = Category::where('slug', 'e-book')
-            ->where('is_visible', true)
-            ->with('products')->get();
-        $dataWebinar = Category::where('slug', 'webinar')
-            ->where('is_visible', true)
-            ->with('products')
-            ->get();
-
-
-        // dd($dataDibimbing, $dataEbook, $dataWebinar);
+            ->with('category', 'productType')->get();
+        $dataEbook = Products::whereHas('productType', function ($query) {
+            $query->where('slug', 'e-book');
+        })->with('productType', 'category')->get();
+        $dataWebinar = Products::whereHas('productType', function ($query) {
+            $query->where('slug', 'webinar');
+        })->with('productType', 'category')->get();
+        $categories = Category::with(['productType'])->get();
         return Inertia::render('Main/Produk', [
             'dataDibimbing' => $dataDibimbing,
             'ebookData' => $dataEbook,
             'webinarData' => $dataWebinar,
+            'categories' => $categories,
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -69,200 +60,119 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
-        // dd($request->admin);
-        $user = User::where('id', Auth::user()->id)->first();
-        $validateData = $request->validate([
-            'schedule' => 'required|date',
-            'init_price' => 'required',
-            'purchase_method' => 'required',
-        ]);
-
-        // jika user menggunakan promo code
-        if ($request->promo) {
-            $cekPromo = PromoCode::where('promo_code', $request->promo)->first();
-            if (!$cekPromo) {
-                return response()->json(['message' => 'promo tidak ditemukan!']);
-            }
-            if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
-                return response()->json(['message' => 'promo sudah anda gunakan, cari promo lain!']);
-            } else {
-                $user->kodePromo()->attach($cekPromo->id);
-            }
-        }
+        $user = Auth::user();
+        $order_code = 'GA' . str(now()->format('YmdHis'));
+        $orderData = new Order();
+        $orderData->unit_price = $request['total_price'];
+        $orderData->quantity = 1;
+        $orderData->user_id = $user->id;
+        $orderData->status = OrderEnum::PENDING->value;
+        $orderData->products_id = $request['product_id'];
+        $orderData->payment_method_id = $request['purchase_method']['id'];
+        $orderData->order_code = $order_code;
 
         $quantity = 1;
-        $adminFee = 0;
         $discount = 0;
         $responseMidtrans = null;
-        $order_code = 'GA' . str(now()->format('YmdHis'));
+        $order_code = Order::generateOrderCode();
+        $orderData->order_code = $order_code;
 
-        $paymentMethod = PaymentMethod::where('name', $validateData['purchase_method']['name'])->first();
-        $getProduct = Products::where('id', $request['product_id'])->with('categories')->first();
-
-        // cek date
-        $cekDate = Course::where('date', $validateData['schedule'])->count();
-        if ($cekDate > 7) {
-            return response()->json(['kuota telah habis']);
-        }
-
-        // cek user menggunakan kode promo
-        if ($request->promo) {
-            $cekPromo = PromoCode::where('promo_code', $request->promo)->first();
-            if (!$cekPromo) {
-                return response()->json(['message' => 'Promo tidak ditemukan!']);
-            }
-
-            if ($cekPromo->is_price == 1) {
-                $discount = $cekPromo->value;
-            } else {
-                $discount = ($cekPromo->value / 100) * $getProduct->price;
-            }
-        }
+        $paymentMethod = PaymentMethod::where('name', $request['purchase_method']['name'])->first();
+        $getProduct = Products::where('id', $request['product_id'])->first();
 
         // charge midtrans
-        $price = $getProduct->price + $request->add_on_price;
         $phoneNumber = $user->profile->phone_number ?? '';
+        $form_result = ['add_on' => []];
+        foreach ($request->all() as $key => $value) {
+            if ($key == 'add_on' && $key == 1 && $request->exists('add_on')) {
+                $add_on_result = [];
+                foreach ($request->add_on as $idx => $value) {
+                    $add_on_result[$idx] = ['id' => $value['id']];
+                }
+                $form_result['add_on'] = $add_on_result;
+                continue;
+            }
+            if ($key == 'place') {
+                $form_result['place_id'] = $request[$key];
+                continue;
+            }
+            if ($key == 'schedule') {
+                $form_result['schedule'] = $request[$key];
+                continue;
+            }
+            if ($key != 'document') {
+                $form_result[$key] = $request[$key];
+            }
+        }
+        $document = [];
+        if ($request->hasFile('document')) {
+            foreach ($request->file('document') as $idx => $file) {
+                $fileName = Str::random(8) . '-' . time() . '.' . $file->extension();
+                Storage::putFileAs('file_uploads', $file, $fileName);
+                $document[$idx]['file_name'] = $fileName;
+                $document[$idx]['size'] = $file->getSize();
+                $document[$idx]['mime_type'] = $file->getMimeType();
+                $document[$idx]['name'] = $file->getClientOriginalName();
+            }
+            $form_result = array_merge((array) $form_result, ['document' => $document]);
+        }
+        // dd($request->all());
+        try {
+            $orderData->form_result = $form_result;
+            $orderData->save();
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+        }
 
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized = config('midtrans.is_sanitized');
         Config::$is3ds = config('midtrans.is_3ds');
 
-        switch ($paymentMethod->category) {
-            case "ewallet":
-                switch ($paymentMethod->payment_type) {
-                    case "gopay":
-                        $adminFee = ($paymentMethod->admin_fee / 100) * $price;
-                        break;
-                    case "qris":
-                        $adminFee = round(($paymentMethod->admin_fee / 100) * $price);
-                        break;
-                    case "shopeePay":
-                        $adminFee = ($paymentMethod->admin_fee / 100) * $price;
-                        break;
-                }
-
-                if ($adminFee != $request->admin) {
-                    return response()->json(['message' => 'pembelian tidak valid!', 'admin' => $adminFee, 'req' => $request->admin]);
-                }
-
-                // $grossAmount = $price - $discount + $adminFee;
-                $grossAmount = $request['total_price'];
-                $params = array(
-                    'payment_type' => $paymentMethod->payment_type,
-                    'transaction_details' => array(
-                        'order_id' => $order_code,
-                        'gross_amount' => $grossAmount
-                    ),
-                    'customer_details' => array(
-                        'first_name' => $user->name,
-                        'last_name' => '',
-                        'email' => $user->email,
-                        'phone' => $phoneNumber,
-                    ),
-                );
-                try {
-                    $responseMidtrans = CoreApi::charge($params);
-                } catch (Exception $e) {
-                    return response()->json(['message' => $e->getMessage()], 500);
-                }
-                break;
-
-            case "bank_transfer":
-                $adminFee = $paymentMethod->admin_fee;
-                $grossAmount = $price - $discount + $adminFee;
-                $params = array(
-                    'payment_type' => 'bank_transfer',
-                    'transaction_details' => array(
-                        'order_id' => $order_code,
-                        'gross_amount' => $grossAmount
-                    ),
-                    'customer_details' => array(
-                        'first_name' => $user->name,
-                        'last_name' => '',
-                        'email' => $user->email,
-                        'phone' => $phoneNumber,
-                    ),
-                    'bank_transfer' => array(
-                        'bank' => $paymentMethod->payment_type,
-                    ),
-                );
-                try {
-                    $responseMidtrans = CoreApi::charge($params);
-                } catch (Exception $e) {
-                    return response()->json(['message' => $e->getMessage()], 500);
-                }
-                break;
+        $midtranPayload = [
+            'transaction_details' => [
+                'order_id' => $orderData->order_code,
+                'gross_amount' => $orderData->unit_price,
+            ],
+            'customer_details' => [
+                'first_name' => $user->name,
+                'last_name' => '',
+                'email' => $user->email,
+                'phone' => $phoneNumber,
+            ],
+        ];
+        if ($paymentMethod->category == 'bank_transfer') {
+            $midtranPayload['bank_transfer'] = ['bank' => $paymentMethod->payment_type];
+            $midtranPayload['payment_type'] = $paymentMethod->category;
         }
 
-        //cek produk bimbingan
-        $produkDibimbing = false;
-        foreach ($getProduct->categories as $category) {
-            if (stripos($category->slug, 'dibimbing') !== false) {
-                $produkDibimbing = true;
-            }
+        if ($paymentMethod->category == 'ewallet') {
+            $midtranPayload['payment_type'] = $paymentMethod->payment_type;
         }
-
-        $order = Order::create([
-            'user_id' => $user->id,
-            'products_id' => $getProduct->id,
-            'payment_method_id' => $paymentMethod->id,
-            'order_code' => $order_code,
-            'quantity' => $quantity,
-            'unit_price' => $getProduct->price,
-            'status' => OrderEnum::PENDING->value,
-            'notes' => $request['note'],
-        ]);
+        // dd($midtranPayload);
+        try {
+            $responseMidtrans = CoreApi::charge($midtranPayload);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+        $responseMidtrans->provider_name = strtolower($paymentMethod->name);
 
         OrderHistory::create([
-            'order_id' => $order->id,
-            'status' => 'pending',
-            'payload' => json_encode($responseMidtrans)
+            'order_id' => $orderData->id,
+            'status' => $orderData->status,
+            'payload' => $responseMidtrans,
         ]);
 
-        // jika produk = bimbingan | store -> course
-        $city = $request['city'] ?? '';
-        if ($produkDibimbing) {
-            if ($getProduct->features[0]['category'] == 'online') {
-                $location = 'Zoom meeting';
-            } elseif ($getProduct->features[0]['category'] == 'offline') {
-                $city = $request['city'] ?? '';
-                $location = $request['place'];
-            }
+        $user->notify(new InvoiceNotification($orderData));
+        // if ($paymentMethod->category == 'bank_transfer') {
+        //     $delay = Carbon::now()->addHours(23)->addMinutes(55);
+        // } else {
+        //     $delay = Carbon::now()->addMinutes(10);
+        // }
+        // $user->notify(new ReminderPurchaseNotification("Segera Lakukan Pembayaran", "Tersisa 5 menit sebelum pesananmu batal!", route('purchase.status', ['order' => $orderData->id])))->delay($delay);
 
-            $course = Course::create([
-                'user_id' => $user->id,
-                'products_id' => $request->product_id,
-                'order_id' => $order->id,
-                'date' => $validateData['schedule'],
-                'city' => $city,
-                'location' => $location,
-                'note' => $request['note']
-            ]);
-        }
 
-        foreach ($request->add_on as $addon) {
-            $course->addOns()->attach($addon['id']);
-        }
-
-        if ($request->hasFile('document')) {
-            $file = $request->file('document');
-            $path = $file->store('/public/file_uploads');
-
-            $upload = new FileUpload();
-            $upload->course_id = $course->id;
-            $upload->filename = $file->getClientOriginalName();
-            $upload->slug = Str::slug($file->getClientOriginalName());
-            $upload->mime_type = $file->getMimeType();
-            $upload->path = $path;
-            $upload->size = $file->getSize();
-            $upload->save();
-
-            $course->fileUploads()->attach($upload->id);
-        }
-        $user->notify(new InvoiceNotification($order));
-        return redirect()->route('purchase.status', $order->order_code);
+        return redirect()->route('purchase.status', $orderData->order_code);
     }
 
     /**
@@ -284,11 +194,19 @@ class PurchaseController extends Controller
         $paymentMethods = PaymentMethod::all();
 
         $product = Products::where('slug', $order)
-            ->with('categories', 'addOns')
+            ->with('category')
+            ->with('addOns')
             ->first();
-
+        $addOns = $product->addOns()->where('is_visible', true)->get();
+        $cities = City::where('is_visible', true)->with(['places' => function($q) {
+            $q->where('is_visible', true);
+        }])->get();
+        $topics = $product->topics()->where('is_visible', true)->get();
         return Inertia::render('Purchase/Form', [
             'date' => $counts,
+            'addOns' => $addOns,
+            'cities' => $cities,
+            'topics' => $topics,
             'paymentMethods' => $paymentMethods,
             'dataProduct' => $product,
         ]);
@@ -314,6 +232,14 @@ class PurchaseController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
         //
     }

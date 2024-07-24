@@ -1,0 +1,181 @@
+name: Deploy to remote
+
+on:
+  push:
+    branches: [development]
+
+jobs:
+  create-depeloyment-artifacts:
+    name: Create deployment artifacts
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create CSS and Javascript
+        run: |
+          npm install
+          npm run build
+
+      - name: Configure PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, xml
+
+      - name: Install composer dependencies
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Create deployment artifact
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: tar -czf "${GITHUB_SHA}".tar.gz --exclude=*.git *
+
+      - name: Store artifact for distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: ${{ github.sha }}.tar.gz
+
+  prepare-release-on-server:
+    runs-on: ubuntu-latest
+    needs: create-depeloyment-artifacts
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: app-build
+
+      - name: Upload
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          source: ${{ github.sha }}.tar.gz
+          target: ${{ secrets.TEST_DIR }}/artifacts
+
+      - name: Extract archive and create directories
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          envs: GITHUB_SHA
+          script: |
+            mkdir -p "${{ secrets.TEST_DIR }}/releases/${GITHUB_SHA}"
+            tar xzf ${{ secrets.TEST_DIR }}/artifacts/${GITHUB_SHA}.tar.gz -C "${{ secrets.TEST_DIR }}/releases/${GITHUB_SHA}"
+            rm -rf ${{ secrets.TEST_DIR }}/releases/${GITHUB_SHA}/storage
+            mkdir -p ${{ secrets.TEST_DIR }}/storage/{app,public,framework,logs,google}
+            mkdir -p ${{ secrets.TEST_DIR }}/storage/framework/{cache,sessions,testing,views}
+            mkdir -p ${{ secrets.TEST_DIR }}/storage/framework/cache
+            chmod -R 0777 ${{ secrets.TEST_DIR }}/storage
+
+  run-before-hooks:
+    name: "Before hook"
+    runs-on: ubuntu-latest
+    needs: [create-depeloyment-artifacts, prepare-release-on-server]
+    steps:
+      - name: Run before hooks
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          RELEASE_PATH: ${{ secrets.TEST_DIR }}/releases/${{ github.sha }}
+          ACTIVE_RELEASE_PATH: ${{ secrets.TEST_DIR }}/current
+          STORAGE_PATH: ${{ secrets.TEST_DIR }}/storage
+          BASE_PATH: ${{ secrets.TEST_DIR }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
+          script: |
+            echo ${GITHUB_SHA}
+
+  activate-release:
+    name: "Activate Release"
+    runs-on: ubuntu-latest
+    needs:
+      [
+        create-depeloyment-artifacts,
+        prepare-release-on-server,
+        run-before-hooks,
+      ]
+    steps:
+      - name: Activate release
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          RELEASE_PATH: ${{ secrets.TEST_DIR }}/releases/${{ github.sha }}
+          ACTIVE_RELEASE_PATH: ${{ secrets.TEST_DIR }}/current
+          STORAGE_PATH: ${{ secrets.TEST_DIR }}/storage
+          BASE_PATH: ${{ secrets.TEST_DIR }}
+          LARAVEL_ENV: ${{ secrets.ENV_DEPLOY }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH,LARAVEL_ENV
+          script: |
+            echo "${LARAVEL_ENV}" > ${RELEASE_PATH}/.env
+            ln -s -f "${STORAGE_PATH}" "${RELEASE_PATH}"
+            ln -s -f "${RELEASE_PATH}/public" "${BASE_PATH}"
+            ln -s -f "${STORAGE_PATH}/app/public" "${RELEASE_PATH}/public/storage"
+            ln -s -n -f "${RELEASE_PATH}" "${ACTIVE_RELEASE_PATH}"
+
+  run-after-hooks:
+    name: "After hook"
+    runs-on: ubuntu-latest
+    needs:
+      [
+        create-depeloyment-artifacts,
+        prepare-release-on-server,
+        activate-release,
+      ]
+    steps:
+      - name: Run after hooks
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          RELEASE_PATH: ${{ secrets.TEST_DIR }}/releases/${{ github.sha }}
+          ACTIVE_RELEASE_PATH: ${{ secrets.TEST_DIR }}/current
+          STORAGE_PATH: ${{ secrets.TEST_DIR }}/storage
+          BASE_PATH: ${{ secrets.TEST_DIR }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
+          script: |
+            echo ${GITHUB_SHA}
+
+  clean-up:
+    name: "Clean Up"
+    runs-on: ubuntu-latest
+    needs:
+      [
+        create-depeloyment-artifacts,
+        prepare-release-on-server,
+        activate-release,
+        run-after-hooks,
+      ]
+    steps:
+      - name: Clean up
+        uses: appleboy/ssh-action@master
+        env:
+          RELEASE_PATH: ${{ secrets.TEST_DIR }}/releases
+          ARTIFACTS_PATH: ${{ secrets.TEST_DIR }}/artifacts
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          envs: RELEASE_PATH, ARTIFACTS_PATH
+          script: |
+            cd $RELEASE_PATH && ls -t -1 | tail -n +2 | xargs rm -rf
+            cd $ARTIFACTS_PATH && ls -t -1 | tail -n +2 | xargs rm -rf

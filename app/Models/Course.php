@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Notifications\CourseNotification;
-use App\Observers\CourseObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Course extends Model
 {
@@ -13,6 +14,7 @@ class Course extends Model
 
     protected $fillable = [
         'user_id',
+        'parent_id',
         'products_id',
         'order_id',
         'tutor_id',
@@ -22,8 +24,19 @@ class Course extends Model
         'date',
         'time',
         'ongoing',
+        'topic_id',
+        'session',
+        'place_id',
         'is_tutor',
-        'is_moderator'
+        'is_moderator',
+        'is_user',
+        'duration_per_meet'
+    ];
+
+    protected $casts = [
+        'is_user' => 'bool',
+        'is_moderator' => 'bool',
+        'is_tutor' => 'bool',
     ];
 
     public function user()
@@ -56,7 +69,11 @@ class Course extends Model
 
     public function fileUploads()
     {
-        return $this->belongsToMany(FileUpload::class);
+        return $this->hasMany(FileUpload::class);
+    }
+    public function productReview()
+    {
+        return $this->hasOne(ProductReview::class);
     }
 
     public function routeNotificationForMail($notification)
@@ -66,6 +83,27 @@ class Course extends Model
 
     public function addOns()
     {
-        return $this->belongsToMany(AddOn::class);
+        return $this->belongsToMany(AddOn::class, 'add_on_course', 'course_id', 'add_on_id');
+    }
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Course::class, 'parent_id');
+    }
+
+    public function child(): HasMany
+    {
+        return $this->hasMany(Course::class, 'parent_id');
+    }
+    public function topic()
+    {
+        return $this->belongsTo(Topic::class);
+    }
+    public function place()
+    {
+        return $this->belongsTo(Place::class);
+    }
+    public function revenue_types()
+    {
+        return $this->hasMany(RevenueType::class);
     }
 }
