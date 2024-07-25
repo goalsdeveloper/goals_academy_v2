@@ -16,7 +16,6 @@ const Dialog = ({
     const type = Object.keys(showDialog).find((key) => showDialog[key]);
     const submitAction = type === "create" ? post : put;
 
-    console.log(type)
     return (
         <div>
             {createPortal(

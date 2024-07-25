@@ -14,6 +14,7 @@ import {
 } from "./Components/SelectMultiTag";
 import toast from "react-hot-toast";
 import { toSlug } from "@/script/utils";
+import sampleImage from "/resources/img/program/sample image.png";
 
 const Create = ({ auth, categories, addons, topics }) => {
     const [show, setShow] = useState(false);
@@ -24,7 +25,7 @@ const Create = ({ auth, categories, addons, topics }) => {
         category_id: "",
         description: "",
         price: "",
-        promo: "",
+        promo_price: "",
         total_meet: "",
         active_period: "",
         duration: "",
@@ -37,6 +38,8 @@ const Create = ({ auth, categories, addons, topics }) => {
     });
 
     function handleSubmit() {
+        const currency = Intl.NumberFormat("id-ID");
+
         router.post(
             route("admin.bimbingan.product.store"),
             {
@@ -46,7 +49,7 @@ const Create = ({ auth, categories, addons, topics }) => {
                 category_id: Number(data.category_id.id),
                 description: data.description,
                 price: Number(data.price),
-                promo: Number(data.promo),
+                promo_price: Number(data.promo_price),
                 total_meet: data.total_meet,
                 active_period: data.active_period,
                 duration: data.duration,
@@ -55,7 +58,7 @@ const Create = ({ auth, categories, addons, topics }) => {
                 facilities: JSON.stringify(data.facilities),
                 is_visible: data.is_visible ? 1 : 0,
                 is_facilities: 0,
-                excerpt: data.description,
+                excerpt: data.description.substring(0, 128),
                 form_config: JSON.stringify(data.form_config),
                 contact_type: data.contact_type,
             },
@@ -128,7 +131,8 @@ const Create = ({ auth, categories, addons, topics }) => {
                                 !data.total_meet ||
                                 !data.active_period ||
                                 !data.contact_type||
-                                !data.duration
+                                !data.duration ||
+                                (("topic" in data.form_config) && !data.topics.length)
                             }
                         >
                             Simpan
@@ -178,7 +182,22 @@ const Create = ({ auth, categories, addons, topics }) => {
                             />
 
                             <div className="flex gap-[1.2vw]">
-                                <div className="h-40 border-2 aspect-square rounded-"></div>
+                                <div className="w-[29vw]">
+                                    <div className="flex items-center justify-center w-full h-[11vw] aspect-square shadow-md rounded-[.5vw] overflow-hidden">
+                                        {typeof(data.product_image) == "string"
+                                            ? <img src={data.product_image ? `/storage/${data.product_image}` : sampleImage} className={`w-full h-full object-cover ${data.product_image ? "" : "grayscale"}`} alt={data.product_image} />
+                                            : <img src={URL.createObjectURL(data.product_image.file)} className={`w-full h-full object-cover ${data.product_image ? "" : "grayscale"}`} alt={data.product_image.url} />
+                                        }
+                                    </div>
+                                    <div className="">
+                                        <small
+                                            htmlFor="picture"
+                                            className="text-red-500 text-[.83vw]"
+                                        >
+                                            *Ukuran foto (402 x 295 px)
+                                        </small>
+                                    </div>
+                                </div>
                                 <div className="w-full space-y-[1.2vw]">
                                     <GoalsTextInput
                                         label="Nama"
@@ -279,11 +298,11 @@ const Create = ({ auth, categories, addons, topics }) => {
                                     }
                                 />
                                 <GoalsTextInput
-                                    label="Promo (Optional)"
+                                    label="Diskon Gimmick (Opsional)"
                                     grow
-                                    data={data.promo}
+                                    data={data.promo_price}
                                     setData={(e) =>
-                                        setData({ ...data, promo: e })
+                                        setData({ ...data, promo_price: e })
                                     }
                                 />
                             </div>
@@ -292,21 +311,13 @@ const Create = ({ auth, categories, addons, topics }) => {
 
                     <div className="flex flex-col w-full gap-[.8vw]">
                         <FormSection title="Informasi">
-                            <div className="flex gap-[1.2vw]">
+                            <div className="grid grid-cols-2 gap-[1.2vw]">
                                 <GoalsTextInput
                                     label="Total Pertemuan"
                                     required
                                     data={data.total_meet}
                                     setData={(e) =>
                                         setData({ ...data, total_meet: e })
-                                    }
-                                />
-                                <GoalsTextInput
-                                    label="Masa Aktif"
-                                    required
-                                    data={data.active_period}
-                                    setData={(e) =>
-                                        setData({ ...data, active_period: e })
                                     }
                                 />
                                 <GoalsTextInput
@@ -321,7 +332,14 @@ const Create = ({ auth, categories, addons, topics }) => {
                                     }
                                 />
                             </div>
-
+                            <GoalsTextInput
+                                label="Durasi Private Chat"
+                                required
+                                data={data.active_period}
+                                setData={(e) =>
+                                    setData({ ...data, active_period: e })
+                                }
+                            />
                             <SelectMultiTag
                                 value={data.add_on}
                                 label="Add on"
@@ -358,11 +376,11 @@ const Create = ({ auth, categories, addons, topics }) => {
 
                             <SelectMultiTag
                                 value={data.topics}
-                                label="Topic"
+                                label="Topik"
                                 handleClearTag={() =>
                                     setData({ ...data, topics: [] })
                                 }
-                                required
+                                required={"topic" in data.form_config}
                             >
                                 {topics.map((option, i) => (
                                     <SelectMultiTagItem
@@ -400,7 +418,7 @@ const Create = ({ auth, categories, addons, topics }) => {
                                 </GoalsButton>
                             }
                         >
-                            <div className="flex flex-wrap gap-[1.6vw]">
+                            <div className="flex flex-wrap gap-x-[.5vw] gap-y-[1vw]">
                                 {data.facilities.length == 0 ? (
                                     <p className="text-[.83vw] w-full text-center">
                                         Belum diatur
@@ -409,10 +427,10 @@ const Create = ({ auth, categories, addons, topics }) => {
                                     data.facilities.map((item) => (
                                         <div
                                             key={item.icon}
-                                            className="flex gap-[.6vw] items-center group hover:bg-neutral-20 px-2 py-1 rounded-full cursor-pointer"
+                                            className="flex gap-[.6vw] items-center group hover:bg-neutral-20 cursor-pointer border border-secondary rounded-full py-[.25vw] px-[.5vw]"
                                         >
                                             <i
-                                                className={`${item.icon} text-secondary`}
+                                                className={`${item.icon} text-secondary text-center w-[1vw]`}
                                             ></i>
                                             <p>{item.text}</p>
 
@@ -421,15 +439,16 @@ const Create = ({ auth, categories, addons, topics }) => {
                                                 onClick={() =>
                                                     setData({
                                                         ...data,
-                                                        facilities:
-                                                            data.facilities.filter(
-                                                                (i) => {
-                                                                    i.icon ==
-                                                                        item.icon &&
-                                                                        i.text ==
-                                                                            item.text;
-                                                                }
-                                                            ),
+                                                        facilities: data.facilities.filter(i => i != item),
+                                                        // facilities:
+                                                        //     data.facilities.filter(
+                                                        //         (i) => {
+                                                        //             i.icon ==
+                                                        //                 item.icon &&
+                                                        //                 i.text ==
+                                                        //                     item.text;
+                                                        //         }
+                                                        //     ),
                                                     })
                                                 }
                                             >

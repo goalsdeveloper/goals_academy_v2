@@ -13,22 +13,45 @@ import { FiChevronLeft, FiInfo } from "react-icons/fi";
 import { BiSolidDiscount } from "react-icons/bi";
 import { FaChevronRight } from "react-icons/fa6";
 import GoalsDatePicker from "@/Components/elements/GoalsDatePicker";
-import { GoalsSelectInput, GoalsSelectInputItem } from "@/Components/elements/GoalsSelectInput";
-import { GoalsSelectMultipleInput, GoalsSelectMultipleInputItem } from "@/Components/elements/GoalsSelectMultipleInput";
+import {
+    GoalsSelectInput,
+    GoalsSelectInputItem,
+} from "@/Components/elements/GoalsSelectInput";
+import {
+    GoalsSelectMultipleInput,
+    GoalsSelectMultipleInputItem,
+} from "@/Components/elements/GoalsSelectMultipleInput";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
-export default function Form({ auth, date, addOns, cities, topics, paymentMethods, dataProduct }) {
+export default function Form({
+    auth,
+    date,
+    addOns,
+    cities,
+    topics,
+    paymentMethods,
+    dataProduct,
+}) {
     const userId = auth.user.id;
-    const [isProcessed, setIsProcessed] = useState(false)
+    const [isProcessed, setIsProcessed] = useState(false);
     const [showMobileSummaryCard, setShowMobileSummaryCard] = useState(false);
 
-    const requiredProfile = ['phone_number', 'university', 'faculty', 'major'].reduce((out, i) => {
-        out[i] = auth.user.profile[i]
-        return out
-    }, {})
+    const requiredProfile = [
+        "phone_number",
+        "university",
+        "faculty",
+        "major",
+        "rumpun",
+    ].reduce((out, i) => {
+        out[i] = auth.user.profile[i];
+        return out;
+    }, {});
 
-    const [userProfile, setUserProfile] = useState({...requiredProfile, id: auth.user.id});
+    const [userProfile, setUserProfile] = useState({
+        ...requiredProfile,
+        id: auth.user.id,
+    });
 
     // Code to input form data
     const { data, setData, errors, setError, post } = useForm({
@@ -37,7 +60,9 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         place: "",
         document: [],
         topic: "",
-        init_price: parseFloat(dataProduct.price) - parseFloat(dataProduct.promo_price || 0),
+        init_price:
+            parseFloat(dataProduct.price) -
+            parseFloat(dataProduct.promo_price || 0),
         promo: "",
         discount: 0,
         purchase_method: "",
@@ -45,7 +70,9 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         product_id: dataProduct.id,
         add_on: [],
         add_on_price: 0,
-        total_price: parseFloat(dataProduct.price) - parseFloat(dataProduct.promo_price || 0),
+        total_price:
+            parseFloat(dataProduct.price) -
+            parseFloat(dataProduct.promo_price || 0),
     });
 
     // Code to input temp form data
@@ -55,7 +82,9 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         place: "",
         document: "",
         topic: "",
-        init_price: parseFloat(dataProduct.price) - parseFloat(dataProduct.promo_price || 0),
+        init_price:
+            parseFloat(dataProduct.price) -
+            parseFloat(dataProduct.promo_price || 0),
         promo: "",
         discount: 0,
         purchase_method: "",
@@ -64,8 +93,6 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
         add_on: [],
         add_on_price: 0,
     });
-
-    console.log(data);
 
     // Initialize product's category
     const category = "offline";
@@ -85,12 +112,19 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
     // Submit function
     const submit = (e) => {
         e.preventDefault();
-        if (Object.keys(userProfile).map(i => userProfile[i]).includes("") || Object.keys(userProfile).map(i => userProfile[i]).includes(null)) {
-            toast('Lengkapi profil terlebih dahulu!', {
-                position: 'top-center',
-                icon: '⚠️',
+        if (
+            Object.keys(userProfile)
+                .map((i) => userProfile[i])
+                .includes("") ||
+            Object.keys(userProfile)
+                .map((i) => userProfile[i])
+                .includes(null)
+        ) {
+            toast("Lengkapi profil terlebih dahulu!", {
+                position: "top-center",
+                icon: "⚠️",
             });
-            location.href = `/produk/${dataProduct.slug}#lengkapi_profil`;
+            window.scrollTo(0, 0);
         } else {
             setIsProcessed(true);
             post("/produk", {
@@ -164,7 +198,12 @@ export default function Form({ auth, date, addOns, cities, topics, paymentMethod
     };
 
     return (
-        <MainLayout auth={auth} title={dataProduct.name} headerClassName="shadow-md md:shadow-none" footerClassName="hidden md:block">
+        <MainLayout
+            auth={auth}
+            title={dataProduct.name}
+            headerClassName="shadow-md md:shadow-none"
+            footerClassName="hidden md:block"
+        >
             <Toaster />
             <section
                 id="purchase-form"
@@ -253,43 +292,246 @@ function MainCard({
 
     return (
         <div className="md:w-[72%] flex flex-col gap-[1vw]">
+            {Object.keys(userProfile)
+                .map((i) => userProfile[i])
+                .includes("") ||
+            Object.keys(userProfile)
+                .map((i) => userProfile[i])
+                .includes(null) ? (
+                <LengkapiProfilAlert
+                    userProfile={userProfile}
+                    setUserProfile={setUserProfile}
+                    data={data}
+                    setData={setData}
+                />
+            ) : (
+                <></>
+            )}
             <div className="md:border-1 md:rounded-[.8vw] md:p-[1.75vw] h-fit">
                 <div className="flex flex-col gap-[4vw] md:gap-0">
                     <div className="md:hidden flex flex-col gap-[4vw]">
-                        <Link href="/produk" className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins"><FiChevronLeft className="text-[5vw]" /> Kembali</Link>
-                        <img className="w-full h-[60vw]" src={'/storage/'+ dataProduct.product_image} alt="" />
+                        <Link
+                            href="/produk"
+                            className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins"
+                        >
+                            <FiChevronLeft className="text-[5vw]" /> Kembali
+                        </Link>
+                        <img
+                            className="w-full h-[60vw] object-cover"
+                            src={"/storage/" + dataProduct.product_image}
+                            alt=""
+                        />
                     </div>
                     <div className="container md:w-full mx-auto flex flex-col gap-[4vw] md:gap-[1vw]">
                         <h3 className="w-full text-secondary font-semibold text-[5.5vw] md:text-[1.8vw]">
                             {dataProduct.name}
                         </h3>
                         <p>{dataProduct.description}</p>
-                        <div className="flex flex-wrap items-center gap-[3vw] md:gap-[1.5vw]">
+                        <div className="flex flex-col md:flex-row flex-wrap items-start gap-[3vw] md:gap-[1vw] multi-column">
                             {dataProduct.facilities.map((item, index) => {
                                 return (
-                                    <div key={index} className="flex items-center gap-[3vw] md:gap-[.5vw]">
-                                        <i className={`${item.icon} text-primary`}></i>
+                                    <div
+                                        key={index}
+                                        className="flex items-center gap-[3vw] md:gap-[.5vw] md:border md:border-secondary md:px-[.5vw] md:py-[.25vw] md:rounded-full"
+                                    >
+                                        <i
+                                            className={`${item.icon} text-primary text-center w-[4vw] md:w-[1vw]`}
+                                        ></i>
                                         <p>{item.text}</p>
                                     </div>
-                                )
+                                );
                             })}
                         </div>
                         <hr className="md:hidden mt-[3vw]" />
                     </div>
                     <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" />
-                    <div className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw] mb-[20vw] md:mb-0" id="lengkapi_profil">
-                        {Object.keys(rules).length == 1 && "document" in rules ? (<></>) : (
+                    <div
+                        className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw] mb-[20vw] md:mb-0"
+                    >
+                        {Object.keys(rules).length == 1 &&
+                        "document" in rules ? (
+                            availableAddOn.length ? (
+                                <div className="w-full flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
+                                    <GoalsSelectMultipleInput
+                                        show={showForm.addOn}
+                                        setShow={(i) => {
+                                            if (
+                                                !(
+                                                    data.add_on.every(
+                                                        (i) =>
+                                                            temp.add_on.filter(
+                                                                (j) =>
+                                                                    j.id == i.id
+                                                            ).length
+                                                    ) &&
+                                                    temp.add_on.every(
+                                                        (i) =>
+                                                            data.add_on.filter(
+                                                                (j) =>
+                                                                    j.id == i.id
+                                                            ).length
+                                                    )
+                                                )
+                                            ) {
+                                                setTemp("add_on", data.add_on);
+                                            }
+                                            showFormHandler("addOn", i);
+                                        }}
+                                        label="Add-On"
+                                        placeholder="Tambah Add-On"
+                                        data={data.add_on}
+                                        onSubmit={() => {
+                                            if (
+                                                !(
+                                                    data.add_on.length == 0 &&
+                                                    temp.add_on.length == 0
+                                                ) &&
+                                                !(
+                                                    data.add_on.every(
+                                                        (i) =>
+                                                            temp.add_on.filter(
+                                                                (j) =>
+                                                                    j.id == i.id
+                                                            ).length
+                                                    ) &&
+                                                    temp.add_on.every(
+                                                        (i) =>
+                                                            data.add_on.filter(
+                                                                (j) =>
+                                                                    j.id == i.id
+                                                            ).length
+                                                    )
+                                                )
+                                            ) {
+                                                let addOnPrice = 0;
+                                                if (temp.add_on.length) {
+                                                    addOnPrice = temp.add_on
+                                                        .map((i) =>
+                                                            parseFloat(i.price)
+                                                        )
+                                                        .reduce(
+                                                            (total, i) =>
+                                                                parseFloat(
+                                                                    total
+                                                                ) +
+                                                                parseFloat(i)
+                                                        );
+                                                } else {
+                                                    addOnPrice = 0;
+                                                }
+                                                let adminFee = 0;
+                                                if (
+                                                    data.purchase_method != ""
+                                                ) {
+                                                    if (
+                                                        parseInt(
+                                                            data.purchase_method
+                                                                .is_price
+                                                        )
+                                                    ) {
+                                                        adminFee = parseFloat(
+                                                            data.purchase_method
+                                                                .admin_fee
+                                                        );
+                                                    } else {
+                                                        adminFee = Math.ceil(
+                                                            ((parseFloat(
+                                                                data.init_price
+                                                            ) -
+                                                                parseFloat(
+                                                                    data.discount
+                                                                ) +
+                                                                addOnPrice) *
+                                                                parseFloat(
+                                                                    data
+                                                                        .purchase_method
+                                                                        .admin_fee
+                                                                )) /
+                                                                100
+                                                        );
+                                                    }
+                                                }
+                                                const totalPrice =
+                                                    parseFloat(
+                                                        data.init_price
+                                                    ) -
+                                                    parseFloat(data.discount) +
+                                                    addOnPrice +
+                                                    adminFee;
+                                                setData({
+                                                    ...data,
+                                                    add_on: temp.add_on,
+                                                    add_on_price: addOnPrice,
+                                                    admin: adminFee,
+                                                    total_price: totalPrice,
+                                                });
+                                            }
+                                        }}
+                                    >
+                                        {availableAddOn.map((item, index) => {
+                                            return (
+                                                <GoalsSelectMultipleInputItem
+                                                    key={index}
+                                                    checked={
+                                                        temp.add_on.filter(
+                                                            (i) =>
+                                                                i.id == item.id
+                                                        ).length
+                                                    }
+                                                    onClick={() => {
+                                                        if (
+                                                            temp.add_on.filter(
+                                                                (i) =>
+                                                                    i.id ==
+                                                                    item.id
+                                                            ).length
+                                                        ) {
+                                                            setTemp(
+                                                                "add_on",
+                                                                temp.add_on.filter(
+                                                                    (i) =>
+                                                                        i.id !=
+                                                                        item.id
+                                                                )
+                                                            );
+                                                        } else {
+                                                            const tempAddOn =
+                                                                temp.add_on.slice();
+                                                            tempAddOn.push(
+                                                                item
+                                                            );
+                                                            setTemp(
+                                                                "add_on",
+                                                                tempAddOn
+                                                            );
+                                                        }
+                                                    }}
+                                                >
+                                                    {item.name + " - IDR " + currency.format(item.price)}
+                                                </GoalsSelectMultipleInputItem>
+                                            );
+                                        })}
+                                    </GoalsSelectMultipleInput>
+                                </div>
+                            ) : (
+                                <></>
+                            )
+                        ) : (
                             <div className="w-full flex flex-col gap-[4vw] md:gap-[1vw] py-[4vw] md:py-0">
                                 {"schedule" in rules ? (
                                     <>
                                         <GoalsDatePicker
                                             required={rules["schedule"]}
                                             show={showForm.schedule}
-                                            setShow={(i) => showFormHandler("schedule", i)}
+                                            setShow={(i) =>
+                                                showFormHandler("schedule", i)
+                                            }
                                             wrapperClassName="hidden md:block"
                                             label="Pilih Jadwal Bimbinganmu"
                                             data={data.schedule}
-                                            setData={(i) => setData("schedule", i)}
+                                            setData={(i) =>
+                                                setData("schedule", i)
+                                            }
                                             minDate={moment()}
                                             maxDate={moment().add(6, "days")}
                                             shouldDisableDate={unavailableDate}
@@ -314,7 +556,8 @@ function MainCard({
                                                         height: "5vw",
                                                         maxHeight: "unset",
                                                         margin: 0,
-                                                        padding: "0 0 1vw 1.25vw",
+                                                        padding:
+                                                            "0 0 1vw 1.25vw",
                                                     },
                                                 },
                                             }}
@@ -330,50 +573,65 @@ function MainCard({
                                                     height: "fit-content",
                                                     maxHeight: "unset",
                                                 },
-                                                "& .MuiPickersLayout-contentWrapper": {
-                                                    width: "100%",
-                                                    height: "100%",
-                                                },
-                                                "& .MuiDayCalendar-monthContainer": {
-                                                    width: "100%",
-                                                    height: "fit-content",
-                                                    position: "relative",
-                                                },
-                                                "& .MuiPickersSlideTransition-root": {
-                                                    width: "100%",
-                                                    height: "fit-content",
-                                                    minHeight: "unset",
-                                                },
-                                                "& .MuiDayCalendar-weekDayLabel": {
-                                                    width: "2.5vw",
-                                                    height: "2.5vw",
-                                                },
+                                                "& .MuiPickersLayout-contentWrapper":
+                                                    {
+                                                        width: "100%",
+                                                        height: "100%",
+                                                    },
+                                                "& .MuiDayCalendar-monthContainer":
+                                                    {
+                                                        width: "100%",
+                                                        height: "fit-content",
+                                                        position: "relative",
+                                                    },
+                                                "& .MuiPickersSlideTransition-root":
+                                                    {
+                                                        width: "100%",
+                                                        height: "fit-content",
+                                                        minHeight: "unset",
+                                                    },
+                                                "& .MuiDayCalendar-weekDayLabel":
+                                                    {
+                                                        width: "2.5vw",
+                                                        height: "2.5vw",
+                                                    },
                                                 "& .MuiPickersDay-root": {
                                                     width: "2.5vw",
                                                     height: "2.5vw",
                                                 },
-                                                "& .MuiPickersDay-root.Mui-selected": {
-                                                    backgroundColor: "#FF8854",
-                                                },
-                                                "& .MuiPickersDay-root.Mui-selected:hover": {
-                                                    backgroundColor: "#FF6420",
-                                                },
-                                                "& .MuiPickersYear-yearButton.Mui-selected": {
-                                                    backgroundColor: "#FF8854",
-                                                },
-                                                ".css-sc0lva-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled:not(.Mui-selected)": {
-                                                    color: "#DDDDDD",
-                                                },
+                                                "& .MuiPickersDay-root.Mui-selected":
+                                                    {
+                                                        backgroundColor:
+                                                            "#FF8854",
+                                                    },
+                                                "& .MuiPickersDay-root.Mui-selected:hover":
+                                                    {
+                                                        backgroundColor:
+                                                            "#FF6420",
+                                                    },
+                                                "& .MuiPickersYear-yearButton.Mui-selected":
+                                                    {
+                                                        backgroundColor:
+                                                            "#FF8854",
+                                                    },
+                                                ".css-sc0lva-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled:not(.Mui-selected)":
+                                                    {
+                                                        color: "#DDDDDD",
+                                                    },
                                             }}
                                         />
                                         <GoalsDatePicker
                                             required={rules["schedule"]}
                                             show={showForm.schedule}
-                                            setShow={(i) => showFormHandler("schedule", i)}
+                                            setShow={(i) =>
+                                                showFormHandler("schedule", i)
+                                            }
                                             wrapperClassName="md:hidden"
                                             label="Pilih Jadwal Bimbinganmu"
                                             data={data.schedule}
-                                            setData={(i) => setData("schedule", i)}
+                                            setData={(i) =>
+                                                setData("schedule", i)
+                                            }
                                             minDate={moment()}
                                             maxDate={moment().add(6, "days")}
                                             shouldDisableDate={unavailableDate}
@@ -414,63 +672,95 @@ function MainCard({
                                                     height: "fit-content",
                                                     maxHeight: "unset",
                                                 },
-                                                "& .MuiPickersLayout-contentWrapper": {
-                                                    width: "100%",
-                                                    height: "100%",
-                                                },
-                                                "& .MuiDayCalendar-monthContainer": {
-                                                    width: "100%",
-                                                    height: "fit-content",
-                                                    position: "relative",
-                                                },
-                                                "& .MuiPickersSlideTransition-root": {
-                                                    width: "100%",
-                                                    height: "fit-content",
-                                                    minHeight: "unset",
-                                                },
-                                                "& .MuiDayCalendar-weekDayLabel": {
-                                                    width: "10vw",
-                                                    height: "10vw",
-                                                },
+                                                "& .MuiPickersLayout-contentWrapper":
+                                                    {
+                                                        width: "100%",
+                                                        height: "100%",
+                                                    },
+                                                "& .MuiDayCalendar-monthContainer":
+                                                    {
+                                                        width: "100%",
+                                                        height: "fit-content",
+                                                        position: "relative",
+                                                    },
+                                                "& .MuiPickersSlideTransition-root":
+                                                    {
+                                                        width: "100%",
+                                                        height: "fit-content",
+                                                        minHeight: "unset",
+                                                    },
+                                                "& .MuiDayCalendar-weekDayLabel":
+                                                    {
+                                                        width: "10vw",
+                                                        height: "10vw",
+                                                    },
                                                 "& .MuiPickersDay-root": {
                                                     width: "10vw",
                                                     height: "10vw",
                                                 },
-                                                "& .MuiPickersDay-root.Mui-selected": {
-                                                    backgroundColor: "#FF8854",
-                                                },
-                                                "& .MuiPickersDay-root.Mui-selected:hover": {
-                                                    backgroundColor: "#FF6420",
-                                                },
-                                                "& .MuiPickersYear-yearButton.Mui-selected": {
-                                                    backgroundColor: "#FF8854",
-                                                },
-                                                ".css-sc0lva-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled:not(.Mui-selected)": {
-                                                    color: "#DDDDDD",
-                                                },
+                                                "& .MuiPickersDay-root.Mui-selected":
+                                                    {
+                                                        backgroundColor:
+                                                            "#FF8854",
+                                                    },
+                                                "& .MuiPickersDay-root.Mui-selected:hover":
+                                                    {
+                                                        backgroundColor:
+                                                            "#FF6420",
+                                                    },
+                                                "& .MuiPickersYear-yearButton.Mui-selected":
+                                                    {
+                                                        backgroundColor:
+                                                            "#FF8854",
+                                                    },
+                                                ".css-sc0lva-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled:not(.Mui-selected)":
+                                                    {
+                                                        color: "#DDDDDD",
+                                                    },
                                             }}
                                         />
                                     </>
-                                ) : (<></>)}
+                                ) : (
+                                    <></>
+                                )}
                                 {"city" in rules ? (
                                     <>
                                         <GoalsSelectInput
                                             required={rules["city"]}
                                             show={showForm.city}
-                                            setShow={(i) => showFormHandler("city", i)}
+                                            setShow={(i) =>
+                                                showFormHandler("city", i)
+                                            }
                                             label="Kota Bimbingan"
                                             placeholder="Pilih Kota"
-                                            data={data.city != "" ? cities.filter(item => item.id == data.city)[0].city : ""}
+                                            data={
+                                                data.city != ""
+                                                    ? cities.filter(
+                                                          (item) =>
+                                                              item.id ==
+                                                              data.city
+                                                      )[0].city
+                                                    : ""
+                                            }
                                         >
                                             {cities.map((item, index) => {
                                                 return (
                                                     <GoalsSelectInputItem
                                                         key={index}
                                                         onClick={() => {
-                                                            if (data.place == "") {
-                                                                setData("city", item.id)
+                                                            if (
+                                                                data.place == ""
+                                                            ) {
+                                                                setData(
+                                                                    "city",
+                                                                    item.id
+                                                                );
                                                             } else {
-                                                                setData({...data, city: item.id, place: ""})
+                                                                setData({
+                                                                    ...data,
+                                                                    city: item.id,
+                                                                    place: "",
+                                                                });
                                                             }
                                                         }}
                                                     >
@@ -482,24 +772,50 @@ function MainCard({
                                         <GoalsSelectInput
                                             required={rules["place"]}
                                             show={showForm.place}
-                                            setShow={(i) => showFormHandler("place", i)}
+                                            setShow={(i) =>
+                                                showFormHandler("place", i)
+                                            }
                                             label="Lokasi Bimbingan"
                                             placeholder="Pilih Lokasi Bimbingan"
-                                            data={data.place != "" ? cities.filter(item => item.id == data.city)[0].places.filter(item => item.id == data.place)[0].place : ""}
+                                            data={
+                                                data.place != ""
+                                                    ? cities
+                                                          .filter(
+                                                              (item) =>
+                                                                  item.id ==
+                                                                  data.city
+                                                          )[0]
+                                                          .places.filter(
+                                                              (item) =>
+                                                                  item.id ==
+                                                                  data.place
+                                                          )[0].place
+                                                    : ""
+                                            }
                                         >
                                             {data.city != "" ? (
-                                                cities.filter(item => item.id == data.city)[0].places.map((item, index) => {
-                                                    return (
-                                                        <GoalsSelectInputItem
-                                                            key={index}
-                                                            onClick={() =>
-                                                                setData("place", item.id)
-                                                            }
-                                                        >
-                                                            {item.place}
-                                                        </GoalsSelectInputItem>
-                                                    );
-                                                })
+                                                cities
+                                                    .filter(
+                                                        (item) =>
+                                                            item.id == data.city
+                                                    )[0]
+                                                    .places.map(
+                                                        (item, index) => {
+                                                            return (
+                                                                <GoalsSelectInputItem
+                                                                    key={index}
+                                                                    onClick={() =>
+                                                                        setData(
+                                                                            "place",
+                                                                            item.id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    {item.place}
+                                                                </GoalsSelectInputItem>
+                                                            );
+                                                        }
+                                                    )
                                             ) : (
                                                 <GoalsSelectInputItem>
                                                     Pilih kota terlebih dahulu
@@ -507,30 +823,51 @@ function MainCard({
                                             )}
                                         </GoalsSelectInput>
                                     </>
-                                ) : (<></>)}
+                                ) : (
+                                    <></>
+                                )}
                                 {"topic" in rules ? (
                                     topics.length ? (
                                         <GoalsSelectInput
                                             required={rules["topic"]}
                                             show={showForm.topic}
-                                            setShow={(i) => showFormHandler("topic", i)}
+                                            setShow={(i) =>
+                                                showFormHandler("topic", i)
+                                            }
                                             label="Topik Bimbingan"
                                             placeholder="Pilih Topik Bimbingan"
-                                            data={data.topic != "" ? topics.filter(item => item.id == data.topic)[0].topic : ""}
+                                            data={
+                                                data.topic != ""
+                                                    ? topics.filter(
+                                                          (item) =>
+                                                              item.id ==
+                                                              data.topic
+                                                      )[0].topic
+                                                    : ""
+                                            }
                                         >
                                             {topics.map((item, index) => {
                                                 return (
                                                     <GoalsSelectInputItem
                                                         key={index}
-                                                        onClick={() => setData("topic", item.id)}
+                                                        onClick={() =>
+                                                            setData(
+                                                                "topic",
+                                                                item.id
+                                                            )
+                                                        }
                                                     >
                                                         {item.topic}
                                                     </GoalsSelectInputItem>
                                                 );
                                             })}
                                         </GoalsSelectInput>
-                                    ) : (<></>)
-                                ) : (<></>)}
+                                    ) : (
+                                        <></>
+                                    )
+                                ) : (
+                                    <></>
+                                )}
                                 {availableAddOn.length ? (
                                     <GoalsSelectMultipleInput
                                         show={showForm.addOn}
@@ -540,13 +877,15 @@ function MainCard({
                                                     data.add_on.every(
                                                         (i) =>
                                                             temp.add_on.filter(
-                                                                (j) => j.id == i.id
+                                                                (j) =>
+                                                                    j.id == i.id
                                                             ).length
                                                     ) &&
                                                     temp.add_on.every(
                                                         (i) =>
                                                             data.add_on.filter(
-                                                                (j) => j.id == i.id
+                                                                (j) =>
+                                                                    j.id == i.id
                                                             ).length
                                                     )
                                                 )
@@ -568,13 +907,15 @@ function MainCard({
                                                     data.add_on.every(
                                                         (i) =>
                                                             temp.add_on.filter(
-                                                                (j) => j.id == i.id
+                                                                (j) =>
+                                                                    j.id == i.id
                                                             ).length
                                                     ) &&
                                                     temp.add_on.every(
                                                         (i) =>
                                                             data.add_on.filter(
-                                                                (j) => j.id == i.id
+                                                                (j) =>
+                                                                    j.id == i.id
                                                             ).length
                                                     )
                                                 )
@@ -582,32 +923,45 @@ function MainCard({
                                                 let addOnPrice = 0;
                                                 if (temp.add_on.length) {
                                                     addOnPrice = temp.add_on
-                                                        .map((i) => parseFloat(i.price))
+                                                        .map((i) =>
+                                                            parseFloat(i.price)
+                                                        )
                                                         .reduce(
                                                             (total, i) =>
-                                                                parseFloat(total) +
+                                                                parseFloat(
+                                                                    total
+                                                                ) +
                                                                 parseFloat(i)
                                                         );
                                                 } else {
                                                     addOnPrice = 0;
                                                 }
                                                 let adminFee = 0;
-                                                if (data.purchase_method != "") {
+                                                if (
+                                                    data.purchase_method != ""
+                                                ) {
                                                     if (
                                                         parseInt(
-                                                            data.purchase_method.is_price
+                                                            data.purchase_method
+                                                                .is_price
                                                         )
                                                     ) {
                                                         adminFee = parseFloat(
-                                                            data.purchase_method.admin_fee
+                                                            data.purchase_method
+                                                                .admin_fee
                                                         );
                                                     } else {
                                                         adminFee = Math.ceil(
-                                                            ((parseFloat(data.init_price) -
-                                                                parseFloat(data.discount) +
+                                                            ((parseFloat(
+                                                                data.init_price
+                                                            ) -
+                                                                parseFloat(
+                                                                    data.discount
+                                                                ) +
                                                                 addOnPrice) *
                                                                 parseFloat(
-                                                                    data.purchase_method
+                                                                    data
+                                                                        .purchase_method
                                                                         .admin_fee
                                                                 )) /
                                                                 100
@@ -615,7 +969,9 @@ function MainCard({
                                                     }
                                                 }
                                                 const totalPrice =
-                                                    parseFloat(data.init_price) -
+                                                    parseFloat(
+                                                        data.init_price
+                                                    ) -
                                                     parseFloat(data.discount) +
                                                     addOnPrice +
                                                     adminFee;
@@ -635,35 +991,47 @@ function MainCard({
                                                     key={index}
                                                     checked={
                                                         temp.add_on.filter(
-                                                            (i) => i.id == item.id
+                                                            (i) =>
+                                                                i.id == item.id
                                                         ).length
                                                     }
                                                     onClick={() => {
                                                         if (
                                                             temp.add_on.filter(
-                                                                (i) => i.id == item.id
+                                                                (i) =>
+                                                                    i.id ==
+                                                                    item.id
                                                             ).length
                                                         ) {
                                                             setTemp(
                                                                 "add_on",
                                                                 temp.add_on.filter(
-                                                                    (i) => i.id != item.id
+                                                                    (i) =>
+                                                                        i.id !=
+                                                                        item.id
                                                                 )
                                                             );
                                                         } else {
                                                             const tempAddOn =
                                                                 temp.add_on.slice();
-                                                            tempAddOn.push(item);
-                                                            setTemp("add_on", tempAddOn);
+                                                            tempAddOn.push(
+                                                                item
+                                                            );
+                                                            setTemp(
+                                                                "add_on",
+                                                                tempAddOn
+                                                            );
                                                         }
                                                     }}
                                                 >
-                                                    {item.name}
+                                                    {item.name + " - IDR " + currency.format(item.price)}
                                                 </GoalsSelectMultipleInputItem>
                                             );
                                         })}
                                     </GoalsSelectMultipleInput>
-                                ) : (<></>)}
+                                ) : (
+                                    <></>
+                                )}
                             </div>
                         )}
                         {"document" in rules ? (
@@ -672,80 +1040,86 @@ function MainCard({
                                     required={rules.document}
                                     label="Berkas Pendukung"
                                     data={data.document}
-                                    fileLimit={dataProduct.contact_type == "other" ? 1 : 3}
+                                    fileLimit={
+                                        dataProduct.contact_type == "other"
+                                            ? 1
+                                            : 3
+                                    }
                                     removeFile={(i) => {
-                                        console.log(i)
                                         setData({
                                             ...data,
-                                            document: data.document.filter((j) => j != i),
+                                            document: data.document.filter(
+                                                (j) => j != i
+                                            ),
                                         });
                                     }}
                                     setData={(i) => {
                                         setData({
                                             ...data,
                                             document: data.document.concat(i),
-                                        })
-                                    }
-                                    }
+                                        });
+                                    }}
                                     placeholder={
                                         <p className="text-black">
-                                            Pilih file skripsi mu atau <br /> seret dan
-                                            lepas di sini
+                                            Pilih file skripsi mu atau <br />{" "}
+                                            seret dan lepas di sini
                                         </p>
                                     }
                                 />
                             </div>
-                        ) : (<></>)}
+                        ) : (
+                            <></>
+                        )}
                     </div>
                     <div className="fixed bottom-0 w-full bg-white md:hidden rounded-t-[4vw] border-t-1 border-gray-300 py-[4vw]">
                         <div className="container mx-auto flex justify-between">
                             <div className="flex flex-col justify-center gap-[1vw]">
                                 <p className="text-[3vw] font-medium">Total</p>
-                                <span className="text-[4.5vw] text-secondary font-bold">IDR {currency.format(data.total_price)}</span>
+                                <span className="text-[4.5vw] text-secondary font-bold">
+                                    IDR {currency.format(data.total_price)}
+                                </span>
                             </div>
                             <GoalsButton
                                 className="rounded-[2vw] w-4/12"
                                 isActive={
-                                    "document" in rules ? (
-                                        rules["document"] ? (
-                                            !(
-                                                data["document"].length == 0 ||
-                                                Object.keys(
-                                                    Object.fromEntries(
-                                                        Object.entries(rules).filter(
-                                                            ([, value]) => value
-                                                        )
-                                                    )
-                                                )
-                                                    .map((i) => data[i])
-                                                    .includes("")
-                                            )
-                                        ) : (
-                                            !(
-                                                Object.keys(
-                                                    Object.fromEntries(
-                                                        Object.entries(rules).filter(
-                                                            ([, value]) => value
-                                                        )
-                                                    )
-                                                )
-                                                    .map((i) => data[i])
-                                                    .includes("")
-                                            )
-                                        )
-                                    ) : (
-                                        !(
-                                            Object.keys(
-                                                Object.fromEntries(
-                                                    Object.entries(rules).filter(
-                                                        ([, value]) => value
-                                                    )
-                                                )
-                                            )
-                                                .map((i) => data[i])
-                                                .includes("")
-                                        )
-                                    )
+                                    "document" in rules
+                                        ? rules["document"]
+                                            ? !(
+                                                  data["document"].length ==
+                                                      0 ||
+                                                  Object.keys(
+                                                      Object.fromEntries(
+                                                          Object.entries(
+                                                              rules
+                                                          ).filter(
+                                                              ([, value]) =>
+                                                                  value
+                                                          )
+                                                      )
+                                                  )
+                                                      .map((i) => data[i])
+                                                      .includes("")
+                                              )
+                                            : !Object.keys(
+                                                  Object.fromEntries(
+                                                      Object.entries(
+                                                          rules
+                                                      ).filter(
+                                                          ([, value]) => value
+                                                      )
+                                                  )
+                                              )
+                                                  .map((i) => data[i])
+                                                  .includes("")
+                                        : !Object.keys(
+                                              Object.fromEntries(
+                                                  Object.entries(rules).filter(
+                                                      ([, value]) => value
+                                                  )
+                                              )
+                                          )
+                                              .map((i) => data[i])
+                                              .includes("")
                                 }
                                 onClick={() => setShowMobileSummaryCard(true)}
                             >
@@ -755,9 +1129,6 @@ function MainCard({
                     </div>
                 </div>
             </div>
-            {Object.keys(userProfile).map(i => userProfile[i]).includes("") || Object.keys(userProfile).map(i => userProfile[i]).includes(null) ? (
-                <LengkapiProfilAlert userProfile={userProfile} setUserProfile={setUserProfile} data={data} setData={setData} />
-            ) : (<></>)}
         </div>
     );
 }
@@ -785,31 +1156,65 @@ function SummaryCard({
     const currency = Intl.NumberFormat("id-ID");
     return (
         <>
-            <div className={`fixed top-0 bottom-0 right-0 md:static w-full h-screen md:h-fit md:w-[30%] flex flex-col bg-white md:ms-[2vw] gap-[4vw] md:gap-[2vw] duration-500 ${showMobile ? '' : 'translate-x-full'} md:translate-x-0 md:text-[.9vw] overflow-auto`}>
+            <div
+                className={`fixed top-0 bottom-0 right-0 md:static w-full h-screen md:h-fit md:w-[30%] flex flex-col bg-white md:ms-[2vw] gap-[4vw] md:gap-[2vw] duration-500 ${
+                    showMobile ? "" : "translate-x-full"
+                } md:translate-x-0 md:text-[.9vw] overflow-auto`}
+            >
                 <div className="relative h-screen md:h-fit border-1 md:rounded-[1vw] pt-[20vw] md:p-[1.75vw] overflow-auto md:overflow-hidden">
                     <div className="md:hidden shadow-md">
-                        <span className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins py-[4vw]" onClick={() => setShowMobile(false)}><FiChevronLeft className="text-[5vw]" /> Kembali</span>
+                        <span
+                            className="container mx-auto flex items-center gap-[2vw] font-medium font-poppins py-[4vw]"
+                            onClick={() => setShowMobile(false)}
+                        >
+                            <FiChevronLeft className="text-[5vw]" /> Kembali
+                        </span>
                     </div>
                     <div className="md:hidden shadow-md py-[4vw]">
                         <div className="container mx-auto space-y-[4vw]">
                             <div className="flex items-center gap-[4vw]">
                                 <div className="w-5/12 rounded-[2vw] overflow-hidden">
-                                    <img className="w-full h-full" src={dataProduct.product_image} alt="" />
+                                    <img
+                                        className="w-full h-full object-cover"
+                                        src={
+                                            "/storage/" +
+                                            dataProduct.product_image
+                                        }
+                                        alt=""
+                                    />
                                 </div>
                                 <div className="w-full">
-                                    <p className="font-semibold text-secondary text-[3vw]">Bimbingan Skripsi</p>
-                                    <p className="font-semibold pt-[3vw]">{dataProduct.name}</p>
-                                    <p className="font-medium text-gray-400 text-[3.5vw]">IDR {currency.format(dataProduct.price)}</p>
+                                    <p className="font-semibold text-secondary text-[3vw]">
+                                        Bimbingan Skripsi
+                                    </p>
+                                    <p className="font-semibold pt-[3vw]">
+                                        {dataProduct.name}
+                                    </p>
+                                    <p className="font-medium text-gray-400 text-[3.5vw]">
+                                        IDR {currency.format(dataProduct.price)}
+                                    </p>
                                 </div>
                             </div>
-                            {Object.keys(userProfile).map(i => userProfile[i]).includes("") || Object.keys(userProfile).map(i => userProfile[i]).includes(null) ? (
+                            {Object.keys(userProfile)
+                                .map((i) => userProfile[i])
+                                .includes("") ||
+                            Object.keys(userProfile)
+                                .map((i) => userProfile[i])
+                                .includes(null) ? (
                                 <ExpandedButton
                                     className="rounded-[2vw] border-1 border-blue-500 p-[4vw]"
                                     textClassName="text-[3vw]"
                                     iconClassName="text-blue-500"
-                                    onClick={() => setShowLengkapiProfilForm(true)}
-                                >Yuk, lengkapin profilnya agar bisa transaksi!</ExpandedButton>
-                            ) : (<></>)}
+                                    onClick={() =>
+                                        setShowLengkapiProfilForm(true)
+                                    }
+                                >
+                                    Yuk, lengkapin profilnya agar bisa
+                                    transaksi!
+                                </ExpandedButton>
+                            ) : (
+                                <></>
+                            )}
                         </div>
                     </div>
                     <div className="container md:w-full mx-auto overflow-auto pb-[24vw] md:pb-0">
@@ -857,23 +1262,26 @@ function SummaryCard({
                                 <table className="w-full border-separate border-spacing-y-[3vw] md:border-spacing-y-[.5vw] text-gray-500 my-1">
                                     <tbody>
                                         <tr>
-                                            <td className="w-1/2">{dataProduct.name}</td>
+                                            <td className="w-1/2">
+                                                {dataProduct.name}
+                                            </td>
                                             <td className="font-bold text-right">
-                                                {data.init_price >
-                                                0
+                                                {data.init_price > 0
                                                     ? `IDR ${currency.format(
-                                                        data.init_price
-                                                    )}`
+                                                          data.init_price
+                                                      )}`
                                                     : "IDR 0"}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Promo</td>
                                             <td className="font-bold text-right">
-                                                {currency.format(data.discount) > 0
+                                                {currency.format(
+                                                    data.discount
+                                                ) > 0
                                                     ? `IDR -${currency.format(
-                                                        data.discount
-                                                    )}`
+                                                          data.discount
+                                                      )}`
                                                     : "IDR 0"}
                                             </td>
                                         </tr>
@@ -882,8 +1290,8 @@ function SummaryCard({
                                             <td className="font-bold text-right">
                                                 {currency.format(data.admin) > 0
                                                     ? `IDR ${currency.format(
-                                                        data.admin
-                                                    )}`
+                                                          data.admin
+                                                      )}`
                                                     : "IDR 0"}
                                             </td>
                                         </tr>
@@ -892,10 +1300,13 @@ function SummaryCard({
                                                 <tr key={index}>
                                                     <td>{item.name}</td>
                                                     <td className="font-bold text-right">
-                                                        IDR {currency.format(item.price)}
+                                                        IDR{" "}
+                                                        {currency.format(
+                                                            item.price
+                                                        )}
                                                     </td>
                                                 </tr>
-                                            )
+                                            );
                                         })}
                                     </tbody>
                                 </table>
@@ -944,48 +1355,56 @@ function SummaryCard({
                             <GoalsButton
                                 className="w-6/12 md:w-full mt-[1.25vw] xl:py-[1vw] rounded-[.5vw]"
                                 isActive={
-                                    "document" in rules ? (
-                                        rules["document"] ? (
-                                            !(
-                                                data["purchase_method"] == "" || data["document"].length == 0 ||
-                                                Object.keys(
-                                                    Object.fromEntries(
-                                                        Object.entries(rules).filter(
-                                                            ([, value]) => value
-                                                        )
-                                                    )
-                                                )
-                                                    .map((i) => data[i])
-                                                    .includes("")
-                                            )
-                                        ) : (
-                                            !(
-                                                data["purchase_method"] == "" ||
-                                                Object.keys(
-                                                    Object.fromEntries(
-                                                        Object.entries(rules).filter(
-                                                            ([, value]) => value
-                                                        )
-                                                    )
-                                                )
-                                                    .map((i) => data[i])
-                                                    .includes("")
-                                            )
-                                        )
-                                    ) : (
-                                        !(
-                                            data["purchase_method"] == "" ||
-                                            Object.keys(
-                                                Object.fromEntries(
-                                                    Object.entries(rules).filter(
-                                                        ([, value]) => value
-                                                    )
-                                                )
-                                            )
-                                                .map((i) => data[i])
-                                                .includes("")
-                                        )
-                                    )
+                                    "document" in rules
+                                        ? rules["document"]
+                                            ? !(
+                                                  data["purchase_method"] ==
+                                                      "" ||
+                                                  data["document"].length ==
+                                                      0 ||
+                                                  Object.keys(
+                                                      Object.fromEntries(
+                                                          Object.entries(
+                                                              rules
+                                                          ).filter(
+                                                              ([, value]) =>
+                                                                  value
+                                                          )
+                                                      )
+                                                  )
+                                                      .map((i) => data[i])
+                                                      .includes("")
+                                              )
+                                            : !(
+                                                  data["purchase_method"] ==
+                                                      "" ||
+                                                  Object.keys(
+                                                      Object.fromEntries(
+                                                          Object.entries(
+                                                              rules
+                                                          ).filter(
+                                                              ([, value]) =>
+                                                                  value
+                                                          )
+                                                      )
+                                                  )
+                                                      .map((i) => data[i])
+                                                      .includes("")
+                                              )
+                                        : !(
+                                              data["purchase_method"] == "" ||
+                                              Object.keys(
+                                                  Object.fromEntries(
+                                                      Object.entries(
+                                                          rules
+                                                      ).filter(
+                                                          ([, value]) => value
+                                                      )
+                                                  )
+                                              )
+                                                  .map((i) => data[i])
+                                                  .includes("")
+                                          )
                                 }
                                 isLoading={isProcessed}
                                 onClick={submit}
@@ -998,7 +1417,9 @@ function SummaryCard({
                         <div className="container mx-auto flex justify-between">
                             <div className="flex flex-col justify-center gap-[1vw]">
                                 <p className="text-[3vw] font-medium">Total</p>
-                                <span className="text-[4.5vw] text-secondary font-bold">IDR {currency.format(totalPrice)}</span>
+                                <span className="text-[4.5vw] text-secondary font-bold">
+                                    IDR {currency.format(totalPrice)}
+                                </span>
                             </div>
                             <GoalsButton
                                 className="rounded-[2vw] w-4/12"
@@ -1030,7 +1451,12 @@ function SummaryCard({
                 setTemp={setTemp}
                 purchaseMethods={purchaseMethods}
             />
-            {Object.keys(userProfile).map(i => userProfile[i]).includes("") || Object.keys(userProfile).map(i => userProfile[i]).includes(null) ? (
+            {Object.keys(userProfile)
+                .map((i) => userProfile[i])
+                .includes("") ||
+            Object.keys(userProfile)
+                .map((i) => userProfile[i])
+                .includes(null) ? (
                 <LengkapiProfilForm
                     userProfile={userProfile}
                     setUserProfile={setUserProfile}
@@ -1040,12 +1466,19 @@ function SummaryCard({
                     setData={setData}
                     toast={toast}
                 />
-            ) : (<></>)}
+            ) : (
+                <></>
+            )}
         </>
     );
 }
 
-const LengkapiProfilAlert = ({ userProfile, setUserProfile, data, setData }) => {
+const LengkapiProfilAlert = ({
+    userProfile,
+    setUserProfile,
+    data,
+    setData,
+}) => {
     const [showLengkapiProfilForm, setShowLengkapiProfilForm] = useState(false);
     return (
         <div className="hidden md:block">

@@ -260,6 +260,7 @@ export default function Edit({ auth, order, places, tutors }) {
                                             setInputValueTutor(newInputValue);
                                         }
                                     }}
+                                    onBlur={() => setInputValueTutor(data.tutor)}
                                     onChange={(e, value) => {
                                         setFormData({
                                             ...formData,
@@ -287,13 +288,14 @@ export default function Edit({ auth, order, places, tutors }) {
                     <FormSection
                         title="Order Details"
                         titleAction={
-                            <button
+                            <a
+                                role="button"
                                 onClick={() => setIsShow(!isShow)}
                                 className="flex items-center gap-[.4vw] text-[.8vw] text-primary"
                             >
                                 File & Media{" "}
                                 <RxFileText className="md:text-[1vw]" />
-                            </button>
+                            </a>
                         }
                     >
                         <GoalsTextInput

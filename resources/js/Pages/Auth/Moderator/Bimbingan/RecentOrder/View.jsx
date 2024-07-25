@@ -42,7 +42,7 @@ const View = ({ tipe = "bimbingan", detailOrder }) => {
                 <GoalsTextInput
                     label="Username"
                     disabled
-                    data={detailOrder?.user?.name ?? ''}
+                    data={detailOrder?.user?.username ?? ''}
                     placeholder="Belum Diset"
                 />
                 <GoalsTextInput
@@ -87,12 +87,13 @@ const View = ({ tipe = "bimbingan", detailOrder }) => {
             <FormSection
                 title="Order Details"
                 titleAction={
-                    <button
+                    <a
+                        role="button"
                         onClick={() => setIsShow(!isShow)}
                         className="flex items-center gap-[.4vw] text-[.8vw] text-primary"
                     >
                         File & Media <RxFileText className="md:text-[1vw]" />
-                    </button>
+                    </a>
                 }
                 className="border"
             >

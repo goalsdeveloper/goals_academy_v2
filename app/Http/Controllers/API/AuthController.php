@@ -21,7 +21,11 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)
+            ->whereHas('profile', function ($query) {
+                $query->where('is_active', '1');
+            })
+            ->first();
 
         if (!$user) {
             throw ValidationException::withMessages([
@@ -51,29 +55,38 @@ class AuthController extends Controller
         ]);
     }
 
-    public function loginValidation(Request $request) {
-        // $credential = Validator::make($request->all(), [
-        //     'email' => 'required|email:dns|exists:users,email',
-        //     'password' => 'required|min:8',
-        // ]);
+    public function loginValidation(Request $request)
+    {
+        $credential = Validator::make($request->all(), [
+            'email' => 'required|email:dns|exists:users,email',
+            'password' => 'required|min:8',
+        ]);
 
-        // if ($credential->fails()) {
-        //     return response()->json(['message' => 'Email atau password Anda salah!']);
-        // } else {
-            $data = array(
-                'email'     => $request->get('email'),
-                'password'  => $request->get('password')
-            );
-        // };
+        if ($credential->fails()) {
+            return response()->json(['message' => 'Email atau password Anda salah!'], 422);
+        }
 
-        if (Auth::attempt($data, true)) {
-            return response()->json(['success' => 'Validasi berhasil!']);
+        $user = User::where('email', $request->email)->first();
+
+
+        if ($user && $user->profile && $user->profile->is_active == '1') {
+            $data = [
+                'email' => $request->get('email'),
+                'password' => $request->get('password')
+            ];
+
+            if (Auth::attempt($data, true)) {
+                return response()->json(['success' => 'Validasi berhasil!']);
+            } else {
+                return response()->json(['message' => 'Email atau password Anda salah!'], 422);
+            }
         } else {
-            return response()->json(['message' => 'Email atau password Anda salah!']);
+            return response()->json(['message' => 'Akun Anda tidak aktif.'], 403);
         }
     }
 
-    public function registerValidation(Request $request) {
+    public function registerValidation(Request $request)
+    {
         $credential = Validator::make($request->all(), [
             'username' => 'required|min:8|max:15|unique:users,username',
             'email' => 'required|email:dns|unique:users,email',

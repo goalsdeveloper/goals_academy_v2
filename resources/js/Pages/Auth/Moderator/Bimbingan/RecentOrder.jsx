@@ -98,7 +98,6 @@ export default function RecentOrder({ auth, orders }) {
                             <li>
                                 <button
                                     onClick={() => {
-                                        console.log(cell.row.original);
                                         setIsShow(!isShow);
                                         setDetailOrder(cell.row.original);
                                     }}

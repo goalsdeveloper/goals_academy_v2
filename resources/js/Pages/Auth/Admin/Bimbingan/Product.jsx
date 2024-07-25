@@ -3,6 +3,7 @@ import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Link, router, useForm } from "@inertiajs/react";
 import { useMemo } from "react";
+import logo from "/resources/img/icon/goals-5.svg";
 import {
     FiCheckCircle,
     FiEdit2,
@@ -20,8 +21,10 @@ import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { FaRegCheckCircle, FaRegTimesCircle } from "react-icons/fa";
 import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
+import axios from "axios";
 
 export default function Product({ auth, bimbingan, categories }) {
+    const [isLoading, setIsLoading] = useState(false);
     bimbingan = bimbingan.data;
     const isDesktop = useMediaQuery({ minWidth: 1024 });
     const [show, setShow] = useState(false);
@@ -31,17 +34,25 @@ export default function Product({ auth, bimbingan, categories }) {
         new URLSearchParams(window.location.search).get("search")
     );
 
+    const currency = Intl.NumberFormat("id-ID");
+
     const onSearchCallback = (search) => {
-        router.visit(route("admin.bimbingan.product.index", { search: search }), {
-            only: ["bimbingan"],
-        });
+        router.visit(
+            route("admin.bimbingan.product.index", { search: search }),
+            {
+                only: ["bimbingan"],
+            }
+        );
     };
 
     async function getBimbinganDetail(id) {
+        setIsLoading(true);
         setProduct(null);
-        const res = await fetch("/admin/bimbingan/product/" + id);
-        const { data } = await res.json();
-        setProduct(data);
+        axios.get("/admin/bimbingan/product/" + id).then((res) => {
+            console.log(res.data.data)
+            setProduct(res.data.data);
+            setIsLoading(false);
+        });
     }
 
     const callback = (method) => {
@@ -109,7 +120,11 @@ export default function Product({ auth, bimbingan, categories }) {
                 ),
             },
             {
-                accessorKey: "price",
+                accessorFn: (row) =>
+                    "Rp." +
+                    currency.format(
+                        Number(row.price) - Number(row.promo_price)
+                    ),
                 header: "Harga",
             },
             {
@@ -198,6 +213,7 @@ export default function Product({ auth, bimbingan, categories }) {
             ) : (
                 <span className="text-[2vw]">Desktop Only</span>
             )}
+            {isLoading && <LoadingUI />}
         </DashboardLayout>
     );
 }
@@ -218,10 +234,22 @@ const ViewDialog = ({ show, setShow, product, categories }) => {
                     show
                         ? "md:top-0 bottom-0 md:scale-100"
                         : "md:top-full -bottom-full md:scale-0"
-                } inset-0 focus:bg-red-400 mx-auto flex gap-[2vw] w-[76vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 my-[8vh] `}
+                } inset-0 focus:bg-red-400 mx-auto flex gap-[2vw] w-[90vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 my-[8vh] `}
             >
                 <View products={product} categories={categories} />
             </div>
         </div>
     );
 };
+
+function LoadingUI() {
+    return (
+        <div className="absolute flex items-center justify-center top-0 left-0 right-0 bottom-0 bg-gray-50 bg-opacity-50 z-50">
+            <img
+                src={logo}
+                alt="Goals Academy"
+                className="w-[6vw] h-[6vw] animate-bounce"
+            />
+        </div>
+    );
+}
