@@ -152,8 +152,12 @@ export default {
             },
             keyframes: {
                 'scroll': {
-                        'from': { 'transform': 'translateX(0)' },
-                        'to': { 'transform': 'translateX(calc(-100% - 2vw))'}
+                        'from': { 'transform': 'translateX(0%)' },
+                        'to': { 'transform': 'translateX(-100%)'}
+                },
+                'scroll2': {
+                        'from': { 'transform': 'translateX(100%)' },
+                        'to': { 'transform': 'translateX(0%)'}
                 },
                 'slideRight': {
                     'from': { 'transform': 'translateX(-100%)' },
@@ -180,6 +184,7 @@ export default {
             },
             animation: {
                 scroll: 'scroll 20s infinite linear',
+                scroll2: 'scroll2 20s infinite linear',
                 slideRight: 'slideRight 3s',
                 fadeIn: 'fadeIn 3s',
                 autoplayY: 'autoplayY 20s infinite linear',

@@ -6,23 +6,24 @@ import GoalsButton from "@/Components/elements/GoalsButton";
 
 export default function Hero() {
     return (
-        <section className="relative py-[4vw] w-[80vw] mx-auto space-y-[2vw]">
-            <div className="mx-auto w-[60vw] space-y-[2vw]">
-                <h1 className="before:icon-primary sm:before:w-0 md:before:w-10 md:before:h-10 md:before:-ms-8 md:before:-mt-5 xl:before:w-20 xl:before:h-20 xl:before:-ms-16 xl:before:-mt-10 text-[2.5vw] text-center">
-                    Ceritakan Kendala Skripsimu dan Temukan Solusinya Bersama{" "}
+        <section className="relative py-[4vw] w-[85vw] mx-auto space-y-[7.5vw] md:space-y-[2vw]">
+            <div className="mx-auto w-[75vw] md:w-[60vw] space-y-[2vw]">
+                <h1 className="before:icon-primary sm:before:w-0 md:before:w-10 md:before:h-10 md:before:-ms-8 md:before:-mt-5 xl:before:w-20 xl:before:h-20 xl:before:-ms-16 xl:before:-mt-10 text-[5.5vw] md:text-[2.5vw] text-center">
+                    Ceritakan Kendala Skripsimu dan Temukan Solusinya Bersama{" "}<br />
                     <span className="text-primary">Goals Academy</span>
                 </h1>
-                <p className="leading-snug mx-auto text-center text-[1.2vw] text-neutral-70">
-                    Percepat kelulusanmu bersama tutor yang solutif <br /> dan
+                <p className="leading-snug mx-auto text-center text-[3.2vw] md:text-[1.2vw] text-neutral-70">
+                    Percepat kelulusanmu bersama tutor yang solutif <br className="hidden md:block"/> dan
                     friendly kapan pun dan dimana pun kalian berada.
                 </p>
             </div>
-            <div className="flex justify-between w-[90%] mx-auto">
-                <div className="flex-1">
+
+            <div className="flex justify-between md:w-[90%] mx-auto">
+                <div className="flex-1 hidden md:block">
                     <img src={LeftPeople} className="object-contain w-[20vw]" />
                 </div>
 
-                <div className="flex flex-col items-center flex-[2] gap-[2vw]">
+                <div className="flex flex-col items-center flex-[2] gap-y-[7.5vw] md:gap-[2vw]">
                     <GoalsButton className="text-nowrap">
                         Daftar Bimbingan Sekarang
                     </GoalsButton>
@@ -31,7 +32,7 @@ export default function Hero() {
                             <>
                                 <div className="text-center">
                                     <h2 className="leading-relaxed">90%</h2>
-                                    <p className="text-[1vw] w-[85%] mx-auto pt-[.5vw]">
+                                    <p className="text-[2.8vw] md:text-[1vw] w-[85%] mx-auto pt-[.5vw]">
                                         Mahasiswa lulus tepat waktu
                                     </p>
                                 </div>
@@ -41,7 +42,7 @@ export default function Hero() {
                     </div>
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 hidden md:block">
                     <img
                         src={RightPeople}
                         className="ml-auto object-contain w-[14.4vw]"
@@ -50,14 +51,14 @@ export default function Hero() {
             </div>
 
             <div
-                className="-z-20 absolute top-[2vw] -right-[2vw] w-72 h-72 rounded-full"
+                className="hidden md:block -z-20 absolute top-[2vw] -right-[2vw] w-72 h-72 rounded-full"
                 style={{
                     background:
                         "radial-gradient(circle, rgba(255,217,201,.8) 0%, rgba(255,227,216,0) 70%)",
                 }}
             />
             <div
-                className="-z-20 absolute top-[9vw] right-[5vw] w-72 h-72 rounded-full"
+                className="hidden md:block -z-20 absolute top-[9vw] right-[5vw] w-72 h-72 rounded-full"
                 style={{
                     background:
                         "radial-gradient(circle, rgba(255,217,201,.8) 0%, rgba(255,227,216,0) 70%)",
@@ -85,7 +86,10 @@ export default function Hero() {
                 }}
             /> */}
             <div
-                className="-z-20 absolute top-[2vw] -right-[18vw] w-56 h-56 rounded-full border-[4px] border-dashed border-[#FFA680]"
+                className="hidden md:block -z-20 absolute top-[2vw] -right-[18vw] w-56 h-56 rounded-full border-[4px] border-dashed border-[#FFA680]"
+            />
+            <div
+                className="md:hidden -z-20 absolute -top-[5vw] -right-[35vw] w-44 h-44 rounded-full border-[6px] border-dashed border-[#FFA680]"
             />
         </section>
     );

@@ -1,16 +1,24 @@
 import React from "react";
 
-import IconFeat1 from "@/Assets/icons/icon-feat.png"
+import IconFeat1 from "@/Assets/icons/icon-feat.png";
 
 export default function Preliminary() {
     return (
-        <section className="bg-gradient-to-b from-primary-10 to-transparent min-h-screen rounded-[3rem]">
-            <div className="relative py-[4vw] w-[80vw] mx-auto space-y-[2.5vw]">
-                <h2 className="text-[1.8vw]">
-                    Jarak bukan Masalah untuk
-                    <br />
-                    <span className="text-primary-40">Lulus Lebih Cepat</span>
-                </h2>
+        <section className="bg-gradient-to-b from-primary-10 to-transparent to-50% md:to-35% rounded-[11.6vw] md:rounded-[3rem]">
+            <div className="relative py-[7.4vw] md:py-[4vw] w-[80vw] mx-auto space-y-[2.5vw]">
+                <div className="md:flex justify-between space-y-[1.2vw]">
+                    <h2 className="text-[3.7vw] md:text-[1.8vw]">
+                        Jarak bukan Masalah untuk
+                        <br />
+                        <span className="text-primary-40">
+                            Lulus Lebih Cepat
+                        </span>
+                    </h2>
+                    <p className="text-[3.2vw] md:text-[1.2vw] md:w-[27%]">
+                        Buat jadwal bimbingan dengan tutor secara online atau
+                        tatap muka dan berinteraksi secara langsung.
+                    </p>
+                </div>
 
                 <div className="flex gap-4">
                     {Array.from({ length: 4 }).map((item) => (
