@@ -19,7 +19,7 @@ export default function Clients() {
                 <div className="absolute bg-gradient-to-r from-white to-transparent w-[15vw] left-0 h-full z-10 hidden md:block"></div>
                 <div className="absolute bg-gradient-to-l from-white to-transparent w-[15vw] right-0 h-full z-10 hidden md:block"></div>
                 <div className="flex overflow-hidden w-max whitespace-nowrap">
-                    <div className="flex gap-3 px-1.5 md:px-4 md:gap-8 animate-scroll">
+                    <div className="flex gap-3 px-1.5 md:px-7 md:gap-14 animate-scroll">
                         {Array.from({ length: 12 }).map((_, index) => (
                             <img
                                 key={index}
@@ -28,7 +28,7 @@ export default function Clients() {
                             />
                         ))}
                     </div>
-                    <div className="flex gap-3 px-1.5 md:px-4 md:gap-8 animate-scroll">
+                    <div className="flex gap-3 px-1.5 md:px-7 md:gap-14 animate-scroll">
                         {Array.from({ length: 12 }).map((_, index) => (
                             <img
                                 key={index}

@@ -3,14 +3,16 @@ import MainLayout from "@/Layouts/MainLayout";
 // import Preliminary from "./Partials/Home/Preliminary";
 import Program from "./Partials/Home/Program";
 import Video from "./Partials/Home/Video";
-import Testimony from "./Partials/Home/Testimony";
+// import Testimony from "./Partials/Home/Testimony";
 // import FAQ from "./Partials/Home/FAQ";
-import Consultation from "./Partials/Home/Consultation";
+// import Consultation from "./Partials/Home/Consultation";
 
 import Hero from "./Partials/HomeRevamp/Hero";
 import Preliminary from "./Partials/HomeRevamp/Preliminary";
 import Clients from "./Partials/HomeRevamp/Clients";
+import Testimony from "./Partials/HomeRevamp/Testimony";
 import FAQ from "./Partials/HomeRevamp/FAQ";
+import Consultation from "./Partials/HomeRevamp/Consultation";
 
 import CornerWaveVector from "@/Components/CornerWaveVector";
 
@@ -186,7 +188,7 @@ export default function Index({ auth, products: data_program }) {
                     className="md:hidden"
                     cornerClassName="w-10/12"
                 />
-                <Video />
+                {/* <Video /> */}
                 <Testimony data={data_testimony} />
             </div>
             <FAQ data={data_faq} />

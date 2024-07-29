@@ -89,7 +89,7 @@ export default function Hero() {
                 className="hidden md:block -z-20 absolute top-[2vw] -right-[18vw] w-56 h-56 rounded-full border-[4px] border-dashed border-[#FFA680]"
             />
             <div
-                className="md:hidden -z-20 absolute -top-[5vw] -right-[35vw] w-44 h-44 rounded-full border-[6px] border-dashed border-[#FFA680]"
+                className="md:hidden -z-20 absolute -top-[5vw] -right-[40vw] w-44 h-44 rounded-full border-[6px] border-dashed border-[#FFA680]"
             />
         </section>
     );

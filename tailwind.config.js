@@ -121,6 +121,9 @@ export default {
                 'bimbingan': 'url(/resources/img/produk/bg-bimbingan.png)',
                 'ebook': 'url(/resources/img/produk/bg-ebook.png)',
                 'webinar': 'url(/resources/img/produk/bg-webinar.png)',
+                'konsultasi-lg': 'url(/resources/img/home/CTA-Desk.png)',
+                'konsultasi': 'url(/resources/img/home/CTA.png)',
+                'testimony-bg': "url(/resources/img/home/TestimoniBG.png)"
             },
             content: {
                 'career': '"Lihat Disini"',
@@ -155,10 +158,6 @@ export default {
                         'from': { 'transform': 'translateX(0%)' },
                         'to': { 'transform': 'translateX(-100%)'}
                 },
-                'scroll2': {
-                        'from': { 'transform': 'translateX(100%)' },
-                        'to': { 'transform': 'translateX(0%)'}
-                },
                 'slideRight': {
                     'from': { 'transform': 'translateX(-100%)' },
                     'to': { 'transform': 'translateX(0)' }
@@ -184,7 +183,7 @@ export default {
             },
             animation: {
                 scroll: 'scroll 20s infinite linear',
-                scroll2: 'scroll2 20s infinite linear',
+                'scroll-slower': 'scroll 50s infinite linear',
                 slideRight: 'slideRight 3s',
                 fadeIn: 'fadeIn 3s',
                 autoplayY: 'autoplayY 20s infinite linear',

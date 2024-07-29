@@ -4,7 +4,7 @@ import { TECollapse } from "tw-elements-react";
 
 export default function FAQ({ data }) {
     return (
-        <section className="w-[90vw] mx-auto py-[7.4vw] md:py-[3.7vw]">
+        <section className="w-[90%] mx-auto py-[7.4vw] md:py-[3.7vw]">
             <div className="flex flex-wrap justify-between mx-auto">
                 <div className="w-full relative space-y-[5.5vw] md:space-y-[2.5vw]">
                     <h2 className="text-[3.7vw] md:text-[1.8vw] text-center">
