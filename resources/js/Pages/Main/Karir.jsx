@@ -10,28 +10,28 @@ import karir4 from "/resources/img/karir/academic-internship.png";
 
 export default function Karir({ auth }) {
     const data_karir = [
-        // {
-        //     title: "Tutor Skripsi",
-        //     image: karir1,
-        //     requirements: [
-        //         "Pendidikan Minimal S1 Semua Jurusan",
-        //         "IPK Minimum 3.5 untuk Jurusan Soshum/3.25 untuk Jurusan Saintek",
-        //         "Mempunyai Komunikasi yang Baik",
-        //         "Berpengalaman dalam Penulisan dan Penelitian Karya Tulis",
-        //     ],
-        //     link: "https://docs.google.com/forms/d/e/1FAIpQLSfzl7tOOgtIKlQ9La6zWw9T0qP9nNAtt_axagw80oo8qf9m_A/viewform?usp=pp_url",
-        // },
-        // {
-        //     title: "Brand Ambassador",
-        //     image: karir2,
-        //     requirements: [
-        //         "Aktif Sosial Media",
-        //         "Usia Minimal 18 Tahun",
-        //         "Minimal 5K Followers di Media Sosial",
-        //         "Memiliki Kemauan untuk Mencari Jaringan Pemasaran Affiliasi",
-        //     ],
-        //     link: "https://docs.google.com/forms/d/e/1FAIpQLSc4VMh1H5lyF4MO3IywudWVg5WnTY3e8JGRzNwWqjp5kBhruw/viewform?usp=pp_url",
-        // },
+        {
+            title: "Tutor Skripsi",
+            image: karir1,
+            requirements: [
+                "Pendidikan Minimal S1 Semua Jurusan",
+                "IPK Minimum 3.5 untuk Jurusan Soshum/3.25 untuk Jurusan Saintek",
+                "Mempunyai Komunikasi yang Baik",
+                "Berpengalaman dalam Penulisan dan Penelitian Karya Tulis",
+            ],
+            link: "https://docs.google.com/forms/d/e/1FAIpQLSfzl7tOOgtIKlQ9La6zWw9T0qP9nNAtt_axagw80oo8qf9m_A/viewform?usp=pp_url",
+        },
+        {
+            title: "Brand Ambassador",
+            image: karir2,
+            requirements: [
+                "Aktif Sosial Media",
+                "Usia Minimal 18 Tahun",
+                "Minimal 5K Followers di Media Sosial",
+                "Memiliki Kemauan untuk Mencari Jaringan Pemasaran Affiliasi",
+            ],
+            link: "https://docs.google.com/forms/d/e/1FAIpQLSc4VMh1H5lyF4MO3IywudWVg5WnTY3e8JGRzNwWqjp5kBhruw/viewform?usp=pp_url",
+        },
         // {
         //     title: "Tutor Olah Data",
         //     image: karir3,

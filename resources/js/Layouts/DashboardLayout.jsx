@@ -215,35 +215,35 @@ export default function DashboardLayout({
                     ],
                     collapsed: false,
                 },
-                // {
-                //     name: "E-book",
-                //     href: "",
-                //     icon: "",
-                //     isActive: false,
-                //     branches: [
-                //         {
-                //             name: "Category",
-                //             href: "/admin/ebook/category",
-                //             icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
-                //             isActive:
-                //                 title == "E-book" && subtitle == "Category",
-                //         },
-                //         {
-                //             name: "Product",
-                //             href: "/admin/ebook/product",
-                //             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
-                //             isActive:
-                //                 title == "E-book" && subtitle == "Product",
-                //         },
-                //         {
-                //             name: "Order",
-                //             href: "/admin/ebook/order",
-                //             icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
-                //             isActive: title == "E-book" && subtitle == "Order",
-                //         },
-                //     ],
-                //     collapsed: true,
-                // },
+                {
+                    name: "Produk Digital",
+                    href: "",
+                    icon: "",
+                    isActive: false,
+                    branches: [
+                        {
+                            name: "Category",
+                            href: "/admin/produk_digital/category",
+                            icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
+                            isActive:
+                                title == "Produk Digital" && subtitle == "Category",
+                        },
+                        {
+                            name: "Product",
+                            href: "/admin/produk_digital/product",
+                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                            isActive:
+                                title == "Produk Digital" && subtitle == "Product",
+                        },
+                        {
+                            name: "Order",
+                            href: "/admin/produk_digital/order",
+                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                            isActive: title == "Produk Digital" && subtitle == "Order",
+                        },
+                    ],
+                    collapsed: true,
+                },
                 // {
                 //     name: "Marketing",
                 //     href: "",

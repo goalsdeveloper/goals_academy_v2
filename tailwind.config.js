@@ -118,7 +118,7 @@ export default {
                 'google': 'url(/resources/img/icon/google.svg)',
                 'facebook': 'url(/resources/img/icon/facebook.svg)',
                 'bimbingan': 'url(/resources/img/produk/bg-bimbingan.png)',
-                'ebook': 'url(/resources/img/produk/bg-ebook.png)',
+                'produk-digital': 'url(/resources/img/produk/bg-produk-digital.png)',
                 'webinar': 'url(/resources/img/produk/bg-webinar.png)',
             },
             content: {

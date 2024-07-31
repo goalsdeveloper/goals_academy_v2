@@ -14,37 +14,61 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // User::create([
+        //     'name' => 'Admin Goals',
+        //     'username' => 'dev.admin',
+        //     'email' => 'dev.admin@goalsacademy.id',
+        //     'password' => Hash::make('dev.admin123'),
+        //     'user_role' => 'admin',
+        //     'email_verified_at' => now(),
+        // ]);
+        // User::create([
+        //     'name' => 'Moderator Goals',
+        //     'username' => 'dev.moderator',
+        //     'email' => 'dev.moderator@goalsacademy.id',
+        //     'password' => Hash::make('dev.moderator123'),
+        //     'user_role' => 'moderator',
+        //     'email_verified_at' => now(),
+        // ]);
+        // User::create([
+        //     'name' => 'Tutor Goals',
+        //     'username' => 'dev.tutor',
+        //     'email' => 'dev.tutor@goalsacademy.id',
+        //     'revenue_type_id' => 1,
+        //     'password' => Hash::make('dev.tutor123'),
+        //     'user_role' => 'tutor',
+        //     'email_verified_at' => now(),
+        // ]);
+        // User::create([
+        //     'name' => 'User Goals',
+        //     'username' => 'dev.user',
+        //     'email' => 'dev.user@goalsacademy.id',
+        //     'password' => Hash::make('dev.user123'),
+        //     'user_role' => 'user',
+        //     'email_verified_at' => now(),
+        // ]);
         User::create([
-            'name' => 'Admin Goals',
-            'username' => 'dev.admin',
-            'email' => 'dev.admin@goalsacademy.id',
-            'password' => Hash::make('dev.admin123'),
+            'name' => 'Admin Goals Academy',
+            'username' => 'admin',
+            'email' => 'admin@goalsacademy.id',
+            'password' => Hash::make('goalscorporate21'),
             'user_role' => 'admin',
             'email_verified_at' => now(),
         ]);
         User::create([
-            'name' => 'Moderator Goals',
-            'username' => 'dev.moderator',
-            'email' => 'dev.moderator@goalsacademy.id',
-            'password' => Hash::make('dev.moderator123'),
+            'username' => 'rara',
+            'name' => 'Rara',
+            'email' => 'rara@goalsacademy.id',
+            'password' => Hash::make('password'),
             'user_role' => 'moderator',
             'email_verified_at' => now(),
         ]);
         User::create([
-            'name' => 'Tutor Goals',
-            'username' => 'dev.tutor',
-            'email' => 'dev.tutor@goalsacademy.id',
-            'revenue_type_id' => 1,
-            'password' => Hash::make('dev.tutor123'),
-            'user_role' => 'tutor',
-            'email_verified_at' => now(),
-        ]);
-        User::create([
-            'name' => 'User Goals',
-            'username' => 'dev.user',
-            'email' => 'dev.user@goalsacademy.id',
-            'password' => Hash::make('dev.user123'),
-            'user_role' => 'user',
+            'username' => 'aninda',
+            'name' => 'Aninda',
+            'email' => 'aninda@goalsacademy.id',
+            'password' => Hash::make('password'),
+            'user_role' => 'moderator',
             'email_verified_at' => now(),
         ]);
         User::create([

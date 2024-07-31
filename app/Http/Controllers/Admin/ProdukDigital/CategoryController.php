@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Ebook;
+namespace App\Http\Controllers\Admin\ProdukDigital;
 
 use Inertia\Inertia;
 use App\Models\Category;
@@ -21,7 +21,7 @@ class CategoryController extends Controller
                 $search = $request->input('search');
                 $perPage = $request->input('perPage', 10);
                 $categories = Category::whereHas('productType', function ($query) {
-                    $query->where('type', 'LIKE', '%e-book%');
+                    $query->where('type', 'LIKE', '%produk-digital%');
                 });
 
                 if ($search) {
@@ -30,7 +30,7 @@ class CategoryController extends Controller
 
                 $categories = $categories->with('productType:id,type')->paginate($perPage);;
 
-                return Inertia::render('Auth/Admin/Ebook/Category', [
+                return Inertia::render('Auth/Admin/ProdukDigital/Category', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
@@ -78,7 +78,7 @@ class CategoryController extends Controller
                 ]);
 
                 $category = new Category();
-                $category->product_type_id = 2; // 2 karena e-book
+                $category->product_type_id = 2; // 2 karena produk-digital
                 $category->name = $validateData['name'];
                 $category->slug = $validateData['slug'];
                 $category->is_visible = $validateData['is_visible'];

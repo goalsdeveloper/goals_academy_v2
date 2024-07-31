@@ -4,7 +4,7 @@ import MainLayout from "@/Layouts/MainLayout";
 import Filter from "../Partials/Produk/Filter";
 import SearchBar from "../Partials/Produk/SearchBar";
 import Bimbingan from "../Partials/Produk/Bimbingan";
-import Ebook from "../Partials/Produk/Ebook";
+import ProdukDigital from "../Partials/Produk/ProdukDigital";
 import Webinar from "../Partials/Produk/Webinar";
 import Consultation from "../Partials/Produk/Consultation";
 
@@ -15,9 +15,9 @@ import program4 from "/resources/img/program/dibimbing-offline-90.png";
 import program5 from "/resources/img/program/dibimbing-tuntas.png";
 import program6 from "/resources/img/program/dibimbing-olah-data.png";
 
-import ebook1 from "/resources/img/ebook/1.png";
-import ebook2 from "/resources/img/ebook/2.png";
-import ebook3 from "/resources/img/ebook/3.png";
+import produkdigital1 from "/resources/img/produk-digital/1.png";
+import produkdigital2 from "/resources/img/produk-digital/2.png";
+import produkdigital3 from "/resources/img/produk-digital/3.png";
 
 import webinar1 from "/resources/img/webinar/1.png";
 import webinar2 from "/resources/img/webinar/2.png";
@@ -27,38 +27,36 @@ import { data } from "autoprefixer";
 
 export default function Produk({
     auth,
-    dataDibimbing,
-    ebookData,
-    webinarData,
+    dataBimbingan,
+    // dataProdukDigital,
+    // dataWebinar,
     categories,
 }) {
-    const dataBimbingan = dataDibimbing;
     const categoriesBimbingan = ['Semua'].concat(
         categories
         .filter(i => i.product_type.type == 'Bimbingan')
         .map(i => i.name)
     )
-    const dataEbook = ebookData;
-    // const dataEbook = [
-    //     {
-    //         title: "How To Survive Your Thesis? Start with Theme",
-    //         price: "-",
-    //         image: ebook1,
-    //         link: "https://lynk.id/goalsacademy/XBmqq6J",
-    //     },
-    //     {
-    //         title: "Proposal Biar Diterima",
-    //         price: 40000,
-    //         image: ebook2,
-    //         link: "https://lynk.id/goalsacademy/XBmqq6J",
-    //     },
-    //     {
-    //         title: "Kajian Pustaka",
-    //         price: 40000,
-    //         image: ebook3,
-    //         link: "https://lynk.id/goalsacademy/XBmqq6J",
-    //     },
-    // ];
+    const dataProdukDigital = [
+        {
+            name: "How To Survive Your Thesis? Start with Theme",
+            price: "-",
+            product_image: produkdigital1,
+            link: "https://lynk.id/goalsacademy/XBmqq6J",
+        },
+        {
+            name: "Proposal Biar Diterima",
+            price: 40000,
+            product_image: produkdigital2,
+            link: "https://lynk.id/goalsacademy/XBmqq6J",
+        },
+        {
+            name: "Kajian Pustaka",
+            price: 40000,
+            product_image: produkdigital3,
+            link: "https://lynk.id/goalsacademy/XBmqq6J",
+        },
+    ];
 
     const dataWebinar = [
         {
@@ -94,7 +92,7 @@ export default function Produk({
     const [show, setShow] = useState(Array(3).fill(false));
     const { data: searchKeyword, setData: setSearchKeyword } = useForm({keyword: ''});
     const [data1, setData1] = useState(dataBimbingan.slice());
-    const [data2, setData2] = useState(dataEbook.slice());
+    const [data2, setData2] = useState(dataProdukDigital.slice());
     const [data3, setData3] = useState(dataWebinar.slice());
     const [category1, setCategory1] = useState('Semua');
 
@@ -118,7 +116,7 @@ export default function Produk({
                 .filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()))
                 .filter((item) => item.category.name == category1);
         }
-        const temp2 = dataEbook
+        const temp2 = dataProdukDigital
             .slice()
             .filter((item) => item.name.toLowerCase().includes(keyword));
         const temp3 = dataWebinar
@@ -156,8 +154,8 @@ export default function Produk({
             <Filter show={show} showHandler={showHandler} />
             <SearchBar searchHandler={searchHandler} className="hidden md:block" data={searchKeyword} setData={setSearchKeyword} />
             <Bimbingan data={data1} active={show[0]} status={status} categories={categoriesBimbingan} category={category1} setCategory={setCategory1} filterHandler={filterByCategory} />
-            {/* <Ebook data={data2} active={show[1]} status={status} /> */}
-            {/* <Webinar data={data3} active={show[2]} status={status} /> */}
+            <ProdukDigital data={data2} active={show[1]} status={status} />
+            <Webinar data={data3} active={show[2]} status={status} />
             <Consultation />
         </MainLayout>
     );
