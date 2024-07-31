@@ -45,7 +45,7 @@ function MobileUI({ data }) {
             <div className="flex justify-between mb-6 xs:mb-8">
                 <div className="md:w-6/12">
                     <h2 className="text-[5vw]">
-                        Produk Digital<span className="text-primary">Skripsi</span>
+                        Produk <span className="text-primary">Digital</span>
                     </h2>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
