@@ -20,20 +20,20 @@ export default function Preliminary() {
                     </p>
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex gap-[1.8vw] md:gap-4 overflow-x-auto w-max">
                     {Array.from({ length: 4 }).map((item) => (
-                        <div className="w-[25%] border rounded-[.8vw] bg-white space-y-[.4vw] p-[1.6vw]">
-                            <div className="w-[3.6vw] h-[3.6vw] border rounded-full">
+                        <div className="w-[70vw] md:w-[19.38vw] border rounded-[3.7vw] md:rounded-[.8vw] bg-white space-y-[.9vw] md:space-y-[.4vw] p-[3.7vw] md:p-[1.6vw]">
+                            <div className="w-[11.6vw] h-[11.6vw] md:w-[3.6vw] md:h-[3.6vw] border rounded-full">
                                 <img
                                     src={IconFeat1}
                                     alt="icon-feat"
                                     className="object-cover w-full h-full p-1 rounded-full"
                                 />
                             </div>
-                            <h3 className="font-sans text-[1vw] font-semibold">
+                            <h3 className="font-sans text-[3.2vw] md:text-[1vw] font-semibold">
                                 Tutor Professional dan Friendly
                             </h3>
-                            <p className="font-sans text-[1vw]">
+                            <p className="font-sans text-[3.2vw] md:text-[1vw]">
                                 Nikmati pengalaman bimbingan skripsi bersama
                                 tutor-tutor profesional, friendly, dan solutif
                                 pilihan Goals Academy.

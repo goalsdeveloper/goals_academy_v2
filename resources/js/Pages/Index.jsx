@@ -1,14 +1,15 @@
 import MainLayout from "@/Layouts/MainLayout";
 // import Hero from "./Partials/Home/Hero";
 // import Preliminary from "./Partials/Home/Preliminary";
-import Program from "./Partials/Home/Program";
-import Video from "./Partials/Home/Video";
+// import Program from "./Partials/Home/Program";
+// import Video from "./Partials/Home/Video";
 // import Testimony from "./Partials/Home/Testimony";
 // import FAQ from "./Partials/Home/FAQ";
 // import Consultation from "./Partials/Home/Consultation";
 
 import Hero from "./Partials/HomeRevamp/Hero";
 import Preliminary from "./Partials/HomeRevamp/Preliminary";
+import Program from "./Partials/HomeRevamp/Program";
 import Clients from "./Partials/HomeRevamp/Clients";
 import Testimony from "./Partials/HomeRevamp/Testimony";
 import FAQ from "./Partials/HomeRevamp/FAQ";
