@@ -38,55 +38,55 @@ export default function Produk({
         .map(i => i.name)
     )
     const dataProdukDigital = [
-        {
-            name: "How To Survive Your Thesis? Start with Theme",
-            price: "-",
-            product_image: produkdigital1,
-            link: "https://lynk.id/goalsacademy/XBmqq6J",
-        },
-        {
-            name: "Proposal Biar Diterima",
-            price: 40000,
-            product_image: produkdigital2,
-            link: "https://lynk.id/goalsacademy/XBmqq6J",
-        },
-        {
-            name: "Kajian Pustaka",
-            price: 40000,
-            product_image: produkdigital3,
-            link: "https://lynk.id/goalsacademy/XBmqq6J",
-        },
+        // {
+        //     name: "How To Survive Your Thesis? Start with Theme",
+        //     price: "-",
+        //     product_image: produkdigital1,
+        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
+        // },
+        // {
+        //     name: "Proposal Biar Diterima",
+        //     price: 40000,
+        //     product_image: produkdigital2,
+        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
+        // },
+        // {
+        //     name: "Kajian Pustaka",
+        //     price: 40000,
+        //     product_image: produkdigital3,
+        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
+        // },
     ];
 
     const dataWebinar = [
-        {
-            title: "Tips Membuat Judul Skripsi Mudah ACC",
-            price: 34000,
-            image: webinar2,
-            date: "2023-10-24 19:00:00",
-            link: "https://lynk.id/goalsacademy/oZyPAav",
-        },
-        {
-            title: "Teknik Lolos Paraphrase Penulisan Proposal Skripsi",
-            price: 34000,
-            image: webinar1,
-            date: "2023-10-25 19:00:00",
-            link: "https://lynk.id/goalsacademy/a2j9vM8",
-        },
-        {
-            title: "Tips & Trick Presentasi Sidang Skripsi yang Disukai Dosen",
-            price: 34000,
-            image: webinar3,
-            date: "2023-10-26 19:00:00",
-            link: "https://lynk.id/goalsacademy/lmzQOyX",
-        },
-        {
-            title: "Bundling Webinar Series Goals Academy",
-            price: 94000,
-            image: webinar4,
-            date: "2023-10-24 19:00:00",
-            link: "https://lynk.id/goalsacademy/nGV0BrP",
-        },
+        // {
+        //     title: "Tips Membuat Judul Skripsi Mudah ACC",
+        //     price: 34000,
+        //     image: webinar2,
+        //     date: "2023-10-24 19:00:00",
+        //     link: "https://lynk.id/goalsacademy/oZyPAav",
+        // },
+        // {
+        //     title: "Teknik Lolos Paraphrase Penulisan Proposal Skripsi",
+        //     price: 34000,
+        //     image: webinar1,
+        //     date: "2023-10-25 19:00:00",
+        //     link: "https://lynk.id/goalsacademy/a2j9vM8",
+        // },
+        // {
+        //     title: "Tips & Trick Presentasi Sidang Skripsi yang Disukai Dosen",
+        //     price: 34000,
+        //     image: webinar3,
+        //     date: "2023-10-26 19:00:00",
+        //     link: "https://lynk.id/goalsacademy/lmzQOyX",
+        // },
+        // {
+        //     title: "Bundling Webinar Series Goals Academy",
+        //     price: 94000,
+        //     image: webinar4,
+        //     date: "2023-10-24 19:00:00",
+        //     link: "https://lynk.id/goalsacademy/nGV0BrP",
+        // },
     ];
 
     const [show, setShow] = useState(Array(3).fill(false));

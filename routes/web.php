@@ -97,6 +97,9 @@ Route::get('/syarat_dan_ketentuan', function () {
     return Inertia::render('Main/SyaratDanKetentuan');
 });
 
+Route::get('/produk/dibimbing-satu-semester', function () {
+    return Inertia::render('Main/DibimbingSatuSemester');
+});
 Route::resource('/produk', PurchaseController::class);
 
 Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status')->middleware(['auth', 'verified']);

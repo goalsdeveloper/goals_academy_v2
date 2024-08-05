@@ -7,11 +7,11 @@ import "@/script/mainHeader";
 export default function MainLayout({
     auth,
     title,
-    children,
     className,
     withFooter = true,
     headerClassName,
-    footerClassName
+    footerClassName,
+    children,
 }) {
     return (
         <>
