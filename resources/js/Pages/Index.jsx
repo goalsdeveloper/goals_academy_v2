@@ -1,16 +1,11 @@
 import MainLayout from "@/Layouts/MainLayout";
-// import Hero from "./Partials/Home/Hero";
-// import Preliminary from "./Partials/Home/Preliminary";
+import Hero from "./Partials/Home/Hero";
+import Preliminary from "./Partials/Home/Preliminary";
 import Program from "./Partials/Home/Program";
 import Video from "./Partials/Home/Video";
 import Testimony from "./Partials/Home/Testimony";
-// import FAQ from "./Partials/Home/FAQ";
+import FAQ from "./Partials/Home/FAQ";
 import Consultation from "./Partials/Home/Consultation";
-
-import Hero from "./Partials/HomeRevamp/Hero";
-import Preliminary from "./Partials/HomeRevamp/Preliminary";
-import Clients from "./Partials/HomeRevamp/Clients";
-import FAQ from "./Partials/HomeRevamp/FAQ";
 
 import CornerWaveVector from "@/Components/CornerWaveVector";
 
@@ -178,7 +173,6 @@ export default function Index({ auth, products: data_program }) {
     return (
         <MainLayout auth={auth} title="Home">
             <Hero />
-            <Clients />
             <Preliminary />
             <Program data={data_program} />
             <div className="relative py-3 overflow-hidden bg-secondary md:bg-transparent md:overflow-visible xs:py-6 md:py-0">

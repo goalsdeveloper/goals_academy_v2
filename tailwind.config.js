@@ -33,7 +33,6 @@ export default {
                     "40": "#A6A6A6",
                     "50": "#848484",
                     "60": "#737373",
-                    "70": "#4F4F4F",
                     "80": "#404040"
                 },
                 "info": {
@@ -151,14 +150,6 @@ export default {
                 '1': '1',
             },
             keyframes: {
-                'scroll': {
-                        'from': { 'transform': 'translateX(0%)' },
-                        'to': { 'transform': 'translateX(-100%)'}
-                },
-                'scroll2': {
-                        'from': { 'transform': 'translateX(100%)' },
-                        'to': { 'transform': 'translateX(0%)'}
-                },
                 'slideRight': {
                     'from': { 'transform': 'translateX(-100%)' },
                     'to': { 'transform': 'translateX(0)' }
@@ -183,8 +174,6 @@ export default {
                 }
             },
             animation: {
-                scroll: 'scroll 20s infinite linear',
-                scroll2: 'scroll2 20s infinite linear',
                 slideRight: 'slideRight 3s',
                 fadeIn: 'fadeIn 3s',
                 autoplayY: 'autoplayY 20s infinite linear',
