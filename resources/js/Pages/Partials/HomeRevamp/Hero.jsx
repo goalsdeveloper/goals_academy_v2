@@ -3,6 +3,7 @@ import React from "react";
 import LeftPeople from "@/Assets/image/hero/left_people.png";
 import RightPeople from "@/Assets/image/hero/right_people.png";
 import GoalsButton from "@/Components/elements/GoalsButton";
+import { router } from "@inertiajs/react";
 
 export default function Hero() {
     return (
@@ -24,7 +25,7 @@ export default function Hero() {
                 </div>
 
                 <div className="flex flex-col items-center flex-[2] gap-y-[7.5vw] md:gap-[2vw]">
-                    <GoalsButton className="text-nowrap">
+                    <GoalsButton className="text-nowrap" onClick={() => router.visit('/produk')}>
                         Daftar Bimbingan Sekarang
                     </GoalsButton>
                     <div className="flex">
@@ -51,21 +52,21 @@ export default function Hero() {
             </div>
 
             <div
-                className="hidden md:block -z-20 absolute top-[2vw] -right-[2vw] w-72 h-72 rounded-full"
+                className="hidden md:block -z-20 absolute top-[2vw] -right-[2vw] md:w-[15vw] h-[15vw] rounded-full"
                 style={{
                     background:
                         "radial-gradient(circle, rgba(255,217,201,.8) 0%, rgba(255,227,216,0) 70%)",
                 }}
             />
             <div
-                className="hidden md:block -z-20 absolute top-[9vw] right-[5vw] w-72 h-72 rounded-full"
+                className="hidden md:block -z-20 absolute top-[9vw] right-[5vw] md:w-[15vw] h-[15vw] rounded-full"
                 style={{
                     background:
                         "radial-gradient(circle, rgba(255,217,201,.8) 0%, rgba(255,227,216,0) 70%)",
                 }}
             />
             <div
-                className="-z-20 absolute top-[11vw] -right-[5vw] w-72 h-72 rounded-full"
+                className="-z-20 absolute top-[11vw] -right-[5vw] md:w-[15vw] h-[15vw] rounded-full"
                 style={{
                     background:
                         "radial-gradient(circle, rgba(255,217,201,.8) 0%, rgba(255,227,216,0) 70%)",

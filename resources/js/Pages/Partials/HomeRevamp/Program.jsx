@@ -1,7 +1,12 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
 import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
-export default function Program() {
+export default function Program({data}) {
+    console.log(data)
+
+
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
     const [selectedCat, setSelectedCat] = useState(0);
 
     return (
@@ -12,7 +17,7 @@ export default function Program() {
             </h2>
 
             <div className="flex flex-col md:flex-row mx-auto gap-[2.1vw]">
-                <div className="md:w-[20%] flex md:flex-col overflow-x-scroll gap-[2.7vw] md:gap-0 pb-[1.6vw]">
+                <div className="md:w-[20%] flex md:flex-col overflow-x-auto gap-[2.7vw] md:gap-0 pb-[1.6vw]">
                     {program_categories.map((cat, i) => (
                         <button
                             key={i}
@@ -53,9 +58,12 @@ export default function Program() {
                                 <li>Offline</li>
                             </ul>
 
-                            <button className="text-[3.2vw] md:text-[1vw] p-[1vw] md:px-[2vw] md:py-[.8vw] w-full bg-secondary text-white md:rounded-[.4vw] rounded-[1.2vw] py-[2.7vw]">
+                            {/* <button className="text-[3.2vw] md:text-[1vw] p-[1vw] md:px-[2vw] md:py-[.8vw] w-full bg-secondary text-white md:rounded-[.4vw] rounded-[1.2vw] py-[2.7vw]">
                                 Daftar Sekarang
-                            </button>
+                            </button> */}
+                            <GoalsButton className="w-full">
+                                {isMobile ? "Daftar" : "Daftar Sekarang"}
+                            </GoalsButton>
                         </div>
                     ))}
                 </div>
