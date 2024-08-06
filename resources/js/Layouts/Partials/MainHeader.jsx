@@ -173,7 +173,7 @@ export default function MainHeader({ auth, title, className }) {
     return (
         <header
             className={`${
-                isMobile && "shadow"
+                isMobile ? "shadow" : ""
             } overflow-y-visible overflow-x-clip sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50 ${className}`}
         >
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}

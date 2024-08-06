@@ -8,13 +8,15 @@ export default function CTA() {
         <section id="cta" className="relative bg-secondary">
             <img src={circle1} alt="" className="absolute top-0 left-0 h-full" />
             <img src={circle2} alt="" className="absolute top-0 left-[38vw] h-full" />
-            <div className="container mx-auto relative py-[3vw] flex justify-between items-center">
+            <div className="container mx-auto relative h-[22vw] flex justify-between items-center">
                 <div className="flex flex-col gap-[2vw]">
                     <span className="w-fit p-[.5vw] px-[1.5vw] bg-red-500 text-white rounded-[.5vw] text-[1.25vw] font-semibold">Bimbingan Sudah Dimulai!</span>
-                    <h2 className="text-white">DIBIMBING SATU SEMESTER</h2>
-                    <p className="text-[1.25vw] flex items-center gap-[.5vw] !text-white">
-                        <img className="w-[2vw]" src={calendarIcon} alt="📆" /> Bimbingan Dimulai : 2 September 2024
-                    </p>
+                    <div className="space-y-[1vw]">
+                        <h2 className="text-white">DIBIMBING SATU SEMESTER</h2>
+                        <p className="text-[1.25vw] flex items-center gap-[.5vw] !text-white">
+                            <img className="w-[2vw]" src={calendarIcon} alt="📆" /> Bimbingan Dimulai : 2 September 2024
+                        </p>
+                    </div>
                     <GoalsButton className="w-fit px-[1.25vw] font-sans !font-bold text-[1.04vw] rounded-[.25vw]" activeClassName="bg-white text-secondary hover:bg-soft">DAFTAR SEKARANG</GoalsButton>
                 </div>
                 <div className="text-white">
