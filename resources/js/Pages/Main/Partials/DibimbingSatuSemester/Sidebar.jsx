@@ -1,4 +1,4 @@
-import GoalsButton from "@/Components/GoalsButton"
+import GoalsButton from "@/Components/GoalsButton";
 
 export default function Sidebar ({ items, scrollToSection }) {
     return (

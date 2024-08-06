@@ -1,9 +1,9 @@
-import testimony1 from "/resources/img/testimony/wendi.jpg";
-import testimony2 from "/resources/img/testimony/ravly.jpg";
-import testimony3 from "/resources/img/testimony/zaqya.jpg";
-import testimony4 from "/resources/img/testimony/haris.jpg";
-import testimony5 from "/resources/img/testimony/ferry.jpg";
-import testimony6 from "/resources/img/testimony/khafidh.jpg";
+import testimoni1 from "/resources/img/testimony/wendi.jpg";
+import testimoni2 from "/resources/img/testimony/ravly.jpg";
+import testimoni3 from "/resources/img/testimony/zaqya.jpg";
+import testimoni4 from "/resources/img/testimony/haris.jpg";
+import testimoni5 from "/resources/img/testimony/ferry.jpg";
+import testimoni6 from "/resources/img/testimony/khafidh.jpg";
 
 export default function Testimoni () {
     const items = [
@@ -11,42 +11,42 @@ export default function Testimoni () {
             name: "Rizky",
             instagram: "instagram",
             faculty: "Hukum",
-            image: testimony1,
+            image: testimoni1,
             text: "Ngerjain skripsi gak lagi bikin stres karena ada Goals Academy. Tutornya keren-keren, selalu siap bantu dan ngasih solusi buat masalah skripsi gue.",
         },
         {
             name: "Doni",
             instagram: "instagram",
             faculty: "Ilmu Komunikasi",
-            image: testimony2,
+            image: testimoni2,
             text: "Mentornya gokil banget! Setiap sesi bimbingan bawa insight baru yang bikin skripsi gue jadi lebih berisi. Worth it banget!",
         },
         {
             name: "Sinta",
             instagram: "instagram",
             faculty: "Akuntansi",
-            image: testimony3,
+            image: testimoni3,
             text: "Goals Academy bikin skripsi jadi gak terlalu ngeri. Semua materi dijelasin dengan simpel dan gampang dipahami. Sesi bimbingannya juga seru!",
         },
         {
             name: "Lia",
             instagram: "instagram",
             faculty: "Administrasi Publik",
-            image: testimony4,
+            image: testimoni4,
             text: "Bimbingan dari Goals Academy bikin gue lebih pede menghadapi sidang. Pertanyaannya udah gue antisipasi semua, thanks to the Q&A sessions!",
         },
         {
             name: "Maria",
             instagram: "instagram",
             faculty: "Ilmu Komunikasi",
-            image: testimony5,
+            image: testimoni5,
             text: "Bimbingan dari Goals Academy tuh ngebantu banget! Skripsi jadi selesai tepat waktu dan hasilnya mantap. Recommended banget deh buat kalian yang lagi berjuang skripsi!",
         },
         {
             name: "Haris",
             instagram: "instagram",
             faculty: "Hukum",
-            image: testimony6,
+            image: testimoni6,
             text: "Sebelum bimbingan di goals academy bingung dan ngga paham sama sekali terkait penggunaan SPSS, setelah daftar bimbingan dan tutornya simple banget aku jadi paham terkait SPSS.",
         },
     ];
