@@ -13,15 +13,27 @@ import FAQ from "./Partials/DibimbingSatuSemester/FAQ";
 import Konsultasi from "./Partials/DibimbingSatuSemester/Konsultasi";
 import { useEffect } from "react";
 import { useState } from "react";
-import { FaRegCalendar } from "react-icons/fa6";
+import { FaRegCalendar, FaWpforms } from "react-icons/fa6";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FiCreditCard, FiUser } from "react-icons/fi";
 import { PiGraduationCap, PiPresentationBold } from "react-icons/pi";
 import { RiComputerFill, RiPercentLine, RiQuestionLine, RiThumbUpFill } from "react-icons/ri";
-import { TbTag } from "react-icons/tb";
+import { TbHandClick, TbReceipt, TbTag } from "react-icons/tb";
 import { HiOutlineUserGroup } from "react-icons/hi2";
-import { MdOutlineLibraryBooks } from "react-icons/md";
+import { MdOutlineLibraryBooks, MdOutlineMarkEmailUnread } from "react-icons/md";
+import tool1 from "/resources/img/tools/discord.png";
+import tool2 from "/resources/img/tools/google-drive.png";
+import tool3 from "/resources/img/tools/google-docs.png";
+import tool4 from "/resources/img/tools/spss.png";
+import tool5 from "/resources/img/tools/google-sheets.png";
+import tool6 from "/resources/img/tools/canva.png";
 import tutor1 from "/resources/img/tutor2/1.png";
+import testimoni1 from "/resources/img/testimony/wendi.jpg";
+import testimoni2 from "/resources/img/testimony/ravly.jpg";
+import testimoni3 from "/resources/img/testimony/zaqya.jpg";
+import testimoni4 from "/resources/img/testimony/haris.jpg";
+import testimoni5 from "/resources/img/testimony/ferry.jpg";
+import testimoni6 from "/resources/img/testimony/khafidh.jpg";
 
 export default function DibimbingSatuSemester ({ auth }) {
     const [sidebarItems, setSidebarItems] = useState([
@@ -73,7 +85,7 @@ export default function DibimbingSatuSemester ({ auth }) {
             href: "faq",
             isActive: false,
         },
-    ])
+    ]);
 
     const benefitItems1 = [
         {
@@ -106,7 +118,7 @@ export default function DibimbingSatuSemester ({ auth }) {
             icon: <MdOutlineLibraryBooks className="text-[1.75vw] text-primary" />,
             className: "bg-[#EAEAEA]",
         },
-    ]
+    ];
 
     const benefitItems2 = [
         {text: "10x Sharing Session Skripsi"},
@@ -119,7 +131,34 @@ export default function DibimbingSatuSemester ({ auth }) {
         {text: "Community Sesama Pejuang Skripsi"},
         {text: "Free Record Sharing Session Skripsi"},
         {text: "Berkesempatan Mendapat Desk Review dan Produk Digital Gratis"},
-    ]
+    ];
+
+    const toolsItems = [
+        {
+            img: tool1,
+            text: "Discord",
+        },
+        {
+            img: tool2,
+            text: "GDrive",
+        },
+        {
+            img: tool3,
+            text: "GDocs",
+        },
+        {
+            img: tool4,
+            text: "SPSS",
+        },
+        {
+            img: tool5,
+            text: "GSheets",
+        },
+        {
+            img: tool6,
+            text: "Canva",
+        },
+    ];
 
     const tutorItems = [
         {
@@ -146,7 +185,98 @@ export default function DibimbingSatuSemester ({ auth }) {
             instagram: "https://instagram.com",
             text: "Menciptakan akses pendidikan yang bermutu merupakan fondasi penting dalam mendorong kemajuan riset dan teknologi."
         },
-    ]
+    ];
+
+    const testimoniItems = [
+        {
+            name: "Rizky",
+            instagram: "instagram",
+            faculty: "Hukum",
+            image: testimoni1,
+            text: "Ngerjain skripsi gak lagi bikin stres karena ada Goals Academy. Tutornya keren-keren, selalu siap bantu dan ngasih solusi buat masalah skripsi gue.",
+        },
+        {
+            name: "Doni",
+            instagram: "instagram",
+            faculty: "Ilmu Komunikasi",
+            image: testimoni2,
+            text: "Mentornya gokil banget! Setiap sesi bimbingan bawa insight baru yang bikin skripsi gue jadi lebih berisi. Worth it banget!",
+        },
+        {
+            name: "Sinta",
+            instagram: "instagram",
+            faculty: "Akuntansi",
+            image: testimoni3,
+            text: "Goals Academy bikin skripsi jadi gak terlalu ngeri. Semua materi dijelasin dengan simpel dan gampang dipahami. Sesi bimbingannya juga seru!",
+        },
+        {
+            name: "Lia",
+            instagram: "instagram",
+            faculty: "Administrasi Publik",
+            image: testimoni4,
+            text: "Bimbingan dari Goals Academy bikin gue lebih pede menghadapi sidang. Pertanyaannya udah gue antisipasi semua, thanks to the Q&A sessions!",
+        },
+        {
+            name: "Maria",
+            instagram: "instagram",
+            faculty: "Ilmu Komunikasi",
+            image: testimoni5,
+            text: "Bimbingan dari Goals Academy tuh ngebantu banget! Skripsi jadi selesai tepat waktu dan hasilnya mantap. Recommended banget deh buat kalian yang lagi berjuang skripsi!",
+        },
+        {
+            name: "Haris",
+            instagram: "instagram",
+            faculty: "Hukum",
+            image: testimoni6,
+            text: "Sebelum bimbingan di goals academy bingung dan ngga paham sama sekali terkait penggunaan SPSS, setelah daftar bimbingan dan tutornya simple banget aku jadi paham terkait SPSS.",
+        },
+    ];
+
+    const pembayaranItems = [
+        {
+            icon: <TbHandClick />,
+            text: "Klik Tombol \"Daftar Sekarang\""
+        },
+        {
+            icon: <FaWpforms />,
+            text: "Isi formulir untuk melengkapi pendaftaranmu"
+        },
+        {
+            icon: <FiCreditCard />,
+            text: "Pilih metode pembayaran yang tersedia"
+        },
+        {
+            icon: <TbReceipt />,
+            text: "Selesaikan pembayaranmu"
+        },
+        {
+            icon: <MdOutlineMarkEmailUnread />,
+            text: "Kemudian kamu akan menerima link melalui email yang kamu daftarkan"
+        },
+    ];
+
+    const FAQItems = [
+        {
+            question: "Kak ini programnya online atau offline ya?",
+            answer: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ab maiores similique libero. Adipisci, deserunt aperiam. Natus quae officia magnam ut quibusdam, illum blanditiis doloremque asperiores esse praesentium. Iure atque id reiciendis velit! Asperiores molestias eum officia itaque corporis sit quam veritatis impedit corrupti aut aliquid consequuntur neque dolore delectus, amet sunt placeat quasi? A iure distinctio maiores nobis fuga illum incidunt vel nemo eius, suscipit, provident officiis deleniti at reprehenderit, rem dolores repellendus iste labore officia quisquam accusantium eum. Quas, voluptas saepe? Natus, sequi delectus. Possimus soluta ipsum tenetur natus, voluptatibus quidem! Doloribus, nisi neque iusto libero necessitatibus a?"
+        },
+        {
+            question: "Sebulan ada berapa kali bimbingan ya kak?",
+            answer: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ab maiores similique libero. Adipisci, deserunt aperiam. Natus quae officia magnam ut quibusdam, illum blanditiis doloremque asperiores esse praesentium. Iure atque id reiciendis velit! Asperiores molestias eum officia itaque corporis sit quam veritatis impedit corrupti aut aliquid consequuntur neque dolore delectus, amet sunt placeat quasi? A iure distinctio maiores nobis fuga illum incidunt vel nemo eius, suscipit, provident officiis deleniti at reprehenderit, rem dolores repellendus iste labore officia quisquam accusantium eum. Quas, voluptas saepe? Natus, sequi delectus. Possimus soluta ipsum tenetur natus, voluptatibus quidem! Doloribus, nisi neque iusto libero necessitatibus a?"
+        },
+        {
+            question: "Bimbingannya bisa dilakukan via apa saja?",
+            answer: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ab maiores similique libero. Adipisci, deserunt aperiam. Natus quae officia magnam ut quibusdam, illum blanditiis doloremque asperiores esse praesentium. Iure atque id reiciendis velit! Asperiores molestias eum officia itaque corporis sit quam veritatis impedit corrupti aut aliquid consequuntur neque dolore delectus, amet sunt placeat quasi? A iure distinctio maiores nobis fuga illum incidunt vel nemo eius, suscipit, provident officiis deleniti at reprehenderit, rem dolores repellendus iste labore officia quisquam accusantium eum. Quas, voluptas saepe? Natus, sequi delectus. Possimus soluta ipsum tenetur natus, voluptatibus quidem! Doloribus, nisi neque iusto libero necessitatibus a?"
+        },
+        {
+            question: "Pembayarannya bisa melalui apa saja ya?",
+            answer: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ab maiores similique libero. Adipisci, deserunt aperiam. Natus quae officia magnam ut quibusdam, illum blanditiis doloremque asperiores esse praesentium. Iure atque id reiciendis velit! Asperiores molestias eum officia itaque corporis sit quam veritatis impedit corrupti aut aliquid consequuntur neque dolore delectus, amet sunt placeat quasi? A iure distinctio maiores nobis fuga illum incidunt vel nemo eius, suscipit, provident officiis deleniti at reprehenderit, rem dolores repellendus iste labore officia quisquam accusantium eum. Quas, voluptas saepe? Natus, sequi delectus. Possimus soluta ipsum tenetur natus, voluptatibus quidem! Doloribus, nisi neque iusto libero necessitatibus a?"
+        },
+        {
+            question: "Apakah tersedia untuk semua jurusan?",
+            answer: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ab maiores similique libero. Adipisci, deserunt aperiam. Natus quae officia magnam ut quibusdam, illum blanditiis doloremque asperiores esse praesentium. Iure atque id reiciendis velit! Asperiores molestias eum officia itaque corporis sit quam veritatis impedit corrupti aut aliquid consequuntur neque dolore delectus, amet sunt placeat quasi? A iure distinctio maiores nobis fuga illum incidunt vel nemo eius, suscipit, provident officiis deleniti at reprehenderit, rem dolores repellendus iste labore officia quisquam accusantium eum. Quas, voluptas saepe? Natus, sequi delectus. Possimus soluta ipsum tenetur natus, voluptatibus quidem! Doloribus, nisi neque iusto libero necessitatibus a?"
+        },
+    ];
 
     useEffect(() => {
         document.addEventListener('scroll', () => {
@@ -187,7 +317,7 @@ export default function DibimbingSatuSemester ({ auth }) {
         const headerHeight = document.querySelector('header').scrollHeight;
         const e = document.querySelector(id);
         scrollTo(0, e.offsetTop - headerHeight);
-    }
+    };
  
     return (
         <MainLayout auth={auth} title="Dibimbing Satu Semester">
@@ -198,12 +328,12 @@ export default function DibimbingSatuSemester ({ auth }) {
                 <div className="w-[55.05vw]">
                     <Benefit items1={benefitItems1} items2={benefitItems2} />
                     <LiniWaktu />
-                    <Tools />
+                    <Tools items={toolsItems} />
                     <Tutor items={tutorItems} />
-                    <Testimoni />
+                    <Testimoni items={testimoniItems} />
                     <Harga />
-                    <Pembayaran />
-                    <FAQ />
+                    <Pembayaran items={pembayaranItems} />
+                    <FAQ items={FAQItems} />
                     <Konsultasi />
                 </div>
             </div>

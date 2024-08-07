@@ -21,7 +21,7 @@ export default function CTA() {
                 </div>
                 <div className="text-white">
                     <p className="font-poppins text-[1.25vw] mb-[1vw] pe-[1vw]">Ada Pertanyaan?</p>
-                    <GoalsButton className="font-sans !font-bold text-[1.04vw] rounded-[.5vw]" activeClassName="bg-none hover:bg-white hover:text-secondary border-white border-2">Hubungi CS</GoalsButton>
+                    <GoalsButton href="https://wa.me/6282147638286" target="_blank" className="font-sans !font-bold text-[1.04vw] rounded-[.5vw]" activeClassName="bg-none hover:bg-white hover:text-secondary border-white border-2">Hubungi CS</GoalsButton>
                 </div>
             </div>
         </section>

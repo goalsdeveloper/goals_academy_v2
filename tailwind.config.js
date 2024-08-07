@@ -140,6 +140,7 @@ export default {
                 'arrow-right-secondary-32': 'url(/resources/img/icon/arrow-right-secondary-32.svg)',
             },
             boxShadow: {
+                'thin': '0px 2px 4px 0 rgba(0,0,0,.25)',
                 'normal': '0px 4px 4px 0 rgba(0,0,0,.25)',
                 'top': '0px -4px 4px 0 rgba(0,0,0,.25)',
                 'centered': '0px 0px 4px 0 rgba(0,0,0,.25)',

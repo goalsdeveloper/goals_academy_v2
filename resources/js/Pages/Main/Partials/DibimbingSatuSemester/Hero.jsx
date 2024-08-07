@@ -7,12 +7,11 @@ export default function Hero() {
         <section id="hero" className="">
             <div className="relative w-[100%] ps-[12.5vw] pe-[7.5vw] mx-auto flex flex-col-reverse md:flex-row items-center justify-center md:justify-between gap-8 md:gap-0 overflow-hidden">
                 <div className="absolute left-0 bottom-0 w-full sm:w-10/12 md:w-6/12 h-[38vw] overflow-hidden -z-10">
-                    {gradientBg3}
-                    {/* <img
+                    <img
                         className=""
                         src={gradientBg3}   
                         alt="Gradient Bg 3"
-                    /> */}
+                    />
                 </div>
                 <div className="md:w-7/12 -mt-[8vw]">
                     <h2 className="text-end md:text-start text-[2.5vw] mb-[1vw]">

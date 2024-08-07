@@ -16,7 +16,7 @@ export default function Harga () {
                 <p className="font-poppins font-medium text-[1.25vw]">Pendaftaran Hari ini diskon 50% cuma seharga</p>
                 <p className="font-poppins font-bold text-[1.875vw]">99K</p>
             </div>
-            <GoalsButton className="w-fit px-[2vw] font-sans text-[1.04vw] rounded-[.5vw] mt-[2vw]">Daftar Sekarang</GoalsButton>
+            <GoalsButton className="w-fit px-[2vw] font-sans text-[1.04vw] rounded-[.5vw] mt-[2.14vw]">Daftar Sekarang</GoalsButton>
         </section>
     )
 }

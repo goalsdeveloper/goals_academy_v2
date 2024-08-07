@@ -8,18 +8,16 @@ export default function Benefit ({ items1, items2  }) {
                 <div>
                     <h2 className="text-[2.5vw] text-black leading-[3.5vw]">Benefit dan Keunggulan <span className="text-primary">Dibimbing Satu Semester</span></h2>
                 </div>
-                {items1.map((item, index) => {
-                    return (
-                        <Card key={index} {...item} />
-                    )
-                })}
+                {items1.map((item, index) => (
+                    <Card key={index} {...item} />
+                ))}
             </div>
             <div>
                 <h2 className="w-10/12 text-[2.5vw] text-black leading-[3.5vw]">Apa Aja yang Kamu Dapetin dari <span className="text-primary">Dibimbing Satu Semester?</span></h2>
                 <div className="grid grid-cols-2 gap-y-[2.4vw] my-[3.07vw]">
-                    {items2.map((item, index) => {
-                        return <Item key={index} {...item} />
-                    })}
+                    {items2.map((item, index) => (
+                        <Item key={index} {...item} />
+                    ))}
                 </div>
                 <GoalsButton className="w-fit px-[2vw] font-sans text-[1.04vw] rounded-[.5vw]">Daftar Sekarang</GoalsButton>
             </div>
