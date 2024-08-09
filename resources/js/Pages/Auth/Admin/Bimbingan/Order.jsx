@@ -40,16 +40,6 @@ export default function Order({ auth, orders }) {
             {
                 accessorKey: "order_code", //access nested data with dot notation
                 header: "Id Pesanan",
-
-                // Cell: ({ cell }) => {
-                //     return (
-                //         <img
-                //             src={cell.row.original.gambar}
-                //             alt="thumbnail-product"
-                //             className="w-[3.6vw] h-[2.6vw] rounded-[.3vw]"
-                //         />
-                //     );
-                // },
             },
             {
                 accessorKey: "user.name",
@@ -66,6 +56,24 @@ export default function Order({ auth, orders }) {
             {
                 accessorKey: "status",
                 header: "Status",
+            },
+            {
+                accessorKey: "form_result.admin",
+                header: "Estimasi Admin",
+            },
+            {
+                accessorKey: "form_result.discount",
+                header: "Diskon",
+            },
+            {
+                // accessorKey: "form_result.discount",
+                header: "Estimasi Earnings",
+                Cell: ({ cell }) => cell.row.original.unit_price - cell.row.original.form_result.admin,
+            },
+            {
+                // accessorKey: "form_result.discount",
+                header: "Harga Total",
+                Cell: ({ cell }) => cell.row.original.unit_price,
             },
             {
                 accessorKey: "updated_at",
