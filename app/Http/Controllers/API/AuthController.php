@@ -88,7 +88,7 @@ class AuthController extends Controller
     public function registerValidation(Request $request)
     {
         $credential = Validator::make($request->all(), [
-            'username' => 'required|min:8|max:15|unique:users,username',
+            'username' => 'required|min:8|unique:users,username',
             'email' => 'required|email:dns|unique:users,email',
             'password' => 'required|min:8',
             'confirmation_password' => 'required|min:8|same:password'

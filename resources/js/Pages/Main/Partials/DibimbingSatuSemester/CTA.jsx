@@ -7,7 +7,7 @@ import circle2 from "/resources/img/vector/circle-2.svg";
 import circle3 from "/resources/img/vector/circle-3.svg";
 import circle4 from "/resources/img/vector/circle-4.svg";
 
-export default function CTA() {
+export default function CTA({ registrationLink }) {
     const [variant, setVariant] = useState(1);
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
@@ -52,13 +52,13 @@ export default function CTA() {
                     ? (
                         <div className="w-full grid grid-cols-2 gap-[2vw] mt-[7.44vw]">
                             <GoalsButton href="https://wa.me/6282147638286" target="_blank" className="font-sans font-medium md:!font-bold text-[3.25vw] md:text-[1.04vw] rounded-[1.8vw] md:rounded-[.5vw]" activeClassName="bg-none hover:bg-white text-white hover:text-secondary border-white border-2">Hubungi CS</GoalsButton>
-                            <GoalsButton className="w-full md:w-fit md:px-[2vw] font-sans !font-medium text-[3.25vw] md:text-[1.04vw] rounded-[1.8vw] md:rounded-[.25vw]" activeClassName="bg-white text-secondary hover:bg-soft">Daftar Sekarang</GoalsButton>
+                            <GoalsButton href={registrationLink} className="w-full md:w-fit md:px-[2vw] font-sans !font-medium text-[3.25vw] md:text-[1.04vw] rounded-[1.8vw] md:rounded-[.25vw]" activeClassName="bg-white text-secondary hover:bg-soft">Daftar Sekarang</GoalsButton>
                         </div>
                     )
                     : (
                         <>
                             {variant == 1 && 
-                                <GoalsButton className="w-full md:w-fit md:px-[2vw] font-sans !font-medium text-[3.25vw] md:text-[1.04vw] rounded-[1.8vw] md:rounded-[.25vw]" activeClassName="bg-white text-secondary hover:bg-soft">Daftar Sekarang</GoalsButton>
+                                <GoalsButton href={registrationLink} className="w-full md:w-fit md:px-[2vw] font-sans !font-medium text-[3.25vw] md:text-[1.04vw] rounded-[1.8vw] md:rounded-[.25vw]" activeClassName="bg-white text-secondary hover:bg-soft">Daftar Sekarang</GoalsButton>
                             }
 
                             {variant == 2 &&

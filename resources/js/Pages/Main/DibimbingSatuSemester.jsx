@@ -29,6 +29,7 @@ import tool5 from "/resources/img/tools/google-sheets.png";
 import tool6 from "/resources/img/tools/canva.png";
 import tutor1 from "/resources/img/tutor2/1.png";
 import tutor2 from "/resources/img/tutor2/2.png";
+import tutor3 from "/resources/img/tutor2/3.png";
 import testimoni1 from "/resources/img/testimony/wendi.jpg";
 import testimoni2 from "/resources/img/testimony/ravly.jpg";
 import testimoni3 from "/resources/img/testimony/zaqya.jpg";
@@ -39,6 +40,8 @@ import GoalsButton from "@/Components/GoalsButton";
 
 export default function DibimbingSatuSemester ({ auth }) {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
+    const registrationLink = "https://lynk.id/goalsacademy/VdDQKd0";
 
     const [sidebarItems, setSidebarItems] = useState([
         {
@@ -184,7 +187,7 @@ export default function DibimbingSatuSemester ({ auth }) {
         {
             name: "Shobastian Muchtar",
             title: "Tutor Favorit di Goals Academy",
-            img: null,
+            img: tutor3,
             linkedin: "https://www.linkedin.com/in/shobastian-muchtar-6571381b9",
             instagram: "https://www.instagram.com/shobastiann/",
             text: "Tutor Favorit di Goals Academy yang memiliki tingkat kepuasan bimbingan 4.9/5 dan terkenal sebagai Tutor solutif untuk berbagai permasalahan skripsi."
@@ -330,16 +333,16 @@ export default function DibimbingSatuSemester ({ auth }) {
     return (
         <MainLayout auth={auth} title="Dibimbing Satu Semester" footerClassName="pb-[20vw] md:pb-0">
             <Hero />
-            <CTA />
+            <CTA {...{registrationLink}} />
             <div className="md:container mx-auto flex justify-between pt-[8vw] md:py-[4vw]">
-                {!isMobile && <Sidebar items={sidebarItems} scrollToSection={scrollToSection} />}
+                {!isMobile && <Sidebar items={sidebarItems} {...{registrationLink, scrollToSection}} />}
                 <div className="w-full md:w-[55.05vw] mx-auto md:mx-0 flex flex-col md:block">
-                    <Benefit items1={benefitItems1} items2={benefitItems2} />
+                    <Benefit items1={benefitItems1} items2={benefitItems2} {...{registrationLink}} />
                     <LiniWaktu />
                     <Tools items={toolsItems} />
                     <Tutor items={tutorItems} />
                     <Testimoni items={testimoniItems} />
-                    <Harga />
+                    <Harga {...{registrationLink}} />
                     <Pembayaran items={pembayaranItems} />
                     <FAQ items={FAQItems} />
                     <Konsultasi />
@@ -347,7 +350,7 @@ export default function DibimbingSatuSemester ({ auth }) {
             </div>
             {isMobile && 
                 <div className="fixed bottom-0 w-full h-[20vw] p-[4vw] bg-white z-10">
-                    <GoalsButton className="px-[2vw] h-full font-sans text-[3.256vw] md:text-[1.04vw] rounded-[2vw] md:rounded-[.5vw]">Daftar Sekarang</GoalsButton>
+                    <GoalsButton href={registrationLink} className="px-[2vw] h-full font-sans text-[3.256vw] md:text-[1.04vw] rounded-[2vw] md:rounded-[.5vw]">Daftar Sekarang</GoalsButton>
                 </div>
             }
         </MainLayout>

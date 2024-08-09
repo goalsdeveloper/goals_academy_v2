@@ -225,7 +225,7 @@ function NavbarExpand({
     const [profileDropdown, setProfileDropdown] = useState(false);
     return (
         <>
-            <div className="hidden md:grid grid-cols-5 md:gap-[3vw] font-medium text-center text-[4vw] md:text-[1vw] select-none">
+            <div className="hidden md:grid grid-cols-3 md:gap-[3vw] font-medium text-center text-[4vw] md:text-[1vw] select-none">
                 <Link
                     href="/produk"
                     className={`font-poppins hover:text-primary flex justify-center ${

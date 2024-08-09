@@ -5,7 +5,7 @@ import { useMediaQuery } from "react-responsive";
 import GoalsButton from "@/Components/GoalsButton";
 import { BiSolidCheckCircle } from "react-icons/bi";
 
-export default function Benefit ({ items1, items2 }) {
+export default function Benefit ({ items1, items2, registrationLink }) {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
@@ -48,7 +48,7 @@ export default function Benefit ({ items1, items2 }) {
                         <Item key={index} {...item} />
                     ))}
                 </div>
-                {!isMobile && <GoalsButton className="w-fit px-[2vw] font-sans text-[2vw] md:text-[1.04vw] rounded-[.5vw]">Daftar Sekarang</GoalsButton>}
+                {!isMobile && <GoalsButton href={registrationLink} className="w-fit px-[2vw] font-sans text-[2vw] md:text-[1.04vw] rounded-[.5vw]">Daftar Sekarang</GoalsButton>}
             </div>
         </section>
     )
