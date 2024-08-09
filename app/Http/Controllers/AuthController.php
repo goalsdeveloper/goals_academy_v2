@@ -33,7 +33,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = auth()->user();
             Log::info("User {username} has been Log in.", ['username' => $user->username]);
-            return redirect(RouteServiceProvider::HOME);
+            return redirect()->intended(RouteServiceProvider::HOME);
         } else {
             return redirect()->back()->with('message', ['login' => 'Email or password is invalid!']);
         }
@@ -61,7 +61,7 @@ class AuthController extends Controller
 
         Auth::login($user, true);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     public function logout(Request $request)
