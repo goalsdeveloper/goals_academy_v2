@@ -45,7 +45,7 @@ function Item ({id, show, toggleShow, question, answer}) {
         <>
             <button
             type="button"
-            className="w-full flex justify-between py-[4vw] px-[4vw] md:py-[1vw] md:px-[2vw] shadow-thin rounded-[2.5vw] md:rounded-[.75vw]"
+            className="w-full flex justify-between gap-[4vw] md:gap-[1vw] py-[4vw] px-[4vw] md:py-[1vw] md:px-[2vw] shadow-thin rounded-[2.5vw] md:rounded-[.75vw]"
             onClick={() => toggleShow(id)}
             >
                 <div className="text-start">

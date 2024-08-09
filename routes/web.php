@@ -97,7 +97,7 @@ Route::get('/syarat_dan_ketentuan', function () {
     return Inertia::render('Main/SyaratDanKetentuan');
 });
 
-Route::get('/produk/dibimbing-satu-semester', function () {
+Route::get('/dibimbingsemester', function () {
     return Inertia::render('Main/DibimbingSatuSemester');
 });
 Route::resource('/produk', PurchaseController::class);

@@ -2,7 +2,7 @@ import gradientBg5 from "/resources/img/vector/gradient-bg-5.svg";
 
 export default function Tools ({ items }) {
     return (
-        <section id="tools" className="container mx-auto md:w-auto md:pb-[3.4vw] mb-[9vw] md:mb-[3.4vw]">
+        <section id="tools" className="container mx-auto md:w-auto mb-[9vw] md:mb-[3.4vw]">
             <div className="relative shadow-normal rounded-[7.9vw] md:rounded-[1.75vw] md:h-[19.25vw] overflow-hidden">
                 <div className="p-[10.23vw] md:p-[4vw] space-y-[6vw] md:space-y-[2vw]">
                     <h2 className="text-[5vw] md:text-[1.875vw] text-black md:font-semibold md:leading-[3.5vw] text-center"><span className="text-primary">Tools</span> yang Bakal Digunakan</h2>

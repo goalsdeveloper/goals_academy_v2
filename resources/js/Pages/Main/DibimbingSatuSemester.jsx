@@ -28,12 +28,14 @@ import tool4 from "/resources/img/tools/spss.png";
 import tool5 from "/resources/img/tools/google-sheets.png";
 import tool6 from "/resources/img/tools/canva.png";
 import tutor1 from "/resources/img/tutor2/1.png";
+import tutor2 from "/resources/img/tutor2/2.png";
 import testimoni1 from "/resources/img/testimony/wendi.jpg";
 import testimoni2 from "/resources/img/testimony/ravly.jpg";
 import testimoni3 from "/resources/img/testimony/zaqya.jpg";
 import testimoni4 from "/resources/img/testimony/herinda.jpg";
 import testimoni5 from "/resources/img/testimony/ferry.jpg";
 import testimoni6 from "/resources/img/testimony/haris.jpg";
+import GoalsButton from "@/Components/GoalsButton";
 
 export default function DibimbingSatuSemester ({ auth }) {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
@@ -165,27 +167,27 @@ export default function DibimbingSatuSemester ({ auth }) {
     const tutorItems = [
         {
             name: "Yordhan Ghalis Dewangga",
-            title: "Chief Executive Officer",
+            title: "Founder Goals Academy",
             img: tutor1,
-            linkedin: "https://linkedin.com/in/",
-            instagram: "https://instagram.com",
+            linkedin: "https://www.linkedin.com/in/yordhan-mahasa-4b6144129/",
+            instagram: "https://www.instagram.com/yordhangd/",
             text: "Menciptakan akses pendidikan yang bermutu merupakan fondasi penting dalam mendorong kemajuan riset dan teknologi."
         },
         {
-            name: "Tutor 1",
-            title: "Tutor Pembantu 1",
-            img: null,
-            linkedin: "https://linkedin.com/in/",
-            instagram: "https://instagram.com",
-            text: "Menciptakan akses pendidikan yang bermutu merupakan fondasi penting dalam mendorong kemajuan riset dan teknologi."
+            name: "Maulidya Indah Mega Saputri",
+            title: "Lulusan Terbaik & Tercepat UGM",
+            img: tutor2,
+            linkedin: "https://www.linkedin.com/in/egalidyaa/",
+            instagram: "https://www.instagram.com/egalidyaa/",
+            text: "Mahasiswa UGM yang berhasil lulus dengan predikat lulusan terbaik karena telah menyelesaikan skripsi dalam waktu 1,5 bulan saja."
         },
         {
-            name: "Tutor 2",
-            title: "Tutor Pembantu 2",
+            name: "Shobastian Muchtar",
+            title: "Tutor Favorit di Goals Academy",
             img: null,
-            linkedin: "https://linkedin.com/in/",
-            instagram: "https://instagram.com",
-            text: "Menciptakan akses pendidikan yang bermutu merupakan fondasi penting dalam mendorong kemajuan riset dan teknologi."
+            linkedin: "https://www.linkedin.com/in/shobastian-muchtar-6571381b9",
+            instagram: "https://www.instagram.com/shobastiann/",
+            text: "Tutor Favorit di Goals Academy yang memiliki tingkat kepuasan bimbingan 4.9/5 dan terkenal sebagai Tutor solutif untuk berbagai permasalahan skripsi."
         },
     ];
 
@@ -259,24 +261,28 @@ export default function DibimbingSatuSemester ({ auth }) {
 
     const FAQItems = [
         {
-            question: "Kak ini programnya online atau offline ya?",
-            answer: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ab maiores similique libero. Adipisci, deserunt aperiam. Natus quae officia magnam ut quibusdam, illum blanditiis doloremque asperiores esse praesentium. Iure atque id reiciendis velit! Asperiores molestias eum officia itaque corporis sit quam veritatis impedit corrupti aut aliquid consequuntur neque dolore delectus, amet sunt placeat quasi? A iure distinctio maiores nobis fuga illum incidunt vel nemo eius, suscipit, provident officiis deleniti at reprehenderit, rem dolores repellendus iste labore officia quisquam accusantium eum. Quas, voluptas saepe? Natus, sequi delectus. Possimus soluta ipsum tenetur natus, voluptatibus quidem! Doloribus, nisi neque iusto libero necessitatibus a?"
+            question: "Kak ini dibimbing private enggak?",
+            answer: "Engga kak, program ini adalah program bimbingan berkelompok secara intens. Jadi kakaknya bakal dibimbing bareng-bareng secara intens agar semua peserta bisa paham skripsi dan diharapkan bisa menyelesaikan skripsinya dalam 1 semester menggunakan roadmap yang dibuat oleh Tim Goals Academy."
         },
         {
-            question: "Sebulan ada berapa kali bimbingan ya kak?",
-            answer: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ab maiores similique libero. Adipisci, deserunt aperiam. Natus quae officia magnam ut quibusdam, illum blanditiis doloremque asperiores esse praesentium. Iure atque id reiciendis velit! Asperiores molestias eum officia itaque corporis sit quam veritatis impedit corrupti aut aliquid consequuntur neque dolore delectus, amet sunt placeat quasi? A iure distinctio maiores nobis fuga illum incidunt vel nemo eius, suscipit, provident officiis deleniti at reprehenderit, rem dolores repellendus iste labore officia quisquam accusantium eum. Quas, voluptas saepe? Natus, sequi delectus. Possimus soluta ipsum tenetur natus, voluptatibus quidem! Doloribus, nisi neque iusto libero necessitatibus a?"
+            question: "Kak ini jumlah pertemuannya ada berapa?",
+            answer: "Total pertemuan yang ada di program ini ada 28X Pertemuan ya kak."
         },
         {
-            question: "Bimbingannya bisa dilakukan via apa saja?",
-            answer: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ab maiores similique libero. Adipisci, deserunt aperiam. Natus quae officia magnam ut quibusdam, illum blanditiis doloremque asperiores esse praesentium. Iure atque id reiciendis velit! Asperiores molestias eum officia itaque corporis sit quam veritatis impedit corrupti aut aliquid consequuntur neque dolore delectus, amet sunt placeat quasi? A iure distinctio maiores nobis fuga illum incidunt vel nemo eius, suscipit, provident officiis deleniti at reprehenderit, rem dolores repellendus iste labore officia quisquam accusantium eum. Quas, voluptas saepe? Natus, sequi delectus. Possimus soluta ipsum tenetur natus, voluptatibus quidem! Doloribus, nisi neque iusto libero necessitatibus a?"
+            question: "Kak dengan aku ikut program ini apa bakalan bisa auto lulus tepat waktu?",
+            answer: "Kalo kamu ngikutin cara penyusunan skripsi yang dijelaskan oleh Tutor dengan konsisten, aku pastikan kamu bakal punya kesempatan buat lulus tepat waktu kok"
         },
         {
-            question: "Pembayarannya bisa melalui apa saja ya?",
-            answer: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ab maiores similique libero. Adipisci, deserunt aperiam. Natus quae officia magnam ut quibusdam, illum blanditiis doloremque asperiores esse praesentium. Iure atque id reiciendis velit! Asperiores molestias eum officia itaque corporis sit quam veritatis impedit corrupti aut aliquid consequuntur neque dolore delectus, amet sunt placeat quasi? A iure distinctio maiores nobis fuga illum incidunt vel nemo eius, suscipit, provident officiis deleniti at reprehenderit, rem dolores repellendus iste labore officia quisquam accusantium eum. Quas, voluptas saepe? Natus, sequi delectus. Possimus soluta ipsum tenetur natus, voluptatibus quidem! Doloribus, nisi neque iusto libero necessitatibus a?"
+            question: "Kak ini bakal bahas skripsi aja?",
+            answer: "Tujuan dari program ini engga cuma kasih tau tips strategi nyusun skripsi, tapi pengen ngebentuk kamu jadi lulusan terbaik dari segi akademik dan memiliki value yang terbentuk positif"
         },
         {
-            question: "Apakah tersedia untuk semua jurusan?",
-            answer: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ab maiores similique libero. Adipisci, deserunt aperiam. Natus quae officia magnam ut quibusdam, illum blanditiis doloremque asperiores esse praesentium. Iure atque id reiciendis velit! Asperiores molestias eum officia itaque corporis sit quam veritatis impedit corrupti aut aliquid consequuntur neque dolore delectus, amet sunt placeat quasi? A iure distinctio maiores nobis fuga illum incidunt vel nemo eius, suscipit, provident officiis deleniti at reprehenderit, rem dolores repellendus iste labore officia quisquam accusantium eum. Quas, voluptas saepe? Natus, sequi delectus. Possimus soluta ipsum tenetur natus, voluptatibus quidem! Doloribus, nisi neque iusto libero necessitatibus a?"
+            question: "Ini bisa bahas penelitian kuantatif atau kualitatif atau jurusan A B C D E F G gaa kak?",
+            answer: "Bisa banget kak, untuk program ini tersedia untuk semua jurusan ya, jadi pembahasannya nanti bersifat general dan kakaknya juga ga perlu khawatir karena nanti ada sesi tanya jawab atau sharing session yang fleksibel banget. Jadi kakak bisa nyesuaikan dengan jurusan atau permasalahan di skripsi kakak."
+        },
+        {
+            question: "Kak ada diskon engga?",
+            answer: "Ada dong! Tapi diskonnya khusus buat member komunitas dan mereka yang pernah bimbingan di Goals Academy ya kak. Apa kakaknya pernah bimbingan atau jadi member komunitas nih?"
         },
     ];
 
@@ -322,12 +328,12 @@ export default function DibimbingSatuSemester ({ auth }) {
     };
  
     return (
-        <MainLayout auth={auth} title="Dibimbing Satu Semester">
+        <MainLayout auth={auth} title="Dibimbing Satu Semester" footerClassName="pb-[20vw] md:pb-0">
             <Hero />
             <CTA />
             <div className="md:container mx-auto flex justify-between pt-[8vw] md:py-[4vw]">
                 {!isMobile && <Sidebar items={sidebarItems} scrollToSection={scrollToSection} />}
-                <div className="w-full md:w-[55.05vw] mx-auto flex flex-col md:block">
+                <div className="w-full md:w-[55.05vw] mx-auto md:mx-0 flex flex-col md:block">
                     <Benefit items1={benefitItems1} items2={benefitItems2} />
                     <LiniWaktu />
                     <Tools items={toolsItems} />
@@ -339,6 +345,11 @@ export default function DibimbingSatuSemester ({ auth }) {
                     <Konsultasi />
                 </div>
             </div>
+            {isMobile && 
+                <div className="fixed bottom-0 w-full h-[20vw] p-[4vw] bg-white z-10">
+                    <GoalsButton className="px-[2vw] h-full font-sans text-[3.256vw] md:text-[1.04vw] rounded-[2vw] md:rounded-[.5vw]">Daftar Sekarang</GoalsButton>
+                </div>
+            }
         </MainLayout>
     )
 }

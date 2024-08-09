@@ -42,20 +42,20 @@ export default function Tutor ({ items }) {
 
 function Card ({ name, title, img, linkedin, instagram, text }) {
     return (
-        <div className="w-[54.19vw] md:w-[18.75vw] border rounded-[3.72vw] md:rounded-[1vw] bg-primary-10 py-[5.56vw] px-[3.95vw] md:py-[1.25vw] md:px-[1vw] space-y-[3vw] md:space-y-[1.25vw]">
+        <div className="basis-full w-[54.19vw] md:w-[18.75vw] border rounded-[3.72vw] md:rounded-[1vw] bg-primary-10 py-[5.56vw] px-[3.95vw] md:py-[1.25vw] md:px-[1vw] space-y-[3vw] md:space-y-[1.25vw]">
             {img 
                 ? <img src={img} className="w-full h-[34.42vw] md:h-[12.65vw] object-cover border rounded-[3.72vw] md:rounded-[1vw] overflow-hidden" /> 
                 : <div className="w-full h-[34.42vw] md:h-[12.65vw] border rounded-[3.72vw] md:rounded-[1vw] bg-white"></div>
             }
             <div>
-                <h4 className="text-[3.256vw] md:text-[1.04vw] mb-[.25vw]">{name}</h4>
-                <p className="font-poppins text-[3.256vw] md:text-[1.04vw]">{title}</p>
+                <h4 className="text-[3vw] md:text-[1vw] mb-[.25vw]">{name}</h4>
+                <p className="font-poppins text-[3vw] md:text-[1vw]">{title}</p>
             </div>
             <div className="flex gap-[1.5vw] md:gap-[.5vw]">
-                <a href={linkedin} className="border border-neutral-20 rounded-full p-[1.5vw] md:p-[.5vw]"><FaLinkedinIn className="text-[3vw] md:text-[1.25vw]" /></a>
-                <a href={instagram} className="border border-neutral-20 rounded-full p-[1.5vw] md:p-[.5vw]"><FaInstagram className="text-[3vw] md:text-[1.25vw]" /></a>
+                <a href={linkedin} target="_blank" className="border border-neutral-20 rounded-full p-[1.5vw] md:p-[.5vw]"><FaLinkedinIn className="text-[3vw] md:text-[1.25vw]" /></a>
+                <a href={instagram} target="_blank" className="border border-neutral-20 rounded-full p-[1.5vw] md:p-[.5vw]"><FaInstagram className="text-[3vw] md:text-[1.25vw]" /></a>
             </div>
-            <p className="text-[3.256vw] md:text-[1.04vw]">{text}</p>
+            <p className="text-[3vw] md:text-[1vw]">{text}</p>
         </div>
     )
 }
