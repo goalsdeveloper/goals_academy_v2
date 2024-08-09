@@ -57,16 +57,16 @@ class UserSeeder extends Seeder
         ]);
         User::create([
             'username' => 'rara',
-            'name' => 'Rara',
-            'email' => 'rara@goalsacademy.id',
+            'name' => 'Vira Alfita Yunia',
+            'email' => 'viraalfita1813@gmail.com',
             'password' => Hash::make('password'),
             'user_role' => 'moderator',
             'email_verified_at' => now(),
         ]);
         User::create([
             'username' => 'aninda',
-            'name' => 'Aninda',
-            'email' => 'aninda@goalsacademy.id',
+            'name' => 'Aninda Waskita Devi',
+            'email' => 'anindawaskitadevi@gmail.com',
             'password' => Hash::make('password'),
             'user_role' => 'moderator',
             'email_verified_at' => now(),
