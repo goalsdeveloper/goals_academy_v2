@@ -11,8 +11,8 @@ import Harga from "./Partials/DibimbingSatuSemester/Harga";
 import Pembayaran from "./Partials/DibimbingSatuSemester/Pembayaran";
 import FAQ from "./Partials/DibimbingSatuSemester/FAQ";
 import Konsultasi from "./Partials/DibimbingSatuSemester/Konsultasi";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 import { FaRegCalendar, FaWpforms } from "react-icons/fa6";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FiCreditCard, FiUser } from "react-icons/fi";
@@ -31,11 +31,13 @@ import tutor1 from "/resources/img/tutor2/1.png";
 import testimoni1 from "/resources/img/testimony/wendi.jpg";
 import testimoni2 from "/resources/img/testimony/ravly.jpg";
 import testimoni3 from "/resources/img/testimony/zaqya.jpg";
-import testimoni4 from "/resources/img/testimony/haris.jpg";
+import testimoni4 from "/resources/img/testimony/herinda.jpg";
 import testimoni5 from "/resources/img/testimony/ferry.jpg";
-import testimoni6 from "/resources/img/testimony/khafidh.jpg";
+import testimoni6 from "/resources/img/testimony/haris.jpg";
 
 export default function DibimbingSatuSemester ({ auth }) {
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
     const [sidebarItems, setSidebarItems] = useState([
         {
             title: "Benefit",
@@ -91,31 +93,31 @@ export default function DibimbingSatuSemester ({ auth }) {
         {
             title: "Tutor Profesional",
             text: "Dipandu oleh mentor berpengalaman dibidangnya.",
-            icon: <FaChalkboardTeacher className="text-[1.75vw] text-primary" />,
+            icon: <FaChalkboardTeacher className="text-[3.75vw] md:text-[1.75vw] text-primary" />,
             className: "bg-[#EAEAEA]",
         },
         {
             title: "Harga Terjangkau",
             text: "Harga yang sangat-sangat terjangkau dibanding tempat lain.",
-            icon: <RiPercentLine className="text-[1.75vw] text-primary" />,
+            icon: <RiPercentLine className="text-[3.75vw] md:text-[1.75vw] text-primary" />,
             className: "bg-[#EAEAEA]",
         },
         {
             title: "Bimbingan Intensif",
             text: "28 pertemuan sepanjang  satu semester.",
-            icon: <PiPresentationBold className="text-[1.75vw] text-primary" />,
+            icon: <PiPresentationBold className="text-[3.75vw] md:text-[1.75vw] text-primary" />,
             className: "bg-[#FFEDE5]",
         },
         {
             title: "Komunitas Eksklusif",
             text: "Join ke komunitas aktif 24/7 dengan support Tutor Goals Academy.",
-            icon: <HiOutlineUserGroup className="text-[1.75vw] text-primary" />,
+            icon: <HiOutlineUserGroup className="text-[3.75vw] md:text-[1.75vw] text-primary" />,
             className: "bg-[#FFEDE5]",
         },
         {
             title: "Materi Komprehensif",
             text: "Materi bimbingan mencakup seluruh aspek yang dibutuhkan untuk skripsi.",
-            icon: <MdOutlineLibraryBooks className="text-[1.75vw] text-primary" />,
+            icon: <MdOutlineLibraryBooks className="text-[3.75vw] md:text-[1.75vw] text-primary" />,
             className: "bg-[#EAEAEA]",
         },
     ];
@@ -323,9 +325,9 @@ export default function DibimbingSatuSemester ({ auth }) {
         <MainLayout auth={auth} title="Dibimbing Satu Semester">
             <Hero />
             <CTA />
-            <div className="container mx-auto flex justify-between py-[4vw]">
-                <Sidebar items={sidebarItems} scrollToSection={scrollToSection} />
-                <div className="w-[55.05vw]">
+            <div className="md:container mx-auto flex justify-between pt-[8vw] md:py-[4vw]">
+                {!isMobile && <Sidebar items={sidebarItems} scrollToSection={scrollToSection} />}
+                <div className="w-full md:w-[55.05vw] mx-auto flex flex-col md:block">
                     <Benefit items1={benefitItems1} items2={benefitItems2} />
                     <LiniWaktu />
                     <Tools items={toolsItems} />
