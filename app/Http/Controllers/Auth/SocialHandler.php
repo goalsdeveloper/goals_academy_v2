@@ -2,29 +2,35 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Exception;
-use App\Models\User;
-use App\Models\Social;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Social;
+use App\Models\User;
 use App\Models\UserProfile;
-use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialHandler extends Controller
 {
-    public function redirectToProvider($provider)
+    public function redirectToProvider($provider, Request $req)
     {
-        return Socialite::driver($provider)->redirect();
+        Log::info($req->header('User-Agent'));
+        return Socialite::driver($provider)
+            ->with(['User-Agent' => $req->header('User-Agent') ?? "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"])
+            ->redirect();
     }
 
-    public function handleProviderCallback($provider)
+    public function handleProviderCallback($provider, Request $req)
     {
         try {
-            $user = Socialite::driver($provider)->user();
+            Log::info($req->header('User-Agent'));
+            $user = Socialite::driver($provider)
+                ->with(['User-Agent' => $req->header('User-Agent') ?? "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"])
+                ->user();
         } catch (Exception $e) {
             Log::info($e);
             return redirect()->route('auth.login')->with('social_failed', 'Gagal login menggunakan social!');
@@ -39,7 +45,7 @@ class SocialHandler extends Controller
         Auth::login($authUser);
         Log::info("User {username} has been Log in using {provider}", ['username' => $user->username, 'provider' => $provider]);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     public function findOrCreateUser($socialUser, $provider)
@@ -62,7 +68,7 @@ class SocialHandler extends Controller
                 ]);
 
                 UserProfile::create([
-                    'user_id' => $user['id']
+                    'user_id' => $user['id'],
                 ]);
             }
 
