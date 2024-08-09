@@ -16,6 +16,7 @@ export default function Order({ auth, orders }) {
     const [keyword, setKeyword] = useState(
         new URLSearchParams(window.location.search).get("search")
     );
+    console.log(orders)
 
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
@@ -58,8 +59,9 @@ export default function Order({ auth, orders }) {
                 header: "Status",
             },
             {
-                accessorKey: "form_result.admin",
+                // accessorKey: "form_result.admin",
                 header: "Estimasi Admin",
+                Cell: ({ cell }) => cell.row.original.form_result.purchase_method.is_price ? cell.row.original.form_result.purchase_method.admin_fee + '%' : 'Rp. ' + cell.row.original.form_result.purchase_method.admin_fee,
             },
             {
                 accessorKey: "form_result.discount",
