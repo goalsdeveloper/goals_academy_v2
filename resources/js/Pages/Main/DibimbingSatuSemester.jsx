@@ -174,7 +174,7 @@ export default function DibimbingSatuSemester ({ auth }) {
             img: tutor1,
             linkedin: "https://www.linkedin.com/in/yordhan-mahasa-4b6144129/",
             instagram: "https://www.instagram.com/yordhangd/",
-            text: "Menciptakan akses pendidikan yang bermutu merupakan fondasi penting dalam mendorong kemajuan riset dan teknologi."
+            text: "Pendiri platform Goals Academy sekaligus menjadi Tutor Pertama yang bisa menyelesaikan segala permasalahan skripsi di berbagai jurusan."
         },
         {
             name: "Maulidya Indah Mega Saputri",
