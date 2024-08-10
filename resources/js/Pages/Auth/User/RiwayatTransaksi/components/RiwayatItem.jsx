@@ -31,7 +31,7 @@ function RiwayatItem({ data }) {
             />
 
             <ProductItemCardLayout
-                imageUrl={data.products.product_image}
+                imageUrl={"/storage/" + data.products.product_image}
                 onClick={() => isMobile && setIsVisible(true)}
                 className={`${
                     isMobile && "border-t-2 last:border-y-2 cursor-pointer"
@@ -62,15 +62,17 @@ function RiwayatItem({ data }) {
                                 ))}
                         </ProductItemCardHeader>
                         <ProductItemCardContent>
-                            <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw]">
+                            <div className="text-[2.7vw] md:text-[1vw] space-y-[.2vw] w-1/2">
                                 <h2 className="text-[2.7vw] md:text-[1vw] line-clamp-1 font-medium mb-[.4vw]">
                                     {data.products.name}
                                 </h2>
                                 <p className="text-neutral-60">
-                                    Dibayar : {target.format("dddd, DD MMMM YYYY")}
+                                    Dibayar :{" "}
+                                    {target.format("dddd, DD MMMM YYYY")}
                                 </p>
                                 <p className="text-neutral-60">
-                                    Metode Pembayaran : {data.payment_method.name}
+                                    Metode Pembayaran :{" "}
+                                    {data.payment_method.name}
                                 </p>
                             </div>
 

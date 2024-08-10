@@ -3,7 +3,6 @@
 namespace App\Notifications\MidtransNotifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -54,7 +53,7 @@ class SuccessNotification extends Notification
     {
         $paymentMethod = $this->order->orderHistory()->where('status', 'pending')->first()->payload;
         if ($paymentMethod['payment_type'] == 'bank_transfer') {
-            $paymentType = $paymentMethod['va_numbers'][0]['bank'];
+            $paymentType = $paymentMethod['provider_name'];
         } else {
             $paymentType = $paymentMethod['payment_type'];
         }

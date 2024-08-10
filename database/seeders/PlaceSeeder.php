@@ -14,41 +14,69 @@ class PlaceSeeder extends Seeder
     {
         Place::insert([
             [
-                'place' => 'Kafe 1',
+                'place' => 'Ekologie 2',
                 'city_id' => 1,
             ],
             [
-                'place' => 'Kafe 2',
+                'place' => 'CW Jl Jakarta',
                 'city_id' => 1,
             ],
             [
-                'place' => 'Kafe 3',
+                'place' => 'CW Soehat',
                 'city_id' => 1,
             ],
             [
-                'place' => 'Kafe 4',
-                'city_id' => 2,
+                'place' => 'AADK Tlogomas',
+                'city_id' => 1,
             ],
             [
-                'place' => 'Kafe 5',
-                'city_id' => 2,
+                'place' => 'AADK Jl Bandung',
+                'city_id' => 1,
             ],
             [
-                'place' => 'Kafe 6',
-                'city_id' => 2,
+                'place' => 'Nakoa Jl Panjaitan',
+                'city_id' => 1,
             ],
             [
-                'place' => 'Kafe 7',
-                'city_id' => 3,
+                'place' => 'Nakoa Dinoyo',
+                'city_id' => 1,
             ],
             [
-                'place' => 'Kafe 8',
-                'city_id' => 3,
+                'place' => 'Nakoa Jl Borobudur',
+                'city_id' => 1,
             ],
             [
-                'place' => 'Kafe 9',
-                'city_id' => 3,
+                'place' => 'Nakoa Jl Bondowoso',
+                'city_id' => 1,
             ],
+            [
+                'place' => 'Handall',
+                'city_id' => 1,
+            ],
+            // [
+            //     'place' => 'Kafe 4',
+            //     'city_id' => 2,
+            // ],
+            // [
+            //     'place' => 'Kafe 5',
+            //     'city_id' => 2,
+            // ],
+            // [
+            //     'place' => 'Kafe 6',
+            //     'city_id' => 2,
+            // ],
+            // [
+            //     'place' => 'Kafe 7',
+            //     'city_id' => 3,
+            // ],
+            // [
+            //     'place' => 'Kafe 8',
+            //     'city_id' => 3,
+            // ],
+            // [
+            //     'place' => 'Kafe 9',
+            //     'city_id' => 3,
+            // ],
         ]);
     }
 }

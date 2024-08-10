@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRoleEnum;
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\Skill;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -35,6 +37,7 @@ class UserProfileSeeder extends Seeder
             'university' => 'Universitas Brawijaya',
             'major' => 'Hukum',
         ]);
+
         // UserProfile::create([
         //     'user_id' => 5,
         //     'phone_number' => '087763420871',
@@ -54,14 +57,29 @@ class UserProfileSeeder extends Seeder
         //     $value->profile()->create();
         // }
 
-        // $users = User::all();
+        $users = User::where('user_role', UserRoleEnum::TUTOR->value)->where('id', '!=', 3)->get();
 
-        // foreach ($users as $user) {
-        //     UserProfile::factory()->create(
-        //         [
-        //             'user_id' => $user->id
-        //         ]
-        //     );
-        // }
+        foreach ($users as $user) {
+            UserProfile::create(
+                [
+                    'user_id' => $user->id,
+                    'phone_number' => fake()->phoneNumber(),
+                    'university' => fake()->address(),
+                    'major' => fake()->company(),
+                    'faculty' => fake()->company(),
+                    'profile_image' => 'user_profile_image/usrProfile41719849083.jpeg',
+                ]
+            );
+
+            // $skills = Skill::all();
+            // $loop = rand(1, count($skills));
+            // // for ($i=0; $i < $loop; $i++) {
+            //     $id = Skill::inRandomOrder()->limit($loop)->get();
+            //     // array_map(function ($e) {
+            //     //     return $e->id;
+            //     // }, $id);
+            //     $user->skills()->attach($id);
+            // // }
+        }
     }
 }

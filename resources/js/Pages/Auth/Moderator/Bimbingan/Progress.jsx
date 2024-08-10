@@ -30,6 +30,7 @@ import DateTimeComp from "./components/DateTimeComp";
 import SelectInput from "@mui/material/Select/SelectInput";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 import { useRef } from "react";
+import moment from "moment";
 
 export default function Progress({ auth, data: recentOrder }) {
     const timeoutRef = useRef(null);
@@ -97,7 +98,7 @@ export default function Progress({ auth, data: recentOrder }) {
                 Cell: ({ renderedCellValue, cell }) => {
                     const course = cell.row.original.course;
 
-                    if (course?.date == null && course?.time == null)
+                    if ((course?.date == null && course?.time == null) || course.child.length > 0)
                         return "-";
                     return (
                         <div className="flex items-center justify-between text-[.8vw]">
@@ -119,7 +120,7 @@ export default function Progress({ auth, data: recentOrder }) {
                 Cell: ({ cell }) => {
                     const course = cell.row.original.course;
 
-                    if (course?.is_tutor == null || course?.child.length > 1)
+                    if (course?.is_tutor == null || course?.child.length > 0)
                         return;
                     return (
                         <span className="items-center justify-center w-full">
@@ -137,8 +138,8 @@ export default function Progress({ auth, data: recentOrder }) {
                 header: "User Confirm",
                 enableSorting: false,
                 Cell: ({ cell }) => {
-                    const course = cell.row.original.course;
-                    if (course?.is_user == null || course?.child.length > 1) {
+                    const course = cell.row.original?.course;
+                    if (course?.is_user == null || course?.child.length > 0) {
                         return;
                     } else
                         return (
@@ -156,13 +157,17 @@ export default function Progress({ auth, data: recentOrder }) {
                 accessorKey: "status",
                 header: "Status",
                 Cell: ({ cell }) => {
-                    if (cell.row.original.course?.ongoing == null) return;
+                    const course = cell.row.original.course;
+                    if (course?.ongoing == null) return;
+
+                    // const status = upperCaseFirstLetter(course?.ongoing);
+
                     const status =
-                        cell.row.original.course?.child.find(
+                        course?.child.find(
                             (x) => x.ongoing == "berjalan"
-                        ) == null || cell.row.original.course?.child.length < 1
+                        ) == null || course?.child.length < 1
                             ? upperCaseFirstLetter(
-                                  cell.row.original.course?.ongoing
+                                  course?.ongoing
                               )
                             : "Berjalan";
 
@@ -188,25 +193,45 @@ export default function Progress({ auth, data: recentOrder }) {
         rowCount: per_page,
         renderRowActions: ({ row }) => {
             const { course } = row.original;
-            console.log(course);
+            const courseTime = moment(course.date + " " + course.time);
+            const isPassed = moment().diff(courseTime, "s") > 0;
 
-            if (course?.child.length > 1)
-                return (
-                    <div className="text-nowrap">
-                        <span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
+            if (course.child.length > 0) {
+                // if (course.ongoing == "selesai") {
+                //     return (
+                //         <div className="text-nowrap">
+                //             <button
+                //                 onClick={() => {
+                //                     if (course.ongoing == "selesai") {
+                //                         setIsShow({ ...isShow, duration: true });
+                //                         setPayloadData({ ...payloadData, id: course.id });
+                //                     }
+                //                 }}
+                //             >
+                //                 <FiThumbsUp className="text-[1.2vw] cursor-pointer text-secondary" />
+                //             </button>
+                //             &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                //         </div>
+                //     );
+                // } else {
+                    return <div className="text-nowrap">
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                     </div>
-                );
+                // }
+            }
+
             return (
                 <div className="flex items-center gap-[.8vw]">
                     <button
                         onClick={() => {
-                            if (!course.is_moderator) {
+                            if (!course.is_moderator && (courseTime._isValid && isPassed)) {
                                 setIsShow({ ...isShow, duration: true });
                                 setPayloadData({ ...payloadData, id: course.id });
                             }
                         }}
                     >
-                        <FiThumbsUp className={"text-[1.2vw] " + (!course.is_moderator ? `cursor-pointer text-secondary` : `cursor-default text-success-50`)} />
+                        <FiThumbsUp className={"text-[1.2vw] " + (course.is_moderator ? `cursor-default text-success-50` : (courseTime._isValid && isPassed ? `cursor-pointer text-secondary` : `cursor-default text-neutral-60`))}
+                        />
                     </button>
                     <Link
                         href={route("moderator.bimbingan.progress.edit", {
@@ -453,6 +478,7 @@ export const DropdownDetailPanel = ({
             time: course.time,
             ongoing: course.ongoing,
             is_tutor: course.is_tutor,
+            is_moderator: course.is_moderator,
             is_user: course.is_user,
             order_id: course.order_id,
             session: course.session,
@@ -466,7 +492,10 @@ export const DropdownDetailPanel = ({
             <Table>
                 <TableBody>
                     {course.child.map((item, index) => {
+                        const courseTime = moment(item.date + " " + item.time);
+                        const isPassed = moment().diff(courseTime, "s") > 0;
                         const status = upperCaseFirstLetter(item.ongoing);
+                        // const status = (item.is_moderator && item.is_tutor) ? "Selesai" : "Berjalan";
                         const cellData = {
                             session: {
                                 label: (
@@ -547,20 +576,13 @@ export const DropdownDetailPanel = ({
                                                 <button
                                                     disabled={status == "Selesai"}
                                                     onClick={() => {
-                                                        if(!item.is_moderator) {
-                                                            return;
+                                                        if(!item.is_moderator && (courseTime._isValid && isPassed)) {
+                                                            setIsShow({...isShow, duration: true,});
+                                                            setPayloadData({...payloadData, id: item.id,});
                                                         }
-                                                        setIsShow({
-                                                            ...isShow,
-                                                            duration: true,
-                                                        });
-                                                        setPayloadData({
-                                                            ...payloadData,
-                                                            id: item.id,
-                                                        });
                                                     }}
                                                 >
-                                                    <FiThumbsUp className={"text-[1.2vw] " + (!item.is_moderator ? `cursor-pointer text-secondary` : `cursor-default text-success-50`)} />
+                                                    <FiThumbsUp className={"text-[1.2vw] " + (item.is_moderator ? `cursor-default text-success-50` : (courseTime._isValid && isPassed ? `cursor-pointer text-secondary` : `cursor-default text-neutral-60`))} />
                                                 </button>
                                                 <Link
                                                     href={route(

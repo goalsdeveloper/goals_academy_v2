@@ -4,7 +4,9 @@ function getFieldData(data) {
     let title = {};
     let desc = {};
 
-    if (data.contact_type === "offline" || data.contact_type === "hybrid") {
+    if (
+        data.products.contact_type === "offline"
+    ) {
         title = {
             ...title,
             city: "Kota Pelaksanaan",
@@ -12,17 +14,30 @@ function getFieldData(data) {
         };
         desc = {
             ...desc,
-            city: data?.location?.city?.city ?? "Kota Belum Diatur",
-            place: data?.place?.place ?? "Lokasi Belum Diatur",
+            city: data?.place?.city?.city ?? "-",
+            place: data?.place?.place ?? "-",
         };
-    } else if (data.contact_type === "online") {
+    } else if (data.products.contact_type === "online") {
         title = {
             ...title,
             link: "Link Meet",
         };
         desc = {
             ...desc,
-            link: data?.location ?? "Link meet Belum Diatur",
+            link: data?.location ?? "-",
+        };
+    } else {
+        title = {
+            ...title,
+            city: "Kota Pelaksanaan",
+            place: "Lokasi Pelaksanaan",
+            link: "Link Meet",
+        };
+        desc = {
+            ...desc,
+            city: data?.place?.city?.city ?? "-",
+            place: data?.place?.place ?? "-",
+            link: data?.location ?? "-",
         };
     }
 
@@ -31,15 +46,12 @@ function getFieldData(data) {
 
 const DetailSatuPertemuan = ({ data, className = "" }) => {
     const gapSize = 1;
-    console.log(data);
 
     const form_field = {
         schedule: "Jadwal Pelaksanaan",
         time: "Jam Pelaksanaan",
         topic: "Topik Bimbingan",
         ...getFieldData(data).title,
-        // add_on: "Add On",
-        // document: "Lampiran Dokumen",
     };
     const form_result = {
         schedule:
@@ -48,15 +60,10 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                 month: "long",
                 day: "numeric",
                 weekday: "long",
-            }) ?? "Jadwal Belum Diatur",
-        time: data?.time ?? "Jam Belum Diatur",
-        topic: data?.topic?.topic ?? "Topik Belum Diatur",
+            }) ?? "-",
+        time: data?.time ? data?.time.substring(0,5) : "-",
+        topic: data?.topic?.topic ?? "-",
         ...getFieldData(data).desc,
-        // add_on:
-        //     data?.add_ons?.map((item) => item["name"]).join(", ") != ""
-        //         ? data?.add_ons?.map((item) => item["name"]).join(", ")
-        //         : "Tidak Ada Add Ons",
-        // document: "Lampiran Dokumen",
     };
 
     return (
@@ -67,17 +74,34 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                     Pelaksanaan Pembelajaran
                 </h2>
                 <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
+                    <li>
+                        <label className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
+                            Nama Produk
+                        </label>
+                        <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">{data?.products?.name}</p>
+                    </li>
                     {Object.keys(form_field).map((key) => (
                         <li
                             key={key}
-                            className="space-y-[.9vw] md:space-y-[.2vw]"
+                            className="grid space-y-[.9vw] md:space-y-[.2vw]"
                         >
                             <label className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
                                 {form_field[key]}
                             </label>
-                            <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
-                                {form_result[key]}
-                            </p>
+                            {key == "link" && form_result[key] != 'Link Meet Belum Diatur' ? (
+                                <a
+                                    href={form_result[key]}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-[3.7vw] md:text-[1.25vw] text-info-40 font-medium"
+                                >
+                                    {form_result[key]}
+                                </a>
+                            ) : (
+                                <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">
+                                    {form_result[key]}
+                                </p>
+                            )}
                         </li>
                     ))}
                 </ul>

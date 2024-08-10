@@ -48,9 +48,17 @@ export default function Progress({ auth, bimbingan }) {
                 size: 150,
             },
             {
+                accessorKey: "products.name",
+                header: "Products Name",
+                size: 200,
+            },
+            {
                 accessorKey: "topic.topic",
                 header: "Topik",
                 size: isMobile ? 200 : 100,
+                Cell: ({ cell }) => {
+                    return cell.getValue() ?? "-"
+                }
             },
             {
                 accessorFn: (row) => moment(row.date + " " + row.time),
@@ -58,11 +66,13 @@ export default function Progress({ auth, bimbingan }) {
                 size: isMobile ? 250 : 170,
                 Cell: ({ cell }) => {
                     return (
-                        <div className="flex justify-between">
-                            <span>{cell.getValue().format("DD/MM/YYYY")}</span>
-                            <span>{cell.getValue().format("HH:mm")}</span>
-                        </div>
-                    );
+                        cell.getValue()._isValid ? (
+                            <div className="flex justify-between">
+                                <span>{cell.getValue().format("DD/MM/YYYY")}</span>
+                                <span>{cell.getValue().format("HH:mm")}</span>
+                            </div>
+                        ) : "-"
+                    )
                 },
             },
             {

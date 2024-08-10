@@ -142,7 +142,6 @@ export default function History({ auth, order_history: res }) {
                         pages,
                         per_page,
                         current_page,
-                        keyword,
                     }}
                 />
             );
@@ -211,7 +210,6 @@ function HistoryDetailPanel({ row }) {
             <Table>
                 <TableBody>
                     {course.child.map((item, index) => {
-                        console.log(item);
                         const cellData = {
                             session: {
                                 label: (

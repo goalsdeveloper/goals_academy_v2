@@ -7,12 +7,25 @@ import { useState } from "react";
 
 const FacilityModal = ({ show, setShow, data, setData }) => {
     const [iconData, setIconData] = useState({
-        class: "",
+        class: "fa-solid fa-location-dot",
         text: "",
     });
     const iconClassname = [
         "fa-solid fa-location-dot",
-        "fa-regular fa-calendar",
+        "fa-solid fa-calendar",
+        "fa-solid fa-clock",
+        "fa-solid fa-gift",
+        "fa-solid fa-comment",
+        "fa-solid fa-comment-medical",
+        "fa-solid fa-layer-group",
+        "fa-solid fa-gears",
+        "fa-solid fa-magnifying-glass",
+        "fa-solid fa-star",
+        "fa-solid fa-file-circle-check",
+        "fa-solid fa-person-chalkboard",
+        "fa-solid fa-screwdriver-wrench",
+        "fa-solid fa-book",
+        "fa-solid fa-note-sticky",
     ];
 
     return (
@@ -35,7 +48,8 @@ const FacilityModal = ({ show, setShow, data, setData }) => {
                 <div className="flex gap-[.5vw]">
                     <SelectInput
                         placeholder="&emsp;"
-                        value={<i className={`${iconData.class}`}></i>}
+                        value={<i className={`${iconData.class} md:w-[1vw]`}></i>}
+                        cols={4}
                     >
                         {iconClassname.map((icon) => (
                             <SelectInputItem
@@ -51,17 +65,18 @@ const FacilityModal = ({ show, setShow, data, setData }) => {
 
                     <GoalsTextInput
                         type="text"
-                        label="Title"
+                        label="Text"
                         data={iconData.text}
                         onChange={(e) =>
                             setIconData({ ...iconData, text: e.target.value })
                         }
+                        className="md:w-[16vw]"
                     />
                 </div>
 
                 <div className="inline-flex gap-[.8vw]">
                     <GoalsButton
-                        size="sm"
+                        size="md"
                         variant="success-bordered"
                         className="w-full"
                         onClick={() => setShow(false)}
@@ -69,7 +84,7 @@ const FacilityModal = ({ show, setShow, data, setData }) => {
                         Batal
                     </GoalsButton>
                     <GoalsButton
-                        size="sm"
+                        size="md"
                         variant="success"
                         className="w-full"
                         onClick={() => {
@@ -86,7 +101,7 @@ const FacilityModal = ({ show, setShow, data, setData }) => {
 
                             setShow(false);
                             setIconData({
-                                class: "",
+                                class: "fa-solid fa-location-dot",
                                 text: "",
                             });
                         }}

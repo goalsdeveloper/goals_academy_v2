@@ -21,7 +21,6 @@ import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 
 export default function View({ auth, progress, tutors }) {
-    console.log(progress)
     const item = [
         {
             url: "https://www.google.com",
@@ -214,7 +213,8 @@ export default function View({ auth, progress, tutors }) {
                         <FormSection
                             title="Order Details"
                             titleAction={
-                                <button
+                                <a
+                                    role="button"
                                     onClick={() =>
                                         setIsShow({ orderDetails: true })
                                     }
@@ -222,7 +222,7 @@ export default function View({ auth, progress, tutors }) {
                                 >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
-                                </button>
+                                </a>
                             }
                         >
                             <GoalsTextInput
@@ -320,7 +320,8 @@ export default function View({ auth, progress, tutors }) {
                         <FormSection
                             title="Tutor Information"
                             titleAction={
-                                <button
+                                <a
+                                    role="button"
                                     onClick={() =>
                                         setIsShow({ tutorDetails: true })
                                     }
@@ -328,7 +329,7 @@ export default function View({ auth, progress, tutors }) {
                                 >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
-                                </button>
+                                </a>
                             }
                         >
                             <textarea

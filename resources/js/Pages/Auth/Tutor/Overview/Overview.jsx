@@ -59,7 +59,6 @@ export default function Overview({
         if (this_month == 0 && today > 0) {
             return 100;
         }
-        console.log(today, this_month)
         var percentage = (today / this_month) * 100;
         return percentage;
     };
@@ -483,7 +482,7 @@ function InfoCard({ title, data, percentage, grow, icon }) {
                     </p>
                     <div className="flex items-center gap-[1vw] md:gap-[.25vw] text-[2.5vw] md:text-[.625vw] text-green-500">
                         <FiTrendingUp className="text-[4vw] md:text-[1vw]" />
-                        <span>{isNaN(percentage) ? 0 : percentage}%</span>
+                        <span>{isNaN(percentage) ? 0 : Math.fround(percentage)}%</span>
                         <span className="text-light-grey">
                             {grow >= 0 ? "+" : "-"}
                             {grow} Today

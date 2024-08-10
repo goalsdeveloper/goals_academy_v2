@@ -26,7 +26,6 @@ export default function DashboardLayout({
     children,
 }) {
     let navConfig;
-    // console.log(auth);
     switch (role) {
         case "admin":
             navConfig = [
@@ -103,6 +102,15 @@ export default function DashboardLayout({
                             ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Order",
+                        },
+                        {
+                            name: "Kode Promo",
+                            href: route('admin.bimbingan.promo-code.index'),
+                            icon: (
+                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
+                            ),
+                            isActive:
+                                title == "Bimbingan" && subtitle == "Kode Promo",
                         },
                     ],
                     collapsed: true,
@@ -438,10 +446,8 @@ export default function DashboardLayout({
                         data.old_notifications.current_page <
                         data.old_notifications.last_page,
                 }));
-            })
-            .then(() => {
                 setTimeout(() => getNewNotification(), 10000);
-            });
+            })
     };
 
     const getNewNotification = () => {
@@ -462,8 +468,8 @@ export default function DashboardLayout({
                     ...n,
                     new: mergedNewNotif(n.new, data.new_notifications),
                 }));
+                setTimeout(() => getNewNotification(), 10000)
             })
-            .then(setTimeout(() => getNewNotification(), 10000));
     };
 
     const getOldNotification = (page) => {
@@ -748,7 +754,7 @@ function Notification({ data, loadMore }) {
                 />
                 <div
                     className={`${
-                        data.new.length > 0 ? "" : "hidden"
+                        data.new.filter((i) => i.read_at == null).length > 0 ? "" : "hidden"
                     } absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}
                 ></div>
             </div>
@@ -818,7 +824,7 @@ function Notification({ data, loadMore }) {
                                     )}
                                 </>
                             ) : (
-                                <div className="flex justify-center items-center h-[30vh]">
+                                <div className="flex justify-center items-center h-[30vh] text-[3.32vw] md:text-[.83vw]">
                                     Oops.. belum ada transaksi
                                 </div>
                             )}
@@ -894,7 +900,7 @@ function Notification({ data, loadMore }) {
                                         )}
                                     </>
                                 ) : (
-                                    <div className="flex justify-center items-center h-[30vh]">
+                                    <div className="flex justify-center items-center h-[30vh] text-[3.32vw] md:text-[.83vw]">
                                         Oops.. belum ada transaksi
                                     </div>
                                 )}
@@ -912,7 +918,6 @@ function NotificationItem({ item }) {
         return (
             <Link
                 onClick={(e) => {
-                    console.log(e);
                     axios
                         .get(route("api.notification.read", { id: item.id }))
                         .then((res) => {
@@ -980,7 +985,6 @@ function NotificationItem({ item }) {
         return (
             <Link
                 onClick={(e) => {
-                    console.log(e);
                     axios
                         .get(route("api.notification.read", { id: item.id }))
                         .then((res) => {

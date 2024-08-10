@@ -35,7 +35,7 @@ class ProgressController extends Controller
                 $search = $request->input("search");
 
                 $query = Order::with([
-                    "user:id,username",
+                    "user","user.profile",
                     "products:id,product_type_id,category_id,name,total_meet",
                     "products.category:id,name",
                     "products.productType:id,type",
@@ -115,7 +115,7 @@ class ProgressController extends Controller
         try {
             $tutors = User::with("profile")->where("user_role", "tutor")->get();
             if (Auth::user()->user_role == "moderator") {
-                $progress_user = Course::with("user:id,username", "user.profile:id,user_id,university,major,phone_number,faculty", "tutor:id,name", "topic:id,topic", "place", "place.city", "order:id,order_code", "products:id,name,contact_type", "fileUploads", "productReview")->findOrFail($progress->id);
+                $progress_user = Course::with("addOns","user:id,username", "user.profile:id,user_id,university,major,phone_number,faculty,rumpun", "tutor:id,name", "topic:id,topic", "place", "place.city", "order:id,order_code", "products:id,name,contact_type,duration", "fileUploads", "productReview")->findOrFail($progress->id);
                 // return response()->json([
                 //     "status" => true,
                 //     "statusCode" => 200,
@@ -240,12 +240,13 @@ class ProgressController extends Controller
                         $progress->update($validateData);
                     }
                     if ($progress->products->contact_type == "other") {
+                        // dd($request);
                         $validateData = $request->validate([
-                            // 'tutor_id' => 'numeric',
+                            'tutor_id' => 'numeric',
                             // 'place_id' => 'nullable|numeric',
                             // 'location' => 'nullable|string',
-                            // "date" => "required|date",
-                            // "time" => "required|date_format:H:i",
+                            "date" => "required|date",
+                            "time" => "required|date_format:H:i",
                             // "record" => "mimes:pdf|nullable",
                         ]);
                         $progress->update($validateData);

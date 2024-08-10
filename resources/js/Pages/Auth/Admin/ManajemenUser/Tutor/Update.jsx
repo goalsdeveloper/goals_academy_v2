@@ -21,20 +21,6 @@ import {
 
 export default function Update({ auth, data }) {
     const [isLoading, setIsLoading] = useState(false);
-    console.log(data);
-
-    const revenueTypes = [
-        {
-            id: 0,
-            name: "40%",
-            percentage: 40,
-        },
-        {
-            id: 0,
-            name: "50%",
-            percentage: 50,
-        },
-    ];
 
     const {
         data: formData,

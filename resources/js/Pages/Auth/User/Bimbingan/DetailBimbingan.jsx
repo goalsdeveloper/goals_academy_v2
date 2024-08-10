@@ -2,7 +2,7 @@ import GoalsButton from "@/Components/elements/GoalsButton";
 import GoalsPopup from "@/Components/elements/GoalsPopup";
 import MainLayout from "@/Layouts/MainLayout";
 import "@/script/momentCustomLocale";
-import { Link, useForm } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
@@ -13,6 +13,7 @@ import DetailBanyakPertemuan, {
     AturJadwalPopup,
 } from "./layouts/DetailBanyakPertemuan";
 import DetailSatuPertemuan from "./layouts/DetailSatuPertemuan";
+import toast from "react-hot-toast";
 
 export default function DetailPesanan({
     auth,
@@ -40,13 +41,19 @@ export default function DetailPesanan({
     });
 
     function handleSubmit() {
-        post(`/bimbingan/${dataBimbingan[0].order.order_code}/review`);
+        post(`/bimbingan/${dataBimbingan[0].order.order_code}/review`, {
+            onSuccess: () => {
+                toast.success("Ulasan berhasil disimpan");
+            },
+            onError: () => {
+                toast.error("Ulasan gagal disimpan");
+            },
+        });
     }
 
     const dataAturJadwalComp = { cities, date, topics };
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
-
     return (
         <MainLayout
             withFooter={false}
@@ -90,6 +97,8 @@ export default function DetailPesanan({
                         />
                         <AturJadwalPopup
                             order_code={dataBimbingan[0].order.order_code}
+                            purchased_date={dataBimbingan[0].order.created_at}
+                            active_period={Number(dataBimbingan[0].products.active_period) - 1}
                             {...dataAturJadwalComp}
                             show={showPopUp.aturJadwalPopup}
                             setShow={() =>
@@ -158,7 +167,8 @@ export default function DetailPesanan({
                                         !!dataBimbingan.find(
                                             (item) => item.date == null
                                         )) ||
-                                    dataBimbingan[0].ongoing == "berjalan"
+                                    dataBimbingan[0].ongoing != "selesai" ||
+                                    dataBimbingan[0].product_review != null
                                 }
                                 variant="bordered"
                                 onClick={() =>
@@ -176,7 +186,8 @@ export default function DetailPesanan({
                                         !!dataBimbingan.find(
                                             (item) => item.date == null
                                         )) ||
-                                    dataBimbingan[0].ongoing != "berjalan"
+                                    // dataBimbingan[0].ongoing != "berjalan"
+                                    dataBimbingan[0].is_user
                                 }
                                 onClick={() =>
                                     setShowPopUp({
@@ -225,11 +236,17 @@ const SelesaiProgram = ({ show, setShow, order_code }) => {
 
                 <div className="grid space-y-[2vw] md:space-y-[.8vw] w-full">
                     <GoalsButton
-                        isLink
-                        method="PUT"
-                        href={`/bimbingan/${order_code}/selesai-bimbingan`}
                         onClick={() => {
                             setShow();
+                            router.put(
+                                `/bimbingan/${order_code}/selesai-bimbingan`,
+                                {},
+                                {
+                                    onSuccess: () => {
+                                        toast.success("Bimbingan selesai");
+                                    },
+                                }
+                            );
                         }}
                         className="w-full"
                     >
@@ -287,20 +304,8 @@ const UlasanTutor = ({ show, setShow, data, setData }) => {
 
 const UlasanProgram = ({ show, setShow, data, setData, handleSubmit }) => {
     function checkFieldRequired() {
-        // if (
-        //     data.rate_tutor == 0 ||
-        //     data.note_tutor == "" ||
-        //     data.note_tutor == null ||
-        //     data.note_tutor == undefined
-        // ) {
-        //     return true;
-        // }
-
         if (
-            data.rate_product == 0 ||
-            data.note_product == ""
-            // || data.note_product == null ||
-            // data.note_product == undefined
+            data.rate_product == 0
         ) {
             return true;
         }

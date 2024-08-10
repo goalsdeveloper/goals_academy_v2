@@ -41,6 +41,7 @@ export default function View({ auth, progress, tutors }) {
         major: progress.user.profile.major ?? "",
         order_code: progress.order.order_code,
         product: progress.products.name,
+        duration: progress.products.duration,
         topic: progress.topic?.topic ?? "",
         session: progress.session ?? "",
         date: progress.date ?? "",
@@ -103,7 +104,6 @@ export default function View({ auth, progress, tutors }) {
                 return <></>;
         }
     };
-    console.log(progress);
 
     return (
         <DashboardLayout
@@ -140,12 +140,12 @@ export default function View({ auth, progress, tutors }) {
                     <div className="flex flex-col gap-[1.2vw]">
                         <FormSection
                             title="User Information"
-                            titleAction={
-                                <SliderButton
-                                    label="Moderator confirmation"
-                                    disabled
-                                />
-                            }
+                            // titleAction={
+                            //     <SliderButton
+                            //         label="Moderator confirmation"
+                            //         disabled
+                            //     />
+                            // }
                             className="h-fit"
                         >
                             <GoalsTextInput
@@ -187,11 +187,7 @@ export default function View({ auth, progress, tutors }) {
                                 <SelectInput
                                     label="Tutor"
                                     disabled
-                                    value={
-                                        (tutors ?? [])?.find(
-                                            (item) => item.id == data.tutor.id
-                                        ).name
-                                    }
+                                    value={data.tutor?.name}
                                     className="w-full"
                                 >
                                     {(tutors ?? [])?.map((item, index) => {
@@ -245,7 +241,8 @@ export default function View({ auth, progress, tutors }) {
                         <FormSection
                             title="Order Details"
                             titleAction={
-                                <button
+                                <a
+                                    role="button"
                                     onClick={() =>
                                         setIsShow({ orderDetails: true })
                                     }
@@ -253,7 +250,7 @@ export default function View({ auth, progress, tutors }) {
                                 >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
-                                </button>
+                                </a>
                             }
                         >
                             <GoalsTextInput
@@ -268,6 +265,15 @@ export default function View({ auth, progress, tutors }) {
                                 data={data.product}
                                 setData={(i) => setData("product", i)}
                             />
+                            {progress?.products?.contact_type != "other" && (
+                                <GoalsTextInput
+                                    label="Duration"
+                                    disabled
+                                    data={data?.duration + " menit"}
+                                    setData={(i) => setData("duration", i)}
+                                />
+                            )}
+
                             <GoalsTextInput
                                 label="Topic"
                                 disabled
@@ -278,7 +284,7 @@ export default function View({ auth, progress, tutors }) {
                             <SelectMultiTag
                                 disabled
                                 value={data.add_on}
-                                label="Add on"
+                                label="Add-On"
                                 handleClearTag={() =>
                                     setData({ ...data, add_on: [] })
                                 }
@@ -351,7 +357,8 @@ export default function View({ auth, progress, tutors }) {
                         <FormSection
                             title="Tutor Information"
                             titleAction={
-                                <button
+                                <a
+                                    role="button"
                                     onClick={() =>
                                         setIsShow({ tutorDetails: true })
                                     }
@@ -359,7 +366,7 @@ export default function View({ auth, progress, tutors }) {
                                 >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
-                                </button>
+                                </a>
                             }
                         >
                             <textarea

@@ -21,14 +21,21 @@ import { FaWhatsappSquare } from "react-icons/fa";
 import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 import { canSubmitFormCheckerProgress } from "../utils";
+import { Autocomplete, TextField } from "@mui/material";
+import { useEffect } from "react";
 
 export default function Edit({ auth, progress, tutors, places }) {
+    const [isInitialRender, setIsInitialRender] = React.useState(true);
     const product_category = progress.products.category.slug;
-
     const [isShow, setIsShow] = React.useState({
         orderDetails: false,
         tutorDetails: false,
     });
+    let currentTutor = tutors?.find((item) => item.id == progress.tutor_id);
+
+    const [inputValueTutor, setInputValueTutor] = React.useState(
+        currentTutor.name ?? ""
+    );
 
     const { data, setData, post, transform } = useForm({
         add_on: progress.add_ons ?? undefined,
@@ -37,15 +44,18 @@ export default function Edit({ auth, progress, tutors, places }) {
         major: progress.user.profile.major ?? "",
         order_code: progress.order.order_code,
         product: progress.products.name,
+        duration: progress.products.duration,
         topic: progress.topic?.topic ?? "",
         session: progress.session ?? "",
         date: progress.date ?? "",
-        time: progress.time.substring(0, 5) ?? "",
+        time: progress.time ? progress.time.substring(0, 5) : "",
         location: progress.location ?? "",
-        place: `${progress.place?.place} | ${progress.place?.city?.city}` ?? "",
+        place: progress.place
+            ? `${progress.place?.place} | ${progress.place?.city?.city}`
+            : "",
         city: progress.place?.city.city ?? "",
         number: progress.user.profile.phone_number ?? "",
-        tutor: tutors?.find((item) => item.id == progress.tutor_id),
+        tutor: currentTutor,
         rate_product: progress.product_review?.rate_product,
         note_product: progress.product_review?.note_product,
         note: progress.note,
@@ -64,6 +74,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                         placeholder="Meeting URL"
                         data={data.location}
                         setData={(i) => setData("location", i)}
+                        type="url"
                         required
                     />
                 );
@@ -99,6 +110,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                             placeholder="Meeting URL"
                             data={data.location}
                             setData={(i) => setData("location", i)}
+                            type="url"
                         />
                         <SelectInput
                             label="Meeting Location"
@@ -128,12 +140,12 @@ export default function Edit({ auth, progress, tutors, places }) {
         }
     };
 
-    function checkSelectInput() {
-        if (!data.tutor) {
-            return true;
-        }
-        return false;
-    }
+    // function checkSelectInput() {
+    //     if (!data.tutor) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     return (
         <DashboardLayout
@@ -143,7 +155,40 @@ export default function Edit({ auth, progress, tutors, places }) {
             auth={auth}
         >
             {/* {isLoading && <LoadingUI />} */}
-            <div className="space-y-[1.6vw]">
+            <form
+                className="space-y-[1.6vw]"
+                onSubmit={(e) => {
+                    e.preventDefault();
+
+                    transform((data) => ({
+                        _method: "put",
+                        tutor_id: data.tutor.id,
+                        record: data.record,
+                        is_moderator: data.is_moderator,
+                        date: data.date,
+                        time: data.time,
+                        location: data.location,
+                        place_id: data.place_id,
+                    }));
+
+                    post(
+                        route("moderator.bimbingan.progress.update", {
+                            progress: progress.id,
+                        }),
+                        {
+                            preserveScroll: true,
+                            onSuccess: () => {
+                                toast.success("Data berhasil diubah");
+                            },
+                            onError: (errors) => {
+                                if (errors.record) {
+                                    toast.error(errors.record[0]);
+                                }
+                            },
+                        }
+                    );
+                }}
+            >
                 <div className="flex items-center justify-between">
                     <Breadcrumb level={2} isSlug />
 
@@ -184,7 +229,11 @@ export default function Edit({ auth, progress, tutors, places }) {
                         <GoalsButton
                             variant="success"
                             size="sm"
-                            disabled={canSubmitFormCheckerProgress(progress, data) || checkSelectInput()}
+                            type="submit"
+                            disabled={
+                                canSubmitFormCheckerProgress(progress, data)
+                                // checkSelectInput()
+                            }
                             onClick={() => {
                                 transform((data) => ({
                                     _method: "put",
@@ -227,9 +276,9 @@ export default function Edit({ auth, progress, tutors, places }) {
                     <div className="flex flex-col gap-[1.2vw]">
                         <FormSection
                             title="User Information"
-                            titleAction={
-                                <SliderButton label="Moderator confirmation" />
-                            }
+                            // titleAction={
+                            //     <SliderButton label="Moderator confirmation" />
+                            // }
                             className="h-fit"
                         >
                             <GoalsTextInput
@@ -268,28 +317,57 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 </a>
                             </div>
                             <div className="flex gap-[.4vw] w-full items-end">
-                                <SelectInput
-                                    label="Tutor"
-                                    value={data.tutor?.name}
-                                    className="w-full"
+                                <label
+                                    htmlFor="tutor"
+                                    className="w-full grid items-center gap-[.4vw]"
                                 >
-                                    {tutors.map((item, index) => {
-                                        return (
-                                            <SelectInputItem
-                                                key={item.id}
-                                                onClick={() => {
-                                                    setData({
-                                                        ...data,
-                                                        tutor: item,
-                                                        tutor_id: item.id
-                                                    });
-                                                }}
-                                            >
-                                                {item.name}
-                                            </SelectInputItem>
-                                        );
-                                    })}
-                                </SelectInput>
+                                    Tutor
+                                    <Autocomplete
+                                        disableClearable
+                                        id="tutor"
+                                        options={tutors}
+                                        style={{ width: "100%" }}
+                                        renderInput={(params) => {
+                                            const { className, ...props } =
+                                                params.inputProps;
+                                            return (
+                                                <div
+                                                    ref={params.InputProps.ref}
+                                                >
+                                                    <input
+                                                        className={
+                                                            "w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[3vw] border placeholder:text-light-grey"
+                                                        }
+                                                        type="text"
+                                                        {...props}
+                                                    />
+                                                </div>
+                                            );
+                                        }}
+                                        inputValue={
+                                            inputValueTutor
+                                        }
+                                        onInputChange={(
+                                            event,
+                                            newInputValue
+                                        ) => {
+                                            if (event != null) {
+                                                setInputValueTutor(
+                                                    newInputValue
+                                                );
+                                            }
+                                        }}
+                                        onBlur={() => setInputValueTutor(data.tutor)}
+                                        getOptionLabel={(option) => option.name}
+                                        onChange={(e, value) => {
+                                            setData({
+                                                ...data,
+                                                tutor: value,
+                                                tutor_id: value.id,
+                                            });
+                                        }}
+                                    />
+                                </label>
                                 <a
                                     href={`https://wa.me/${phoneNumberFormat(
                                         data?.tutor?.profile?.phone_number
@@ -324,7 +402,8 @@ export default function Edit({ auth, progress, tutors, places }) {
                         <FormSection
                             title="Order Details"
                             titleAction={
-                                <button
+                                <a
+                                    role="button"
                                     onClick={() =>
                                         setIsShow({ orderDetails: true })
                                     }
@@ -332,7 +411,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
-                                </button>
+                                </a>
                             }
                         >
                             <GoalsTextInput
@@ -347,6 +426,14 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 data={data.product}
                                 setData={(i) => setData("product", i)}
                             />
+                            {progress.products.contact_type != "other" && (
+                                <GoalsTextInput
+                                    label="Duration"
+                                    disabled
+                                    data={data.duration  + " menit"}
+                                    setData={(i) => setData("duration", i)}
+                                />
+                            )}
                             <GoalsTextInput
                                 label="Topic"
                                 disabled
@@ -357,7 +444,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                             <SelectMultiTag
                                 disabled
                                 value={data.add_on}
-                                label="Add on"
+                                label="Add-On"
                                 handleClearTag={() =>
                                     setData({ ...data, add_on: [] })
                                 }
@@ -431,7 +518,8 @@ export default function Edit({ auth, progress, tutors, places }) {
                         <FormSection
                             title="Tutor Information"
                             titleAction={
-                                <button
+                                <a
+                                    role="button"
                                     onClick={() =>
                                         setIsShow({ tutorDetails: true })
                                     }
@@ -439,7 +527,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
-                                </button>
+                                </a>
                             }
                         >
                             <textarea
@@ -453,7 +541,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                         </FormSection>
                     </div>
                 </div>
-            </div>
+            </form>
         </DashboardLayout>
     );
 }

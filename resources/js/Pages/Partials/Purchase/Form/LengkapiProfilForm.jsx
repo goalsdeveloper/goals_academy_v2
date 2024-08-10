@@ -1,17 +1,24 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { FiX } from "react-icons/fi";
 import GoalsButton from "@/Components/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
+import { Autocomplete } from "@mui/material";
+import { universities, majorFamilies } from "@/Hooks/data";
 
 const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast }) => {
+    console.log(userProfile)
     const { data, setData, errors, setError, post } = useForm({
         id: userProfile.id,
         phone_number: userProfile.phone_number ? userProfile.phone_number : "",
         university: userProfile.university ? userProfile.university : "",
         faculty: userProfile.faculty ? userProfile.faculty : "",
         major: userProfile.major ? userProfile.major : "",
+        rumpun: userProfile.rumpun ? userProfile.rumpun : "",
     });
+
+    const [university, setUniversity] = React.useState(data.university);
+    const [rumpun, setRumpun] = React.useState(data.rumpun);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -43,10 +50,7 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                 .then(response => response.json())
                 .then(response => {
                     if (response.message == 'success') {
-                        toast('Profil berhasil dilengkapi!', {
-                            position: 'top-center',
-                            icon: '✅'
-                        })
+                        toast.success('Profil berhasil dilengkapi!', { position: 'top-center' })
                         setUserProfile(data)
                         setIsLoading(false)
                     }
@@ -80,7 +84,6 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                 >
                     <div className="space-y-[3.2vw] md:space-y-[.8vw]">
                         <GoalsTextInput
-                            className="capitalize"
                             type="number"
                             label="Nomor Telepon"
                             placeholder="Masukkan nomor telepon disini"
@@ -91,8 +94,52 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                             setData={i => setData("phone_number", i)}
                             onChange={(e) => setData("phone_number", e.target.value)}
                         />
-                        <GoalsTextInput
-                            className="capitalize"
+                        <label
+                            htmlFor="university"
+                            className="w-full grid items-center gap-[.4vw]"
+                        >
+                            Universitas
+                            <Autocomplete
+                                disableClearable
+                                id="university"
+                                options={universities}
+                                renderInput={(params) => {
+                                    const { className, ...props } =
+                                        params.inputProps;
+                                    return (
+                                        <div ref={params.InputProps.ref}>
+                                            <input
+                                                className={
+                                                    "w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[3vw] border placeholder:text-light-grey"
+                                                }
+                                                type="text"
+                                                {...props}
+                                            />
+                                        </div>
+                                    );
+                                }}
+                                getOptionLabel={(option) => option}
+                                inputValue={university}
+                                onInputChange={(event, newInputValue) => {
+                                    if (event != null) {
+                                        setUniversity(newInputValue);
+                                    }
+                                }}
+                                onBlur={() => setUniversity(data.university)}
+                                onChange={(e, value) => {
+                                    setData({
+                                        ...data,
+                                        university: value
+                                    });
+                                }}
+                            />
+                            {errors.university !== "" && (
+                                <p className={`text-red-500 text-[3.6vw] md:text-[.9vw]`}>
+                                    {errors.university}
+                                </p>
+                            )}
+                        </label>
+                        {/* <GoalsTextInput
                             type="text"
                             label="Universitas"
                             placeholder="Masukkan universitas disini"
@@ -102,9 +149,8 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                             data={data.university}
                             setData={i => setData("university", i)}
                             onChange={(e) => setData("university", e.target.value)}
-                        />
+                        /> */}
                         <GoalsTextInput
-                            className="capitalize"
                             type="text"
                             label="Fakultas"
                             placeholder="Masukkan fakultas disini"
@@ -116,7 +162,6 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                             onChange={(e) => setData("faculty", e.target.value)}
                         />
                         <GoalsTextInput
-                            className="capitalize"
                             type="text"
                             label="Jurusan"
                             placeholder="Masukkan jurusan disini"
@@ -127,6 +172,51 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                             setData={i => setData("major", i)}
                             onChange={(e) => setData("major", e.target.value)}
                         />
+                        <label
+                            htmlFor="major_family"
+                            className="w-full grid items-center gap-[.4vw]"
+                        >
+                            Rumpun Jurusan
+                            <Autocomplete
+                                disableClearable
+                                id="major_family"
+                                options={majorFamilies}
+                                renderInput={(params) => {
+                                    const { className, ...props } =
+                                        params.inputProps;
+                                    return (
+                                        <div ref={params.InputProps.ref}>
+                                            <input
+                                                className={
+                                                    "w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[3vw] border placeholder:text-light-grey"
+                                                }
+                                                type="text"
+                                                {...props}
+                                            />
+                                        </div>
+                                    );
+                                }}
+                                getOptionLabel={(option) => option}
+                                inputValue={rumpun}
+                                onInputChange={(event, newInputValue) => {
+                                    if (event != null) {
+                                        setRumpun(newInputValue);
+                                    }
+                                }}
+                                onBlur={() => setRumpun(data.rumpun)}
+                                onChange={(e, value) => {
+                                    setData({
+                                        ...data,
+                                        rumpun: value
+                                    });
+                                }}
+                            />
+                            {errors.rumpun !== "" && (
+                                <p className={`text-red-500 text-[3.6vw] md:text-[.9vw]`}>
+                                    {errors.rumpun}
+                                </p>
+                            )}
+                        </label>
                     </div>
                     <GoalsButton className="rounded-md" onClick={submitHandler} isLoading={isLoading}>
                         Simpan

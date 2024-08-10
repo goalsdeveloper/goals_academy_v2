@@ -46,7 +46,20 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
     transition: background-color 5000s ease-in-out 0s;
+    outline: none;
 }
+
+.multi-column {
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+    -moz-column-fill: auto;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 20px;
+    -webkit-column-fill: auto;
+    column-count: 2;
+    column-gap: 20px;
+    column-fill: auto;
+ }
 
 @layer base {
     html {

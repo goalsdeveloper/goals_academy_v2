@@ -7,10 +7,12 @@ import {
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Link, router, useForm } from "@inertiajs/react";
-import { useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useMediaQuery } from "react-responsive";
 import logo from "/resources/img/icon/goals-5.svg";
+import { Autocomplete } from "@mui/material";
+import { universities, majorFamilies } from "@/Hooks/data";
 
 export default function Setting({ auth, user, skills }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -21,18 +23,24 @@ export default function Setting({ auth, user, skills }) {
         put,
     } = useForm({
         id: user.id,
-        name: user.name,
-        username: user.username,
-        phone_number: user.profile.phone_number,
-        email: user.email,
-        university: user.profile.university,
-        faculty: user.profile.faculty,
-        major: user.profile.major,
-        linkedin_url: user.profile.linkedin_url,
+        name: user.name ?? "",
+        username: user.username ?? "",
+        phone_number: user.profile.phone_number ?? "",
+        email: user.email ?? "",
+        university: user.profile.university ?? "",
+        faculty: user.profile.faculty ?? "",
+        major: user.profile.major ?? "",
+        rumpun: user.profile.rumpun ?? "",
+        linkedin_url: user.profile.linkedin_url ? user.profile.linkedin_url : "",
         skills: user.skills.map((i) => i.id),
         soft_skills: user.skills.filter((i) => i.category == "soft_skill"),
         hard_skills: user.skills.filter((i) => i.category == "hard_skill"),
     });
+
+    console.log(formData)
+
+    const [university, setUniversity] = React.useState(formData.university);
+    const [rumpun, setRumpun] = React.useState(formData.rumpun);
 
     const { data: temp, setData: setTemp } = useForm({
         skills: user.skills.map((i) => i.id),
@@ -192,16 +200,61 @@ export default function Setting({ auth, user, skills }) {
                                 setData={(i) => setFormData("email", i)}
                                 labelClassName="font-medium"
                             />
+                            <div className="flex justify-end">
+                                <GoalsButton href="/tutor/ubah-password" isLink className="rounded-[.5vw] w-1/2" activeClassName="bg-blue-500 hover:bg-blue-600 text-white">
+                                    Ubah Password
+                                </GoalsButton>
+                            </div>
                         </div>
                         <div className="bg-white w-full rounded-[.8vw] pt-[3.3vw] pb-[5.5vw] md:p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw]">
-                            <GoalsTextInput
+                            <label
+                                htmlFor="university"
+                                className="w-full grid items-center gap-[.4vw]"
+                            >
+                                University
+                                <Autocomplete
+                                    disableClearable
+                                    id="university"
+                                    options={universities}
+                                    renderInput={(params) => {
+                                        const { className, ...props } =
+                                            params.inputProps;
+                                        return (
+                                            <div ref={params.InputProps.ref}>
+                                                <input
+                                                    className={
+                                                        "w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[3vw] border placeholder:text-light-grey"
+                                                    }
+                                                    type="text"
+                                                    {...props}
+                                                />
+                                            </div>
+                                        );
+                                    }}
+                                    getOptionLabel={(option) => option}
+                                    inputValue={university}
+                                    onInputChange={(event, newInputValue) => {
+                                        if (event != null) {
+                                            setUniversity(newInputValue);
+                                        }
+                                    }}
+                                    onBlur={() => setUniversity(formData.university)}
+                                    onChange={(e, value) => {
+                                        setFormData({
+                                            ...formData,
+                                            university: value
+                                        });
+                                    }}
+                                />
+                            </label>
+                            {/* <GoalsTextInput
                                 required
                                 label="University"
                                 placeholder="University"
                                 data={formData.university ?? ""}
                                 setData={(i) => setFormData("university", i)}
                                 labelClassName="font-medium"
-                            />
+                            /> */}
                             <div className="grid grid-cols-2 gap-[1.2vw]">
                                 <GoalsTextInput
                                     required
@@ -227,6 +280,46 @@ export default function Setting({ auth, user, skills }) {
                                 setData={(i) => setFormData("linkedin_url", i)}
                                 labelClassName="font-medium"
                             />
+                            <label
+                                htmlFor="major_family"
+                                className="w-full grid items-center gap-[.4vw]"
+                            >
+                                Rumpun Jurusan
+                                <Autocomplete
+                                    disableClearable
+                                    id="major_family"
+                                    options={majorFamilies}
+                                    renderInput={(params) => {
+                                        const { className, ...props } =
+                                            params.inputProps;
+                                        return (
+                                            <div ref={params.InputProps.ref}>
+                                                <input
+                                                    className={
+                                                        "w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[3vw] border placeholder:text-light-grey"
+                                                    }
+                                                    type="text"
+                                                    {...props}
+                                                />
+                                            </div>
+                                        );
+                                    }}
+                                    getOptionLabel={(option) => option}
+                                    inputValue={rumpun}
+                                    onInputChange={(event, newInputValue) => {
+                                        if (event != null) {
+                                            setRumpun(newInputValue);
+                                        }
+                                    }}
+                                    onBlur={() => setRumpun(formData.rumpun)}
+                                    onChange={(e, value) => {
+                                        setFormData({
+                                            ...formData,
+                                            rumpun: value
+                                        });
+                                    }}
+                                />
+                            </label>
                             <div className="grid grid-cols-2 gap-[1.2vw]">
                                 <GoalsSelectMultipleInput
                                     required
@@ -259,8 +352,9 @@ export default function Setting({ auth, user, skills }) {
                                             soft_skills: i,
                                         });
                                     }}
+                                    data={formData.soft_skills}
                                     label="Soft Skills"
-                                    className="text-[.8vw]"
+                                    className="!text-[.83vw]"
                                     labelClassName="font-medium"
                                     placeholderClassName="font-normal"
                                     submitButtonClassName="text-[.8vw] w-[5vw]"
@@ -339,7 +433,6 @@ export default function Setting({ auth, user, skills }) {
                                                             );
                                                         }
                                                     }}
-                                                    // className="text-[.8vw]"
                                                 >
                                                     {item.name}
                                                 </GoalsSelectMultipleInputItem>
@@ -376,8 +469,9 @@ export default function Setting({ auth, user, skills }) {
                                             hard_skills: i,
                                         });
                                     }}
+                                    data={formData.hard_skills}
                                     label="Hard Skills"
-                                    className="text-[.8vw]"
+                                    className="!text-[.83vw]"
                                     labelClassName="font-medium"
                                     placeholderClassName="font-normal"
                                     submitButtonClassName="text-[.8vw] w-[5vw]"
@@ -456,7 +550,6 @@ export default function Setting({ auth, user, skills }) {
                                                             );
                                                         }
                                                     }}
-                                                    // className="text-[.8vw]"
                                                 >
                                                     {item.name}
                                                 </GoalsSelectMultipleInputItem>

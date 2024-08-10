@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarContr
 use App\Http\Controllers\Admin\Webinar\WebinarController;
 use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\DashboardUserController;
+use App\Http\Controllers\MainController;
 // use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\EmailDiskonController;
 use App\Http\Controllers\EmailVerificationController;
@@ -41,9 +42,11 @@ use App\Http\Controllers\Moderator\SettingController as ModeratorSettingControll
 use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
 use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Http\Controllers\Tutor\OverviewController;
+use App\Models\Products;
 use App\Models\TutorNote;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
@@ -57,7 +60,8 @@ Route::get('/token', function () {
 });
 
 Route::get('/', function () {
-    return Inertia::render('Index');
+    $products = Products::with('category')->whereIn("id", [3,8,1])->get();
+    return Inertia::render('Index', ['products' => $products]);
 });
 
 Route::get('/dashboard/user/webinar', [DashboardUserController::class, 'webinar']);
@@ -80,9 +84,13 @@ Route::get('/karir', function () {
 Route::get('/profil_perusahaan', function () {
     return Inertia::render('Main/ProfilPerusahaan');
 });
+Route::get('/profil_perusahaan2', function () {
+    return Inertia::render('Main/ProfilPerusahaanBaru');
+});
 
+Route::get('/profil_tutor_new', [MainController::class, 'profilTutor'])->name('profilTutor');
 Route::get('/profil_tutor', function () {
-    return Inertia::render('Main/ProfilTutor');
+    return Inertia::render('Main/ProfilTutorOld');
 });
 
 Route::get('/syarat_dan_ketentuan', function () {
@@ -137,6 +145,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::post('product/updateNumberList', [BimbinganController::class, 'updateOrderNumber'])->name('product.updateOrderNumber');
         Route::put('product/{product}/updateVisible', [BimbinganController::class, 'updateVisible'])->name('product.updateVisible');
         Route::resource('order', AdminOrderBimbinganController::class);
+        Route::resource('promo-code', PromoCodeController::class)->parameter('promo-code', 'promo_code');
     });
     Route::prefix('webinar')->name('webinar.')->group(function () {
         Route::resource('category', AdminCategoryWebinarController::class);

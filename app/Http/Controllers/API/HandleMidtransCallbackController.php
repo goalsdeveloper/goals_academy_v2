@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Notifications\GeneralCourseNotification;
 use App\Notifications\MidtransNotifications\ExpireNotification;
 use App\Notifications\MidtransNotifications\SuccessNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -59,11 +60,11 @@ class HandleMidtransCallbackController extends Controller
                 'message' => 'Invalid Order / Order not found!',
             ], 400);
         }
+        $status = OrderEnum::PENDING->value;
 
         switch ($transactionStatus) {
             case 'settlement':
                 $status = OrderEnum::SUCCESS->value;
-                $notificationInstance = new SuccessNotification($order);
                 Log::info("Transaksi {$order->order_code} telah berhasil pada " . now());
                 if ($order->products->productType->type == "Bimbingan") {
                     $count_course = $order->products->total_meet;
@@ -74,12 +75,19 @@ class HandleMidtransCallbackController extends Controller
                     ];
                     $session = 1;
                     $form_result = $order->form_result;
-                    $parentCourse = Course::create(array_merge($dataCourse, [
-                        'session' => $session, 'ongoing' => CourseStatusEnum::WAITING,
+                    $dataParentCourse = [
+                        'session' => $session,
+                        'ongoing' => CourseStatusEnum::WAITING,
                         'date' => $form_result['schedule'] ?? null,
                         'place_id' => $form_result['place_id'] ?? null,
                         'topic_id' => $form_result['topic'] ?? null,
-                    ]));
+                    ];
+                    if ($order->products->category->name == "Desk Review") {
+                        $now = Carbon::now();
+                        $dataParentCourse['date'] = $now->toDateString();
+                        $dataParentCourse['time'] = $now->toTimeString();
+                    }
+                    $parentCourse = Course::create(array_merge($dataCourse, $dataParentCourse));
                     $dataCourse['parent_id'] = $parentCourse->id;
                     if (array_key_exists('add_on', $form_result) && $form_result['add_on'] != null) {
                         foreach ($form_result['add_on'] as $key => $value) {
@@ -112,6 +120,7 @@ class HandleMidtransCallbackController extends Controller
                         }
                     }
                     $moderators = User::where('user_role', UserRoleEnum::MODERATOR)->get();
+                    $order->user->notify(new SuccessNotification($order));
                     foreach ($moderators as $moderator) {
                         $moderator->notify(new GeneralCourseNotification("Ada Bimbingan Baru!", "Terdapat Bimbingan Baru dengan kode {$order->order_code} yang Harus diproses!", route('moderator.bimbingan.order.edit', ['order' => $order->order_code])));
                     }
@@ -119,7 +128,7 @@ class HandleMidtransCallbackController extends Controller
                 break;
             case 'expire':
                 $status = OrderEnum::FAILED->value;
-                $notificationInstance = new ExpireNotification($order);
+                $order->user->notify(new ExpireNotification($order));
                 Log::info("Transaksi {$order->order_code} telah gagal pada " . now());
                 break;
             case 'cancel':
@@ -128,7 +137,6 @@ class HandleMidtransCallbackController extends Controller
                 break;
         }
         $order->status = $status;
-        $order->user->notify($notificationInstance);
         $order->save();
         OrderHistory::create([
             'order_id' => $order->id,

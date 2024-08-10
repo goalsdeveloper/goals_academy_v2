@@ -13,7 +13,6 @@ import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 export default function UserLayout({ auth, title, children }) {
-    // console.log();
     return (
         <>
             <Head title={title} />

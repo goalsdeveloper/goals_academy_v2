@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\FileUpload;
 use App\Notifications\GeneralCourseNotification;
+use App\Models\Revenue;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,14 +49,16 @@ class ProgressController extends Controller
                             ->orWhere('date', 'LIKE', '%' . $search . '%')
                             ->orWhereHas('user', function ($q) use ($search) {
                                 $q->where('username', 'LIKE', '%' . $search . '%');
+                            })->orWhereHas('products', function ($q) use ($search) {
+                                $q->where('name', 'LIKE', '%' . $search . '%');
                             })->orWhereHas('topic', function ($q) use ($search) {
-                            $q->where('topic', 'LIKE', '%' . $search . '%');
-                        });
+                                $q->where('topic', 'LIKE', '%' . $search . '%');
+                            });
                     });
                 }
 
                 // Load related models
-                $query->with('topic:id,topic', 'user:id,username', 'products:id,name');
+                $query->with('topic:id,topic', 'user:id,username', 'products:id,name')->where('tutor_id', $user->id)->where('ongoing', '!=', CourseStatusEnum::SUCCESS);
 
                 // Paginate results
                 $tutor = $query->paginate($perPage);
@@ -105,7 +108,7 @@ class ProgressController extends Controller
 
     public function show(Course $progress)
     {
-        $order = $progress->load('order', 'addOns', 'fileUploads', "user.profile", "topic", 'products');
+        $order = $progress->load('order','place.city', 'addOns', 'fileUploads', "user.profile", "topic", 'products');
         // $files = FileUpload::where('course_id', $progress->parent_id)->get();
         $files = $progress->fileUploads;
         return Inertia::render('Auth/Tutor/Bimbingan/Progress/Show', [
@@ -145,7 +148,7 @@ class ProgressController extends Controller
             if ($request->hasFile('document')) {
                 foreach ($request->file('document') as $idx => $file) {
                     $fileName = Str::random(8) . '-' . time() . '.' . $file->extension();
-                    Storage::putFileAs('file_uploads', $file, $fileName);
+                    $documents[$idx]['path'] = Storage::putFileAs('file_uploads', $file, $fileName);
                     $documents[$idx]['file_name'] = $fileName;
                     $documents[$idx]['size'] = $file->getSize();
                     $documents[$idx]['slug'] = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
@@ -158,7 +161,7 @@ class ProgressController extends Controller
                 $file->course_id = $progress->id;
                 $file->filename = $document['file_name'];
                 $file->mime_type = $document['mime_type'];
-                $file->path = 'file_uploads';
+                $file->path = $document['path'];
                 $file->size = $document['size'];
                 $file->user_id = auth()->user()->id;
                 $file->name = $document['name'];

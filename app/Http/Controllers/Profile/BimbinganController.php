@@ -58,7 +58,7 @@ class BimbinganController extends Controller
         })->whereHas('products.productType', function (Builder $query) {
             $query->where('type', 'like', '%bimbingan%');
         })
-            ->with('order', 'tutor:id,name', 'tutorNote', 'fileUploads', 'products:id,name,slug,product_image,contact_type', 'place:id,place', 'place.city:id,city', 'addOns', 'topic:id,topic')
+            ->with('order', 'tutor:id,name', 'tutorNote', 'fileUploads', 'products:id,name,slug,product_image,contact_type,active_period', 'place:id,place,city_id', 'place.city:id,city', 'addOns', 'topic:id,topic', 'productReview')
             ->get();
         if ($course->isEmpty()) {
             return abort(404);
@@ -89,17 +89,20 @@ class BimbinganController extends Controller
     {
         $course = $order->courses()->where('session', 1)->first();
         $validate = $request->validate([
-            'rate_tutor' => 'integer|min:1|max:5',
-            'rate_product' => 'integer|min:1|max:5',
-            'note_tutor' => 'string',
-            'note_product' => 'string',
+            'rate_tutor' => 'integer|min:0|max:5|nullable',
+            'rate_product' => 'integer|min:0|max:5|nullable',
+            'note_tutor' => 'string|nullable',
+            'note_product' => 'string|nullable',
         ]);
         try {
             ProductReview::create(array_merge($validate, ['course_id' => $course->id]));
         } catch (\Throwable $th) {
             return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', $th->getMessage());
         }
-        redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', 'Berhasil Mengirim Review');
+
+        // dd($validate);
+        // redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', 'Berhasil Mengirim Review');
+        redirect()->back()->with('message', 'Berhasil Mengirim Review');
     }
 
     public function complete(Order $order)
@@ -127,6 +130,7 @@ class BimbinganController extends Controller
             foreach ($moderators as $moderator) {
                 $moderator->notify(new GeneralCourseNotification("User Telah set Jadwal!", "Bimbingan {$order->order_code} sesi {$course->session} telah diset oleh pengguna, yuk cek segera!", route('moderator.bimbingan.progress.edit', ['progress' => $course])));
             }
+            $course->tutor->notify(new GeneralCourseNotification("User Telah set Jadwal!", "Bimbingan {$order->order_code} sesi {$course->session} telah diset oleh pengguna, yuk cek segera!", route('moderator.bimbingan.progress.edit', ['progress' => $course])));
             $course->update($data);
         } catch (\Throwable $th) {
 

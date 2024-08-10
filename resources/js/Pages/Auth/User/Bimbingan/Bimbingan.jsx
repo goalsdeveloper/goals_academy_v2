@@ -5,6 +5,9 @@ import {
     ProductItemCardHeader,
     ProductItemCardLayout,
 } from "@/Components/fragments/ProductItemCard";
+import {
+    upperCaseFirstLetter,
+} from "@/script/utils";
 import UserLayout from "@/Layouts/UserLayout";
 import "@/script/momentCustomLocale";
 import { Link } from "@inertiajs/react";
@@ -56,9 +59,13 @@ function BimbinganItem({ data }) {
               .add(data?.products?.duration, "minutes")
               .format("HH:mm")
         : "N/A";
-    const courseStatus =
-        data.ongoing.charAt(0).toUpperCase() +
-        data.ongoing.slice(1);
+    const courseStatus = data.child.find((x) => x.ongoing == "berjalan") == null || data?.child.length < 1
+                        ? upperCaseFirstLetter(data?.ongoing)
+                        : "Berjalan"
+
+    // const courseStatus =
+    //     data.ongoing.charAt(0).toUpperCase() +
+    //     data.ongoing.slice(1);
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
@@ -91,7 +98,7 @@ function BimbinganItem({ data }) {
                                 {data.products.name}
                             </h2>
                             <p className="text-neutral-40 md:text-neutral-60">
-                                {moment(data.order.form_result.schedule).format(
+                                {moment(data?.order?.form_result?.schedule).format(
                                     "dddd, DD MMMM YYYY"
                                 )}
                             </p>
@@ -117,7 +124,7 @@ function BimbinganItem({ data }) {
 
 export const EmptyProductLayout = ({
     imgUrl = figure,
-    redirectUrl = "/",
+    redirectUrl = "/produk",
     description = "Kamu belum punya program yang aktif nih",
     buttonTxt = "Cari Program",
 }) => {
