@@ -69,10 +69,10 @@ jobs:
             tar xzf ${{ secrets.DIR }}/artifacts/${GITHUB_SHA}.tar.gz -C "${{ secrets.DIR }}/releases/${GITHUB_SHA}"
 
             rm -rf ${{ secrets.DIR }}/releases/${GITHUB_SHA}/storage
-            mkdir -p ${{ secrets.DIR }}/storage/{app,public,framework,logs}
-            mkdir -p ${{ secrets.DIR }}/storage/framework/{cache,sessions,testing,views}
-            mkdir -p ${{ secrets.DIR }}/storage/framework/cache
-            chmod -R 0777 ${{ secrets.DIR }}/storage
+            mkdir -p ${{ secrets.DIR }}/app_storage/{app,public,framework,logs}
+            mkdir -p ${{ secrets.DIR }}/app_storage/framework/{cache,sessions,testing,views}
+            mkdir -p ${{ secrets.DIR }}/app_storage/framework/cache
+            chmod -R 0777 ${{ secrets.DIR }}/app_storage
 
   run-before-hooks:
     name: "Before hook"
@@ -85,7 +85,7 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
           RELEASE_PATH: ${{ secrets.DIR }}/releases/${{ github.sha }}
           ACTIVE_RELEASE_PATH: ${{ secrets.DIR }}/current
-          STORAGE_PATH: ${{ secrets.DIR }}/storage
+          STORAGE_PATH: ${{ secrets.DIR }}/app_storage
           BASE_PATH: ${{ secrets.DIR }}
         with:
           host: ${{ secrets.HOST }}
@@ -112,9 +112,9 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
           RELEASE_PATH: ${{ secrets.DIR }}/releases/${{ github.sha }}
           ACTIVE_RELEASE_PATH: ${{ secrets.DIR }}/current
-          STORAGE_PATH: ${{ secrets.DIR }}/storage
+          STORAGE_PATH: ${{ secrets.DIR }}/app_storage
           BASE_PATH: ${{ secrets.DIR }}
-          # LARAVEL_ENV: ${{ secrets.ENV }}
+          LARAVEL_ENV: ${{ secrets.ENV }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
@@ -122,9 +122,9 @@ jobs:
           port: ${{ secrets.PORT }}
           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
           script: |
-            echo ${{ secrets.ENV }}
+            echo "${LARAVEL_ENV}" > ${RELEASE_PATH}/.env
             ln -s -f "${BASE_PATH}/.env" "${RELEASE_PATH}"
-            ln -s -f "${STORAGE_PATH}" "${RELEASE_PATH}"
+            ln -s -f "${STORAGE_PATH}" "${RELEASE_PATH}/storage"
             ln -s -f "${RELEASE_PATH}/public" "${BASE_PATH}"
             ln -s -f "${STORAGE_PATH}/app/public" "${RELEASE_PATH}/public/storage"
             ln -s -n -f "${RELEASE_PATH}" "${ACTIVE_RELEASE_PATH}"
@@ -140,7 +140,7 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
           RELEASE_PATH: ${{ secrets.DIR }}/releases/${{ github.sha }}
           ACTIVE_RELEASE_PATH: ${{ secrets.DIR }}/current
-          STORAGE_PATH: ${{ secrets.DIR }}/storage
+          STORAGE_PATH: ${{ secrets.DIR }}/app_storage
           BASE_PATH: ${{ secrets.DIR }}
         with:
           host: ${{ secrets.HOST }}
