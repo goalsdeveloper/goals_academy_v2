@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { useMediaQuery } from "react-responsive";
 import logo from "/resources/img/icon/goals-5.svg";
 import { Autocomplete } from "@mui/material";
-import { universities, majorFamilies } from "@/Hooks/data";
+import { universities, majorFamilies } from "@/data";
 
 export default function Setting({ auth, user, skills }) {
     const [isLoading, setIsLoading] = useState(false);

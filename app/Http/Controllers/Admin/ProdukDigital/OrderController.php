@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Ebook;
+namespace App\Http\Controllers\Admin\ProdukDigital;
 
 use Inertia\Inertia;
 use App\Models\Order;
@@ -24,7 +24,7 @@ class OrderController extends Controller
                 $query = Order::with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])
                     ->whereHas('products', function ($query) {
                         $query->whereHas('productType', function ($subQuery) {
-                            $subQuery->where('type', 'LIKE', '%e-book%');
+                            $subQuery->where('type', 'LIKE', '%produk-digital%');
                         });
                     });
 
@@ -36,7 +36,7 @@ class OrderController extends Controller
 
                 $orders = $query->paginate($perPage);
 
-                return Inertia::render('Auth/Admin/Ebook/Order', [
+                return Inertia::render('Auth/Admin/ProdukDigital/Order', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data history success',

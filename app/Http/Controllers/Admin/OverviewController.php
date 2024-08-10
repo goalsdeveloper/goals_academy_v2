@@ -10,8 +10,8 @@ use Carbon\Carbon;
 use DateTime;
 use Exception;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period;
 
@@ -29,7 +29,7 @@ class OverviewController extends Controller
                 $productNames = Products::pluck('name')->toArray();
                 if (!$startDateString && !$endDateString) {
                     $oneMonthAgo = now()->subMonth();
-                    $order =  Order::where('created_at', '>=', $oneMonthAgo)
+                    $order = Order::where('created_at', '>=', $oneMonthAgo)
                         ->orderBy('created_at', 'desc')
                         ->where('status', OrderEnum::SUCCESS)
                         ->with(['user:id,username,name', 'products:id,product_type_id,category_id,name', 'products.category:id,name', 'products.productType:id,type'])->take(5)
@@ -50,9 +50,8 @@ class OverviewController extends Controller
                     $totalCheckout = Order::where('created_at', '>=', $oneMonthAgo)
                         ->count();
 
-                    $totalEarning = (int)Order::where('status', '=', 'Success')
-                        ->where('created_at', '>=', $oneMonthAgo)
-                        ->sum('unit_price');
+                    $totalEarning = Order::where('status', '=', 'Success')
+                        ->where('created_at', '>=', $oneMonthAgo)->get();
 
                     $limit = 1000;
                     $period = Period::months(1);
@@ -90,11 +89,16 @@ class OverviewController extends Controller
                         }
                     }
 
+                    $totalEarnings = 0;
+                    foreach ($totalEarning as $key => $value) {
+                        $totalEarnings += ($value->form_result['total_price'] - $value->form_result['admin']);
+                    }
+
                     ksort($totalsByDate);
                     return Inertia::render('Auth/Admin/Overview/Overview', [
                         'status' => true,
                         'statusCode' => 200,
-                        'total_earning' => $totalEarning,
+                        'total_earning' => $totalEarnings,
                         'total_order' => $totalOrder,
                         'total_checkout' => $totalCheckout,
                         'list_orders' => $order,
@@ -126,10 +130,12 @@ class OverviewController extends Controller
                     $totalCheckout = Order::whereBetween('created_at', [$startDateString, Carbon::createFromDate($endDateString)->addDays(1)])
                         ->count();
 
-                    $totalEarning = (int)Order::whereBetween('created_at', [$startDateString, Carbon::createFromDate($endDateString)->addDays(1)])
-                        ->where('status', '=', 'Success')
-                        ->sum('unit_price');
-
+                    $totalEarning = Order::whereBetween('created_at', [$startDateString, Carbon::createFromDate($endDateString)->addDays(1)])
+                        ->where('status', '=', 'Success')->get();
+                    $totalEarnings = 0;
+                    foreach ($totalEarning as $key => $value) {
+                        $totalEarnings += ($value->form_result['total_price'] - $value->form_result['admin']);
+                    }
                     $limit = 1000;
                     try {
                         $startDate = DateTime::createFromFormat('Y-m-d', $startDateString);
@@ -173,6 +179,7 @@ class OverviewController extends Controller
                                 }
                             }
                         }
+
                     } catch (Exception $e) {
                         return response()->json(['error' => $e->getMessage()], 400);
                     }
@@ -181,7 +188,7 @@ class OverviewController extends Controller
                     return Inertia::render('Auth/Admin/Overview/Overview', [
                         'status' => true,
                         'statusCode' => 200,
-                        'total_earning' => $totalEarning,
+                        'total_earning' => $totalEarnings,
                         'total_order' => $totalOrder,
                         'total_checkout' => $totalCheckout,
                         'list_orders' => $order,
@@ -198,18 +205,17 @@ class OverviewController extends Controller
             return response()->json([
                 'status' => false,
                 'statusCode' => 500,
-                'message' => 'Failed to retrieve data. Internal Server Error'
+                'message' => 'Failed to retrieve data. Internal Server Error',
             ], 500);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
                 'statusCode' => 500,
                 'message' => 'Internal Server Error',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
-
 
     /**
      * Show the form for creating a new resource.

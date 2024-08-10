@@ -1,5 +1,5 @@
 import image1 from "/resources/img/produk/bimbingan.svg";
-import image2 from "/resources/img/produk/ebook.svg";
+import image2 from "/resources/img/produk/produk-digital.svg";
 import image3 from "/resources/img/produk/webinar.svg";
 
 export default function Filter ({ show, showHandler }) {
@@ -11,7 +11,7 @@ export default function Filter ({ show, showHandler }) {
             <div className="container mx-auto md:pt-2 lg:pt-4 xl:pt-8 3xl:pt-4">
                 <div className="grid grid-cols-3 gap-[2vw] md:gap-5 3xl:gap-8">
                     <FilterCard name="Bimbingan Skripsi" img={image1} active={show[0]} className="bg-bimbingan" onClick={() => showHandler(0)} />
-                    <FilterCard name="E-Book Skripsi" img={image2} active={show[1]} className="bg-ebook" onClick={() => showHandler(1)} />
+                    <FilterCard name="Produk Digital" img={image2} active={show[1]} className="bg-produk-digital" onClick={() => showHandler(1)} />
                     <FilterCard name="Webinar Skripsi" img={image3} active={show[2]} className="bg-webinar" onClick={() => showHandler(2)} />
                 </div>
             </div>

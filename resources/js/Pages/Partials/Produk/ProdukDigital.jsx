@@ -4,16 +4,16 @@ import { Navigation, Pagination, A11y, FreeMode } from "swiper/modules";
 import ButtonSwiper from "@/Components/ButtonSwiper";
 import ButtonPill from "@/Components/ButtonPill";
 
-export default function Ebook({ data, active, status }) {
+export default function ProdukDigital({ data, active, status }) {
     return (
         <section
-            id="ebook"
+            id="produk-digital"
             className={`${
                 active || status ? "" : "hidden"
             } my-8 xl:my-12 3xl:my-16 overflow-hidden`}
         >
             <div className="container mx-auto hidden md:block">
-                <h2 className="mb-4 sm:mb-6 xl:mb-10 3xl:mb-14">E-Book</h2>
+                <h2 className="mb-4 sm:mb-6 xl:mb-10 3xl:mb-14">Produk Digital</h2>
                 <div className="grid grid-cols-3 justify-center md:gap-8 xl:gap-16 pb-2">
                     {data.map((item, index) => {
                         const model =
@@ -24,7 +24,7 @@ export default function Ebook({ data, active, status }) {
                                 : "";
                         return (
                             <div key={index} className={`flex ${model}`}>
-                                <EbookCard
+                                <Card
                                     key={index}
                                     item={item}
                                     className="md:w-[21vw] 3xl:w-[20vw]"
@@ -34,18 +34,18 @@ export default function Ebook({ data, active, status }) {
                     })}
                 </div>
             </div>
-            <EbookMobile data={data} />
+            <MobileUI data={data} />
         </section>
     );
 }
 
-function EbookMobile({ data }) {
+function MobileUI({ data }) {
     return (
         <div className="container mx-auto md:hidden">
             <div className="flex justify-between mb-6 xs:mb-8">
                 <div className="md:w-6/12">
                     <h2 className="text-[5vw]">
-                        E-Book <span className="text-primary">Skripsi</span>
+                        Produk <span className="text-primary">Digital</span>
                     </h2>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
@@ -69,7 +69,7 @@ function EbookMobile({ data }) {
                             style={{ width: "fit-content" }}
                             className="p-4 md:p-2 lg:p-3 xl:p-4"
                         >
-                            <EbookCard item={item} className="w-[70vw]" />
+                            <Card item={item} className="w-[70vw]" />
                         </SwiperSlide>
                     );
                 })}
@@ -78,7 +78,7 @@ function EbookMobile({ data }) {
     );
 }
 
-function EbookCard({ item, className }) {
+function Card({ item, className }) {
     const currency = Intl.NumberFormat("id-ID");
     return (
         <div
@@ -87,7 +87,7 @@ function EbookCard({ item, className }) {
             <div className="w-full h-[90vw] md:h-[27vw] overflow-hidden">
                 <img
                     className="w-full"
-                    src={`/storage/${item.product_image}`}
+                    src={`${item.product_image}`}
                     alt={item.name}
                 />
             </div>
