@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Ebook;
+namespace App\Http\Controllers\Admin\ProdukDigital;
 
 use Inertia\Inertia;
 use App\Models\Products;
@@ -10,7 +10,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class EbookController extends Controller
+class ProdukDigitalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,7 +25,7 @@ class EbookController extends Controller
 
                 $query = Products::with('category', 'productType')
                     ->whereHas('productType', function ($query) {
-                        $query->where('type', 'e-book');
+                        $query->where('type', 'produk-digital');
                     });
 
                 if ($search) {
@@ -50,7 +50,7 @@ class EbookController extends Controller
                     return $product;
                 });
 
-                return Inertia::render('Auth/Admin/Ebook/Product', [
+                return Inertia::render('Auth/Admin/ProdukDigital/Product', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
@@ -161,7 +161,7 @@ class EbookController extends Controller
             if (Auth::user()->user_role == "admin") {
 
 
-                if (strcasecmp($product->productType->type, "e-book") !== 0) {
+                if (strcasecmp($product->productType->type, "produk-digital") !== 0) {
                     return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Product not found'], 404);
                 }
 
@@ -267,7 +267,7 @@ class EbookController extends Controller
 
                 $product->delete();
 
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete e-book success'], 200);
+                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete produk-digital success'], 200);
             } else {
                 abort(403);
             }

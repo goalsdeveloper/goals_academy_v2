@@ -9,9 +9,9 @@ use App\Http\Controllers\Admin\Bimbingan\PlaceController;
 use App\Http\Controllers\Admin\Bimbingan\TopicController;
 use App\Http\Controllers\Admin\Career\JobController;
 use App\Http\Controllers\Admin\Career\ParticipantController;
-use App\Http\Controllers\Admin\Ebook\CategoryController as AdminCategoryEbookController;
-use App\Http\Controllers\Admin\Ebook\EbookController;
-use App\Http\Controllers\Admin\Ebook\OrderController as AdminOrderEbookController;
+use App\Http\Controllers\Admin\ProdukDigital\CategoryController as AdminCategoryProdukDigitalController;
+use App\Http\Controllers\Admin\ProdukDigital\ProdukDigitalController;
+use App\Http\Controllers\Admin\ProdukDigital\OrderController as AdminOrderProdukDigitalController;
 use App\Http\Controllers\Admin\Ecourse\CategoryController as AdminCategoryEcourseController;
 use App\Http\Controllers\Admin\Ecourse\EcourseController;
 use App\Http\Controllers\Admin\Ecourse\OrderController as AdminOrderEcourseController;
@@ -97,6 +97,9 @@ Route::get('/syarat_dan_ketentuan', function () {
     return Inertia::render('Main/SyaratDanKetentuan');
 });
 
+Route::get('/dibimbingsemester', function () {
+    return Inertia::render('Main/DibimbingSatuSemester');
+});
 Route::resource('/produk', PurchaseController::class);
 
 Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status')->middleware(['auth', 'verified']);
@@ -152,10 +155,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::resource('product', WebinarController::class);
         Route::resource('order', AdminOrderWebinarController::class);
     });
-    Route::prefix('ebook')->name('ebook.')->group(function () {
-        Route::resource('category', AdminCategoryEbookController::class);
-        Route::resource('product', EbookController::class);
-        Route::resource('order', AdminOrderEbookController::class);
+    Route::prefix('produk_digital')->name('produk_digital.')->group(function () {
+        Route::resource('category', AdminCategoryProdukDigitalController::class);
+        Route::resource('product', ProdukDigitalController::class);
+        Route::resource('order', AdminOrderProdukDigitalController::class);
     });
     Route::prefix('ecourse')->name('ecourse.')->group(function () {
         Route::resource('category', AdminCategoryEcourseController::class);
