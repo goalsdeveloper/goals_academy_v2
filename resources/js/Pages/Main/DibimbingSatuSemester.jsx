@@ -134,7 +134,7 @@ export default function DibimbingSatuSemester ({ auth }) {
         {text: "Free Chat Online 24/7"},
         {text: "Free 1x Sharing Skripsi Kuantitatif"},
         {text: "Call Bareng Tutor Sewaktu-Waktu"},
-        {text: "Free Produk Digital Q&A Sidang Skripsi"},
+        {text: "Materi Video yang Diupdate Berkala"},
         {text: "Community Sesama Pejuang Skripsi"},
         {text: "Free Record Sharing Session Skripsi"},
         {text: "Berkesempatan Mendapat Desk Review dan Produk Digital Gratis"},

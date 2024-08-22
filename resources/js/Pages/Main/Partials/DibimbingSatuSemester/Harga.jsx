@@ -12,11 +12,11 @@ export default function Harga ({ registrationLink }) {
                 <p className="font-poppins font-bold text-[3.72vw] md:text-[1.875vw]">2000K</p>
             </div>
             <div className="flex flex-col md:flex-row md:justify-between items-center py-[6vw] md:py-[2vw]">
-                <p className="font-poppins font-semibold text-[3.256vw] md:text-[1.25vw] mb-[6vw] md:mb-0">Khusus pendaftaran di bulan September,  <br />kamu bisa dapetin cuma dengan harga</p>
+                <p className="font-poppins font-semibold text-[3.256vw] md:text-[1.25vw] mb-[6vw] md:mb-0">Khusus pendaftaran di bulan ini harga jadi segini,<br/>karena bulan depan harga naik</p>
                 <p className="font-poppins font-bold text-[5.56vw] md:text-[1.875vw] md:text-red-700 relative before:content-['2000K'] before:absolute before:-top-[3vw] md:before:-top-[1vw] before:text-center md:before:text-right before:w-full before:font-semibold before:line-through before:decoration-red-700 before:text-dark before:text-[2.79vw] md:before:text-[1vw]">199K</p>
             </div>
-            <div className="flex flex-col md:flex-row justify-between items-center text-white py-[3vw] md:p-[1vw] bg-red-400 rounded-[3.72vw] md:rounded-[.75vw] gap-[2vw] md:gap-0">
-                <p className="w-10/12 md:w-auto text-center font-poppins md:font-medium text-[3.256vw] md:text-[1.25vw]">Pendaftaran Hari ini diskon 50% cuma seharga</p>
+            <div className="flex flex-col md:flex-row justify-between items-center text-white py-[3vw] md:p-[1vw] bg-red-400 rounded-[3.72vw] md:rounded-[.75vw] gap-[2vw] md:gap-[.5vw]">
+                <p className="w-10/12 md:w-auto text-left font-poppins md:font-medium text-[3.256vw] md:text-[1.25vw]">Dalam perayaan Kemerdekaan Indonesia, gunakan kode promo "MERDEKA79" dan dapatkan harga khusus menjadi</p>
                 <p className="font-poppins font-medium md:font-bold text-[8.37vw] md:text-[1.875vw]">99K</p>
             </div>
             {!isMobile && <GoalsButton href={registrationLink} className="w-fit px-[2vw] font-sans text-[1.04vw] rounded-[.5vw] mt-[2.14vw]">Daftar Sekarang</GoalsButton>}
