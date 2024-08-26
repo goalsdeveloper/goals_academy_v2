@@ -117,11 +117,6 @@ export default function Statistic({ auth, product_type }) {
 
     const getDataUser = (startDate, endDate) => {
         setIsLoading(true);
-        console.log(
-            `/api/user_growth?startDate=${startDate ? startDate : ""}&endDate=${
-                endDate ? endDate : ""
-            }`
-        );
         fetch(
             `/api/user_growth?startDate=${startDate ? startDate : ""}&endDate=${
                 endDate ? endDate : ""
@@ -178,7 +173,6 @@ export default function Statistic({ auth, product_type }) {
 
     // Click & Views
 
-    console.log(data.totalsByDate);
     const [barLabels, setBarLabels] = useState(Object.keys(data.totalsByDate).map(i => i.split('-')[2]));
 
     const [clickData, setClickData] = useState(
@@ -227,13 +221,6 @@ export default function Statistic({ auth, product_type }) {
     // Function to get Data
     const getData = (startDate, endDate, productType, productName) => {
         setIsLoading(true);
-        console.log(
-            `/api/views_sales?startDate=${startDate ? startDate : ""}&endDate=${
-                endDate ? endDate : ""
-            }&productType=${productType ? productType : ""}&productName=${
-                productName ? productName : ""
-            }`
-        );
         fetch(
             `/api/views_sales?startDate=${startDate ? startDate : ""}&endDate=${
                 endDate ? endDate : ""

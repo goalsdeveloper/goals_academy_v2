@@ -59,10 +59,8 @@ export default function MainHeader({ auth, title, className }) {
                         data.promo_notifications.current_page <
                         data.promo_notifications.last_page,
                 }));
-            })
-            .then(() => {
                 setTimeout(() => getNewNotification(), 10000);
-            });
+            })
     };
 
     const getNewNotification = () => {
@@ -93,8 +91,8 @@ export default function MainHeader({ auth, title, className }) {
                     ),
                     promo: mergedNewNotif(n.promo, data.promo_notifications),
                 }));
+                setTimeout(() => getNewNotification(), 10000)
             })
-            .then(setTimeout(() => getNewNotification(), 10000));
     };
 
     const getOldNotification = (category, page, setIsLoading) => {
@@ -388,7 +386,6 @@ function Notification({ auth, data, loadMore }) {
     };
 
     const loadMoreProgram = () => {
-        console.log(1);
         loadMore("Pembelajaran", data.pageProgram + 1, setIsLoading);
     };
 
@@ -928,7 +925,6 @@ function NotificationItem({ item }) {
         return (
             <Link
                 onClick={(e) => {
-                    console.log(e);
                     axios
                         .get(route("api.notification.read", { id: item.id }))
                         .then((res) => {

@@ -37,8 +37,3 @@ h6, .h6 {
 .swiper-program .swiper-slide-active {
     @apply scale-110 !important;
 }
-
-
-.font-work-sans {
-    font-family: Work Sans, sans-serif;
-}

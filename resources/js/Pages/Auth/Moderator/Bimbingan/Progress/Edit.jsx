@@ -22,18 +22,21 @@ import { RxFileText } from "react-icons/rx";
 import FileMediaPopup from "../components/FileMediaPopup";
 import { canSubmitFormCheckerProgress } from "../utils";
 import { Autocomplete, TextField } from "@mui/material";
+import { useEffect } from "react";
 
 export default function Edit({ auth, progress, tutors, places }) {
+    const [isInitialRender, setIsInitialRender] = React.useState(true);
     const product_category = progress.products.category.slug;
-
     const [isShow, setIsShow] = React.useState({
         orderDetails: false,
         tutorDetails: false,
     });
+    let currentTutor = tutors?.find((item) => item.id == progress.tutor_id);
 
-    const currentTutor = tutors?.find((item) => item.id == progress.tutor_id);
+    const [inputValueTutor, setInputValueTutor] = React.useState(
+        currentTutor.name ?? ""
+    );
 
-    const [inputValueTutor, setInputValueTutor] = React.useState("");
     const { data, setData, post, transform } = useForm({
         add_on: progress.add_ons ?? undefined,
         username: progress.user.username,
@@ -137,12 +140,12 @@ export default function Edit({ auth, progress, tutors, places }) {
         }
     };
 
-    function checkSelectInput() {
-        if (!data.tutor) {
-            return true;
-        }
-        return false;
-    }
+    // function checkSelectInput() {
+    //     if (!data.tutor) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     return (
         <DashboardLayout
@@ -228,8 +231,8 @@ export default function Edit({ auth, progress, tutors, places }) {
                             size="sm"
                             type="submit"
                             disabled={
-                                canSubmitFormCheckerProgress(progress, data) ||
-                                checkSelectInput()
+                                canSubmitFormCheckerProgress(progress, data)
+                                // checkSelectInput()
                             }
                             onClick={() => {
                                 transform((data) => ({
@@ -342,16 +345,19 @@ export default function Edit({ auth, progress, tutors, places }) {
                                             );
                                         }}
                                         inputValue={
-                                            inputValueTutor == ""
-                                                ? currentTutor.name
-                                                : inputValueTutor
+                                            inputValueTutor
                                         }
                                         onInputChange={(
                                             event,
                                             newInputValue
                                         ) => {
-                                            setInputValueTutor(newInputValue);
+                                            if (event != null) {
+                                                setInputValueTutor(
+                                                    newInputValue
+                                                );
+                                            }
                                         }}
+                                        onBlur={() => setInputValueTutor(data.tutor)}
                                         getOptionLabel={(option) => option.name}
                                         onChange={(e, value) => {
                                             setData({
@@ -396,7 +402,8 @@ export default function Edit({ auth, progress, tutors, places }) {
                         <FormSection
                             title="Order Details"
                             titleAction={
-                                <button
+                                <a
+                                    role="button"
                                     onClick={() =>
                                         setIsShow({ orderDetails: true })
                                     }
@@ -404,7 +411,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
-                                </button>
+                                </a>
                             }
                         >
                             <GoalsTextInput
@@ -423,7 +430,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 <GoalsTextInput
                                     label="Duration"
                                     disabled
-                                    data={data.duration}
+                                    data={data.duration  + " menit"}
                                     setData={(i) => setData("duration", i)}
                                 />
                             )}
@@ -437,7 +444,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                             <SelectMultiTag
                                 disabled
                                 value={data.add_on}
-                                label="Add on"
+                                label="Add-On"
                                 handleClearTag={() =>
                                     setData({ ...data, add_on: [] })
                                 }
@@ -511,7 +518,8 @@ export default function Edit({ auth, progress, tutors, places }) {
                         <FormSection
                             title="Tutor Information"
                             titleAction={
-                                <button
+                                <a
+                                    role="button"
                                     onClick={() =>
                                         setIsShow({ tutorDetails: true })
                                     }
@@ -519,7 +527,7 @@ export default function Edit({ auth, progress, tutors, places }) {
                                 >
                                     File & Media{" "}
                                     <RxFileText className="md:text-[1vw]" />
-                                </button>
+                                </a>
                             }
                         >
                             <textarea

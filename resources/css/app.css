@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -49,6 +51,18 @@ select:-webkit-autofill:focus {
     outline: none;
 }
 
+.multi-column {
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+    -moz-column-fill: auto;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 20px;
+    -webkit-column-fill: auto;
+    column-count: 2;
+    column-gap: 20px;
+    column-fill: auto;
+ }
+
 @layer base {
     html {
         font-size: 16px;
@@ -65,4 +79,8 @@ select:-webkit-autofill:focus {
         font-size: inherit;
         @apply text-inherit;
     }
+}
+
+.font-work-sans {
+    font-family: Work Sans, sans-serif;
 }

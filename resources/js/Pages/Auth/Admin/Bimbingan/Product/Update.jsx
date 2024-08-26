@@ -15,15 +15,19 @@ import {
 import { router, useForm } from "@inertiajs/react";
 import toast from "react-hot-toast";
 import { toSlug } from "@/script/utils";
+import sampleImage from "/resources/img/program/sample image.png";
 
 const Update = ({ auth, categories, topics, addons, products }) => {
     const [show, setShow] = useState(false);
+    const currency = Intl.NumberFormat("id-ID");
+
     const { data, setData, post, transform } = useForm({
         name: products.name,
-        product_image: "",
+        product_image: products.product_image,
         slug: products.slug,
         category_id: categories.find((item) => item.id == products.category_id),
         description: products.description,
+        excerpt: products.excerpt,
         price: products.price,
         promo_price: products.promo_price ?? "",
         total_meet: products.total_meet,
@@ -61,7 +65,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
             facilities: JSON.stringify(data.facilities),
             is_visible: data.is_visible ? 1 : 0,
             is_facilities: 0,
-            excerpt: data.description,
+            excerpt: data.description.substring(0, 128),
             form_config: JSON.stringify(data.form_config),
             contact_type: data.contact_type,
         }));
@@ -133,7 +137,20 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                 !data.total_meet ||
                                 !data.active_period ||
                                 !data.contact_type ||
-                                !data.duration
+                                !data.duration ||
+                                ("topic" in data.form_config &&
+                                    !data.topics.length)
+                                //  ? (
+                                // ) : (
+                                //     !data.name ||
+                                //     !data.category_id ||
+                                //     !data.description ||
+                                //     !data.price ||
+                                //     !data.total_meet ||
+                                //     !data.active_period ||
+                                //     !data.contact_type ||
+                                //     !data.duration
+                                // )
                             }
                         >
                             Perbarui
@@ -160,19 +177,56 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                         >
                             <input
                                 type="file"
-                                onChange={(e) =>
+                                id="picture"
+                                onChange={(e) => {
                                     setData({
                                         ...data,
                                         product_image: {
                                             url: e.target.value,
                                             file: e.target.files[0],
                                         },
-                                    })
-                                }
+                                    });
+                                }}
                             />
-
                             <div className="flex gap-[1.2vw]">
-                                <div className="h-40 border-2 aspect-square rounded-"></div>
+                                <div className="w-[29vw]">
+                                    <div className="flex items-center justify-center w-full h-[11vw] aspect-square shadow-md rounded-[.5vw] overflow-hidden">
+                                        {typeof data.product_image ==
+                                        "string" ? (
+                                            <img
+                                                src={
+                                                    data.product_image
+                                                        ? `/storage/${data.product_image}`
+                                                        : sampleImage
+                                                }
+                                                className={`w-full h-full object-cover ${
+                                                    data.product_image
+                                                        ? ""
+                                                        : "grayscale"
+                                                }`}
+                                                alt={data.product_image}
+                                            />
+                                        ) : (
+                                            <img
+                                                src={URL.createObjectURL(
+                                                    data.product_image.file
+                                                )}
+                                                className={`w-full h-full object-cover ${
+                                                    data.product_image
+                                                        ? ""
+                                                        : "grayscale"
+                                                }`}
+                                                alt={data.product_image.url}
+                                            />
+                                        )}
+                                    </div>
+                                    <small
+                                        htmlFor="picture"
+                                        className="text-red-500 text-[.83vw]"
+                                    >
+                                        *Ukuran foto (402 x 295 px)
+                                    </small>
+                                </div>
                                 <div className="w-full space-y-[1.2vw]">
                                     <GoalsTextInput
                                         label="Nama"
@@ -253,12 +307,12 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                     placeholder="Deskripsi singkat tentang program ini"
                                     value={data.description}
                                     required
-                                    onChange={(e) =>
+                                    onChange={(e) => {
                                         setData({
                                             ...data,
                                             description: e.target.value,
-                                        })
-                                    }
+                                        });
+                                    }}
                                     className=" w-full h-[7.8vw] border border-neutral-50 text-[.83vw] rounded-[.4vw] px-[1.2vw] md:py-[1vw] resize-none "
                                 ></textarea>
                             </div>
@@ -276,7 +330,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                     }
                                 />
                                 <GoalsTextInput
-                                    label="Promo (Optional)"
+                                    label="Diskon Gimmick (Opsional)"
                                     grow
                                     data={data.promo_price}
                                     setData={(e) =>
@@ -289,21 +343,13 @@ const Update = ({ auth, categories, topics, addons, products }) => {
 
                     <div className="flex flex-col w-full gap-[.8vw]">
                         <FormSection title="Informasi">
-                            <div className="flex gap-[1.2vw]">
+                            <div className="grid grid-cols-2 gap-[1.2vw]">
                                 <GoalsTextInput
                                     label="Total Pertemuan"
                                     required
                                     data={data.total_meet}
                                     setData={(e) =>
                                         setData({ ...data, total_meet: e })
-                                    }
-                                />
-                                <GoalsTextInput
-                                    label="Masa Aktif"
-                                    required
-                                    data={data.active_period}
-                                    setData={(e) =>
-                                        setData({ ...data, active_period: e })
                                     }
                                 />
                                 <GoalsTextInput
@@ -318,7 +364,14 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                     }
                                 />
                             </div>
-
+                            <GoalsTextInput
+                                label="Durasi Private Chat"
+                                required
+                                data={data.active_period}
+                                setData={(e) =>
+                                    setData({ ...data, active_period: e })
+                                }
+                            />
                             <SelectMultiTag
                                 value={data.add_on}
                                 label="Add on"
@@ -354,11 +407,11 @@ const Update = ({ auth, categories, topics, addons, products }) => {
 
                             <SelectMultiTag
                                 value={data.topics}
-                                label="Topic"
+                                label="Topik"
                                 handleClearTag={() =>
                                     setData({ ...data, topics: [] })
                                 }
-                                required
+                                required={"topic" in data.form_config}
                             >
                                 {topics.map((option, i) => (
                                     // <SelectInputItem
@@ -407,7 +460,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                 </GoalsButton>
                             }
                         >
-                            <div className="flex flex-wrap gap-[1.6vw]">
+                            <div className="flex flex-wrap gap-x-[.5vw] gap-y-[1vw]">
                                 {data.facilities.length == 0 ? (
                                     <p className="text-[.83vw] w-full text-center">
                                         Belum diatur
@@ -416,28 +469,32 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                     data.facilities.map((item) => (
                                         <div
                                             key={item.icon}
-                                            className="flex gap-[.6vw] items-center group hover:bg-neutral-20 px-2 py-1 rounded-full cursor-pointer"
+                                            className="flex gap-[.6vw] items-center group hover:bg-neutral-20 cursor-pointer border border-secondary rounded-full py-[.25vw] px-[.5vw]"
                                         >
                                             <i
-                                                className={`${item.icon} text-secondary`}
+                                                className={`${item.icon} text-secondary text-center w-[1vw]`}
                                             ></i>
                                             <p>{item.text}</p>
                                             <button
                                                 type="button"
-                                                onClick={() =>
+                                                onClick={() => {
                                                     setData({
                                                         ...data,
                                                         facilities:
                                                             data.facilities.filter(
-                                                                (i) => {
-                                                                    i.icon ==
-                                                                        item.icon &&
-                                                                        i.text ==
-                                                                            item.text;
-                                                                }
+                                                                (i) => i != item
                                                             ),
-                                                    })
-                                                }
+                                                        // facilities:
+                                                        //     data.facilities.filter(
+                                                        //         (i) => {
+                                                        //             i.icon ==
+                                                        //                 item.icon &&
+                                                        //                 i.text ==
+                                                        //                     item.text;
+                                                        //         }
+                                                        //     ),
+                                                    });
+                                                }}
                                             >
                                                 <i className="transition-all opacity-0 fa-solid fa-xmark group-hover:opacity-100"></i>
                                             </button>

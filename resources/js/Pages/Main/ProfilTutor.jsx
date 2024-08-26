@@ -9,8 +9,11 @@ import tutor3 from "/resources/img/tutor/3.png";
 import tutor4 from "/resources/img/tutor/4.png";
 import tutor5 from "/resources/img/tutor/5.png";
 import tutor6 from "/resources/img/tutor/6.png";
+import bgGradient from "/resources/img/vector/gradient-bg-1.svg";
+import bgGradient2 from "/resources/img/vector/gradient-bg-2.svg";
+import TutorListOld from "../Partials/ProfilTutor/TutorList";
 
-export default function ProfilTutor({ auth }) {
+export default function ProfilTutor({ auth, tutors, skill }) {
     const data_tutor = [
         {
             name: "Widyana Rahma Cahyani",
@@ -67,8 +70,13 @@ export default function ProfilTutor({ auth }) {
 
     return (
         <MainLayout auth={auth} title="Profil Tutor">
-            <Hero />
-            <TutorList data={data_tutor} />
+            <div className="relative overflow-x-hidden">
+                <div className="absolute w-[29vw] md:[25vw] h-[29vw] md:h-[25vw] rounded-full top-[20vw] md:top-[4vw] right-[-20vw] md:right-[-20vw] border-dashed border-[4px] md:border-[10px] -z-10 border-secondary"></div>
+                <img src={bgGradient} className="absolute right-[-15vw] md:right-0 top-[25vw] md:top-0 -z-50 w-[55vw] md:w-auto h-[55vw] md:h-auto" alt="" />
+                <img src={bgGradient2} className="absolute left-[-20vw] md:left-[-10vw] top-[2vw] md:top-[1.2vw] -z-50 w-[55vw] md:w-auto h-[55vw] md:h-auto" alt="" />
+                <Hero />
+                <TutorList data={tutors} skillSearch={skill} />
+            </div>
             <Consultation />
         </MainLayout>
     );

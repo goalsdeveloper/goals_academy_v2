@@ -5,8 +5,7 @@ function getFieldData(data) {
     let desc = {};
 
     if (
-        data.products.contact_type === "offline" ||
-        data.products.contact_type === "hybrid"
+        data.products.contact_type === "offline"
     ) {
         title = {
             ...title,
@@ -15,8 +14,8 @@ function getFieldData(data) {
         };
         desc = {
             ...desc,
-            city: data?.location?.city?.city ?? "Kota Belum Diatur",
-            place: data?.place?.place ?? "Lokasi Belum Diatur",
+            city: data?.place?.city?.city ?? "-",
+            place: data?.place?.place ?? "-",
         };
     } else if (data.products.contact_type === "online") {
         title = {
@@ -25,7 +24,20 @@ function getFieldData(data) {
         };
         desc = {
             ...desc,
-            link: data?.location ?? "Link Meet Belum Diatur",
+            link: data?.location ?? "-",
+        };
+    } else {
+        title = {
+            ...title,
+            city: "Kota Pelaksanaan",
+            place: "Lokasi Pelaksanaan",
+            link: "Link Meet",
+        };
+        desc = {
+            ...desc,
+            city: data?.place?.city?.city ?? "-",
+            place: data?.place?.place ?? "-",
+            link: data?.location ?? "-",
         };
     }
 
@@ -40,8 +52,6 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
         time: "Jam Pelaksanaan",
         topic: "Topik Bimbingan",
         ...getFieldData(data).title,
-        // add_on: "Add On",
-        // document: "Lampiran Dokumen",
     };
     const form_result = {
         schedule:
@@ -50,15 +60,10 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                 month: "long",
                 day: "numeric",
                 weekday: "long",
-            }) ?? "Jadwal Belum Diatur",
-        time: data?.time ?? "Jam Belum Diatur",
-        topic: data?.topic?.topic ?? "Topik Belum Diatur",
+            }) ?? "-",
+        time: data?.time ? data?.time.substring(0,5) : "-",
+        topic: data?.topic?.topic ?? "-",
         ...getFieldData(data).desc,
-        // add_on:
-        //     data?.add_ons?.map((item) => item["name"]).join(", ") != ""
-        //         ? data?.add_ons?.map((item) => item["name"]).join(", ")
-        //         : "Tidak Ada Add Ons",
-        // document: "Lampiran Dokumen",
     };
 
     return (
@@ -69,6 +74,12 @@ const DetailSatuPertemuan = ({ data, className = "" }) => {
                     Pelaksanaan Pembelajaran
                 </h2>
                 <ul className="text-black space-y-[1.8vw] md:space-y-[1.25vw]">
+                    <li>
+                        <label className="text-[2.8vw] md:text-[.8vw] font-normal text-neutral-50">
+                            Nama Produk
+                        </label>
+                        <p className="text-[3.7vw] md:text-[1.25vw] text-neutral-80 font-medium">{data?.products?.name}</p>
+                    </li>
                     {Object.keys(form_field).map((key) => (
                         <li
                             key={key}

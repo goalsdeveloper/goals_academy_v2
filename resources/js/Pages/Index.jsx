@@ -1,11 +1,19 @@
 import MainLayout from "@/Layouts/MainLayout";
-import Hero from "./Partials/Home/Hero";
-import Preliminary from "./Partials/Home/Preliminary";
-import Program from "./Partials/Home/Program";
-import Video from "./Partials/Home/Video";
-import Testimony from "./Partials/Home/Testimony";
-import FAQ from "./Partials/Home/FAQ";
-import Consultation from "./Partials/Home/Consultation";
+// import Hero from "./Partials/Home/Hero";
+// import Preliminary from "./Partials/Home/Preliminary";
+// import Program from "./Partials/Home/Program";
+// import Video from "./Partials/Home/Video";
+// import Testimony from "./Partials/Home/Testimony";
+// import FAQ from "./Partials/Home/FAQ";
+// import Consultation from "./Partials/Home/Consultation";
+
+import Hero from "./Partials/HomeRevamp/Hero";
+import Preliminary from "./Partials/HomeRevamp/Preliminary";
+import Program from "./Partials/HomeRevamp/Program";
+import Clients from "./Partials/HomeRevamp/Clients";
+import Testimony from "./Partials/HomeRevamp/Testimony";
+import FAQ from "./Partials/HomeRevamp/FAQ";
+import Consultation from "./Partials/HomeRevamp/Consultation";
 
 import CornerWaveVector from "@/Components/CornerWaveVector";
 
@@ -23,63 +31,63 @@ import testimony7 from "/resources/img/testimony/herinda.jpg";
 import testimony8 from "/resources/img/testimony/khafidh.jpg";
 import testimony9 from "/resources/img/testimony/ludi.jpg";
 
-export default function Index({ auth }) {
-    const data_program = [
-        {
-            id: 1,
-            title: "Dibimbing Sekali",
-            slug: "dibimbing-sekali",
-            img: program1,
-            excerpt:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 60 menit, sesuai dengan permasalahan pada skripsimu.",
-            description:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 60 menit, sesuai dengan permasalahan pada skripsimu.",
-            features: {
-                times: 1,
-                duration: 60,
-                category: "Online",
-            },
-            price: 95000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/n6GjmgN",
-        },
-        {
-            id: 2,
-            title: "Dibimbing Tuntas",
-            slug: "dibimbing-tuntas",
-            img: program2,
-            excerpt:
-                "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
-            description:
-                "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
-            features: {
-                times: 8,
-                duration: 60,
-                category: "Online",
-            },
-            price: 988000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/vMQZXjR",
-        },
-        {
-            id: 3,
-            title: "Dibimbing Olah Data",
-            slug: "dibimbing-olah-data",
-            img: program3,
-            excerpt:
-                "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
-            description:
-                "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
-            features: {
-                times: 1,
-                duration: 60,
-                category: "Online",
-            },
-            price: 155000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/xmQ79ke",
-        },
-    ];
+export default function Index({ auth, products: data_program }) {
+    // const data_program = [
+    //     {
+    //         id: 1,
+    //         title: "Dibimbing Sekali",
+    //         slug: "dibimbing-sekali",
+    //         img: program1,
+    //         excerpt:
+    //             "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 60 menit, sesuai dengan permasalahan pada skripsimu.",
+    //         description:
+    //             "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 60 menit, sesuai dengan permasalahan pada skripsimu.",
+    //         features: {
+    //             times: 1,
+    //             duration: 60,
+    //             category: "Online",
+    //         },
+    //         price: 95000,
+    //         hasDiscount: false,
+    //         link: "https://lynk.id/goalsacademy/n6GjmgN",
+    //     },
+    //     {
+    //         id: 2,
+    //         title: "Dibimbing Tuntas",
+    //         slug: "dibimbing-tuntas",
+    //         img: program2,
+    //         excerpt:
+    //             "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
+    //         description:
+    //             "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
+    //         features: {
+    //             times: 8,
+    //             duration: 60,
+    //             category: "Online",
+    //         },
+    //         price: 988000,
+    //         hasDiscount: false,
+    //         link: "https://lynk.id/goalsacademy/vMQZXjR",
+    //     },
+    //     {
+    //         id: 3,
+    //         title: "Dibimbing Olah Data",
+    //         slug: "dibimbing-olah-data",
+    //         img: program3,
+    //         excerpt:
+    //             "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
+    //         description:
+    //             "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
+    //         features: {
+    //             times: 1,
+    //             duration: 60,
+    //             category: "Online",
+    //         },
+    //         price: 155000,
+    //         hasDiscount: false,
+    //         link: "https://lynk.id/goalsacademy/xmQ79ke",
+    //     },
+    // ];
 
     const data_testimony = [
         {
@@ -170,11 +178,10 @@ export default function Index({ auth }) {
         },
     ];
 
-    // console.log(auth);
-
     return (
         <MainLayout auth={auth} title="Home">
             <Hero />
+            <Clients />
             <Preliminary />
             <Program data={data_program} />
             <div className="relative py-3 overflow-hidden bg-secondary md:bg-transparent md:overflow-visible xs:py-6 md:py-0">
@@ -182,7 +189,7 @@ export default function Index({ auth }) {
                     className="md:hidden"
                     cornerClassName="w-10/12"
                 />
-                <Video />
+                {/* <Video /> */}
                 <Testimony data={data_testimony} />
             </div>
             <FAQ data={data_faq} />

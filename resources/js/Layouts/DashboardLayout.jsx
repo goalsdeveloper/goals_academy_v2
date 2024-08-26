@@ -26,7 +26,6 @@ export default function DashboardLayout({
     children,
 }) {
     let navConfig;
-    // console.log(auth);
     switch (role) {
         case "admin":
             navConfig = [
@@ -103,6 +102,15 @@ export default function DashboardLayout({
                             ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Order",
+                        },
+                        {
+                            name: "Kode Promo",
+                            href: route('admin.bimbingan.promo-code.index'),
+                            icon: (
+                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
+                            ),
+                            isActive:
+                                title == "Bimbingan" && subtitle == "Kode Promo",
                         },
                     ],
                     collapsed: true,
@@ -438,10 +446,8 @@ export default function DashboardLayout({
                         data.old_notifications.current_page <
                         data.old_notifications.last_page,
                 }));
-            })
-            .then(() => {
                 setTimeout(() => getNewNotification(), 10000);
-            });
+            })
     };
 
     const getNewNotification = () => {
@@ -462,8 +468,8 @@ export default function DashboardLayout({
                     ...n,
                     new: mergedNewNotif(n.new, data.new_notifications),
                 }));
+                setTimeout(() => getNewNotification(), 10000)
             })
-            .then(setTimeout(() => getNewNotification(), 10000));
     };
 
     const getOldNotification = (page) => {
@@ -912,7 +918,6 @@ function NotificationItem({ item }) {
         return (
             <Link
                 onClick={(e) => {
-                    console.log(e);
                     axios
                         .get(route("api.notification.read", { id: item.id }))
                         .then((res) => {
@@ -980,7 +985,6 @@ function NotificationItem({ item }) {
         return (
             <Link
                 onClick={(e) => {
-                    console.log(e);
                     axios
                         .get(route("api.notification.read", { id: item.id }))
                         .then((res) => {
