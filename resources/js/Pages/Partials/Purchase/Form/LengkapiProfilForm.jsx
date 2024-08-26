@@ -4,7 +4,7 @@ import { FiX } from "react-icons/fi";
 import GoalsButton from "@/Components/GoalsButton";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import { Autocomplete } from "@mui/material";
-import { universities, majorFamilies } from "@/Hooks/data";
+import { universities, majorFamilies } from "@/data";
 
 const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast }) => {
     console.log(userProfile)

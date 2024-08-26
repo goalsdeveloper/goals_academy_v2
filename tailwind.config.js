@@ -33,7 +33,6 @@ export default {
                     "40": "#A6A6A6",
                     "50": "#848484",
                     "60": "#737373",
-                    "70": "#4F4F4F",
                     "80": "#404040"
                 },
                 "info": {
@@ -119,11 +118,8 @@ export default {
                 'google': 'url(/resources/img/icon/google.svg)',
                 'facebook': 'url(/resources/img/icon/facebook.svg)',
                 'bimbingan': 'url(/resources/img/produk/bg-bimbingan.png)',
-                'ebook': 'url(/resources/img/produk/bg-ebook.png)',
+                'produk-digital': 'url(/resources/img/produk/bg-produk-digital.png)',
                 'webinar': 'url(/resources/img/produk/bg-webinar.png)',
-                'konsultasi-lg': 'url(/resources/img/home/CTA-Desk.png)',
-                'konsultasi': 'url(/resources/img/home/CTA.png)',
-                'testimony-bg': "url(/resources/img/home/TestimoniBG.png)"
             },
             content: {
                 'career': '"Lihat Disini"',
@@ -144,6 +140,8 @@ export default {
                 'arrow-right-secondary-32': 'url(/resources/img/icon/arrow-right-secondary-32.svg)',
             },
             boxShadow: {
+                'thin': '0px 2px 4px 0 rgba(0,0,0,.25)',
+                'normal': '0px 4px 4px 0 rgba(0,0,0,.25)',
                 'top': '0px -4px 4px 0 rgba(0,0,0,.25)',
                 'centered': '0px 0px 4px 0 rgba(0,0,0,.25)',
                 'centered-spread': '0px 0px 8px 0px rgba(0,0,0,.20)',
@@ -154,10 +152,6 @@ export default {
                 '1': '1',
             },
             keyframes: {
-                'scroll': {
-                        'from': { 'transform': 'translateX(0%)' },
-                        'to': { 'transform': 'translateX(-100%)'}
-                },
                 'slideRight': {
                     'from': { 'transform': 'translateX(-100%)' },
                     'to': { 'transform': 'translateX(0)' }
@@ -182,8 +176,6 @@ export default {
                 }
             },
             animation: {
-                scroll: 'scroll 20s infinite linear',
-                'scroll-slower': 'scroll 50s infinite linear',
                 slideRight: 'slideRight 3s',
                 fadeIn: 'fadeIn 3s',
                 autoplayY: 'autoplayY 20s infinite linear',
@@ -211,7 +203,11 @@ export default {
                     '@screen 4xl': {
                         width: '80%',
                         maxWidth: '1728px'
-                    }
+                    },
+                    '@screen 5xl': {
+                        width: '80%',
+                        maxWidth: '2048px'
+                    },
                 },
                 '.container-lg': {
                     width: '85%',
@@ -225,7 +221,11 @@ export default {
                     '@screen 4xl': {
                         width: '80%',
                         maxWidth: '1920px'
-                    }
+                    },
+                    '@screen 4xl': {
+                        width: '80%',
+                        maxWidth: '2560px'
+                    },
                 }
             })
         }

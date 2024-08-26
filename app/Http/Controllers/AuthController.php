@@ -33,7 +33,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = auth()->user();
             Log::info("User {username} has been Log in.", ['username' => $user->username]);
-            return redirect(RouteServiceProvider::HOME);
+            return redirect()->intended(RouteServiceProvider::HOME);
         } else {
             return redirect()->back()->with('message', ['login' => 'Email or password is invalid!']);
         }
@@ -43,7 +43,7 @@ class AuthController extends Controller
     {
         // dd($request);
         $validateData = $request->validate([
-            'username' => 'required|min:8|max:15|unique:users,username',
+            'username' => 'required|min:8|unique:users,username',
             'email' => 'required|email:dns|unique:users,email',
             'password' => 'required|min:8',
             'confirmation_password' => 'required|min:8|same:password',
@@ -61,7 +61,7 @@ class AuthController extends Controller
 
         Auth::login($user, true);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     public function logout(Request $request)
