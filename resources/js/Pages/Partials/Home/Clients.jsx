@@ -17,7 +17,7 @@ export default function Clients() {
             <div className="relative pt-[2vw] pb-[4vw]">
                 <div className="absolute bg-gradient-to-r from-white to-transparent w-[15vw] left-0 h-full z-10 hidden md:block"></div>
                 <div className="absolute bg-gradient-to-l from-white to-transparent w-[15vw] right-0 h-full z-10 hidden md:block"></div>
-                <div className="flex overflow-hidden w-max whitespace-nowrap">
+                <div className="flex overflow-hidden w-full whitespace-nowrap">
                     <div className="flex gap-6 px-3 lg:px-12 lg:gap-24 animate-scroll">
                         {uniLogos.map((item) => (
                             <img

@@ -1,19 +1,19 @@
 import MainLayout from "@/Layouts/MainLayout";
-// import Hero from "./Partials/Home/Hero";
-// import Preliminary from "./Partials/Home/Preliminary";
-// import Program from "./Partials/Home/Program";
-// import Video from "./Partials/Home/Video";
-// import Testimony from "./Partials/Home/Testimony";
-// import FAQ from "./Partials/Home/FAQ";
-// import Consultation from "./Partials/Home/Consultation";
+// import Hero from "./Partials/Home-old/Hero";
+// import Preliminary from "./Partials/Home-old/Preliminary";
+// import Program from "./Partials/Home-old/Program";
+// import Video from "./Partials/Home-old/Video";
+// import Testimony from "./Partials/Home-old/Testimony";
+// import FAQ from "./Partials/Home-old/FAQ";
+// import Consultation from "./Partials/Home-old/Consultation";
 
-import Hero from "./Partials/HomeRevamp/Hero";
-import Preliminary from "./Partials/HomeRevamp/Preliminary";
-import Program from "./Partials/HomeRevamp/Program";
-import Clients from "./Partials/HomeRevamp/Clients";
-import Testimony from "./Partials/HomeRevamp/Testimony";
-import FAQ from "./Partials/HomeRevamp/FAQ";
-import Consultation from "./Partials/HomeRevamp/Consultation";
+import Hero from "./Partials/Home/Hero";
+import Preliminary from "./Partials/Home/Preliminary";
+import Program from "./Partials/Home/Program";
+import Clients from "./Partials/Home/Clients";
+import Testimony from "./Partials/Home/Testimony";
+import FAQ from "./Partials/Home/FAQ";
+import Consultation from "./Partials/Home/Consultation";
 
 import CornerWaveVector from "@/Components/CornerWaveVector";
 
@@ -179,7 +179,7 @@ export default function Index({ auth, products: data_program }) {
     ];
 
     return (
-        <MainLayout auth={auth} title="Home">
+        <MainLayout auth={auth} title="Home" className="overflow-x-hidden">
             <Hero />
             <Clients />
             <Preliminary />
