@@ -82,6 +82,10 @@ Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
 });
 
+Route::get('/ecourse', function () {
+    return Inertia::render('Main/Ecourse');
+});
+
 Route::get('/profil_perusahaan', function () {
     return Inertia::render('Main/ProfilPerusahaan');
 });
