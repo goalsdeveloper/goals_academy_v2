@@ -60,7 +60,8 @@ Route::get('/token', function () {
 });
 
 Route::get('/', function () {
-    $products = Products::with('category')->whereIn("id", [3,8,1])->get();
+    // $products = Products::with('category')->whereIn("id", [3,8,1])->get();
+    $products = Products::with('category')->get();
     return Inertia::render('Index', ['products' => $products]);
 });
 

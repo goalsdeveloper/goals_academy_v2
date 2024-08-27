@@ -17,25 +17,16 @@ export default function Clients() {
             <div className="relative pt-[2vw] pb-[4vw]">
                 <div className="absolute bg-gradient-to-r from-white to-transparent w-[15vw] left-0 h-full z-10 hidden md:block"></div>
                 <div className="absolute bg-gradient-to-l from-white to-transparent w-[15vw] right-0 h-full z-10 hidden md:block"></div>
-                <div className="flex overflow-hidden w-full whitespace-nowrap">
-                    <div className="flex gap-6 px-3 lg:px-12 lg:gap-24 animate-scroll">
-                        {uniLogos.map((item) => (
+                <div className="flex px-3 lg:px-12 animate-scroll">
+                    {Array.from({ length: 11 }).map(i => (
+                        uniLogos.map((item) => (
                             <img
                                 key={item.id}
                                 src={item.logo}
-                                className="w-[11.6vw] h-[11.6vw] md:w-[8vw] md:h-[8vw]"
+                                className="w-[11.6vw] h-[11.6vw] md:w-[8vw] md:h-[8vw] mx-[2vw]"
                             />
-                        ))}
-                    </div>
-                    <div className="flex gap-6 px-3 lg:px-12 lg:gap-24 animate-scroll">
-                        {uniLogos.map((item) => (
-                            <img
-                                key={item.id}
-                                src={item.logo}
-                                className="w-[11.6vw] h-[11.6vw] md:w-[8vw] md:h-[8vw]"
-                            />
-                        ))}
-                    </div>
+                        ))
+                    ))}
                 </div>
             </div>
         </section>
