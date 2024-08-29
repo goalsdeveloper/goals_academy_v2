@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\Career\ParticipantController;
 use App\Http\Controllers\Admin\ProdukDigital\CategoryController as AdminCategoryProdukDigitalController;
 use App\Http\Controllers\Admin\ProdukDigital\ProdukDigitalController;
 use App\Http\Controllers\Admin\ProdukDigital\OrderController as AdminOrderProdukDigitalController;
-use App\Http\Controllers\Admin\Ecourse\CategoryController as AdminCategoryEcourseController;
+use App\Http\Controllers\Admin\Ecourse\PackageController as AdminPackageEcourseController;
 use App\Http\Controllers\Admin\Ecourse\EcourseController;
 use App\Http\Controllers\Admin\Ecourse\OrderController as AdminOrderEcourseController;
 use App\Http\Controllers\Admin\ManajemenUser\ModeratorController;
@@ -166,7 +166,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::resource('order', AdminOrderProdukDigitalController::class);
     });
     Route::prefix('ecourse')->name('ecourse.')->group(function () {
-        Route::resource('category', AdminCategoryEcourseController::class);
+        Route::resource('package', AdminPackageEcourseController::class);
+        Route::post('package/updateNumberList', [AdminPackageEcourseController::class, 'updateOrderNumber'])->name('package.updateOrderNumber');
+        Route::put('package/{package}/updateVisible', [AdminPackageEcourseController::class, 'updateVisible'])->name('package.updateVisible');
         Route::resource('product', EcourseController::class);
         Route::resource('order', AdminOrderEcourseController::class);
     });
