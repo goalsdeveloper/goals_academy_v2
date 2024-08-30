@@ -16,58 +16,65 @@ import toast from "react-hot-toast";
 import { toSlug } from "@/script/utils";
 import sampleImage from "/resources/img/program/sample image.png";
 
-const Update = ({ auth, product }) => {
+const Update = ({ auth, products }) => {
     const [show, setShow] = useState(false);
-    const { data, setData } = useForm({
-        name: product.name,
-        product_image: product.product_image,
-        slug: product.slug,
-        category_id: "",
-        description: product.description,
-        excerpt: product.excerpt,
-        price: product.price,
-        promo_price: product.promo_price ?? "",
-        active_period: product.active_period,
-        facilities: 
-            typeof product.facilities == "string"
-                ? JSON.parse(product.facilities)
-                : product.facilities,
-        is_visible: product.is_visible == 1 ? true : false,
-        form_config: 
-            typeof product.form_config == "object"
-                ? product.form_config
-                : product.form_config && JSON.parse(product.form_config),
+    const { data, setData, post, transform } = useForm({
+        name: products.name,
+        product_image: products.product_image,
+        slug: products.slug,
+        category_id: products.category_id,
+        description: products.description,
+        excerpt: products.excerpt,
+        price: products.price,
+        promo_price: products.promo_price ?? "",
+        total_meet: products.total_meet,
+        active_period: products.active_period,
+        duration: products.duration,
+        add_on: products.add_ons ?? [],
+        topics: products.topics ?? [],
+        facilities:
+            typeof products.facilities == "string"
+                ? JSON.parse(products.facilities)
+                : products.facilities,
+        is_visible: products.is_visible == 1 ? true : false,
+        form_config:
+            typeof products.form_config == "object"
+                ? products.form_config
+                : JSON.parse(products.form_config) ?? {},
+        contact_type: products.contact_type,
     });
 
     function handleSubmit() {
-        const currency = Intl.NumberFormat("id-ID");
+        transform((data) => ({
+            _method: "put",
+            name: data.name,
+            product_image: data.product_image ? data.product_image.file : undefined,
+            slug: data.slug,
+            category_id: Number(data.category_id),
+            description: data.description,
+            price: Number(data.price),
+            promo_price: Number(data.promo_price),
+            total_meet: data.total_meet,
+            active_period: data.active_period,
+            duration: data.duration,
+            addons: JSON.stringify(data.add_on.map((item) => item.id)),
+            topics: JSON.stringify(data.topics.map((item) => item.id)),
+            facilities: JSON.stringify(data.facilities),
+            is_visible: data.is_visible ? 1 : 0,
+            is_facilities: 0,
+            excerpt: data.description.substring(0, 128),
+            form_config: JSON.stringify(data.form_config),
+            contact_type: data.contact_type,
+        }));
 
-        router.post(
-            route("admin.ecourse.package.store"),
-            {
-                name: data.name,
-                product_image: data.product_image.file,
-                slug: data.slug,
-                category_id: Number(data.category_id.id),
-                description: data.description,
-                price: Number(data.price),
-                promo_price: Number(data.promo_price),
-                active_period: data.active_period,
-                facilities: JSON.stringify(data.facilities),
-                is_visible: data.is_visible ? 1 : 0,
-                is_facilities: 0,
-                excerpt: data.description.substring(0, 128),
-                form_config: JSON.stringify(data.form_config),
+        post(route("admin.ecourse.package.update", products), {
+            onSuccess: () => {
+                toast.success("Product berhasil ditambahkan");
             },
-            {
-                onSuccess: () => {
-                    toast.success("Product berhasil ditambahkan");
-                },
-                onError: (error) => {
-                    toast.error(error.message);
-                },
-            }
-        );
+            onError: (error) => {
+                toast.error(error.message);
+            },
+        });
     }
 
     const formConfigList = [

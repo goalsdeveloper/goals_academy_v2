@@ -79,7 +79,6 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-        // dd('test');
         try {
             if (Auth::user()->user_role == "admin") {
                 $validateData = $request->validate([
@@ -100,7 +99,7 @@ class PackageController extends Controller
                     'facilities.*.icon' => 'required|string',
                     'facilities.*.text' => 'required|string',
                     'form_config' => '', // Allow seluruh key form_config
-                    'duration' => 'numeric',
+                    'duration' => 'numeric|nullable',
                     'promo_price' => 'numeric',
                 ]);
 
@@ -109,8 +108,8 @@ class PackageController extends Controller
                 );
 
                 $package = new Products();
-                $package->product_type_id = 1; // Kenapa 1, karena ini product untuk bimbingan aja
-                $package->number_list = 2;
+                $package->product_type_id = 4; // Kenapa 1, karena ini products untuk ecourse aja
+                $package->number_list = 1;
                 $package->category_id = $validateData['category_id'];
                 $package->name = $validateData['name'];
                 $package->slug = $validateData['slug'];
@@ -138,12 +137,12 @@ class PackageController extends Controller
                 $package->form_config = $form_config;
 
                 if ($request->hasFile('product_image')) {
-                    if (!Storage::disk('public')->exists('product')) {
-                        Storage::disk('public')->makeDirectory('product');
+                    if (!Storage::disk('public')->exists('products')) {
+                        Storage::disk('public')->makeDirectory('products');
                     }
                     $image = $validateData['product_image'];
-                    $fileName = 'bimbingan' . time() . '.' . $image->extension();
-                    $path = Storage::disk('public')->putFileAs('product/bimbingan', $image, $fileName);
+                    $fileName = 'ecourse' . time() . '.' . $image->extension();
+                    $path = Storage::disk('public')->putFileAs('products/ecourse', $image, $fileName);
                     $package->product_image = $path;
                 }
 
@@ -171,8 +170,8 @@ class PackageController extends Controller
                 }
                 // }
 
-                return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil ditambahkan');
-                // return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $package], 201);
+                return redirect()->route('admin.ecourse.package.index')->with('message', 'Product berhasil ditambahkan');
+                // return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create products success', "data" => $package], 201);
             } else {
                 abort(403);
             }
@@ -180,7 +179,7 @@ class PackageController extends Controller
             return response()->json([
                 'message' => $e->getMessage(),
             ]);
-            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            return redirect()->route('admin.ecourse.package.index')->withErrors($e->getMessage());
             // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
         }
     }
@@ -226,7 +225,7 @@ class PackageController extends Controller
             // $topics = Topic::get();
             $package->load('addOns', 'topics');
             return Inertia::render('Auth/Admin/Ecourse/Package/Update', [
-                'product' => $package,
+                'products' => $package,
                 // 'addons' => $addons,
                 // 'topics' => $topics,
             ]);
@@ -242,8 +241,8 @@ class PackageController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                // Jika product tidak bertipe bimbingan
-                if ($package->product_type_id != 1) {
+                // Jika products tidak bertipe ecourse
+                if ($package->product_type_id != 4) {
                     throw new \Exception('Invalid object type');
                 }
 
@@ -265,7 +264,7 @@ class PackageController extends Controller
                     'facilities.*.icon' => 'string',
                     'facilities.*.text' => 'string',
                     'form_config' => '',
-                    'duration' => 'numeric',
+                    'duration' => 'numeric||nullable',
                     'promo_price' => 'numeric',
 
                 ]);
@@ -280,12 +279,12 @@ class PackageController extends Controller
                     if ($package->product_image) {
                         Storage::disk('public')->delete($package->product_image);
                     }
-                    if (!Storage::disk('public')->exists('product/bimbingan')) {
-                        Storage::disk('public')->makeDirectory('product/bimbingan');
+                    if (!Storage::disk('public')->exists('products/ecourse')) {
+                        Storage::disk('public')->makeDirectory('products/ecourse');
                     }
                     $image = $request->file('product_image');
-                    $fileName = 'bimbingan' . time() . '.' . $image->getClientOriginalExtension();
-                    $path = $image->storeAs('product/bimbingan', $fileName, 'public');
+                    $fileName = 'ecourse' . time() . '.' . $image->getClientOriginalExtension();
+                    $path = $image->storeAs('products/ecourse', $fileName, 'public');
                     $validateData['product_image'] = $path;
                 }
 
@@ -307,14 +306,14 @@ class PackageController extends Controller
                     $package->topics()->sync($topics);
                 }
 
-                return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil diupdate');
-                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update product success'], 200);
+                return redirect()->route('admin.ecourse.package.index')->with('message', 'Product berhasil diupdate');
+                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update products success'], 200);
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
             dd($e->getMessage());
-            // return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            // return redirect()->route('admin.ecourse.package.index')->withErrors($e->getMessage());
             // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while updating category', 'error' => $e->getMessage()], 500);
         }
     }
@@ -346,16 +345,16 @@ class PackageController extends Controller
                     Storage::delete($package->product_image);
                 }
                 $package->delete();
-                return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil dihapus');
-                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete product success'], 200);
+                return redirect()->route('admin.ecourse.package.index')->with('message', 'Product berhasil dihapus');
+                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete products success'], 200);
             } else {
                 abort(403);
             }
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
-            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to delete product. Internal Server Error'], 500);
+            return redirect()->route('admin.ecourse.package.index')->withErrors($e->getMessage());
+            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to delete products. Internal Server Error'], 500);
         } catch (\Exception $e) {
-            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            return redirect()->route('admin.ecourse.package.index')->withErrors($e->getMessage());
             // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }

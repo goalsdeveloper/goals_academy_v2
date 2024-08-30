@@ -13,27 +13,27 @@ import toast from "react-hot-toast";
 import { toSlug } from "@/script/utils";
 import sampleImage from "/resources/img/program/sample image.png";
 
-const View = ({ product }) => {
+const View = ({ products }) => {
     const [show, setShow] = useState(false);
     const { data, setData } = useForm({
-        name: product.name,
-        product_image: product.product_image,
-        slug: product.slug,
+        name: products.name,
+        product_image: products.product_image,
+        slug: products.slug,
         category_id: "",
-        description: product.description,
-        excerpt: product.excerpt,
-        price: product.price,
-        promo_price: product.promo_price ?? "",
-        active_period: product.active_period,
+        description: products.description,
+        excerpt: products.excerpt,
+        price: products.price,
+        promo_price: products.promo_price ?? "",
+        active_period: products.active_period,
         facilities: 
-            typeof product.facilities == "string"
-                ? JSON.parse(product.facilities)
-                : product.facilities,
-        is_visible: product.is_visible == 1 ? true : false,
+            typeof products.facilities == "string"
+                ? JSON.parse(products.facilities)
+                : products.facilities,
+        is_visible: products.is_visible == 1 ? true : false,
         form_config: 
-            typeof product.form_config == "object"
-                ? product.form_config
-                : product.form_config && JSON.parse(product.form_config),
+            typeof products.form_config == "object"
+                ? products.form_config
+                : products.form_config && JSON.parse(products.form_config),
     });
 
     function handleSubmit() {
@@ -76,7 +76,7 @@ const View = ({ product }) => {
     ];
 
     return (
-        <form className="space-y-[1.6vw]" >
+        <form className="w-full space-y-[1.6vw]" >
             <div className="flex gap-[1.2vw]">
                 <div className="flex flex-col w-full gap-[.8vw]">
                     <FormSection
@@ -222,14 +222,14 @@ const View = ({ product }) => {
 
                     <FormSection
                         title="Fasilitas Program"
-                        titleAction={
-                            <GoalsButton
-                                size="sm"
-                                onClick={() => setShow(!show)}
-                            >
-                                Tambah
-                            </GoalsButton>
-                        }
+                        // titleAction={
+                        //     <GoalsButton
+                        //         size="sm"
+                        //         onClick={() => setShow(!show)}
+                        //     >
+                        //         Tambah
+                        //     </GoalsButton>
+                        // }
                         bordered
                     >
                         <div className="flex flex-wrap gap-x-[.5vw] gap-y-[1vw]">

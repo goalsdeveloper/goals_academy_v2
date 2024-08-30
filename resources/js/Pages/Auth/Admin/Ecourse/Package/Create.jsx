@@ -22,14 +22,19 @@ const Create = ({ auth }) => {
         name: "",
         product_image: "",
         slug: "",
-        category_id: "",
+        category_id: 7, // Default khusus ecourse
         description: "",
         price: "",
         promo_price: "",
+        total_meet: 1, // Default khusus ecourse
         active_period: "",
+        duration: "",
+        add_on: [],
+        topics: [],
         facilities: [],
         is_visible: false,
         form_config: {},
+        contact_type: "online", // Default khusus ecourse
     });
 
     function handleSubmit() {
@@ -41,16 +46,21 @@ const Create = ({ auth }) => {
                 name: data.name,
                 product_image: data.product_image.file,
                 slug: data.slug,
-                category_id: Number(data.category_id.id),
+                category_id: Number(data.category_id),
                 description: data.description,
                 price: Number(data.price),
                 promo_price: Number(data.promo_price),
+                total_meet: data.total_meet,
                 active_period: data.active_period,
+                duration: data.duration,
+                addons: JSON.stringify(data.add_on.map((item) => item.id)),
+                topics: JSON.stringify(data.topics.map((item) => item.id)),
                 facilities: JSON.stringify(data.facilities),
                 is_visible: data.is_visible ? 1 : 0,
                 is_facilities: 0,
                 excerpt: data.description.substring(0, 128),
                 form_config: JSON.stringify(data.form_config),
+                contact_type: data.contact_type,
             },
             {
                 onSuccess: () => {

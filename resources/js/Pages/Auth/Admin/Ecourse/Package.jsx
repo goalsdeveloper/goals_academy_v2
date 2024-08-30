@@ -22,7 +22,7 @@ export default function Package({ auth, ecourse }) {
     const [isLoading, setIsLoading] = useState(false);
     const isDesktop = useMediaQuery({ minWidth: 1024 });
     const [show, setShow] = useState(false);
-    const [product, setProduct] = useState();
+    const [products, setProducts] = useState();
     const [keyword, setKeyword] = useState(
         new URLSearchParams(window.location.search).get("search")
     );
@@ -40,9 +40,9 @@ export default function Package({ auth, ecourse }) {
 
     async function getEcourseDetail(id) {
         setIsLoading(true);
-        setProduct(null);
+        setProducts(null);
         axios.get("/admin/ecourse/package/" + id).then((res) => {
-            setProduct(res.data.data);
+            setProducts(res.data.data);
             setIsLoading(false);
         });
     }
@@ -75,7 +75,7 @@ export default function Package({ auth, ecourse }) {
             //                     `${window.location.origin}/storage/` +
             //                     cell.row.original.product_image
             //                 }
-            //                 alt="thumbnail-product"
+            //                 alt="thumbnail-products"
             //                 className="w-[3.6vw] h-[2.6vw] rounded-[.3vw] object-contain bg-neutral-20"
             //             />
             //         );
@@ -185,12 +185,12 @@ export default function Package({ auth, ecourse }) {
                     </SubHeading>
                     {/* <GoalsAdminTable /> */}
 
-                    {product &&
+                    {products &&
                         createPortal(
                             <ViewDialog
                                 show={show}
                                 setShow={setShow}
-                                product={product}
+                                products={products}
                             />,
                             document.body
                         )}
@@ -213,7 +213,7 @@ export default function Package({ auth, ecourse }) {
     );
 }
 
-const ViewDialog = ({ show, setShow, product }) => {
+const ViewDialog = ({ show, setShow, products }) => {
     return (
         <div
             className={`${
@@ -231,7 +231,7 @@ const ViewDialog = ({ show, setShow, product }) => {
                         : "md:top-full -bottom-full md:scale-0"
                 } inset-0 focus:bg-red-400 mx-auto flex gap-[2vw] w-[90vw] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[1vw] p-[8vw] md:p-[1.75vw] z-50 my-[8vh] `}
             >
-                <View product={product} />
+                <View products={products} />
             </div>
         </div>
     );
