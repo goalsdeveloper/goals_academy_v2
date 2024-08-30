@@ -83,7 +83,13 @@ Route::get('/karir', function () {
 });
 
 Route::get('/ecourse', function () {
-    return Inertia::render('Main/Ecourse');
+    $data = Products::whereHas('productType', function ($query) {
+        $query->where('type', 'E-Course');
+    })->where('is_visible', true)->with('category', 'productType')->get();
+
+    return Inertia::render('Main/Ecourse', [
+        'data' => $data
+    ]);
 });
 
 Route::get('/profil_perusahaan', function () {

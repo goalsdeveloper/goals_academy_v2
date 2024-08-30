@@ -7,55 +7,7 @@ import CornerWaveVector2 from '@/Components/CornerWaveVector2';
 import tree3 from '/resources/img/vector/tree-3.svg';
 import tree4 from '/resources/img/vector/tree-4.svg';
 
-export default function Ecourse ({ auth }) {
-    const data = [
-        {
-            id: 1,
-            name: "Paket 1 Bulan",
-            slug: "paket-1-bulan",
-            img: null,
-            excerpt:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 60 menit, sesuai dengan permasalahan pada skripsimu.",
-            description:
-                "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 60 menit, sesuai dengan permasalahan pada skripsimu.",
-            category: {name: "Ecourse"},
-            price: 95000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/n6GjmgN",
-            priority: false,
-        },
-        {
-            id: 2,
-            name: "Pake 3 Bulan",
-            slug: "paket-3-bulan",
-            img: null,
-            excerpt:
-                "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
-            description:
-                "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
-            category: {name: "Ecourse"},
-            price: 988000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/vMQZXjR",
-            priority: true,
-        },
-        {
-            id: 3,
-            name: "Paket 6 Bulan",
-            slug: "paket-6-bulan",
-            img: null,
-            excerpt:
-                "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
-            description:
-                "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
-            category: {name: "Ecourse"},
-            price: 155000,
-            hasDiscount: false,
-            link: "https://lynk.id/goalsacademy/xmQ79ke",
-            priority: false,
-        },
-    ];
-
+export default function Ecourse ({ auth, data }) {
     return (
         <MainLayout auth={auth} title="E-Course">
             <section id="ecourse" className="pt-[10vw] pb-[20vw] md:pt-0 md:pb-[5vw] relative overflow-hidden">

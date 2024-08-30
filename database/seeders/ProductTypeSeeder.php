@@ -25,5 +25,9 @@ class ProductTypeSeeder extends Seeder
             'type' => 'Webinar',
             'slug' => 'webinar',
         ]);
+        ProductType::create([
+            'type' => 'E-Course',
+            'slug' => 'ecourse',
+        ]);
     }
 }
