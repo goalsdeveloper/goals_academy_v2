@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
 use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
 use App\Http\Controllers\Admin\Webinar\WebinarController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\MainController;
@@ -41,6 +42,7 @@ use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewContro
 use App\Http\Controllers\Moderator\SettingController as ModeratorSettingController;
 use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
 use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
+use App\Http\Controllers\MoodleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\PurchaseController;
@@ -59,6 +61,7 @@ Route::get('/token', function () {
     return csrf_token();
 });
 
+
 Route::get('/', function () {
     $products = Products::with('category')->whereIn("id", [3,8,1])->get();
     return Inertia::render('Index', ['products' => $products]);
@@ -68,14 +71,12 @@ Route::get('/dashboard/user/webinar', [DashboardUserController::class, 'webinar'
 Route::get('/dashboard/user/webinar/{id}', [DashboardUserController::class, 'detailWebinar']);
 Route::get('/dashboard/user/bimbingan', [DashboardUserController::class, 'bimbingan']);
 Route::get('/dashboard/user/bimbingan/{id}', [DashboardUserController::class, 'detailBimbingan']);
+Route::get('/get_user', [MoodleController::class, 'search_user']);
+Route::get('/enroll_user', [MoodleController::class, 'enroll_user']);
+Route::get('/ecourse', [AuthController::class, 'redirecting_to_ecourse']);
+Route::get('/ecourse/daftar', [MoodleController::class, 'moodle_page']);
+Route::get('/ecourse/course/{id}', [MoodleController::class, 'to_course'])->name('ecourse.to_course');
 
-// Route::get('/artikel', function () {
-//     return Inertia::render('Main/Artikel');
-// });
-
-// Route::get('/diskusi', function () {
-//     return Inertia::render('Main/Diskusi');
-// });
 
 Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
@@ -97,7 +98,15 @@ Route::get('/syarat_dan_ketentuan', function () {
     return Inertia::render('Main/SyaratDanKetentuan');
 });
 
+Route::prefix('produk')->name('produk.')->group(function () {
+    Route::prefix('ecourse')->name('ecourse.')->group(function () {
+        Route::get('/', [MoodleController::class, 'index'])->name('index');
+        Route::post('/',[MoodleController::class, 'store'])->name('store');
+        Route::get('/{id}', [MoodleController::class, 'show'])->name('show');
+    });
+});
 Route::resource('/produk', PurchaseController::class);
+
 
 Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status')->middleware(['auth', 'verified']);
 

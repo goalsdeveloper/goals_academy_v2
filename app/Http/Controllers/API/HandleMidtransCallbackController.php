@@ -8,6 +8,7 @@ use App\Enums\UserRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\FileUpload;
+use App\Models\Moodle;
 use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Models\User;
@@ -65,7 +66,6 @@ class HandleMidtransCallbackController extends Controller
         switch ($transactionStatus) {
             case 'settlement':
                 $status = OrderEnum::SUCCESS->value;
-                Log::info("Transaksi {$order->order_code} telah berhasil pada " . now());
                 if ($order->products->productType->type == "Bimbingan") {
                     $count_course = $order->products->total_meet;
                     $dataCourse = [
@@ -120,11 +120,22 @@ class HandleMidtransCallbackController extends Controller
                         }
                     }
                     $moderators = User::where('user_role', UserRoleEnum::MODERATOR)->get();
-                    $order->user->notify(new SuccessNotification($order));
                     foreach ($moderators as $moderator) {
-                        $moderator->notify(new GeneralCourseNotification("Ada Bimbingan Baru!", "Terdapat Bimbingan Baru dengan kode {$order->order_code} yang Harus diproses!", route('moderator.bimbingan.order.edit', ['order' => $order->order_code])));
+                        $moderator->notify(new GeneralCourseNotification("Ada Bimbingan Baru!", "Terdapat Bimbingan Baru dengan kode {$order->order_code} yang Harus diproses!", route('moderator.bimbingan.order.edit', ['order' => $order->order_code]), ['database', 'mail']));
                     }
                 }
+
+                if($order->products->productType->type == "Ecourse") {
+                    try {
+                        $moodle = new Moodle();
+                        $moodle->add_user_to_cohort($order->user->username);
+                        Log::info("User dengan username: {$order->user->username} Berhasil didaftarkan pada ecourse");
+                    } catch (\Throwable $th) {
+                        Log::info("Error on handle callback: {$th->getMessage()}");
+                    }
+                }
+                $order->user->notify(new SuccessNotification($order));
+                Log::info("Transaksi {$order->order_code} telah berhasil pada " . now());
                 break;
             case 'expire':
                 $status = OrderEnum::FAILED->value;
