@@ -52,7 +52,7 @@ export default function MainFooter({ className }) {
                         <div className="grid gap-2">
                             <a href="/produk" target="_blank">Bimbingan Skripsi</a>
                             <a href="/produk" target="_blank">Webinar Skripsi</a>
-                            <a href="/produk" target="_blank">E-book Skripsi</a>
+                            <a href="/produk" target="_blank">Produk Digital Skripsi</a>
                             <a href="" target="">Video Pembelajaran</a>
                         </div>
                     </div>

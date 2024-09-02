@@ -34,23 +34,23 @@ class PurchaseController extends Controller
      */
     public function index(Products $products)
     {
-        // $dataDibimbing = Category::where('slug', 'like', 'dibimbing%')->first()->products;
-        $dataDibimbing = Products::whereHas('productType', function ($query) {
+        // $dataBimbingan = Category::where('slug', 'like', 'dibimbing%')->first()->products;
+        $dataBimbingan = Products::whereHas('productType', function ($query) {
             $query->where('type', 'bimbingan');
         })
             ->where('is_visible', true)
             ->with('category', 'productType')->get();
-        $dataEbook = Products::whereHas('productType', function ($query) {
-            $query->where('slug', 'e-book');
+        $dataProdukDigital = Products::whereHas('productType', function ($query) {
+            $query->where('slug', 'produk-digital');
         })->with('productType', 'category')->get();
         $dataWebinar = Products::whereHas('productType', function ($query) {
             $query->where('slug', 'webinar');
         })->with('productType', 'category')->get();
         $categories = Category::with(['productType'])->get();
         return Inertia::render('Main/Produk', [
-            'dataDibimbing' => $dataDibimbing,
-            'ebookData' => $dataEbook,
-            'webinarData' => $dataWebinar,
+            'dataBimbingan' => $dataBimbingan,
+            'dataProdukDigital' => $dataProdukDigital,
+            'dataWebinar' => $dataWebinar,
             'categories' => $categories,
         ]);
     }

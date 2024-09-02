@@ -18,12 +18,16 @@ class ProductTypeSeeder extends Seeder
             'slug' => 'bimbingan',
         ]);
         ProductType::create([
-            'type' => 'E-book',
-            'slug' => 'e-book',
+            'type' => 'Produk Digital',
+            'slug' => 'produk-digital',
         ]);
         ProductType::create([
             'type' => 'Webinar',
             'slug' => 'webinar',
+        ]);
+        ProductType::create([
+            'type' => 'E-Course',
+            'slug' => 'ecourse',
         ]);
     }
 }

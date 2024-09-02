@@ -173,7 +173,7 @@ export default function MainHeader({ auth, title, className }) {
     return (
         <header
             className={`${
-                isMobile && "shadow"
+                isMobile ? "shadow" : ""
             } overflow-y-visible overflow-x-clip sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50 ${className}`}
         >
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
@@ -225,7 +225,7 @@ function NavbarExpand({
     const [profileDropdown, setProfileDropdown] = useState(false);
     return (
         <>
-            <div className="hidden md:grid grid-cols-5 md:gap-[3vw] font-medium text-center text-[4vw] md:text-[1vw] select-none">
+            <div className="hidden md:grid grid-cols-4 md:gap-[3vw] font-medium text-center text-[4vw] md:text-[1vw] select-none">
                 <Link
                     href="/produk"
                     className={`font-poppins hover:text-primary flex justify-center ${
@@ -233,6 +233,14 @@ function NavbarExpand({
                     }`}
                 >
                     Produk
+                </Link>
+                <Link
+                    href="/ecourse"
+                    className={`font-poppins hover:text-primary flex justify-center ${
+                        title == "E-Course" ? "font" : ""
+                    }`}
+                >
+                    E-Course
                 </Link>
                 {/* <Link
                     href="/artikel"

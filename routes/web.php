@@ -9,10 +9,10 @@ use App\Http\Controllers\Admin\Bimbingan\PlaceController;
 use App\Http\Controllers\Admin\Bimbingan\TopicController;
 use App\Http\Controllers\Admin\Career\JobController;
 use App\Http\Controllers\Admin\Career\ParticipantController;
-use App\Http\Controllers\Admin\Ebook\CategoryController as AdminCategoryEbookController;
-use App\Http\Controllers\Admin\Ebook\EbookController;
-use App\Http\Controllers\Admin\Ebook\OrderController as AdminOrderEbookController;
-use App\Http\Controllers\Admin\Ecourse\CategoryController as AdminCategoryEcourseController;
+use App\Http\Controllers\Admin\ProdukDigital\CategoryController as AdminCategoryProdukDigitalController;
+use App\Http\Controllers\Admin\ProdukDigital\ProdukDigitalController;
+use App\Http\Controllers\Admin\ProdukDigital\OrderController as AdminOrderProdukDigitalController;
+use App\Http\Controllers\Admin\Ecourse\PackageController as AdminPackageEcourseController;
 use App\Http\Controllers\Admin\Ecourse\EcourseController;
 use App\Http\Controllers\Admin\Ecourse\OrderController as AdminOrderEcourseController;
 use App\Http\Controllers\Admin\ManajemenUser\ModeratorController;
@@ -63,7 +63,8 @@ Route::get('/token', function () {
 
 
 Route::get('/', function () {
-    $products = Products::with('category')->whereIn("id", [3,8,1])->get();
+    // $products = Products::with('category')->whereIn("id", [3,8,1])->get();
+    $products = Products::with('category')->get();
     return Inertia::render('Index', ['products' => $products]);
 });
 
@@ -80,6 +81,16 @@ Route::get('/ecourse/course/{id}', [MoodleController::class, 'to_course'])->name
 
 Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
+});
+
+Route::get('/ecourse', function () {
+    $data = Products::whereHas('productType', function ($query) {
+        $query->where('type', 'E-Course');
+    })->where('is_visible', true)->with('category', 'productType')->get();
+
+    return Inertia::render('Main/Ecourse', [
+        'data' => $data
+    ]);
 });
 
 Route::get('/profil_perusahaan', function () {
@@ -104,6 +115,10 @@ Route::prefix('produk')->name('produk.')->group(function () {
         Route::post('/',[MoodleController::class, 'store'])->name('store');
         Route::get('/{id}', [MoodleController::class, 'show'])->name('show');
     });
+});
+
+Route::get('/dibimbingsemester', function () {
+    return Inertia::render('Main/DibimbingSatuSemester');
 });
 Route::resource('/produk', PurchaseController::class);
 
@@ -161,13 +176,15 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::resource('product', WebinarController::class);
         Route::resource('order', AdminOrderWebinarController::class);
     });
-    Route::prefix('ebook')->name('ebook.')->group(function () {
-        Route::resource('category', AdminCategoryEbookController::class);
-        Route::resource('product', EbookController::class);
-        Route::resource('order', AdminOrderEbookController::class);
+    Route::prefix('produk_digital')->name('produk_digital.')->group(function () {
+        Route::resource('category', AdminCategoryProdukDigitalController::class);
+        Route::resource('product', ProdukDigitalController::class);
+        Route::resource('order', AdminOrderProdukDigitalController::class);
     });
     Route::prefix('ecourse')->name('ecourse.')->group(function () {
-        Route::resource('category', AdminCategoryEcourseController::class);
+        Route::resource('package', AdminPackageEcourseController::class);
+        Route::post('package/updateNumberList', [AdminPackageEcourseController::class, 'updateOrderNumber'])->name('package.updateOrderNumber');
+        Route::put('package/{package}/updateVisible', [AdminPackageEcourseController::class, 'updateVisible'])->name('package.updateVisible');
         Route::resource('product', EcourseController::class);
         Route::resource('order', AdminOrderEcourseController::class);
     });
@@ -219,3 +236,4 @@ require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/socialite.php';
+

@@ -33,7 +33,6 @@ export default function Form({
     paymentMethods,
     dataProduct,
 }) {
-    console.log(addOns);
     const userId = auth.user.id;
     const [isProcessed, setIsProcessed] = useState(false);
     const [showMobileSummaryCard, setShowMobileSummaryCard] = useState(false);
@@ -43,6 +42,7 @@ export default function Form({
         "university",
         "faculty",
         "major",
+        "rumpun",
     ].reduce((out, i) => {
         out[i] = auth.user.profile[i];
         return out;
@@ -124,7 +124,7 @@ export default function Form({
                 position: "top-center",
                 icon: "⚠️",
             });
-            location.href = `/produk/${dataProduct.slug}#lengkapi_profil`;
+            window.scrollTo(0, 0);
         } else {
             setIsProcessed(true);
             post("/produk", {
@@ -292,6 +292,21 @@ function MainCard({
 
     return (
         <div className="md:w-[72%] flex flex-col gap-[1vw]">
+            {Object.keys(userProfile)
+                .map((i) => userProfile[i])
+                .includes("") ||
+            Object.keys(userProfile)
+                .map((i) => userProfile[i])
+                .includes(null) ? (
+                <LengkapiProfilAlert
+                    userProfile={userProfile}
+                    setUserProfile={setUserProfile}
+                    data={data}
+                    setData={setData}
+                />
+            ) : (
+                <></>
+            )}
             <div className="md:border-1 md:rounded-[.8vw] md:p-[1.75vw] h-fit">
                 <div className="flex flex-col gap-[4vw] md:gap-0">
                     <div className="md:hidden flex flex-col gap-[4vw]">
@@ -329,10 +344,9 @@ function MainCard({
                         </div>
                         <hr className="md:hidden mt-[3vw]" />
                     </div>
-                    <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" />
+                    {rules.length ? <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" /> : <></>}
                     <div
                         className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw] mb-[20vw] md:mb-0"
-                        id="lengkapi_profil"
                     >
                         {Object.keys(rules).length == 1 &&
                         "document" in rules ? (
@@ -493,7 +507,7 @@ function MainCard({
                                                         }
                                                     }}
                                                 >
-                                                    {item.name}
+                                                    {item.name + " - IDR " + currency.format(item.price)}
                                                 </GoalsSelectMultipleInputItem>
                                             );
                                         })}
@@ -1010,12 +1024,7 @@ function MainCard({
                                                         }
                                                     }}
                                                 >
-                                                    {item.name +
-                                                        " - " +
-                                                        "Rp " +
-                                                        currency.format(
-                                                            item.price
-                                                        )}
+                                                    {item.name + " - IDR " + currency.format(item.price)}
                                                 </GoalsSelectMultipleInputItem>
                                             );
                                         })}
@@ -1120,21 +1129,6 @@ function MainCard({
                     </div>
                 </div>
             </div>
-            {Object.keys(userProfile)
-                .map((i) => userProfile[i])
-                .includes("") ||
-            Object.keys(userProfile)
-                .map((i) => userProfile[i])
-                .includes(null) ? (
-                <LengkapiProfilAlert
-                    userProfile={userProfile}
-                    setUserProfile={setUserProfile}
-                    data={data}
-                    setData={setData}
-                />
-            ) : (
-                <></>
-            )}
         </div>
     );
 }

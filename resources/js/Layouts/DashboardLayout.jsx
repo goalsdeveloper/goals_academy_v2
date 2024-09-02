@@ -12,7 +12,7 @@ import { ImExit } from "react-icons/im";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdHistory, MdOutlineEventNote } from "react-icons/md";
 import { RiBarChart2Line } from "react-icons/ri";
-import { TbLayoutGridAdd } from "react-icons/tb";
+import { TbLayoutGridAdd, TbPackages } from "react-icons/tb";
 import { TfiDropbox } from "react-icons/tfi";
 import { useMediaQuery } from "react-responsive";
 import { TECollapse } from "tw-elements-react";
@@ -137,36 +137,36 @@ export default function DashboardLayout({
                 //     ],
                 //     collapsed: true,
                 // },
-                // {
-                //     name: "E-course",
-                //     href: "",
-                //     icon: "",
-                //     isActive: false,
-                //     branches: [
-                //         {
-                //             name: "Category",
-                //             href: "/admin/ecourse/category",
-                //             icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
-                //             isActive:
-                //                 title == "E-course" && subtitle == "Category",
-                //         },
-                //         {
-                //             name: "Product",
-                //             href: "/admin/ecourse/product",
-                //             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
-                //             isActive:
-                //                 title == "E-course" && subtitle == "Product",
-                //         },
-                //         {
-                //             name: "Order",
-                //             href: "/admin/ecourse/order",
-                //             icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
-                //             isActive:
-                //                 title == "E-course" && subtitle == "Order",
-                //         },
-                //     ],
-                //     collapsed: true,
-                // },
+                {
+                    name: "E-Course",
+                    href: "",
+                    icon: "",
+                    isActive: false,
+                    branches: [
+                        {
+                            name: "Package",
+                            href: "/admin/ecourse/package",
+                            icon: <TbPackages className="text-[4vw] md:text-[1vw]" />,
+                            isActive:
+                                title == "E-Course" && subtitle == "Package",
+                        },
+                        {
+                            name: "Product",
+                            href: "/admin/ecourse/product",
+                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                            isActive:
+                                title == "E-Course" && subtitle == "Product",
+                        },
+                        {
+                            name: "Order",
+                            href: "/admin/ecourse/order",
+                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                            isActive:
+                                title == "E-Course" && subtitle == "Order",
+                        },
+                    ],
+                    collapsed: true,
+                },
                 {
                     name: "Manajemen User",
                     href: "",
@@ -215,35 +215,35 @@ export default function DashboardLayout({
                     ],
                     collapsed: false,
                 },
-                // {
-                //     name: "E-book",
-                //     href: "",
-                //     icon: "",
-                //     isActive: false,
-                //     branches: [
-                //         {
-                //             name: "Category",
-                //             href: "/admin/ebook/category",
-                //             icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
-                //             isActive:
-                //                 title == "E-book" && subtitle == "Category",
-                //         },
-                //         {
-                //             name: "Product",
-                //             href: "/admin/ebook/product",
-                //             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
-                //             isActive:
-                //                 title == "E-book" && subtitle == "Product",
-                //         },
-                //         {
-                //             name: "Order",
-                //             href: "/admin/ebook/order",
-                //             icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
-                //             isActive: title == "E-book" && subtitle == "Order",
-                //         },
-                //     ],
-                //     collapsed: true,
-                // },
+                {
+                    name: "Produk Digital",
+                    href: "",
+                    icon: "",
+                    isActive: false,
+                    branches: [
+                        {
+                            name: "Category",
+                            href: "/admin/produk_digital/category",
+                            icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
+                            isActive:
+                                title == "Produk Digital" && subtitle == "Category",
+                        },
+                        {
+                            name: "Product",
+                            href: "/admin/produk_digital/product",
+                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                            isActive:
+                                title == "Produk Digital" && subtitle == "Product",
+                        },
+                        {
+                            name: "Order",
+                            href: "/admin/produk_digital/order",
+                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                            isActive: title == "Produk Digital" && subtitle == "Order",
+                        },
+                    ],
+                    collapsed: true,
+                },
                 // {
                 //     name: "Marketing",
                 //     href: "",

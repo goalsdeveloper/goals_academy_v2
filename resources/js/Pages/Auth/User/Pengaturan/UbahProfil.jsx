@@ -1,4 +1,5 @@
 import PengaturanLayout, { ImageUploader } from "@/Layouts/PengaturanLayout";
+import React from "react";
 import { Link, useForm } from "@inertiajs/react";
 import "@/script/momentCustomLocale";
 import GoalsButton from "@/Components/elements/GoalsButton";
@@ -9,17 +10,23 @@ import { useMediaQuery } from "react-responsive";
 import { FiChevronLeft } from "react-icons/fi";
 import { PiPencilSimpleLight } from "react-icons/pi";
 import toast from "react-hot-toast";
+import { Autocomplete } from "@mui/material";
+import { universities, majorFamilies } from "@/data";
 
 export default function Index({ auth, userData, profileData }) {
     const { data, setData, post, processing } = useForm({
         username: userData.username,
         name: userData.name,
         phone_number: profileData.phone_number,
-        university: profileData.university,
+        university: profileData.university ? profileData.university : "",
         faculty: profileData.faculty,
         major: profileData.major,
+        rumpun: profileData.rumpun ? profileData.rumpun : "",
         referral: "",
     });
+
+    const [university, setUniversity] = React.useState(data.university);
+    const [rumpun, setRumpun] = React.useState(data.rumpun);
 
     const submit = (e) => {
         e.preventDefault();
@@ -89,7 +96,47 @@ export default function Index({ auth, userData, profileData }) {
                                 id="phone_number"
                                 label="Nomor Telepon"
                             />
-                            <GoalsTextInput
+                            <label
+                                htmlFor="university"
+                                className="w-full grid items-center gap-[.4vw]"
+                            >
+                                Universitas
+                                <Autocomplete
+                                    disableClearable
+                                    id="university"
+                                    options={universities}
+                                    renderInput={(params) => {
+                                        const { className, ...props } =
+                                            params.inputProps;
+                                        return (
+                                            <div ref={params.InputProps.ref}>
+                                                <input
+                                                    className={
+                                                        "w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[3vw] border placeholder:text-light-grey"
+                                                    }
+                                                    type="text"
+                                                    {...props}
+                                                />
+                                            </div>
+                                        );
+                                    }}
+                                    getOptionLabel={(option) => option}
+                                    inputValue={university}
+                                    onInputChange={(event, newInputValue) => {
+                                        if (event != null) {
+                                            setUniversity(newInputValue);
+                                        }
+                                    }}
+                                    onBlur={() => setUniversity(data.university)}
+                                    onChange={(e, value) => {
+                                        setData({
+                                            ...data,
+                                            university: value
+                                        });
+                                    }}
+                                />
+                            </label>
+                            {/* <GoalsTextInput
                                 data={data.university}
                                 onChange={(e) =>
                                     setData("university", e.target.value)
@@ -98,7 +145,7 @@ export default function Index({ auth, userData, profileData }) {
                                 type="text"
                                 id="university"
                                 label="Universitas"
-                            />
+                            /> */}
                             <GoalsTextInput
                                 data={data.faculty}
                                 onChange={(e) =>
@@ -120,6 +167,46 @@ export default function Index({ auth, userData, profileData }) {
                                 label="Jurusan"
                             />
                         </div>
+                        <label
+                            htmlFor="major_family"
+                            className="w-full grid items-center gap-[.4vw]"
+                        >
+                            Rumpun Jurusan
+                            <Autocomplete
+                                disableClearable
+                                id="major_family"
+                                options={majorFamilies}
+                                renderInput={(params) => {
+                                    const { className, ...props } =
+                                        params.inputProps;
+                                    return (
+                                        <div ref={params.InputProps.ref}>
+                                            <input
+                                                className={
+                                                    "w-full flex justify-between items-center text-[3.7vw] md:text-[.8vw] focus:ring-0 px-[3vw] md:px-[1vw] rounded-md text-dark h-[12vw] md:h-[3vw] border placeholder:text-light-grey"
+                                                }
+                                                type="text"
+                                                {...props}
+                                            />
+                                        </div>
+                                    );
+                                }}
+                                getOptionLabel={(option) => option}
+                                inputValue={rumpun}
+                                onInputChange={(event, newInputValue) => {
+                                    if (event != null) {
+                                        setRumpun(newInputValue);
+                                    }
+                                }}
+                                onBlur={() => setRumpun(data.rumpun)}
+                                onChange={(e, value) => {
+                                    setData({
+                                        ...data,
+                                        rumpun: value
+                                    });
+                                }}
+                            />
+                        </label>
                         <GoalsTextInput
                             data={data.referral}
                             onChange={(e) =>

@@ -152,6 +152,7 @@ const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
                                             index
                                         ) => (
                                             <Link
+                                                key={index}
                                                 method={method}
                                                 className={`flex gap-2 py-[3.7vw] px-[7.4vw] items-center font-poppins hover:text-primary  ${
                                                     text == "Riwayat Transaksi"
@@ -227,7 +228,7 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
                     text: "Bimbingan",
                 },
                 { href: "/produk", icon: <FiMonitor />, text: "Webinar" },
-                { href: "/produk", icon: <FiAirplay />, text: "E-Course" },
+                { href: "/ecourse", icon: <FiAirplay />, text: "E-Course" },
             ],
         },
         // {

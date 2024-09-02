@@ -41,8 +41,8 @@ class ModeratorScheduleTutorController extends Controller
                     $formattedCourses[] = $schedule;
                 }
 
-                $courses = Course::with(['tutor:id,name', 'products:id,name,duration'])
-                    ->select('id', 'tutor_id', 'date', 'time', 'products_id')
+                $courses = Course::with(['user:id,name', 'tutor:id,username,name', 'products:id,name,duration', 'order:id,order_code'])
+                    ->select('id', 'user_id', 'tutor_id', 'order_id', 'date', 'time', 'products_id', 'ongoing', 'session')
                     ->whereNotNull('tutor_id')
                     ->whereNotNull('date')
                     ->whereNotNull('time')
@@ -62,7 +62,7 @@ class ModeratorScheduleTutorController extends Controller
                         if ($time == $startTime) {
                             $dateKey = $course->date;
                             if (isset($schedule[$dateKey])) {
-                                $schedule[$dateKey][] = ['name' => $course->tutor->name, 'time' => $course->time];
+                                $schedule[$dateKey][] = ['course' => $course];
                                 // $schedule[$dateKey][] = $course->time;
                             }
                         }

@@ -54,7 +54,6 @@ export default function DetailPesanan({
     const dataAturJadwalComp = { cities, date, topics };
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
-
     return (
         <MainLayout
             withFooter={false}
@@ -237,9 +236,6 @@ const SelesaiProgram = ({ show, setShow, order_code }) => {
 
                 <div className="grid space-y-[2vw] md:space-y-[.8vw] w-full">
                     <GoalsButton
-                        // isLink
-                        // method="PUT"
-                        // href={`/bimbingan/${order_code}/selesai-bimbingan`}
                         onClick={() => {
                             setShow();
                             router.put(
@@ -308,20 +304,8 @@ const UlasanTutor = ({ show, setShow, data, setData }) => {
 
 const UlasanProgram = ({ show, setShow, data, setData, handleSubmit }) => {
     function checkFieldRequired() {
-        // if (
-        //     data.rate_tutor == 0 ||
-        //     data.note_tutor == "" ||
-        //     data.note_tutor == null ||
-        //     data.note_tutor == undefined
-        // ) {
-        //     return true;
-        // }
-
         if (
-            data.rate_product == 0 ||
-            data.note_product == ""
-            // || data.note_product == null ||
-            // data.note_product == undefined
+            data.rate_product == 0
         ) {
             return true;
         }

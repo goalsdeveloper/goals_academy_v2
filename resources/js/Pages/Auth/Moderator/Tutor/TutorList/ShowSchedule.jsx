@@ -13,65 +13,6 @@ const ShowSchedule = ({
     dateRange,
     handleDateChange,
 }) => {
-    // const data = [
-    //     {
-    //         "2024-01-01": [
-    //             {
-    //                 time: "13:00",
-    //                 duration: 60,
-    //                 products: "Dibimbing Online 60 Menit",
-    //             },
-    //             {
-    //                 time: "15:00",
-    //                 duration: 90,
-    //                 products: "Dibimbing Offline 90 Menit",
-    //             },
-    //         ],
-    //         "2024-01-02": [
-    //             {
-    //                 time: "08:00",
-    //                 duration: 60,
-    //                 products: "Dibimbing Online 60 Menit",
-    //             },
-    //         ],
-    //         "2024-01-03": [
-    //             {
-    //                 time: "08:00",
-    //                 duration: 60,
-    //                 products: "Dibimbing Online 60 Menit",
-    //             },
-    //         ],
-    //         "2024-01-04": [
-    //             {
-    //                 time: "08:00",
-    //                 duration: 60,
-    //                 products: "Dibimbing Online 60 Menit",
-    //             },
-    //         ],
-    //         "2024-01-05": [
-    //             {
-    //                 time: "08:00",
-    //                 duration: 60,
-    //                 products: "Dibimbing Online 60 Menit",
-    //             },
-    //         ],
-    //         "2024-01-06": [
-    //             {
-    //                 time: "08:00",
-    //                 duration: 60,
-    //                 products: "Dibimbing Online 60 Menit",
-    //             },
-    //         ],
-    //         "2024-01-07": [
-    //             {
-    //                 time: "08:00",
-    //                 duration: 60,
-    //                 products: "Dibimbing Online 60 Menit",
-    //             },
-    //         ],
-    //     },
-    // ];
-
     const columns = useMemo(
         () =>
             Object.keys(dataSchedule[0]).map((i) => ({
@@ -80,7 +21,7 @@ const ShowSchedule = ({
                 size: 50,
                 Cell: ({ cell }) => {
                     return (
-                        <div>
+                        <div className="align-top">
                             {cell.getValue().map((item, index) => {
                                 if (index.length == 0) {
                                     return;
@@ -120,6 +61,7 @@ const ShowSchedule = ({
         muiTableBodyCellProps: {
             sx: {
                 padding: 0,
+                verticalAlign: "top",
             },
         },
     };
@@ -139,12 +81,12 @@ const ShowSchedule = ({
                                         const start_date = moment(
                                             dateRange.start_date
                                         )
-                                            .subtract(6, "days")
+                                            .subtract(7, "days")
                                             .format("YYYY-MM-DD");
                                         const end_date = moment(
                                             dateRange.end_date
                                         )
-                                            .subtract(6, "days")
+                                            .subtract(7, "days")
                                             .format("YYYY-MM-DD");
                                         handleDateChange(start_date, end_date);
                                     }}
@@ -165,12 +107,12 @@ const ShowSchedule = ({
                                         const start_date = moment(
                                             dateRange.start_date
                                         )
-                                            .add(6, "days")
+                                            .add(7, "days")
                                             .format("YYYY-MM-DD");
                                         const end_date = moment(
                                             dateRange.end_date
                                         )
-                                            .add(6, "days")
+                                            .add(7, "days")
                                             .format("YYYY-MM-DD");
                                         handleDateChange(start_date, end_date);
                                     }}
