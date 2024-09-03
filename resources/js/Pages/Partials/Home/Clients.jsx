@@ -1,11 +1,14 @@
 import React from "react";
+import { useMediaQuery } from "react-responsive";
 
 export default function Clients() {
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
     return (
         <section className=" relative py-[4vw] mx-auto space-y-[3vw]">
-            <div className="w-[85vw] mx-auto text-center">
-                <h3 className="text-[3.7vw] md:text-[1.8vw]">
-                    Telah Dipercaya oleh Lebih dari 100+ <br />
+            <div className="w-[80vw] md:w-[85vw] mx-auto text-center">
+                <h3 className="mb-[2vw] md:mb-0 text-[3.7vw] md:text-[1.8vw]">
+                    Telah Dipercaya oleh Lebih dari 100+{isMobile ? <br /> : " "}
                     <span className="text-primary">Mahasiswa Indonesia</span>
                 </h3>
                 <p className="text-[3.2vw] md:text-[1.2vw]">
@@ -14,7 +17,7 @@ export default function Clients() {
                 </p>
             </div>
 
-            <div className="relative pt-[2vw] pb-[4vw]">
+            <div className="relative pt-[4vw] md:pt-[2vw] pb-[8vw] md:pb-[4vw]">
                 <div className="absolute bg-gradient-to-r from-white to-transparent w-[15vw] left-0 h-full z-10 hidden md:block"></div>
                 <div className="absolute bg-gradient-to-l from-white to-transparent w-[15vw] right-0 h-full z-10 hidden md:block"></div>
                 <div className="flex px-3 lg:px-12 animate-scroll">

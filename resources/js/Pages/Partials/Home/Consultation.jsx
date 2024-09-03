@@ -10,10 +10,10 @@ export default function Consultation() {
             /> */}
             {/* <div className="mx-auto h-[14vw] w-[86vw] bg-konsultasi-lg">
         </div> */}
-            <div className="flex justify-between rounded-[3.7vw] overflow-hidden md:rounded-[.8vw] p-[4vw] py-[6vw] md:p-[2vw] md:py-[2vw] bg-konsultasi md:bg-konsultasi-lg bg-cover">
-                <div className="flex flex-col md:flex-row gap-[4vw] md:gap-[2vw] items-center w-80% text-center justify-between mx-auto">
+            <div className="flex justify-between rounded-[3.7vw] overflow-hidden md:rounded-[.8vw] p-[4vw] py-[6vw] md:p-[2vw] md:py-[2vw] bg-konsultasi md:bg-konsultasi-lg bg-cover text-[3.2vw] md:text-[1vw]">
+                <div className="flex flex-col md:flex-row gap-[4vw] md:gap-[2vw] items-center w-80% text-center md:text-start justify-between mx-auto">
                     <div className="w-[80%] md:w-[50%] space-y-[1vw]">
-                        <h2 className="font-poppins text-[3.7vw] md:text-[1.8vw] leading-normal text-white">
+                        <h2 className="font-medium font-poppins text-[3.7vw] md:text-[1.8vw] leading-normal text-white">
                             Masih Bingung Program Apa yang Sesuai Dengan
                             Kebutuhanmu?
                         </h2>

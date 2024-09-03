@@ -6,8 +6,23 @@ import GoalsButton from "@/Components/elements/GoalsButton";
 import { router } from "@inertiajs/react";
 
 export default function Hero() {
+    const data = [
+        {
+            val: "90%",
+            desc: "Mahasiswa lulus tepat waktu"
+        },
+        {
+            val: "1000+",
+            desc: "Mahasiswa memilih Goals Academy"
+        },
+        {
+            val: "30+",
+            desc: "Tutor skripsi berpengalaman"
+        },
+    ]
+
     return (
-        <section className="relative py-[4vw] w-[85vw] mx-auto space-y-[7.5vw] md:space-y-[2vw]">
+        <section className="relative py-[8vw] md:py-[4vw] w-[85vw] mx-auto space-y-[7.5vw] md:space-y-[2vw]">
             <div className="mx-auto w-[75vw] md:w-[60vw] space-y-[2vw]">
                 <h1 className="before:icon-primary sm:before:w-0 md:before:w-10 md:before:h-10 md:before:-ms-8 md:before:-mt-5 xl:before:w-20 xl:before:h-20 xl:before:-ms-16 xl:before:-mt-10 text-[5.5vw] md:text-[2.5vw] text-center">
                     Ceritakan Kendala Skripsimu dan Temukan Solusinya Bersama{" "}<br />
@@ -29,12 +44,12 @@ export default function Hero() {
                         Daftar Bimbingan Sekarang
                     </GoalsButton>
                     <div className="flex">
-                        {Array.from({ length: 3 }).map((_, index) => (
+                        {data.map(({val, desc}, index) => (
                             <>
-                                <div className="text-center">
-                                    <h2 className="leading-relaxed">90%</h2>
+                                <div key={index} className="text-center">
+                                    <h2 className="leading-relaxed">{val}</h2>
                                     <p className="text-[2.8vw] md:text-[1vw] w-[85%] mx-auto pt-[.5vw]">
-                                        Mahasiswa lulus tepat waktu
+                                        {desc}
                                     </p>
                                 </div>
                                 <div className="last:hidden w-[1px] h-[75%] bg-neutral-40 flex-shrink-0 mt-[.7vw]"></div>

@@ -228,7 +228,7 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
                     text: "Bimbingan",
                 },
                 { href: "/produk", icon: <FiMonitor />, text: "Webinar" },
-                { href: "/ecourse", icon: <FiAirplay />, text: "E-Course" },
+                // { href: "/ecourse", icon: <FiAirplay />, text: "E-Course" },
             ],
         },
         // {

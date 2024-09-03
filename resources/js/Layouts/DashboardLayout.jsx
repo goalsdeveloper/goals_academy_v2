@@ -137,36 +137,36 @@ export default function DashboardLayout({
                 //     ],
                 //     collapsed: true,
                 // },
-                {
-                    name: "E-Course",
-                    href: "",
-                    icon: "",
-                    isActive: false,
-                    branches: [
-                        {
-                            name: "Package",
-                            href: "/admin/ecourse/package",
-                            icon: <TbPackages className="text-[4vw] md:text-[1vw]" />,
-                            isActive:
-                                title == "E-Course" && subtitle == "Package",
-                        },
-                        {
-                            name: "Product",
-                            href: "/admin/ecourse/product",
-                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
-                            isActive:
-                                title == "E-Course" && subtitle == "Product",
-                        },
-                        {
-                            name: "Order",
-                            href: "/admin/ecourse/order",
-                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
-                            isActive:
-                                title == "E-Course" && subtitle == "Order",
-                        },
-                    ],
-                    collapsed: true,
-                },
+                // {
+                //     name: "E-Course",
+                //     href: "",
+                //     icon: "",
+                //     isActive: false,
+                //     branches: [
+                //         {
+                //             name: "Package",
+                //             href: "/admin/ecourse/package",
+                //             icon: <TbPackages className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-Course" && subtitle == "Package",
+                //         },
+                //         {
+                //             name: "Product",
+                //             href: "/admin/ecourse/product",
+                //             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-Course" && subtitle == "Product",
+                //         },
+                //         {
+                //             name: "Order",
+                //             href: "/admin/ecourse/order",
+                //             icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
+                //             isActive:
+                //                 title == "E-Course" && subtitle == "Order",
+                //         },
+                //     ],
+                //     collapsed: true,
+                // },
                 {
                     name: "Manajemen User",
                     href: "",
