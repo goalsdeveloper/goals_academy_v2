@@ -83,15 +83,15 @@ Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
 });
 
-Route::get('/ecourse', function () {
-    $data = Products::whereHas('productType', function ($query) {
-        $query->where('type', 'E-Course');
-    })->where('is_visible', true)->with('category', 'productType')->get();
+// Route::get('/ecourse', function () {
+//     $data = Products::whereHas('productType', function ($query) {
+//         $query->where('type', 'E-Course');
+//     })->where('is_visible', true)->with('category', 'productType')->get();
 
-    return Inertia::render('Main/Ecourse', [
-        'data' => $data
-    ]);
-});
+//     return Inertia::render('Main/Ecourse', [
+//         'data' => $data
+//     ]);
+// });
 
 Route::get('/profil_perusahaan', function () {
     return Inertia::render('Main/ProfilPerusahaan');

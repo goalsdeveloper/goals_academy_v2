@@ -1,5 +1,6 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
 import { useState } from "react";
+import { FiThumbsUp } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 
 export default function Program({data}) {
@@ -7,8 +8,10 @@ export default function Program({data}) {
 
     const categories = Array(...new Set(data.map(i => i.category.name)));
 
+    const recommendationProductIds = [1, 2, 3, 4]
+
     return (
-        <section className="w-[80vw] mx-auto py-8 space-y-[2.5vw]">
+        <section className="w-[85vw] md:w-[80vw] mx-auto py-8 space-y-[5vw] md:space-y-[2.5vw]">
             <h2 className="text-[3.7vw] md:text-[1.8vw] text-center">
                 Pilih Program Goals untuk {/* <br /> */}
                 <span className="text-primary-40">Solusi Skripsimu</span>
@@ -19,10 +22,10 @@ export default function Program({data}) {
                     <button
                         className={`${
                             selectedCat == "Rekomendasi" && "text-secondary border-b-[.2vw] md:border-b-0 border-secondary"
-                        } md:h-[2.7vw] md:border-l-2 text-start text-nowrap text-[3.7vw] md:px-[1.2vw] md:text-[1vw]`}
+                        } md:h-[2.7vw] md:border-l-2 text-start text-nowrap text-[3.7vw] md:px-[1.2vw] md:text-[1vw] flex gap-x-[.5vw]`}
                         onClick={() => setSelectedCat("Rekomendasi")}
                     >
-                        Rekomendasi
+                        Rekomendasi <FiThumbsUp />
                     </button>
                     {categories.map((cat, i) => (
                         <button
@@ -38,9 +41,21 @@ export default function Program({data}) {
                 </div>
 
                 <div className="grid grid-cols-2 gap-[2vw]">
-                    {data.filter(i => i.category.name == selectedCat).map((item, index) => (
-                        <Card key={index} {...item} />
-                    ))}
+                    {selectedCat == "Rekomendasi" ? (
+                        data.filter(i => recommendationProductIds.includes(i.id)).map((item, index) => (
+                            <Card 
+                                key={index} 
+                                {...item} 
+                            />
+                        ))
+                    ) : (
+                        data.filter(i => i.category.name == selectedCat).map((item, index) => (
+                            <Card 
+                                key={index} 
+                                {...item} 
+                            />
+                        ))
+                    )}
                 </div>
             </div>
         </section>
@@ -55,13 +70,29 @@ const program_categories = [
     "Desk Review",
 ];
 
-const Card = ({ name, facilities, price, promo_price, slug, label }) => {
+const Card = ({ id, name, facilities, price, promo_price, slug }) => {
     const currency = Intl.NumberFormat("id-ID");
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
+    let label = "";
+    let labelClassName = "hidden";
+
+    if (Number(promo_price) > 0) {
+        label = "Promo"
+        labelClassName = "bg-red-500 text-white"
+    }
+    
+    if (id == 2 || id == 4) {
+        label = "Rekomendasi"
+        labelClassName = "bg-blue-500 text-white"
+    } else if (id == 3) {
+        label = "Paling Laris"
+        labelClassName = "bg-green-500 text-white"
+    }
+
     return (
-        <div className="overflow-hidden relative border rounded-[3.7vw] md:rounded-[.8vw] p-[3.7vw] md:p-[1.2vw] md:w-[22vw] md:h-[20vw] space-y-[3.6vw] md:space-y-[1.6vw]">
-            <div className={`${label ? "" : "hidden"} absolute top-0 right-0 text-[2.3vw] md:text-[.8vw] bg-green-400 text-white px-[5.6vw] md:px-[1.2vw] py-[.4vw] rounded-es-[4vw] md:rounded-se-[.8vw] md:rounded-es-[.8vw]`}>
+        <div className="overflow-hidden relative border rounded-[3.7vw] md:rounded-[.8vw] p-[3.4vw] md:p-[1.2vw] md:w-[22vw] md:h-[20vw] space-y-[3.6vw] md:space-y-[1.6vw]">
+            <div className={`w-[28.84vw] md:w-[8.34vw] text-center absolute top-0 right-0 text-[2.3vw] md:text-[1vw] px-[5.6vw] py-[.8vw] md:px-[1.2vw] md:py-[.4vw] rounded-es-[4vw] md:rounded-se-[.8vw] md:rounded-es-[.8vw] ${labelClassName}`}>
                 {label}
             </div>
 
@@ -69,8 +100,9 @@ const Card = ({ name, facilities, price, promo_price, slug, label }) => {
                 <h3 className="text-[3.2vw] md:text-[1vw] font-bold line-clamp-1">
                     {name}
                 </h3>
-                <p className="text-[3.2vw] md:text-[1vw] font-medium">
-                    Rp {currency.format(Number(price) - Number(promo_price))}
+                <p className="text-[3.2vw] md:text-[1vw] font-medium space-x-[.5vw]">
+                    {Number(promo_price) > 0 ? <span className="text-neutral-50 line-through decoration-black md:decoration-2">&nbsp;{isMobile ? "" : " "}Rp {currency.format(Number(price))}{isMobile ? "" : " "}&nbsp;</span> : <></>}{isMobile ? <br /> : ""}
+                    <span>Rp {currency.format(Number(price) - Number(promo_price))}</span>
                 </p>
             </div>
 
@@ -88,8 +120,9 @@ const Card = ({ name, facilities, price, promo_price, slug, label }) => {
             {/* <button className="text-[3.2vw] md:text-[1vw] p-[1vw] md:px-[2vw] md:py-[.8vw] w-full bg-secondary text-white md:rounded-[.4vw] rounded-[1.2vw] py-[2.7vw]">
                 Daftar Sekarang
             </button> */}
-            <GoalsButton className="w-full" href={`/produk/${slug}`}>
-                {isMobile ? "Daftar" : "Daftar Sekarang"}
+            <GoalsButton className="w-full !text-[3.2vw] md:!text-[1vw] !p-[2vw] !py-[2.5vw] md:!p-[1vw] !font-normal md:!font-medium" href={`/produk/${slug}`}>
+                {/* {isMobile ? "Daftar" : "Daftar Sekarang"} */}
+                Daftar Sekarang
             </GoalsButton>
         </div>
     )

@@ -4,7 +4,7 @@ import { TECollapse } from "tw-elements-react";
 
 export default function FAQ({ data }) {
     return (
-        <section className="w-[90%] mx-auto py-[7.4vw] md:py-[3.7vw]">
+        <section className="md:w-[90%] mx-auto px-[4vw] md:px-0 py-[7.4vw] md:py-[3.7vw] bg-[#F8F8F8] md:bg-transparent">
             <div className="flex flex-wrap justify-between mx-auto">
                 <div className="w-full relative space-y-[5.5vw] md:space-y-[2.5vw]">
                     <h2 className="text-[3.7vw] md:text-[1.8vw] text-center">
@@ -24,11 +24,11 @@ function FAQItem({ id, show, toggleShow, question, answer }) {
     function FAQIcon() {
         if (condition) {
             return (
-                <i className="flex items-center justify-center w-4 h-4 text-white rounded-full fa-solid fa-minus bg-secondary text-10 xs:text-12 md:text-6 lg:text-10 xl:text-12 xs:w-5 xs:h-5 md:w-3 md:h-3 lg:w-4 lg:h-4 xl:w-5 xl:h-5"></i>
+                <i className="flex items-center justify-center w-4 h-4 text-white rounded-full fa-solid fa-minus bg-secondary text-[3.2vw] md:text-[1vw] xs:w-5 xs:h-5 md:w-3 md:h-3 lg:w-4 lg:h-4 xl:w-5 xl:h-5"></i>
             );
         } else {
             return (
-                <i className="flex items-center justify-center w-4 h-4 text-white rounded-full fa-solid fa-plus bg-secondary text-10 xs:text-12 md:text-6 lg:text-10 xl:text-12 xs:w-5 xs:h-5 md:w-3 md:h-3 lg:w-4 lg:h-4 xl:w-5 xl:h-5"></i>
+                <i className="flex items-center justify-center w-4 h-4 text-white rounded-full fa-solid fa-plus bg-secondary text-[3.2vw] md:text-[1vw] xs:w-5 xs:h-5 md:w-3 md:h-3 lg:w-4 lg:h-4 xl:w-5 xl:h-5"></i>
             );
         }
     }
@@ -37,7 +37,7 @@ function FAQItem({ id, show, toggleShow, question, answer }) {
         <>
             <button
                 type="button"
-                className="flex items-center w-full gap-3 p-[3.7vw] shadow-md rounded-[2.7vw] md:rounded-[.8vw] md:p-[1.2vw]"
+                className="flex items-center w-full bg-white gap-3 p-[3.7vw] shadow-md rounded-[2.7vw] md:rounded-[.8vw] md:p-[1.2vw] text-[3.2vw] md:text-[1vw]"
                 onClick={() => toggleShow(id)}
             >
                 {/* <div><FAQIcon /></div> */}
@@ -66,7 +66,7 @@ function FAQContent({ data }) {
     };
 
     return (
-        <div className="w-full space-y-[1.3vw] md:space-y-[.8vw]">
+        <div className="w-full space-y-[1.6vw] md:space-y-[.8vw]">
             {data.map(({ question, answer }, index) => {
                 if (index != data.length - 1) {
                     return (

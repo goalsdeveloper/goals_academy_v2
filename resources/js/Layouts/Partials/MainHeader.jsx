@@ -225,7 +225,7 @@ function NavbarExpand({
     const [profileDropdown, setProfileDropdown] = useState(false);
     return (
         <>
-            <div className="hidden md:grid grid-cols-4 md:gap-[3vw] font-medium text-center text-[4vw] md:text-[1vw] select-none">
+            <div className="hidden md:grid grid-cols-3 md:gap-[3vw] font-medium text-center text-[4vw] md:text-[1vw] select-none">
                 <Link
                     href="/produk"
                     className={`font-poppins hover:text-primary flex justify-center ${
@@ -234,14 +234,14 @@ function NavbarExpand({
                 >
                     Produk
                 </Link>
-                <Link
+                {/* <Link
                     href="/ecourse"
                     className={`font-poppins hover:text-primary flex justify-center ${
                         title == "E-Course" ? "font" : ""
                     }`}
                 >
                     E-Course
-                </Link>
+                </Link> */}
                 {/* <Link
                     href="/artikel"
                     className={`font-poppins hover:text-primary flex justify-center ${
