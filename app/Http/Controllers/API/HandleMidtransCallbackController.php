@@ -125,7 +125,7 @@ class HandleMidtransCallbackController extends Controller
                     }
                 }
 
-                if($order->products->productType->type == "Ecourse") {
+                if($order->products->productType->type == "E-course") {
                     try {
                         $moodle = new Moodle();
                         $moodle->add_user_to_cohort($order->user->username);

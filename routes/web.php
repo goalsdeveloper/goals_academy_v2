@@ -74,7 +74,7 @@ Route::get('/dashboard/user/bimbingan', [DashboardUserController::class, 'bimbin
 Route::get('/dashboard/user/bimbingan/{id}', [DashboardUserController::class, 'detailBimbingan']);
 Route::get('/get_user', [MoodleController::class, 'search_user']);
 Route::get('/enroll_user', [MoodleController::class, 'enroll_user']);
-Route::get('/ecourse', [AuthController::class, 'redirecting_to_ecourse']);
+// Route::get('/ecourse', [AuthController::class, 'redirecting_to_ecourse']);
 Route::get('/ecourse/daftar', [MoodleController::class, 'moodle_page']);
 Route::get('/ecourse/course/{id}', [MoodleController::class, 'to_course'])->name('ecourse.to_course');
 

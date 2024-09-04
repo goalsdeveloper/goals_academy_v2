@@ -44,8 +44,17 @@ class MoodleController extends Controller
 
     public function index()
     {
-        $courses = $this->moodle->get_courses([]);
-        dd($courses);
+        try {
+            $user = Auth::user();
+            $moodle = new Moodle();
+            $res = $moodle->auth_request($user);
+            if (!$res->loginurl) {
+                return redirect()->back();
+            }
+            return Inertia::location($res->loginurl);
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+        }
     }
 
     public function show($id)

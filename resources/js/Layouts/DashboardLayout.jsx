@@ -152,7 +152,7 @@ export default function DashboardLayout({
                         },
                         {
                             name: "Product",
-                            href: "/admin/ecourse/product",
+                            href: route('produk.ecourse.index'),
                             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
                             isActive:
                                 title == "E-Course" && subtitle == "Product",
