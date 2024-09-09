@@ -8,7 +8,7 @@ import circle3 from "/resources/img/vector/circle-3.svg";
 import circle4 from "/resources/img/vector/circle-4.svg";
 
 export default function CTA({ registrationLink }) {
-    const [variant, setVariant] = useState(1);
+    const [variant, setVariant] = useState(3);
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 

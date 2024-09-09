@@ -6,7 +6,7 @@ import { TECollapse } from "tw-elements-react";
 import TECollapseItem from "@/Components/TECollapseItem";
 import { Link } from "@inertiajs/react";
 import { useRef } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast, { Toaster, useToasterStore } from "react-hot-toast";
 import "@/script/momentCustomLocale";
 
 export default function Status({
@@ -17,6 +17,8 @@ export default function Status({
     paymentName,
     bankName,
 }) {
+    const { toasts } = useToasterStore();
+    const TOAST_LIMIT = 1;
     const vaNumber = orderHistory.va_numbers ? orderHistory.va_numbers[0].va_number : orderHistory.permata_va_number
     const [countdown, setCountdown] = useState(
         moment().hours(0).minutes(0).seconds(0)
@@ -133,6 +135,16 @@ export default function Status({
             clearInterval(countdownInterval.current);
         };
     }, []);
+
+    useEffect(() => {
+        toasts
+            .filter((t) => t.visible) // Only consider visible toasts
+            .forEach((t, i) => {
+                if (i >= TOAST_LIMIT) {
+                    toast.remove(t.id); // Dismiss – Use toast.remove(t.id) for no exit animation
+                }
+            }) // Is toast index over limit?
+    }, [toasts]);
 
     return (
         <MainLayout auth={auth} title="Purchase">
