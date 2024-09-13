@@ -9,12 +9,9 @@ use App\Http\Controllers\Admin\Bimbingan\PlaceController;
 use App\Http\Controllers\Admin\Bimbingan\TopicController;
 use App\Http\Controllers\Admin\Career\JobController;
 use App\Http\Controllers\Admin\Career\ParticipantController;
-use App\Http\Controllers\Admin\ProdukDigital\CategoryController as AdminCategoryProdukDigitalController;
-use App\Http\Controllers\Admin\ProdukDigital\ProdukDigitalController;
-use App\Http\Controllers\Admin\ProdukDigital\OrderController as AdminOrderProdukDigitalController;
-use App\Http\Controllers\Admin\Ecourse\PackageController as AdminPackageEcourseController;
 use App\Http\Controllers\Admin\Ecourse\EcourseController;
 use App\Http\Controllers\Admin\Ecourse\OrderController as AdminOrderEcourseController;
+use App\Http\Controllers\Admin\Ecourse\PackageController as AdminPackageEcourseController;
 use App\Http\Controllers\Admin\ManajemenUser\ModeratorController;
 use App\Http\Controllers\Admin\ManajemenUser\RevenueTypeController;
 use App\Http\Controllers\Admin\ManajemenUser\TutorController;
@@ -22,19 +19,20 @@ use App\Http\Controllers\Admin\ManajemenUser\UserController;
 use App\Http\Controllers\Admin\Marketing\AffiliateController;
 use App\Http\Controllers\Admin\Marketing\VoucherController;
 use App\Http\Controllers\Admin\OverviewController as AdminOverviewController;
+use App\Http\Controllers\Admin\ProdukDigital\CategoryController as AdminCategoryProdukDigitalController;
+use App\Http\Controllers\Admin\ProdukDigital\OrderController as AdminOrderProdukDigitalController;
+use App\Http\Controllers\Admin\ProdukDigital\ProdukDigitalController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
 use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
 use App\Http\Controllers\Admin\Webinar\WebinarController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\DashboardUserController;
-use App\Http\Controllers\MainController;
-// use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\EmailDiskonController;
+// use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\Moderator\Bimbingan\ModeratorHistoryBimbinganController;
 use App\Http\Controllers\Moderator\Bimbingan\ModeratorOrderController;
 use App\Http\Controllers\Moderator\Bimbingan\ProgressController;
@@ -47,24 +45,19 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
-use App\Http\Controllers\Tutor\OverviewController;
 use App\Models\Products;
 use App\Models\TutorNote;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Spatie\Analytics\Facades\Analytics;
-use Spatie\Analytics\Period;
-use Xendit\Configuration;
 
 Route::get('/token', function () {
     return csrf_token();
 });
 
-
 Route::get('/', function () {
     // $products = Products::with('category')->whereIn("id", [3,8,1])->get();
-    $products = Products::with('category')->get();
+    $products = Products::where('is_visible', true)->with('category')->get();
     return Inertia::render('Index', ['products' => $products]);
 });
 
@@ -77,7 +70,6 @@ Route::get('/enroll_user', [MoodleController::class, 'enroll_user']);
 // Route::get('/ecourse', [AuthController::class, 'redirecting_to_ecourse']);
 Route::get('/ecourse/daftar', [MoodleController::class, 'moodle_page']);
 Route::get('/ecourse/course/{id}', [MoodleController::class, 'to_course'])->name('ecourse.to_course');
-
 
 Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
@@ -112,7 +104,7 @@ Route::get('/syarat_dan_ketentuan', function () {
 Route::prefix('produk')->name('produk.')->group(function () {
     Route::prefix('ecourse')->name('ecourse.')->group(function () {
         Route::get('/', [MoodleController::class, 'index'])->name('index');
-        Route::post('/',[MoodleController::class, 'store'])->name('store');
+        Route::post('/', [MoodleController::class, 'store'])->name('store');
         Route::get('/{id}', [MoodleController::class, 'show'])->name('show');
     });
 });
@@ -121,7 +113,6 @@ Route::get('/dibimbingsemester', function () {
     return Inertia::render('Main/DibimbingSatuSemester');
 });
 Route::resource('/produk', PurchaseController::class);
-
 
 Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status')->middleware(['auth', 'verified']);
 
@@ -231,9 +222,7 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')-
 
 Route::get('files/course/download/{fileName}', [FileController::class, 'downloadFileCourse'])->name('file.course.download')->middleware('auth');
 
-
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/socialite.php';
-

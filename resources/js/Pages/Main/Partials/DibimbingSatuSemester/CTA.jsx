@@ -8,19 +8,19 @@ import circle3 from "/resources/img/vector/circle-3.svg";
 import circle4 from "/resources/img/vector/circle-4.svg";
 
 export default function CTA({ registrationLink }) {
-    const [variant, setVariant] = useState(1);
+    const [variant, setVariant] = useState(3);
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
         <section id="cta" className="relative bg-secondary">
-            {isMobile 
+            {isMobile
                 ? <img src={circle4} alt="" className="absolute top-0 left-0 h-full" />
                 : (
                     <>
                         <img src={circle1} alt="" className="absolute top-0 left-0 h-full" />
 
-                        {variant == 2 
+                        {variant == 2
                             ? <img src={circle2} alt="" className="absolute top-0 left-[38vw] h-full" />
                             : <img src={circle3} alt="" className="absolute top-0 right-0 h-full" />
                         }
@@ -48,7 +48,7 @@ export default function CTA({ registrationLink }) {
 
                 </div>
 
-                {isMobile 
+                {isMobile
                     ? (
                         <div className="w-full grid grid-cols-2 gap-[2vw] mt-[7.44vw]">
                             <GoalsButton href="https://wa.me/6282147638286" target="_blank" className="font-sans font-medium md:!font-bold text-[3.25vw] md:text-[1.04vw] rounded-[1.8vw] md:rounded-[.5vw]" activeClassName="bg-none hover:bg-white text-white hover:text-secondary border-white border-2">Hubungi CS</GoalsButton>
@@ -57,7 +57,7 @@ export default function CTA({ registrationLink }) {
                     )
                     : (
                         <>
-                            {variant == 1 && 
+                            {variant == 1 &&
                                 <GoalsButton href={registrationLink} className="w-full md:w-fit md:px-[2vw] font-sans !font-medium text-[3.25vw] md:text-[1.04vw] rounded-[1.8vw] md:rounded-[.5vw]" activeClassName="bg-white text-secondary hover:bg-soft">Daftar Sekarang</GoalsButton>
                             }
 
@@ -80,7 +80,7 @@ export default function CTA({ registrationLink }) {
                         </>
                     )
                 }
-                
+
             </div>
         </section>
     );

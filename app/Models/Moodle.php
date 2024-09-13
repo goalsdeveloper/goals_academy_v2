@@ -21,7 +21,7 @@ class Moodle
                 'email' => $user->email,
                 'username' => $user->username,
                 'firstname' => $user->name, // You will not need this parameter, if you are not creating/updating users
-                'lastname' => 'User', // You will not need this parameter, if you are not creating/updating users
+                'lastname' => explode(' ', $user->name)[1] ?? 'user', // You will not need this parameter, if you are not creating/updating users
             ],
             'wstoken' => $this->token,
             'wsfunction' => 'auth_userkey_request_login_url',

@@ -110,7 +110,29 @@ class MoodleController extends Controller
             if ($payment_method->category == 'ewallet') {
                 $midtranPayload['payment_type'] = $payment_method->payment_type;
             }
-
+            $form_result = ['add_on' => []];
+            foreach ($request->all() as $key => $value) {
+                if ($key == 'add_on' && $key == 1 && $request->exists('add_on')) {
+                    $add_on_result = [];
+                    foreach ($request->add_on as $idx => $value) {
+                        $add_on_result[$idx] = ['id' => $value['id']];
+                    }
+                    $form_result['add_on'] = $add_on_result;
+                    continue;
+                }
+                if ($key == 'place') {
+                    $form_result['place_id'] = $request[$key];
+                    continue;
+                }
+                if ($key == 'schedule') {
+                    $form_result['schedule'] = $request[$key];
+                    continue;
+                }
+                if ($key != 'document') {
+                    $form_result[$key] = $request[$key];
+                }
+            }
+            $order->form_result = $form_result;
             $order->save();
             $responseMidtrans = CoreApi::charge($midtranPayload);
             $responseMidtrans->provider_name = strtolower($payment_method->name);

@@ -61,7 +61,7 @@ export default function Order({ auth, orders }) {
             {
                 // accessorKey: "form_result.admin",
                 header: "Estimasi Admin",
-                Cell: ({ cell }) => cell.row.original.form_result.purchase_method.is_price ? cell.row.original.form_result.purchase_method.admin_fee + '%' : 'Rp. ' + cell.row.original.form_result.purchase_method.admin_fee,
+                Cell: ({ cell }) => cell.row.original.form_result?.purchase_method?.is_price == false ? cell.row.original.form_result.purchase_method?.admin_fee + '%' : 'Rp. ' + cell.row.original.form_result.purchase_method?.admin_fee,
             },
             {
                 accessorKey: "form_result.discount",
