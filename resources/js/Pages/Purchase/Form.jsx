@@ -548,8 +548,8 @@ function MainCard({
                                             setData={(i) =>
                                                 setData("schedule", i)
                                             }
-                                            minDate={moment()}
-                                            maxDate={moment().add(6, "days")}
+                                            minDate={moment().add(1, "days")}
+                                            maxDate={moment().add(8, "days")}
                                             shouldDisableDate={unavailableDate}
                                             theme={theme}
                                             slotProps={{
