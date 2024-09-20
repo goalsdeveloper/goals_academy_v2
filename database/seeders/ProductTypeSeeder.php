@@ -26,8 +26,12 @@ class ProductTypeSeeder extends Seeder
             'slug' => 'webinar',
         ]);
         ProductType::create([
-            'type' => 'E-Course',
-            'slug' => 'ecourse',
+            'type' => 'Jasa Riset',
+            'slug' => 'jasa-riset',
         ]);
+        // ProductType::create([
+        //     'type' => 'E-Course',
+        //     'slug' => 'ecourse',
+        // ]);
     }
 }
