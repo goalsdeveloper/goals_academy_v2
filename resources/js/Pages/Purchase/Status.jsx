@@ -8,6 +8,7 @@ import { Link } from "@inertiajs/react";
 import { useRef } from "react";
 import toast, { Toaster, useToasterStore } from "react-hot-toast";
 import "@/script/momentCustomLocale";
+import GoalsButton from "@/Components/GoalsButton";
 
 export default function Status({
     auth,
@@ -16,6 +17,7 @@ export default function Status({
     paymentMethod,
     paymentName,
     bankName,
+    status,
 }) {
     const { toasts } = useToasterStore();
     const TOAST_LIMIT = 1;
@@ -25,7 +27,8 @@ export default function Status({
     );
     const currency = Intl.NumberFormat("id-ID");
     const target = moment(orderHistory.expiry_time);
-    const [purchaseStatus, setPurchaseStatus] = useState("pending");
+    const [purchaseStatus, setPurchaseStatus] = useState(status);
+    const [redirectAt, setRedirectAt] = useState(4);
 
     let paymentSteps = {
         desktop: [
@@ -97,35 +100,43 @@ export default function Status({
         countdownInterval.current = setInterval(() => {
             fetch(`/api/check-payment-status/${data.order_code}`)
                 .then((response) => response.json())
-                .then((data) =>
-                    setPurchaseStatus(data["status"].toLowerCase())
+                .then((response) => {
+                    setPurchaseStatus(response.status.toLowerCase())
+                    const difference = target.diff(moment());
+                    if (response.status.toLowerCase() == "success") {
+                        clearInterval(countdownInterval.current);
+                        setCountdown(moment().hours(0).minutes(0).seconds(0));
+                        // Redirect to WA
+                        setTimeout(() => setRedirectAt(3), 1000);
+                        setTimeout(() => setRedirectAt(2), 2000);
+                        setTimeout(() => setRedirectAt(1), 3000);
+                        setTimeout(() => {
+                            setRedirectAt(0);
+                            open(`https://api.whatsapp.com/send?phone=6282147638286&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(' ', '%20')}%20dengan%20order%20id%20${data.order_code}.`, '_blank')
+                        }, 4000)
+                    } else if (difference <= 1) {
+                        clearInterval(countdownInterval.current);
+                        setCountdown(moment().hours(0).minutes(0).seconds(0));
+                        location.href = "/";
+                        toast.error("Waktu Pembayaran Telah Habis!");
+                    } else {
+                        const remaining = moment();
+        
+                        remaining.hours(Math.floor(difference / (1000 * 60 * 60)));
+                        remaining.minutes(
+                            Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
+                        );
+                        remaining.seconds(
+                            Math.floor(
+                                ((difference % (1000 * 60 * 60)) % (1000 * 60)) / 1000
+                            )
+                        );
+        
+                        setCountdown(remaining);
+                    }
+                }
                 );
 
-            const difference = target.diff(moment());
-            if (difference <= 1) {
-                clearInterval(countdownInterval.current);
-                setCountdown(moment().hours(0).minutes(0).seconds(0));
-                location.href = "/";
-                toast.error("Waktu Pembayaran Telah Habis!");
-            }
-            if (purchaseStatus.toLowerCase() == "success") {
-                clearInterval(countdownInterval.current);
-                setCountdown(moment().hours(0).minutes(0).seconds(0));
-            } else {
-                const remaining = moment();
-
-                remaining.hours(Math.floor(difference / (1000 * 60 * 60)));
-                remaining.minutes(
-                    Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
-                );
-                remaining.seconds(
-                    Math.floor(
-                        ((difference % (1000 * 60 * 60)) % (1000 * 60)) / 1000
-                    )
-                );
-
-                setCountdown(remaining);
-            }
         }, 1000);
     };
 
@@ -191,13 +202,16 @@ export default function Status({
                                             : "scale-0"
                                     }`}
                                 >
-                                    <svg
-                                        className="h-[60vw] md:h-[16vw] fill-green-500"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.25 16.518l-4.5-4.319 1.396-1.435 3.078 2.937 6.105-6.218 1.421 1.409-7.5 7.626z" />
-                                    </svg>
+                                    <div className="space-y-[8vw] md:space-y-[2vw]">
+                                        <svg
+                                            className="h-[60vw] md:h-[15vw] fill-green-500"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.25 16.518l-4.5-4.319 1.396-1.435 3.078 2.937 6.105-6.218 1.421 1.409-7.5 7.626z" />
+                                        </svg>
+                                        <GoalsButton isLink={false} href={`https://api.whatsapp.com/send?phone=6282147638286&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(' ', '%20')}%20dengan%20order%20id%20${data.order_code}.`} target="_blank" className="rounded-[2vw] md:rounded-[.5vw]">Konfirmasi ke Admin{redirectAt > 0 ? ` (${redirectAt})` : ''}</GoalsButton>
+                                    </div>
                                 </div>
                                 <div
                                     className={`w-full flex flex-col items-center gap-[4vw] md:gap-[1vw] duration-1000 ${
@@ -278,6 +292,12 @@ export default function Status({
                             <hr className="hidden md:block w-full border-light-grey" />
                             <table className="w-full font-poppins border-separate border-spacing-y-[4vw] md:border-spacing-y-[1.2vw] -my-[1vw] text-[3.25vw] md:text-[1vw]">
                                 <tbody>
+                                    <tr>
+                                        <td>Produk</td>
+                                        <td className="flex justify-end items-center gap-[.8vw] font-semibold">
+                                            {data.products.name}{" "}
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td>Metode Pembayaran</td>
                                         <td className="flex justify-end items-center gap-[.8vw] font-semibold">
