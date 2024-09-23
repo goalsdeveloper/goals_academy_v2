@@ -66,6 +66,10 @@ class AuthController extends Controller
 
         Auth::login($user, true);
 
+        if($user->email_verified_at == null) {
+            return redirect()->route('verification.notice');
+        }
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

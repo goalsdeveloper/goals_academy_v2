@@ -27,7 +27,7 @@ class PurchaseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index']);
+        $this->middleware(['auth', 'verified'])->except(['index']);
     }
     /**
      * Display a listing of the resource.
@@ -181,7 +181,7 @@ class PurchaseController extends Controller
     public function show(string $order)
     {
         // cek kondisi tanggal
-        $endDate = Carbon::now()->addDays(7);
+        $endDate = Carbon::now()->addDays(8);
 
         $counts = Course::select('date')
             ->selectRaw('COUNT(*) as count')
