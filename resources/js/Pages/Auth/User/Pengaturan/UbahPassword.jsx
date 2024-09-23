@@ -92,24 +92,3 @@ export default function Index({ auth }) {
         </PengaturanLayout>
     );
 }
-
-function Input({ type, id, label, value, onChange }) {
-    return (
-        <div className="relative flex">
-            <input
-                value={value}
-                onChange={onChange}
-                id={id}
-                type={type}
-                className="w-full border-1 xl:border-2 border-dark placeholder-shown:border-light-grey font-poppins rounded-[1vw] md:rounded-[.5vw] pt-[3vw] pb-[1.5vw] px-[3vw] md:pt-[1vw] md:pb-[.5vw] md:px-[1.75vw] focus:border-dark peer"
-                placeholder=" "
-            />
-            <label
-                htmlFor={id}
-                className="absolute px-[1vw] md:px-[.5vw] bg-white text-secondary peer-focus:text-secondary peer-placeholder-shown:text-light-grey ms-[2.5vw] md:ms-[1.5vw] -mt-[1.5vw] md:-mt-[.75vw]"
-            >
-                {label}
-            </label>
-        </div>
-    );
-}
