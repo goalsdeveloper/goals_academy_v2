@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Bimbingan;
+namespace App\Http\Controllers\Admin\JasaRiset;
 
 use App\Http\Controllers\Controller;
 use App\Models\AddOn;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
-class BimbinganController extends Controller
+class JasaRisetController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,13 +22,13 @@ class BimbinganController extends Controller
         try {
             if (Auth::user()->user_role == "admin") {
                 $search = $request->input('search');
-                $bimbingan = Products::with('category', 'productType')
+                $jasaRiset = Products::with('category', 'productType')
                     ->whereHas('productType', function ($query) {
-                        $query->where('type', 'bimbingan');
+                        $query->where('type', 'Jasa Riset');
                     });
 
                 if ($search) {
-                    $bimbingan->where(function ($query) use ($search) {
+                    $jasaRiset->where(function ($query) use ($search) {
                         $query->where('name', 'LIKE', "%$search%")
                             ->orWhereHas('category', function ($query) use ($search) {
                                 $query->where('name', 'LIKE', "%$search%");
@@ -36,47 +36,17 @@ class BimbinganController extends Controller
                     });
                 }
 
-                $bimbingan = $bimbingan->get();
+                $jasaRiset = $jasaRiset->get();
 
-                $bimbingan_tuntas = $bimbingan->filter(function ($product) {
-                    return str_contains($product->category->name, 'Dibimbing Tuntas');
-                });
-
-                $bimbingan_sekali = $bimbingan->filter(function ($product) {
-                    return str_contains($product->category->name, 'Dibimbing Sekali');
-                });
-
-                $bimbingan_tuntas->transform(function ($product) {
-
-                    if (is_string($product->facilities)) {
-                        $product->facilities = json_decode($product->facilities, true);
-                    }
-                    if (is_string($product->form_config)) {
-                        $product->form_config = json_decode($product->form_config, true);
-                    }
-                    return $product;
-                });
-
-                $bimbingan_sekali->transform(function ($product) {
-
-                    if (is_string($product->facilities)) {
-                        $product->facilities = json_decode($product->facilities, true);
-                    }
-                    if (is_string($product->form_config)) {
-                        $product->form_config = json_decode($product->form_config, true);
-                    }
-                    return $product;
-                });
-
-                return Inertia::render('Auth/Admin/Bimbingan/Product', [
+                return Inertia::render('Auth/Admin/JasaRiset/Product', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
-                    'bimbingan' => function () use ($request) {
+                    'jasaRiset' => function () use ($request) {
                         $search = $request->input('search');
                         $perPage = $request->input('perPage', 15);
-                        $bimbingan = Products::whereHas('category.productType', function ($q) {
-                            $q->where('type', 'bimbingan');
+                        $jasaRiset = Products::whereHas('category.productType', function ($q) {
+                            $q->where('type', 'jasa-riset');
                         })->when($search, function ($q) use ($search) {
                             $q->where(function ($query) use ($search) {
                                 $query->where('name', 'LIKE', "%$search%")
@@ -85,9 +55,9 @@ class BimbinganController extends Controller
                                     });
                             });
                         })->with('category')->orderBy('category_id', 'asc')->orderBy('number_list', 'asc')->paginate($perPage);
-                        return $bimbingan;
+                        return $jasaRiset;
                     },
-                    'categories' => Category::where('product_type_id', '1')->get(),
+                    'categories' => Category::where('product_type_id', '4')->get(),
 
                 ], 200);
             } else {
@@ -109,7 +79,7 @@ class BimbinganController extends Controller
     public function create()
     {
         if (Auth::user()->user_role == "admin") {
-            $categories = Category::where('product_type_id', '1')->get();
+            $categories = Category::where('product_type_id', '4')->get();
             $addons = AddOn::get();
             $topics = Topic::get();
             // return response()->json([
@@ -122,7 +92,7 @@ class BimbinganController extends Controller
             //         'topics' => $topics
             //     ]
             // ], 200);
-            return Inertia::render('Auth/Admin/Bimbingan/Product/Create', [
+            return Inertia::render('Auth/Admin/JasaRiset/Product/Create', [
                 'categories' => $categories,
                 'addons' => $addons,
                 'topics' => $topics,
@@ -167,7 +137,7 @@ class BimbinganController extends Controller
                 );
 
                 $product = new Products();
-                $product->product_type_id = 1; // Kenapa 1, karena ini product untuk bimbingan aja
+                $product->product_type_id = 1; // Kenapa 1, karena ini product untuk jasaRiset aja
                 $product->number_list = 2;
                 $product->category_id = $validateData['category_id'];
                 $product->name = $validateData['name'];
@@ -200,8 +170,8 @@ class BimbinganController extends Controller
                         Storage::disk('public')->makeDirectory('product');
                     }
                     $image = $validateData['product_image'];
-                    $fileName = 'bimbingan' . time() . '.' . $image->extension();
-                    $path = Storage::disk('public')->putFileAs('product/bimbingan', $image, $fileName);
+                    $fileName = 'jasaRiset' . time() . '.' . $image->extension();
+                    $path = Storage::disk('public')->putFileAs('product/jasaRiset', $image, $fileName);
                     $product->product_image = $path;
                 }
 
@@ -229,7 +199,7 @@ class BimbinganController extends Controller
                 }
                 // }
 
-                return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil ditambahkan');
+                return redirect()->route('admin.jasaRiset.product.index')->with('message', 'Product berhasil ditambahkan');
                 // return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
             } else {
                 abort(403);
@@ -238,7 +208,7 @@ class BimbinganController extends Controller
             return response()->json([
                 'message' => $e->getMessage(),
             ]);
-            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            return redirect()->route('admin.jasaRiset.product.index')->withErrors($e->getMessage());
             // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
         }
     }
@@ -251,7 +221,7 @@ class BimbinganController extends Controller
         try {
             if (Auth::user()->user_role == "admin") {
 
-                if (strcasecmp($product->productType->type, "bimbingan") != 0) {
+                if (strcasecmp($product->productType->type, "jasaRiset") != 0) {
                     return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Product not found'], 404);
                 }
 
@@ -264,13 +234,13 @@ class BimbinganController extends Controller
                     $product->form_config = json_decode($product->form_config);
                 }
 
-                // return redirect()->route('admin.bimbingan.product.index');
+                // return redirect()->route('admin.jasaRiset.product.index');
                 return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $product], 200);
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            return redirect()->route('admin.jasaRiset.product.index')->withErrors($e->getMessage());
             // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while processing request', 'error' => $e->getMessage()], 500);
         }
     }
@@ -281,7 +251,7 @@ class BimbinganController extends Controller
     public function edit(Products $product)
     {
         if (Auth::user()->user_role == "admin") {
-            $categories = Category::where('product_type_id', '1')->get();
+            $categories = Category::where('product_type_id', '4')->get();
             $addons = AddOn::get();
             $topics = Topic::get();
             $product->load('category', 'addOns', 'topics');
@@ -291,7 +261,7 @@ class BimbinganController extends Controller
             //     'addons' =>$addons,
             //     'topics'=>$topics
             // ]], 200);
-            return Inertia::render('Auth/Admin/Bimbingan/Product/Update', [
+            return Inertia::render('Auth/Admin/JasaRiset/Product/Update', [
                 'categories' => $categories,
                 'products' => $product,
                 'addons' => $addons,
@@ -309,7 +279,7 @@ class BimbinganController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                // Jika product tidak bertipe bimbingan
+                // Jika product tidak bertipe jasaRiset
                 if ($product->product_type_id != 1) {
                     throw new \Exception('Invalid object type');
                 }
@@ -347,12 +317,12 @@ class BimbinganController extends Controller
                     if ($product->product_image) {
                         Storage::disk('public')->delete($product->product_image);
                     }
-                    if (!Storage::disk('public')->exists('product/bimbingan')) {
-                        Storage::disk('public')->makeDirectory('product/bimbingan');
+                    if (!Storage::disk('public')->exists('product/jasaRiset')) {
+                        Storage::disk('public')->makeDirectory('product/jasaRiset');
                     }
                     $image = $request->file('product_image');
-                    $fileName = 'bimbingan' . time() . '.' . $image->getClientOriginalExtension();
-                    $path = $image->storeAs('product/bimbingan', $fileName, 'public');
+                    $fileName = 'jasaRiset' . time() . '.' . $image->getClientOriginalExtension();
+                    $path = $image->storeAs('product/jasaRiset', $fileName, 'public');
                     $validateData['product_image'] = $path;
                 }
 
@@ -374,14 +344,14 @@ class BimbinganController extends Controller
                     $product->topics()->sync($topics);
                 }
 
-                return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil diupdate');
+                return redirect()->route('admin.jasaRiset.product.index')->with('message', 'Product berhasil diupdate');
                 // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update product success'], 200);
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
             dd($e->getMessage());
-            // return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            // return redirect()->route('admin.jasaRiset.product.index')->withErrors($e->getMessage());
             // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while updating category', 'error' => $e->getMessage()], 500);
         }
     }
@@ -413,16 +383,16 @@ class BimbinganController extends Controller
                     Storage::delete($product->product_image);
                 }
                 $product->delete();
-                return redirect()->route('admin.bimbingan.product.index')->with('message', 'Product berhasil dihapus');
+                return redirect()->route('admin.jasaRiset.product.index')->with('message', 'Product berhasil dihapus');
                 // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete product success'], 200);
             } else {
                 abort(403);
             }
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            return redirect()->route('admin.jasaRiset.product.index')->withErrors($e->getMessage());
             // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Failed to delete product. Internal Server Error'], 500);
         } catch (\Exception $e) {
-            return redirect()->route('admin.bimbingan.product.index')->withErrors($e->getMessage());
+            return redirect()->route('admin.jasaRiset.product.index')->withErrors($e->getMessage());
             // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }

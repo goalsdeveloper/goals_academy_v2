@@ -115,6 +115,33 @@ export default function DashboardLayout({
                     ],
                     collapsed: true,
                 },
+                {
+                    name: "Jasa Riset",
+                    href: "",
+                    icon: "",
+                    isActive: false,
+                    branches: [
+                        {
+                            name: "Product",
+                            href: "/admin/jasa_riset/product",
+                            icon: (
+                                <TfiDropbox className="text-[4vw] md:text-[1vw]" />
+                            ),
+                            isActive:
+                                title == "Jasa Riset" && subtitle == "Product",
+                        },
+                        {
+                            name: "Order",
+                            href: "/admin/jasa_riset/order",
+                            icon: (
+                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
+                            ),
+                            isActive:
+                                title == "Jasa Riset" && subtitle == "Order",
+                        },
+                    ],
+                    collapsed: true,
+                },
                 // {
                 //     name: "Webinar",
                 //     href: "",
