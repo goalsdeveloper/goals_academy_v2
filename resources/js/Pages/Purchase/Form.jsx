@@ -354,12 +354,10 @@ function MainCard({
                         </div>
                         <hr className="md:hidden mt-[3vw]" />
                     </div>
-                    {rules.length ? (
-                        <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" />
-                    ) : (
-                        <></>
-                    )}
-                    <div className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw] mb-[20vw] md:mb-0">
+                    {Object.keys(rules).length ? <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" /> : <></>}
+                    <div
+                        className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw] mb-[20vw] md:mb-0"
+                    >
                         {Object.keys(rules).length == 1 &&
                         "document" in rules ? (
                             availableAddOn.length ? (

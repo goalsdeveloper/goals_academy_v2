@@ -23,9 +23,9 @@ import { FaRegCheckCircle, FaRegTimesCircle } from "react-icons/fa";
 import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 import axios from "axios";
 
-export default function Product({ auth, bimbingan, categories }) {
+export default function Product({ auth, jasaRiset, categories }) {
     const [isLoading, setIsLoading] = useState(false);
-    bimbingan = bimbingan.data;
+    jasaRiset = jasaRiset.data;
     const isDesktop = useMediaQuery({ minWidth: 1024 });
     const [show, setShow] = useState(false);
     const [product, setProduct] = useState();
@@ -38,9 +38,9 @@ export default function Product({ auth, bimbingan, categories }) {
 
     const onSearchCallback = (search) => {
         router.visit(
-            route("admin.bimbingan.product.index", { search: search }),
+            route("admin.jasa_riset.product.index", { search: search }),
             {
-                only: ["bimbingan"],
+                only: ["jasaRiset"],
             }
         );
     };
@@ -48,7 +48,7 @@ export default function Product({ auth, bimbingan, categories }) {
     async function getBimbinganDetail(id) {
         setIsLoading(true);
         setProduct(null);
-        axios.get("/admin/bimbingan/product/" + id).then((res) => {
+        axios.get("/admin/jasaRiset/product/" + id).then((res) => {
             // console.log(res.data.data)
             setProduct(res.data.data);
             setIsLoading(false);
@@ -56,8 +56,8 @@ export default function Product({ auth, bimbingan, categories }) {
     }
 
     const callback = (method) => {
-        router.visit(route("admin.bimbingan.product.index"), {
-            only: ["bimbingan"],
+        router.visit(route("admin.jasa_riset.product.index"), {
+            only: ["jasaRiset"],
             onSuccess: () => {
                 if (method == "create") {
                     toast.success("Create Success!");
@@ -105,7 +105,7 @@ export default function Product({ auth, bimbingan, categories }) {
                         isEnabled={cell.row.original.is_visible}
                         setIsEnabled={() => {
                             router.put(
-                                route("admin.bimbingan.product.updateVisible", {
+                                route("admin.jasa_riset.product.updateVisible", {
                                     product: cell.row.original.id,
                                 }),
                                 {
@@ -138,7 +138,7 @@ export default function Product({ auth, bimbingan, categories }) {
                                     as="button"
                                     method="GET"
                                     href={route(
-                                        "admin.bimbingan.product.edit",
+                                        "admin.jasa_riset.product.edit",
                                         { product: cell.row.original }
                                     )}
                                 >
@@ -179,7 +179,7 @@ export default function Product({ auth, bimbingan, categories }) {
                             isLink
                             method="GET"
                             size="sm"
-                            href={route("admin.bimbingan.product.create")}
+                            href={route("admin.jasa_riset.product.create")}
                             className="flex items-center gap-[.5vw]"
                         >
                             <FiPlus className="text-[1vw]" />
@@ -200,7 +200,7 @@ export default function Product({ auth, bimbingan, categories }) {
                         )}
                     <GoalsDashboardTable
                         columns={columns}
-                        data={bimbingan}
+                        data={jasaRiset}
                         isSplitByCategory
                         isDraggable
                         keyword={keyword}

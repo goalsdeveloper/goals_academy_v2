@@ -501,7 +501,7 @@ function Notification({ auth, data, loadMore }) {
                             </button>
                         </div>
                         {/* Transaksi */}
-                        <div className={activeDisplay != 0 && "hidden"}>
+                        <div className={activeDisplay != 0 ? "hidden" : ""}>
                             {Number(data.newTransaction.length) +
                                 Number(data.oldTransaction.length) >
                             0 ? (
@@ -565,7 +565,7 @@ function Notification({ auth, data, loadMore }) {
                             )}
                         </div>
                         {/* Promo */}
-                        <div className={activeDisplay != 1 && "hidden"}>
+                        <div className={activeDisplay != 1 ? "hidden" : ""}>
                             {data.promo.length ? (
                                 <>
                                     {data.promo.map((item, index) => {
@@ -600,7 +600,7 @@ function Notification({ auth, data, loadMore }) {
                             )}
                         </div>
                         {/* Program */}
-                        <div className={activeDisplay != 2 && "hidden"}>
+                        <div className={activeDisplay != 2 ? "hidden" : ""}>
                             {data.program.length ? (
                                 <>
                                     {data.program.map((item, index) => {
@@ -717,7 +717,7 @@ function Notification({ auth, data, loadMore }) {
                                 </button>
                             </div>
                             {/* Transaksi */}
-                            <div className={activeDisplay != 0 && "hidden"}>
+                            <div className={activeDisplay != 0 ? "hidden" : ""}>
                                 {Number(data.newTransaction.length) +
                                     Number(data.oldTransaction.length) >
                                 0 ? (
@@ -780,7 +780,7 @@ function Notification({ auth, data, loadMore }) {
                                 )}
                             </div>
                             {/* Promo */}
-                            <div className={activeDisplay != 1 && "hidden"}>
+                            <div className={activeDisplay != 1 ? "hidden" : ""}>
                                 {data.promo.length ? (
                                     <>
                                         {data.promo.map((item, index) => {
@@ -815,7 +815,7 @@ function Notification({ auth, data, loadMore }) {
                                 )}
                             </div>
                             {/* Program */}
-                            <div className={activeDisplay != 2 && "hidden"}>
+                            <div className={activeDisplay != 2 ? "hidden" : ""}>
                                 {data.program.length ? (
                                     <>
                                         {data.program.map((item, index) => {

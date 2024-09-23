@@ -1,12 +1,13 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
+import { Link } from "@inertiajs/react";
 import { useState } from "react";
 import { FiThumbsUp } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 
 export default function Program({data}) {
-    const [selectedCat, setSelectedCat] = useState('Rekomendasi');
-
     const categories = Array(...new Set(data.map(i => i.category.name)));
+    
+    const [selectedCat, setSelectedCat] = useState(categories[0]);
 
     const recommendationProductIds = [1, 2, 3, 4]
 
@@ -19,14 +20,14 @@ export default function Program({data}) {
 
             <div className="flex flex-col md:flex-row mx-auto gap-[2.1vw]">
                 <div className="md:w-[20%] flex md:flex-col overflow-x-auto gap-[2.7vw] md:gap-0 pb-[1.6vw] scrollbar-hidden">
-                    <button
+                    {/* <button
                         className={`${
                             selectedCat == "Rekomendasi" && "text-secondary border-b-[.2vw] md:border-b-0 border-secondary"
                         } md:h-[2.7vw] md:border-l-2 text-start text-nowrap text-[3.7vw] md:px-[1.2vw] md:text-[1vw] flex gap-x-[.5vw]`}
                         onClick={() => setSelectedCat("Rekomendasi")}
                     >
                         Rekomendasi <FiThumbsUp />
-                    </button>
+                    </button> */}
                     {categories.map((cat, i) => (
                         <button
                             key={i}
@@ -117,13 +118,12 @@ const Card = ({ id, name, facilities, price, promo_price, slug }) => {
                 ))}
             </ul>
 
-            {/* <button className="text-[3.2vw] md:text-[1vw] p-[1vw] md:px-[2vw] md:py-[.8vw] w-full bg-secondary text-white md:rounded-[.4vw] rounded-[1.2vw] py-[2.7vw]">
+            <Link as="button" href={`/produk/${slug}`} className="relative text-[3.2vw] md:text-[1vw] p-[1vw] py-[2.7vw] md:px-[2vw] md:py-[.8vw] w-full bg-secondary hover:bg-primary text-white md:rounded-[.4vw] rounded-[1.2vw]">
                 Daftar Sekarang
-            </button> */}
-            <GoalsButton className="w-full !text-[3.2vw] md:!text-[1vw] !p-[2vw] !py-[2.5vw] md:!p-[1vw] !font-normal md:!font-medium" href={`/produk/${slug}`}>
-                {/* {isMobile ? "Daftar" : "Daftar Sekarang"} */}
+            </Link>
+            {/* <GoalsButton className="w-full !text-[3.2vw] md:!text-[1vw] !p-[2vw] !py-[2.5vw] md:!p-[1vw] !font-normal md:!font-medium" href={`/produk/${slug}`}>
                 Daftar Sekarang
-            </GoalsButton>
+            </GoalsButton> */}
         </div>
     )
 }

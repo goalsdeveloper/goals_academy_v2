@@ -21,7 +21,6 @@ import { datepickerStyle, mobileDatepickerStyle } from "./config";
 
 const DetailBanyakPertemuan = ({ data, setIsAturJadwalShow }) => {
     const [showDetail, setShowDetail] = useState(null);
-    console.log(data)
 
     return (
         <div className="relative space-y-[2vw]">
@@ -50,7 +49,7 @@ const DetailBanyakPertemuan = ({ data, setIsAturJadwalShow }) => {
                         </p>
                     </div>
                     <GoalsButton
-                        disabled={!data.some((item) => item.date === null) || data[0]?.ongoing != "berjalan"}
+                        disabled={!data.some((item) => item.date === null) || !data.some((item) => item.ongoing === "berjalan")}
                         variant="info"
                         onClick={() => setIsAturJadwalShow()}
                     >

@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\Career\ParticipantController;
 use App\Http\Controllers\Admin\Ecourse\EcourseController;
 use App\Http\Controllers\Admin\Ecourse\OrderController as AdminOrderEcourseController;
 use App\Http\Controllers\Admin\Ecourse\PackageController as AdminPackageEcourseController;
+use App\Http\Controllers\Admin\JasaRiset\JasaRisetController;
+use App\Http\Controllers\Admin\JasaRiset\OrderController as AdminOrderJasaRisetController;
 use App\Http\Controllers\Admin\ManajemenUser\ModeratorController;
 use App\Http\Controllers\Admin\ManajemenUser\RevenueTypeController;
 use App\Http\Controllers\Admin\ManajemenUser\TutorController;
@@ -161,6 +163,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::put('product/{product}/updateVisible', [BimbinganController::class, 'updateVisible'])->name('product.updateVisible');
         Route::resource('order', AdminOrderBimbinganController::class);
         Route::resource('promo-code', PromoCodeController::class)->parameter('promo-code', 'promo_code');
+    });
+    Route::prefix('jasa_riset')->name('jasa_riset.')->group(function () {
+        Route::resource('product', JasaRisetController::class);
+        Route::post('product/updateNumberList', [JasaRisetController::class, 'updateOrderNumber'])->name('product.updateOrderNumber');
+        Route::put('product/{product}/updateVisible', [JasaRisetController::class, 'updateVisible'])->name('product.updateVisible');
+        Route::resource('order', AdminOrderJasaRisetController::class);
     });
     Route::prefix('webinar')->name('webinar.')->group(function () {
         Route::resource('category', AdminCategoryWebinarController::class);
