@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CourseStatusEnum;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CouponCheckController;
 use App\Http\Controllers\API\DateCheckController;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 // use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\API\ViewsClickAndSalesAmountController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +28,7 @@ use App\Http\Controllers\API\ViewsClickAndSalesAmountController;
 |
 | Here is where you can register API routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| be assigned to the 'api' middleware group. Make something great!
 |
  */
 
@@ -77,4 +79,4 @@ Route::get('views_sales', [ViewsClickAndSalesAmountController::class, 'index']);
 Route::get('user_growth', [ViewsClickAndSalesAmountController::class, 'userGrowth']);
 Route::get('tutor_schedule', [TutorSheduleController::class, 'index']);
 
-Route::put('check_expired', [ExpiredCourseCheckerController::class, 'index'])->name("check_expired");
+Route::put('check_expired', [ExpiredCourseCheckerController::class, 'index'])->name('check_expired');
