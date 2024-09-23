@@ -6,28 +6,22 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class NotificationController extends Controller
 {
     public function readNotification(String $id)
     {
-        // dd('test');
         $user = Auth::user();
         $notif = $user->notifications()->where('id', $id)->first();
         if ($notif) {
             $notif->markAsRead();
             if (!isset($notif->data['link'])) {
-                return response()->json([
-                    'message' => 'Notifikasi tidak ditemukan'
-                ], 404);
+                return redirect()->back()->with('success', 'notif berhasil dibaca');
             }
-            return response()->json([
-                'link' => $notif->data['link']
-            ], 200);
+            return Inertia::location($notif->data['link']);
         }
-        return response()->json([
-            'message' => 'Notif Tidak Ditemukan',
-        ], 404);
+        return redirect()->back()->with('error', 'data tidak ditemukan');
     }
 
     public function getNewNotification(Request $req)

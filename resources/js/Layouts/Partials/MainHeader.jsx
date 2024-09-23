@@ -39,28 +39,26 @@ export default function MainHeader({ auth, title, className }) {
     });
 
     const getFirstNotification = () => {
-        axios
-            .get(route("api.notification.userNotification"))
-            .then((res) => {
-                const data = res.data;
-                setNotificationData((n) => ({
-                    ...n,
-                    newTransaction: data.new_transaction_notifications,
-                    oldTransaction: data.transaction_notifications.data,
-                    program: data.program_notifications.data,
-                    promo: data.promo_notifications.data,
-                    hasMoreTransaction:
-                        data.transaction_notifications.current_page <
-                        data.transaction_notifications.last_page,
-                    hasMoreProgram:
-                        data.program_notifications.current_page <
-                        data.program_notifications.last_page,
-                    hasMorePromo:
-                        data.promo_notifications.current_page <
-                        data.promo_notifications.last_page,
-                }));
-                setTimeout(() => getNewNotification(), 10000);
-            })
+        axios.get(route("api.notification.userNotification")).then((res) => {
+            const data = res.data;
+            setNotificationData((n) => ({
+                ...n,
+                newTransaction: data.new_transaction_notifications,
+                oldTransaction: data.transaction_notifications.data,
+                program: data.program_notifications.data,
+                promo: data.promo_notifications.data,
+                hasMoreTransaction:
+                    data.transaction_notifications.current_page <
+                    data.transaction_notifications.last_page,
+                hasMoreProgram:
+                    data.program_notifications.current_page <
+                    data.program_notifications.last_page,
+                hasMorePromo:
+                    data.promo_notifications.current_page <
+                    data.promo_notifications.last_page,
+            }));
+            setTimeout(() => getNewNotification(), 10000);
+        });
     };
 
     const getNewNotification = () => {
@@ -91,8 +89,8 @@ export default function MainHeader({ auth, title, className }) {
                     ),
                     promo: mergedNewNotif(n.promo, data.promo_notifications),
                 }));
-                setTimeout(() => getNewNotification(), 10000)
-            })
+                setTimeout(() => getNewNotification(), 10000);
+            });
     };
 
     const getOldNotification = (category, page, setIsLoading) => {
@@ -863,18 +861,7 @@ function NotificationItem({ item }) {
     if (item.data.category == "Transaksi") {
         return (
             <Link
-                method="GET"
-                onClick={() => {
-                    axios
-                        .get(route("api.notification.read", { id: item.id }))
-                        .then((res) => {
-                            if(res.status == 200) {
-                                window.location = res.data.link
-                            } else {
-                                window.reload()
-                            }
-                        });
-                }}
+                href={route("api.notification.read", { id: item.id })}
                 as="button"
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
@@ -932,17 +919,7 @@ function NotificationItem({ item }) {
     } else {
         return (
             <Link
-                onClick={(e) => {
-                    axios
-                        .get(route("api.notification.read", { id: item.id }))
-                        .then((res) => {
-                            if (item.data.link != undefined) {
-                                window.location = item.data.link;
-                                return;
-                            }
-                            location.reload();
-                        });
-                }}
+                href={route("api.notification.read", { id: item.id })}
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}

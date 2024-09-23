@@ -105,12 +105,13 @@ export default function DashboardLayout({
                         },
                         {
                             name: "Kode Promo",
-                            href: route('admin.bimbingan.promo-code.index'),
+                            href: route("admin.bimbingan.promo-code.index"),
                             icon: (
                                 <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
                             ),
                             isActive:
-                                title == "Bimbingan" && subtitle == "Kode Promo",
+                                title == "Bimbingan" &&
+                                subtitle == "Kode Promo",
                         },
                     ],
                     collapsed: true,
@@ -224,22 +225,32 @@ export default function DashboardLayout({
                         {
                             name: "Category",
                             href: "/admin/produk_digital/category",
-                            icon: <GrTag className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <GrTag className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
-                                title == "Produk Digital" && subtitle == "Category",
+                                title == "Produk Digital" &&
+                                subtitle == "Category",
                         },
                         {
                             name: "Product",
                             href: "/admin/produk_digital/product",
-                            icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
+                            icon: (
+                                <TfiDropbox className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
-                                title == "Produk Digital" && subtitle == "Product",
+                                title == "Produk Digital" &&
+                                subtitle == "Product",
                         },
                         {
                             name: "Order",
                             href: "/admin/produk_digital/order",
-                            icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
-                            isActive: title == "Produk Digital" && subtitle == "Order",
+                            icon: (
+                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
+                            ),
+                            isActive:
+                                title == "Produk Digital" &&
+                                subtitle == "Order",
                         },
                     ],
                     collapsed: true,
@@ -434,20 +445,18 @@ export default function DashboardLayout({
     });
 
     const getFirstNotification = () => {
-        axios
-            .get(route("api.notification.get"))
-            .then((res) => {
-                const data = res.data;
-                setNotificationData((n) => ({
-                    ...n,
-                    new: data.new_notifications,
-                    old: data.old_notifications.data,
-                    hasMore:
-                        data.old_notifications.current_page <
-                        data.old_notifications.last_page,
-                }));
-                setTimeout(() => getNewNotification(), 10000);
-            })
+        axios.get(route("api.notification.get")).then((res) => {
+            const data = res.data;
+            setNotificationData((n) => ({
+                ...n,
+                new: data.new_notifications,
+                old: data.old_notifications.data,
+                hasMore:
+                    data.old_notifications.current_page <
+                    data.old_notifications.last_page,
+            }));
+            setTimeout(() => getNewNotification(), 10000);
+        });
     };
 
     const getNewNotification = () => {
@@ -460,16 +469,14 @@ export default function DashboardLayout({
             }, old);
             return mergedArray;
         };
-        axios
-            .get(route("api.notification.get"))
-            .then((res) => {
-                const data = res.data;
-                setNotificationData((n) => ({
-                    ...n,
-                    new: mergedNewNotif(n.new, data.new_notifications),
-                }));
-                setTimeout(() => getNewNotification(), 10000)
-            })
+        axios.get(route("api.notification.get")).then((res) => {
+            const data = res.data;
+            setNotificationData((n) => ({
+                ...n,
+                new: mergedNewNotif(n.new, data.new_notifications),
+            }));
+            setTimeout(() => getNewNotification(), 10000);
+        });
     };
 
     const getOldNotification = (page) => {
@@ -514,7 +521,11 @@ export default function DashboardLayout({
     return (
         <main className="relative flex font-sans bg-gray-50 text-dark">
             <Head title={title} />
-            <aside className={`${navShow ? '' : '-translate-x-full md:translate-x-0'} z-[200] md:z-50 absolute md:relative w-[60vw] md:w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[3.32vw] md:text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer duration-300`}>
+            <aside
+                className={`${
+                    navShow ? "" : "-translate-x-full md:translate-x-0"
+                } z-[200] md:z-50 absolute md:relative w-[60vw] md:w-[18vw] h-screen bg-dark-indigo text-white font-sans text-[3.32vw] md:text-[.83vw] overflow-auto scrollbar-hidden cursor-pointer duration-300`}
+            >
                 <div className="flex justify-between md:justify-center items-center px-[5vw] md:px-0 md:pt-[2.5vw] md:pb-[1.75vw]">
                     <Link href="/">
                         <img
@@ -650,7 +661,12 @@ export default function DashboardLayout({
                 <header className="absolute z-[100] md:z-50 top-0 w-full h-[20vw] md:h-[5.8vw] flex justify-between items-center bg-dark-indigo md:bg-gray-50 px-[4.2vw] md:pt-[2.5vw] md:pb-[1.75vw] md:border-b-1">
                     {isMobile ? (
                         <>
-                            <div className={`${!navShow && 'hidden'} absolute top-0 w-screen h-screen z-20`} onClick={() => setNavShow(false)}></div>
+                            <div
+                                className={`${
+                                    !navShow && "hidden"
+                                } absolute top-0 w-screen h-screen z-20`}
+                                onClick={() => setNavShow(false)}
+                            ></div>
                             <div className="flex gap-[4vw] md:gap-[1vw]">
                                 <NavigationBurgerButton
                                     isOpen={navShow}
@@ -754,7 +770,9 @@ function Notification({ data, loadMore }) {
                 />
                 <div
                     className={`${
-                        data.new.filter((i) => i.read_at == null).length > 0 ? "" : "hidden"
+                        data.new.filter((i) => i.read_at == null).length > 0
+                            ? ""
+                            : "hidden"
                     } absolute border-1 border-white rounded-full top-0 right-0 w-[2.5vw] h-[2.5vw] md:w-[.6vw] md:h-[.6vw] bg-red-500`}
                 ></div>
             </div>
@@ -917,17 +935,7 @@ function NotificationItem({ item }) {
     if (item.data.category == "Transaksi") {
         return (
             <Link
-                onClick={(e) => {
-                    axios
-                        .get(route("api.notification.read", { id: item.id }))
-                        .then((res) => {
-                            if (item.data.link != undefined) {
-                                window.location = item.data.link;
-                                return;
-                            }
-                            location.reload();
-                        });
-                }}
+                href={route("api.notification.read", { id: item.id })}
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
@@ -984,17 +992,7 @@ function NotificationItem({ item }) {
     } else {
         return (
             <Link
-                onClick={(e) => {
-                    axios
-                        .get(route("api.notification.read", { id: item.id }))
-                        .then((res) => {
-                            if (item.data.link != undefined) {
-                                window.location = item.data.link;
-                                return;
-                            }
-                            location.reload();
-                        });
-                }}
+                href={route("api.notification.read", { id: item.id })}
                 className={`${
                     item.read_at ? "hover:bg-soft" : "bg-soft"
                 } relative w-full flex justify-between items-center border-y-1 rounded-[.25vw] p-[4vw] md:p-[1vw]`}
