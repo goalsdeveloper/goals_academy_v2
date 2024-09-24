@@ -17,6 +17,7 @@ import { TfiDropbox } from "react-icons/tfi";
 import { useMediaQuery } from "react-responsive";
 import { TECollapse } from "tw-elements-react";
 import logo from "/resources/img/icon/goals-6.svg";
+import axios from "axios";
 
 export default function DashboardLayout({
     auth,
@@ -25,6 +26,11 @@ export default function DashboardLayout({
     role,
     children,
 }) {
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        axios.get("/dashboard_layout_data").then(response => setData(response.data))
+    }, []);
+
     let navConfig;
     switch (role) {
         case "admin":
@@ -352,6 +358,7 @@ export default function DashboardLayout({
                             isActive:
                                 title == "Bimbingan" &&
                                 subtitle == "Recent Order",
+                            info: data?.moderator?.bimbingan.order,
                         },
                         {
                             name: "Progress",
@@ -361,6 +368,7 @@ export default function DashboardLayout({
                             ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Progress",
+                            info: data?.moderator?.bimbingan.progress,
                         },
                         {
                             name: "History",
@@ -425,6 +433,7 @@ export default function DashboardLayout({
                             ),
                             isActive:
                                 title == "Bimbingan" && subtitle == "Progress",
+                            info: data?.tutor?.bimbingan.progress,
                         },
                         {
                             name: "History",
@@ -571,9 +580,10 @@ export default function DashboardLayout({
                 <nav className="flex flex-col gap-[5vw] md:gap-[1.25vw] py-[1.25vw] ps-[5vw] pe-[6.3vw] md:ps-[1.67vw] md:pe-[2.1vw]">
                     {navConfig.map(
                         (
-                            { name, href, icon, isActive, branches, collapsed },
+                            item,
                             index
                         ) => {
+                            const { name, href, icon, isActive, branches, collapsed } = item;
                             return (
                                 <div key={index}>
                                     {branches ? (
@@ -611,32 +621,11 @@ export default function DashboardLayout({
                                                     >
                                                         {branches.map(
                                                             (
-                                                                {
-                                                                    name,
-                                                                    href,
-                                                                    icon,
-                                                                    isActive,
-                                                                },
+                                                                subItem,
                                                                 index
                                                             ) => {
                                                                 return (
-                                                                    <NavItem
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        name={
-                                                                            name
-                                                                        }
-                                                                        href={
-                                                                            href
-                                                                        }
-                                                                        icon={
-                                                                            icon
-                                                                        }
-                                                                        isActive={
-                                                                            isActive
-                                                                        }
-                                                                    />
+                                                                    <NavItem key={index} {...subItem} />
                                                                 );
                                                             }
                                                         )}
@@ -646,24 +635,11 @@ export default function DashboardLayout({
                                                 <div className="grid gap-[.75vw] mt-[.85vw]">
                                                     {branches.map(
                                                         (
-                                                            {
-                                                                name,
-                                                                href,
-                                                                icon,
-                                                                isActive,
-                                                            },
+                                                            subItem,
                                                             index
                                                         ) => {
                                                             return (
-                                                                <NavItem
-                                                                    key={index}
-                                                                    name={name}
-                                                                    href={href}
-                                                                    icon={icon}
-                                                                    isActive={
-                                                                        isActive
-                                                                    }
-                                                                />
+                                                                <NavItem key={index} {...subItem} />
                                                             );
                                                         }
                                                     )}
@@ -671,12 +647,7 @@ export default function DashboardLayout({
                                             )}
                                         </>
                                     ) : (
-                                        <NavItem
-                                            name={name}
-                                            href={href}
-                                            icon={icon}
-                                            isActive={isActive}
-                                        />
+                                        <NavItem {...item} />
                                     )}
                                 </div>
                             );
@@ -740,15 +711,18 @@ export default function DashboardLayout({
     );
 }
 
-function NavItem({ name, href, icon, isActive }) {
+function NavItem({ name, href, icon, isActive, info }) {
     return (
         <GoalsButton
-            className="rounded-[2vw] md:rounded-[.5vw] p-[4vw] md:p-[1vw] gap-[3vw] md:gap-[.75vw] !justify-start"
+            className="rounded-[2vw] md:rounded-[.5vw] p-[4vw] md:p-[1vw] justify-between items-center"
             activeClassName={isActive && "bg-white text-dark-indigo"}
             isLink={true}
             href={href}
         >
-            {icon} {name}
+            <div className="flex gap-[3vw] md:gap-[.75vw] !justify-start">
+                {icon} {name}
+            </div>
+            <span className={`rounded-full w-[1.5vw] h-[1.5vw] ${info ? "bg-secondary" : "bg-transparent"} text-white flex items-center justify-center`}>{info}</span>
         </GoalsButton>
     );
 }

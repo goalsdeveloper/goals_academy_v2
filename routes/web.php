@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CourseStatusEnum;
 use App\Http\Controllers\Admin\Bimbingan\AddOnController;
 use App\Http\Controllers\Admin\Bimbingan\BimbinganController;
 use App\Http\Controllers\Admin\Bimbingan\CategoryController;
@@ -47,9 +48,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
+use App\Models\Order;
 use App\Models\Products;
 use App\Models\TutorNote;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -229,6 +231,52 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')-
 });
 
 Route::get('files/course/download/{fileName}', [FileController::class, 'downloadFileCourse'])->name('file.course.download')->middleware('auth');
+
+Route::get('dashboard_layout_data', function () {
+    $user = Auth::user();
+
+    $moderatorBimbinganRecentOrder =
+        Order::with([
+            'products:id,product_type_id',
+            'products.productType:id,type',
+            'course:id,ongoing',
+        ])->whereHas('products', function ($query) {
+            $query->whereHas('productType', function ($subQuery) {
+                $subQuery->where('type', 'LIKE', '%bimbingan%');
+            });
+        })->whereHas('course', function ($courseQuery) {
+            $courseQuery->where('ongoing', CourseStatusEnum::WAITING);
+        })->where('status', 'Success')->count();
+
+    $moderatorBimbinganProgress =
+        Order::with([
+            'products:id,product_type_id',
+            'products.productType:id,type',
+            'course:id,ongoing',
+        ])->whereHas('products', function ($query) {
+            $query->whereHas('productType', function ($subQuery) {
+                $subQuery->where('type', 'LIKE', '%bimbingan%');
+            });
+        })->whereHas('course', function ($courseQuery) {
+            $courseQuery->where('ongoing', CourseStatusEnum::ONGOING);
+        })->where('status', 'Success')->count();
+
+    $tutorBimbinganProgress = $user->tutor()->whereIn('ongoing', [CourseStatusEnum::ONGOING])->whereNotNull('date')->whereNotNull('time')->count();
+
+    return response()->json([
+        'moderator' => [
+            'bimbingan' => [
+                'order' => $moderatorBimbinganRecentOrder,
+                'progress' => $moderatorBimbinganProgress,
+            ],
+        ],
+        'tutor' => [
+            'bimbingan' => [
+                'progress' => $tutorBimbinganProgress,
+            ],
+        ],
+    ]);
+});
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';

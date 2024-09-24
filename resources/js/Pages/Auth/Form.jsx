@@ -12,6 +12,7 @@ import rectangle from "/resources/img/vector/rectangle-1.svg";
 
 import { TECollapse } from "tw-elements-react";
 import icon from "/resources/img/icon/goals-4.svg";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 export default function Form ({ title }) {
     const [activeForm, setActiveForm] = useState(title);
@@ -296,6 +297,11 @@ function FormRight({ activeForm, setActiveForm, showSyaratDanKetentuan, setShowS
 }
 
 function RegisterForm({ active, registerData, setRegisterData, registerErrors, setRegisterError, registerLoading, onSubmit, showSyaratDanKetentuan, setShowSyaratDanKetentuan }) {
+    const [showPassword, setShowPassword] = useState({
+        'password': false,
+        'confirmation_password': false
+    })
+
     return (
         <div
             className={`${
@@ -328,28 +334,38 @@ function RegisterForm({ active, registerData, setRegisterData, registerErrors, s
                     label="Email"
                     error={registerErrors.email}
                 />
-                <Input
-                    value={registerData.password}
-                    onChange={(e) => {
-                        setRegisterData("password", e.target.value)
-                        setRegisterError("password", "")
-                    }}
-                    type="password"
-                    id="password"
-                    label="Password"
-                    error={registerErrors.password}
-                />
-                <Input
-                    value={registerData.confirmation_password}
-                    onChange={(e) => {
-                        setRegisterData("confirmation_password", e.target.value)
-                        setRegisterError("confirmation_password", "")
-                    }}
-                    type="password"
-                    id="confirmation_password"
-                    label="Ulangi Password"
-                    error={registerErrors.confirmation_password}
-                />
+                <div className="relative">
+                    <Input
+                        value={registerData.password}
+                        onChange={(e) => {
+                            setRegisterData("password", e.target.value)
+                            setRegisterError("password", "")
+                        }}
+                        type={showPassword.password ? "text" : "password"}
+                        id="password"
+                        label="Password"
+                        error={registerErrors.password}
+                    />
+                    <div className="absolute top-0 right-0 h-full w-1/12 flex items-center cursor-pointer" onClick={() => setShowPassword({...showPassword, password: !showPassword.password})}>
+                        {showPassword.password ? <FiEye className="text-gray-400" /> : <FiEyeOff className="text-gray-400" />}
+                    </div>
+                </div>
+                <div className="relative">
+                    <Input
+                        value={registerData.confirmation_password}
+                        onChange={(e) => {
+                            setRegisterData("confirmation_password", e.target.value)
+                            setRegisterError("confirmation_password", "")
+                        }}
+                        type={showPassword.confirmation_password ? "text" : "password"}
+                        id="confirmation_password"
+                        label="Ulangi Password"
+                        error={registerErrors.confirmation_password}
+                    />
+                    <div className="absolute top-0 right-0 h-full w-1/12 flex items-center cursor-pointer" onClick={() => setShowPassword({...showPassword, confirmation_password: !showPassword.confirmation_password})}>
+                        {showPassword.confirmation_password ? <FiEye className="text-gray-400" /> : <FiEyeOff className="text-gray-400" />}
+                    </div>
+                </div>
                 <div className="flex justify-center items-center gap-[2vw] md:gap-[1vw] xl:gap-[.5vw] md:px-[1vw]">
                     <input type="checkbox" className="w-[5vw] h-[5vw] md:w-[1vw] md:h-[1vw]" checked={registerData.agreement} onChange={() => setRegisterData("agreement", !registerData.agreement)} />
                     <p className="text-[3vw] md:text-[1.8vw] xl:text-[.95vw]">Saya setuju dengan <a role="button" onClick={() => {setShowSyaratDanKetentuan(true)}} className="text-secondary font-medium">Syarat dan Ketentuan</a> yang berlaku di Goals Academy</p>
@@ -382,6 +398,8 @@ function RegisterForm({ active, registerData, setRegisterData, registerErrors, s
 }
 
 function LoginForm({ active, loginData, setLoginData, loginMessage, setLoginMessage, loginLoading, onSubmit }) {
+    const [showPassword, setShowPassword] = useState(false);
+
     return (
         <div
             className={`${
@@ -410,15 +428,20 @@ function LoginForm({ active, loginData, setLoginData, loginMessage, setLoginMess
                     label="Email"
                 />
                 <div className="relative pb-[1.5vw]">
-                    <Input
-                        value={loginData.password}
-                        onChange={(e) =>
-                            setLoginData("password", e.target.value)
-                        }
-                        type="password"
-                        id="login_password"
-                        label="Password"
-                    />
+                    <div className="relative">
+                        <Input
+                            value={loginData.password}
+                            onChange={(e) =>
+                                setLoginData("password", e.target.value)
+                            }
+                            type={showPassword ? "text" : "password"}
+                            id="login_password"
+                            label="Password"
+                        />
+                        <div className="absolute top-0 right-0 h-full w-1/12 flex items-center cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? <FiEye className="text-gray-400" /> : <FiEyeOff className="text-gray-400" />}
+                        </div>
+                    </div>
                     <Link href="/lupa_password" className="absolute text-[3vw] md:text-[1.75vw] xl:text-[.95vw] xl:mt-[.5vw] right-0 text-blue-500">
                         Lupa password?
                     </Link>
