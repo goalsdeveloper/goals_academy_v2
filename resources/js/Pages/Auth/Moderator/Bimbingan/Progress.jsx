@@ -224,22 +224,25 @@ export default function Progress({ auth, data: recentOrder }) {
                 <div className="flex items-center gap-[.8vw]">
                     <button
                         onClick={() => {
-                            if (!course.is_moderator && (courseTime._isValid && isPassed)) {
+                            if (!course.is_moderator && (courseTime.isValid() && isPassed)) {
                                 setIsShow({ ...isShow, duration: true });
                                 setPayloadData({ ...payloadData, id: course.id });
                             }
                         }}
                     >
-                        <FiThumbsUp className={"text-[1.2vw] " + (course.is_moderator ? `cursor-default text-success-50` : (courseTime._isValid && isPassed ? `cursor-pointer text-secondary` : `cursor-default text-neutral-60`))}
-                        />
+                        <FiThumbsUp className={"text-[1.2vw] " + (course.is_moderator ? `cursor-default text-success-50` : (courseTime.isValid() && isPassed ? `cursor-pointer text-secondary` : `cursor-default text-neutral-60`))} />
                     </button>
-                    <Link
-                        href={route("moderator.bimbingan.progress.edit", {
-                            progress: course.id,
-                        })}
-                    >
-                        <FiEdit2 className="text-[1.2vw] text-secondary" />
-                    </Link>
+                    {courseTime.isValid() ? (
+                        <Link
+                            href={route("moderator.bimbingan.progress.edit", { progress: course.id })}
+                        >
+                            <FiEdit2 className={`text-[1.2vw] ${courseTime.isValid() ? 'text-secondary' : 'text-neutral-60'}`} />
+                        </Link>
+                    ) : (
+                        <span>
+                            <FiEdit2 className={`text-[1.2vw] ${courseTime.isValid() ? 'text-secondary' : 'text-neutral-60'}`} />
+                        </span>
+                    )}
                     <Link
                         href={route("moderator.bimbingan.progress.show", {
                             progress: course.id,
@@ -576,22 +579,29 @@ export const DropdownDetailPanel = ({
                                                 <button
                                                     disabled={status == "Selesai"}
                                                     onClick={() => {
-                                                        if(!item.is_moderator && (courseTime._isValid && isPassed)) {
+                                                        if(!item.is_moderator && (courseTime.isValid() && isPassed)) {
                                                             setIsShow({...isShow, duration: true,});
                                                             setPayloadData({...payloadData, id: item.id,});
                                                         }
                                                     }}
                                                 >
-                                                    <FiThumbsUp className={"text-[1.2vw] " + (item.is_moderator ? `cursor-default text-success-50` : (courseTime._isValid && isPassed ? `cursor-pointer text-secondary` : `cursor-default text-neutral-60`))} />
+                                                    <FiThumbsUp className={"text-[1.2vw] " + (item.is_moderator ? `cursor-default text-success-50` : (courseTime.isValid() && isPassed ? `cursor-pointer text-secondary` : `cursor-default text-neutral-60`))} />
                                                 </button>
-                                                <Link
-                                                    href={route(
-                                                        "moderator.bimbingan.progress.edit",
-                                                        { progress: item.id }
-                                                    )}
-                                                >
-                                                    <FiEdit2 className="text-[1.2vw] text-secondary" />
-                                                </Link>
+                                                {courseTime.isValid() ? (
+                                                    <Link
+                                                        href={route(
+                                                            "moderator.bimbingan.progress.edit",
+                                                            { progress: item.id } 
+                                                        )}
+                                                    >
+                                                        <FiEdit2 className={`text-[1.2vw] ${courseTime.isValid() ? 'text-secondary' : 'text-neutral-60'}`} />
+                                                    </Link>
+                                                ) : (
+                                                    <span>
+                                                        <FiEdit2 className={`text-[1.2vw] ${courseTime.isValid() ? 'text-secondary' : 'text-neutral-60'}`} />
+                                                    </span>
+
+                                                )}
                                             </>
                                         )}
 
