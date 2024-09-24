@@ -94,7 +94,7 @@ export default function Index({ auth, userData, profileData }) {
                                 placeholder="Masukkan Nomor Telepon Anda"
                                 type="number"
                                 id="phone_number"
-                                label="Nomor Telepon"
+                                label="Nomor Whatsapp"
                             />
                             <label
                                 htmlFor="university"

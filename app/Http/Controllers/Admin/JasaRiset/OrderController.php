@@ -50,7 +50,7 @@ class OrderController extends Controller
                     $query = Order::with(['paymentMethod:id,name', 'user:id,username,name', 'products:id,product_type_id,category_id,name,product_image', 'products.category:id,name', 'products.productType:id,type'])
                     ->whereHas('products', function ($query) {
                         $query->whereHas('productType', function ($subQuery) {
-                            $subQuery->where('type', 'LIKE', '%jasa-riset%');
+                            $subQuery->where('type', 'LIKE', '%Jasa Riset%');
                         });
                     })->orderBy('updated_at', 'desc');
 

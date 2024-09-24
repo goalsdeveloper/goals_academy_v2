@@ -90,7 +90,7 @@ const Update = ({ auth, categories, topics, addons, products }) => {
 
     return (
         <DashboardLayout
-            title="Bimbingan"
+            title="Jasa Riset"
             subtitle="Product"
             role="admin"
             auth={auth}
