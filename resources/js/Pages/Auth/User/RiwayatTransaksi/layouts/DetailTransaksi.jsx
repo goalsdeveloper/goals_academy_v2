@@ -130,18 +130,19 @@ const TransactionDetailContent = ({ data }) => {
                     <div className="grid">
                         {add_on.length != 0
                             ? add_on.map((item, index) => {
-                                  if (item == "") {
-                                      return "-";
-                                  } else
-                                      return (
-                                          <p
-                                              key={index}
-                                              className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium"
-                                          >
-                                              {item.name}
-                                          </p>
-                                      );
-                              })
+                                    if (item == "") {
+                                        return "-";
+                                    } else {
+                                        return (
+                                            <p
+                                                key={index}
+                                                className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium"
+                                            >
+                                                {item.name}
+                                            </p>
+                                        );
+                                    }
+                                })
                             : "-"}
                     </div>
                 </div>
