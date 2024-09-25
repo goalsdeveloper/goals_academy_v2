@@ -4,6 +4,7 @@ import { FiChevronLeft, FiX } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "@inertiajs/react";
 import GoalsButton from "@/Components/elements/GoalsButton";
+import moment from "moment";
 
 const DetailTransaksi = ({ data, show, setShow }) => {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
@@ -55,7 +56,9 @@ const DetailTransaksi = ({ data, show, setShow }) => {
 
 const TransactionDetailContent = ({ data }) => {
     const currency = Intl.NumberFormat("id-ID");
-    const add_on = data.form_result.add_on;
+    const add_on = data?.form_result.add_on;
+    const order_history_success = data?.order_history.filter((i) => i.status.toLowerCase() == "success")[0]
+    const settlement_time = order_history_success?.payload?.settlement_time
     
     const statusClassMap = {
         Berhasil: "text-success-50",
@@ -92,7 +95,7 @@ const TransactionDetailContent = ({ data }) => {
                     Waktu Pembayaran
                 </h3>
                 <p className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium">
-                    {data.waktu_pembayaran || "-"}
+                    {moment(settlement_time).format('DD/MM/YYYY HH:mm') || "-"}
                 </p>
             </div>
             <div className="space-y-[.2vw]">
