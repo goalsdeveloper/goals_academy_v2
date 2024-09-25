@@ -45,9 +45,18 @@ const DetailTransaksi = ({ data, show, setShow }) => {
                     <div className="grid grid-cols-2 gap-[1.8vw] md:gap-[1.25vw]">
                         <TransactionDetailContent data={data} />
                     </div>
-                    {data.status == "Pending" ?
-                        <GoalsButton isLink href={`/purchase/${data.order_code}`} className="w-full" onClick={() => setShow(false)}>Bayar Sekarang</GoalsButton>
-                    : <></>}
+                    {data.status == "Pending" 
+                        ?   <GoalsButton isLink href={`/purchase/${data.order_code}`} className="w-full" onClick={() => setShow(false)}>Bayar Sekarang</GoalsButton>
+                        :   <GoalsButton 
+                                className="w-full" 
+                                onClick={() => {
+                                    setShow(false)
+                                    open(`https://api.whatsapp.com/send?phone=6282147638286&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data?.products?.name.replaceAll(' ', '%20')}%20dengan%20order%20id%20${data?.order_code}.`, '_blank')
+                                }}
+                            >
+                                Konfirmasi Admin
+                            </GoalsButton>
+                    }
                 </GoalsPopup>
             )}
         </>
