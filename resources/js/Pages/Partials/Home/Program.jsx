@@ -12,7 +12,7 @@ export default function Program({data}) {
     const recommendationProductIds = [1, 2, 3, 4]
 
     return (
-        <section className="w-[85vw] md:w-[80vw] mx-auto py-8 space-y-[5vw] md:space-y-[2.5vw]">
+        <section className="w-[85vw] md:w-[80vw] mx-auto py-8 md:pt-[4vw] md:pb-[6.25vw] space-y-[5vw] md:space-y-[2.5vw]">
             <h2 className="text-[3.7vw] md:text-[1.8vw] text-center">
                 Pilih Program Goals untuk {/* <br /> */}
                 <span className="text-primary-40">Solusi Skripsimu</span>

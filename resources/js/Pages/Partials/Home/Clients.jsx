@@ -5,7 +5,7 @@ export default function Clients() {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
-        <section className=" relative py-[4vw] mx-auto space-y-[3vw]">
+        <section className=" relative py-[4vw] md:pt-[8vw] md:pb-[5vw] mx-auto space-y-[3vw]">
             <div className="w-[80vw] md:w-[85vw] mx-auto text-center">
                 <h3 className="mb-[2vw] md:mb-0 text-[3.7vw] md:text-[1.8vw]">
                     Telah Dipercaya oleh Lebih dari 100+{isMobile ? <br /> : " "}

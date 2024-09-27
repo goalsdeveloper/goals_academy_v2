@@ -3,7 +3,7 @@ import Quote from "@/Assets/icons/double-quote.png";
 
 export default function Testimony({ data: datas }) {
     return (
-        <section className="relative object-cover bg-testimony-bg h-[85vw] md:h-[37.5vw] pt-[5vw] pb-[2vw] space-y-[2.8vw] md:space-y-[1.2vw]">
+        <section className="relative object-cover bg-testimony-bg h-[85vw] md:h-[37.5vw] py-[6.25vw] space-y-[2.8vw] md:space-y-[1.2vw]">
             <div className="w-[90%] md:w-[80%] mx-auto space-y-[.4vw]">
                 <h2 className="text-[3.7vw] md:text-[1.8vw] font-bold text-white">
                     Kata Mereka Tentang Goals Academy
@@ -25,7 +25,7 @@ export default function Testimony({ data: datas }) {
                 </div>
             </div>
 
-            <div className="absolute bg-white h-[80%] w-full top-[40%] z-0" />
+            <div className="absolute bg-white h-[50%] w-full bottom-0 z-0" />
         </section>
     );
 }
