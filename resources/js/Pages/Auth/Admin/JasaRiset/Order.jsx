@@ -16,19 +16,16 @@ export default function Order({ auth, orders }) {
     const [keyword, setKeyword] = useState(
         new URLSearchParams(window.location.search).get("search")
     );
-    console.log(orders)
+    console.log(orders);
 
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
     }, [current_page]);
 
     const onSearchCallback = (search) => {
-        router.visit(
-            route("admin.bimbingan.order.index", { search: search }),
-            {
-                only: ["orders"],
-            }
-        );
+        router.visit(route("admin.bimbingan.order.index", { search: search }), {
+            only: ["orders"],
+        });
     };
 
     // const approveCallback = () => {
@@ -61,7 +58,13 @@ export default function Order({ auth, orders }) {
             {
                 // accessorKey: "form_result.admin",
                 header: "Estimasi Admin",
-                Cell: ({ cell }) => cell.row.original.form_result.purchase_method.is_price ? cell.row.original.form_result.purchase_method.admin_fee + '%' : 'Rp. ' + cell.row.original.form_result.purchase_method.admin_fee,
+                Cell: ({ cell }) =>
+                    cell.row.original.form_result.purchase_method.is_price
+                        ? "Rp. " +
+                          cell.row.original.form_result.purchase_method
+                              .admin_fee
+                        : cell.row.original.form_result.purchase_method
+                              .admin_fee + "%",
             },
             {
                 accessorKey: "form_result.discount",
@@ -70,7 +73,9 @@ export default function Order({ auth, orders }) {
             {
                 // accessorKey: "form_result.discount",
                 header: "Estimasi Earnings",
-                Cell: ({ cell }) => cell.row.original.unit_price - cell.row.original.form_result.admin,
+                Cell: ({ cell }) =>
+                    cell.row.original.unit_price -
+                    cell.row.original.form_result.admin,
             },
             {
                 // accessorKey: "form_result.discount",
@@ -97,7 +102,7 @@ export default function Order({ auth, orders }) {
 
     return (
         <DashboardLayout
-            title="Bimbingan"
+            title="Jasa Riset"
             subtitle="Order"
             role="admin"
             auth={auth}

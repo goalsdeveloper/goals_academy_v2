@@ -26,6 +26,7 @@ import axios from "axios";
 export default function Product({ auth, jasaRiset, categories }) {
     const [isLoading, setIsLoading] = useState(false);
     jasaRiset = jasaRiset.data;
+    console.log(jasaRiset)
     const isDesktop = useMediaQuery({ minWidth: 1024 });
     const [show, setShow] = useState(false);
     const [product, setProduct] = useState();
@@ -48,9 +49,12 @@ export default function Product({ auth, jasaRiset, categories }) {
     async function getBimbinganDetail(id) {
         setIsLoading(true);
         setProduct(null);
-        axios.get("/admin/jasaRiset/product/" + id).then((res) => {
-            // console.log(res.data.data)
+        console.log(route("admin.jasa_riset.product.show", { product: id }));
+        axios.get(route('admin.jasa_riset.product.show', {product: id})).then((res) => {
             setProduct(res.data.data);
+            setIsLoading(false);
+        }).catch((error) => {
+            console.log(error)
             setIsLoading(false);
         });
     }
@@ -167,7 +171,7 @@ export default function Product({ auth, jasaRiset, categories }) {
 
     return (
         <DashboardLayout
-            title="Bimbingan"
+            title="Jasa Riset"
             subtitle="Product"
             role="admin"
             auth={auth}
@@ -202,7 +206,6 @@ export default function Product({ auth, jasaRiset, categories }) {
                         columns={columns}
                         data={jasaRiset}
                         isSplitByCategory
-                        isDraggable
                         keyword={keyword}
                         setKeyword={setKeyword}
                         onSearch={(i) => {

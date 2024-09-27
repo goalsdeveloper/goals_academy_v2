@@ -86,6 +86,13 @@ function DashboardSidebar({ title, className }) {
                     </span>
                 </span>
             </DashboardNavbarItem>
+            <DashboardNavbarItem
+                href={route('produk.ecourse.index')}
+                active={title == "Ecourse"}
+            >
+                <LuGraduationCap className="text-[1.2vw]" />
+                <span>Ecourse</span>
+            </DashboardNavbarItem>
             {/* <DashboardNavbarItem
                 href="/pengaturan"
                 active={title == "Pengaturan"}

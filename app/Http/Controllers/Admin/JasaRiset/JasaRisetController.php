@@ -46,7 +46,7 @@ class JasaRisetController extends Controller
                         $search = $request->input('search');
                         $perPage = $request->input('perPage', 15);
                         $jasaRiset = Products::whereHas('category.productType', function ($q) {
-                            $q->where('type', 'jasa-riset');
+                            $q->where('type', 'Jasa Riset');
                         })->when($search, function ($q) use ($search) {
                             $q->where(function ($query) use ($search) {
                                 $query->where('name', 'LIKE', "%$search%")
@@ -82,16 +82,6 @@ class JasaRisetController extends Controller
             $categories = Category::where('product_type_id', '4')->get();
             $addons = AddOn::get();
             $topics = Topic::get();
-            // return response()->json([
-            //     'status' => true,
-            //     'statusCode' => 200,
-            //     'message' => 'Data retrieval successful',
-            //     'data' => [
-            //         'categories' => $categories,
-            //         'addons' => $addons,
-            //         'topics' => $topics
-            //     ]
-            // ], 200);
             return Inertia::render('Auth/Admin/JasaRiset/Product/Create', [
                 'categories' => $categories,
                 'addons' => $addons,
@@ -121,7 +111,6 @@ class JasaRisetController extends Controller
                     'product_image' => 'image|mimes:png,jpg,jpeg,svg',
                     'is_visible' => 'required|in:0,1',
                     'is_facilities' => 'required|in:0,1',
-                    // 'number_list' => 'numeric',
                     'total_meet' => 'required|numeric',
                     'active_period' => 'required|numeric',
                     'facilities' => 'required|string',
@@ -135,10 +124,8 @@ class JasaRisetController extends Controller
                 $form_config = json_decode(
                     $validateData['form_config']
                 );
-
                 $product = new Products();
-                $product->product_type_id = 1; // Kenapa 1, karena ini product untuk jasaRiset aja
-                $product->number_list = 2;
+                $product->product_type_id = 4; // Kenapa 1, karena ini product untuk jasaRiset aja
                 $product->category_id = $validateData['category_id'];
                 $product->name = $validateData['name'];
                 $product->slug = $validateData['slug'];
@@ -147,7 +134,6 @@ class JasaRisetController extends Controller
                 $product->price = $validateData['price'];
                 $product->is_visible = $validateData['is_visible'];
                 $product->is_facilities = $validateData['is_facilities'];
-                // $product->number_list = $validateData['number_list'];
                 $product->total_meet = $validateData['total_meet'];
                 $product->active_period = $validateData['active_period'];
                 $product->number_list = Products::newNumberList($product->category_id);
@@ -199,8 +185,7 @@ class JasaRisetController extends Controller
                 }
                 // }
 
-                return redirect()->route('admin.jasaRiset.product.index')->with('message', 'Product berhasil ditambahkan');
-                // return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
+                return redirect()->route('admin.jasa_riset.product.index')->with('message', 'Product berhasil ditambahkan');
             } else {
                 abort(403);
             }
@@ -221,7 +206,7 @@ class JasaRisetController extends Controller
         try {
             if (Auth::user()->user_role == "admin") {
 
-                if (strcasecmp($product->productType->type, "jasaRiset") != 0) {
+                if (strcasecmp($product->productType->type, "Jasa Riset") != 0) {
                     return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Product not found'], 404);
                 }
 
@@ -240,7 +225,11 @@ class JasaRisetController extends Controller
                 abort(403);
             }
         } catch (\Exception $e) {
-            return redirect()->route('admin.jasaRiset.product.index')->withErrors($e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'something wrong with the server'
+            ], 500);
+            return redirect()->route('admin.jasa_riset.product.index')->withErrors($e->getMessage());
             // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while processing request', 'error' => $e->getMessage()], 500);
         }
     }
@@ -255,12 +244,6 @@ class JasaRisetController extends Controller
             $addons = AddOn::get();
             $topics = Topic::get();
             $product->load('category', 'addOns', 'topics');
-            // return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
-            //     'categories' => $categories,
-            //     'products' => $product,
-            //     'addons' =>$addons,
-            //     'topics'=>$topics
-            // ]], 200);
             return Inertia::render('Auth/Admin/JasaRiset/Product/Update', [
                 'categories' => $categories,
                 'products' => $product,
@@ -295,7 +278,6 @@ class JasaRisetController extends Controller
                     'product_image' => 'image',
                     'is_visible' => 'in:0,1',
                     'is_facilities' => 'in:0,1',
-                    // 'number_list' => 'numeric',
                     'total_meet' => 'numeric',
                     'active_period' => 'numeric',
                     'facilities' => 'string',
@@ -344,15 +326,12 @@ class JasaRisetController extends Controller
                     $product->topics()->sync($topics);
                 }
 
-                return redirect()->route('admin.jasaRiset.product.index')->with('message', 'Product berhasil diupdate');
-                // return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update product success'], 200);
+                return redirect()->route('admin.jasa_riset.product.index')->with('message', 'Product berhasil diupdate');
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-            dd($e->getMessage());
-            // return redirect()->route('admin.jasaRiset.product.index')->withErrors($e->getMessage());
-            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while updating category', 'error' => $e->getMessage()], 500);
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while updating category', 'error' => $e->getMessage()], 500);
         }
     }
 

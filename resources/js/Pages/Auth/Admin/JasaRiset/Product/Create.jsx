@@ -83,7 +83,7 @@ const Create = ({ auth, categories, addons, topics }) => {
 
     return (
         <DashboardLayout
-            title="Bimbingan"
+            title="Jasa Riset"
             subtitle="Product"
             role="admin"
             auth={auth}

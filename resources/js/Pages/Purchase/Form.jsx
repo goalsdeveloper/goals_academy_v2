@@ -33,6 +33,8 @@ export default function Form({
     paymentMethods,
     dataProduct,
 }) {
+    console.log(dataProduct);
+    console.log(dataProduct.product_type);
     const userId = auth.user.id;
     const [isProcessed, setIsProcessed] = useState(false);
     const [showMobileSummaryCard, setShowMobileSummaryCard] = useState(false);
@@ -127,10 +129,18 @@ export default function Form({
             window.scrollTo(0, 0);
         } else {
             setIsProcessed(true);
-            post("/produk", {
-                onFinish: () => setIsProcessed(false),
-                onError: () => setIsProcessed(false),
-            });
+            if (dataProduct.product_type_id == 4) {
+                console.log("object");
+                post(route("produk.ecourse.store"), {
+                    onFinish: () => setIsProcessed(false),
+                    onError: () => setIsProcessed(false),
+                });
+            } else {
+                post("/produk", {
+                    onFinish: () => setIsProcessed(false),
+                    onError: () => setIsProcessed(false),
+                });
+            }
         }
     };
 
@@ -507,7 +517,11 @@ function MainCard({
                                                         }
                                                     }}
                                                 >
-                                                    {item.name + " - IDR " + currency.format(item.price)}
+                                                    {item.name +
+                                                        " - IDR " +
+                                                        currency.format(
+                                                            item.price
+                                                        )}
                                                 </GoalsSelectMultipleInputItem>
                                             );
                                         })}
@@ -532,8 +546,8 @@ function MainCard({
                                             setData={(i) =>
                                                 setData("schedule", i)
                                             }
-                                            minDate={moment()}
-                                            maxDate={moment().add(6, "days")}
+                                            minDate={moment().add(1, "days")}
+                                            maxDate={moment().add(8, "days")}
                                             shouldDisableDate={unavailableDate}
                                             theme={theme}
                                             slotProps={{
@@ -1024,7 +1038,11 @@ function MainCard({
                                                         }
                                                     }}
                                                 >
-                                                    {item.name + " - IDR " + currency.format(item.price)}
+                                                    {item.name +
+                                                        " - IDR " +
+                                                        currency.format(
+                                                            item.price
+                                                        )}
                                                 </GoalsSelectMultipleInputItem>
                                             );
                                         })}
