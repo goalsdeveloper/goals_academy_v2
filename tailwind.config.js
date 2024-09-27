@@ -186,6 +186,7 @@ export default {
             animation: {
                 scroll: 'scroll 20s infinite linear',
                 'scroll-slower': 'scroll 50s infinite linear',
+                'scroll-200': 'scroll 200s infinite linear',
                 slideRight: 'slideRight 3s',
                 fadeIn: 'fadeIn 3s',
                 autoplayY: 'autoplayY 20s infinite linear',
