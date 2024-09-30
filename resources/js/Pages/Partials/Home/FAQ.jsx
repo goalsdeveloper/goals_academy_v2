@@ -68,7 +68,7 @@ function FAQContent({ data }) {
     };
 
     return (
-        <div className="w-full space-y-[1.6vw] md:space-y-[.8vw]">
+        <div className="w-full space-y-[1.86vw] md:space-y-[.8vw]">
             {data.map(({ question, answer }, index) => {
                 if (index != data.length - 1) {
                     return (

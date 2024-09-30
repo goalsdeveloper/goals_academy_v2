@@ -3,9 +3,9 @@ import Quote from "@/Assets/icons/double-quote.png";
 
 export default function Testimony({ data: datas }) {
     return (
-        <section className="relative object-cover bg-testimony-bg h-[85vw] md:h-[37.5vw] py-[6.25vw] space-y-[2.8vw] md:space-y-[1.2vw]">
+        <section className="relative object-cover bg-testimony-mobile md:bg-testimony md:h-[37.5vw] pt-[6.25vw] pb-[13vw] space-y-[3.72vw] md:space-y-[1.2vw]">
             <div className="w-[90%] md:w-[80%] mx-auto space-y-[.4vw]">
-                <h2 className="text-[3.7vw] md:text-[1.8vw] font-bold text-white">
+                <h2 className="text-[3.7vw] md:text-[1.8vw] font-semibold md:font-bold text-white">
                     Kata Mereka Tentang Goals Academy
                 </h2>
                 <p className="text-white text-[2.7vw] md:text-[1.2vw]">

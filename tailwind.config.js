@@ -123,7 +123,8 @@ export default {
                 'webinar': 'url(/resources/img/produk/bg-webinar.png)',
                 'konsultasi-lg': 'url(/resources/img/home/CTA-Desk.png)',
                 'konsultasi': 'url(/resources/img/home/CTA.png)',
-                'testimony-bg': "url(/resources/img/home/TestimoniBG.png)"
+                'testimony': "url(/resources/img/home/TestimoniBG.png)",
+                'testimony-mobile': "url(/resources/img/home/TestimoniBGMobile.png)",
             },
             content: {
                 'career': '"Lihat Disini"',

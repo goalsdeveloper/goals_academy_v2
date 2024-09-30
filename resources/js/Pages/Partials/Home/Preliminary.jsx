@@ -23,7 +23,7 @@ export default function Preliminary() {
                     </p>
                 </div>
 
-                <div className="w-full overflow-x-auto">
+                <div className="w-full overflow-x-auto scrollbar-hidden">
                     <div className="flex gap-[1.8vw] md:gap-4 w-max md:w-full">
                         {data.map((item) => (
                             <div
