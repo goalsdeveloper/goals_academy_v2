@@ -278,6 +278,10 @@ Route::get('dashboard_layout_data', function () {
     ]);
 });
 
+Route::get('mail', function () {
+    return view('email.purchase.invoice');
+});
+
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';
 require __DIR__ . '/auth.php';
