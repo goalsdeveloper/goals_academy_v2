@@ -213,7 +213,7 @@
     </script>
 </head>
 
-<body class="flex justify-center font-sans antialiased text-12 xs:text-16 sm:text-16 md:text-8 lg:text-12 xl:text-14 3xl:text-20 bg-neutral-20">
+<body class="flex justify-center font-sans antialiased text-16 bg-neutral-20">
     <div class="max-w-[640px] w-full bg-white px-12">
         <header class="flex justify-between pt-10 pb-8">
             <div class="flex items-center gap-2">
