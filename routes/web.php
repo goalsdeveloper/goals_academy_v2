@@ -278,8 +278,13 @@ Route::get('dashboard_layout_data', function () {
     ]);
 });
 
-Route::get('pending', function () {
-    return view('email.purchase.pending');
+Route::get('pending/{order}', function (string $order) {
+    $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
+        $query->where('status', 'pending');
+    })->with('orderHistory', 'paymentMethod', 'products')->first();
+    
+    // dd(['data' => $order, '$expiry_time' => $expiry_time]);
+    return view('email.purchase.pending', ['data' => $order]);
 });
 
 require __DIR__ . '/profile/profile.php';

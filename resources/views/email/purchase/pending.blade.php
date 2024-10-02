@@ -1,23 +1,29 @@
 @extends('email.layout')
 
+<?php
+    $expiry_time = $data->orderHistory->first()->payload['expiry_time'];
+    $total_price = number_format($data->form_result['total_price'])
+?>
+
 @section('content')
+    <div id="expiry_time" class="hidden">{{ $expiry_time }}</div>
     <div class="space-y-6">
         <h1 class="font-poppins font-semibold text-24">Thank you for the order</h1>
-        <p class="text-neutral-60">Hello! Thanks for shopping with us. We’ve received your order No. 13428. We will notify you when we send it.</p>
+        <p class="text-neutral-60">Hello! Thanks for shopping with us. We’ve received your order No. {{ $data->order_code }}. We will notify you when we send it.</p>
     </div>
     <div class="pt-10 space-y-10">
         <div class="space-y-2">
             <h2 class="font-poppins font-medium">Order details</h2>
-            <p class="text-neutral-60">No. Invoice: <span class="font-semibold text-secondary">DBO123456789</span></p>
+            <p class="text-neutral-60">No. Invoice: <span class="font-semibold text-secondary">{{ $data->order_code }}</span></p>
         </div>
         <div class="space-y-4">
             <div class="flex gap-8">
-                <img src="https://goalsacademy.id/storage/product/bimbingan/bimbingan1720598439.png" alt="" class="h-24 rounded-md border-1">
+                <img src="https://goalsacademy.id/storage/{{ $data->products->product_image }}" alt="" class="w-32 h-24 rounded-md border-1 object-cover">
                 <div class="h-24 flex flex-col justify-between">
-                    <p class="text-neutral-40">Bisa dibayar sebelum: <span class="font-semibold text-red-500">23:58:58</span></p>
+                    <p class="text-neutral-40">Bisa dibayar sebelum: <span id="countdown" class="font-semibold text-red-500">00:00:00</span></p>
                     <div class="space-y-1">
-                        <p class="font-semibold">Dibimbing Sekali Online</p>
-                        <p class="font-poppins font-bold text-secondary">Rp 88.000</p>
+                        <p class="font-semibold">{{ $data->products->name }}</p>
+                        <p class="font-poppins font-bold text-secondary">{{ $total_price }}</p>
                     </div>
                 </div>
             </div>
@@ -28,13 +34,46 @@
                 </tr>
                 <tr>
                     <td class="py-2">Subtotal</td>
-                    <td class="text-end">Rp 88.000</td>
+                    <td class="text-end">{{ $total_price }}</td>
                 </tr>
                 <tr class="font-poppins font-semibold text-24">
                     <td class="pt-2">Total</td>
-                    <td class="text-end">Rp 88.000</td>
+                    <td class="text-end">{{ $total_price }}</td>
                 </tr>
             </table>
         </div>
     </div>
+@endsection
+
+@section('script')
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js" integrity="sha512-hUhvpC5f8cgc04OZb55j0KNGh4eh7dLxd/dPSJ5VyzqDWxsayYbojWyl5Tkcgrmb/RVKCRJI1jNlRbVP4WWC4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+    <script>
+        const expiry_time = document.getElementById('expiry_time').innerHTML;
+        const countdownContainer = document.getElementById('countdown');
+        // Set the date we're counting down to
+        const countDownDate = new Date(expiry_time).getTime();
+
+        // Update the count down every 1 second
+        const x = setInterval(function() {
+            // Get today's date and time
+            const now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            const distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result in the element with id="countdown"
+            countdownContainer.innerHTML = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            // If the count down is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                countdownContainer.innerHTML = "00:00:00";
+            }
+        }, 1000);
+    </script>
 @endsection

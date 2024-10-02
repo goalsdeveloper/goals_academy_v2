@@ -213,6 +213,8 @@
             },
         }
     </script>
+
+    @yield('head')
 </head>
 
 <body class="flex justify-center font-sans antialiased text-16 bg-neutral-20">
@@ -237,5 +239,7 @@
         </footer>
     </div>
 </body>
+
+@yield('script')
 
 </html>
