@@ -287,6 +287,15 @@ Route::get('pending/{order}', function (string $order) {
     return view('email.purchase.pending', ['data' => $order]);
 });
 
+Route::get('success/{order}', function (string $order) {
+    $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
+        $query->where('status', 'success');
+    })->with('orderHistory', 'paymentMethod', 'products')->first();
+    
+    // dd(['data' => $order, '$expiry_time' => $expiry_time]);
+    return view('email.purchase.success', ['data' => $order]);
+});
+
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';
 require __DIR__ . '/auth.php';

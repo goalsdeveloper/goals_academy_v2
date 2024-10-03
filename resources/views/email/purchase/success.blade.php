@@ -6,10 +6,12 @@
 ?>
 
 @section('content')
+    {{-- {{ date_format($data->created_at, "M d, Y") }} --}}
     <div id="expiry_time" class="hidden">{{ $expiry_time }}</div>
-    <div class="space-y-6">
-        <h1 class="font-poppins font-semibold text-24">Thank you for the order</h1>
-        <p class="text-neutral-60">Hello! Thanks for shopping with us. We’ve received your order No. {{ $data->order_code }}. We will notify you when we send it.</p>
+    <img src={{ asset('img/vector/payment.svg') }} alt="" class="h-52">
+    <div class="space-y-2">
+        <h1 class="font-poppins font-semibold text-24">Your payment successfull</h1>
+        <p class="text-neutral-60">Hello, Thank you for payment on {{ date_format($data->created_at, "M d, Y") }}</p>
     </div>
     <div class="pt-10 space-y-10">
         <div class="space-y-2">
