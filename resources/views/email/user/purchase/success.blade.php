@@ -9,7 +9,7 @@
     <img src={{ asset('img/vector/payment.svg') }} alt="" class="h-52">
     <div class="space-y-2">
         <h1 class="font-poppins font-semibold text-24">Your payment successfull</h1>
-        <p class="text-neutral-60">Hello, Thank you for payment on {{ date_format($data->created_at, "M d, Y") }}</p>
+        <p class="text-neutral-60">Hello, Thank you for your payment on {{ date_format($data->created_at, "M d, Y") }}</p>
     </div>
     <div class="pt-10 space-y-10">
         <div class="space-y-2">
