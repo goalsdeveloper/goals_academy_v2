@@ -300,6 +300,10 @@ Route::get('email-verification/{user}', function (User $user) {
     return view('email.user.auth.email-verification', ['data' => $user]);
 });
 
+Route::get('reset-password/{user}', function (User $user) {
+    return view('email.user.auth.reset-password', ['data' => $user]);
+});
+
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';
 require __DIR__ . '/auth.php';

@@ -1,7 +1,7 @@
 @extends('email.layout')
 
 @section('content')
-    <div class="space-y-2">
+    <div class="space-y-6">
         <h1 class="font-poppins font-semibold text-24">Confirm your email address</h1>
         <p class="text-neutral-60">Hello, Please click the button below to verify your email address. If you did not create an account, no further action is required.</p>
     </div>
