@@ -310,6 +310,12 @@ Route::get('expired/{order}', function (string $order) {
     return view('email.user.bimbingan.expired', ['data' => $order]);
 });
 
+Route::get('recent-order/{order}', function (string $order) {
+    $order = Order::where('order_code', $order)->with('products')->first();
+    
+    return view('email.moderator.bimbingan.recent-order', ['data' => $order]);
+});
+
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';
 require __DIR__ . '/auth.php';
