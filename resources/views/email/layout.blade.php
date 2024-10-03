@@ -225,9 +225,9 @@
                 <span class="text-poppins text-20 font-semibold leading-none">Goals Academy</span>
             </div>
             <div class="flex items-center gap-6 text-secondary">
-                <i class="fa-brands fa-twitter text-[1.375rem]"></i>
-                <i class="fa-brands fa-facebook text-[1.375rem]"></i>
-                <i class="fa-brands fa-instagram text-[1.375rem]"></i>
+                <a href="https://x.com/goalsacademy_id"><i class="fa-brands fa-twitter text-[1.375rem]"></i></a>
+                <a href="https://facebook.com"><i class="fa-brands fa-facebook text-[1.375rem]"></i></a>
+                <a href="https://www.instagram.com/goalsacademy_id/"><i class="fa-brands fa-instagram text-[1.375rem]"></i></a>
             </div>
         </header>
         <main class="border-y-1 py-10">

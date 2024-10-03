@@ -42,6 +42,7 @@
                 </tr>
             </table>
         </div>
+        <a href="https://goalsacademy.id/purchase/{{ $data->order_code }}" role="button" class="inline-block bg-secondary text-white rounded-lg py-[14px] px-9">Pay now</a>
     </div>
 @endsection
 

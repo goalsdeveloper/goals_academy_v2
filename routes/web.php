@@ -304,6 +304,12 @@ Route::get('reset-password/{user}', function (User $user) {
     return view('email.user.auth.reset-password', ['data' => $user]);
 });
 
+Route::get('expired/{order}', function (string $order) {
+    $order = Order::where('order_code', $order)->with('products')->first();
+    
+    return view('email.user.bimbingan.expired', ['data' => $order]);
+});
+
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';
 require __DIR__ . '/auth.php';
