@@ -5,7 +5,6 @@
 ?>
 
 @section('content')
-    {{-- {{ date_format($data->created_at, "M d, Y") }} --}}
     <img src={{ asset('img/vector/payment.svg') }} alt="" class="h-52">
     <div class="space-y-2">
         <h1 class="font-poppins font-semibold text-24">Your payment successfull</h1>

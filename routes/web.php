@@ -51,6 +51,7 @@ use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Models\Order;
 use App\Models\Products;
 use App\Models\TutorNote;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -292,8 +293,11 @@ Route::get('success/{order}', function (string $order) {
         $query->where('status', 'success');
     })->with('orderHistory', 'paymentMethod', 'products')->first();
     
-    // dd(['data' => $order, '$expiry_time' => $expiry_time]);
     return view('email.user.purchase.success', ['data' => $order]);
+});
+
+Route::get('email-verification/{user}', function (User $user) {
+    return view('email.user.auth.email-verification', ['data' => $user]);
 });
 
 require __DIR__ . '/profile/profile.php';
