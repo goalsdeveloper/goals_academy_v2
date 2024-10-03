@@ -224,7 +224,7 @@
                 <img src={{ asset("img/icon-goals-academy.svg") }} alt="" class="h-6">
                 <span class="text-poppins text-20 font-semibold leading-none">Goals Academy</span>
             </div>
-            <div class="flex items-center gap-2 text-secondary">
+            <div class="flex items-center gap-6 text-secondary">
                 <i class="fa-brands fa-twitter text-[1.375rem]"></i>
                 <i class="fa-brands fa-facebook text-[1.375rem]"></i>
                 <i class="fa-brands fa-instagram text-[1.375rem]"></i>
