@@ -284,7 +284,7 @@ Route::get('pending/{order}', function (string $order) {
     })->with('orderHistory', 'paymentMethod', 'products')->first();
     
     // dd(['data' => $order, '$expiry_time' => $expiry_time]);
-    return view('email.purchase.pending', ['data' => $order]);
+    return view('email.user.purchase.pending', ['data' => $order]);
 });
 
 Route::get('success/{order}', function (string $order) {
@@ -293,7 +293,7 @@ Route::get('success/{order}', function (string $order) {
     })->with('orderHistory', 'paymentMethod', 'products')->first();
     
     // dd(['data' => $order, '$expiry_time' => $expiry_time]);
-    return view('email.purchase.success', ['data' => $order]);
+    return view('email.user.purchase.success', ['data' => $order]);
 });
 
 require __DIR__ . '/profile/profile.php';
