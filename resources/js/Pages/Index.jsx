@@ -30,8 +30,14 @@ import testimony6 from "/resources/img/testimony/ferry.jpg";
 import testimony7 from "/resources/img/testimony/herinda.jpg";
 import testimony8 from "/resources/img/testimony/khafidh.jpg";
 import testimony9 from "/resources/img/testimony/ludi.jpg";
+import WelcomeDialog from "./Partials/Home/WelcomeDialog";
+import { useEffect, useState } from "react";
+import { usePage } from "@inertiajs/react";
 
-export default function Index({ auth, products: data_program }) {
+export default function Index({ auth, products: data_program}) {
+    const welcomeMessage = usePage().props.message == "WELCOME_MESSAGE"
+    const [showDialog, setShowDialog] = useState(welcomeMessage);
+
     // const data_program = [
     //     {
     //         id: 1,
@@ -180,6 +186,13 @@ export default function Index({ auth, products: data_program }) {
 
     return (
         <MainLayout auth={auth} title="Home" className="overflow-x-hidden">
+            {showDialog && (
+                <WelcomeDialog
+                    setShowDialog={setShowDialog}
+                    showDialog={showDialog}
+                    auth={auth}
+                />
+            )}
             <Hero />
             <Clients />
             <Preliminary />

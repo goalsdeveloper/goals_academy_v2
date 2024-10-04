@@ -25,8 +25,7 @@ class EmailVerificationController extends Controller
     {
         $request->fulfill();
         Session::flash('email-verified', 'Email anda telah terverifikasi, selamat datang di Goals Academy!');
-        // return view('auth.email-verification');
-        return redirect(RouteServiceProvider::HOME);
+        return redirect(RouteServiceProvider::HOME)->with('message', 'WELCOME_MESSAGE');
     }
 
     public function resend(Request $request)
