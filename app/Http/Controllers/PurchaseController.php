@@ -40,6 +40,11 @@ class PurchaseController extends Controller
         })
             ->where('is_visible', true)
             ->with('category', 'productType')->get();
+        $dataJasaRiset = Products::whereHas('productType', function ($query) {
+            $query->where('type', 'Jasa Riset');
+        })
+            ->where('is_visible', true)
+            ->with('category', 'productType')->get();
         $dataProdukDigital = Products::whereHas('productType', function ($query) {
             $query->where('slug', 'produk-digital');
         })->with('productType', 'category')->get();
@@ -50,6 +55,7 @@ class PurchaseController extends Controller
         return Inertia::render('Main/Produk', [
             'dataBimbingan' => $dataBimbingan,
             'dataProdukDigital' => $dataProdukDigital,
+            'dataJasaRiset' => $dataJasaRiset,
             'dataWebinar' => $dataWebinar,
             'categories' => $categories,
         ]);

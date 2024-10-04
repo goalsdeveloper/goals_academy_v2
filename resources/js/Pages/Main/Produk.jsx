@@ -4,6 +4,7 @@ import MainLayout from "@/Layouts/MainLayout";
 import Filter from "../Partials/Produk/Filter";
 import SearchBar from "../Partials/Produk/SearchBar";
 import Bimbingan from "../Partials/Produk/Bimbingan";
+import JasaRiset from "../Partials/Produk/JasaRiset";
 import ProdukDigital from "../Partials/Produk/ProdukDigital";
 import Webinar from "../Partials/Produk/Webinar";
 import Consultation from "../Partials/Produk/Consultation";
@@ -28,6 +29,7 @@ import { data } from "autoprefixer";
 export default function Produk({
     auth,
     dataBimbingan,
+    dataJasaRiset,
     // dataProdukDigital,
     // dataWebinar,
     categories,
@@ -35,6 +37,11 @@ export default function Produk({
     const categoriesBimbingan = ['Semua'].concat(
         categories
         .filter(i => i.product_type.type == 'Bimbingan')
+        .map(i => i.name)
+    )
+    const categoriesJasaRiset = ['Semua'].concat(
+        categories
+        .filter(i => i.product_type.type == 'Jasa Riset')
         .map(i => i.name)
     )
     const dataProdukDigital = [
@@ -94,6 +101,7 @@ export default function Produk({
     const [data1, setData1] = useState(dataBimbingan.slice());
     const [data2, setData2] = useState(dataProdukDigital.slice());
     const [data3, setData3] = useState(dataWebinar.slice());
+    const [data4, setData4] = useState(dataJasaRiset.slice());
     const [category1, setCategory1] = useState('Semua');
 
     const status = ((show[0] == show[1]) == show[2]) == false;
@@ -151,9 +159,10 @@ export default function Produk({
     return (
         <MainLayout auth={auth} title="Produk">
             <SearchBar searchHandler={searchHandler} className="md:hidden" data={searchKeyword} setData={setSearchKeyword} />
-            <Filter show={show} showHandler={showHandler} />
+        <Filter show={show} showHandler={showHandler} />
             <SearchBar searchHandler={searchHandler} className="hidden md:block" data={searchKeyword} setData={setSearchKeyword} />
             <Bimbingan data={data1} active={show[0]} status={status} categories={categoriesBimbingan} category={category1} setCategory={setCategory1} filterHandler={filterByCategory} />
+            <JasaRiset data={data4} active={show[0]} status={status} categories={categoriesBimbingan} category={category1} setCategory={setCategory1} filterHandler={filterByCategory} />
             <ProdukDigital data={data2} active={show[1]} status={status} />
             <Webinar data={data3} active={show[2]} status={status} />
             <Consultation />
