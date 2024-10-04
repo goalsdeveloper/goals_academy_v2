@@ -123,7 +123,8 @@ export default {
                 'webinar': 'url(/resources/img/produk/bg-webinar.png)',
                 'konsultasi-lg': 'url(/resources/img/home/CTA-Desk.png)',
                 'konsultasi': 'url(/resources/img/home/CTA.png)',
-                'testimony-bg': "url(/resources/img/home/TestimoniBG.png)"
+                'testimony': "url(/resources/img/home/TestimoniBG.png)",
+                'testimony-mobile': "url(/resources/img/home/TestimoniBGMobile.png)",
             },
             content: {
                 'career': '"Lihat Disini"',
@@ -186,6 +187,7 @@ export default {
             animation: {
                 scroll: 'scroll 20s infinite linear',
                 'scroll-slower': 'scroll 50s infinite linear',
+                'scroll-200': 'scroll 200s infinite linear',
                 slideRight: 'slideRight 3s',
                 fadeIn: 'fadeIn 3s',
                 autoplayY: 'autoplayY 20s infinite linear',

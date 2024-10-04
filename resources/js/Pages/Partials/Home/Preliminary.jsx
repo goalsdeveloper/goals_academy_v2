@@ -8,7 +8,7 @@ import IconFeat4 from "@/Assets/icons/icon-feat4.svg";
 export default function Preliminary() {
     return (
         <section className="bg-gradient-to-b from-primary-10 to-transparent to-50% md:to-35% rounded-[11.6vw] md:rounded-[3rem]">
-            <div className="relative py-[7.4vw] md:py-[4vw] w-[80vw] mx-auto space-y-[2.5vw]">
+            <div className="relative py-[7.4vw] md:py-[6.25vw] w-[80vw] mx-auto space-y-[2.5vw]">
                 <div className="md:flex justify-between space-y-[1.2vw]">
                     <h2 className="text-[3.7vw] md:text-[1.8vw]">
                         Jarak bukan Masalah untuk
@@ -23,7 +23,7 @@ export default function Preliminary() {
                     </p>
                 </div>
 
-                <div className="w-full overflow-x-auto">
+                <div className="w-full overflow-x-auto scrollbar-hidden">
                     <div className="flex gap-[1.8vw] md:gap-4 w-max md:w-full">
                         {data.map((item) => (
                             <div

@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Consultation() {
     return (
-        <section className="relative w-[90%] mx-auto bg-cover overflow-hidden py-8 md:py-20">
+        <section className="relative w-[90%] mx-auto bg-cover overflow-hidden py-8 md:py-[7vw]">
             {/* <img
                 src={ConsultationImage}
                 alt="Consultation"

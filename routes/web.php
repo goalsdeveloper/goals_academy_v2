@@ -51,6 +51,7 @@ use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Models\Order;
 use App\Models\Products;
 use App\Models\TutorNote;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -276,6 +277,43 @@ Route::get('dashboard_layout_data', function () {
             ],
         ],
     ]);
+});
+
+Route::get('pending/{order}', function (string $order) {
+    $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
+        $query->where('status', 'pending');
+    })->with('orderHistory', 'paymentMethod', 'products')->first();
+    
+    // dd(['data' => $order, '$expiry_time' => $expiry_time]);
+    return view('email.user.purchase.pending', ['data' => $order]);
+});
+
+Route::get('success/{order}', function (string $order) {
+    $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
+        $query->where('status', 'success');
+    })->with('orderHistory', 'paymentMethod', 'products')->first();
+    
+    return view('email.user.purchase.success', ['data' => $order]);
+});
+
+Route::get('email-verification/{user}', function (User $user) {
+    return view('email.user.auth.email-verification', ['data' => $user]);
+});
+
+Route::get('reset-password/{user}', function (User $user) {
+    return view('email.user.auth.reset-password', ['data' => $user]);
+});
+
+Route::get('expired/{order}', function (string $order) {
+    $order = Order::where('order_code', $order)->with('products')->first();
+    
+    return view('email.user.bimbingan.expired', ['data' => $order]);
+});
+
+Route::get('recent-order/{order}', function (string $order) {
+    $order = Order::where('order_code', $order)->with('products')->first();
+    
+    return view('email.moderator.bimbingan.recent-order', ['data' => $order]);
 });
 
 require __DIR__ . '/profile/profile.php';

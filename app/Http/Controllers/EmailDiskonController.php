@@ -20,7 +20,7 @@ class EmailDiskonController extends Controller
             'message' => 'This is Promo Email Test!'
         ];
 
-        Mail::send('emails.email-layout', $data, function (Message $message) use ($email) {
+        Mail::send('email.user.promo', $data, function (Message $message) use ($email) {
             $message->to($email['email'])->subject('Promo Test Email.');
         });
 

@@ -5,7 +5,7 @@ export default function Clients() {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
-        <section className=" relative py-[4vw] mx-auto space-y-[3vw]">
+        <section className=" relative py-[16.75vw] md:pt-[8vw] md:pb-[5vw] mx-auto space-y-[3vw]">
             <div className="w-[80vw] md:w-[85vw] mx-auto text-center">
                 <h3 className="mb-[2vw] md:mb-0 text-[3.7vw] md:text-[1.8vw]">
                     Telah Dipercaya oleh Lebih dari 100+{isMobile ? <br /> : " "}
@@ -17,20 +17,35 @@ export default function Clients() {
                 </p>
             </div>
 
-            <div className="relative pt-[4vw] md:pt-[2vw] pb-[8vw] md:pb-[4vw]">
+            <div className="w-full flex flex-nowrap relative gap-0 pt-[4vw] md:pt-[2vw] md:pb-[4vw]">
                 <div className="absolute bg-gradient-to-r from-white to-transparent w-[15vw] left-0 h-full z-10 hidden md:block"></div>
                 <div className="absolute bg-gradient-to-l from-white to-transparent w-[15vw] right-0 h-full z-10 hidden md:block"></div>
-                <div className="flex px-3 lg:px-12 animate-scroll">
+                <ul className="flex items-center justify-center md:justify-start [&_li]:mx-[3vw] md:[&_li]:mx-[2vw] [&_img]:max-w-none animate-scroll-200">
                     {Array.from({ length: 11 }).map(i => (
                         uniLogos.map((item) => (
-                            <img
-                                key={item.id}
-                                src={item.logo}
-                                className="w-[11.6vw] h-[11.6vw] md:w-[8vw] md:h-[8vw] mx-[2vw]"
-                            />
+                            <li key={item.id}>
+                                <img
+                                    // key={item.id}
+                                    src={item.logo}
+                                    className="w-[11.6vw] h-[11.625vw] md:w-[6vw] md:h-[6vw]"
+                                />
+                            </li>
                         ))
                     ))}
-                </div>
+                </ul>
+                <ul className="flex items-center justify-center md:justify-start [&_li]:mx-[3vw] md:[&_li]:mx-[2vw] [&_img]:max-w-none animate-scroll-200">
+                    {Array.from({ length: 11 }).map(i => (
+                        uniLogos.map((item) => (
+                            <li key={item.id}>
+                                <img
+                                    // key={item.id}
+                                    src={item.logo}
+                                    className="w-[11.6vw] h-[11.625vw] md:w-[6vw] md:h-[6vw]"
+                                />
+                            </li>
+                        ))
+                    ))}
+                </ul>
             </div>
         </section>
     );

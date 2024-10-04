@@ -4,6 +4,7 @@ import { FiChevronLeft, FiX } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "@inertiajs/react";
 import GoalsButton from "@/Components/elements/GoalsButton";
+import moment from "moment";
 
 const DetailTransaksi = ({ data, show, setShow }) => {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
@@ -44,9 +45,18 @@ const DetailTransaksi = ({ data, show, setShow }) => {
                     <div className="grid grid-cols-2 gap-[1.8vw] md:gap-[1.25vw]">
                         <TransactionDetailContent data={data} />
                     </div>
-                    {data.status == "Pending" ?
-                        <GoalsButton isLink href={`/purchase/${data.order_code}`} className="w-full" onClick={() => setShow(false)}>Bayar Sekarang</GoalsButton>
-                    : <></>}
+                    {data.status == "Pending" 
+                        ?   <GoalsButton isLink href={`/purchase/${data.order_code}`} className="w-full" onClick={() => setShow(false)}>Bayar Sekarang</GoalsButton>
+                        :   <GoalsButton 
+                                className="w-full" 
+                                onClick={() => {
+                                    setShow(false)
+                                    open(`https://api.whatsapp.com/send?phone=6282147638286&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data?.products?.name.replaceAll(' ', '%20')}%20dengan%20order%20id%20${data?.order_code}.`, '_blank')
+                                }}
+                            >
+                                Konfirmasi Admin
+                            </GoalsButton>
+                    }
                 </GoalsPopup>
             )}
         </>
@@ -55,7 +65,9 @@ const DetailTransaksi = ({ data, show, setShow }) => {
 
 const TransactionDetailContent = ({ data }) => {
     const currency = Intl.NumberFormat("id-ID");
-    const add_on = data.form_result.add_on;
+    const add_on = data?.form_result.add_on;
+    const order_history_success = data?.order_history.filter((i) => i.status.toLowerCase() == "success")[0]
+    const settlement_time = order_history_success?.payload?.settlement_time
     
     const statusClassMap = {
         Berhasil: "text-success-50",
@@ -92,7 +104,7 @@ const TransactionDetailContent = ({ data }) => {
                     Waktu Pembayaran
                 </h3>
                 <p className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium">
-                    {data.waktu_pembayaran || "-"}
+                    {moment(settlement_time).format('DD/MM/YYYY HH:mm') || "-"}
                 </p>
             </div>
             <div className="space-y-[.2vw]">
@@ -127,18 +139,19 @@ const TransactionDetailContent = ({ data }) => {
                     <div className="grid">
                         {add_on.length != 0
                             ? add_on.map((item, index) => {
-                                  if (item == "") {
-                                      return "-";
-                                  } else
-                                      return (
-                                          <p
-                                              key={index}
-                                              className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium"
-                                          >
-                                              {item.name}
-                                          </p>
-                                      );
-                              })
+                                    if (item == "") {
+                                        return "-";
+                                    } else {
+                                        return (
+                                            <p
+                                                key={index}
+                                                className="text-[3.7vw] md:text-[1vw] text-neutral-80 font-medium"
+                                            >
+                                                {item.name}
+                                            </p>
+                                        );
+                                    }
+                                })
                             : "-"}
                     </div>
                 </div>

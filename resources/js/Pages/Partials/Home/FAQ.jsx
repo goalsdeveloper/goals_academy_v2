@@ -4,14 +4,16 @@ import { TECollapse } from "tw-elements-react";
 
 export default function FAQ({ data }) {
     return (
-        <section className="md:w-[90%] mx-auto px-[4vw] md:px-0 py-[7.4vw] md:py-[3.7vw] bg-[#F8F8F8] md:bg-transparent">
-            <div className="flex flex-wrap justify-between mx-auto">
-                <div className="w-full relative space-y-[5.5vw] md:space-y-[2.5vw]">
-                    <h2 className="text-[3.7vw] md:text-[1.8vw] text-center">
-                        Paling Sering{" "}
-                        <span className="text-primary-40">Ditanyakan</span>
-                    </h2>
-                    <FAQContent data={data} />
+        <section className="w-full mx-auto px-[4vw] md:px-0 py-[7.4vw] md:py-[4.6vw] !bg-[#F8F8F8]">
+            <div className="md:w-[90%] mx-auto">
+                <div className="flex flex-wrap justify-between mx-auto">
+                    <div className="w-full relative space-y-[5.5vw] md:space-y-[2.5vw]">
+                        <h2 className="text-[3.7vw] md:text-[1.8vw] text-center">
+                            Paling Sering{" "}
+                            <span className="text-primary-40">Ditanyakan</span>
+                        </h2>
+                        <FAQContent data={data} />
+                    </div>
                 </div>
             </div>
         </section>
@@ -66,7 +68,7 @@ function FAQContent({ data }) {
     };
 
     return (
-        <div className="w-full space-y-[1.6vw] md:space-y-[.8vw]">
+        <div className="w-full space-y-[1.86vw] md:space-y-[.8vw]">
             {data.map(({ question, answer }, index) => {
                 if (index != data.length - 1) {
                     return (

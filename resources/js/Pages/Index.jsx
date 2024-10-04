@@ -197,11 +197,11 @@ export default function Index({ auth, products: data_program}) {
             <Clients />
             <Preliminary />
             <Program data={data_program} />
-            <div className="relative py-3 overflow-hidden bg-secondary md:bg-transparent md:overflow-visible xs:py-6 md:py-0">
-                <CornerWaveVector
+            <div className="relative overflow-hidden bg-secondary md:bg-transparent md:overflow-visible md:py-0">
+                {/* <CornerWaveVector
                     className="md:hidden"
                     cornerClassName="w-10/12"
-                />
+                /> */}
                 {/* <Video /> */}
                 <Testimony data={data_testimony} />
             </div>

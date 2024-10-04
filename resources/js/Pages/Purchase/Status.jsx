@@ -28,7 +28,18 @@ export default function Status({
     const currency = Intl.NumberFormat("id-ID");
     const target = moment(orderHistory.expiry_time);
     const [purchaseStatus, setPurchaseStatus] = useState(status);
-    const [redirectAt, setRedirectAt] = useState(4);
+    const [redirectAt, setRedirectAt] = useState(12);
+
+    function redirectToWhatsApp () {
+        setRedirectAt((i) => {
+            if (i > 0) {
+                setTimeout(() => redirectToWhatsApp(), 1000)
+            } else if (i == 0) {
+                open(`https://api.whatsapp.com/send?phone=6282147638286&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(' ', '%20')}%20dengan%20order%20id%20${data.order_code}.`, '_blank')
+            }
+            return i-1
+        })
+    }
 
     let paymentSteps = {
         desktop: [
@@ -94,28 +105,17 @@ export default function Status({
         }
     }
 
-    let countdownInterval = useRef();
-
-    const startCountdown = () => {
-        countdownInterval.current = setInterval(() => {
+    const playCountdown = () => {
+        setTimeout(() => {
             fetch(`/api/check-payment-status/${data.order_code}`)
                 .then((response) => response.json())
                 .then((response) => {
                     setPurchaseStatus(response.status.toLowerCase())
                     const difference = target.diff(moment());
                     if (response.status.toLowerCase() == "success") {
-                        clearInterval(countdownInterval.current);
                         setCountdown(moment().hours(0).minutes(0).seconds(0));
-                        // Redirect to WA
-                        setTimeout(() => setRedirectAt(3), 1000);
-                        setTimeout(() => setRedirectAt(2), 2000);
-                        setTimeout(() => setRedirectAt(1), 3000);
-                        setTimeout(() => {
-                            setRedirectAt(0);
-                            open(`https://api.whatsapp.com/send?phone=6282147638286&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(' ', '%20')}%20dengan%20order%20id%20${data.order_code}.`, '_blank')
-                        }, 4000)
+                        redirectToWhatsApp()
                     } else if (difference <= 1) {
-                        clearInterval(countdownInterval.current);
                         setCountdown(moment().hours(0).minutes(0).seconds(0));
                         location.href = "/";
                         toast.error("Waktu Pembayaran Telah Habis!");
@@ -133,18 +133,16 @@ export default function Status({
                         );
         
                         setCountdown(remaining);
+
+                        playCountdown()
                     }
                 }
-                );
-
+            );
         }, 1000);
     };
 
     useEffect(() => {
-        startCountdown();
-        return () => {
-            clearInterval(countdownInterval.current);
-        };
+        playCountdown();
     }, []);
 
     useEffect(() => {
@@ -210,7 +208,7 @@ export default function Status({
                                         >
                                             <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.25 16.518l-4.5-4.319 1.396-1.435 3.078 2.937 6.105-6.218 1.421 1.409-7.5 7.626z" />
                                         </svg>
-                                        <GoalsButton isLink={false} href={`https://api.whatsapp.com/send?phone=6282147638286&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(' ', '%20')}%20dengan%20order%20id%20${data.order_code}.`} target="_blank" className="rounded-[2vw] md:rounded-[.5vw]">Konfirmasi ke Admin{redirectAt > 0 ? ` (${redirectAt})` : ''}</GoalsButton>
+                                        <GoalsButton onClick={() => setRedirectAt(-1)} isLink={false} href={`https://api.whatsapp.com/send?phone=6282147638286&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(' ', '%20')}%20dengan%20order%20id%20${data.order_code}.`} target="_blank" className="rounded-[2vw] md:rounded-[.5vw]">Konfirmasi ke Admin{(redirectAt > 0) && (redirectAt <= 10) ? ` (${redirectAt})` : ''}</GoalsButton>
                                     </div>
                                 </div>
                                 <div
@@ -357,10 +355,10 @@ export default function Status({
                                     Belanja Lagi
                                 </Link>
                                 <Link
-                                    href="#"
+                                    href="/"
                                     className="p-[2vw] md:p-[.6vw] font-medium text-center bg-primary text-white text-[3vw] md:text-[1vw]"
                                 >
-                                    Cek Status Transaksi
+                                    Kembali ke Beranda
                                 </Link>
                             </div>
                         </div>
@@ -396,11 +394,6 @@ function PaymentSteps ({ steps }) {
                         <p className="font-bold">
                             1. Transaksi melalui Desktop
                         </p>
-                        {/* <p>
-                            Berikut langkah pembayaran
-                            menggunakan GoPay melalui
-                            Desktop:
-                        </p> */}
                         <ul className="list-disc ms-[6vw] md:ms-[2vw]">
                             {steps['desktop'].map((item, index) => {
                                 return (
@@ -413,11 +406,6 @@ function PaymentSteps ({ steps }) {
                         <p className="font-bold">
                             2. Transaksi melalui Mobile
                         </p>
-                        {/* <p>
-                            Berikut langkah pembayaran
-                            menggunakan GoPay melalui
-                            Mobile:
-                        </p> */}
                         <ul className="list-disc ms-[6vw] md:ms-[2vw]">
                             {steps['mobile'].map((item, index) => {
                                 return (
