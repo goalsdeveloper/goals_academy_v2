@@ -85,8 +85,8 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                     <div className="space-y-[3.2vw] md:space-y-[.8vw]">
                         <GoalsTextInput
                             type="number"
-                            label="Nomor Telepon"
-                            placeholder="Masukkan nomor telepon disini"
+                            label="Nomor Whatsapp"
+                            placeholder="Masukkan nomor whatsapp disini"
                             value={data.phone_number}
                             error={errors.phone_number}
                             cancelButton={data.phone_number != ""}
