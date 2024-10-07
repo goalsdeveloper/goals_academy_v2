@@ -152,6 +152,7 @@ const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
                                             index
                                         ) => (
                                             <Link
+                                                key={index}
                                                 method={method}
                                                 className={`flex gap-2 py-[3.7vw] px-[7.4vw] items-center font-poppins hover:text-primary  ${
                                                     text == "Riwayat Transaksi"
@@ -227,7 +228,7 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
                     text: "Bimbingan",
                 },
                 { href: "/produk", icon: <FiMonitor />, text: "Webinar" },
-                { href: "/produk", icon: <FiAirplay />, text: "E-Course" },
+                // { href: "/ecourse", icon: <FiAirplay />, text: "E-Course" },
             ],
         },
         // {
@@ -267,7 +268,7 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
                 onClick={() => setIsOpen(false)}
             ></div>
             <div
-                className={`overflow-y-scroll absolute w-[74vw] flex flex-col justify-between z-[500] top-0 left-0 bg-white duration-300 h-[calc(100dvh)] border-2 text-neutral-80 text-[3.2vw] ${
+                className={`overflow-y-scroll absolute w-[74vw] flex flex-col justify-between z-50 top-0 left-0 bg-white duration-300 h-[calc(100dvh)] border-2 text-neutral-80 text-[3.2vw] ${
                     isOpen
                         ? "translate-x-[0%]"
                         : "opacity-0 -translate-x-[100%]"

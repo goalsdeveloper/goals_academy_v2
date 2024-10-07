@@ -8,6 +8,7 @@ use App\Enums\UserRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\FileUpload;
+use App\Models\Moodle;
 use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Models\User;
@@ -17,6 +18,7 @@ use App\Notifications\MidtransNotifications\SuccessNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Stmt\Break_;
 
 class HandleMidtransCallbackController extends Controller
 {
@@ -65,66 +67,79 @@ class HandleMidtransCallbackController extends Controller
         switch ($transactionStatus) {
             case 'settlement':
                 $status = OrderEnum::SUCCESS->value;
-                Log::info("Transaksi {$order->order_code} telah berhasil pada " . now());
-                if ($order->products->productType->type == "Bimbingan") {
-                    $count_course = $order->products->total_meet;
-                    $dataCourse = [
-                        'user_id' => $order->user_id,
-                        'products_id' => $order->products_id,
-                        'order_id' => $order->id,
-                    ];
-                    $session = 1;
-                    $form_result = $order->form_result;
-                    $dataParentCourse = [
-                        'session' => $session,
-                        'ongoing' => CourseStatusEnum::WAITING,
-                        'date' => $form_result['schedule'] ?? null,
-                        'place_id' => $form_result['place_id'] ?? null,
-                        'topic_id' => $form_result['topic'] ?? null,
-                    ];
-                    if ($order->products->category->name == "Desk Review") {
-                        $now = Carbon::now();
-                        $dataParentCourse['date'] = $now->toDateString();
-                        $dataParentCourse['time'] = $now->toTimeString();
-                    }
-                    $parentCourse = Course::create(array_merge($dataCourse, $dataParentCourse));
-                    $dataCourse['parent_id'] = $parentCourse->id;
-                    if (array_key_exists('add_on', $form_result) && $form_result['add_on'] != null) {
-                        foreach ($form_result['add_on'] as $key => $value) {
-                            $parentCourse->addOns()->attach($value['id']);
+                $notification_link = route('purchase.status', ['order' => $order->order_code]);
+                switch ($order->products->productType->type) {
+                    case "Bimbingan":
+                        $count_course = $order->products->total_meet;
+                        $dataCourse = [
+                            'user_id' => $order->user_id,
+                            'products_id' => $order->products_id,
+                            'order_id' => $order->id,
+                        ];
+                        $session = 1;
+                        $form_result = $order->form_result;
+                        $dataParentCourse = [
+                            'session' => $session,
+                            'ongoing' => CourseStatusEnum::WAITING,
+                            'date' => $form_result['schedule'] ?? null,
+                            'place_id' => $form_result['place_id'] ?? null,
+                            'topic_id' => $form_result['topic'] ?? null,
+                        ];
+                        if ($order->products->category->name == "Desk Review") {
+                            $now = Carbon::now();
+                            $dataParentCourse['date'] = $now->toDateString();
+                            $dataParentCourse['time'] = $now->toTimeString();
                         }
-                    }
-                    for ($i = 1; $i < $count_course; $i++) {
-                        Course::create(
-                            array_merge($dataCourse, [
-                                'date' => $form_result['schedule'] ?? null,
-                                'place_id' => $form_result['place_id'] ?? null,
-                                'topic_id' => $form_result['topic'] ?? null,
-                                'session' => ++$session,
-                                'ongoing' => CourseStatusEnum::WAITING,
-                            ])
-                        );
-                    }
-                    if (array_key_exists('document', $form_result)) {
-                        foreach ($form_result['document'] as $idx => $key) {
-                            FileUpload::create([
-                                'course_id' => $parentCourse->id,
-                                'slug' => $key['file_name'],
-                                'filename' => $key['file_name'],
-                                'mime_type' => $key['mime_type'],
-                                'name' => $key['name'],
-                                'size' => $key['size'],
-                                'path' => '/file_uploads/' . $key['file_name'],
-                                'user_id' => $parentCourse->user_id,
-                            ]);
+                        $parentCourse = Course::create(array_merge($dataCourse, $dataParentCourse));
+                        $dataCourse['parent_id'] = $parentCourse->id;
+                        if (array_key_exists('add_on', $form_result) && $form_result['add_on'] != null) {
+                            foreach ($form_result['add_on'] as $key => $value) {
+                                $parentCourse->addOns()->attach($value['id']);
+                            }
                         }
-                    }
-                    $moderators = User::where('user_role', UserRoleEnum::MODERATOR)->get();
-                    $order->user->notify(new SuccessNotification($order));
-                    foreach ($moderators as $moderator) {
-                        $moderator->notify(new GeneralCourseNotification("Ada Bimbingan Baru!", "Terdapat Bimbingan Baru dengan kode {$order->order_code} yang Harus diproses!", route('moderator.bimbingan.order.edit', ['order' => $order->order_code])));
-                    }
+                        for ($i = 1; $i < $count_course; $i++) {
+                            Course::create(
+                                array_merge($dataCourse, [
+                                    'date' => $form_result['schedule'] ?? null,
+                                    'place_id' => $form_result['place_id'] ?? null,
+                                    'topic_id' => $form_result['topic'] ?? null,
+                                    'session' => ++$session,
+                                    'ongoing' => CourseStatusEnum::WAITING,
+                                ])
+                            );
+                        }
+                        if (array_key_exists('document', $form_result)) {
+                            foreach ($form_result['document'] as $idx => $key) {
+                                FileUpload::create([
+                                    'course_id' => $parentCourse->id,
+                                    'slug' => $key['file_name'],
+                                    'filename' => $key['file_name'],
+                                    'mime_type' => $key['mime_type'],
+                                    'name' => $key['name'],
+                                    'size' => $key['size'],
+                                    'path' => '/file_uploads/' . $key['file_name'],
+                                    'user_id' => $parentCourse->user_id,
+                                ]);
+                            }
+                        }
+                        $moderators = User::where('user_role', UserRoleEnum::MODERATOR)->get();
+                        foreach ($moderators as $moderator) {
+                            $moderator->notify(new GeneralCourseNotification("Ada Bimbingan Baru!", "Terdapat Bimbingan Baru dengan kode {$order->order_code} yang Harus diproses!", route('moderator.bimbingan.order.edit', ['order' => $order->order_code]), ['database', 'mail']));
+                        }
+                        $notification_link = route('user.profile.detailPembelajaran', ['order_id' => $order->order_code]);
+                        $order->user->notify(new GeneralCourseNotification("Bimbingan Baru Telah Ditambahkan!", "Bimbingan dengan kode {$order->order_code} telah berhasil ditambahkan oleh sistem", route('user.profile.detailPembelajaran', ['order_id' => $order->order_code]), ['database', 'mail']));
+                        break;
+                    case 'Jasa Riset':
+                        $notification_link = route('purchase.status', ['order' => $order->order_code]);
+                        $order->user->notify(new GeneralCourseNotification("Pembelian Jasa Riset Berhasil", "Silahkan konfirmasi ke admin untuk langkah selanjutnya!", $notification_link, ['database', 'mail']));
+                        break;
+                    default:
+                        $notification_link = route('purchase.status', ['order' => $order->order_code]);
+                        $order->user->notify(new GeneralCourseNotification("Produk Berhasil Ditambahkan", "Silahkan konfirmasi ke admin untuk langkah selanjutnya!", $notification_link, ['database', 'mail']));
+                        break;
                 }
+                $order->user->notify(new SuccessNotification($order, $notification_link));
+                Log::info("Transaksi {$order->order_code} telah berhasil pada " . now());
                 break;
             case 'expire':
                 $status = OrderEnum::FAILED->value;
@@ -134,6 +149,11 @@ class HandleMidtransCallbackController extends Controller
             case 'cancel':
                 $status = OrderEnum::CANCEL->value;
                 Log::info("Transaksi {$order->order_code} telah dibatalkan pada " . now());
+                break;
+            case 'pending':
+                if ($order->status != OrderEnum::PENDING) {
+                    $status = $order->status;
+                }
                 break;
         }
         $order->status = $status;

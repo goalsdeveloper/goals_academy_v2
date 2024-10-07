@@ -27,30 +27,36 @@ class PurchaseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index']);
+        $this->middleware(['auth', 'verified'])->except(['index']);
     }
     /**
      * Display a listing of the resource.
      */
     public function index(Products $products)
     {
-        // $dataDibimbing = Category::where('slug', 'like', 'dibimbing%')->first()->products;
-        $dataDibimbing = Products::whereHas('productType', function ($query) {
+        // $dataBimbingan = Category::where('slug', 'like', 'dibimbing%')->first()->products;
+        $dataBimbingan = Products::whereHas('productType', function ($query) {
             $query->where('type', 'bimbingan');
         })
             ->where('is_visible', true)
             ->with('category', 'productType')->get();
-        $dataEbook = Products::whereHas('productType', function ($query) {
-            $query->where('slug', 'e-book');
+        $dataJasaRiset = Products::whereHas('productType', function ($query) {
+            $query->where('type', 'Jasa Riset');
+        })
+            ->where('is_visible', true)
+            ->with('category', 'productType')->get();
+        $dataProdukDigital = Products::whereHas('productType', function ($query) {
+            $query->where('slug', 'produk-digital');
         })->with('productType', 'category')->get();
         $dataWebinar = Products::whereHas('productType', function ($query) {
             $query->where('slug', 'webinar');
         })->with('productType', 'category')->get();
         $categories = Category::with(['productType'])->get();
         return Inertia::render('Main/Produk', [
-            'dataDibimbing' => $dataDibimbing,
-            'ebookData' => $dataEbook,
-            'webinarData' => $dataWebinar,
+            'dataBimbingan' => $dataBimbingan,
+            'dataProdukDigital' => $dataProdukDigital,
+            'dataJasaRiset' => $dataJasaRiset,
+            'dataWebinar' => $dataWebinar,
             'categories' => $categories,
         ]);
     }
@@ -181,7 +187,7 @@ class PurchaseController extends Controller
     public function show(string $order)
     {
         // cek kondisi tanggal
-        $endDate = Carbon::now()->addDays(7);
+        $endDate = Carbon::now()->addDays(8);
 
         $counts = Course::select('date')
             ->selectRaw('COUNT(*) as count')

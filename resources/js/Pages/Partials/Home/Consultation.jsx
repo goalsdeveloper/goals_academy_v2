@@ -1,21 +1,33 @@
-import ButtonHoverSlide from "@/Components/ButtonHoverSlide";
+import React from "react";
 
-export default function Consultation () {
+export default function Consultation() {
     return (
-        <section id="consultation" className="my-16 xs:my-20 md:my-16 lg:my-20 xl:my-24 3xl:my-32">
-            <div className="md:container mx-auto">
-                <div className="flex flex-col md:flex-row flex-wrap items-center shadow-centered-spread md:rounded-md lg:rounded-xl xl:rounded-2xl p-12 md:p-14 lg:p-18 xl:p-24 3xl:p-32 gap-2 md:gap-0">
-                    <div className="w-full md:w-7/12 text-center md:text-start">
-                        <h3 className="mb-2 lg:mb-3 xl:mb-4 leading-normal">Masih Bingung Program Apa yang <br /><span className="text-primary">Sesuai dengan Kebutuhanmu?</span></h3>
-                        <p className="hidden md:inline-block text-6 xs:text-10 sm:text-12 md:text-8 lg:text-10 xl:text-12 3xl:text-16">Mari konsultasikan program yang cocok dan sesuai kebutuhanmu sekarang juga.</p>
+        <section className="relative w-[90%] mx-auto bg-cover overflow-hidden py-8 md:py-[7vw]">
+            {/* <img
+                src={ConsultationImage}
+                alt="Consultation"
+                className="absolute top-0 left-0 object-cover w-full -z-10"
+            /> */}
+            {/* <div className="mx-auto h-[14vw] w-[86vw] bg-konsultasi-lg">
+        </div> */}
+            <div className="flex justify-between rounded-[3.7vw] overflow-hidden md:rounded-[.8vw] p-[4vw] py-[6vw] md:p-[2vw] md:py-[2vw] bg-konsultasi md:bg-konsultasi-lg bg-cover text-[3.2vw] md:text-[1vw]">
+                <div className="flex flex-col md:flex-row gap-[4vw] md:gap-[2vw] items-center w-80% text-center md:text-start justify-between mx-auto">
+                    <div className="w-[80%] md:w-[50%] space-y-[1vw]">
+                        <h2 className="font-medium font-poppins text-[3.7vw] md:text-[1.8vw] leading-normal text-white">
+                            Masih Bingung Program Apa yang Sesuai Dengan
+                            Kebutuhanmu?
+                        </h2>
+                        <p className="text-white text-[2.7vw] md:text-[1vw]">
+                            Konsultasikan program yang cocok dan sesuai dengan
+                            kebutuhanmu
+                        </p>
                     </div>
-                    <div className="w-5/12 md:w-5/12 flex justify-center md:justify-end">
-                        <a href="https://wa.me/6282147638286" className="w-11/12 sm:w-10/12 md:w-5/12 h-6 xs:h-10 sm:h-12 md:h-6 lg:h-8 xl:h-10 2xl:h-12 3xl:h-14" target="_blank">
-                            <ButtonHoverSlide className="h-full before:p-1 sm:before:p-2 md:before:p-0.5 lg:before:p-1.5 xl:before:p-1 2xl:before:p-1.5 3xl:before:p-2.5 before:content-arrow-right-16 xs:before:content-arrow-right-20 sm:before:content-arrow-right-32 md:before:content-arrow-right-16 lg:before:content-arrow-right-20 xl:before:content-arrow-right-32 after:content-consultation after:text-primary after:font-medium border-1 xl:border-2 border-primary rounded-full before:w-[160%] before:-ms-[160%] before:duration-300 after:w-full after:duration-300 hover:before:-ms-[30%] hover:after:-me-[100%] before:bg-sweep-primary text-10 xs:text-14 sm:text-18 md:text-8 lg:text-12 xl:text-14 3xl:text-20 bg-white"></ButtonHoverSlide>
-                        </a>
-                    </div>
+
+                    <button className="bg-primary-10 font-medium py-[2vw] px-[4vw] md:py-[.8vw] md:px-[2vw] my-auto !border-0 w-fit h-fit rounded-full md:rounded-[.4vw] text-secondary">
+                        Tanya Sekarang
+                    </button>
                 </div>
             </div>
         </section>
-    )
+    );
 }

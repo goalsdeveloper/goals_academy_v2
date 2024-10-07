@@ -7,17 +7,17 @@ import "@/script/mainHeader";
 export default function MainLayout({
     auth,
     title,
-    children,
     className,
     withFooter = true,
     headerClassName,
-    footerClassName
+    footerClassName,
+    children,
 }) {
     return (
         <>
             <Head title={title} />
             <MainHeader auth={auth} title={title} className={headerClassName} />
-            <main className={`text-dark overflow-visible ${className}`}>
+            <main className={`relative text-dark overflow-visible ${className} z-0`}>
                 {children}
             </main>
             {withFooter && <MainFooter className={footerClassName} />}

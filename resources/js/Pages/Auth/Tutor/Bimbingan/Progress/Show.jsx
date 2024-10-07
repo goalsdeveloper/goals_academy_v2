@@ -44,6 +44,7 @@ export default function Show({ auth, order, files }) {
                 return (
                     <GoalsTextInput
                         disabled
+                        type="url"
                         label="Meeting URL"
                         placeholder="Meeting URL"
                         data={formData.location}

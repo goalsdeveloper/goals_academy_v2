@@ -38,6 +38,13 @@ h6, .h6 {
     @apply scale-110 !important;
 }
 
+.swiper-ecourse {
+    @apply overflow-visible !important;
+}
+
+.swiper-ecourse .swiper-slide-active {
+    @apply scale-110 !important;
+}
 
 .font-work-sans {
     font-family: Work Sans, sans-serif;

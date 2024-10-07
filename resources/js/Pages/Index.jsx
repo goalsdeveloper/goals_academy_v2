@@ -1,8 +1,16 @@
 import MainLayout from "@/Layouts/MainLayout";
+// import Hero from "./Partials/Home-old/Hero";
+// import Preliminary from "./Partials/Home-old/Preliminary";
+// import Program from "./Partials/Home-old/Program";
+// import Video from "./Partials/Home-old/Video";
+// import Testimony from "./Partials/Home-old/Testimony";
+// import FAQ from "./Partials/Home-old/FAQ";
+// import Consultation from "./Partials/Home-old/Consultation";
+
 import Hero from "./Partials/Home/Hero";
 import Preliminary from "./Partials/Home/Preliminary";
 import Program from "./Partials/Home/Program";
-import Video from "./Partials/Home/Video";
+import Clients from "./Partials/Home/Clients";
 import Testimony from "./Partials/Home/Testimony";
 import FAQ from "./Partials/Home/FAQ";
 import Consultation from "./Partials/Home/Consultation";
@@ -22,8 +30,14 @@ import testimony6 from "/resources/img/testimony/ferry.jpg";
 import testimony7 from "/resources/img/testimony/herinda.jpg";
 import testimony8 from "/resources/img/testimony/khafidh.jpg";
 import testimony9 from "/resources/img/testimony/ludi.jpg";
+import WelcomeDialog from "./Partials/Home/WelcomeDialog";
+import { useEffect, useState } from "react";
+import { usePage } from "@inertiajs/react";
 
-export default function Index({ auth, products: data_program }) {
+export default function Index({ auth, products: data_program}) {
+    const welcomeMessage = usePage().props.message == "WELCOME_MESSAGE"
+    const [showDialog, setShowDialog] = useState(welcomeMessage);
+
     // const data_program = [
     //     {
     //         id: 1,
@@ -171,16 +185,24 @@ export default function Index({ auth, products: data_program }) {
     ];
 
     return (
-        <MainLayout auth={auth} title="Home">
+        <MainLayout auth={auth} title="Home" className="overflow-x-hidden">
+            {showDialog && (
+                <WelcomeDialog
+                    setShowDialog={setShowDialog}
+                    showDialog={showDialog}
+                    auth={auth}
+                />
+            )}
             <Hero />
+            <Clients />
             <Preliminary />
             <Program data={data_program} />
-            <div className="relative py-3 overflow-hidden bg-secondary md:bg-transparent md:overflow-visible xs:py-6 md:py-0">
-                <CornerWaveVector
+            <div className="relative overflow-hidden bg-secondary md:bg-transparent md:overflow-visible md:py-0">
+                {/* <CornerWaveVector
                     className="md:hidden"
                     cornerClassName="w-10/12"
-                />
-                <Video />
+                /> */}
+                {/* <Video /> */}
                 <Testimony data={data_testimony} />
             </div>
             <FAQ data={data_faq} />

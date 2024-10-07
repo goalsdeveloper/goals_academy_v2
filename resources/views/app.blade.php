@@ -29,7 +29,7 @@
         gtag('config', 'G-WSWZG2RDLM');
 
     </script> --}}
-    
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZ92GS9QYP"></script>
     <script>
@@ -67,6 +67,27 @@
         fbq('track', 'PageView');
 
     </script>
+
+    <!--REDIRECTING TO NATIVE BROWSER-->
+    <script>
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        var str = navigator.userAgent;
+        var instagram = str.indexOf("Instagram");
+        var facebook = str.indexOf("FB");
+
+        if (/android/i.test(userAgent) && (instagram != -1 || facebook != -1)) {
+            document.write(
+                `<a target=\"_blank\" href=\"${window.location.href}\" download id=\"open-browser-url\">Mengarahkan ke Browser</a>`
+                );
+            window.stop();
+            let input = document.getElementById('open-browser-url');
+            if (input) {
+                input.click();
+            }
+        }
+
+    </script>
+
     <noscript><img height="1" width="1" style="display:none"
             src="https://www.facebook.com/tr?id=7713547088705036&ev=PageView&noscript=1" /></noscript>
     <!-- End Meta Pixel Code -->

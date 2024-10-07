@@ -14,7 +14,7 @@ import { PiPencilSimpleLight } from "react-icons/pi";
 import GoalsImageUploader from "@/Components/elements/GoalsImageUploader";
 import toast from "react-hot-toast";
 import { Autocomplete } from "@mui/material";
-import { universities, majorFamilies } from "@/Hooks/data";
+import { universities, majorFamilies } from "@/data";
 
 export default function Profile({ auth, profile, skills }) {
     const [showForm, setShowForm] = useState({

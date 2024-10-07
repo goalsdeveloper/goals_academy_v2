@@ -135,7 +135,7 @@ export default function Index({ auth, userData, profileData }) {
                                     }
                                     type="text"
                                     id="phone_number"
-                                    label="Nomor Telepon"
+                                    label="Nomor Whatsapp"
                                 />
                                 <GoalsTextInput
                                     value={data.university}

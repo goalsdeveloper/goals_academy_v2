@@ -64,11 +64,32 @@ class CategorySeeder extends Seeder
             'product_type_id' => 3,
         ]);
         Category::create([
-            'name' => 'Ebook',
-            'slug' => Str::slug('Ebook'),
+            'name' => 'Produk Digital',
+            'slug' => Str::slug('Produk Digital'),
             'is_visible' => true,
-            'description' => 'Ebook',
+            'description' => 'Produk Digital',
             'product_type_id' => 2,
         ]);
+        Category::create([
+            'name' => 'Special',
+            'slug' => Str::slug('Special'),
+            'is_visible' => false,
+            'description' => 'Special',
+            'product_type_id' => 1,
+        ]);
+        Category::create([
+            'name' => 'Jasa Riset',
+            'slug' => Str::slug('Jasa Riset'),
+            'is_visible' => true,
+            'description' => 'Jasa Riset',
+            'product_type_id' => 4,
+        ]);
+        // Category::create([
+        //     'name' => 'E-Course',
+        //     'slug' => Str::slug('E-Course'),
+        //     'is_visible' => true,
+        //     'description' => 'E-Course',
+        //     'product_type_id' => 4,
+        // ]);
     }
 }

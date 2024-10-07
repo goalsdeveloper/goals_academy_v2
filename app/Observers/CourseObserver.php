@@ -8,11 +8,11 @@ use App\Models\Course;
 use Illuminate\Support\Facades\Log;
 
 use Illuminate\Support\Facades\Auth;
-use Filament\Notifications\Notification;
-use Filament\Notifications\Actions\Action;
-use App\Filament\AdminDashboard\Resources\CourseResource;
-use App\Filament\Tutor\Resources\CourseResource as TutorCourseResource;
-use App\Filament\Moderator\Resources\CourseResource as ModeratorCourseResource;
+// use Filament\Notifications\Notification;
+// use Filament\Notifications\Actions\Action;
+// use App\Filament\AdminDashboard\Resources\CourseResource;
+// use App\Filament\Tutor\Resources\CourseResource as TutorCourseResource;
+// use App\Filament\Moderator\Resources\CourseResource as ModeratorCourseResource;
 use App\Notifications\CourseNotification;
 
 class CourseObserver

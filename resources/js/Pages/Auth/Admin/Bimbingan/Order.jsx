@@ -16,6 +16,7 @@ export default function Order({ auth, orders }) {
     const [keyword, setKeyword] = useState(
         new URLSearchParams(window.location.search).get("search")
     );
+    console.log(orders)
 
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
@@ -40,16 +41,6 @@ export default function Order({ auth, orders }) {
             {
                 accessorKey: "order_code", //access nested data with dot notation
                 header: "Id Pesanan",
-
-                // Cell: ({ cell }) => {
-                //     return (
-                //         <img
-                //             src={cell.row.original.gambar}
-                //             alt="thumbnail-product"
-                //             className="w-[3.6vw] h-[2.6vw] rounded-[.3vw]"
-                //         />
-                //     );
-                // },
             },
             {
                 accessorKey: "user.name",
@@ -66,6 +57,25 @@ export default function Order({ auth, orders }) {
             {
                 accessorKey: "status",
                 header: "Status",
+            },
+            {
+                // accessorKey: "form_result.admin",
+                header: "Estimasi Admin",
+                Cell: ({ cell }) => cell.row.original.form_result?.purchase_method?.is_price == false ? cell.row.original.form_result.purchase_method?.admin_fee + '%' : 'Rp. ' + cell.row.original.form_result.purchase_method?.admin_fee,
+            },
+            {
+                accessorKey: "form_result.discount",
+                header: "Diskon",
+            },
+            {
+                // accessorKey: "form_result.discount",
+                header: "Estimasi Earnings",
+                Cell: ({ cell }) => cell.row.original.unit_price - cell.row.original.form_result.admin,
+            },
+            {
+                // accessorKey: "form_result.discount",
+                header: "Harga Total",
+                Cell: ({ cell }) => cell.row.original.unit_price,
             },
             {
                 accessorKey: "updated_at",

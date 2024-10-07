@@ -14,14 +14,13 @@ class GeneralCourseNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    protected $title;
-    protected $description;
-    protected $url;
-    public function __construct($title, $description, $url)
+    protected $title, $description, $url, $via;
+    public function __construct($title, $description, $url, $via = ['database'])
     {
         $this->title = $title;
         $this->description = $description;
         $this->url = $url;
+        $this->via = $via;
     }
 
     /**
@@ -31,7 +30,7 @@ class GeneralCourseNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return $this->via;
     }
 
     /**
@@ -40,9 +39,10 @@ class GeneralCourseNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        ->subject('Goals Academy Notifications')
+        ->line($this->title)
+        ->line($this->description)
+        ->action('Notification Action', $this->url);
     }
 
     public function toArray(object $notifiable): array

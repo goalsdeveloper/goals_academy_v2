@@ -10,14 +10,15 @@ class SuccessNotification extends Notification
 {
     use Queueable;
 
-    protected $order;
+    protected $order, $link;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($order)
+    public function __construct($order, $link)
     {
         $this->order = $order;
+        $this->link = $link;
     }
 
     /**
@@ -64,7 +65,7 @@ class SuccessNotification extends Notification
             'expiry_time' => $paymentMethod['expiry_time'],
             'order_id' => $this->order->order_code,
             'payment_method' => $paymentType,
-            'link' => route('user.profile.detailPembelajaran', ['order_id' => $this->order->order_code]),
+            'link' => $this->link,
         ];
     }
 }
