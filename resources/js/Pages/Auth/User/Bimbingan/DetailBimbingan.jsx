@@ -6,6 +6,7 @@ import { Link, router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
+import GoalsBadge from "@/Components/elements/GoalsBadge";
 
 // import { detailData as dataBimbingan } from "./data";
 import { createPortal } from "react-dom";
@@ -39,6 +40,20 @@ export default function DetailPesanan({
         note_product: "",
         note_tutor: "",
     });
+
+    const statusObject = [
+        {
+            text: "Menunggu",
+            desc: "Bimbingan masih dalam proses konfirmasi, untuk info lebih lanjut bisa menghubungi admin"
+        },
+        {
+            text: "Berjalan",
+            desc: "Bimbingan anda sedang berjalan, jika ada kendala selama bimbingan silakan hubungi admin"
+        }
+    ]
+    const isWaiting = dataBimbingan.map(i => i.ongoing).includes('menunggu');
+    const isOngoing = dataBimbingan.map(i => i.ongoing).includes('berjalan');
+    const isFinished = dataBimbingan.map(i => i.ongoing).every(i => i == 'selesai');
 
     function handleSubmit() {
         post(`/bimbingan/${dataBimbingan[0].order.order_code}/review`, {
@@ -123,15 +138,22 @@ export default function DetailPesanan({
                 <div className="flex items-center justify-between">
                     {/* Header */}
                     {isMobile ? (
-                        <Link
-                            href="/bimbingan"
-                            className="flex items-center gap-[1.5vw] text-black"
-                        >
-                            <FiChevronLeft className="md:hidden text-[4vw]" />
-                            <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-[4vw]">
-                                Detail Pembelajaran
-                            </h1>
-                        </Link>
+                        <>
+                            <Link
+                                href="/bimbingan"
+                                className="w-full flex items-center gap-[1.5vw] text-black"
+                            >
+                                <FiChevronLeft className="md:hidden text-[4vw]" />
+                                <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-[4vw]">
+                                    Detail Pembelajaran
+                                </h1>
+                            </Link>
+                            {isWaiting ? (
+                                <StatusBadge {...statusObject[0]} />
+                            ) : isOngoing ? (
+                                <StatusBadge {...statusObject[1]} />
+                            ) : <></>}
+                        </>
                     ) : (
                         <h1 className="font-medium text-black text-[3.7vw] md:text-[1.8vw] leading-[12vw] md:leading-[4vw]">
                             Detail Pembelajaran
@@ -377,5 +399,52 @@ const StarRating = ({ totalStars, rating, setRating }) => {
                 </span>
             ))}
         </div>
+    );
+};
+
+function StatusBadge ({ text, desc }) {
+    const [show, setShow] = useState(false);
+    return (
+        <div className="relative">
+            <GoalsBadge
+                title={<span className="flex items-center gap-[2vw] text-[3.7vw]">{text} <div className="flex items-center justify-center text-blue-500 border-1 border-blue-500 rounded-full text-[3vw] md:text-[.83vw] h-[4vw] w-[4vw] md:w-[1vw] md:h-[1vw]">!</div></span>}
+                className="text-blue-500 bg-blue-100 cursor-pointer"
+                onClick={() => setShow(true)}
+            />
+            {createPortal(<StatusBadgeDescription {...{show, setShow, desc}} />, document.body)}
+        </div>
+    )
+}
+
+const StatusBadgeDescription = ({ show, setShow, desc }) => {
+    return (
+        <GoalsPopup
+            show={show}
+            setShow={setShow}
+            className="h-fit md:max-w-[23.5vw]"
+            header="Informasi Bimbingan"
+        >
+            <div className="flex flex-col items-center gap-[7.4vw] md:gap-[2vw]">
+                <p className="text-[3.7vw] md:text-[1vw] text-black text-center">
+                    {desc}
+                </p>
+
+                <div className="grid space-y-[2vw] md:space-y-[.8vw] w-full">
+                    <GoalsButton
+                        onClick={() => open(`https://api.whatsapp.com/send?phone=6282147638286`, '_blank')}
+                        className="w-full"
+                    >
+                        Hubungi Admin
+                    </GoalsButton>
+                    <GoalsButton
+                        variant="bordered"
+                        onClick={() => setShow(false)}
+                        className="w-full"
+                    >
+                        Kembali
+                    </GoalsButton>
+                </div>
+            </div>
+        </GoalsPopup>
     );
 };

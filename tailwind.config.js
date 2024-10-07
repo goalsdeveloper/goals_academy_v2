@@ -69,6 +69,9 @@ export default {
             width: {
                 'xl': '160%',
             },
+            zIndex: {
+                '999': '999',
+            },
             borderWidth: {
                 '1': '1px',
             },
