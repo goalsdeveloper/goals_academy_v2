@@ -61,7 +61,7 @@ select:-webkit-autofill:focus {
     column-count: 2;
     column-gap: 20px;
     column-fill: auto;
- }
+}
 
 @layer base {
     html {
