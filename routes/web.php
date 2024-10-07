@@ -70,25 +70,10 @@ Route::get('/dashboard/user/webinar', [DashboardUserController::class, 'webinar'
 Route::get('/dashboard/user/webinar/{id}', [DashboardUserController::class, 'detailWebinar']);
 Route::get('/dashboard/user/bimbingan', [DashboardUserController::class, 'bimbingan']);
 Route::get('/dashboard/user/bimbingan/{id}', [DashboardUserController::class, 'detailBimbingan']);
-Route::get('/get_user', [MoodleController::class, 'search_user']);
-Route::get('/enroll_user', [MoodleController::class, 'enroll_user']);
-// Route::get('/ecourse', [AuthController::class, 'redirecting_to_ecourse']);
-Route::get('/ecourse/daftar', [MoodleController::class, 'moodle_page']);
-Route::get('/ecourse/course/{id}', [MoodleController::class, 'to_course'])->name('ecourse.to_course');
 
 Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
 });
-
-// Route::get('/ecourse', function () {
-//     $data = Products::whereHas('productType', function ($query) {
-//         $query->where('type', 'E-Course');
-//     })->where('is_visible', true)->with('category', 'productType')->get();
-
-//     return Inertia::render('Main/Ecourse', [
-//         'data' => $data
-//     ]);
-// });
 
 Route::get('/profil_perusahaan', function () {
     return Inertia::render('Main/ProfilPerusahaan');
@@ -215,7 +200,6 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')-
     Route::get('/', [ModeratorOverviewController::class, 'index'])->name('index');
     Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
         Route::resource('order', ModeratorOrderController::class)->parameters(['order' => 'order:order_code']);
-        // Route::get('order/edit/{order}', [ModeratorOrderController::class, 'edit'])->name('order.edit');
         Route::get('order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('order.showOnline');
         Route::patch('order/{order:order_code}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('order.updateOnline');
         Route::resource('progress', ProgressController::class);
@@ -283,16 +267,13 @@ Route::get('pending/{order}', function (string $order) {
     $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
         $query->where('status', 'pending');
     })->with('orderHistory', 'paymentMethod', 'products')->first();
-    
+
     // dd(['data' => $order, '$expiry_time' => $expiry_time]);
     return view('email.user.purchase.pending', ['data' => $order]);
 });
 
-Route::get('success/{order}', function (string $order) {
-    $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
-        $query->where('status', 'success');
-    })->with('orderHistory', 'paymentMethod', 'products')->first();
-    
+Route::get('success/{order}', function (Order $order) {
+    // $order = $order->with('orderHistory', 'paymentMethod', 'products');
     return view('email.user.purchase.success', ['data' => $order]);
 });
 
@@ -306,14 +287,32 @@ Route::get('reset-password/{user}', function (User $user) {
 
 Route::get('expired/{order}', function (string $order) {
     $order = Order::where('order_code', $order)->with('products')->first();
-    
+
     return view('email.user.bimbingan.expired', ['data' => $order]);
 });
 
-Route::get('recent-order/{order}', function (string $order) {
-    $order = Order::where('order_code', $order)->with('products')->first();
-    
-    return view('email.moderator.bimbingan.recent-order', ['data' => $order]);
+Route::get('recent-order/{order}', function (Order $order) {
+    // dd($order);
+    return view('email.moderator.bimbingan.recent-order', ['data' => $order->load('products')]);
+});
+
+Route::get('testemail', function () {
+    return view('email.email-generate.user.auth.reset-password', ['url' => 'https://google.com']);
+});
+
+Route::get('testemail/order-expired/{order}', function (Order $order) {
+    return view('email.email-generate.user.bimbingan.expired', ['data' => $order]);
+});
+
+Route::get('testemail/recent-order/{order}', function (Order $order) {
+    return view('email.email-generate.moderator.bimbingan.recent-order', ['data' => $order]);
+});
+
+Route::get('testemail/success/{order}', function (Order $order) {
+    return view('email.email-generate.user.purchase.success', ['data' => $order]);
+});
+Route::get('testemail/pending/{order}', function (Order $order) {
+    return view('email.email-generate.user.purchase.pending', ['data' => $order]);
 });
 
 require __DIR__ . '/profile/profile.php';

@@ -38,11 +38,7 @@ class SuccessNotification extends Notification
     {
         $url = url('/purchase/' . $this->order->order_code);
 
-        return (new MailMessage)
-            ->subject('Pembayaran Berhasil')
-            ->line("Selamat, pembayaran kamu pada pembelian {$this->order->order_code} telah berhasil! Langkah selanjutnya dapat dilihat di:")
-            ->action('Lihat Detail', $url)
-            ->line('Terimakasih telah menggunakan Goals Academy!');
+        return (new MailMessage)->view('email.email-generate.user.purchase.success', ['data' => $this->order]);
     }
 
     /**

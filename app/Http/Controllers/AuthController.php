@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -62,7 +63,8 @@ class AuthController extends Controller
             'user_id' => $user['id'],
         ]);
 
-        event(new Registered($user));
+        // event(new Registered($user));
+        Mail::send();
 
         Auth::login($user, true);
 
