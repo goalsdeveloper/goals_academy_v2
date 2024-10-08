@@ -14,10 +14,13 @@ Route::post('register', [AuthController::class, 'register'])->name('auth.registe
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth')->name('auth.logout');
 Route::get('/lupa_password', function () {
     return Inertia::render('Auth/LupaPassword');
-});
+})->name('auth.forgot-password.form');
 Route::get('/lupa_password/password_baru', function () {
     return Inertia::render('Auth/PasswordBaru');
-});
+})->name('auth.reset-password.form');
+
+Route::post('/forgot-password', [AuthController::class, 'forgot_password'])->name('auth.forgot-password');
+Route::post('/reset-password', [AuthController::class, 'reset_password'])->name('auth.reset-password');
 Route::get('/verifikasi_email', function () {
     return Inertia::render('Auth/VerifikasiEmail');
 });

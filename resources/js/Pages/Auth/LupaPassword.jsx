@@ -1,4 +1,4 @@
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 import Input from "@/Components/OnBorderLabeledInput";
 import SubmitButton from "@/Components/BorderedSubmitButton";
 import CornerWaveVector from "@/Components/CornerWaveVector";
@@ -12,8 +12,8 @@ export default function LupaPassword () {
 
     const submit = (e) => {
         e.preventDefault()
-        // post("/reset_password")
-        alert(data["email"])
+        router.post(route('auth.forgot-password'), data)
+        console.log('test')
     }
 
     return (

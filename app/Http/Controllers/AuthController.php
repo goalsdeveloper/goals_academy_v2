@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -66,7 +67,7 @@ class AuthController extends Controller
 
         Auth::login($user, true);
 
-        if($user->email_verified_at == null) {
+        if ($user->email_verified_at == null) {
             return redirect()->route('verification.notice');
         }
 
@@ -83,6 +84,23 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function forgot_password(Request $req)
+    {
+        $req->validate(['email' => 'required|email']);
+        $status = Password::sendResetLink(
+            $req->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with(['status' => __($status)])
+            : back()->withErrors(['email' => __($status)]);
+    }
+
+    public function reset_password()
+    {
+        return true;
     }
 
     public function redirecting_to_ecourse()
