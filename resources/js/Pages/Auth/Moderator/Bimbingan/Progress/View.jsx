@@ -65,6 +65,7 @@ export default function View({ auth, progress, tutors }) {
                 return (
                     <GoalsTextInput
                         disabled
+                        type="url"
                         label="Meeting URL"
                         placeholder="Meeting URL"
                         data={data.location}

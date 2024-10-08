@@ -201,11 +201,7 @@ const dataTableOptionsConfig = ({
                 if (hoveredRow && draggingRow) {
                     const originItem = data[draggingRow.index];
                     const destinationItem = data[hoveredRow.index];
-                    // data.splice(
-                    //     hoveredRow.index,
-                    //     0,
-                    //     data.splice(draggingRow.index, 1)[0]
-                    // );
+                    
                     router.post(
                         route("admin.bimbingan.product.updateOrderNumber"),
                         {

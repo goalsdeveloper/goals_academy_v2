@@ -49,7 +49,7 @@ export default function Product({ auth, bimbingan, categories }) {
         setIsLoading(true);
         setProduct(null);
         axios.get("/admin/bimbingan/product/" + id).then((res) => {
-            console.log(res.data.data)
+            // console.log(res.data.data)
             setProduct(res.data.data);
             setIsLoading(false);
         });

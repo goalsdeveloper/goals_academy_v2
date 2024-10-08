@@ -77,7 +77,7 @@
 
         if (/android/i.test(userAgent) && (instagram != -1 || facebook != -1)) {
             document.write(
-                "<a target=\"_blank\" href=\"https://goalsacademy.id\" download id=\"open-browser-url\">Mengarahkan ke Browser</a>"
+                `<a target=\"_blank\" href=\"${window.location.href}\" download id=\"open-browser-url\">Mengarahkan ke Browser</a>`
                 );
             window.stop();
             let input = document.getElementById('open-browser-url');
@@ -85,7 +85,7 @@
                 input.click();
             }
         }
-        
+
     </script>
 
     <noscript><img height="1" width="1" style="display:none"

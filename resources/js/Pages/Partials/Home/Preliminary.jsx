@@ -1,55 +1,80 @@
-import figure2 from "/resources/img/figure/2.svg";
+import React from "react";
 
-function Icon ({iconClass}) {
-    return (
-        <div className="rounded-lg lg:rounded-xl p-[1vw]">
-            <i className={iconClass}></i>
-        </div>
-    )
-}
+import IconFeat1 from "@/Assets/icons/icon-feat1.svg";
+import IconFeat2 from "@/Assets/icons/icon-feat2.svg";
+import IconFeat3 from "@/Assets/icons/icon-feat3.svg";
+import IconFeat4 from "@/Assets/icons/icon-feat4.svg";
 
-export default function Preliminary () {
+export default function Preliminary() {
     return (
-        <section id="introduction" className="my-16 xs:my-20 md:my-16 lg:my-20 xl:my-24 3xl:my-32">
-            <div className="container mx-auto flex flex-wrap items-center justify-center md:justify-between gap-8 md:gap-0">
-                <div className="w-full sm:w-10/12 md:w-6/12">
-                    <img src={figure2} alt="Figure 2" />
+        <section className="bg-gradient-to-b from-primary-10 to-transparent to-50% md:to-35% rounded-[11.6vw] md:rounded-[3rem]">
+            <div className="relative py-[7.4vw] md:py-[6.25vw] w-[80vw] mx-auto space-y-[2.5vw]">
+                <div className="md:flex justify-between space-y-[1.2vw]">
+                    <h2 className="text-[3.7vw] md:text-[1.8vw]">
+                        Jarak bukan Masalah untuk
+                        <br />
+                        <span className="text-primary-40">
+                            Lulus Lebih Cepat
+                        </span>
+                    </h2>
+                    <p className="text-[3.2vw] md:text-[1.2vw] md:w-[27%]">
+                        Buat jadwal bimbingan dengan tutor secara online atau
+                        tatap muka dan berinteraksi secara langsung.
+                    </p>
                 </div>
-                <div className="md:w-5/12 3xl:w-6/12 3xl:ps-16">
-                    <h2>Jarak bukan Masalah untuk <span className="text-primary">Lulus Lebih Cepat.</span></h2>
-                    <p className="mt-2 mb-4 sm:mb-6 xl:mt-4 xl:mb-10 3xl:mt-6 3xl:mb-14">Buat jadwal bimbingan dengan tutor secara online atau tatap muka dan berinteraksi secara langsung.</p>
-                    <div className="grid w-full xl:w-11/12 3xl:w-11/12 gap-4">
-                        <div className="flex items-center gap-4">
-                            <Icon iconClass="fa-solid fa-chalkboard-user text-20 md:text-12 lg:text-24 xl:text-28" />
-                            <div>
-                                <h5 className="mb-1">Tutor <span className="text-primary">Profesional dan Friendly</span></h5>
-                                <p>Dibimbing oleh tutor yang berpengalaman dan seru</p>
+
+                <div className="w-full overflow-x-auto scrollbar-hidden">
+                    <div className="flex gap-[1.8vw] md:gap-4 w-max md:w-full">
+                        {data.map((item) => (
+                            <div
+                                key={item.id}
+                                className="w-[70vw] md:w-full border rounded-[3.7vw] md:rounded-[.8vw] bg-white space-y-[.9vw] md:space-y-[.4vw] p-[3.7vw] md:p-[1.6vw]"
+                            >
+                                <div className="w-[11.6vw] h-[11.6vw] md:w-[3.6vw] md:h-[3.6vw] border rounded-full">
+                                    <img
+                                        src={item.icon}
+                                        alt="icon-feat"
+                                        className="object-cover w-full h-full p-1 rounded-full"
+                                    />
+                                </div>
+                                <h3 className="font-sans text-[3.2vw] md:text-[1vw] font-semibold">
+                                    {item.title}
+                                </h3>
+                                <p className="font-sans text-[3.2vw] md:text-[1vw]">
+                                    {item.desc}
+                                </p>
                             </div>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <Icon iconClass="fa-solid fa-business-time text-20 md:text-12 lg:text-24 xl:text-28" />
-                            <div>
-                                <h5 className="mb-1">Bebas <span className="text-primary">Request Jadwal</span></h5>
-                                <p>Pilih jadwal bimbingan sesuai kebutuhanmu</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <Icon iconClass="fa-solid fa-graduation-cap text-20 md:text-12 lg:text-24 xl:text-28" />
-                            <div>
-                                <h5 className="mb-1">Mentoring <span className="text-primary">24/7</span></h5>
-                                <p>Bebas konsultasi dan tanya-tanya tentang skripsimu</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <Icon iconClass="bi bi-rocket-takeoff-fill text-24 md:text-14 lg:text-28 xl:text-36" />
-                            <div>
-                                <h5 className="mb-1">Program <span className="text-primary">Lulus 3 Bulan</span></h5>
-                                <p>Punya cara efektif dan efisien untuk mempercepat kelulusanmu</p>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>
         </section>
-    )
+    );
 }
+
+const data = [
+    {
+        id: 1,
+        icon: IconFeat1,
+        title: "Tutor Professional dan Friendly",
+        desc: "Nikmati pengalaman bimbingan skripsi bersama tutor-tutor profesional, friendly, dan solutif pilihan Goals Academy.",
+    },
+    {
+        id: 2,
+        icon: IconFeat2,
+        title: "Bebas Request Jadwal",
+        desc: "Tidak perlu khawatir dengan waktu bimbingan. Sesuaikan jadwal bimbingan dengan kebutuhan dan aktivitasmu!",
+    },
+    {
+        id: 3,
+        icon: IconFeat3,
+        title: "Mentoring 24/7",
+        desc: "Terkendala skripsi di luar jam bimbingan? Konsultasikan kendala skripsimu kapan pun kamu butuhkan.",
+    },
+    {
+        id: 4,
+        icon: IconFeat4,
+        title: "Program Tuntas 3 Bulan",
+        desc: "Kami menawarkan metode bimbingan efektif dan efisien untuk bantu mempercepat kelulusanmu.",
+    },
+];

@@ -45,7 +45,7 @@ class SocialHandler extends Controller
         Auth::login($authUser);
         Log::info("User {username} has been Log in using {provider}", ['username' => $user->username, 'provider' => $provider]);
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::HOME)->with('message', 'WELCOME_MESSAGE');
     }
 
     public function findOrCreateUser($socialUser, $provider)

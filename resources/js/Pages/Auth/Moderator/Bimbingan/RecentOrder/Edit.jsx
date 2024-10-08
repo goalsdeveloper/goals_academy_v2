@@ -211,7 +211,7 @@ export default function Edit({ auth, order, places, tutors }) {
                                 disabled
                                 data={
                                     order.user?.profile?.phone_number ??
-                                    "Belum Ada Nomor Telepon"
+                                    "Belum Ada Nomor Whatsapp"
                                 }
                             />
                             <a

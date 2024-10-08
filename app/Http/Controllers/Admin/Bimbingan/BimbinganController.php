@@ -87,7 +87,7 @@ class BimbinganController extends Controller
                         })->with('category')->orderBy('category_id', 'asc')->orderBy('number_list', 'asc')->paginate($perPage);
                         return $bimbingan;
                     },
-                    'categories' => Category::get(),
+                    'categories' => Category::where('product_type_id', '1')->get(),
 
                 ], 200);
             } else {
@@ -109,7 +109,7 @@ class BimbinganController extends Controller
     public function create()
     {
         if (Auth::user()->user_role == "admin") {
-            $categories = Category::get();
+            $categories = Category::where('product_type_id', '1')->get();
             $addons = AddOn::get();
             $topics = Topic::get();
             // return response()->json([
@@ -281,7 +281,7 @@ class BimbinganController extends Controller
     public function edit(Products $product)
     {
         if (Auth::user()->user_role == "admin") {
-            $categories = Category::get();
+            $categories = Category::where('product_type_id', '1')->get();
             $addons = AddOn::get();
             $topics = Topic::get();
             $product->load('category', 'addOns', 'topics');

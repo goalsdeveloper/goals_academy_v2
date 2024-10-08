@@ -30,7 +30,7 @@ class Products extends Model
         'number_list',
         'form_config',
         'contact_type',
-        'promo_price',  
+        'promo_price',
     ];
 
     protected $casts = [
@@ -71,6 +71,9 @@ class Products extends Model
 
     static public function newNumberList(Int $category) {
         $lastNumber = Products::where('category_id', $category)->orderBy('number_list', 'desc')->first();
+        if($lastNumber == null){
+            return 1;
+        }
         return $lastNumber->number_list + 1;
     }
 }

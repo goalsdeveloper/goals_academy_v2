@@ -1,4 +1,6 @@
 const universities = [
+    "Lainnya (Indonesia)",
+    "Lainnya (Luar Negeri)",
     "Akademi Administrasi Keuangan Jakarta",
     "Akademi Administrasi Kusuma Mandiri",
     "Akademi Administrasi Pembangunan Indonesia",
@@ -3188,7 +3190,7 @@ const universities = [
     "Universitas Muhammadiyah Tangerang",
     "Universitas Muhammadiyah Tarakan",
     "Universitas Muhammadiyah Tasikmalaya",
-    "Universitas Muhammadiyah Yogyakarta",  
+    "Universitas Muhammadiyah Yogyakarta",
     "Universitas Mulawarman",
     "Universitas Multimedia Nusantara",
     "Universitas Multimedia Nusantara Jakarta",

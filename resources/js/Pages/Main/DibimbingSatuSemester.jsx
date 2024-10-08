@@ -134,7 +134,7 @@ export default function DibimbingSatuSemester ({ auth }) {
         {text: "Free Chat Online 24/7"},
         {text: "Free 1x Sharing Skripsi Kuantitatif"},
         {text: "Call Bareng Tutor Sewaktu-Waktu"},
-        {text: "Free Produk Digital Q&A Sidang Skripsi"},
+        {text: "Materi Video yang Diupdate Berkala"},
         {text: "Community Sesama Pejuang Skripsi"},
         {text: "Free Record Sharing Session Skripsi"},
         {text: "Berkesempatan Mendapat Desk Review dan Produk Digital Gratis"},
@@ -174,7 +174,7 @@ export default function DibimbingSatuSemester ({ auth }) {
             img: tutor1,
             linkedin: "https://www.linkedin.com/in/yordhan-mahasa-4b6144129/",
             instagram: "https://www.instagram.com/yordhangd/",
-            text: "Menciptakan akses pendidikan yang bermutu merupakan fondasi penting dalam mendorong kemajuan riset dan teknologi."
+            text: "Pendiri platform Goals Academy sekaligus menjadi Tutor Pertama yang bisa menyelesaikan segala permasalahan skripsi di berbagai jurusan."
         },
         {
             name: "Maulidya Indah Mega Saputri",

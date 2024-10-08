@@ -27,7 +27,7 @@ class PurchaseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index']);
+        $this->middleware(['auth', 'verified'])->except(['index']);
     }
     /**
      * Display a listing of the resource.
@@ -37,6 +37,11 @@ class PurchaseController extends Controller
         // $dataBimbingan = Category::where('slug', 'like', 'dibimbing%')->first()->products;
         $dataBimbingan = Products::whereHas('productType', function ($query) {
             $query->where('type', 'bimbingan');
+        })
+            ->where('is_visible', true)
+            ->with('category', 'productType')->get();
+        $dataJasaRiset = Products::whereHas('productType', function ($query) {
+            $query->where('type', 'Jasa Riset');
         })
             ->where('is_visible', true)
             ->with('category', 'productType')->get();
@@ -50,6 +55,7 @@ class PurchaseController extends Controller
         return Inertia::render('Main/Produk', [
             'dataBimbingan' => $dataBimbingan,
             'dataProdukDigital' => $dataProdukDigital,
+            'dataJasaRiset' => $dataJasaRiset,
             'dataWebinar' => $dataWebinar,
             'categories' => $categories,
         ]);
@@ -181,7 +187,7 @@ class PurchaseController extends Controller
     public function show(string $order)
     {
         // cek kondisi tanggal
-        $endDate = Carbon::now()->addDays(7);
+        $endDate = Carbon::now()->addDays(8);
 
         $counts = Course::select('date')
             ->selectRaw('COUNT(*) as count')

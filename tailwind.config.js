@@ -33,6 +33,7 @@ export default {
                     "40": "#A6A6A6",
                     "50": "#848484",
                     "60": "#737373",
+                    "70": "#4F4F4F",
                     "80": "#404040"
                 },
                 "info": {
@@ -67,6 +68,9 @@ export default {
             },
             width: {
                 'xl': '160%',
+            },
+            zIndex: {
+                '999': '999',
             },
             borderWidth: {
                 '1': '1px',
@@ -120,6 +124,10 @@ export default {
                 'bimbingan': 'url(/resources/img/produk/bg-bimbingan.png)',
                 'produk-digital': 'url(/resources/img/produk/bg-produk-digital.png)',
                 'webinar': 'url(/resources/img/produk/bg-webinar.png)',
+                'konsultasi-lg': 'url(/resources/img/home/CTA-Desk.png)',
+                'konsultasi': 'url(/resources/img/home/CTA.png)',
+                'testimony': "url(/resources/img/home/TestimoniBG.png)",
+                'testimony-mobile': "url(/resources/img/home/TestimoniBGMobile.png)",
             },
             content: {
                 'career': '"Lihat Disini"',
@@ -152,6 +160,10 @@ export default {
                 '1': '1',
             },
             keyframes: {
+                'scroll': {
+                        'from': { 'transform': 'translateX(0)' },
+                        'to': { 'transform': 'translateX(-100%)'}
+                },
                 'slideRight': {
                     'from': { 'transform': 'translateX(-100%)' },
                     'to': { 'transform': 'translateX(0)' }
@@ -176,6 +188,9 @@ export default {
                 }
             },
             animation: {
+                scroll: 'scroll 20s infinite linear',
+                'scroll-slower': 'scroll 50s infinite linear',
+                'scroll-200': 'scroll 200s infinite linear',
                 slideRight: 'slideRight 3s',
                 fadeIn: 'fadeIn 3s',
                 autoplayY: 'autoplayY 20s infinite linear',
@@ -217,10 +232,6 @@ export default {
                     '@screen 3xl': {
                         width: '80%',
                         maxWidth: '1728px'
-                    },
-                    '@screen 4xl': {
-                        width: '80%',
-                        maxWidth: '1920px'
                     },
                     '@screen 4xl': {
                         width: '80%',

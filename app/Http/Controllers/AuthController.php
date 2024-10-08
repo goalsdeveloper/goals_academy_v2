@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Moodle;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Providers\RouteServiceProvider;
@@ -11,12 +12,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class AuthController extends Controller
 {
     public function index()
     {
+        if (Auth::check()) {
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
         // LOGIN/REGISTER VIEW HERE...
         return Inertia::render('Auth/Form', ['title' => 'login']);
     }
@@ -61,6 +66,10 @@ class AuthController extends Controller
 
         Auth::login($user, true);
 
+        if($user->email_verified_at == null) {
+            return redirect()->route('verification.notice');
+        }
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -74,5 +83,20 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function redirecting_to_ecourse()
+    {
+        try {
+            $user = Auth::user();
+            $moodle = new Moodle();
+            $res = $moodle->auth_request($user);
+            if (!$res->loginurl) {
+                return redirect()->back();
+            }
+            return Inertia::location($res->loginurl);
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+        }
     }
 }

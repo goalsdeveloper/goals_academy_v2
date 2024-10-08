@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CourseStatusEnum;
 use App\Http\Controllers\Admin\Bimbingan\AddOnController;
 use App\Http\Controllers\Admin\Bimbingan\BimbinganController;
 use App\Http\Controllers\Admin\Bimbingan\CategoryController;
@@ -9,12 +10,11 @@ use App\Http\Controllers\Admin\Bimbingan\PlaceController;
 use App\Http\Controllers\Admin\Bimbingan\TopicController;
 use App\Http\Controllers\Admin\Career\JobController;
 use App\Http\Controllers\Admin\Career\ParticipantController;
-use App\Http\Controllers\Admin\ProdukDigital\CategoryController as AdminCategoryProdukDigitalController;
-use App\Http\Controllers\Admin\ProdukDigital\ProdukDigitalController;
-use App\Http\Controllers\Admin\ProdukDigital\OrderController as AdminOrderProdukDigitalController;
-use App\Http\Controllers\Admin\Ecourse\CategoryController as AdminCategoryEcourseController;
 use App\Http\Controllers\Admin\Ecourse\EcourseController;
 use App\Http\Controllers\Admin\Ecourse\OrderController as AdminOrderEcourseController;
+use App\Http\Controllers\Admin\Ecourse\PackageController as AdminPackageEcourseController;
+use App\Http\Controllers\Admin\JasaRiset\JasaRisetController;
+use App\Http\Controllers\Admin\JasaRiset\OrderController as AdminOrderJasaRisetController;
 use App\Http\Controllers\Admin\ManajemenUser\ModeratorController;
 use App\Http\Controllers\Admin\ManajemenUser\RevenueTypeController;
 use App\Http\Controllers\Admin\ManajemenUser\TutorController;
@@ -22,18 +22,20 @@ use App\Http\Controllers\Admin\ManajemenUser\UserController;
 use App\Http\Controllers\Admin\Marketing\AffiliateController;
 use App\Http\Controllers\Admin\Marketing\VoucherController;
 use App\Http\Controllers\Admin\OverviewController as AdminOverviewController;
+use App\Http\Controllers\Admin\ProdukDigital\CategoryController as AdminCategoryProdukDigitalController;
+use App\Http\Controllers\Admin\ProdukDigital\OrderController as AdminOrderProdukDigitalController;
+use App\Http\Controllers\Admin\ProdukDigital\ProdukDigitalController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
 use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
 use App\Http\Controllers\Admin\Webinar\WebinarController;
-use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\DashboardUserController;
-use App\Http\Controllers\MainController;
-// use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\EmailDiskonController;
+// use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\Moderator\Bimbingan\ModeratorHistoryBimbinganController;
 use App\Http\Controllers\Moderator\Bimbingan\ModeratorOrderController;
 use App\Http\Controllers\Moderator\Bimbingan\ProgressController;
@@ -41,26 +43,26 @@ use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewContro
 use App\Http\Controllers\Moderator\SettingController as ModeratorSettingController;
 use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
 use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
+use App\Http\Controllers\MoodleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
-use App\Http\Controllers\Tutor\OverviewController;
+use App\Models\Order;
 use App\Models\Products;
 use App\Models\TutorNote;
-use Illuminate\Support\Facades\Response;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Spatie\Analytics\Facades\Analytics;
-use Spatie\Analytics\Period;
-use Xendit\Configuration;
 
 Route::get('/token', function () {
     return csrf_token();
 });
 
 Route::get('/', function () {
-    $products = Products::with('category')->whereIn("id", [3,8,1])->get();
+    // $products = Products::with('category')->whereIn("id", [3,8,1])->get();
+    $products = Products::where('is_visible', true)->with('category')->get();
     return Inertia::render('Index', ['products' => $products]);
 });
 
@@ -68,18 +70,25 @@ Route::get('/dashboard/user/webinar', [DashboardUserController::class, 'webinar'
 Route::get('/dashboard/user/webinar/{id}', [DashboardUserController::class, 'detailWebinar']);
 Route::get('/dashboard/user/bimbingan', [DashboardUserController::class, 'bimbingan']);
 Route::get('/dashboard/user/bimbingan/{id}', [DashboardUserController::class, 'detailBimbingan']);
-
-// Route::get('/artikel', function () {
-//     return Inertia::render('Main/Artikel');
-// });
-
-// Route::get('/diskusi', function () {
-//     return Inertia::render('Main/Diskusi');
-// });
+Route::get('/get_user', [MoodleController::class, 'search_user']);
+Route::get('/enroll_user', [MoodleController::class, 'enroll_user']);
+// Route::get('/ecourse', [AuthController::class, 'redirecting_to_ecourse']);
+Route::get('/ecourse/daftar', [MoodleController::class, 'moodle_page']);
+Route::get('/ecourse/course/{id}', [MoodleController::class, 'to_course'])->name('ecourse.to_course');
 
 Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
 });
+
+// Route::get('/ecourse', function () {
+//     $data = Products::whereHas('productType', function ($query) {
+//         $query->where('type', 'E-Course');
+//     })->where('is_visible', true)->with('category', 'productType')->get();
+
+//     return Inertia::render('Main/Ecourse', [
+//         'data' => $data
+//     ]);
+// });
 
 Route::get('/profil_perusahaan', function () {
     return Inertia::render('Main/ProfilPerusahaan');
@@ -95,6 +104,14 @@ Route::get('/profil_tutor', function () {
 
 Route::get('/syarat_dan_ketentuan', function () {
     return Inertia::render('Main/SyaratDanKetentuan');
+});
+
+Route::prefix('produk')->name('produk.')->group(function () {
+    Route::prefix('ecourse')->name('ecourse.')->group(function () {
+        Route::get('/', [MoodleController::class, 'index'])->name('index');
+        Route::post('/', [MoodleController::class, 'store'])->name('store');
+        Route::get('/{id}', [MoodleController::class, 'show'])->name('show');
+    });
 });
 
 Route::get('/dibimbingsemester', function () {
@@ -150,6 +167,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::resource('order', AdminOrderBimbinganController::class);
         Route::resource('promo-code', PromoCodeController::class)->parameter('promo-code', 'promo_code');
     });
+    Route::prefix('jasa_riset')->name('jasa_riset.')->group(function () {
+        Route::resource('product', JasaRisetController::class);
+        Route::post('product/updateNumberList', [JasaRisetController::class, 'updateOrderNumber'])->name('product.updateOrderNumber');
+        Route::put('product/{product}/updateVisible', [JasaRisetController::class, 'updateVisible'])->name('product.updateVisible');
+        Route::resource('order', AdminOrderJasaRisetController::class);
+    });
     Route::prefix('webinar')->name('webinar.')->group(function () {
         Route::resource('category', AdminCategoryWebinarController::class);
         Route::resource('product', WebinarController::class);
@@ -161,7 +184,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::resource('order', AdminOrderProdukDigitalController::class);
     });
     Route::prefix('ecourse')->name('ecourse.')->group(function () {
-        Route::resource('category', AdminCategoryEcourseController::class);
+        Route::resource('package', AdminPackageEcourseController::class);
+        Route::post('package/updateNumberList', [AdminPackageEcourseController::class, 'updateOrderNumber'])->name('package.updateOrderNumber');
+        Route::put('package/{package}/updateVisible', [AdminPackageEcourseController::class, 'updateVisible'])->name('package.updateVisible');
         Route::resource('product', EcourseController::class);
         Route::resource('order', AdminOrderEcourseController::class);
     });
@@ -208,6 +233,88 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')-
 
 Route::get('files/course/download/{fileName}', [FileController::class, 'downloadFileCourse'])->name('file.course.download')->middleware('auth');
 
+Route::get('dashboard_layout_data', function () {
+    $user = Auth::user();
+
+    $moderatorBimbinganRecentOrder =
+        Order::with([
+            'products:id,product_type_id',
+            'products.productType:id,type',
+            'course:id,ongoing',
+        ])->whereHas('products', function ($query) {
+            $query->whereHas('productType', function ($subQuery) {
+                $subQuery->where('type', 'LIKE', '%bimbingan%');
+            });
+        })->whereHas('course', function ($courseQuery) {
+            $courseQuery->where('ongoing', CourseStatusEnum::WAITING);
+        })->where('status', 'Success')->count();
+
+    $moderatorBimbinganProgress =
+        Order::with([
+            'products:id,product_type_id',
+            'products.productType:id,type',
+            'course:id,ongoing',
+        ])->whereHas('products', function ($query) {
+            $query->whereHas('productType', function ($subQuery) {
+                $subQuery->where('type', 'LIKE', '%bimbingan%');
+            });
+        })->whereHas('course', function ($courseQuery) {
+            $courseQuery->where('ongoing', CourseStatusEnum::ONGOING);
+        })->where('status', 'Success')->count();
+
+    $tutorBimbinganProgress = $user->tutor()->whereIn('ongoing', [CourseStatusEnum::ONGOING])->whereNotNull('date')->whereNotNull('time')->count();
+
+    return response()->json([
+        'moderator' => [
+            'bimbingan' => [
+                'order' => $moderatorBimbinganRecentOrder,
+                'progress' => $moderatorBimbinganProgress,
+            ],
+        ],
+        'tutor' => [
+            'bimbingan' => [
+                'progress' => $tutorBimbinganProgress,
+            ],
+        ],
+    ]);
+});
+
+Route::get('pending/{order}', function (string $order) {
+    $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
+        $query->where('status', 'pending');
+    })->with('orderHistory', 'paymentMethod', 'products')->first();
+    
+    // dd(['data' => $order, '$expiry_time' => $expiry_time]);
+    return view('email.user.purchase.pending', ['data' => $order]);
+});
+
+Route::get('success/{order}', function (string $order) {
+    $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
+        $query->where('status', 'success');
+    })->with('orderHistory', 'paymentMethod', 'products')->first();
+    
+    return view('email.user.purchase.success', ['data' => $order]);
+});
+
+Route::get('email-verification/{user}', function (User $user) {
+    return view('email.user.auth.email-verification', ['data' => $user]);
+});
+
+Route::get('reset-password/{user}', function (User $user) {
+    return view('email.user.auth.reset-password', ['data' => $user]);
+});
+
+Route::get('expired/{order}', function (string $order) {
+    $order = Order::where('order_code', $order)->with('products')->first();
+    
+    return view('email.user.bimbingan.expired', ['data' => $order]);
+});
+
+Route::get('recent-order/{order}', function (string $order) {
+    $order = Order::where('order_code', $order)->with('products')->first();
+    
+    return view('email.moderator.bimbingan.recent-order', ['data' => $order]);
+});
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';

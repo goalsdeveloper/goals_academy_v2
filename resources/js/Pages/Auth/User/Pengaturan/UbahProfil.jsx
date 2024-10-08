@@ -91,10 +91,10 @@ export default function Index({ auth, userData, profileData }) {
                                 onChange={(e) =>
                                     setData("phone_number", e.target.value)
                                 }
-                                placeholder="Masukkan Nomor Telepon Anda"
+                                placeholder="Masukkan Nomor Whatsapp Anda"
                                 type="number"
                                 id="phone_number"
-                                label="Nomor Telepon"
+                                label="Nomor Whatsapp"
                             />
                             <label
                                 htmlFor="university"

@@ -1,5 +1,6 @@
 import React from "react";
-import { FiX } from "react-icons/fi";
+import { useState } from "react";
+import { FiExternalLink, FiEye, FiEyeOff, FiX } from "react-icons/fi";
 
 const GoalsTextInput = ({
     type = "text",
@@ -19,6 +20,8 @@ const GoalsTextInput = ({
     disabled = false,
     ...rest
 }) => {
+    const [showPassword, setShowPassword] = useState(false);
+    
     return (
         <div
             className={`flex flex-col ${
@@ -37,7 +40,7 @@ const GoalsTextInput = ({
                         id={name}
                         name={name}
                         required={required}
-                        type={type}
+                        type={(type == "password" && showPassword) ? "text" : type}
                         placeholder={placeholder}
                         value={data}
                         onChange={(e) => setData(e.target.value)}
@@ -49,6 +52,16 @@ const GoalsTextInput = ({
                         disabled={disabled}
                         {...rest}
                     />
+                    {type == "password" && (
+                        <div className="absolute top-0 right-0 h-full flex items-center cursor-pointer px-[3vw] md:px-[1vw]" onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? <FiEye className="text-gray-400" /> : <FiEyeOff className="text-gray-400" />}
+                        </div>
+                    )}
+                    {type == "url" && (
+                        <a className="absolute top-0 right-0 h-full flex items-center cursor-pointer px-[3vw] md:px-[1vw]" href={data} target="_blank">
+                            <FiExternalLink className="text-gray-400" />
+                        </a>
+                    )}
                     {cancelButton && data !== "" && (
                         <div className="absolute right-0 top-[5%] me-[2.4vw] md:me-[.8vw] h-[90%] cursor-pointer bg-white flex items-center">
                             <FiX

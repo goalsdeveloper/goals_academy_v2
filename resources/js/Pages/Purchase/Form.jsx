@@ -23,6 +23,7 @@ import {
 } from "@/Components/elements/GoalsSelectMultipleInput";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
 import toast, { Toaster } from "react-hot-toast";
+import { createPortal } from "react-dom";
 
 export default function Form({
     auth,
@@ -33,6 +34,8 @@ export default function Form({
     paymentMethods,
     dataProduct,
 }) {
+    console.log(dataProduct);
+    console.log(dataProduct.product_type);
     const userId = auth.user.id;
     const [isProcessed, setIsProcessed] = useState(false);
     const [showMobileSummaryCard, setShowMobileSummaryCard] = useState(false);
@@ -127,10 +130,18 @@ export default function Form({
             window.scrollTo(0, 0);
         } else {
             setIsProcessed(true);
-            post("/produk", {
-                onFinish: () => setIsProcessed(false),
-                onError: () => setIsProcessed(false),
-            });
+            if (dataProduct.product_type_id == 4) {
+                console.log("object");
+                post(route("produk.ecourse.store"), {
+                    onFinish: () => setIsProcessed(false),
+                    onError: () => setIsProcessed(false),
+                });
+            } else {
+                post("/produk", {
+                    onFinish: () => setIsProcessed(false),
+                    onError: () => setIsProcessed(false),
+                });
+            }
         }
     };
 
@@ -344,7 +355,7 @@ function MainCard({
                         </div>
                         <hr className="md:hidden mt-[3vw]" />
                     </div>
-                    <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" />
+                    {Object.keys(rules).length ? <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" /> : <></>}
                     <div
                         className="container md:w-full mx-auto md:flex md:gap-[1vw] md:text-[.9vw] mb-[20vw] md:mb-0"
                     >
@@ -507,7 +518,11 @@ function MainCard({
                                                         }
                                                     }}
                                                 >
-                                                    {item.name + " - IDR " + currency.format(item.price)}
+                                                    {item.name +
+                                                        " - IDR " +
+                                                        currency.format(
+                                                            item.price
+                                                        )}
                                                 </GoalsSelectMultipleInputItem>
                                             );
                                         })}
@@ -532,8 +547,8 @@ function MainCard({
                                             setData={(i) =>
                                                 setData("schedule", i)
                                             }
-                                            minDate={moment()}
-                                            maxDate={moment().add(6, "days")}
+                                            minDate={moment().add(1, "days")}
+                                            maxDate={moment().add(8, "days")}
                                             shouldDisableDate={unavailableDate}
                                             theme={theme}
                                             slotProps={{
@@ -1024,7 +1039,11 @@ function MainCard({
                                                         }
                                                     }}
                                                 >
-                                                    {item.name + " - IDR " + currency.format(item.price)}
+                                                    {item.name +
+                                                        " - IDR " +
+                                                        currency.format(
+                                                            item.price
+                                                        )}
                                                 </GoalsSelectMultipleInputItem>
                                             );
                                         })}
@@ -1433,41 +1452,45 @@ function SummaryCard({
                     </div>
                 </div>
             </div>
-            <PromoForm
-                show={showPromoForm}
-                setShow={setShowPromoForm}
-                data={data}
-                setData={setData}
-                temp={temp}
-                setTemp={setTemp}
-                promoHandler={promoHandler}
-            />
-            <PurchaseMethodForm
-                show={showPurchaseMethodForm}
-                setShow={setShowPurchaseMethodForm}
-                data={data}
-                setData={setData}
-                temp={temp}
-                setTemp={setTemp}
-                purchaseMethods={purchaseMethods}
-            />
-            {Object.keys(userProfile)
-                .map((i) => userProfile[i])
-                .includes("") ||
-            Object.keys(userProfile)
-                .map((i) => userProfile[i])
-                .includes(null) ? (
-                <LengkapiProfilForm
-                    userProfile={userProfile}
-                    setUserProfile={setUserProfile}
-                    show={showLengkapiProfilForm}
-                    setShow={setShowLengkapiProfilForm}
-                    data={data}
-                    setData={setData}
-                    toast={toast}
-                />
-            ) : (
-                <></>
+            {createPortal(
+                <>
+                    <PromoForm
+                        show={showPromoForm}
+                        setShow={setShowPromoForm}
+                        data={data}
+                        setData={setData}
+                        temp={temp}
+                        setTemp={setTemp}
+                        promoHandler={promoHandler}
+                    />
+                    <PurchaseMethodForm
+                        show={showPurchaseMethodForm}
+                        setShow={setShowPurchaseMethodForm}
+                        data={data}
+                        setData={setData}
+                        temp={temp}
+                        setTemp={setTemp}
+                        purchaseMethods={purchaseMethods}
+                    />
+                    {Object.keys(userProfile)
+                        .map((i) => userProfile[i])
+                        .includes("") ||
+                    Object.keys(userProfile)
+                        .map((i) => userProfile[i])
+                        .includes(null) ? (
+                        <LengkapiProfilForm
+                            userProfile={userProfile}
+                            setUserProfile={setUserProfile}
+                            show={showLengkapiProfilForm}
+                            setShow={setShowLengkapiProfilForm}
+                            data={data}
+                            setData={setData}
+                            toast={toast}
+                        />
+                    ) : (
+                        <></>
+                    )}
+                </>, document.body
             )}
         </>
     );

@@ -9,7 +9,7 @@ import Breadcrumb from "@/Pages/Auth/Admin/components/Breadcrumb";
 import FormSection from "@/Pages/Auth/Admin/components/layouts/FormSection";
 import GoalsTextInput from "@/Components/elements/GoalsTextInput";
 import GoalsTextArea from "@/Components/elements/GoalsTextArea";
-import { FiChevronLeft, FiFileText } from "react-icons/fi";
+import { FiChevronLeft, FiExternalLink, FiFileText } from "react-icons/fi";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
 import FileMediaPopup from "@/Pages/Auth/Moderator/Bimbingan/components/FileMediaPopup";
 import { SelectMultiTag, SelectMultiTagItem } from "@/Pages/Auth/Admin/Bimbingan/Product/Components/SelectMultiTag";
@@ -53,6 +53,7 @@ export default function Update({ auth, order, files }) {
                 return (
                     <GoalsTextInput
                         disabled
+                        type="url"
                         label="Meeting URL"
                         placeholder="Meeting URL"
                         data={formData.location}
