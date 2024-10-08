@@ -722,7 +722,7 @@ function NavItem({ name, href, icon, isActive, info }) {
             <div className="flex gap-[3vw] md:gap-[.75vw] !justify-start">
                 {icon} {name}
             </div>
-            <span className={`rounded-full w-[1.5vw] h-[1.5vw] ${info ? "bg-secondary" : "bg-transparent"} text-white flex items-center justify-center`}>{info}</span>
+            <span className={`rounded-full w-[1.5vw] h-[1.5vw] ${info ? "bg-secondary text-white" : "bg-transparent text-transparent"} flex items-center justify-center`}>{info}</span>
         </GoalsButton>
     );
 }

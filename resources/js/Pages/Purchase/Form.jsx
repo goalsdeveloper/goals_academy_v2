@@ -23,6 +23,7 @@ import {
 } from "@/Components/elements/GoalsSelectMultipleInput";
 import GoalsUploadFile from "@/Components/elements/GoalsUploadFile";
 import toast, { Toaster } from "react-hot-toast";
+import { createPortal } from "react-dom";
 
 export default function Form({
     auth,
@@ -1451,41 +1452,45 @@ function SummaryCard({
                     </div>
                 </div>
             </div>
-            <PromoForm
-                show={showPromoForm}
-                setShow={setShowPromoForm}
-                data={data}
-                setData={setData}
-                temp={temp}
-                setTemp={setTemp}
-                promoHandler={promoHandler}
-            />
-            <PurchaseMethodForm
-                show={showPurchaseMethodForm}
-                setShow={setShowPurchaseMethodForm}
-                data={data}
-                setData={setData}
-                temp={temp}
-                setTemp={setTemp}
-                purchaseMethods={purchaseMethods}
-            />
-            {Object.keys(userProfile)
-                .map((i) => userProfile[i])
-                .includes("") ||
-            Object.keys(userProfile)
-                .map((i) => userProfile[i])
-                .includes(null) ? (
-                <LengkapiProfilForm
-                    userProfile={userProfile}
-                    setUserProfile={setUserProfile}
-                    show={showLengkapiProfilForm}
-                    setShow={setShowLengkapiProfilForm}
-                    data={data}
-                    setData={setData}
-                    toast={toast}
-                />
-            ) : (
-                <></>
+            {createPortal(
+                <>
+                    <PromoForm
+                        show={showPromoForm}
+                        setShow={setShowPromoForm}
+                        data={data}
+                        setData={setData}
+                        temp={temp}
+                        setTemp={setTemp}
+                        promoHandler={promoHandler}
+                    />
+                    <PurchaseMethodForm
+                        show={showPurchaseMethodForm}
+                        setShow={setShowPurchaseMethodForm}
+                        data={data}
+                        setData={setData}
+                        temp={temp}
+                        setTemp={setTemp}
+                        purchaseMethods={purchaseMethods}
+                    />
+                    {Object.keys(userProfile)
+                        .map((i) => userProfile[i])
+                        .includes("") ||
+                    Object.keys(userProfile)
+                        .map((i) => userProfile[i])
+                        .includes(null) ? (
+                        <LengkapiProfilForm
+                            userProfile={userProfile}
+                            setUserProfile={setUserProfile}
+                            show={showLengkapiProfilForm}
+                            setShow={setShowLengkapiProfilForm}
+                            data={data}
+                            setData={setData}
+                            toast={toast}
+                        />
+                    ) : (
+                        <></>
+                    )}
+                </>, document.body
             )}
         </>
     );
