@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Notifications\GeneralCourseNotification;
 use App\Notifications\MidtransNotifications\ExpireNotification;
 use App\Notifications\MidtransNotifications\SuccessNotification;
+use App\Notifications\ModeratorRecentOrderNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -124,10 +125,10 @@ class HandleMidtransCallbackController extends Controller
                         }
                         $moderators = User::where('user_role', UserRoleEnum::MODERATOR)->get();
                         foreach ($moderators as $moderator) {
-                            $moderator->notify(new GeneralCourseNotification("Ada Bimbingan Baru!", "Terdapat Bimbingan Baru dengan kode {$order->order_code} yang Harus diproses!", route('moderator.bimbingan.order.edit', ['order' => $order->order_code]), ['database', 'mail']));
+                            $moderator->notify(new ModeratorRecentOrderNotification($order));
                         }
                         $notification_link = route('user.profile.detailPembelajaran', ['order_id' => $order->order_code]);
-                        $order->user->notify(new GeneralCourseNotification("Bimbingan Baru Telah Ditambahkan!", "Bimbingan dengan kode {$order->order_code} telah berhasil ditambahkan oleh sistem", route('user.profile.detailPembelajaran', ['order_id' => $order->order_code]), ['database', 'mail']));
+                        $order->user->notify(new GeneralCourseNotification("Bimbingan Baru Telah Ditambahkan!", "Bimbingan dengan kode {$order->order_code} telah berhasil ditambahkan oleh sistem", route('user.profile.detailPembelajaran', ['order_id' => $order->order_code]), ['database']));
                         break;
                     case 'Jasa Riset':
                         $notification_link = route('purchase.status', ['order' => $order->order_code]);

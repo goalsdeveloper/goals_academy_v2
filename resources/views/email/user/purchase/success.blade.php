@@ -1,7 +1,7 @@
 @extends('email.layout')
 
 <?php
-    $total_price = 'Rp ' . number_format($data->form_result['total_price'], 0, ',', '.');
+    // $total_price = 'Rp ' . number_format($data->form_result['total_price'], 0, ',', '.');
 ?>
 
 @section('content')
@@ -21,7 +21,7 @@
                 <div class="h-24 flex flex-col justify-between">
                     <div class="space-y-1">
                         <p class="font-semibold">{{ $data->products->name }}</p>
-                        <p class="font-poppins font-bold text-secondary">{{ $total_price }}</p>
+                        <p class="font-poppins font-bold text-secondary">{{ Number::currency($data->form_result['total_price'], 'IDR') }}</p>
                     </div>
                 </div>
             </div>
@@ -32,11 +32,11 @@
                 </tr>
                 <tr>
                     <td class="py-2">Subtotal</td>
-                    <td class="text-end">{{ $total_price }}</td>
+                    <td class="text-end">{{ Number::currency($data->form_result['total_price'], 'IDR') }}</td>
                 </tr>
                 <tr class="font-poppins font-semibold text-24">
                     <td class="pt-2">Total</td>
-                    <td class="text-end">{{ $total_price }}</td>
+                    <td class="text-end">{{ Number::currency($data->form_result['total_price'], 'IDR') }}</td>
                 </tr>
             </table>
         </div>

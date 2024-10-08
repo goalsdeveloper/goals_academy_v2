@@ -1,0 +1,82 @@
+<!DOCTYPE {{{ page.doctype || 'html' }}}>
+<html lang="{{ page.language || 'en' }}" xmlns:v="urn:schemas-microsoft-com:vml">
+
+<head>
+  <meta charset="{{ page.charset || 'utf-8' }}" />
+  <meta name="x-apple-disable-message-reformatting" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <!--[if mso]>
+      <noscript>
+        <xml>
+          <o:OfficeDocumentSettings
+            xmlns:o="urn:schemas-microsoft-com:office:office"
+          >
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+          </o:OfficeDocumentSettings>
+        </xml>
+      </noscript>
+      <style>
+        td,
+        th,
+        div,
+        p,
+        a,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          font-family: "Segoe UI", sans-serif;
+          mso-line-height-rule: exactly;
+        }
+      </style>
+    <![endif]-->
+  <if condition="page.title">
+    <title>{{{ page.title }}}</title>
+  </if>
+  <style>
+    {{{ page.css }}}
+  </style>
+  <stack name="head" />
+</head>
+
+<body
+  class="flex justify-center font-sans antialiased text-16 bg-neutral-20 [word-break:break-word] [-webkit-font-smoothing:antialiased] {{ page.bodyClass || '' }}">
+  <if condition="page.preheader">
+    <div class="hidden">
+      {{{ page.preheader }}}
+      <each loop="item in Array.from(Array(150))">&#8199;&#65279;&#847;
+      </each>
+    </div>
+  </if>
+  <div class="max-w-[640px] bg-white px-12 mx-auto">
+    <header class="flex justify-between pt-10 pb-8">
+      <div class="flex items-center gap-2">
+        <img src="@{{asset('img/icon-goals-academy.svg')}}" alt="" class="h-6">
+        <span class="text-poppins text-20 font-semibold leading-none text-black">Goals Academy</span>
+      </div>
+      <div class="flex items-center gap-6 text-secondary">
+        <a href="https://x.com/goalsacademy_id"><img src="@{{asset('img/icon/twitter-brands.png')}}" alt=""
+            width="100%"></a>
+        </a>
+        <a href="https://facebook.com"><img src="@{{asset('img/icon/facebook-brands.png')}}" alt="" width="100%"></a>
+        <a href="https://www.instagram.com/goalsacademy_id/"><img src="@{{asset('img/icon/instagram-brands.png')}}" alt="" width="100%"></a>
+      </div>
+    </header>
+    <x-divider />
+    <main class="">
+      <content />
+    </main>
+    <x-divider />
+    <footer class="text-center pt-10 pb-8 text-black">
+      <p>Jl. Graha Joyo Family | Kota Malang | Jawa Timur</p>
+      <p>&copy; 2024 Goals Academy. All rights reserved</p>
+    </footer>
+  </div>
+</body>
+
+</html>
