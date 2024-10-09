@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -127,7 +128,7 @@ class PurchaseController extends Controller
             $orderData->form_result = $form_result;
             $orderData->save();
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Log::error($th->getMessage());
         }
 
         Config::$serverKey = config('midtrans.server_key');
@@ -159,7 +160,7 @@ class PurchaseController extends Controller
         try {
             $responseMidtrans = CoreApi::charge($midtranPayload);
         } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            Log::error($th->getMessage());
         }
         $responseMidtrans->provider_name = strtolower($paymentMethod->name);
 

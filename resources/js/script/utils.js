@@ -1,4 +1,4 @@
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 
 export function getValue(obj, propertyString) {
     const properties = propertyString.split(".");
@@ -108,3 +108,7 @@ export const updateSearchParams = (key, value) => {
 
     router.get(window.location.pathname, Object.fromEntries(urlSearchParams.entries()), { preserveState: true });
 };
+
+export const getQuery = () => {
+    return usePage().props.ziggy.query;
+}

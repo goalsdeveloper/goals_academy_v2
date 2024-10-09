@@ -1,0 +1,20 @@
+---
+title: "The Website Weekly Newsletter"
+preheader: "👀 Lorem, ipsum, and much dolor in this week's edition."
+image: https://images.unsplash.com/photo-1565932887479-b18108f07ffd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1200&q=80
+bodyClass: bg-slate-50
+---
+
+<x-main>
+  <div class="space-y-6">
+    <h1 class="font-poppins font-semibold text-24 text-black">Your access has expired</h1>
+    <p class="text-neutral-60">Hello, Your access for <a
+        href="@{{$data->order_code}}"
+        class="font-medium text-secondary">@{{ $data->products->name }}</a> program has expired. Don't worry, you can
+      still continue your learning journey . Renew your access now!</p>
+  </div>
+  <div class="pt-10 space-y-10">
+    <a href="https://goalsacademy.id/produk" role="button"
+      class="inline-block bg-secondary text-white rounded-lg py-[14px] px-9 text-decoration-none">Buy new access</a>
+  </div>
+</x-main>
