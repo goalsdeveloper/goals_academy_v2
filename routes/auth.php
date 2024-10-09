@@ -15,8 +15,8 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth')->na
 Route::get('/lupa_password', function () {
     return Inertia::render('Auth/LupaPassword');
 })->name('auth.forgot-password.form');
-Route::get('/lupa_password/password_baru', function () {
-    return Inertia::render('Auth/PasswordBaru');
+Route::get('/lupa_password/{token}', function (String $token) {
+    return Inertia::render('Auth/PasswordBaru', ['token' => $token]);
 })->name('auth.reset-password.form');
 
 Route::post('/forgot-password', [AuthController::class, 'forgot_password'])->name('auth.forgot-password');

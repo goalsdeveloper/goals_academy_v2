@@ -256,7 +256,7 @@
           please ignore this email. To reset your password, please click this button bellow.</p>
       </div>
       <div class="space-y-10" style="padding-top: 2.5rem;">
-        <a href="{{$url}}" role="button" class="bg-secondary text-white" style="display: inline-block; border-radius: 0.5rem; background-color: rgb(255 136 84 / 1); padding: 14px 2.25rem; color: rgb(255 255 255 / 1); text-decoration: none">Reset password</a>
+        <a href="{{route('auth.reset-password.form', ['token' => $token, 'email' => $email])}}" role="button" class="bg-secondary text-white" style="display: inline-block; border-radius: 0.5rem; background-color: rgb(255 136 84 / 1); padding: 14px 2.25rem; color: rgb(255 255 255 / 1); text-decoration: none">Reset password</a>
       </div>
     </main>
     <div role="separator" class="bg-slate-300" style="background-color: rgb(203 213 225 / 1); height: 1px; line-height: 1px; margin: 24px 0">&zwj;</div>
