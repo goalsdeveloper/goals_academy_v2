@@ -1,0 +1,25 @@
+---
+title: "The Website Weekly Newsletter"
+preheader: "👀 Lorem, ipsum, and much dolor in this week's edition."
+image: https://images.unsplash.com/photo-1565932887479-b18108f07ffd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1200&q=80
+bodyClass: bg-slate-50
+---
+
+<x-main>
+  <div class="space-y-6">
+    <h1 class="font-poppins font-semibold text-24 text-black">You have a new order</h1>
+    <p class="text-neutral-60">Great news! You've just received a new order. Please log in to your dashboard to view the
+      full details of the order and begin processing it.</p>
+  </div>
+  <div class="pt-10 space-y-10">
+    <div class="space-y-2">
+      <h2 class="font-poppins font-medium text-black">Order details</h2>
+      <p class="text-neutral-60">Product's Name: <span
+          class="font-semibold text-secondary">@{{ $data->products->name }}</span></p>
+      <p class="text-neutral-60">No. Invoice: <span class="font-semibold text-secondary">@{{ $data->order_code }}</span>
+      </p>
+    </div>
+    <a href="@{{ route('moderator.bimbingan.order.edit', ['order' => $data->order_code]) }}" role="button"
+      class="inline-block bg-secondary text-white rounded-lg py-[14px] px-9 text-decoration-none">Process</a>
+  </div>
+</x-main>
