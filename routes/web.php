@@ -61,7 +61,6 @@ Route::get('/token', function () {
 });
 
 Route::get('/', function () {
-    // $products = Products::with('category')->whereIn("id", [3,8,1])->get();
     $products = Products::where('is_visible', true)->with('category')->get();
     return Inertia::render('Index', ['products' => $products]);
 });
@@ -70,25 +69,10 @@ Route::get('/dashboard/user/webinar', [DashboardUserController::class, 'webinar'
 Route::get('/dashboard/user/webinar/{id}', [DashboardUserController::class, 'detailWebinar']);
 Route::get('/dashboard/user/bimbingan', [DashboardUserController::class, 'bimbingan']);
 Route::get('/dashboard/user/bimbingan/{id}', [DashboardUserController::class, 'detailBimbingan']);
-Route::get('/get_user', [MoodleController::class, 'search_user']);
-Route::get('/enroll_user', [MoodleController::class, 'enroll_user']);
-// Route::get('/ecourse', [AuthController::class, 'redirecting_to_ecourse']);
-Route::get('/ecourse/daftar', [MoodleController::class, 'moodle_page']);
-Route::get('/ecourse/course/{id}', [MoodleController::class, 'to_course'])->name('ecourse.to_course');
 
 Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
 });
-
-// Route::get('/ecourse', function () {
-//     $data = Products::whereHas('productType', function ($query) {
-//         $query->where('type', 'E-Course');
-//     })->where('is_visible', true)->with('category', 'productType')->get();
-
-//     return Inertia::render('Main/Ecourse', [
-//         'data' => $data
-//     ]);
-// });
 
 Route::get('/profil_perusahaan', function () {
     return Inertia::render('Main/ProfilPerusahaan');
@@ -141,9 +125,7 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
     // Check if the file exists
     if (file_exists($fullPath)) {
         return response()->download($fullPath, $fileName);
-        // return response()->download($fullPath, $fileName);
     } else {
-        // Handle the case where the file doesn't exist
         return response()->json(['error' => 'File not found'], 404);
     }
 });
@@ -178,9 +160,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::resource('product', WebinarController::class);
         Route::resource('order', AdminOrderWebinarController::class);
     });
-    Route::prefix('produk_digital')->name('produk_digital.')->group(function () {
+    Route::prefix('produk-digital')->name('produk_digital.')->group(function () {
         Route::resource('category', AdminCategoryProdukDigitalController::class);
+        Route::put('category/{category}/updateVisible', [AdminCategoryProdukDigitalController::class, 'updateVisible'])->name('category.updateVisible');
         Route::resource('product', ProdukDigitalController::class);
+        Route::post('product/updateNumberList', [ProdukDigitalController::class, 'updateOrderNumber'])->name('product.updateOrderNumber');
+        Route::put('product/{product}/updateVisible', [ProdukDigitalController::class, 'updateVisible'])->name('product.updateVisible');
         Route::resource('order', AdminOrderProdukDigitalController::class);
     });
     Route::prefix('ecourse')->name('ecourse.')->group(function () {
@@ -283,7 +268,7 @@ Route::get('pending/{order}', function (string $order) {
     $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
         $query->where('status', 'pending');
     })->with('orderHistory', 'paymentMethod', 'products')->first();
-    
+
     // dd(['data' => $order, '$expiry_time' => $expiry_time]);
     return view('email.user.purchase.pending', ['data' => $order]);
 });
@@ -292,7 +277,7 @@ Route::get('success/{order}', function (string $order) {
     $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
         $query->where('status', 'success');
     })->with('orderHistory', 'paymentMethod', 'products')->first();
-    
+
     return view('email.user.purchase.success', ['data' => $order]);
 });
 
@@ -306,13 +291,13 @@ Route::get('reset-password/{user}', function (User $user) {
 
 Route::get('expired/{order}', function (string $order) {
     $order = Order::where('order_code', $order)->with('products')->first();
-    
+
     return view('email.user.bimbingan.expired', ['data' => $order]);
 });
 
 Route::get('recent-order/{order}', function (string $order) {
     $order = Order::where('order_code', $order)->with('products')->first();
-    
+
     return view('email.moderator.bimbingan.recent-order', ['data' => $order]);
 });
 
