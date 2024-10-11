@@ -38,7 +38,7 @@ class InvoiceNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $url = url('/purchase/' . $this->order->order_code);
-        return (new MailMessage)->view('email.email-generate.user.purchase.pending', ['data' => $this->order]);
+        return (new MailMessage)->view('email.user.purchase.pending', ['data' => $this->order]);
     }
 
     /**

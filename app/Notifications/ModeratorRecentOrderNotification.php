@@ -35,7 +35,7 @@ class ModeratorRecentOrderNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)->view('email.email-generate.moderator.bimbingan.recent-order', ['data' => $this->order]);
+        return (new MailMessage)->view('email.moderator.bimbingan.recent-order', ['data' => $this->order]);
     }
 
     public function toArray(object $notifiable): array

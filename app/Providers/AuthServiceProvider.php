@@ -26,10 +26,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         VerifyEmail::toMailUsing(function ($notifiable, $url) {
-            return (new MailMessage)->view('email.email-generate.user.auth.email-verification', ['url' => $url]);
+            return (new MailMessage)->view('email.user.auth.email-verification', ['url' => $url]);
         });
         ResetPassword::toMailUsing(function ($notifiable, $token) {
-            return (new MailMessage)->view('email.email-generate.user.auth.reset-password', ['token' => $token, 'email' => $notifiable->email]);
+            return (new MailMessage)->view('email.user.auth.reset-password', ['token' => $token, 'email' => $notifiable->email]);
         });
     }
 }
