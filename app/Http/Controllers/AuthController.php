@@ -7,12 +7,16 @@ use App\Models\Moodle;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class AuthController extends Controller
@@ -62,11 +66,12 @@ class AuthController extends Controller
             'user_id' => $user['id'],
         ]);
 
-        event(new Registered($user));
+        // event(new Registered($user));
+        Mail::send();
 
         Auth::login($user, true);
 
-        if($user->email_verified_at == null) {
+        if ($user->email_verified_at == null) {
             return redirect()->route('verification.notice');
         }
 
@@ -83,6 +88,48 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function forgot_password(Request $req)
+    {
+        $req->validate(['email' => 'required|email']);
+        $status = Password::sendResetLink(
+            $req->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with('success', 'Email berhasil dikirim, silahkan cek email')
+            : back()->withErrors(['error', 'Silahkan cek alamat email atau inbox email']);
+    }
+
+    public function reset_password(Request $req)
+    {
+        try {
+            $req->validate([
+                'token' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|min:8|confirmed',
+            ]);
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+        $status = Password::reset(
+            $req->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('auth.index')
+            : redirect()->back()->withErrors(['error', 'Terjadi Kesalahan']);
     }
 
     public function redirecting_to_ecourse()

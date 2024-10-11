@@ -200,7 +200,6 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')-
     Route::get('/', [ModeratorOverviewController::class, 'index'])->name('index');
     Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
         Route::resource('order', ModeratorOrderController::class)->parameters(['order' => 'order:order_code']);
-        // Route::get('order/edit/{order}', [ModeratorOrderController::class, 'edit'])->name('order.edit');
         Route::get('order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('order.showOnline');
         Route::patch('order/{order:order_code}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('order.updateOnline');
         Route::resource('progress', ProgressController::class);
@@ -273,11 +272,8 @@ Route::get('pending/{order}', function (string $order) {
     return view('email.user.purchase.pending', ['data' => $order]);
 });
 
-Route::get('success/{order}', function (string $order) {
-    $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
-        $query->where('status', 'success');
-    })->with('orderHistory', 'paymentMethod', 'products')->first();
-
+Route::get('success/{order}', function (Order $order) {
+    // $order = $order->with('orderHistory', 'paymentMethod', 'products');
     return view('email.user.purchase.success', ['data' => $order]);
 });
 
@@ -295,10 +291,28 @@ Route::get('expired/{order}', function (string $order) {
     return view('email.user.bimbingan.expired', ['data' => $order]);
 });
 
-Route::get('recent-order/{order}', function (string $order) {
-    $order = Order::where('order_code', $order)->with('products')->first();
+Route::get('recent-order/{order}', function (Order $order) {
+    // dd($order);
+    return view('email.moderator.bimbingan.recent-order', ['data' => $order->load('products')]);
+});
 
-    return view('email.moderator.bimbingan.recent-order', ['data' => $order]);
+Route::get('testemail', function () {
+    return view('email.email-generate.user.auth.reset-password', ['url' => 'https://google.com']);
+});
+
+Route::get('testemail/order-expired/{order}', function (Order $order) {
+    return view('email.email-generate.user.bimbingan.expired', ['data' => $order]);
+});
+
+Route::get('testemail/recent-order/{order}', function (Order $order) {
+    return view('email.email-generate.moderator.bimbingan.recent-order', ['data' => $order]);
+});
+
+Route::get('testemail/success/{order}', function (Order $order) {
+    return view('email.email-generate.user.purchase.success', ['data' => $order]);
+});
+Route::get('testemail/pending/{order}', function (Order $order) {
+    return view('email.email-generate.user.purchase.pending', ['data' => $order]);
 });
 
 require __DIR__ . '/profile/profile.php';

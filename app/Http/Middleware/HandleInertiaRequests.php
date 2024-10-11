@@ -37,9 +37,14 @@ class HandleInertiaRequests extends Middleware
                 // 'notifications' => $this->getUserNotification($request),
             ],
             'message' => fn () => $request->session()->get('message'),
+            'flash' => [
+                'success' => fn() => $request->session()->has('success'),
+                'message' => fn () => $request->session()->has('success') ? $request->session()->get('success') : $request->session()->get('error'),
+            ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
+                'query' => $request->query()
             ],
             'csrf_token' => csrf_token(),
         ];

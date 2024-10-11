@@ -38,12 +38,7 @@ class InvoiceNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $url = url('/purchase/' . $this->order->order_code);
-        return (new MailMessage)
-            ->subject('Segera Lakukan Pembayaran')
-            ->greeting('Hello')
-            ->line('Orderan kamu siap untuk dibayar nih!')
-            ->action('Detail Pembayaran', $url)
-            ->line('Terimakasih telah menggunakan Goals Academy!');
+        return (new MailMessage)->view('email.email-generate.user.purchase.pending', ['data' => $this->order]);
     }
 
     /**
