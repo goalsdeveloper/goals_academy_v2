@@ -38,7 +38,7 @@ class SuccessNotification extends Notification
     {
         $url = url('/purchase/' . $this->order->order_code);
 
-        return (new MailMessage)->view('email.email-generate.user.purchase.success', ['data' => $this->order]);
+        return (new MailMessage)->view('email.user.purchase.success', ['data' => $this->order]);
     }
 
     /**
