@@ -6,8 +6,11 @@ use Inertia\Inertia;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\AddOn;
 use App\Models\Category;
+use App\Models\Topic;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProdukDigitalController extends Controller
@@ -19,42 +22,27 @@ class ProdukDigitalController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-
-                $perPage = $request->input('perPage', 10);
-                $search = $request->input('search');
-
-                $query = Products::with('category', 'productType')
-                    ->whereHas('productType', function ($query) {
-                        $query->where('type', 'produk-digital');
-                    });
-
-                if ($search) {
-                    $query->where(function ($query) use ($search) {
-                        $query->where('name', 'LIKE', "%$search%")
-                            ->orWhereHas('category', function ($query) use ($search) {
-                                $query->where('name', 'LIKE', "%$search%");
-                            });
-                    });
-                }
-
-                $ebook = $query->paginate($perPage);
-
-                $ebook->getCollection()->transform(function ($product) {
-
-                    if (is_string($product->facilities)) {
-                        $product->facilities = json_decode($product->facilities, true);
-                    }
-                    if (is_string($product->form_config)) {
-                        $product->form_config = json_decode($product->form_config, true);
-                    }
-                    return $product;
-                });
-
                 return Inertia::render('Auth/Admin/ProdukDigital/Product', [
                     'status' => true,
                     'statusCode' => 200,
                     'message' => 'get data success',
-                    'data' => $ebook,
+                    'produk_digital' => function () use ($request) {
+                        $search = $request->input('search');
+                        $perPage = $request->input('perPage', 15);
+                        $produk_digital = Products::whereHas('category.productType', function ($q) {
+                            $q->where('id', 2);
+                        })->when($search, function ($q) use ($search) {
+                            $q->where(function ($query) use ($search) {
+                                $query->where('name', 'LIKE', "%$search%")
+                                    ->orWhereHas('category', function ($query) use ($search) {
+                                        $query->where('name', 'LIKE', "%$search%");
+                                    });
+                            });
+                        })->with('category')->orderBy('category_id', 'asc')->orderBy('number_list', 'asc')->paginate($perPage);
+                        return $produk_digital;
+                    },
+                    'categories' => Category::where('product_type_id', '2')->get(),
+
                 ], 200);
             } else {
                 abort(403);
@@ -63,13 +51,11 @@ class ProdukDigitalController extends Controller
             return response()->json([
                 'status' => false,
                 'statusCode' => 500,
-                'message' => 'Error: ' . $e->getMessage(),
-                'data' => null,
+                'message' => 'An error occurred while processing request',
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -77,9 +63,14 @@ class ProdukDigitalController extends Controller
     public function create()
     {
         if (Auth::user()->user_role == "admin") {
-            $categories = Category::get();
-            // return response()->json(['status' => true, 'statusCode' => 200, "data" => $categories], 201);
-            return Inertia::render('Auth/Admin/Bimbingan/Product/Create');
+            $categories = Category::where('product_type_id', 2)->get();
+            $addons = AddOn::get();
+            $topics = Topic::get();
+            return Inertia::render('Auth/Admin/ProdukDigital/Product/Create', [
+                'categories' => $categories,
+                'addons' => $addons,
+                'topics' => $topics,
+            ]);
         } else {
             abort(403);
         }
@@ -90,67 +81,105 @@ class ProdukDigitalController extends Controller
      */
     public function store(Request $request)
     {
+        // dd('test');
         try {
             if (Auth::user()->user_role == "admin") {
                 $validateData = $request->validate([
-                    // 'product_type_id' => 'required|numeric',
                     'category_id' => 'required|numeric',
                     'name' => 'required|string',
                     'slug' => 'required|string',
                     'excerpt' => 'required|string',
                     'description' => 'required|string',
+                    'contact_type' => 'required|string',
                     'price' => 'required|numeric',
-                    'product_image' => 'required|image|mimes:png,jpg,jpeg,svg',
+                    'product_image' => 'image|mimes:png,jpg,jpeg,svg',
                     'is_visible' => 'required|in:0,1',
                     'is_facilities' => 'required|in:0,1',
-                    'number_list' => 'numeric',
+                    // 'number_list' => 'numeric',
                     'total_meet' => 'required|numeric',
                     'active_period' => 'required|numeric',
-                    'facilities' => 'required|array|min:1',
+                    'facilities' => 'required|string',
                     'facilities.*.icon' => 'required|string',
                     'facilities.*.text' => 'required|string',
+                    'form_config' => '', // Allow seluruh key form_config
                     'duration' => 'numeric',
                     'promo_price' => 'numeric',
                 ]);
 
+                $form_config = json_decode(
+                    $validateData['form_config']
+                );
+
                 $product = new Products();
-                $product->product_type_id = 2; // Kenapa 2, karena ini product untuk ebook aja
+                $product->product_type_id = 2;
                 $product->category_id = $validateData['category_id'];
                 $product->name = $validateData['name'];
                 $product->slug = $validateData['slug'];
                 $product->excerpt = $validateData['excerpt'];
                 $product->description = $validateData['description'];
                 $product->price = $validateData['price'];
-                // $product->product_image = $validateData['product_image'];
                 $product->is_visible = $validateData['is_visible'];
                 $product->is_facilities = $validateData['is_facilities'];
-                $product->number_list = $validateData['number_list'];
                 $product->total_meet = $validateData['total_meet'];
                 $product->active_period = $validateData['active_period'];
-                $product->duration = $validateData['duration'];
-                $product->promo_price = $validateData['promo_price'];
+                $product->number_list = Products::newNumberList($product->category_id);
+                if (isset($validateData['duration'])) {
+                    $product->duration = $validateData['duration'];
+                }
 
-                $facilities = json_encode($validateData['facilities']);
+                if (isset($validateData['promo_price'])) {
+                    $product->promo_price = $validateData['promo_price'];
+                }
 
+                $facilities = json_decode($validateData['facilities'], true);
+                array_push($facilities);
                 $product->facilities = $facilities;
 
+                $product->form_config = $form_config;
 
-                if ($request->File('product_image')) {
-                    $product->product_image = $request->file('product_image')->store('resource/img/program/');
+                if ($request->hasFile('product_image')) {
+                    if (!Storage::disk('public')->exists('product')) {
+                        Storage::disk('public')->makeDirectory('product');
+                    }
+                    $image = $validateData['product_image'];
+                    $fileName = 'produk_digital' . time() . '.' . $image->extension();
+                    $path = Storage::disk('public')->putFileAs('product/produk_digital', $image, $fileName);
+                    $product->product_image = $path;
                 }
 
                 $product->save();
 
-                return response()->json(['status' => true, 'statusCode' => 201, 'message' => 'create product success', "data" => $product], 201);
+                if ($request->filled('addons')) {
+                    $addons = json_decode($request->addons);
+                    foreach ($addons as $addonId) {
+                        $addon = AddOn::find($addonId);
+                        if ($addon) {
+                            $product->addOns()->attach($addonId);
+                        }
+                    }
+                }
+                if ($request->filled('topics')) {
+                    $topics = json_decode($request->topics);
+                    foreach ($topics as $topicId) {
+                        $topic = Topic::find($topicId);
+                        if ($topic) {
+                            $product->topics()->attach($topicId);
+                        }
+                    }
+                }
+                // }
+
+                return redirect()->route('admin.produk_digital.product.index')->with('message', 'Product berhasil ditambahkan');
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred', 'error' => $e->getMessage()], 500);
+            return response()->json([
+                'message' => $e->getMessage(),
+            ]);
+            return redirect()->route('admin.produk_digital.product.index')->withErrors($e->getMessage());
         }
     }
-
 
     /**
      * Display the specified resource.
@@ -160,12 +189,11 @@ class ProdukDigitalController extends Controller
         try {
             if (Auth::user()->user_role == "admin") {
 
-
-                if (strcasecmp($product->productType->type, "produk-digital") !== 0) {
+                if (strcasecmp($product->productType->type, "produk_digital") != 0) {
                     return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Product not found'], 404);
                 }
 
-                $product->load('category', 'productType');
+                $product->load('category', 'productType', 'topics', 'addOns');
                 if (is_string($product->facilities)) {
                     $product->facilities = json_decode($product->facilities);
                 }
@@ -173,26 +201,37 @@ class ProdukDigitalController extends Controller
                 if (is_string($product->form_config)) {
                     $product->form_config = json_decode($product->form_config);
                 }
+
+                // return redirect()->route('admin.produk_digital.product.index');
                 return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'get data success', 'data' => $product], 200);
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while processing request', 'error' => $e->getMessage()], 500);
+            return redirect()->route('admin.produk_digital.product.index')->withErrors($e->getMessage());
+            // return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'An error occurred while processing request', 'error' => $e->getMessage()], 500);
         }
     }
-
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Products $product)
     {
-        $categories = Category::get();
-        //  return response()->json(['status' => true, 'statusCode' => 200, 'data' => [
-        //     'categories' => $categories,
-        //     'products' => $product
-        // ]], 200);
+        if (Auth::user()->user_role == "admin") {
+            $categories = Category::where('product_type_id', '2')->get();
+            $addons = AddOn::get();
+            $topics = Topic::get();
+            $product->load('category', 'addOns', 'topics');
+            return Inertia::render('Auth/Admin/ProdukDigital/Product/Update', [
+                'categories' => $categories,
+                'products' => $product,
+                'addons' => $addons,
+                'topics' => $topics,
+            ]);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -202,7 +241,8 @@ class ProdukDigitalController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                if ($product->product_type_id !== 3) {
+                // Jika product tidak bertipe produk-digital
+                if ($product->product_type_id != 2) {
                     throw new \Exception('Invalid object type');
                 }
 
@@ -213,42 +253,81 @@ class ProdukDigitalController extends Controller
                     'excerpt' => 'string',
                     'description' => 'string',
                     'price' => 'numeric',
-                    'product_image' => 'image|mimes:png,jpg,jpeg,svg',
+                    'contact_type' => 'string',
+                    'product_image' => 'image',
                     'is_visible' => 'in:0,1',
                     'is_facilities' => 'in:0,1',
-                    'number_list' => 'numeric',
+                    // 'number_list' => 'numeric',
                     'total_meet' => 'numeric',
                     'active_period' => 'numeric',
-                    'facilities' => 'array|min:1',
+                    'facilities' => 'string',
                     'facilities.*.icon' => 'string',
                     'facilities.*.text' => 'string',
+                    'form_config' => '',
+                    'duration' => 'numeric',
                     'promo_price' => 'numeric',
+
                 ]);
+
+                $form_config = json_decode(
+                    $validateData['form_config']
+                );
+                $validateData['form_config'] = $form_config;
 
                 if ($request->hasFile('product_image')) {
                     // Hapus foto lama jika ada
                     if ($product->product_image) {
-                        Storage::delete($product->product_image);
+                        Storage::disk('public')->delete($product->product_image);
                     }
-                    $validateData['product_image'] = $request->file('product_image')->store('resource/img/program/');
+                    if (!Storage::disk('public')->exists('product/produk_digital')) {
+                        Storage::disk('public')->makeDirectory('product/produk_digital');
+                    }
+                    $image = $request->file('product_image');
+                    $fileName = 'produk_digital' . time() . '.' . $image->getClientOriginalExtension();
+                    $path = $image->storeAs('product/produk_digital', $fileName, 'public');
+                    $validateData['product_image'] = $path;
+                }
+
+                if (isset($validateData['facilities'])) {
+                    $facilities = json_decode($validateData['facilities'], true);
+                    array_push($facilities);
+                    $validateData['facilities'] = $facilities;
                 }
 
                 $product->update($validateData);
 
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'update ebook success'], 200);
+                if ($request->filled('addons')) {
+                    $addons = json_decode($request->addons);
+                    $product->addOns()->sync($addons);
+                }
+
+                if ($request->filled('topics')) {
+                    $topics = json_decode($request->topics);
+                    $product->topics()->sync($topics);
+                }
+
+                return redirect()->route('admin.produk_digital.product.index')->with('message', 'Product berhasil diupdate');
             } else {
                 abort(403);
             }
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'Error: ' . $e->getMessage(),
-                'data' => null,
-            ], 500);
+            Log::error($e->getMessage());
+            return redirect()->back()->withErrors(['message' => 'Terjadi Kesalahan']);
         }
     }
 
+    public function updateVisible(Request $request, Products $product)
+    {
+        try {
+            $validateData = $request->validate([
+                'is_visible' => 'boolean',
+            ]);
+            $product->update($validateData);
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -257,26 +336,55 @@ class ProdukDigitalController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                if ($product->product_type_id !== 2) {
+                if ($product->product_type_id != 2) {
                     throw new \Exception('Invalid object type');
                 }
-
                 if ($product->product_image) {
                     Storage::delete($product->product_image);
                 }
-
                 $product->delete();
-
-                return response()->json(['status' => true, 'statusCode' => 200, 'message' => 'delete produk-digital success'], 200);
+                return redirect()->route('admin.produk_digital.product.index')->with('message', 'Product berhasil dihapus');
             } else {
                 abort(403);
             }
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect()->route('admin.produk_digital.product.index')->withErrors($e->getMessage());
         } catch (\Exception $e) {
+            return redirect()->route('admin.produk_digital.product.index')->withErrors($e->getMessage());
+        }
+    }
+
+    public function updateOrderNumber(Request $req)
+    {
+        try {
+            $origin = $req['origin_id'];
+            $destination = $req['destination_id'];
+            $category_id = $req['category_id'];
+            $max = $destination;
+            $min = $origin;
+            if ($max < $min) {
+                $max = $origin;
+                $min = $destination;
+            }
+            $products = Products::where('category_id', $category_id)->whereBetween('number_list', [$min, $max])
+                ->orderBy('number_list', 'asc')->get();
+            foreach ($products as $product) {
+                if ($product->number_list == $origin) {
+                    $product->number_list = $destination;
+                    $product->update();
+                    continue;
+                }
+                if ($destination > $origin) {
+                    $product->number_list = $product->number_list - 1;
+                } else {
+                    $product->number_list = $product->number_list + 1;
+                }
+                $product->update();
+            }
+            return redirect()->back();
+        } catch (\Throwable $th) {
             return response()->json([
-                'status' => false,
-                'statusCode' => 500,
-                'message' => 'Error: ' . $e->getMessage(),
-                'data' => null,
+                'message' => 'gagal ordering,' . $th->getMessage(),
             ], 500);
         }
     }

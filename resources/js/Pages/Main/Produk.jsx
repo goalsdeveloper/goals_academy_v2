@@ -30,7 +30,7 @@ export default function Produk({
     auth,
     dataBimbingan,
     dataJasaRiset,
-    // dataProdukDigital,
+    dataProdukDigital,
     // dataWebinar,
     categories,
 }) {
@@ -44,26 +44,6 @@ export default function Produk({
         .filter(i => i.product_type.type == 'Jasa Riset')
         .map(i => i.name)
     )
-    const dataProdukDigital = [
-        // {
-        //     name: "How To Survive Your Thesis? Start with Theme",
-        //     price: "-",
-        //     product_image: produkdigital1,
-        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
-        // },
-        // {
-        //     name: "Proposal Biar Diterima",
-        //     price: 40000,
-        //     product_image: produkdigital2,
-        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
-        // },
-        // {
-        //     name: "Kajian Pustaka",
-        //     price: 40000,
-        //     product_image: produkdigital3,
-        //     link: "https://lynk.id/goalsacademy/XBmqq6J",
-        // },
-    ];
 
     const dataWebinar = [
         // {
@@ -102,6 +82,7 @@ export default function Produk({
     const [data2, setData2] = useState(dataProdukDigital.slice());
     const [data3, setData3] = useState(dataWebinar.slice());
     const [data4, setData4] = useState(dataJasaRiset.slice());
+    const [data5, setData5] = useState(dataProdukDigital.slice());
     const [category1, setCategory1] = useState('Semua');
 
     const status = ((show[0] == show[1]) == show[2]) == false;
@@ -163,7 +144,7 @@ export default function Produk({
             <SearchBar searchHandler={searchHandler} className="hidden md:block" data={searchKeyword} setData={setSearchKeyword} />
             <Bimbingan data={data1} active={show[0]} status={status} categories={categoriesBimbingan} category={category1} setCategory={setCategory1} filterHandler={filterByCategory} />
             <JasaRiset data={data4} active={show[0]} status={status} categories={categoriesBimbingan} category={category1} setCategory={setCategory1} filterHandler={filterByCategory} />
-            <ProdukDigital data={data2} active={show[1]} status={status} />
+            <ProdukDigital data={data5} active={show[1]} status={status} />
             <Webinar data={data3} active={show[2]} status={status} />
             <Consultation />
         </MainLayout>

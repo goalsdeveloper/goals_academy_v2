@@ -61,7 +61,6 @@ Route::get('/token', function () {
 });
 
 Route::get('/', function () {
-    // $products = Products::with('category')->whereIn("id", [3,8,1])->get();
     $products = Products::where('is_visible', true)->with('category')->get();
     return Inertia::render('Index', ['products' => $products]);
 });
@@ -126,9 +125,7 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
     // Check if the file exists
     if (file_exists($fullPath)) {
         return response()->download($fullPath, $fileName);
-        // return response()->download($fullPath, $fileName);
     } else {
-        // Handle the case where the file doesn't exist
         return response()->json(['error' => 'File not found'], 404);
     }
 });
@@ -163,9 +160,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::resource('product', WebinarController::class);
         Route::resource('order', AdminOrderWebinarController::class);
     });
-    Route::prefix('produk_digital')->name('produk_digital.')->group(function () {
+    Route::prefix('produk-digital')->name('produk_digital.')->group(function () {
         Route::resource('category', AdminCategoryProdukDigitalController::class);
+        Route::put('category/{category}/updateVisible', [AdminCategoryProdukDigitalController::class, 'updateVisible'])->name('category.updateVisible');
         Route::resource('product', ProdukDigitalController::class);
+        Route::post('product/updateNumberList', [ProdukDigitalController::class, 'updateOrderNumber'])->name('product.updateOrderNumber');
+        Route::put('product/{product}/updateVisible', [ProdukDigitalController::class, 'updateVisible'])->name('product.updateVisible');
         Route::resource('order', AdminOrderProdukDigitalController::class);
     });
     Route::prefix('ecourse')->name('ecourse.')->group(function () {
