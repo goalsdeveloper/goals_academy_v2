@@ -10,12 +10,12 @@
     </div>
     <div class="space-y-6">
         <div class="flex gap-8" style="flex-wrap: wrap">
-            <img src="https://goalsacademy.id/storage/{{ $data->products->product_image }}" alt="" class="w-32 h-24 rounded-md border-1 object-cover">
+            <img src="{{ asset('storage/'.$data->products->product_image) }}" alt="" class="w-32 h-24 rounded-md border-1 object-cover">
             <div class="h-24 flex flex-col justify-between gap-2">
-                <p class="text-neutral-40">Bisa dibayar sebelum: <span class="font-semibold text-red-500">{{ $expiry_time }}</span></p>
+                <p class="text-neutral-40">Bisa dibayar sebelum: <span class="font-semibold text-red-500">{{ $data->orderHistory()->first()->payload['expiry_time']}}</span></p>
                 <div class="space-y-1">
                     <p class="font-semibold">{{ $data->products->name }}</p>
-                    <p class="font-poppins font-bold text-secondary">{{ $total_price }}</p>
+                    <p class="font-poppins font-bold text-secondary">{{ Number::currency($data->form_result['total_price'], 'IDR') }}</p>
                 </div>
             </div>
         </div>
@@ -26,15 +26,15 @@
             </tr>
             <tr>
                 <td class="py-2">Subtotal</td>
-                <td class="text-end">{{ $total_price }}</td>
+                <td class="text-end">{{ Number::currency($data->form_result['total_price'], 'IDR') }}</td>
             </tr>
             <tr class="font-poppins font-semibold text-24">
                 <td class="pt-2">Total</td>
-                <td class="text-end">{{ $total_price }}</td>
+                <td class="text-end">{{ Number::currency($data->form_result['total_price'], 'IDR') }}</td>
             </tr>
         </table>
     </div>
-    <a href="https://goalsacademy.id/purchase/{{ $data->order_code }}" role="button" class="inline-block bg-secondary text-white rounded-lg py-[14px] px-9">Pay now</a>
+    <a href="{{ route('purchase.status', ['order' => $data->order_code]) }}" role="button" class="inline-block bg-secondary text-white rounded-lg py-[14px] px-9">Pay now</a>
     {{-- <x-mail::button :url="'https://goalsacademy.id/purchase/' . $data->order_code" :align="'start'">
     Pay now
     </x-mail::button> --}}
