@@ -1,7 +1,7 @@
 @props(['url'])
 <tr>
 <td class="header">
-    <div class="w-full flex items-center justify-between">
+    <div class="w-full flex items-center justify-between gap-8" style="flex-wrap: wrap;">
         <a href="{{ $url }}" style="display: flex;" class="items-center gap-2">
             <img src="https://goalsacademy.id/img/icon-goals-academy.svg" alt="logo" style="height: 24px;">
             <span class="text-poppins text-20 font-semibold leading-none">{{ $slot }}</span>

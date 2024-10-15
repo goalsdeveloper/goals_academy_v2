@@ -54,6 +54,7 @@ use App\Models\Products;
 use App\Models\TutorNote;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -317,6 +318,11 @@ Route::get('testemail/pending/{order}', function (Order $order) {
 });
 
 Route::get('pending/new/{order}', function (Order $order) {
+    return new Pending($order);
+});
+
+Route::get('test-mail/{order}', function (Order $order) {
+    Mail::to('roziqinakhmad14juli@gmail.com')->send(new Pending($order));
     return new Pending($order);
 });
 

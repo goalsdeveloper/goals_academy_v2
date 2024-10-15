@@ -28,7 +28,7 @@ class Pending extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Payment Pending',
+            subject: 'Payment Pending - ' . $this->order->order_code,
         );
     }
 
@@ -37,7 +37,9 @@ class Pending extends Mailable
      */
     public function content(): Content
     {
-        $expiry_time = $this->order->orderHistory->first()->payload['expiry_time'];
+        $date = date_create($this->order->orderHistory->first()->payload['expiry_time']);
+        $expiry_time = date_format($date, 'd M Y H:i:s');
+        // $expiry_time = $this->order->orderHistory->first()->payload['expiry_time'];
         $total_price = 'Rp ' . number_format($this->order->form_result['total_price'], 0, ',', '.');
         return new Content(
             markdown: 'mail.user.payment.pending',
