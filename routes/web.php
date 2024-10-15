@@ -48,11 +48,13 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
+use App\Mail\User\Payment\Pending;
 use App\Models\Order;
 use App\Models\Products;
 use App\Models\TutorNote;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -313,6 +315,15 @@ Route::get('testemail/success/{order}', function (Order $order) {
 });
 Route::get('testemail/pending/{order}', function (Order $order) {
     return view('email.email-generate.user.purchase.pending', ['data' => $order]);
+});
+
+Route::get('pending/new/{order}', function (Order $order) {
+    return new Pending($order);
+});
+
+Route::get('test-mail/{order}', function (Order $order) {
+    Mail::to('roziqinakhmad14juli@gmail.com')->send(new Pending($order));
+    return new Pending($order);
 });
 
 require __DIR__ . '/profile/profile.php';
