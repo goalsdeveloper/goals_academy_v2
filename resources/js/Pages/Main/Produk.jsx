@@ -139,12 +139,43 @@ export default function Produk({
 
     return (
         <MainLayout auth={auth} title="Produk">
-            <SearchBar searchHandler={searchHandler} className="md:hidden" data={searchKeyword} setData={setSearchKeyword} />
-        <Filter show={show} showHandler={showHandler} />
-            <SearchBar searchHandler={searchHandler} className="hidden md:block" data={searchKeyword} setData={setSearchKeyword} />
-            <Bimbingan data={data1} active={show[0]} status={status} categories={categoriesBimbingan} category={category1} setCategory={setCategory1} filterHandler={filterByCategory} />
-            <JasaRiset data={data4} active={show[0]} status={status} categories={categoriesBimbingan} category={category1} setCategory={setCategory1} filterHandler={filterByCategory} />
-            <ProdukDigital data={data5} active={show[1]} status={status} />
+            <SearchBar
+                searchHandler={searchHandler}
+                className="md:hidden"
+                data={searchKeyword}
+                setData={setSearchKeyword}
+            />
+            <Filter show={show} showHandler={showHandler} />
+            <SearchBar
+                searchHandler={searchHandler}
+                className="hidden md:block"
+                data={searchKeyword}
+                setData={setSearchKeyword}
+            />
+            <Bimbingan
+                data={data1}
+                active={show[0]}
+                status={status}
+                categories={categoriesBimbingan}
+                category={category1}
+                setCategory={setCategory1}
+                filterHandler={filterByCategory}
+            />
+            <JasaRiset
+                data={data4}
+                active={show[0]}
+                status={status}
+                categories={categoriesBimbingan}
+                category={category1}
+                setCategory={setCategory1}
+                filterHandler={filterByCategory}
+            />
+            <ProdukDigital
+                data={data5}
+                active={show[1]}
+                status={status}
+                categories={categoriesBimbingan}
+            />
             <Webinar data={data3} active={show[2]} status={status} />
             <Consultation />
         </MainLayout>
