@@ -2,7 +2,7 @@
 {{-- Header --}}
 <x-slot:header>
 <x-mail::header :url="config('app.url')">
-<h2>{{ config('app.name')}}</h2>
+{{ config('app.name')}}
 </x-mail::header>
 </x-slot:header>
 
@@ -21,8 +21,7 @@
 {{-- Footer --}}
 <x-slot:footer>
 <x-mail::footer>
-Jl. Graha Joyo Family | Kota Malang | Jawa Timur
-
+Jl. Graha Joyo Family | Kota Malang | Jawa Timur<br/>
 © {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
 </x-mail::footer>
 </x-slot:footer>
