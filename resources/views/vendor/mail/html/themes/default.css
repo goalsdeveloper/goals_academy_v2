@@ -41,6 +41,7 @@ h1 {
     font-size: 1.5em;
     font-weight: 600;
     margin: 0;
+    margin-bottom: 8px;
     text-align: left;
     font-family: Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji
 }
@@ -300,4 +301,15 @@ img {
 
 .break-all {
     word-break: break-all;
+}
+
+hr {
+    border-width: 1;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #e5e7eb;
 }

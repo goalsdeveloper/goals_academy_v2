@@ -49,6 +49,7 @@ use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Mail\User\Payment\Pending;
+use App\Mail\User\Payment\Success;
 use App\Models\Order;
 use App\Models\Products;
 use App\Models\TutorNote;
@@ -321,9 +322,13 @@ Route::get('pending/new/{order}', function (Order $order) {
     return new Pending($order);
 });
 
+Route::get('success/new/{order}', function (Order $order) {
+    return new Success($order);
+});
+
 Route::get('test-mail/{order}', function (Order $order) {
-    Mail::to('roziqinakhmad14juli@gmail.com')->send(new Pending($order));
-    return new Pending($order);
+    Mail::to('roziqinakhmad14juli@gmail.com')->send(new Success($order));
+    return new Success($order);
 });
 
 require __DIR__ . '/profile/profile.php';
