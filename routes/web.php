@@ -50,6 +50,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Mail\User\Payment\Pending;
 use App\Mail\Moderator\Bimbingan\RecentOrder;
+use App\Mail\User\Auth\EmailVerification;
 use App\Mail\User\Bimbingan\Expired;
 use App\Mail\User\Payment\Success;
 use App\Models\Order;
@@ -283,7 +284,7 @@ Route::get('success/{order}', function (Order $order) {
 });
 
 Route::get('email-verification/{user}', function (User $user) {
-    return view('email.user.auth.email-verification', ['data' => $user]);
+    return view('email.user.auth.email-verification', ['data' => $user, 'url' => 'https://google.com']);
 });
 
 Route::get('reset-password/{user}', function (User $user) {
@@ -336,9 +337,13 @@ Route::get('recent-order/new/{order}', function (Order $order) {
     return new RecentOrder($order);
 });
 
-Route::get('test-mail/{order}', function (Order $order) {
-    Mail::to('roziqinakhmad14juli@gmail.com')->send(new Expired($order));
-    return new Expired($order);
+Route::get('email-verification/new/{user}', function (User $user) {
+    return new EmailVerification($user);
+});
+
+Route::get('test-mail/{user}', function (User $user) {
+    Mail::to('roziqinakhmad14juli@gmail.com')->send(new EmailVerification($user));
+    return new EmailVerification($user);
 });
 
 require __DIR__ . '/profile/profile.php';
