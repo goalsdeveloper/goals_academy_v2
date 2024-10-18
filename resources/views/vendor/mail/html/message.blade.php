@@ -21,7 +21,7 @@
 {{-- Footer --}}
 <x-slot:footer>
 <x-mail::footer>
-Jl. Graha Joyo Family | Kota Malang | Jawa Timur<br/>
+Jl. Graha Joyo Family | Kota Malang | Jawa Timur<br>
 © {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
 </x-mail::footer>
 </x-slot:footer>

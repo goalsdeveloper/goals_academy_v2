@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\User\Payment;
+namespace App\Mail\Moderator\Bimbingan;
 
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class Success extends Mailable
+class RecentOrder extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,7 +29,7 @@ class Success extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Payment Success - ' . $this->order->order_code,
+            subject: 'New Order - ' . $this->order->order_code,
         );
     }
 
@@ -38,12 +38,10 @@ class Success extends Mailable
      */
     public function content(): Content
     {
-        $total_price = 'Rp ' . number_format($this->order->form_result['total_price'], 0, ',', '.');
         return new Content(
-            markdown: 'mail.user.payment.success',
+            markdown: 'mail.moderator.bimbingan.recent-order',
             with: [
                 'data' => $this->order,
-                'total_price' => $total_price,
             ]
         );
     }

@@ -49,6 +49,7 @@ use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Mail\User\Payment\Pending;
+use App\Mail\Moderator\Bimbingan\RecentOrder;
 use App\Mail\User\Payment\Success;
 use App\Models\Order;
 use App\Models\Products;
@@ -326,9 +327,13 @@ Route::get('success/new/{order}', function (Order $order) {
     return new Success($order);
 });
 
+Route::get('recent-order/new/{order}', function (Order $order) {
+    return new RecentOrder($order);
+});
+
 Route::get('test-mail/{order}', function (Order $order) {
-    Mail::to('roziqinakhmad14juli@gmail.com')->send(new Success($order));
-    return new Success($order);
+    Mail::to('roziqinakhmad14juli@gmail.com')->send(new RecentOrder($order));
+    return new RecentOrder($order);
 });
 
 require __DIR__ . '/profile/profile.php';

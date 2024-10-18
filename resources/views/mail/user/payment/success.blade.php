@@ -1,9 +1,9 @@
 <x-mail::message>
-{{-- <img src="https://goalsacademy.id/img/vector/payment.png" alt="payment-vector" class="h-52"> --}}
 <img src={{ asset("img/vector/payment.png") }} alt="payment-vector" class="h-52">
 
 # Your payment successful
 Hello, Thank you for your payment on {{ date_format($data->created_at, "M d, Y") }}
+
 <div style="padding-top: 40px;">
     <div class="space-y-2" style="margin-bottom: 40px 0;">
         <h2>Order details</h2>
@@ -39,7 +39,7 @@ Hello, Thank you for your payment on {{ date_format($data->created_at, "M d, Y")
 </div>
 
 # Have problems or want to confirm the program?
-If you're having any issues or need to confirm program details, our team is here to help! Contact us by clicking this button bellow. <br/><br/><br>
+If you're having any issues or need to confirm program details, our team is here to help! Contact us by clicking this button bellow. <br><br><br>
 
 <x-mail::button :url="'https://api.whatsapp.com/send?phone=6282147638286'" :align="'start'">
 Contact Admin

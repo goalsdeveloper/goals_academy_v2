@@ -1,6 +1,7 @@
 <x-mail::message>
-# Thank you for the order <br/><br/>
+# Thank you for the order <br><br>
 Hello! Thanks for shopping with us. We’ve received your order No. {{ $data->order_code }}. We will notify you when we send it.
+
 <div style="padding-top: 40px;">
     <div class="space-y-2" style="margin-bottom: 40px 0;">
         <h2>Order details</h2>
