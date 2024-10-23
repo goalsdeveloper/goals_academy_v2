@@ -67,11 +67,6 @@ Route::get('/', function () {
     return Inertia::render('Index', ['products' => $products]);
 });
 
-Route::get('/dashboard/user/webinar', [DashboardUserController::class, 'webinar']);
-Route::get('/dashboard/user/webinar/{id}', [DashboardUserController::class, 'detailWebinar']);
-Route::get('/dashboard/user/bimbingan', [DashboardUserController::class, 'bimbingan']);
-Route::get('/dashboard/user/bimbingan/{id}', [DashboardUserController::class, 'detailBimbingan']);
-
 Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
 });
