@@ -188,58 +188,45 @@ export default function DashboardLayout({
                     ],
                     collapsed: true,
                 },
-                // {
-                //     name: "Webinar",
-                //     href: "",
-                //     icon: "",
-                //     isActive: false,
-                //     branches: [
-                //         {
-                //             name: "Product",
-                //             href: "/admin/webinar/product",
-                //             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
-                //             isActive:
-                //                 title == "Webinar" && subtitle == "Product",
-                //         },
-                //         {
-                //             name: "Order",
-                //             href: "/admin/webinar/order",
-                //             icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
-                //             isActive: title == "Webinar" && subtitle == "Order",
-                //         },
-                //     ],
-                //     collapsed: true,
-                // },
-                // {
-                //     name: "E-Course",
-                //     href: "",
-                //     icon: "",
-                //     isActive: false,
-                //     branches: [
-                //         {
-                //             name: "Package",
-                //             href: "/admin/ecourse/package",
-                //             icon: <TbPackages className="text-[4vw] md:text-[1vw]" />,
-                //             isActive:
-                //                 title == "E-Course" && subtitle == "Package",
-                //         },
-                //         {
-                //             name: "Product",
-                //             href: "/admin/ecourse/product",
-                //             icon: <TfiDropbox className="text-[4vw] md:text-[1vw]" />,
-                //             isActive:
-                //                 title == "E-Course" && subtitle == "Product",
-                //         },
-                //         {
-                //             name: "Order",
-                //             href: "/admin/ecourse/order",
-                //             icon: <FiShoppingCart className="text-[4vw] md:text-[1vw]" />,
-                //             isActive:
-                //                 title == "E-Course" && subtitle == "Order",
-                //         },
-                //     ],
-                //     collapsed: true,
-                // },
+                {
+                    name: "Webinar",
+                    href: "",
+                    icon: "",
+                    isActive: false,
+                    branches: [
+                        {
+                            name: "Category",
+                            href: "/admin/webinar/category",
+                            icon: (
+                                <GrTag className="text-[4vw] md:text-[1vw]" />
+                            ),
+                            isActive:
+                                title == "Webinar" &&
+                                subtitle == "Category",
+                        },
+                        {
+                            name: "Product",
+                            href: "/admin/webinar/product",
+                            icon: (
+                                <TfiDropbox className="text-[4vw] md:text-[1vw]" />
+                            ),
+                            isActive:
+                                title == "Webinar" &&
+                                subtitle == "Produk",
+                        },
+                        {
+                            name: "Order",
+                            href: "/admin/webinar/order",
+                            icon: (
+                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
+                            ),
+                            isActive:
+                                title == "Webinar" &&
+                                subtitle == "Order",
+                        },
+                    ],
+                    collapsed: true,
+                },
                 {
                     name: "Manajemen User",
                     href: "",
