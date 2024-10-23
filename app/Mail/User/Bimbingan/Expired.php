@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\User\Payment;
+namespace App\Mail\User\Bimbingan;
 
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class Pending extends Mailable
+class Expired extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,7 +29,7 @@ class Pending extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Payment Pending - ' . $this->order->order_code,
+            subject: 'Program Expired - ' . $this->order->order_code,
         );
     }
 
@@ -38,15 +38,10 @@ class Pending extends Mailable
      */
     public function content(): Content
     {
-        $date = date_create($this->order->orderHistory->first()->payload['expiry_time']);
-        $expiry_time = date_format($date, 'd M Y H:i:s');
-        $total_price = 'Rp ' . number_format($this->order->form_result['total_price'], 0, ',', '.');
         return new Content(
-            markdown: 'mail.user.payment.pending',
+            markdown: 'mail.user.bimbingan.expired',
             with: [
                 'data' => $this->order,
-                'expiry_time' => $expiry_time,
-                'total_price' => $total_price,
             ]
         );
     }

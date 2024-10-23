@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Mail\User\Payment;
+namespace App\Mail\User\Auth;
 
-use App\Models\Order;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,14 +11,14 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class Pending extends Mailable
+class ResetPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(protected Order $order)
+    public function __construct(protected User $user)
     {
         // 
     }
@@ -29,7 +29,7 @@ class Pending extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Payment Pending - ' . $this->order->order_code,
+            subject: 'Reset Password',
         );
     }
 
@@ -38,15 +38,11 @@ class Pending extends Mailable
      */
     public function content(): Content
     {
-        $date = date_create($this->order->orderHistory->first()->payload['expiry_time']);
-        $expiry_time = date_format($date, 'd M Y H:i:s');
-        $total_price = 'Rp ' . number_format($this->order->form_result['total_price'], 0, ',', '.');
         return new Content(
-            markdown: 'mail.user.payment.pending',
+            markdown: 'mail.user.auth.reset-password',
             with: [
-                'data' => $this->order,
-                'expiry_time' => $expiry_time,
-                'total_price' => $total_price,
+                'data' => $this->user,
+                'token' => 'asdf',
             ]
         );
     }
