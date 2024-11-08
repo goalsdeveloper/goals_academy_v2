@@ -4,6 +4,7 @@ import { SelectInput } from "./Components/SelectInput";
 import { SelectMultiTag } from "./Components/SelectMultiTag";
 import SliderButton from "./Components/SliderButton";
 import sampleImage from "/resources/img/program/sample image.png";
+import GoalsButton from "@/Components/GoalsButton";
 
 const View = ({ products, categories }) => {
     const currency = Intl.NumberFormat("id-ID");
@@ -32,6 +33,15 @@ const View = ({ products, categories }) => {
                 ? products.form_config
                 : products.form_config && JSON.parse(products.form_config),
         contact_type: products.contact_type,
+        webinar_properties: {
+            date: products.webinar_properties.date,
+            session: products.webinar_properties.session,
+            time: products.webinar_properties.time,
+            via: products.webinar_properties.via,
+            pemateri: products.webinar_properties.pemateri.filter(
+                (value) => value != ""
+            ),
+        },
     };
 
     const formConfigList = [
@@ -66,7 +76,19 @@ const View = ({ products, categories }) => {
                         >
                             <div className="flex gap-[1.2vw]">
                                 <div className="flex items-center justify-center w-[29vw] h-[11vw] aspect-square shadow-md rounded-[.5vw] overflow-hidden">
-                                    <img src={data.product_image ? `/storage/${data.product_image}` : sampleImage} className={`w-full h-full object-cover ${data.product_image ? "" : "grayscale"}`} alt={data.product_image} />
+                                    <img
+                                        src={
+                                            data.product_image
+                                                ? `/storage/${data.product_image}`
+                                                : sampleImage
+                                        }
+                                        className={`w-full h-full object-cover ${
+                                            data.product_image
+                                                ? ""
+                                                : "grayscale"
+                                        }`}
+                                        alt={data.product_image}
+                                    />
                                 </div>
                                 <div className="w-full space-y-[1.2vw]">
                                     <GoalsTextInput
@@ -143,35 +165,66 @@ const View = ({ products, categories }) => {
                     </div>
 
                     <div className="flex flex-col w-full gap-[.8vw]">
-                        <FormSection className="border" title="Informasi">
+                        <FormSection title="Informasi">
                             <div className="grid grid-cols-2 gap-[1.2vw]">
                                 <GoalsTextInput
-                                    label="Total Pertemuan"
+                                    label="Tanggal"
+                                    type="date"
+                                    grow
                                     disabled
-                                    data={data.total_meet}
+                                    data={data.webinar_properties.date}
+                                    required
                                 />
                                 <GoalsTextInput
-                                    label="Durasi Pertemuan"
+                                    label="Waktu"
+                                    type="time"
                                     disabled
-                                    data={data.duration}
+                                    grow
+                                    data={data.webinar_properties.time}
+                                    required
                                 />
                             </div>
-                            <GoalsTextInput
-                                label="Durasi Private Chat"
-                                disabled
-                                data={data.active_period}
-                            />
-                            <SelectMultiTag
-                                disabled
-                                value={data.add_on}
-                                label="Add on"
-                            ></SelectMultiTag>
-
-                            <SelectMultiTag
-                                value={data.topics}
-                                label="Topik"
-                                disabled
-                            ></SelectMultiTag>
+                            <div className="grid grid-cols-2 gap-[1.2vw]">
+                                <GoalsTextInput
+                                    label="Total Sesi"
+                                    type="number"
+                                    grow
+                                    disabled
+                                    data={data.webinar_properties.session}
+                                    required
+                                />
+                                <GoalsTextInput
+                                    label="Via"
+                                    type="text"
+                                    grow
+                                    disabled
+                                    data={data.webinar_properties.via}
+                                    required
+                                />
+                            </div>
+                            <div className="grid grid-cols-1 gap-[1.2vw]">
+                                {data.webinar_properties.pemateri.map(
+                                    (item, index) => {
+                                        return (
+                                            <div className="relative">
+                                                <GoalsTextInput
+                                                    label={`Pemateri ${
+                                                        index + 1
+                                                    }`}
+                                                    type="text"
+                                                    grow
+                                                    data={
+                                                        data.webinar_properties
+                                                            .pemateri[index]
+                                                    }
+                                                    required
+                                                    disabled
+                                                />
+                                            </div>
+                                        );
+                                    }
+                                )}
+                            </div>
                         </FormSection>
 
                         <FormSection
@@ -198,10 +251,7 @@ const View = ({ products, categories }) => {
                                 )}
                             </div>
                         </FormSection>
-                        <FormSection
-                            className="border"
-                            title="Opsi Formulir User"
-                        >
+                        <FormSection title="Opsi Formulir User">
                             <table className="">
                                 <thead>
                                     <tr className="bg-[#F8F8FC]">
@@ -227,7 +277,6 @@ const View = ({ products, categories }) => {
                                             </td>
                                             <td className="text-center">
                                                 <input
-                                                    disabled
                                                     type="checkbox"
                                                     name={item.key + "-visible"}
                                                     checked={data.form_config.hasOwnProperty(
@@ -237,7 +286,6 @@ const View = ({ products, categories }) => {
                                             </td>
                                             <td className="text-center">
                                                 <input
-                                                    disabled
                                                     type="checkbox"
                                                     name={
                                                         item.key + "-required"
@@ -247,19 +295,6 @@ const View = ({ products, categories }) => {
                                                             item.key
                                                         ] == 1
                                                     }
-                                                    onChange={(e) => {
-                                                        setData({
-                                                            ...data,
-                                                            form_config: {
-                                                                ...data.form_config,
-                                                                [item.key]: e
-                                                                    .target
-                                                                    .checked
-                                                                    ? 1
-                                                                    : 0,
-                                                            },
-                                                        });
-                                                    }}
                                                 />
                                             </td>
                                         </tr>

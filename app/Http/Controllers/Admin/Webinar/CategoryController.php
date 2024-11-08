@@ -55,7 +55,7 @@ class CategoryController extends Controller
         ]);
 
         $category = new Category();
-        $category->product_type_id = 2;
+        $category->product_type_id = 3;
         $category->name = $validateData['name'];
         $category->slug = $validateData['slug'];
         $category->is_visible = $validateData['is_visible'];
