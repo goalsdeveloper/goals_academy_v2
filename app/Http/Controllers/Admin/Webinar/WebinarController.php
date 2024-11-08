@@ -108,7 +108,7 @@ class WebinarController extends Controller
                 );
 
                 $product = new Products();
-                $product->product_type_id = 2;
+                $product->product_type_id = 3;
                 $product->category_id = $validateData['category_id'];
                 $product->name = $validateData['name'];
                 $product->slug = $validateData['slug'];
@@ -187,7 +187,6 @@ class WebinarController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-
                 if (strcasecmp($product->productType->type, "webinar") != 0) {
                     return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Product not found'], 404);
                 }
@@ -199,6 +198,10 @@ class WebinarController extends Controller
 
                 if (is_string($product->form_config)) {
                     $product->form_config = json_decode($product->form_config);
+                }
+
+                if (is_string($product->webinar_properties)) {
+                    $product->webinar_properties = json_decode($product->webinar_properties);
                 }
 
                 // return redirect()->route('admin.webinar.product.index');
