@@ -15,9 +15,11 @@ class ModeratorRecentOrderNotification extends Notification
      * Create a new notification instance.
      */
     protected $order;
-    public function __construct($order)
+    protected $url;
+    public function __construct($order, $url)
     {
         $this->order = $order;
+        $this->url = $url;
     }
 
     /**
@@ -35,7 +37,7 @@ class ModeratorRecentOrderNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)->view('email.moderator.bimbingan.recent-order', ['data' => $this->order]);
+        return (new MailMessage)->view('email.moderator.bimbingan.recent-order', ['data' => $this->order, 'url' => $this->url]);
     }
 
     public function toArray(object $notifiable): array
@@ -44,7 +46,7 @@ class ModeratorRecentOrderNotification extends Notification
             'category' => 'Pembelajaran',
             'title' => "Ada Bimbingan Baru!",
             'description' => "Terdapat Bimbingan Baru dengan kode {$this->order->order_code} yang Harus diproses!",
-            'link' => route('moderator.bimbingan.order.edit', ['order' => $this->order->order_code]),
+            'link' => $this->url,
         ];
     }
 

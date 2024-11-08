@@ -5,6 +5,8 @@ namespace App\Notifications\MidtransNotifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Mail\User\Payment\Success;
+use Illuminate\Mail\Mailable;
 
 class SuccessNotification extends Notification
 {
@@ -34,11 +36,11 @@ class SuccessNotification extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(object $notifiable): Mailable
     {
         $url = url('/purchase/' . $this->order->order_code);
 
-        return (new MailMessage)->view('email.user.purchase.success', ['data' => $this->order]);
+        return (new Success($this->order))->to($notifiable->email);
     }
 
     /**
