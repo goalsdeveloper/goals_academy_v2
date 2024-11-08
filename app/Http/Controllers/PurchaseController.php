@@ -48,7 +48,9 @@ class PurchaseController extends Controller
             ->with('category', 'productType')->get();
         $dataProdukDigital = Products::whereHas('productType', function ($query) {
             $query->where('slug', 'produk-digital');
-        })->with('productType', 'category')->get();
+        })
+            ->where('is_visible', true)
+            ->with('productType', 'category')->get();
         $dataWebinar = Products::whereHas('productType', function ($query) {
             $query->where('slug', 'webinar');
         })->with('productType', 'category')->get();
@@ -171,13 +173,6 @@ class PurchaseController extends Controller
         ]);
 
         $user->notify(new InvoiceNotification($orderData));
-        // if ($paymentMethod->category == 'bank_transfer') {
-        //     $delay = Carbon::now()->addHours(23)->addMinutes(55);
-        // } else {
-        //     $delay = Carbon::now()->addMinutes(10);
-        // }
-        // $user->notify(new ReminderPurchaseNotification("Segera Lakukan Pembayaran", "Tersisa 5 menit sebelum pesananmu batal!", route('purchase.status', ['order' => $orderData->id])))->delay($delay);
-
 
         return redirect()->route('purchase.status', $orderData->order_code);
     }
@@ -205,7 +200,7 @@ class PurchaseController extends Controller
             ->with('addOns')
             ->first();
         $addOns = $product->addOns()->where('is_visible', true)->get();
-        $cities = City::where('is_visible', true)->with(['places' => function($q) {
+        $cities = City::where('is_visible', true)->with(['places' => function ($q) {
             $q->where('is_visible', true);
         }])->get();
         $topics = $product->topics()->where('is_visible', true)->get();
