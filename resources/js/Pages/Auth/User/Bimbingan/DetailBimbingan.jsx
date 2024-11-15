@@ -431,7 +431,12 @@ const StatusBadgeDescription = ({ show, setShow, desc }) => {
 
                 <div className="grid space-y-[2vw] md:space-y-[.8vw] w-full">
                     <GoalsButton
-                        onClick={() => open(`https://api.whatsapp.com/send?phone=6282147638286`, '_blank')}
+                        onClick={() =>
+                            open(
+                                `https://api.whatsapp.com/send?phone=6285173276387`,
+                                "_blank"
+                            )
+                        }
                         className="w-full"
                     >
                         Hubungi Admin
