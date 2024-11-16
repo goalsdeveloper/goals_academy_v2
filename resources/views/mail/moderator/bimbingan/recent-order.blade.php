@@ -10,7 +10,7 @@ Great news! You've just received a new order. Please log in to your dashboard to
     </div>
 </div>
 
-<x-mail::button :url="'https://goalsacademy.id/moderator/bimbingan/order/' . $data->order_code . '/edit'" :align="'start'">
+<x-mail::button :url="$url" :align="'start'">
 Process Order
 </x-mail::button>
 </x-mail::message>
