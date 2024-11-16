@@ -8,7 +8,6 @@ import moment from "moment/moment";
 import { useRef } from "react";
 
 export default function Webinar({ data, active, status }) {
-    console.log(data);
     return (
         <section
             id="webinar"
@@ -89,35 +88,23 @@ function WebinarMobile({ data }) {
 
 function WebinarCard({ item, className }) {
     const currency = Intl.NumberFormat("id-ID");
-    const target = moment(item?.webinar_properties?.date);
-    const [countdown, setCountdown] = useState("00:00:00:00");
+    const target = moment(
+        item?.webinar_properties?.date + " " + item?.webinar_properties?.time
+    ).format("X");
+    const [countdown, setCountdown] = useState(item?.webinar_properties?.time);
 
     let countdownInterval = useRef();
 
     const startCountdown = () => {
         countdownInterval.current = setInterval(() => {
-            const difference = target.diff(moment());
-            if (difference <= 1) {
+            var diffTime = target - moment().format("X");
+            var duration = moment.duration(diffTime * 1000, "millisecond");
+            if (diffTime < 0) {
                 setCountdown("00:00:00:00");
-                clearInterval(countdownInterval.current);
             } else {
-                const days = target
-                    .diff(moment(), "days")
-                    .toString()
-                    .padStart(2, "0");
-                const remaining = moment();
-
-                remaining.hours(Math.floor(difference / (1000 * 60 * 60)));
-                remaining.minutes(
-                    Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
+                setCountdown(
+                    `${duration.days()}:${duration.hours()}:${duration.minutes()}:${duration.seconds()}`
                 );
-                remaining.seconds(
-                    Math.floor(
-                        ((difference % (1000 * 60 * 60)) % (1000 * 60)) / 1000
-                    )
-                );
-
-                setCountdown(days + remaining.format(":HH:mm:ss"));
             }
         }, 1000);
     };
