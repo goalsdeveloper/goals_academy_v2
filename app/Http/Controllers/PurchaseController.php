@@ -53,7 +53,7 @@ class PurchaseController extends Controller
             ->with('productType', 'category')->get();
         $dataWebinar = Products::whereHas('productType', function ($query) {
             $query->where('slug', 'webinar');
-        })->with('productType', 'category')->get();
+        })->where('is_visible', true)->with('productType', 'category')->get();
         $categories = Category::with(['productType'])->get();
         return Inertia::render('Main/Produk', [
             'dataBimbingan' => $dataBimbingan,

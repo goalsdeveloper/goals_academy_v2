@@ -240,7 +240,7 @@ class WebinarController extends Controller
         try {
             if (Auth::user()->user_role == "admin") {
                 // Jika product tidak bertipe produk-digital
-                if ($product->product_type_id != 2) {
+                if ($product->product_type_id != 3) {
                     throw new \Exception('Invalid object type');
                 }
 
@@ -319,6 +319,7 @@ class WebinarController extends Controller
             $product->update($validateData);
             return redirect()->back();
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['status' => false, 'statusCode' => 500, 'message' => 'Internal Server Error'], 500);
         }
     }
