@@ -30,6 +30,8 @@ export default function Order({ auth, orders }) {
         });
     };
 
+    const currency = Intl.NumberFormat("id-ID");
+
     const columns = useMemo(
         () => [
             {
@@ -60,9 +62,11 @@ export default function Order({ auth, orders }) {
                     false
                         ? cell.row.original.form_result.purchase_method
                               ?.admin_fee + "%"
-                        : "Rp. " +
-                          cell.row.original.form_result.purchase_method
-                              ?.admin_fee,
+                        : "Rp." +
+                          currency.format(
+                              cell.row.original.form_result.purchase_method
+                                  ?.admin_fee
+                          ),
             },
             {
                 accessorKey: "form_result.discount",
@@ -72,13 +76,16 @@ export default function Order({ auth, orders }) {
                 // accessorKey: "form_result.discount",
                 header: "Estimasi Earnings",
                 Cell: ({ cell }) =>
-                    cell.row.original.unit_price -
-                    cell.row.original.form_result.admin,
+                    "Rp." +
+                    currency.format(
+                        cell.row.original.unit_price -
+                            cell.row.original.form_result.admin
+                    ),
             },
             {
                 // accessorKey: "form_result.discount",
                 header: "Harga Total",
-                Cell: ({ cell }) => cell.row.original.unit_price,
+                Cell: ({ cell }) => "Rp." + currency.format(cell.row.original.unit_price),
             },
             {
                 // accessorKey: "form_result.discount",
@@ -91,7 +98,10 @@ export default function Order({ auth, orders }) {
                                 setShowDialog(true);
                                 setOrderDetail(
                                     data.find((e) => {
-                                        return e.order_code == cell.row.original.order_code;
+                                        return (
+                                            e.order_code ==
+                                            cell.row.original.order_code
+                                        );
                                     })
                                 );
                             }}

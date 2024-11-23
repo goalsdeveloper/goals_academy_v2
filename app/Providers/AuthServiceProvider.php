@@ -10,6 +10,7 @@ use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Log;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -28,10 +29,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         VerifyEmail::toMailUsing(function ($notifiable, $url) {
-            return (new EmailVerification($notifiable))->to($notifiable->email);
+            return (new EmailVerification($notifiable, $url))->to($notifiable->email);
         });
         ResetPassword::toMailUsing(function ($notifiable, $token) {
-            return (new AuthResetPassword($notifiable))->to($notifiable->email);
+            return (new AuthResetPassword($notifiable, $token))->to($notifiable->email);
         });
     }
 }

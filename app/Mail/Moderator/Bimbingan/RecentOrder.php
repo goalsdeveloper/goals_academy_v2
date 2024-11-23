@@ -20,7 +20,7 @@ class RecentOrder extends Mailable
      */
     public function __construct(protected Order $order)
     {
-        // 
+        //
     }
 
     /**
@@ -42,6 +42,7 @@ class RecentOrder extends Mailable
             markdown: 'mail.moderator.bimbingan.recent-order',
             with: [
                 'data' => $this->order,
+                'url' => $this->url,
             ]
         );
     }

@@ -2,8 +2,10 @@
 
 namespace App\Notifications;
 
+use App\Mail\Moderator\Bimbingan\RecentOrder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -14,8 +16,7 @@ class ModeratorRecentOrderNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    protected $order;
-    protected $url;
+    protected $order, $url;
     public function __construct($order, $url)
     {
         $this->order = $order;
@@ -35,9 +36,9 @@ class ModeratorRecentOrderNotification extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(object $notifiable): Mailable
     {
-        return (new MailMessage)->view('email.moderator.bimbingan.recent-order', ['data' => $this->order, 'url' => $this->url]);
+        return (new RecentOrder($this->order, $this->url))->to($notifiable->email);
     }
 
     public function toArray(object $notifiable): array

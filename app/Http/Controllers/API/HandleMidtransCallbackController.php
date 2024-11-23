@@ -126,11 +126,11 @@ class HandleMidtransCallbackController extends Controller
                         }
                         $moderators = User::where('user_role', UserRoleEnum::MODERATOR)->get();
                         foreach ($moderators as $moderator) {
-                            $moderator->notify(new ModeratorRecentOrderNotification($order, route('moderator.bimbingan.order.edit', ['order' => $this->order->order_code])));
+                            $moderator->notify(new ModeratorRecentOrderNotification(order: $order, url: route('moderator.bimbingan.order.edit', ['order' => $order->order_code])));
                         }
                         $admins = User::where('user_role', UserRoleEnum::ADMIN->value)->get();
                         foreach ($admins as $admin) {
-                            $admin->notify(new ModeratorRecentOrderNotification($order, route('admin.bimbingan.order.index')));
+                            $admin->notify(new ModeratorRecentOrderNotification(order: $order, url: route('admin.bimbingan.order.index')));
                         }
                         $notification_link = route('user.profile.detailPembelajaran', ['order_id' => $order->order_code]);
                         $order->user->notify(new GeneralCourseNotification("Bimbingan Baru Telah Ditambahkan!", "Bimbingan dengan kode {$order->order_code} telah berhasil ditambahkan oleh sistem", route('user.profile.detailPembelajaran', ['order_id' => $order->order_code]), ['database']));

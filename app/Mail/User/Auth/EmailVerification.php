@@ -18,9 +18,9 @@ class EmailVerification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(protected User $user)
+    public function __construct(protected User $user, protected string $url)
     {
-        // 
+        //
     }
 
     /**
@@ -42,7 +42,7 @@ class EmailVerification extends Mailable
             markdown: 'mail.user.auth.email-verification',
             with: [
                 'data' => $this->user,
-                'url' => 'https://goalsacademy.com'
+                'url' => $this->url
             ]
         );
     }

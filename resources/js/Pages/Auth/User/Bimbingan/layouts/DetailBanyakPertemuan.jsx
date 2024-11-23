@@ -509,7 +509,7 @@ function getInputBasedContactType(
                             sx={mobileDatepickerStyle.sx}
                             required
                         />
-    
+
                         {"topic" && topics.length && (
                             <GoalsSelectInput
                                 show={showForm.topic}
@@ -625,19 +625,38 @@ function StatusBadge ({ text, desc }) {
     return (
         <div className="relative">
             <GoalsBadge
-                title={<span className="flex gap-[.5vw]">{text} <div className="flex items-center justify-center text-blue-500 border-1 border-blue-500 rounded-full h-[1vw] w-[1vw]">!</div></span>}
+                title={
+                    <span className="flex gap-[.5vw]">
+                        {text}{" "}
+                        <div className="flex items-center justify-center text-blue-500 border-1 border-blue-500 rounded-full h-[1vw] w-[1vw]">
+                            !
+                        </div>
+                    </span>
+                }
                 className="text-blue-500 bg-blue-100 peer/status cursor-pointer"
             />
             <div className="absolute bottom-0 translate-y-[100%] hidden hover:block peer-hover/status:block z-10 pt-[.5vw]">
                 <div className="w-[24vw] bg-white text-dark text-center shadow-xl rounded-[.625vw] space-y-[2.08vw] pt-[2.5vw] pb-[1.67vw] px-[2.08vw]">
-                    <h3 className="font-poppins font-semibold text-[5vw] md:text-[1.25vw]">Informasi Bimbingan</h3>
+                    <h3 className="font-poppins font-semibold text-[5vw] md:text-[1.25vw]">
+                        Informasi Bimbingan
+                    </h3>
                     <p className="text-[4vw] md:text-[1vw]">{desc}</p>
                     <div>
-                        <GoalsButton onClick={() => open(`https://api.whatsapp.com/send?phone=6282147638286`, '_blank')} className="w-full">Hubungi Admin</GoalsButton>
+                        <GoalsButton
+                            onClick={() =>
+                                open(
+                                    `https://api.whatsapp.com/send?phone=6285173276387`,
+                                    "_blank"
+                                )
+                            }
+                            className="w-full"
+                        >
+                            Hubungi Admin
+                        </GoalsButton>
                         {/* <GoalsButton className="w-full">Kembali</GoalsButton> */}
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }

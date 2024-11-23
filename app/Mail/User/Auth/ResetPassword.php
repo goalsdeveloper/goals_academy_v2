@@ -18,9 +18,9 @@ class ResetPassword extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(protected User $user)
+    public function __construct(protected User $user, protected string $token)
     {
-        // 
+        //
     }
 
     /**
@@ -42,7 +42,7 @@ class ResetPassword extends Mailable
             markdown: 'mail.user.auth.reset-password',
             with: [
                 'data' => $this->user,
-                'token' => 'asdf',
+                'token' => $this->token,
             ]
         );
     }
