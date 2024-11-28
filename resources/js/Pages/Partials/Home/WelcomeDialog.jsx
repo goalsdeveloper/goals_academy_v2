@@ -9,14 +9,6 @@ export default function WelcomeDialog({ showDialog, setShowDialog, auth }) {
     return (
         <div>
             {createPortal(
-                // <GoalsPopup
-                //     show={showDialog}
-                //     setShow={() => setShowDialog(false)}
-                //     className="!absolute !w-[80%] md:!w-[38.75vw] md:!h-fit !rounded-[1vw] !inset-0 !mr-5 !my-auto !top-initial"
-                // >
-
-                // </GoalsPopup>
-
                 <>
                     <div
                         className={`${
@@ -55,9 +47,11 @@ export default function WelcomeDialog({ showDialog, setShowDialog, auth }) {
                             !
                         </h3>
                         <p className=" text-center">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore
+                            Selamat datang di tempat yang tepat! 🎉 Dapatkan
+                            pengajaran dari tutor yang solutif dan friendly
+                            kapan pun dan dimana pun kalian berada. Yuk, cek
+                            program bimbingannya, pilih yang pas buat kamu, dan
+                            mulai bimbingan sekarang! 💡📚
                         </p>
 
                         <GoalsButton

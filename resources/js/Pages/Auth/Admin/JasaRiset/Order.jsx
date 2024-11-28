@@ -1,13 +1,14 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import SubHeading from "../components/SubHeading";
 import { Link, router } from "@inertiajs/react";
-import { FiPlus } from "react-icons/fi";
+import { FiEye, FiPlus } from "react-icons/fi";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { useMemo } from "react";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 import { useState } from "react";
 import { getPaginationPages } from "@/script/utils";
 import { useEffect } from "react";
+import Dialog from "./Order/Dialog";
 
 export default function Order({ auth, orders }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
@@ -16,23 +17,21 @@ export default function Order({ auth, orders }) {
     const [keyword, setKeyword] = useState(
         new URLSearchParams(window.location.search).get("search")
     );
-    console.log(orders);
-
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
     }, [current_page]);
 
+    const [showDialog, setShowDialog] = useState(false);
+    const [orderDetail, setOrderDetail] = useState({});
+
     const onSearchCallback = (search) => {
-        router.visit(route("admin.bimbingan.order.index", { search: search }), {
+        router.visit(route("admin.jasa_riset.order.index", { search: search }), {
             only: ["orders"],
         });
     };
 
-    // const approveCallback = () => {
-    //     router.visit(route("admin.bimbingan.product.index"), {
-    //         only: ["orders"],
-    //     });
-    // };
+    const currency = Intl.NumberFormat("id-ID");
+
     const columns = useMemo(
         () => [
             {
@@ -59,12 +58,15 @@ export default function Order({ auth, orders }) {
                 // accessorKey: "form_result.admin",
                 header: "Estimasi Admin",
                 Cell: ({ cell }) =>
-                    cell.row.original.form_result.purchase_method.is_price
-                        ? "Rp. " +
-                          cell.row.original.form_result.purchase_method
-                              .admin_fee
-                        : cell.row.original.form_result.purchase_method
-                              .admin_fee + "%",
+                    cell.row.original.form_result?.purchase_method?.is_price ==
+                    false
+                        ? cell.row.original.form_result.purchase_method
+                              ?.admin_fee + "%"
+                        : "Rp." +
+                          currency.format(
+                              cell.row.original.form_result.purchase_method
+                                  ?.admin_fee
+                          ),
             },
             {
                 accessorKey: "form_result.discount",
@@ -74,13 +76,39 @@ export default function Order({ auth, orders }) {
                 // accessorKey: "form_result.discount",
                 header: "Estimasi Earnings",
                 Cell: ({ cell }) =>
-                    cell.row.original.unit_price -
-                    cell.row.original.form_result.admin,
+                    "Rp." +
+                    currency.format(
+                        cell.row.original.unit_price -
+                            cell.row.original.form_result.admin
+                    ),
             },
             {
                 // accessorKey: "form_result.discount",
                 header: "Harga Total",
-                Cell: ({ cell }) => cell.row.original.unit_price,
+                Cell: ({ cell }) =>
+                    "Rp." + currency.format(cell.row.original.unit_price),
+            },
+            {
+                // accessorKey: "form_result.discount",
+                header: "Detail Harga",
+                Cell: ({ cell }) => (
+                    <button>
+                        <FiEye
+                            className="text-[1.2vw] text-gray-400"
+                            onClick={() => {
+                                setShowDialog(true);
+                                setOrderDetail(
+                                    data.find((e) => {
+                                        return (
+                                            e.order_code ==
+                                            cell.row.original.order_code
+                                        );
+                                    })
+                                );
+                            }}
+                        />
+                    </button>
+                ),
             },
             {
                 accessorKey: "updated_at",
@@ -109,6 +137,14 @@ export default function Order({ auth, orders }) {
         >
             <div className="space-y-[1.6vw]">
                 <SubHeading title="Order" />
+                <Dialog
+                    {...{
+                        showDialog,
+                        setShowDialog,
+                        orderDetail,
+                        setOrderDetail,
+                    }}
+                />
 
                 <GoalsDashboardTable
                     isHeadVisible

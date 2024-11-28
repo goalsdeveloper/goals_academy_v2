@@ -189,7 +189,7 @@ class ProdukDigitalController extends Controller
         try {
             if (Auth::user()->user_role == "admin") {
 
-                if (strcasecmp($product->productType->type, "produk_digital") != 0) {
+                if (strcasecmp($product->productType->type, "Produk Digital") != 0) {
                     return response()->json(['status' => false, 'statusCode' => 404, 'message' => 'Product not found'], 404);
                 }
 

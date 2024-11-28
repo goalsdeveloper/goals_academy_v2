@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Mail\PendingOrderEmail;
+use App\Mail\User\Payment\Pending;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -40,10 +40,7 @@ class InvoiceNotification extends Notification
     public function toMail(object $notifiable): Mailable
     {
         $url = url('/purchase/' . $this->order->order_code);
-        // return (new MailMessage)->view('email.user.purchase.pending', ['data' => $this->order]);
-        // return (new MailMessage)->se('mail.user.payment.pending', ['data' => $this->order]);
-        // return new PendingOrderEmail($this->order)
-        return (new PendingOrderEmail($this->order))
+        return (new Pending($this->order))
             ->to($notifiable->email);
     }
 

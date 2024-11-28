@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Moodle;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class ExpiredEcourseCheckerCron extends Command
 {

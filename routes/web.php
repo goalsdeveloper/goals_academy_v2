@@ -159,7 +159,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
     });
     Route::prefix('webinar')->name('webinar.')->group(function () {
         Route::resource('category', AdminCategoryWebinarController::class);
+        Route::put('category/{category}/updateVisible', [AdminCategoryWebinarController::class, 'updateVisible'])->name('category.updateVisible');
         Route::resource('product', WebinarController::class);
+        Route::put('product/{product}/updateVisible', [WebinarController::class, 'updateVisible'])->name('product.updateVisible');
         Route::resource('order', AdminOrderWebinarController::class);
     });
     Route::prefix('produk-digital')->name('produk_digital.')->group(function () {
@@ -329,22 +331,22 @@ Route::get('expired/new/{order}', function (Order $order) {
     return new Expired($order);
 });
 
-Route::get('email-verification/new/{user}', function (User $user) {
-    return new EmailVerification($user);
-});
+// Route::get('email-verification/new/{user}', function (User $user) {
+//     return new EmailVerification($user);
+// });
 
-Route::get('reset-password/new/{user}', function (User $user) {
-    return new ResetPassword($user);
-});
+// Route::get('reset-password/new/{user}', function (User $user) {
+//     return new ResetPassword($user);
+// });
 
-Route::get('recent-order/new/{order}', function (Order $order) {
-    return new RecentOrder($order);
-});
+// Route::get('recent-order/new/{order}', function (Order $order) {
+//     return new RecentOrder($order);
+// });
 
-Route::get('test-mail/{user}', function (User $user) {
-    Mail::to('roziqinakhmad14juli@gmail.com')->send(new ResetPassword($user));
-    return new ResetPassword($user);
-});
+// Route::get('test-mail/{user}', function (User $user) {
+//     Mail::to('roziqinakhmad14juli@gmail.com')->send(new ResetPassword($user));
+//     return new ResetPassword($user);
+// });
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';

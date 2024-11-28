@@ -27,11 +27,11 @@ const Dialog = ({
                         onSubmit={(e) => {
                             e.preventDefault();
                             if (showDialog.create) {
-                                post(route("admin.produk_digital.category.store"), {
+                                post(route("admin.webinar.category.store"), {
                                     onFinish: () => callback('create')
                                 });
                             } else if (showDialog.edit) {
-                                put(route("admin.produk_digital.category.update", formData.id), {
+                                put(route("admin.webinar.category.update", formData.id), {
                                     onFinish: () => callback('edit')
                                 });
                             }

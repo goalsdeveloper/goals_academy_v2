@@ -11,7 +11,7 @@ Hello! Thanks for shopping with us. We’ve received your order No. {{ $data->or
         <table style="margin-bottom: 24px;">
             <tr style="vertical-align: top;">
                 <td>
-                    <img src="https://goalsacademy.id/storage/{{ $data->products->product_image }}" alt="product-image" width="128" height="96" style="object-fit: cover; border-width: 1px; border-radius: 6px;">
+                    <img src="{{Storage::url($data->products->product_image)}}" alt="product-image" width="128" height="96" style="object-fit: cover; border-width: 1px; border-radius: 6px;">
                 </td>
                 <td style="padding-left: 2em;">
                     <div style="height: 96px;">
@@ -41,7 +41,7 @@ Hello! Thanks for shopping with us. We’ve received your order No. {{ $data->or
     </div>
 </div>
 
-<x-mail::button :url="'https://goalsacademy.id/purchase/' . $data->order_code" :align="'start'">
+<x-mail::button :url="route('purchase.status', ['order' => $data->order_code])" :align="'start'">
 Pay now
 </x-mail::button>
 </x-mail::message>

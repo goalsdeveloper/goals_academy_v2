@@ -31,7 +31,7 @@ export default function Produk({
     dataBimbingan,
     dataJasaRiset,
     dataProdukDigital,
-    // dataWebinar,
+    dataWebinar,
     categories,
 }) {
     const categoriesBimbingan = ['Semua'].concat(
@@ -44,37 +44,6 @@ export default function Produk({
         .filter(i => i.product_type.type == 'Jasa Riset')
         .map(i => i.name)
     )
-
-    const dataWebinar = [
-        // {
-        //     title: "Tips Membuat Judul Skripsi Mudah ACC",
-        //     price: 34000,
-        //     image: webinar2,
-        //     date: "2023-10-24 19:00:00",
-        //     link: "https://lynk.id/goalsacademy/oZyPAav",
-        // },
-        // {
-        //     title: "Teknik Lolos Paraphrase Penulisan Proposal Skripsi",
-        //     price: 34000,
-        //     image: webinar1,
-        //     date: "2023-10-25 19:00:00",
-        //     link: "https://lynk.id/goalsacademy/a2j9vM8",
-        // },
-        // {
-        //     title: "Tips & Trick Presentasi Sidang Skripsi yang Disukai Dosen",
-        //     price: 34000,
-        //     image: webinar3,
-        //     date: "2023-10-26 19:00:00",
-        //     link: "https://lynk.id/goalsacademy/lmzQOyX",
-        // },
-        // {
-        //     title: "Bundling Webinar Series Goals Academy",
-        //     price: 94000,
-        //     image: webinar4,
-        //     date: "2023-10-24 19:00:00",
-        //     link: "https://lynk.id/goalsacademy/nGV0BrP",
-        // },
-    ];
 
     const [show, setShow] = useState(Array(3).fill(false));
     const { data: searchKeyword, setData: setSearchKeyword } = useForm({keyword: ''});

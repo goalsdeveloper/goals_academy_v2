@@ -48,8 +48,7 @@ export default function Product({ auth, produk_digital, categories }) {
     async function getProdukDigitalDetail(id) {
         setIsLoading(true);
         setProduct(null);
-        axios.get("/admin/produk_digital/product/" + id).then((res) => {
-            // console.log(res.data.data)
+        axios.get(route('admin.produk_digital.product.show', {id: id})).then((res) => {
             setProduct(res.data.data);
             setIsLoading(false);
         });
