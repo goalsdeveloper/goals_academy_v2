@@ -172,11 +172,11 @@ export default function MainHeader({ auth, title, className }) {
         <header
             className={`${
                 isMobile ? "shadow" : ""
-            } overflow-y-visible overflow-x-clip sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50 ${className}`}
+            } overflow-y-visible fixed md:sticky w-full top-0 right-0 bg-white text-dark lg:text-base z-50 ${className}`}
         >
             {/* This is element to generate some tailwind css to make responsive header. Don't erase it */}
             <div className="md:h-[7.5vw] hidden"></div>
-            <nav className="container flex flex-wrap items-center justify-between mx-auto duration-500 h-[20vw] md:h-[10vw]">
+            <nav className="overflow-y-visible container flex flex-wrap items-center justify-between mx-auto duration-500 h-[20vw] md:h-[10vw]">
                 {isMobile ? (
                     <MobileHeader
                         {...{
