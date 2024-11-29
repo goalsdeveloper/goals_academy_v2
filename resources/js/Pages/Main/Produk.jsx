@@ -51,42 +51,64 @@ export default function Produk({
     const [data2, setData2] = useState(dataProdukDigital.slice());
     const [data3, setData3] = useState(dataWebinar.slice());
     const [data4, setData4] = useState(dataJasaRiset.slice());
-    const [data5, setData5] = useState(dataProdukDigital.slice());
     const [category1, setCategory1] = useState('Semua');
+    const [category4, setCategory4] = useState('Semua');
 
     const status = ((show[0] == show[1]) == show[2]) == false;
 
-    const showHandler = (id) => {
-        const temp = Array(3).fill(false);
-        temp[id] = !show[id];
-        setShow(temp);
-    };
-
     const searchHandler = (keyword) => {
-        let temp1
-        if (category1 == 'Semua') {
-            temp1 = dataBimbingan
-                .slice()
-                .filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()));
-        } else {
-            temp1 = dataBimbingan
-                .slice()
-                .filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()))
-                .filter((item) => item.category.name == category1);
-        }
+        const temp1 = dataBimbingan
+            .slice()
+            .filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()));
         const temp2 = dataProdukDigital
             .slice()
             .filter((item) => item.name.toLowerCase().includes(keyword));
         const temp3 = dataWebinar
             .slice()
-            .filter((item) => item.title.toLowerCase().includes(keyword));
+            .filter((item) => item.name.toLowerCase().includes(keyword));
+        const temp4 = dataJasaRiset
+            .slice()
+            .filter((item) => item.name.toLowerCase().includes(keyword));
         setData1(temp1);
         setData2(temp2);
         setData3([]);
         setTimeout(() => {
             setData3(temp3);
         }, 0);
+        setData4(temp4);
     };
+
+    // const showHandler = (id) => {
+    //     const temp = Array(3).fill(false);
+    //     temp[id] = !show[id];
+    //     setShow(temp);
+    // };
+
+    // const searchHandler = (keyword) => {
+    //     let temp1
+    //     if (category1 == 'Semua') {
+    //         temp1 = dataBimbingan
+    //             .slice()
+    //             .filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()));
+    //     } else {
+    //         temp1 = dataBimbingan
+    //             .slice()
+    //             .filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()))
+    //             .filter((item) => item.category.name == category1);
+    //     }
+    //     const temp2 = dataProdukDigital
+    //         .slice()
+    //         .filter((item) => item.name.toLowerCase().includes(keyword));
+    //     const temp3 = dataWebinar
+    //         .slice()
+    //         .filter((item) => item.title.toLowerCase().includes(keyword));
+    //     setData1(temp1);
+    //     setData2(temp2);
+    //     setData3([]);
+    //     setTimeout(() => {
+    //         setData3(temp3);
+    //     }, 0);
+    // };
 
     const filterByCategory = (category, productType) => {
         if (productType == "bimbingan") {
@@ -96,13 +118,27 @@ export default function Produk({
                 .slice()
                 .filter((item) => item.name.toLowerCase().includes(searchKeyword.keyword));
             } else {
-                temp1 = dataBimbingan
-                    .slice()
-                    .filter((item) => item.name.toLowerCase().includes(searchKeyword.keyword))
-                    .filter((item) => item.category.name == category)
-            }
+                    temp1 = dataBimbingan
+                        .slice()
+                        .filter((item) => item.name.toLowerCase().includes(searchKeyword.keyword))
+                        .filter((item) => item.category.name == category)
+                }
             setData1(temp1)
             setCategory1(category)
+        } else if (productType == "jasa-riset") {
+            let temp4
+            if (category == 'Semua') {
+                temp4 = dataJasaRiset
+                .slice()
+                .filter((item) => item.name.toLowerCase().includes(searchKeyword.keyword));
+            } else {
+                    temp4 = dataJasaRiset
+                        .slice()
+                        .filter((item) => item.name.toLowerCase().includes(searchKeyword.keyword))
+                        .filter((item) => item.category.name == category)
+                }
+            setData4(temp4)
+            setCategory4(category)
         }
     }
 
@@ -114,7 +150,7 @@ export default function Produk({
                 data={searchKeyword}
                 setData={setSearchKeyword}
             />
-            <Filter show={show} showHandler={showHandler} />
+            {/* <Filter show={show} showHandler={showHandler} /> */}
             <SearchBar
                 searchHandler={searchHandler}
                 className="hidden md:block"
@@ -134,16 +170,19 @@ export default function Produk({
                 data={data4}
                 active={show[0]}
                 status={status}
-                categories={categoriesBimbingan}
-                category={category1}
-                setCategory={setCategory1}
+                categories={categoriesJasaRiset}
+                category={category4}
+                setCategory={setCategory4}
                 filterHandler={filterByCategory}
-            />
+                />
             <ProdukDigital
-                data={data5}
+                data={data2}
                 active={show[1]}
                 status={status}
-                categories={categoriesBimbingan}
+                // categories={categoriesBimbingan}
+                // category={category2}
+                // setCategory={setCategory2}
+                // filterHandler={filterByCategory}
             />
             <Webinar data={data3} active={show[2]} status={status} />
             <Consultation />

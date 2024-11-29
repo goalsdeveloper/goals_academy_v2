@@ -15,31 +15,33 @@ export default function ProdukDigital({
 }) {
     return (
         <section
-            id="bimbingan"
+            id="webinar"
             className={`${
                 active || status ? "" : "hidden"
             } my-8 xl:my-12 3xl:my-16 overflow-hidden`}
         >
             <div className="container mx-auto hidden md:block">
                 <h2 className="mb-4 sm:mb-6 xl:mb-10 3xl:mb-14">Produk Digital</h2>
-                <div className="grid grid-cols-3 justify-center md:gap-8 xl:gap-16 pb-2">
-                    {data.map((item, index) => {
-                        const model =
-                            (index + 1) % 3 == 2
-                                ? "justify-center"
-                                : (index + 1) % 3 == 0
-                                ? "justify-end"
-                                : "";
-                        return (
-                            <div key={index} className={`flex ${model}`}>
-                                <BimbinganCard
-                                    item={item}
-                                    className="w-72 md:w-[21vw] 3xl:w-[20vw]"
-                                />
-                            </div>
-                        );
-                    })}
-                </div>
+                {data.length ? (
+                    <div className="grid grid-cols-3 justify-center md:gap-8 xl:gap-16 pb-2">
+                        {data.map((item, index) => {
+                            const model =
+                                (index + 1) % 3 == 2
+                                    ? "justify-center"
+                                    : (index + 1) % 3 == 0
+                                    ? "justify-end"
+                                    : "";
+                            return (
+                                <div key={index} className={`flex ${model}`}>
+                                    <BimbinganCard
+                                        item={item}
+                                        className="w-72 md:w-[21vw] 3xl:w-[20vw]"
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
+                ) : <div className="w-full text-center">Produk tidak ditemukan</div>}
             </div>
             <ProdukDigitalMobile
                 data={data}
@@ -64,15 +66,15 @@ function ProdukDigitalMobile({
             <div className="flex justify-between mb-6 xs:mb-8">
                 <div className="md:w-6/12">
                     <h2 className="text-[5vw]">
-                        Bimbingan <span className="text-primary">Skripsi</span>
+                        Produk <span className="text-primary">Digital</span>
                     </h2>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                    <ButtonSwiper name="bimbingan-prev" direction="left" />
-                    <ButtonSwiper name="bimbingan-next" direction="right" />
+                    <ButtonSwiper name="webinar-prev" direction="left" />
+                    <ButtonSwiper name="webinar-next" direction="right" />
                 </div>
             </div>
-            <Swiper
+            {/* <Swiper
                 modules={[Navigation, Pagination, A11y, FreeMode]}
                 slidesPerView={"auto"}
                 grabCursor={true}
@@ -91,14 +93,14 @@ function ProdukDigitalMobile({
                                         ? "border-secondary text-secondary"
                                         : "border-light-grey"
                                 }`}
-                                onClick={() => filterHandler(item, "bimbingan")}
+                                onClick={() => filterHandler(item, "webinar")}
                             >
                                 {item}
                             </div>
                         </SwiperSlide>
                     );
                 })}
-            </Swiper>
+            </Swiper> */}
             <Swiper
                 modules={[Navigation, Pagination, A11y, FreeMode]}
                 className="swiper-custom"
@@ -107,8 +109,8 @@ function ProdukDigitalMobile({
                 grabCursor={true}
                 freeMode={true}
                 navigation={{
-                    nextEl: ".bimbingan-next",
-                    prevEl: ".bimbingan-prev",
+                    nextEl: ".webinar-next",
+                    prevEl: ".webinar-prev",
                 }}
             >
                 {data.map((item, index) => {

@@ -19,25 +19,27 @@ export default function Webinar({ data, active, status }) {
                 <h2 className="mb-4 sm:mb-6 xl:mb-10 3xl:mb-14">
                     Webinar Skripsi
                 </h2>
-                <div className="grid grid-cols-3 justify-center md:gap-8 xl:gap-16 pb-2">
-                    {data.map((item, index) => {
-                        const model =
-                            (index + 1) % 3 == 2
-                                ? "justify-center"
-                                : (index + 1) % 3 == 0
-                                ? "justify-end"
-                                : "";
-                        return (
-                            <div key={index} className={`flex ${model}`}>
-                                <WebinarCard
-                                    key={index}
-                                    item={item}
-                                    className="w-[70vw] md:w-[21vw] 3xl:w-[20vw]"
-                                />
-                            </div>
-                        );
-                    })}
-                </div>
+                {data.length ? (
+                    <div className="grid grid-cols-3 justify-center md:gap-8 xl:gap-16 pb-2">
+                        {data.map((item, index) => {
+                            const model =
+                                (index + 1) % 3 == 2
+                                    ? "justify-center"
+                                    : (index + 1) % 3 == 0
+                                    ? "justify-end"
+                                    : "";
+                            return (
+                                <div key={index} className={`flex ${model}`}>
+                                    <WebinarCard
+                                        key={index}
+                                        item={item}
+                                        className="w-[70vw] md:w-[21vw] 3xl:w-[20vw]"
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
+                ) : <div className="w-full text-center">Produk tidak ditemukan</div>}
             </div>
             <WebinarMobile data={data} />
         </section>
