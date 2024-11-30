@@ -16,7 +16,6 @@ export default function Order({ auth, orders }) {
     const [keyword, setKeyword] = useState(
         new URLSearchParams(window.location.search).get("search")
     );
-    console.log(orders)
 
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));

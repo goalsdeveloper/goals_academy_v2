@@ -18,7 +18,6 @@ export default function LupaPassword (prop) {
     });
     const submit = (e) => {
         e.preventDefault()
-        console.log(data)
         router.post(route("auth.reset-password"), data, {
             onSuccess: (page) => {
                 toast.success(page.props.flash.message);

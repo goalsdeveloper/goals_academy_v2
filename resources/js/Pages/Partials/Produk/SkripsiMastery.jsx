@@ -4,7 +4,7 @@ import { Navigation, Pagination, A11y, FreeMode } from "swiper/modules";
 import ButtonSwiper from "@/Components/ButtonSwiper";
 import BimbinganCard from "@/Components/BimbinganCard";
 
-export default function ProdukDigital({
+export default function SkripsiMastery({
     data,
     active,
     status,
@@ -15,13 +15,13 @@ export default function ProdukDigital({
 }) {
     return (
         <section
-            id="produk-digital"
+            id="skripsi-mastery"
             className={`${
                 active || status ? "" : "hidden"
             } my-8 xl:my-12 3xl:my-16 overflow-hidden`}
         >
             <div className="container mx-auto hidden md:block">
-                <h2 className="mb-4 sm:mb-6 xl:mb-10 3xl:mb-14">Produk Digital</h2>
+                <h2 className="mb-4 sm:mb-6 xl:mb-10 3xl:mb-14">Skripsi Mastery</h2>
                 {data.length ? (
                     <div className="grid grid-cols-3 justify-center md:gap-8 xl:gap-16 pb-2">
                         {data.map((item, index) => {
@@ -43,7 +43,7 @@ export default function ProdukDigital({
                     </div>
                 ) : <div className="w-full text-center">Produk tidak ditemukan</div>}
             </div>
-            <ProdukDigitalMobile
+            <SkripsiMasteryMobile
                 data={data}
                 categories={categories}
                 category={category}
@@ -54,7 +54,7 @@ export default function ProdukDigital({
     );
 }
 
-function ProdukDigitalMobile({
+function SkripsiMasteryMobile({
     data,
     categories,
     category,
@@ -70,8 +70,8 @@ function ProdukDigitalMobile({
                     </h2>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                    <ButtonSwiper name="produk-digital-prev" direction="left" />
-                    <ButtonSwiper name="produk-digital-next" direction="right" />
+                    <ButtonSwiper name="skripsi-mastery-prev" direction="left" />
+                    <ButtonSwiper name="skripsi-mastery-next" direction="right" />
                 </div>
             </div>
             {/* <Swiper
@@ -93,7 +93,7 @@ function ProdukDigitalMobile({
                                         ? "border-secondary text-secondary"
                                         : "border-light-grey"
                                 }`}
-                                onClick={() => filterHandler(item, "produk-digital")}
+                                onClick={() => filterHandler(item, "skripsi-mastery")}
                             >
                                 {item}
                             </div>
@@ -109,8 +109,8 @@ function ProdukDigitalMobile({
                 grabCursor={true}
                 freeMode={true}
                 navigation={{
-                    nextEl: ".produk-digital-next",
-                    prevEl: ".produk-digital-prev",
+                    nextEl: ".skripsi-mastery-next",
+                    prevEl: ".skripsi-mastery-prev",
                 }}
             >
                 {data.map((item, index) => {

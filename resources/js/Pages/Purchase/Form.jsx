@@ -34,8 +34,6 @@ export default function Form({
     paymentMethods,
     dataProduct,
 }) {
-    console.log(dataProduct);
-    console.log(dataProduct.product_type);
     const userId = auth.user.id;
     const [isProcessed, setIsProcessed] = useState(false);
     const [showMobileSummaryCard, setShowMobileSummaryCard] = useState(false);
@@ -131,7 +129,6 @@ export default function Form({
         } else {
             setIsProcessed(true);
             if (dataProduct.product_type_id == 4) {
-                console.log("object");
                 post(route("produk.ecourse.store"), {
                     onFinish: () => setIsProcessed(false),
                     onError: () => setIsProcessed(false),
@@ -338,21 +335,23 @@ function MainCard({
                             {dataProduct.name}
                         </h3>
                         <p>{dataProduct.description}</p>
-                        <div className="flex flex-col md:flex-row flex-wrap items-start gap-[3vw] md:gap-[1vw] multi-column">
-                            {dataProduct.facilities.map((item, index) => {
-                                return (
-                                    <div
-                                        key={index}
-                                        className="flex items-center gap-[3vw] md:gap-[.5vw] md:border md:border-secondary md:px-[.5vw] md:py-[.25vw] md:rounded-full"
-                                    >
-                                        <i
-                                            className={`${item.icon} text-primary text-center w-[4vw] md:w-[1vw]`}
-                                        ></i>
-                                        <p>{item.text}</p>
-                                    </div>
-                                );
-                            })}
-                        </div>
+                        {dataProduct?.facilities?.length ? (
+                            <div className="flex flex-col md:flex-row flex-wrap items-start gap-[3vw] md:gap-[1vw] multi-column">
+                                {dataProduct?.facilities?.map((item, index) => {
+                                    return (
+                                        <div
+                                            key={index}
+                                            className="flex items-center gap-[3vw] md:gap-[.5vw] md:border md:border-secondary md:px-[.5vw] md:py-[.25vw] md:rounded-full"
+                                        >
+                                            <i
+                                                className={`${item.icon} text-primary text-center w-[4vw] md:w-[1vw]`}
+                                            ></i>
+                                            <p>{item.text}</p>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : <></>}
                         <hr className="md:hidden mt-[3vw]" />
                     </div>
                     {Object.keys(rules).length ? <hr className="hidden md:block mt-[2vw] mb-[2.5vw]" /> : <></>}

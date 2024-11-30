@@ -153,7 +153,6 @@ export default function TutorList({ auth, tutors, majors, skills }) {
                             <li>
                                 <button
                                     onClick={() => {
-                                        console.log(cell.row.original);
                                         setDataProfile(cell.row.original);
                                         setShowProfile(!showProfile);
                                     }}

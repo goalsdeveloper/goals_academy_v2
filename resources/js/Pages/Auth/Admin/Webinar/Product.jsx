@@ -49,7 +49,6 @@ export default function Product({ auth, webinar, categories }) {
         setIsLoading(true);
         setProduct(null);
         axios.get("/admin/webinar/product/" + id).then((res) => {
-            // console.log(res.data.data)
             setProduct(res.data.data);
             setIsLoading(false);
         });

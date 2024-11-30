@@ -11,8 +11,6 @@ export default function LupaPassword() {
         email: "",
     });
 
-    console.log(usePage());
-
     const submit = (e) => {
         e.preventDefault();
         router.post(route("auth.forgot-password"), data, {
