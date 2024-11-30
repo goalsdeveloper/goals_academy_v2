@@ -41,6 +41,11 @@ class PurchaseController extends Controller
         })
             ->where('is_visible', true)
             ->with('category', 'productType')->get();
+        $dataSkripsiMastery = Products::whereHas('productType', function ($query) {
+            $query->where('type', 'Skripsi Mastery');
+        })
+            ->where('is_visible', true)
+            ->with('category', 'productType')->get();
         $dataJasaRiset = Products::whereHas('productType', function ($query) {
             $query->where('type', 'Jasa Riset');
         })
@@ -57,6 +62,7 @@ class PurchaseController extends Controller
         $categories = Category::with(['productType'])->get();
         return Inertia::render('Main/Produk', [
             'dataBimbingan' => $dataBimbingan,
+            'dataSkripsiMastery' => $dataSkripsiMastery,
             'dataProdukDigital' => $dataProdukDigital,
             'dataJasaRiset' => $dataJasaRiset,
             'dataWebinar' => $dataWebinar,

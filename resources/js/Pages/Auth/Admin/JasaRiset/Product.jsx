@@ -26,7 +26,6 @@ import axios from "axios";
 export default function Product({ auth, jasaRiset, categories }) {
     const [isLoading, setIsLoading] = useState(false);
     jasaRiset = jasaRiset.data;
-    console.log(jasaRiset)
     const isDesktop = useMediaQuery({ minWidth: 1024 });
     const [show, setShow] = useState(false);
     const [product, setProduct] = useState();
@@ -49,12 +48,10 @@ export default function Product({ auth, jasaRiset, categories }) {
     async function getBimbinganDetail(id) {
         setIsLoading(true);
         setProduct(null);
-        console.log(route("admin.jasa_riset.product.show", { product: id }));
         axios.get(route('admin.jasa_riset.product.show', {product: id})).then((res) => {
             setProduct(res.data.data);
             setIsLoading(false);
         }).catch((error) => {
-            console.log(error)
             setIsLoading(false);
         });
     }

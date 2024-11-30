@@ -25,10 +25,12 @@ import webinar2 from "/resources/img/webinar/2.png";
 import webinar3 from "/resources/img/webinar/3.png";
 import webinar4 from "/resources/img/webinar/4.png";
 import { data } from "autoprefixer";
+import SkripsiMastery from "../Partials/Produk/SkripsiMastery";
 
 export default function Produk({
     auth,
     dataBimbingan,
+    dataSkripsiMastery,
     dataJasaRiset,
     dataProdukDigital,
     dataWebinar,
@@ -51,6 +53,7 @@ export default function Produk({
     const [data2, setData2] = useState(dataProdukDigital.slice());
     const [data3, setData3] = useState(dataWebinar.slice());
     const [data4, setData4] = useState(dataJasaRiset.slice());
+    const [data5, setData5] = useState(dataSkripsiMastery.slice());
     const [category1, setCategory1] = useState('Semua');
     const [category4, setCategory4] = useState('Semua');
 
@@ -69,6 +72,9 @@ export default function Produk({
         const temp4 = dataJasaRiset
             .slice()
             .filter((item) => item.name.toLowerCase().includes(keyword));
+        const temp5 = dataSkripsiMastery
+            .slice()
+            .filter((item) => item.name.toLowerCase().includes(keyword));
         setData1(temp1);
         setData2(temp2);
         setData3([]);
@@ -76,6 +82,7 @@ export default function Produk({
             setData3(temp3);
         }, 0);
         setData4(temp4);
+        setData4(temp5);
     };
 
     // const showHandler = (id) => {
@@ -157,6 +164,11 @@ export default function Produk({
                 data={searchKeyword}
                 setData={setSearchKeyword}
             />
+            <SkripsiMastery
+                data={data5}
+                active={true}
+                status={status}
+            />
             <Bimbingan
                 data={data1}
                 active={show[0]}
@@ -168,7 +180,7 @@ export default function Produk({
             />
             <JasaRiset
                 data={data4}
-                active={show[0]}
+                active={true}
                 status={status}
                 categories={categoriesJasaRiset}
                 category={category4}

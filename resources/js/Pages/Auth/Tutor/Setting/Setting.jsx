@@ -37,8 +37,6 @@ export default function Setting({ auth, user, skills }) {
         hard_skills: user.skills.filter((i) => i.category == "hard_skill"),
     });
 
-    console.log(formData)
-
     const [university, setUniversity] = React.useState(formData.university);
     const [rumpun, setRumpun] = React.useState(formData.rumpun);
 
