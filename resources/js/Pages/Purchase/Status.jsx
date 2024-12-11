@@ -21,7 +21,9 @@ export default function Status({
 }) {
     const { toasts } = useToasterStore();
     const TOAST_LIMIT = 1;
-    const vaNumber = orderHistory.va_numbers ? orderHistory.va_numbers[0].va_number : orderHistory.permata_va_number
+    const vaNumber = orderHistory.va_numbers
+        ? orderHistory.va_numbers[0].va_number
+        : orderHistory.permata_va_number;
     const [countdown, setCountdown] = useState(
         moment().hours(0).minutes(0).seconds(0)
     );
@@ -30,79 +32,85 @@ export default function Status({
     const [purchaseStatus, setPurchaseStatus] = useState(status);
     const [redirectAt, setRedirectAt] = useState(12);
 
-    function redirectToWhatsApp () {
+    function redirectToWhatsApp() {
         setRedirectAt((i) => {
             if (i > 0) {
-                setTimeout(() => redirectToWhatsApp(), 1000)
+                setTimeout(() => redirectToWhatsApp(), 1000);
             } else if (i == 0) {
-                open(`https://api.whatsapp.com/send?phone=6282147638286&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(' ', '%20')}%20dengan%20order%20id%20${data.order_code}.`, '_blank')
+                open(
+                    `https://api.whatsapp.com/send?phone=6285173276387&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(
+                        " ",
+                        "%20"
+                    )}%20dengan%20order%20id%20${data.order_code}.`,
+                    "_blank"
+                );
             }
-            return i-1
-        })
+            return i - 1;
+        });
     }
 
     let paymentSteps = {
         desktop: [
-            'Buka aplikasi pembayaran pada smartphone Anda',
-            'Klik tombol untuk scan QR Code',
-            'Periksa detail pembayaran lalu tekan tombol bayar',
-            'Masukkan PIN/password Anda',
-            'Pembayaran selesai'
+            "Buka aplikasi pembayaran pada smartphone Anda",
+            "Klik tombol untuk scan QR Code",
+            "Periksa detail pembayaran lalu tekan tombol bayar",
+            "Masukkan PIN/password Anda",
+            "Pembayaran selesai",
         ],
         mobile: [
-            'Catat atau salin nomor Virtual Account yang Anda dapat',
+            "Catat atau salin nomor Virtual Account yang Anda dapat",
             `Lakukan pembayaran melalui ATM ${paymentMethod.name}, Internet Banking, atau Mobile Banking`,
-            'Masukkan PIN Anda',
-            'Pilih \'Transfer ke Virtual Account\'',
-            'Masukkan nomor Virtual Account yang Anda dapat',
-            'Saat pembayaran berhasil, Anda akan langsung diarahkan ke halaman Status Pembayaran'
-        ]
-    }
+            "Masukkan PIN Anda",
+            "Pilih 'Transfer ke Virtual Account'",
+            "Masukkan nomor Virtual Account yang Anda dapat",
+            "Saat pembayaran berhasil, Anda akan langsung diarahkan ke halaman Status Pembayaran",
+        ],
+    };
 
     if (paymentMethod.name.toLowerCase() == "gopay") {
         paymentSteps = {
             desktop: [
-                'Buka aplikasi Gojek dan klik “Bayar”',
-                'Scan Kode QR dari layar HP Anda',
-                'Klik “Konfirmasi & Bayar”',
-                'Masukkan PIN Anda',
-                'Pembayaran Anda Berhasil',
-                'Saat pembayaran berhasil, periksa status pembayaran Anda di halaman Status Pembayaran'
+                "Buka aplikasi Gojek dan klik “Bayar”",
+                "Scan Kode QR dari layar HP Anda",
+                "Klik “Konfirmasi & Bayar”",
+                "Masukkan PIN Anda",
+                "Pembayaran Anda Berhasil",
+                "Saat pembayaran berhasil, periksa status pembayaran Anda di halaman Status Pembayaran",
             ],
             mobile: [
-                'Unduh Kode QR yang diberikan',
-                'Buka aplikasi GoPay',
-                'Klik tombol “Bayar”',
-                'Klik ikon gallery',
-                'Pilih Kode QR yang telah diunduh',
-                'Klik “Konfirmasi & Bayar”',
-                'Masukkan PIN Anda',
-                'Pembayaran Anda Berhasil',
-                'Saat pembayaran berhasil, periksa status pembayaran Anda di halaman Status Pembayaran'
-            ]
-        }
-    } else if (paymentMethod.name.toLowerCase() == 'qris') {
+                "Unduh Kode QR yang diberikan",
+                "Buka aplikasi GoPay",
+                "Klik tombol “Bayar”",
+                "Klik ikon gallery",
+                "Pilih Kode QR yang telah diunduh",
+                "Klik “Konfirmasi & Bayar”",
+                "Masukkan PIN Anda",
+                "Pembayaran Anda Berhasil",
+                "Saat pembayaran berhasil, periksa status pembayaran Anda di halaman Status Pembayaran",
+            ],
+        };
+    } else if (paymentMethod.name.toLowerCase() == "qris") {
         paymentSteps = {
             desktop: [
-                'Buka aplikasi pembayaran lalu klik “Bayar”',
-                'Scan Kode QRIS dari layar HP Anda',
-                'Klik “Konfirmasi & Bayar”',
-                'Masukkan PIN Anda',
-                'Pembayaran Anda Berhasil',
-                'Saat pembayaran berhasil, periksa status pembayaran Anda di halaman Status Pembayaran'
+                "Buka aplikasi pembayaran lalu klik “Bayar”",
+                "Scan Kode QRIS dari layar HP Anda",
+                "Klik “Konfirmasi & Bayar”",
+                "Masukkan PIN Anda",
+                "Pembayaran Anda Berhasil",
+                "Saat pembayaran berhasil, periksa status pembayaran Anda di halaman Status Pembayaran",
             ],
             mobile: [
-                'Unduh Kode QRIS yang diberikan',
-                'Buka aplikasi pembayaran Anda',
-                'Klik tombol “Bayar”',
-                'Klik ikon gallery',
-                'Pilih Kode QRIS yang telah diunduh',
-                'Klik “Konfirmasi & Bayar”',
-                'Masukkan PIN Anda',
-                'Pembayaran Anda Berhasil',
-                'Saat pembayaran berhasil, periksa status pembayaran Anda di halaman Status Pembayaran'
-            ]
-        }
+                "Unduh Kode QRIS yang diberikan",
+                "Buka aplikasi pembayaran Anda",
+                "Klik tombol “Bayar”",
+                "Klik ikon gallery",
+                "Pilih Kode QRIS yang telah diunduh",
+                "Klik “Konfirmasi & Bayar”",
+                "Masukkan PIN Anda",
+                "Pembayaran Anda Berhasil",
+                "Saat pembayaran berhasil, periksa status pembayaran Anda di halaman Status Pembayaran",
+            ],
+        };
     }
 
     const playCountdown = () => {
@@ -110,34 +118,39 @@ export default function Status({
             fetch(`/api/check-payment-status/${data.order_code}`)
                 .then((response) => response.json())
                 .then((response) => {
-                    setPurchaseStatus(response.status.toLowerCase())
+                    setPurchaseStatus(response.status.toLowerCase());
                     const difference = target.diff(moment());
                     if (response.status.toLowerCase() == "success") {
                         setCountdown(moment().hours(0).minutes(0).seconds(0));
-                        redirectToWhatsApp()
+                        redirectToWhatsApp();
                     } else if (difference <= 1) {
                         setCountdown(moment().hours(0).minutes(0).seconds(0));
                         location.href = "/";
                         toast.error("Waktu Pembayaran Telah Habis!");
                     } else {
                         const remaining = moment();
-        
-                        remaining.hours(Math.floor(difference / (1000 * 60 * 60)));
+
+                        remaining.hours(
+                            Math.floor(difference / (1000 * 60 * 60))
+                        );
                         remaining.minutes(
-                            Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
+                            Math.floor(
+                                (difference % (1000 * 60 * 60)) / (1000 * 60)
+                            )
                         );
                         remaining.seconds(
                             Math.floor(
-                                ((difference % (1000 * 60 * 60)) % (1000 * 60)) / 1000
+                                ((difference % (1000 * 60 * 60)) %
+                                    (1000 * 60)) /
+                                    1000
                             )
                         );
-        
+
                         setCountdown(remaining);
 
-                        playCountdown()
+                        playCountdown();
                     }
-                }
-            );
+                });
         }, 1000);
     };
 
@@ -152,7 +165,7 @@ export default function Status({
                 if (i >= TOAST_LIMIT) {
                     toast.remove(t.id); // Dismiss – Use toast.remove(t.id) for no exit animation
                 }
-            }) // Is toast index over limit?
+            }); // Is toast index over limit?
     }, [toasts]);
 
     return (
@@ -208,7 +221,23 @@ export default function Status({
                                         >
                                             <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.25 16.518l-4.5-4.319 1.396-1.435 3.078 2.937 6.105-6.218 1.421 1.409-7.5 7.626z" />
                                         </svg>
-                                        <GoalsButton onClick={() => setRedirectAt(-1)} isLink={false} href={`https://api.whatsapp.com/send?phone=6282147638286&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(' ', '%20')}%20dengan%20order%20id%20${data.order_code}.`} target="_blank" className="rounded-[2vw] md:rounded-[.5vw]">Konfirmasi ke Admin{(redirectAt > 0) && (redirectAt <= 10) ? ` (${redirectAt})` : ''}</GoalsButton>
+                                        <GoalsButton
+                                            onClick={() => setRedirectAt(-1)}
+                                            isLink={false}
+                                            href={`https://api.whatsapp.com/send?phone=6285173276387&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(
+                                                " ",
+                                                "%20"
+                                            )}%20dengan%20order%20id%20${
+                                                data.order_code
+                                            }.`}
+                                            target="_blank"
+                                            className="rounded-[2vw] md:rounded-[.5vw]"
+                                        >
+                                            Konfirmasi ke Admin
+                                            {redirectAt > 0 && redirectAt <= 10
+                                                ? ` (${redirectAt})`
+                                                : ""}
+                                        </GoalsButton>
                                     </div>
                                 </div>
                                 <div
@@ -236,8 +265,12 @@ export default function Status({
                                                 <h2
                                                     className="leading-loose cursor-pointer text-[6vw] md:text-[2.3vw]"
                                                     onClick={() => {
-                                                        navigator.clipboard.writeText(vaNumber);
-                                                        toast.success("Text copied!");
+                                                        navigator.clipboard.writeText(
+                                                            vaNumber
+                                                        );
+                                                        toast.success(
+                                                            "Text copied!"
+                                                        );
                                                     }}
                                                 >
                                                     {vaNumber}
@@ -245,8 +278,12 @@ export default function Status({
                                                 <p
                                                     className="font-medium hover:text-primary cursor-pointer"
                                                     onClick={() => {
-                                                        navigator.clipboard.writeText(vaNumber);
-                                                        toast.success("Text copied!");
+                                                        navigator.clipboard.writeText(
+                                                            vaNumber
+                                                        );
+                                                        toast.success(
+                                                            "Text copied!"
+                                                        );
                                                     }}
                                                 >
                                                     <i className="bi bi-copy"></i>{" "}
@@ -369,7 +406,7 @@ export default function Status({
     );
 }
 
-function PaymentSteps ({ steps }) {
+function PaymentSteps({ steps }) {
     const [show, setShow] = useState(false);
     return (
         <div className="w-full block my-[2vw] md:my-0">
@@ -379,9 +416,7 @@ function PaymentSteps ({ steps }) {
                     show ? "-rotate-180" : ""
                 }`}
                 className="h-[9vw] md:h-[3vw] border-1 border-dark"
-                onClick={() =>
-                    setShow(!show)
-                }
+                onClick={() => setShow(!show)}
             >
                 Lihat Langkah Pembayaran
             </ExpandedButton>
@@ -395,27 +430,21 @@ function PaymentSteps ({ steps }) {
                             1. Transaksi melalui Desktop
                         </p>
                         <ul className="list-disc ms-[6vw] md:ms-[2vw]">
-                            {steps['desktop'].map((item, index) => {
-                                return (
-                                    <li key={index}>{item}</li>
-                                )
+                            {steps["desktop"].map((item, index) => {
+                                return <li key={index}>{item}</li>;
                             })}
                         </ul>
                     </div>
                     <div className="border-1 border-dark rounded-[1.5vw] md:rounded-[.6vw] p-[4vw] md:p-[1vw] flex flex-col gap-[1vw]">
-                        <p className="font-bold">
-                            2. Transaksi melalui Mobile
-                        </p>
+                        <p className="font-bold">2. Transaksi melalui Mobile</p>
                         <ul className="list-disc ms-[6vw] md:ms-[2vw]">
-                            {steps['mobile'].map((item, index) => {
-                                return (
-                                    <li key={index}>{item}</li>
-                                )
+                            {steps["mobile"].map((item, index) => {
+                                return <li key={index}>{item}</li>;
                             })}
                         </ul>
                     </div>
                 </TECollapseItem>
             </TECollapse>
         </div>
-    )
+    );
 }

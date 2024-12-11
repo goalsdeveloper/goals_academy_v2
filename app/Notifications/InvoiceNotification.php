@@ -2,8 +2,10 @@
 
 namespace App\Notifications;
 
+use App\Mail\User\Payment\Pending;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
@@ -35,15 +37,11 @@ class InvoiceNotification extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(object $notifiable): Mailable
     {
         $url = url('/purchase/' . $this->order->order_code);
-        return (new MailMessage)
-            ->subject('Segera Lakukan Pembayaran')
-            ->greeting('Hello')
-            ->line('Orderan kamu siap untuk dibayar nih!')
-            ->action('Detail Pembayaran', $url)
-            ->line('Terimakasih telah menggunakan Goals Academy!');
+        return (new Pending($this->order))
+            ->to($notifiable->email);
     }
 
     /**
@@ -55,7 +53,7 @@ class InvoiceNotification extends Notification
     {
         $paymentMethod = $this->order->orderHistory()->where('status', 'pending')->first()->payload;
         if ($paymentMethod['payment_type'] == 'bank_transfer') {
-                $paymentType = $paymentMethod['provider_name'];
+            $paymentType = $paymentMethod['provider_name'];
         } else {
             $paymentType = $paymentMethod['payment_type'];
         }

@@ -6,9 +6,9 @@
         <p class="text-neutral-60">Hello, Please click the button below to verify your email address. If you did not create an account, no further action is required.</p>
     </div>
     <div class="pt-10 space-y-10">
-        <a href="https://goalsacademy.id/email/verify/{{ $data->email }}" role="button" class="inline-block bg-secondary text-white rounded-lg py-[14px] px-9">Confirm email address</a>
+        <a href="{{ $url }}" role="button" class="inline-block bg-secondary text-white rounded-lg py-[14px] px-9">Confirm email address</a>
         <p>
-            If you're having trouble clicking the "Verify Email Address" button, copy and paste the URL below into your web browser: <a href="https://goalsacademy.id/email/verify/{{ $data->email }}" class="text-blue-500 underline">https://goalsacademy.id/email/verify/{{ $data->email }}</a>
+            If you're having trouble clicking the "Verify Email Address" button, copy and paste the URL below into your web browser: <a href="{{ $url }}" class="text-blue-500 underline">{{ $url }}</a>
         </p>
     </div>
 @endsection

@@ -27,13 +27,19 @@ const Dialog = ({
                         onSubmit={(e) => {
                             e.preventDefault();
                             if (showDialog.create) {
-                                post(route("admin.bimbingan.category.store"), {
+                                post(route("admin.produk_digital.category.store"), {
                                     onFinish: () => callback('create')
                                 });
                             } else if (showDialog.edit) {
-                                put(route("admin.bimbingan.category.update", formData.id), {
-                                    onFinish: () => callback('edit')
-                                });
+                                put(
+                                    route(
+                                        "admin.produk_digital.category.update",
+                                        formData.id
+                                    ),
+                                    {
+                                        onFinish: () => callback("edit"),
+                                    }
+                                );
                             }
                             setShowDialog({ create: false, edit: false, show: false, delete: false });
                         }}

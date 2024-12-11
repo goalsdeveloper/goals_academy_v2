@@ -16,8 +16,7 @@ function RiwayatItem({ data }) {
     const [isVisible, setIsVisible] = useState(false);
 
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
-
-    const { expiry_time } = data?.order_history[0]?.payload;
+    const expiry_time = data?.order_history[0]?.payload?.expiry_time ?? null;
     const target = moment(expiry_time);
 
     return (

@@ -11,6 +11,6 @@
             <p class="text-neutral-60">Product's Name: <span class="font-semibold text-secondary">{{ $data->products->name }}</span></p>
             <p class="text-neutral-60">No. Invoice: <span class="font-semibold text-secondary">{{ $data->order_code }}</span></p>
         </div>
-        <a href="https://goalsacademy.id/moderator/bimbingan/order/{{ $data->order_code }}/edit" role="button" class="inline-block bg-secondary text-white rounded-lg py-[14px] px-9">Process</a>
+        <a href="{{ $url }}" role="button" class="inline-block bg-secondary text-white rounded-lg py-[14px] px-9">Process</a>
     </div>
 @endsection

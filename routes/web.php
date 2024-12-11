@@ -48,11 +48,18 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
+use App\Mail\User\Payment\Pending;
+use App\Mail\Moderator\Bimbingan\RecentOrder;
+use App\Mail\User\Auth\EmailVerification;
+use App\Mail\User\Auth\ResetPassword;
+use App\Mail\User\Bimbingan\Expired;
+use App\Mail\User\Payment\Success;
 use App\Models\Order;
 use App\Models\Products;
 use App\Models\TutorNote;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -61,34 +68,13 @@ Route::get('/token', function () {
 });
 
 Route::get('/', function () {
-    // $products = Products::with('category')->whereIn("id", [3,8,1])->get();
     $products = Products::where('is_visible', true)->with('category')->get();
     return Inertia::render('Index', ['products' => $products]);
 });
 
-Route::get('/dashboard/user/webinar', [DashboardUserController::class, 'webinar']);
-Route::get('/dashboard/user/webinar/{id}', [DashboardUserController::class, 'detailWebinar']);
-Route::get('/dashboard/user/bimbingan', [DashboardUserController::class, 'bimbingan']);
-Route::get('/dashboard/user/bimbingan/{id}', [DashboardUserController::class, 'detailBimbingan']);
-Route::get('/get_user', [MoodleController::class, 'search_user']);
-Route::get('/enroll_user', [MoodleController::class, 'enroll_user']);
-// Route::get('/ecourse', [AuthController::class, 'redirecting_to_ecourse']);
-Route::get('/ecourse/daftar', [MoodleController::class, 'moodle_page']);
-Route::get('/ecourse/course/{id}', [MoodleController::class, 'to_course'])->name('ecourse.to_course');
-
 Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
 });
-
-// Route::get('/ecourse', function () {
-//     $data = Products::whereHas('productType', function ($query) {
-//         $query->where('type', 'E-Course');
-//     })->where('is_visible', true)->with('category', 'productType')->get();
-
-//     return Inertia::render('Main/Ecourse', [
-//         'data' => $data
-//     ]);
-// });
 
 Route::get('/profil_perusahaan', function () {
     return Inertia::render('Main/ProfilPerusahaan');
@@ -117,6 +103,9 @@ Route::prefix('produk')->name('produk.')->group(function () {
 Route::get('/dibimbingsemester', function () {
     return Inertia::render('Main/DibimbingSatuSemester');
 });
+Route::get('/skripsi-mastery', function () {
+    return Inertia::render('Main/SkripsiMastery');
+});
 Route::resource('/produk', PurchaseController::class);
 
 Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status')->middleware(['auth', 'verified']);
@@ -141,9 +130,7 @@ Route::get('/unduhfile/{slug}', function (string $slug) {
     // Check if the file exists
     if (file_exists($fullPath)) {
         return response()->download($fullPath, $fileName);
-        // return response()->download($fullPath, $fileName);
     } else {
-        // Handle the case where the file doesn't exist
         return response()->json(['error' => 'File not found'], 404);
     }
 });
@@ -175,12 +162,17 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
     });
     Route::prefix('webinar')->name('webinar.')->group(function () {
         Route::resource('category', AdminCategoryWebinarController::class);
+        Route::put('category/{category}/updateVisible', [AdminCategoryWebinarController::class, 'updateVisible'])->name('category.updateVisible');
         Route::resource('product', WebinarController::class);
+        Route::put('product/{product}/updateVisible', [WebinarController::class, 'updateVisible'])->name('product.updateVisible');
         Route::resource('order', AdminOrderWebinarController::class);
     });
-    Route::prefix('produk_digital')->name('produk_digital.')->group(function () {
+    Route::prefix('produk-digital')->name('produk_digital.')->group(function () {
         Route::resource('category', AdminCategoryProdukDigitalController::class);
+        Route::put('category/{category}/updateVisible', [AdminCategoryProdukDigitalController::class, 'updateVisible'])->name('category.updateVisible');
         Route::resource('product', ProdukDigitalController::class);
+        Route::post('product/updateNumberList', [ProdukDigitalController::class, 'updateOrderNumber'])->name('product.updateOrderNumber');
+        Route::put('product/{product}/updateVisible', [ProdukDigitalController::class, 'updateVisible'])->name('product.updateVisible');
         Route::resource('order', AdminOrderProdukDigitalController::class);
     });
     Route::prefix('ecourse')->name('ecourse.')->group(function () {
@@ -215,7 +207,6 @@ Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')-
     Route::get('/', [ModeratorOverviewController::class, 'index'])->name('index');
     Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
         Route::resource('order', ModeratorOrderController::class)->parameters(['order' => 'order:order_code']);
-        // Route::get('order/edit/{order}', [ModeratorOrderController::class, 'edit'])->name('order.edit');
         Route::get('order/{order}/show-online', [ModeratorOrderController::class, 'showOnline'])->name('order.showOnline');
         Route::patch('order/{order:order_code}/update-online', [ModeratorOrderController::class, 'updateBimbinganOnline'])->name('order.updateOnline');
         Route::resource('progress', ProgressController::class);
@@ -283,38 +274,82 @@ Route::get('pending/{order}', function (string $order) {
     $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
         $query->where('status', 'pending');
     })->with('orderHistory', 'paymentMethod', 'products')->first();
-    
+
     // dd(['data' => $order, '$expiry_time' => $expiry_time]);
     return view('email.user.purchase.pending', ['data' => $order]);
 });
 
-Route::get('success/{order}', function (string $order) {
-    $order = Order::where('order_code', $order)->whereHas('orderHistory', function ($query) {
-        $query->where('status', 'success');
-    })->with('orderHistory', 'paymentMethod', 'products')->first();
-    
+Route::get('success/{order}', function (Order $order) {
+    // $order = $order->with('orderHistory', 'paymentMethod', 'products');
     return view('email.user.purchase.success', ['data' => $order]);
 });
 
 Route::get('email-verification/{user}', function (User $user) {
-    return view('email.user.auth.email-verification', ['data' => $user]);
+    return view('email.user.auth.email-verification', ['data' => $user, 'url' => 'https://google.com']);
 });
 
 Route::get('reset-password/{user}', function (User $user) {
-    return view('email.user.auth.reset-password', ['data' => $user]);
+    return view('email.user.auth.reset-password', ['data' => $user, 'token' => 'asdf', 'email' => $user->email]);
 });
 
 Route::get('expired/{order}', function (string $order) {
     $order = Order::where('order_code', $order)->with('products')->first();
-    
+
     return view('email.user.bimbingan.expired', ['data' => $order]);
 });
 
-Route::get('recent-order/{order}', function (string $order) {
-    $order = Order::where('order_code', $order)->with('products')->first();
-    
-    return view('email.moderator.bimbingan.recent-order', ['data' => $order]);
+Route::get('recent-order/{order}', function (Order $order) {
+    // dd($order);
+    return view('email.moderator.bimbingan.recent-order', ['data' => $order->load('products')]);
 });
+
+Route::get('testemail', function () {
+    return view('email.email-generate.user.auth.reset-password', ['url' => 'https://google.com']);
+});
+
+Route::get('testemail/order-expired/{order}', function (Order $order) {
+    return view('email.email-generate.user.bimbingan.expired', ['data' => $order]);
+});
+
+Route::get('testemail/recent-order/{order}', function (Order $order) {
+    return view('email.email-generate.moderator.bimbingan.recent-order', ['data' => $order]);
+});
+
+Route::get('testemail/success/{order}', function (Order $order) {
+    return view('email.email-generate.user.purchase.success', ['data' => $order]);
+});
+Route::get('testemail/pending/{order}', function (Order $order) {
+    return view('email.email-generate.user.purchase.pending', ['data' => $order]);
+});
+
+Route::get('pending/new/{order}', function (Order $order) {
+    return new Pending($order);
+});
+
+Route::get('success/new/{order}', function (Order $order) {
+    return new Success($order);
+});
+
+Route::get('expired/new/{order}', function (Order $order) {
+    return new Expired($order);
+});
+
+// Route::get('email-verification/new/{user}', function (User $user) {
+//     return new EmailVerification($user);
+// });
+
+// Route::get('reset-password/new/{user}', function (User $user) {
+//     return new ResetPassword($user);
+// });
+
+// Route::get('recent-order/new/{order}', function (Order $order) {
+//     return new RecentOrder($order);
+// });
+
+// Route::get('test-mail/{user}', function (User $user) {
+//     Mail::to('roziqinakhmad14juli@gmail.com')->send(new ResetPassword($user));
+//     return new ResetPassword($user);
+// });
 
 require __DIR__ . '/profile/profile.php';
 require __DIR__ . '/tutor/tutor.php';

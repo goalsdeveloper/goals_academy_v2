@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -40,6 +41,11 @@ class PurchaseController extends Controller
         })
             ->where('is_visible', true)
             ->with('category', 'productType')->get();
+        $dataSkripsiMastery = Products::whereHas('productType', function ($query) {
+            $query->where('type', 'Skripsi Mastery');
+        })
+            ->where('is_visible', true)
+            ->with('category', 'productType')->get();
         $dataJasaRiset = Products::whereHas('productType', function ($query) {
             $query->where('type', 'Jasa Riset');
         })
@@ -47,13 +53,16 @@ class PurchaseController extends Controller
             ->with('category', 'productType')->get();
         $dataProdukDigital = Products::whereHas('productType', function ($query) {
             $query->where('slug', 'produk-digital');
-        })->with('productType', 'category')->get();
+        })
+            ->where('is_visible', true)
+            ->with('productType', 'category')->get();
         $dataWebinar = Products::whereHas('productType', function ($query) {
             $query->where('slug', 'webinar');
-        })->with('productType', 'category')->get();
+        })->where('is_visible', true)->with('productType', 'category')->get();
         $categories = Category::with(['productType'])->get();
         return Inertia::render('Main/Produk', [
             'dataBimbingan' => $dataBimbingan,
+            'dataSkripsiMastery' => $dataSkripsiMastery,
             'dataProdukDigital' => $dataProdukDigital,
             'dataJasaRiset' => $dataJasaRiset,
             'dataWebinar' => $dataWebinar,
@@ -127,7 +136,7 @@ class PurchaseController extends Controller
             $orderData->form_result = $form_result;
             $orderData->save();
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Log::error($th->getMessage());
         }
 
         Config::$serverKey = config('midtrans.server_key');
@@ -159,7 +168,7 @@ class PurchaseController extends Controller
         try {
             $responseMidtrans = CoreApi::charge($midtranPayload);
         } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            Log::error($th->getMessage());
         }
         $responseMidtrans->provider_name = strtolower($paymentMethod->name);
 
@@ -170,13 +179,6 @@ class PurchaseController extends Controller
         ]);
 
         $user->notify(new InvoiceNotification($orderData));
-        // if ($paymentMethod->category == 'bank_transfer') {
-        //     $delay = Carbon::now()->addHours(23)->addMinutes(55);
-        // } else {
-        //     $delay = Carbon::now()->addMinutes(10);
-        // }
-        // $user->notify(new ReminderPurchaseNotification("Segera Lakukan Pembayaran", "Tersisa 5 menit sebelum pesananmu batal!", route('purchase.status', ['order' => $orderData->id])))->delay($delay);
-
 
         return redirect()->route('purchase.status', $orderData->order_code);
     }
@@ -204,7 +206,7 @@ class PurchaseController extends Controller
             ->with('addOns')
             ->first();
         $addOns = $product->addOns()->where('is_visible', true)->get();
-        $cities = City::where('is_visible', true)->with(['places' => function($q) {
+        $cities = City::where('is_visible', true)->with(['places' => function ($q) {
             $q->where('is_visible', true);
         }])->get();
         $topics = $product->topics()->where('is_visible', true)->get();

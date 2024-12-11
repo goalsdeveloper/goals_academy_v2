@@ -2,9 +2,17 @@ import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, A11y, FreeMode } from "swiper/modules";
 import ButtonSwiper from "@/Components/ButtonSwiper";
-import ButtonPill from "@/Components/ButtonPill";
+import BimbinganCard from "@/Components/BimbinganCard";
 
-export default function ProdukDigital({ data, active, status }) {
+export default function ProdukDigital({
+    data,
+    active,
+    status,
+    categories,
+    category,
+    setCategory,
+    filterHandler,
+}) {
     return (
         <section
             id="produk-digital"
@@ -14,32 +22,45 @@ export default function ProdukDigital({ data, active, status }) {
         >
             <div className="container mx-auto hidden md:block">
                 <h2 className="mb-4 sm:mb-6 xl:mb-10 3xl:mb-14">Produk Digital</h2>
-                <div className="grid grid-cols-3 justify-center md:gap-8 xl:gap-16 pb-2">
-                    {data.map((item, index) => {
-                        const model =
-                            (index + 1) % 3 == 2
-                                ? "justify-center"
-                                : (index + 1) % 3 == 0
-                                ? "justify-end"
-                                : "";
-                        return (
-                            <div key={index} className={`flex ${model}`}>
-                                <Card
-                                    key={index}
-                                    item={item}
-                                    className="md:w-[21vw] 3xl:w-[20vw]"
-                                />
-                            </div>
-                        );
-                    })}
-                </div>
+                {data.length ? (
+                    <div className="grid grid-cols-3 justify-center md:gap-8 xl:gap-16 pb-2">
+                        {data.map((item, index) => {
+                            const model =
+                                (index + 1) % 3 == 2
+                                    ? "justify-center"
+                                    : (index + 1) % 3 == 0
+                                    ? "justify-end"
+                                    : "";
+                            return (
+                                <div key={index} className={`flex ${model}`}>
+                                    <BimbinganCard
+                                        item={item}
+                                        className="w-72 md:w-[21vw] 3xl:w-[20vw]"
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
+                ) : <div className="w-full text-center">Produk tidak ditemukan</div>}
             </div>
-            <MobileUI data={data} />
+            <ProdukDigitalMobile
+                data={data}
+                categories={categories}
+                category={category}
+                setCategory={setCategory}
+                filterHandler={filterHandler}
+            />
         </section>
     );
 }
 
-function MobileUI({ data }) {
+function ProdukDigitalMobile({
+    data,
+    categories,
+    category,
+    setCategory,
+    filterHandler,
+}) {
     return (
         <div className="container mx-auto md:hidden">
             <div className="flex justify-between mb-6 xs:mb-8">
@@ -49,10 +70,37 @@ function MobileUI({ data }) {
                     </h2>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                    <ButtonSwiper name="ebook-prev" direction="left" />
-                    <ButtonSwiper name="ebook-next" direction="right" />
+                    <ButtonSwiper name="produk-digital-prev" direction="left" />
+                    <ButtonSwiper name="produk-digital-next" direction="right" />
                 </div>
             </div>
+            {/* <Swiper
+                modules={[Navigation, Pagination, A11y, FreeMode]}
+                slidesPerView={"auto"}
+                grabCursor={true}
+                freeMode={true}
+            >
+                {categories.map((item, index) => {
+                    return (
+                        <SwiperSlide
+                            key={index}
+                            style={{ width: "fit-content" }}
+                            className="p-1 md:p-2 lg:p-3 xl:p-4"
+                        >
+                            <div
+                                className={`rounded-full px-[2vw] py-[.5vw] border-[.25vw] ${
+                                    category == item
+                                        ? "border-secondary text-secondary"
+                                        : "border-light-grey"
+                                }`}
+                                onClick={() => filterHandler(item, "produk-digital")}
+                            >
+                                {item}
+                            </div>
+                        </SwiperSlide>
+                    );
+                })}
+            </Swiper> */}
             <Swiper
                 modules={[Navigation, Pagination, A11y, FreeMode]}
                 className="swiper-custom"
@@ -60,7 +108,10 @@ function MobileUI({ data }) {
                 slidesPerView={"auto"}
                 grabCursor={true}
                 freeMode={true}
-                navigation={{ nextEl: ".ebook-next", prevEl: ".ebook-prev" }}
+                navigation={{
+                    nextEl: ".produk-digital-next",
+                    prevEl: ".produk-digital-prev",
+                }}
             >
                 {data.map((item, index) => {
                     return (
@@ -69,45 +120,11 @@ function MobileUI({ data }) {
                             style={{ width: "fit-content" }}
                             className="p-4 md:p-2 lg:p-3 xl:p-4"
                         >
-                            <Card item={item} className="w-[70vw]" />
+                            <BimbinganCard item={item} className="w-[70vw]" />
                         </SwiperSlide>
                     );
                 })}
             </Swiper>
-        </div>
-    );
-}
-
-function Card({ item, className }) {
-    const currency = Intl.NumberFormat("id-ID");
-    return (
-        <div
-            className={`shadow-centered rounded-3xl md:rounded-lg xl:rounded-3xl overflow-hidden ${className}`}
-        >
-            <div className="w-full h-[90vw] md:h-[27vw] overflow-hidden">
-                <img
-                    className="w-full"
-                    src={`${item.product_image}`}
-                    alt={item.name}
-                />
-            </div>
-            <div className="p-4 md:p-3 lg:p-4 2xl:p-6 3xl:p-8">
-                <p className="font-medium text-16 xs:text-20 md:text-10 lg:text-14 xl:text-16 2xl:text-20 3xl:text-24 h-12 xs:h-16 md:h-7 lg:h-8 2xl:h-12 3xl:h-16">
-                    {item.name}
-                </p>
-                <p className="font-bold font-poppins text-primary text-20 xs:text-24 md:text-14 lg:text-18 xl:text-24 2xl:text-28 3xl:text-32 my-4 md:my-3 lg:my-4 xl:my-6">
-                    IDR {item.price != "-" ? currency.format(item.price) : "-"}
-                </p>
-                {/* <ButtonPill href={item.link} className="w-full">Beli Sekarang</ButtonPill> */}
-                <ButtonPill
-                    href={item.link}
-                    isLink={false}
-                    isActive={false}
-                    className="w-full"
-                >
-                    Coming Soon
-                </ButtonPill>
-            </div>
         </div>
     );
 }

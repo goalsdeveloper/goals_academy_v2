@@ -1,0 +1,19 @@
+---
+title: "The Website Weekly Newsletter"
+preheader: "👀 Lorem, ipsum, and much dolor in this week's edition."
+image: https://images.unsplash.com/photo-1565932887479-b18108f07ffd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1200&q=80
+bodyClass: bg-slate-50
+---
+
+<x-main>
+<div class="space-y-6">
+        <h1 class="font-poppins font-semibold text-24 text-black">Confirm your email address</h1>
+        <p class="text-neutral-60">Hello, Please click the button below to verify your email address. If you did not create an account, no further action is required.</p>
+    </div>
+    <div class="pt-10 space-y-10">
+        <a href="@{{ $url }}" role="button" class="inline-block bg-secondary text-white rounded-lg py-[14px] px-9 text-decoration-none">Confirm email address</a>
+        <p class="text-black">
+            If you're having trouble clicking the "Verify Email Address" button, copy and paste the URL below into your web browser: <a href="@{{ $url }}" class="text-blue-500 underline">@{{ $url }}</a>
+        </p>
+    </div>
+</x-main>

@@ -79,7 +79,6 @@ export default function Schedule({ auth, data }) {
                                     className="w-full flex items-center justify-center gap-[1vw] py-[1.5vw] px-[1.2vw]"
                                     onClick={() => {
                                         if (value.length >= 1) {
-                                            console.log(value)
                                             setDataDetail(value);
                                             setShowDetail(true);
                                         }
