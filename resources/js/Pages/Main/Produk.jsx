@@ -164,11 +164,11 @@ export default function Produk({
                 data={searchKeyword}
                 setData={setSearchKeyword}
             />
-            <SkripsiMastery
+            {/* <SkripsiMastery
                 data={data5}
                 active={true}
                 status={status}
-            />
+            /> */}
             <Bimbingan
                 data={data1}
                 active={show[0]}
