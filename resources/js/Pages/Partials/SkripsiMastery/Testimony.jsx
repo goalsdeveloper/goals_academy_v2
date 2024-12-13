@@ -1,7 +1,5 @@
-import "swiper/css";
+import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay, A11y, FreeMode } from "swiper/modules";
 
 import testimony1 from "/resources/img/testimony/wendi.jpg";
 import testimony2 from "/resources/img/testimony/roziqin.jpg";
@@ -14,6 +12,8 @@ import testimony8 from "/resources/img/testimony/khafidh.jpg";
 import testimony9 from "/resources/img/testimony/ludi.jpg";
 
 export default function Testimony () {
+    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+    
     const data = [
         {
             name: "Wendi",
@@ -84,43 +84,33 @@ export default function Testimony () {
     return (
         <section id="testimony" className="relative overflow-hidden">
             <div className="w-full mx-auto md:relative md:flex justify-between items-center">
-                <div className="w-full md:absolute z-10 md:before:absolute md:before:-z-10 md:before:w-screen md:before:h-full md:before:bg-dark md:before:bg-opacity-75 h-full flex justify-center items-center">
-                    <div className="hidden md:block text-center *:text-white md:space-y-[2vw]">
-                        <h3 className="md:w-[60vw] leading-normal md:text-[2.5vw]">Goals Academy Telah Mengkurasi Modul Pembelajaran dan Menghadirkan Dalam Format Video Learning yang Bisa Langsung Dipraktikan Hampir Semua Jurusan</h3>
-                        <p className="md:text-[1.25vw]">Tentu Ada Jadwal Rutin Buat Belajar Bareng dan Monitoring Progress Skripsimu</p>
+                <div className="w-full absolute z-10 before:absolute before:-z-10 before:w-screen before:h-full before:bg-dark before:bg-opacity-75 h-full flex justify-center items-center">
+                    <div className="w-[88.35vw] md:w-auto text-center *:text-white space-y-[5.285vw] md:space-y-[2vw]">
+                        <h3 className="md:w-[60vw] leading-normal text-[5.825vw] md:text-[2.5vw]">Goals Academy Telah Mengkurasi Modul Pembelajaran dan Menghadirkan Dalam Format Video Learning yang Bisa Langsung Dipraktikan Hampir Semua Jurusan</h3>
+                        <p className="font-normal md:font-medium text-[2.9vw] md:text-[1.25vw]">Tentu Ada Jadwal Rutin Buat Belajar Bareng dan Monitoring Progress Skripsimu</p>
                     </div>
                 </div>
                 <div className="w-screen">
-                    <TestimonyDesktop data={data} show={show} />
+                    <div className="w-[150%] h-[100vw] md:w-[120%] md:h-[48.44vw] -translate-x-[25vw] md:-translate-x-0 overflow-hidden">
+                        <div className={!show ? `grid grid-cols-${isMobile ? 3 : 5}` : "hidden"}>
+                            <TestimonyPartial data={data.slice(0,3)} />
+                            <TestimonyPartial data={data.slice(3,6)} className={"-mt-12"} />
+                            <TestimonyPartial data={data.slice(6,9)} className={"-mt-24"} />
+                            {!isMobile && (
+                                <>
+                                    <TestimonyPartial data={data.slice(0,3)} className={"-mt-36"} />
+                                    <TestimonyPartial data={data.slice(3,6)} className={"-mt-12"} />
+                                </>
+                            )}
+                        </div>
+                    </div>
                 </div>
-                <TestimonyMobile data={data} />
             </div>
         </section>
     )
 }
 
-function TestimonyCard ({data}) {
-    return (
-        <div className="md:m-1 xl:m-2 p-4 xs:p-6 md:p-[.83vw] bg-white rounded-lg border-4 md:border-2 lg:border-3 xl:border-4 3xl:border-6 border-gray-100">
-            <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2 3xl:gap-3">
-                    <img className="h-10 xs:h-14 md:h-[2vw] rounded-full" src={data.image} alt="User Icon" />
-                    <div>
-                        <p className="text-16 xs:text-18 md:text-8 lg:text-10 xl:text-14 3xl:text-20 font-medium">{data.name}</p>
-                        <p className="md:text-[.83vw] text-primary">@{data.instagram}</p>
-                    </div>
-                </div>
-                <i className="bi bi-quote text-36 xs:text-48 md:text-[2.5vw] text-primary -scale-x-1"></i>
-            </div>
-            <p className="h-[20vw] xs:h-24 md:h-[4vw] my-4 md:my-2 lg:my-4 md:text-[.83vw]">
-                {data.text}
-            </p>
-            <p className="mt-4 lg:mt-6 xl:mt-8 md:text-[.83vw] text-primary font-bold">Fakultas {data.faculty}</p>
-        </div>
-    )
-}
-
-function TestimonyDesktopPartial ({data, className}) {
+function TestimonyPartial ({data, className}) {
     return (
         <div className={"flex flex-col " + className}>
             <div className="flex flex-col animate-autoplayY">
@@ -142,54 +132,23 @@ function TestimonyDesktopPartial ({data, className}) {
     )
 }
 
-function TestimonyDesktop ({data, show}) {
+function TestimonyCard ({data}) {
     return (
-        <>
-            <div className="hidden md:block"></div>
-            <div className="hidden md:block h-80 md:h-[48.44vw] md:w-[120%] overflow-hidden">
-                <div className={!show ? "grid grid-cols-5" : "hidden"}>
-                    <TestimonyDesktopPartial data={data.slice(0,3)} />
-                    <TestimonyDesktopPartial data={data.slice(3,6)} className={"-mt-12"} />
-                    <TestimonyDesktopPartial data={data.slice(6,9)} className={"-mt-24"} />
-                    <TestimonyDesktopPartial data={data.slice(0,3)} className={"-mt-36"} />
-                    <TestimonyDesktopPartial data={data.slice(3,6)} className={"-mt-12"} />
+        <div className="m-[.8vw] md:m-[.4vw] p-[3.64vw] md:p-[.83vw] bg-white rounded-lg border-4 md:border-[.2vw] border-gray-100">
+            <div className="flex justify-between items-center">
+                <div className="flex items-center gap-[1.94vw] md:gap-[.4vw]">
+                    <img className="h-[7.28vw] md:h-[2vw] rounded-full" src={data.image} alt="User Icon" />
+                    <div>
+                        <p className="text-[2.73vw] md:text-[1.25vw] font-medium">{data.name}</p>
+                        <p className="text-[1.8vw] md:text-[.83vw] text-primary">@{data.instagram}</p>
+                    </div>
                 </div>
+                <i className="bi bi-quote text-[5.825vw] md:text-[2.5vw] text-primary -scale-x-1"></i>
             </div>
-        </>
-    )
-}
-
-
-function TestimonyMobile ({data}) {
-    return (
-        <>
-            <Swiper
-            modules={[Navigation, Pagination, Autoplay, A11y]}
-            className="swiper-mobile"
-            autoplay={true}
-            slidesPerView={1}
-            spaceBetween={20}
-            grabCursor={true}
-            draggable={true}
-            loop={true}
-            pagination={{
-                el: ".testimony-pagination",
-                clickable: true,
-                type: "bullets",
-                renderBullet: (index, className) => {
-                    return `<button class="${className}"></button>`
-                }
-            }}
-            >
-                {data.map((item, index) => {
-                    return (
-                        <SwiperSlide key={index}>
-                            <TestimonyCard data={item} />
-                        </SwiperSlide>
-                    )
-                })}
-            </Swiper>
-            <div className="testimony-pagination flex flex-wrap justify-center md:hidden my-4"></div>
-        </>
+            <p className="h-[10vw] md:h-[4vw] my-[3.88vw] md:my-[.83vw] text-[1.8vw] md:text-[.83vw]">
+                {data.text}
+            </p>
+            <p className="mt-[3.88vw] lg:mt-[1.67vw] text-[1.8vw] md:text-[.83vw] text-primary font-bold">Fakultas {data.faculty}</p>
+        </div>
     )
 }

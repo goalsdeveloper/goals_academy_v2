@@ -5,7 +5,7 @@ export default function Clients() {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
-        <section id="clients" className="w-full relative py-[16.75vw] md:pt-[6.25vw] md:pb-[5.2vw] mx-auto space-y-[3vw] overflow-hidden">
+        <section id="clients" className="w-full relative pt-[9.7vw] pb-[9.59vw] md:pt-[6.25vw] md:pb-[5.2vw] mx-auto space-y-[3vw] overflow-hidden">
             <div className="w-full mx-auto flex flex-nowrap relative gap-0 pt-[4vw] md:pt-[2vw] md:pb-[4vw] overflow-hidden">
                 {/* <div className="absolute bg-gradient-to-r from-white to-transparent w-[15vw] left-0 h-full z-10 hidden md:block"></div>
                 <div className="absolute bg-gradient-to-l from-white to-transparent w-[15vw] right-0 h-full z-10 hidden md:block"></div> */}

@@ -36,11 +36,11 @@ export default function Facilities () {
     ]
 
     return (
-        <section id="quotes" className="md:pt-[7.34vw] md:pb-[7.76vw]">
-            <div className="w-[84.375%] mx-auto md:space-y-[7.92vw]">
-                <div className="w-[60.63vw] mx-auto text-center md:space-y-[2.4vw]">
-                    <h2 className="md:text-[2.5vw]">Tidak Hanya Video Learning Fast Track Skripsian dan Komunitas yang Kita Hadirkan</h2>
-                    <p className="md:text-[1.25vw]">Tentu Ada Jadwal Rutin Buat Belajar Bareng dan Monitoring Progress Skripsimu</p>
+        <section id="facilities" className="pt-[16vw] pb-[24.27vw] md:pt-[7.34vw] md:pb-[7.76vw] overflow-hidden">
+            <div className="w-[88.35%] md:w-[84.375%] mx-auto space-y-[14.8vw] md:space-y-[7.92vw]">
+                <div className="md:w-[60.63vw] mx-auto text-center space-y-[5.825vw] md:space-y-[2.4vw]">
+                    <h2 className="text-[5.825vw] md:text-[2.5vw]">Tidak Hanya Video Learning Fast Track Skripsian dan Komunitas yang Kita Hadirkan</h2>
+                    <p className="text-[2.9vw] md:text-[1.25vw]">Tentu Ada Jadwal Rutin Buat Belajar Bareng dan Monitoring Progress Skripsimu</p>
                 </div>
                 <div>
                     <Swiper
@@ -66,9 +66,9 @@ export default function Facilities () {
 
 function Card ({ title, text }) {
     return (
-        <div className="bg-[#FFEDE5] md:w-[25vw] md:px-[2.08vw] md:pt-[2.5vw] md:pb-[1.67vw] md:space-y-[2.08vw] rounded-[.83vw]">
-            <h3 className="font-semibold md:text-[1.875vw] md:w-[92.5%]">{title.split(" ").length == 2 ? <>{title.split(" ")[0]}<br />{title.split(" ")[1]}</> : title}</h3>
-            <p className="md:text-[1.04vw]">{text}</p>
+        <div className="bg-[#FFEDE5] w-[72.82vw] md:w-[25vw] px-[9.7vw] pt-[11.65vw] pb-[7.77vw] md:px-[2.08vw] md:pt-[2.5vw] md:pb-[1.67vw] space-y-[9.7vw] md:space-y-[2.08vw] rounded-[3.88vw] md:rounded-[.83vw]">
+            <h3 className="w-[75%] md:w-[92.5%] md:font-semibold text-[3.88vw] md:text-[1.875vw]">{title.split(" ").length == 2 ? <>{title.split(" ")[0]}<br />{title.split(" ")[1]}</> : title}</h3>
+            <p className="text-[3.4vw] md:text-[1.04vw]">{text}</p>
         </div>
     )
 }
