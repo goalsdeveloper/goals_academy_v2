@@ -1,5 +1,5 @@
 import { useMediaQuery } from "react-responsive";
-import image from "/resources/img/skripsi-mastery/triangle.svg";
+import image from "/resources/img/skripsi-mastery/triangle.gif";
 
 export default function Triangle () {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
@@ -14,21 +14,14 @@ export default function Triangle () {
                             <h3 className="text-[5.825vw] md:text-[2.5vw]">Prokrastinasi</h3>
                             <p className="text-[2.9vw] md:text-[1.25vw]">Manajemen Waktumu yang Berantakan</p>
                         </div>
-                        {!isMobile && (
-                            <div>
-                                <img src={image} alt="Triangle Image" className="w-full md:w-[41.67vw] md:h-[41.67vw]" />
-                            </div>
-                        )}
                         <div className="w-[40.29vw] md:w-[17.24vw] text-center space-y-[1.94vw] md:space-y-[1.25vw]">
                             <h3 className="text-[5.825vw] md:text-[2.5vw]">Eksternal</h3>
                             <p className="text-[2.9vw] md:text-[1.25vw]">Dosen Pembimbing, Akses Data, Ga Ada Support System</p>
                         </div>
                     </div>
-                    {isMobile && (
-                        <div>
-                            <img src={image} alt="Triangle Image" className="w-full md:w-[41.67vw] md:h-[41.67vw]" />
-                        </div>
-                    )}
+                    <div className="flex justify-center">
+                        <img src={image} alt="Triangle Image" className="w-full md:w-auto md:h-[41.67vw]" />
+                    </div>
                     <div className="flex justify-center">
                         <div className="w-[42.48vw] md:w-[19vw] text-center space-y-[1.94vw] md:space-y-[1.25vw]">
                             <h3 className="text-[5.825vw] md:text-[2.5vw]">Dirimu Sendiri</h3>
