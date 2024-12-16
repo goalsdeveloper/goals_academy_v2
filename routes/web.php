@@ -103,7 +103,7 @@ Route::prefix('produk')->name('produk.')->group(function () {
 Route::get('/dibimbingsemester', function () {
     return Inertia::render('Main/DibimbingSatuSemester');
 });
-Route::get('/skripsi-mastery', function () {
+Route::get('/skripsimastery', function () {
     return Inertia::render('Main/SkripsiMastery');
 });
 Route::resource('/produk', PurchaseController::class);

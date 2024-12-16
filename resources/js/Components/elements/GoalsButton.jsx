@@ -41,7 +41,7 @@ const GoalsButton = ({
     function getVariantClassName() {
         switch (variant) {
             case "primary":
-                return "border-1 lg:border-2 border-secondary bg-secondary hover:bg-primary text-white ";
+                return "border-1 lg:border-2 border-secondary bg-secondary hover:bg-primary text-white";
             case "bordered":
                 return "border-1 lg:border-2 border-secondary text-secondary hover:border-primary hover:text-primary";
             case "info":
@@ -49,13 +49,13 @@ const GoalsButton = ({
             case "info-bordered":
                 return "border-1 lg:border-2 border-info-40 text-info-40 hover:border-info-50 hover:text-info-50";
             case "primary-inverse":
-                return "bg-primary-10 text-secondary hover:bg-primary-20";
+                return "border-1 lg:border-2 border-primary-10 bg-primary-10 text-secondary hover:border-primary-20 hover:bg-primary-20";
             case "success":
                 return "border-1 lg:border-2 border-success-50 hover:border-success-60 bg-success-50 hover:bg-success-60 text-white";
             case "success-bordered":
                 return "border-1 lg:border-2 border-success-50 text-success-50 hover:border-success-60 hover:text-success-60";
             default:
-                return "border-1 border-neutral-20";
+                return "border-1 lg:border-2 border-neutral-20";
         }
     }
 
