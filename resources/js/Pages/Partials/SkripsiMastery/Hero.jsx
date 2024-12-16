@@ -9,7 +9,7 @@ import moment from "moment/moment";
 export default function Hero () {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
-    const target = moment("2025-01-01 00:00").format("X");
+    const target = moment("2025-01-20 21:00").format("X");
     const [countdown, setCountdown] = useState("00:00");
 
     let countdownInterval = useRef();
@@ -22,7 +22,7 @@ export default function Hero () {
                 setCountdown("00 : 00 : 00 : 00");
             } else {
                 setCountdown(
-                    `${String(duration.days()).padStart(2, "0")} : ${String(duration.hours()).padStart(2, "0")} : ${String(duration.minutes()).padStart(2, "0")} : ${String(duration.seconds()).padStart(2, "0")}`
+                    `${String(duration.months() * 31  + duration.days()).padStart(2, "0")} : ${String(duration.hours()).padStart(2, "0")} : ${String(duration.minutes()).padStart(2, "0")} : ${String(duration.seconds()).padStart(2, "0")}`
                 );
             }
         }, 1000);
@@ -59,7 +59,7 @@ export default function Hero () {
                 </div>
                 <div className="flex items-center gap-[5.825vw] md:gap-[2.5vw] font-poppins *:md:font-semibold text-neutral-70 mt-[7.37vw] mb-[9.7vw] md:mt-[3.34vw] md:mb-[4.48vw]">
                     <p className="w-[29.85vw] md:w-auto text-[5.825vw] md:text-[1.875vw] font-bold text-primary">{countdown}</p>
-                    <p className="w-[52.43vw] md:w-auto font-sans md:font-poppins text-[2.9vw] md:text-[1.25vw]">Dapatkan harga waitinglist sebelum berakhir</p>
+                    <p className="w-[52.43vw] md:w-auto font-sans md:font-poppins text-[2.9vw] md:text-[1.25vw]">Dapatkan harga waiting list sebelum berakhir</p>
                 </div>
                 <div className="w-[110%] h-[70vw] md:w-auto md:h-auto -translate-x-[5vw] md:-translate-x-0 flex justify-center">
                     <img src={isMobile ? imageMobile : image} alt="Skripsi Mastery Poster" className="md:w-[65.834vw] md:rounded-[2.08vw] object-cover" />
