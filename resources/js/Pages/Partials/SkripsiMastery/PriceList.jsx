@@ -5,10 +5,10 @@ export default function PriceList () {
     const data = [
         {
             title: "Akses 1 Bulan",
-            subtitle: "", 
-            desc: "Lebih Hemat Hingga 450rb", 
-            price: 95000, 
-            slug: "skripsi-mastery-akses-1-bulan", 
+            subtitle: "",
+            desc: "Lebih Hemat Hingga 450rb",
+            price: 95000,
+            slug: "skripsi-mastery-akses-1-bulan",
             facilities: [
                 "10 modul Fast Track Nyusun Skripsi",
                 "Bebas Konsultasi via Chat Bersama Tutor",
@@ -16,23 +16,23 @@ export default function PriceList () {
                 "Free Desk Review",
                 "Daily Call Bersama Tutor",
                 "Monthly Call Bersama The Founders",
-                "Akses Informasi Maganng & Berita"
-            ], 
+                "Akses Informasi Magang & Berita"
+            ],
             tagline: {
-                text: "", 
-                color: "", 
+                text: "",
+                color: "",
                 bg: ""
-            }, 
-            buttonVariant: "primary-inverse", 
+            },
+            buttonVariant: "primary-inverse",
             borderColor: "neutral-30",
             bgColor: "white"
         },
         {
             title: "Akses 3 Bulan",
-            subtitle: "", 
-            desc: "Lebih Hemat Hingga 450rb", 
-            price: 250000, 
-            slug: "skripsi-mastery-akses-3-bulan", 
+            subtitle: "",
+            desc: "Lebih Hemat Hingga 450rb",
+            price: 250000,
+            slug: "skripsi-mastery-akses-3-bulan",
             facilities: [
                 "10 modul Fast Track Nyusun Skripsi",
                 "Bebas Konsultasi via Chat Bersama Tutor",
@@ -40,23 +40,23 @@ export default function PriceList () {
                 "Free Desk Review",
                 "Daily Call Bersama Tutor",
                 "Monthly Call Bersama The Founders",
-                "Akses Informasi Maganng & Berita"
-            ], 
+                "Akses Informasi Magang & Berita"
+            ],
             tagline: {
-                text: "Pilihan kebanyakan mahasiswa", 
-                color: "primary", 
+                text: "Pilihan kebanyakan mahasiswa",
+                color: "primary",
                 bg: "skin"
-            }, 
-            buttonVariant: "primary-inverse", 
+            },
+            buttonVariant: "primary-inverse",
             borderColor: "neutral-30",
             bgColor: "white"
         },
         {
             title: "Akses 6 Bulan",
-            subtitle: "Dapatkan Bonus Sertifikat Tambahan, khusus untuk akses 6 bulan untuk mempercantik CV", 
-            desc: "Lebih Hemat Hingga 450rb", 
-            price: 450000, 
-            slug: "skripsi-mastery-akses-6-bulan", 
+            subtitle: "Dapatkan Bonus Sertifikat Tambahan, khusus untuk akses 6 bulan untuk mempercantik CV",
+            desc: "Lebih Hemat Hingga 450rb",
+            price: 450000,
+            slug: "skripsi-mastery-akses-6-bulan",
             facilities: [
                 "10 modul Fast Track Nyusun Skripsi",
                 "Bebas Konsultasi via Chat Bersama Tutor",
@@ -64,14 +64,14 @@ export default function PriceList () {
                 "Free Desk Review",
                 "Daily Call Bersama Tutor",
                 "Monthly Call Bersama The Founders",
-                "Akses Informasi Maganng & Berita"
-            ], 
+                "Akses Informasi Magang & Berita"
+            ],
             tagline: {
-                text: "Best Deal + Rekomendasi Founders", 
-                color: "white", 
+                text: "Best Deal + Rekomendasi Founders",
+                color: "white",
                 bg: "primary"
-            }, 
-            buttonVariant: "primary", 
+            },
+            buttonVariant: "primary",
             borderColor: "primary",
             bgColor: "transparent"
         },
