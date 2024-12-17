@@ -28,8 +28,10 @@ export default function SkripsiMastery () {
             <Clients />
             <PriceList />
             <CertificateDisplay />
-            <Callback />
-            <Footer />
+            <div className="relative md:bg-neutral-70">
+                <Callback />
+                <Footer />
+            </div>
         </>
     )
 }
