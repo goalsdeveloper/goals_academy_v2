@@ -1,18 +1,29 @@
-import { Link } from "@inertiajs/react";
-import logo from "/resources/img/icon/goals-1.svg";
 import { useMediaQuery } from "react-responsive";
+import { Link } from "@inertiajs/react";
+import { useState, useEffect } from "react";
+import logo from "/resources/img/icon/goals-1.svg";
 import GoalsButton from "@/Components/elements/GoalsButton";
 
 export default function Header () {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const handleScroll = () => {
+        const position = scrollY;
+        setScrollPosition(position);
+    };
+
+    useEffect(() => {
+        document.addEventListener('scroll', handleScroll);
+    }, [])
 
     return (
         <header 
             className={`${
                 isMobile ? "shadow" : ""
-            } overflow-y-visible w-full top-0 right-0 bg-transparent text-dark lg:text-base z-50`}
+            } sticky overflow-y-visible w-full top-0 right-0 ${scrollPosition ? "bg-transparent backdrop-filter backdrop-blur-md bg-opacity-30" : "bg-transparent"} text-dark lg:text-base z-50 duration-500`}
         >
-            <nav className="w-[84.375%] mx-auto overflow-y-visible flex flex-nowrap items-center justify-between duration-500 h-[24.76vw] md:h-[7.7vw]">
+            <nav className={`w-[84.375%] mx-auto overflow-y-visible flex flex-nowrap items-center justify-between duration-500 ${scrollPosition ? "h-[24.76vw] md:h-[6vw]" : "h-[24.76vw] md:h-[7.7vw]"}`}>
+            {/* <nav className={`w-[84.375%] mx-auto overflow-y-visible flex flex-nowrap items-center justify-between duration-500 h-[24.76vw] md:h-[7.7vw]`}> */}
                 <div>
                     <Link href="/">
                         <img
