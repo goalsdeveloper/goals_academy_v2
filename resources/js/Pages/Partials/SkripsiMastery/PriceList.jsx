@@ -21,14 +21,14 @@ export default function PriceList () {
                 "Free Desk Review",
                 "Daily Call Bersama Tutor",
                 "Monthly Call Bersama The Founders",
-                "Akses Informasi Maganng & Berita"
-            ], 
+                "Akses Informasi Magang & Berita"
+            ],
             tagline: {
-                text: "", 
-                color: "", 
+                text: "",
+                color: "",
                 bg: ""
-            }, 
-            buttonVariant: "primary-inverse", 
+            },
+            buttonVariant: "primary-inverse",
             borderColor: "neutral-30",
             bgColor: "white"
         },
@@ -46,14 +46,14 @@ export default function PriceList () {
                 "Free Desk Review",
                 "Daily Call Bersama Tutor",
                 "Monthly Call Bersama The Founders",
-                "Akses Informasi Maganng & Berita"
-            ], 
+                "Akses Informasi Magang & Berita"
+            ],
             tagline: {
-                text: "Pilihan kebanyakan mahasiswa", 
-                color: "primary", 
+                text: "Pilihan kebanyakan mahasiswa",
+                color: "primary",
                 bg: "skin"
-            }, 
-            buttonVariant: "primary-inverse", 
+            },
+            buttonVariant: "primary-inverse",
             borderColor: "neutral-30",
             bgColor: "white"
         },
@@ -71,14 +71,14 @@ export default function PriceList () {
                 "Free Desk Review",
                 "Daily Call Bersama Tutor",
                 "Monthly Call Bersama The Founders",
-                "Akses Informasi Maganng & Berita"
-            ], 
+                "Akses Informasi Magang & Berita"
+            ],
             tagline: {
-                text: "Best Deal + Rekomendasi Founders", 
-                color: "white", 
+                text: "Best Deal + Rekomendasi Founders",
+                color: "white",
                 bg: "primary"
-            }, 
-            buttonVariant: "primary", 
+            },
+            buttonVariant: "primary",
             borderColor: "primary",
             bgColor: "transparent"
         },

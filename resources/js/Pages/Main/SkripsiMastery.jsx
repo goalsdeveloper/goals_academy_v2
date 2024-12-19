@@ -1,5 +1,5 @@
 import { Head } from "@inertiajs/react";
-import TopBackground from "../Partials/SkripsiMastery/topBackground";
+import TopBackground from "../Partials/SkripsiMastery/TopBackground";
 import Header from "../Partials/SkripsiMastery/Header";
 import Hero from "../Partials/SkripsiMastery/Hero";
 import Phases from "../Partials/SkripsiMastery/Phases";
