@@ -1,13 +1,18 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
 import background from "/resources/img/vector/gradient-bg-8.svg";
 
+import img1 from "/resources/img/skripsi-mastery/akses-1-bulan.png";
+import img2 from "/resources/img/skripsi-mastery/akses-3-bulan.png";
+import img3 from "/resources/img/skripsi-mastery/akses-6-bulan.png";
+
 export default function PriceList () {
     const data = [
         {
             title: "Akses 1 Bulan",
             subtitle: "", 
-            desc: "Lebih Hemat Hingga 450rb", 
+            desc: "", 
             price: 95000, 
+            img: img1,
             slug: "skripsi-mastery-akses-1-bulan", 
             facilities: [
                 "10 modul Fast Track Nyusun Skripsi",
@@ -30,8 +35,9 @@ export default function PriceList () {
         {
             title: "Akses 3 Bulan",
             subtitle: "", 
-            desc: "Lebih Hemat Hingga 450rb", 
+            desc: "Lebih Hemat Hingga 35rb", 
             price: 250000, 
+            img: img2,
             slug: "skripsi-mastery-akses-3-bulan", 
             facilities: [
                 "10 modul Fast Track Nyusun Skripsi",
@@ -54,8 +60,9 @@ export default function PriceList () {
         {
             title: "Akses 6 Bulan",
             subtitle: "Dapatkan Bonus Sertifikat Tambahan, khusus untuk akses 6 bulan untuk mempercantik CV", 
-            desc: "Lebih Hemat Hingga 450rb", 
+            desc: "Lebih Hemat Hingga 120rb", 
             price: 450000, 
+            img: img3,
             slug: "skripsi-mastery-akses-6-bulan", 
             facilities: [
                 "10 modul Fast Track Nyusun Skripsi",
@@ -94,21 +101,25 @@ export default function PriceList () {
     )
 }
 
-function Card ({ title, subtitle, desc, price, slug, facilities, tagline, buttonVariant, borderColor, bgColor }) {
+function Card ({ title, subtitle, desc, price, img, slug, facilities, tagline, buttonVariant, borderColor, bgColor }) {
     const currency = Intl.NumberFormat("id-ID")
 
     return (
-        <div className={`border-1 border-${borderColor} bg-${bgColor} h-[121.36vw] md:h-[35.42vw] rounded-[2.9vw] md:rounded-[.83vw] overflow-hidden`}>
-            <div className={`h-[8%] flex justify-center items-center bg-${tagline.bg} text-${tagline.color} text-center font-medium text-[3.4vw] md:text-[1.04vw]`}>{tagline.text}</div>
-            <div className="h-[92%] px-[8.79vw] md:px-[2.34vw] flex justify-center items-center">
+        <div className={`border-1 border-${borderColor} bg-${bgColor} h-fit md:h-[45vw] rounded-[2.9vw] md:rounded-[.83vw] overflow-hidden`}>
+            <div className={`md:h-[8%] flex justify-center items-center bg-${tagline.bg} text-${tagline.color} text-center font-medium text-[3.4vw] md:text-[1.04vw] py-[2vw] md:py-0`}>{tagline.text}</div>
+            <div className="py-[4vw] md:py-[2vw]">
+                <img className="h-[50vw] md:h-[10vw] mx-auto" src={img} alt={`${title} Image`} />
+            </div>
+            <div className="md:h-[50%] pb-[6vw] px-[8.79vw] md:py-0 md:px-[2.34vw] flex justify-center">
                 <div className="w-full flex flex-col gap-[6.28vw] md:gap-[2.08vw]">
+
                     <div className="space-y-[2.72vw] md:space-y-[1.875vw]">
                         <div>
                             <h3 className="font-semibold text-[5.825vw] md:text-[1.875vw]">{title}</h3>
                             <p className="text-neutral-50 md:text-[.83vw]">{subtitle}</p>
                         </div>
                         <div>
-                            <p className="font-poppins md:text-[.83vw]">{desc}</p>
+                            <p className="font-poppins md:text-[.83vw] text-neutral-80">{desc}</p>
                             <p className="text-primary font-poppins font-bold text-[8.16vw] md:text-[2.5vw]"><sup className="font-semibold text-[2.72vw] md:text-[.83vw] -top-[5vw] md:-top-[1.5vw]">RP</sup>{currency.format(price)}</p>
                         </div>
                     </div>

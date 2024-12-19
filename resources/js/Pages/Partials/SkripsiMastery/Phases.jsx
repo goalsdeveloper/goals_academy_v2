@@ -33,13 +33,13 @@ export default function Phases () {
                                 <hr className="border-neutral-30 md:border-dark my-[5.285vw] md:my-[2.08vw]" />
                                 <div className="flex justify-center md:justify-between items-center gap-[7.7vw] md:gap-0">
                                     <p className="font-poppins font-bold text-secondary text-[5.825vw] md:text-[2.5vw]">Phase<span className="text-[9.7vw] md:text-[3.75vw]">{index+1}</span></p>
-                                    <p className="w-[47.57vw] md:w-[15vw] text-[2.9vw] md:text-[1.25vw]">{item}</p>
+                                    <p className="w-[47.57vw] md:w-[18vw] text-[2.9vw] md:text-[1.25vw]">{item}</p>
                                 </div>
                             </div>
                         ) : (
                             <div key={index} className="flex justify-center md:justify-between items-center gap-[7.7vw] md:gap-0">
                                 <p className="font-poppins font-bold text-secondary text-[5.825vw] md:text-[2.5vw]">Phase<span className="text-[9.7vw] md:text-[3.75vw]">{index+1}</span></p>
-                                <p className="w-[47.57vw] md:w-[15vw] text-[2.9vw] md:text-[1.25vw]">{item}</p>
+                                <p className="w-[47.57vw] md:w-[18vw] text-[2.9vw] md:text-[1.25vw]">{item}</p>
                             </div>
                         ))}
                     </div>

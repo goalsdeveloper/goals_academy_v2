@@ -1,13 +1,13 @@
 import { useMediaQuery } from "react-responsive";
 import GoalsButton from "@/Components/elements/GoalsButton";
-import background from "/resources/img/skripsi-mastery/bg-quotes.svg";
-import backgroundMobile from "/resources/img/skripsi-mastery/bg-quotes-mobile.svg";
+import background from "/resources/img/skripsi-mastery/bg-callback.svg";
+import backgroundMobile from "/resources/img/skripsi-mastery/bg-callback-mobile.svg";
 
 export default function Callback () {    
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
-        <section id="callback" className="relative pt-[23.54vw] pb-[118.5vw] md:pt-[10vw] md:pb-[12vw] overflow-hidden md:-translate-y-[.6vw]">
+        <section id="callback" className="relative pt-[28vw] pb-[68vw] md:pt-[10vw] md:pb-[12vw] overflow-hidden md:-translate-y-[.6vw]">
             <div className="w-full absolute top-0 -z-10">
                 <img className="w-full md:rounded-[.83vw]" src={isMobile ? backgroundMobile : background} alt="Background Image" />
             </div>
@@ -18,7 +18,7 @@ export default function Callback () {
                         <p className="font-poppins text-[2.9vw] md:text-[1.25vw]">Yordhan Ghalis Dewangga - CEO Goals Academy</p>
                     </div>
                     <div>
-                        <a href="#pricelist"><GoalsButton className="!bg-primary !border-primary w-[62.93vw] md:w-[20.83vw] text-[3.4vw] md:text-[1.04vw]">Take Action Sekarang!</GoalsButton></a>
+                        <a href="#pricelist"><GoalsButton className="!bg-primary !border-primary w-[62.93vw] md:w-[20.83vw] text-[3.4vw] md:text-[1.04vw]">Daftar Sekarang</GoalsButton></a>
                     </div>
                 </div>
             </div>

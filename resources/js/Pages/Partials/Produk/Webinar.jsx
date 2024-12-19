@@ -153,7 +153,7 @@ function WebinarCard({ item, className }) {
                 <ButtonPill
                     target=""
                     href={route("produk.show", { produk: item.slug })}
-                    className="w-full"
+                    className="w-full mt-2"
                 >
                     Beli Sekarang
                 </ButtonPill>

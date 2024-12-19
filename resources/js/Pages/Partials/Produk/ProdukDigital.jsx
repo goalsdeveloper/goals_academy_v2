@@ -2,7 +2,7 @@ import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, A11y, FreeMode } from "swiper/modules";
 import ButtonSwiper from "@/Components/ButtonSwiper";
-import BimbinganCard from "@/Components/BimbinganCard";
+import ProductCard from "@/Components/ProductCard";
 
 export default function ProdukDigital({
     data,
@@ -33,7 +33,7 @@ export default function ProdukDigital({
                                     : "";
                             return (
                                 <div key={index} className={`flex ${model}`}>
-                                    <BimbinganCard
+                                    <ProductCard
                                         item={item}
                                         className="w-72 md:w-[21vw] 3xl:w-[20vw]"
                                     />
@@ -120,7 +120,7 @@ function ProdukDigitalMobile({
                             style={{ width: "fit-content" }}
                             className="p-4 md:p-2 lg:p-3 xl:p-4"
                         >
-                            <BimbinganCard item={item} className="w-[70vw]" />
+                            <ProductCard item={item} className="w-[70vw]" />
                         </SwiperSlide>
                     );
                 })}
