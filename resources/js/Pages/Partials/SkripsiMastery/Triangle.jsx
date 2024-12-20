@@ -7,7 +7,7 @@ export default function Triangle () {
     return (
         <section id="triangle" className="pt-[12.86vw] pb-[16vw] md:pt-[3.85vw] md:pb-0">
             <div className="w-[88.35%] md:w-[84.375%] mx-auto space-y-[10.92vw] md:space-y-[7.7vw]">
-                <h2 className="text-center text-[5.825vw] md:text-[2.5vw]">Riset mengatakan, 3 hal ini bikin skripsimu gak selesai</h2>
+                <h2 className="text-center text-[5.825vw] md:text-[2.5vw]">Riset Mengatakan, 3 Hal ini Bikin Skripsimu Gak Selesai</h2>
                 <div className="md:space-y-[1vw]">
                     <div className="flex justify-between">
                         <div className="w-[40.29vw] md:w-[17.24vw] text-center space-y-[1.94vw] md:space-y-[1.25vw]">
