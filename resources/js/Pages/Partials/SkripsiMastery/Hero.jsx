@@ -44,7 +44,7 @@ export default function Hero () {
                             <img src={groupPicture} alt="Group Picture" className="w-[15.72vw] md:w-[6.67vw]" />
                             <p className="w-[55vw] md:w-[13.9vw] font-poppins font-medium text-[2.9vw] md:text-[.83vw]"><span className="text-primary font-semibold text-[3.4vw] md:text-[1.25vw]">5.000+</span> mahasiswa telah bimbingan di Goals Academy</p>
                         </div>
-                        <h1 className="text-[5.825vw] md:text-[2.5vw] leading-normal">Belajar Strategi Nyusun Skripsi dari Ahlinya Biar Kamu Bisa Segera Lulus Dan Dapet Pekerjaan Impianmu</h1>
+                        <h1 className="text-[5.825vw] md:text-[2.5vw] leading-normal">Belajar Strategi Nyusun Skripsi dari Ahlinya Biar Kamu Bisa Segera Lulus dan Dapet Pekerjaan Impianmu</h1>
                     </div>
                     <div className="md:w-[18.28vw] flex md:flex-col justify-between">
                         <div className="space-y-[1.94vw] md:space-y-[1vw]">
@@ -58,8 +58,11 @@ export default function Hero () {
                     </div>
                 </div>
                 <div className="flex items-center gap-[5.825vw] md:gap-[2.5vw] font-poppins *:md:font-semibold text-neutral-70 mt-[7.37vw] mb-[9.7vw] md:mt-[3.34vw] md:mb-[4.48vw]">
-                    <p className="w-[29.85vw] md:w-auto text-[5.825vw] md:text-[1.875vw] font-bold text-primary">{countdown}</p>
-                    <p className="w-[52.43vw] md:w-auto font-sans md:font-poppins text-[2.9vw] md:text-[1.25vw]">Dapatkan harga waiting list sebelum berakhir</p>
+                    <p className="w-[52vw] md:w-auto text-[5.825vw] md:text-[1.875vw] font-bold text-primary">{countdown}</p>
+                    <div className="w-[50vw] md:w-auto font-sans md:font-poppins text-[2.9vw] md:text-[1.25vw]">
+                        <p className="font-normal">Program akan dimulai 20 Januari 2025</p>
+                        <p className="font-semibold">Dapatkan harga waiting list sebelum berakhir</p>
+                    </div>
                 </div>
                 <div className="w-[110%] h-[70vw] md:w-auto md:h-auto -translate-x-[5vw] md:-translate-x-0 flex justify-center">
                     <img src={isMobile ? imageMobile : image} alt="Skripsi Mastery Poster" className="md:w-[65.834vw] md:rounded-[2.08vw] object-cover" />
