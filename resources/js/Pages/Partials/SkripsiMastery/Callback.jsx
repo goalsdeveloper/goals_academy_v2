@@ -1,7 +1,7 @@
 import { useMediaQuery } from "react-responsive";
 import GoalsButton from "@/Components/elements/GoalsButton";
-import background from "/resources/img/skripsi-mastery/bg-callback.svg";
-import backgroundMobile from "/resources/img/skripsi-mastery/bg-callback-mobile.svg";
+import background from "/resources/img/skripsi-mastery/bg-callback.png";
+import backgroundMobile from "/resources/img/skripsi-mastery/bg-callback-mobile.png";
 
 export default function Callback () {    
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });

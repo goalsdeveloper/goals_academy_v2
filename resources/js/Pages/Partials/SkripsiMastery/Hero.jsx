@@ -1,6 +1,6 @@
 import { useMediaQuery } from "react-responsive";
 import { FaAlignLeft, FaStar } from "react-icons/fa6";
-import groupPicture from "/resources/img/skripsi-mastery/group-picture.svg";
+import groupPicture from "/resources/img/skripsi-mastery/group-picture.png";
 import image from "/resources/img/skripsi-mastery/img-1.png";
 import imageMobile from "/resources/img/skripsi-mastery/img-1-mobile.png";
 import { useState, useEffect, useRef } from "react";
