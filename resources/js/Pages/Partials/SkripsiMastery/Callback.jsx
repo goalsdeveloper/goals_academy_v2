@@ -1,13 +1,13 @@
 import { useMediaQuery } from "react-responsive";
 import GoalsButton from "@/Components/elements/GoalsButton";
-import background from "/resources/img/skripsi-mastery/bg-callback.svg";
-import backgroundMobile from "/resources/img/skripsi-mastery/bg-callback-mobile.svg";
+import background from "/resources/img/skripsi-mastery/bg-callback.png";
+import backgroundMobile from "/resources/img/skripsi-mastery/bg-callback-mobile.png";
 
 export default function Callback () {    
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
     return (
-        <section id="callback" className="relative pt-[28vw] pb-[68vw] md:pt-[10vw] md:pb-[12vw] overflow-hidden md:-translate-y-[.6vw]">
+        <section id="callback" className="relative pt-[28vw] pb-[68vw] md:pt-[10vw] md:pb-[10vw] overflow-hidden md:-translate-y-[.6vw]">
             <div className="w-full absolute top-0 -z-10">
                 <img className="w-full md:rounded-[.83vw]" src={isMobile ? backgroundMobile : background} alt="Background Image" />
             </div>

@@ -90,7 +90,7 @@ export default function PriceList () {
                 <img src={background} alt="Background Image" className="md:w-[50vw]" />
             </div>
             <div className="w-[88.35vw] md:w-[73.96%] mx-auto space-y-[11.65vw] md:space-y-[8.23vw]">
-                <h2 className="text-[5.825vw] md:text-[2.5vw] text-center">Kalau di spill semua, nanti websitenya bakal panjang Berikutnya adalah giliranmu</h2>
+                <h2 className="text-[5.825vw] md:text-[2.5vw] text-center">Kalau di Spill Semua, Nanti Websitenya Bakal Panjang<br/>Berikutnya Adalah Giliranmu</h2>
                 <div className="w-[80.58vw] md:w-auto mx-auto grid grid-cols-1 md:grid-cols-3 gap-[3.88vw] md:gap-[1.04vw]">
                     {data.map((item, index) => (
                         <Card key={index} {...item} />

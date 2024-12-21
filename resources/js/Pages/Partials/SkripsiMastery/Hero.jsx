@@ -1,6 +1,6 @@
 import { useMediaQuery } from "react-responsive";
 import { FaAlignLeft, FaStar } from "react-icons/fa6";
-import groupPicture from "/resources/img/skripsi-mastery/group-picture.svg";
+import groupPicture from "/resources/img/skripsi-mastery/group-picture.png";
 import image from "/resources/img/skripsi-mastery/img-1.png";
 import imageMobile from "/resources/img/skripsi-mastery/img-1-mobile.png";
 import { useState, useEffect, useRef } from "react";
@@ -44,7 +44,7 @@ export default function Hero () {
                             <img src={groupPicture} alt="Group Picture" className="w-[15.72vw] md:w-[6.67vw]" />
                             <p className="w-[55vw] md:w-[13.9vw] font-poppins font-medium text-[2.9vw] md:text-[.83vw]"><span className="text-primary font-semibold text-[3.4vw] md:text-[1.25vw]">5.000+</span> mahasiswa telah bimbingan di Goals Academy</p>
                         </div>
-                        <h1 className="text-[5.825vw] md:text-[2.5vw] leading-normal">Belajar Strategi Nyusun Skripsi dari Ahlinya Biar Kamu Bisa Segera Lulus Dan Dapet Pekerjaan Impianmu</h1>
+                        <h1 className="text-[5.825vw] md:text-[2.5vw] leading-normal">Belajar Strategi Nyusun Skripsi dari Ahlinya Biar Kamu Bisa Segera Lulus dan Dapet Pekerjaan Impianmu</h1>
                     </div>
                     <div className="md:w-[18.28vw] flex md:flex-col justify-between">
                         <div className="space-y-[1.94vw] md:space-y-[1vw]">
