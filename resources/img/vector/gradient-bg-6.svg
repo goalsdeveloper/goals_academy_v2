@@ -1,48 +1,50 @@
 <svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_11094_33087)">
-<g clip-path="url(#clip1_11094_33087)">
-<mask id="mask0_11094_33087" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+<g clip-path="url(#clip0_11453_33548)">
+<mask id="mask0_11453_33548" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
 <rect width="1920" height="1080" fill="#D9D9D9"/>
 </mask>
-<g mask="url(#mask0_11094_33087)">
-<g opacity="0.8" filter="url(#filter0_f_11094_33087)">
-<circle cx="139" cy="162" r="415" fill="#FF8854"/>
+<g mask="url(#mask0_11453_33548)">
+<g opacity="0.8" filter="url(#filter0_f_11453_33548)">
+<circle cx="139" cy="-88" r="415" fill="#FF8854"/>
 </g>
 </g>
 </g>
-<g clip-path="url(#clip2_11094_33087)">
-<g opacity="0.12">
-<line x1="107.337" y1="1147.67" x2="107.337" y2="-92.334" stroke="#404040" stroke-width="1.33333"/>
-<line x1="227.337" y1="1148" x2="227.337" y2="-92" stroke="#404040" stroke-width="1.33333"/>
-<line x1="347.337" y1="1148.33" x2="347.337" y2="-91.666" stroke="#404040" stroke-width="1.33333"/>
-<line x1="467.337" y1="1148.67" x2="467.337" y2="-91.332" stroke="#404040" stroke-width="1.33333"/>
-<line x1="587.337" y1="1149" x2="587.337" y2="-90.998" stroke="#404040" stroke-width="1.33333"/>
-<line x1="707.337" y1="1149.34" x2="707.337" y2="-90.6641" stroke="#404040" stroke-width="1.33333"/>
-<line x1="827.337" y1="1149.67" x2="827.337" y2="-90.3301" stroke="#404040" stroke-width="1.33333"/>
-<line x1="947.337" y1="1150" x2="947.337" y2="-89.9961" stroke="#404040" stroke-width="1.33333"/>
-<line x1="1067.34" y1="1150.34" x2="1067.34" y2="-89.6621" stroke="#404040" stroke-width="1.33333"/>
-<line x1="1187.34" y1="1150.67" x2="1187.34" y2="-89.3281" stroke="#404040" stroke-width="1.33333"/>
-<line x1="1307.34" y1="1151.01" x2="1307.34" y2="-88.9941" stroke="#404040" stroke-width="1.33333"/>
-<line x1="1427.34" y1="1151.34" x2="1427.34" y2="-88.6602" stroke="#404040" stroke-width="1.33333"/>
-<line x1="1547.34" y1="1151.67" x2="1547.34" y2="-88.3262" stroke="#404040" stroke-width="1.33333"/>
-<line x1="1667.34" y1="1152.01" x2="1667.34" y2="-87.9922" stroke="#404040" stroke-width="1.33333"/>
-<line x1="1787.34" y1="1152.34" x2="1787.34" y2="-87.6582" stroke="#404040" stroke-width="1.33333"/>
-</g>
+<mask id="mask1_11453_33548" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-87" y="-7" width="2007" height="1037">
+<path d="M729.157 214.194C729.157 389.161 249.048 571 100.496 571C-48.0562 571 2.49893 226.966 2.49893 51.9993C2.49893 -122.967 785.947 151.499 934.499 151.499C1083.05 151.499 729.157 39.2274 729.157 214.194Z" fill="url(#paint0_linear_11453_33548)"/>
+<path d="M1517.5 293.5C1775 439.999 1422.63 782.106 1834 737C1897.35 743.726 1912.5 622.501 1899.5 473C1887.32 332.997 1884 413.001 1884 211.5C1884 49.2137 1926.2 85.1076 1874.5 76.0005C1690 43.5006 1440.19 82.1636 1234.5 83.5003C1170.5 83.9162 784.501 37.501 489.498 209.5C102.883 434.913 1310.36 175.65 1517.5 293.5Z" fill="#D9D9D9"/>
+<path d="M1122.73 244.891C446.022 302.82 726.397 860.224 596.836 933.557C542.082 964.548 647.018 941.895 778.426 945.9C942.686 950.907 932.901 949.476 1122.73 945.9C1312.57 942.325 1248.99 945.9 1544.07 945.9C1839.14 945.9 1837.88 945.9 1899.09 917.808C1912.86 911.487 1920 1127.58 1920 805.866C1920 569.637 1799.45 186.962 1122.73 244.891Z" fill="#D9D9D9"/>
+<path d="M453.735 244.891C-222.978 302.82 57.3975 860.224 -72.1642 933.557C-126.918 964.548 -21.982 941.895 109.426 945.9C273.686 950.907 263.901 949.476 453.735 945.9C643.568 942.325 579.988 945.9 875.066 945.9C1170.14 945.9 1168.88 945.9 1230.09 917.808C1243.86 911.487 1251 1127.58 1251 805.866C1251 569.637 1130.45 186.962 453.735 244.891Z" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask1_11453_33548)">
+<g opacity="0.1">
+<line x1="-0.66276" y1="1283.67" x2="-0.66268" y2="43.666" stroke="#404040" stroke-width="1.33333"/>
+<line x1="119.337" y1="1284" x2="119.337" y2="44" stroke="#404040" stroke-width="1.33333"/>
+<line x1="239.337" y1="1284.33" x2="239.337" y2="44.334" stroke="#404040" stroke-width="1.33333"/>
+<line x1="359.337" y1="1284.67" x2="359.337" y2="44.668" stroke="#404040" stroke-width="1.33333"/>
+<line x1="479.337" y1="1285" x2="479.337" y2="45.002" stroke="#404040" stroke-width="1.33333"/>
+<line x1="599.337" y1="1285.34" x2="599.337" y2="45.3359" stroke="#404040" stroke-width="1.33333"/>
+<line x1="719.337" y1="1285.67" x2="719.337" y2="45.6699" stroke="#404040" stroke-width="1.33333"/>
+<line x1="839.337" y1="1286" x2="839.337" y2="46.0039" stroke="#404040" stroke-width="1.33333"/>
+<line x1="959.337" y1="1286.34" x2="959.337" y2="46.3379" stroke="#404040" stroke-width="1.33333"/>
+<line x1="1079.34" y1="1286.67" x2="1079.34" y2="46.6719" stroke="#404040" stroke-width="1.33333"/>
+<line x1="1199.34" y1="1287.01" x2="1199.34" y2="47.0059" stroke="#404040" stroke-width="1.33333"/>
+<line x1="1319.34" y1="1287.34" x2="1319.34" y2="47.3398" stroke="#404040" stroke-width="1.33333"/>
+<line x1="1439.34" y1="1287.67" x2="1439.34" y2="47.6738" stroke="#404040" stroke-width="1.33333"/>
+<line x1="1559.34" y1="1288.01" x2="1559.34" y2="48.0078" stroke="#404040" stroke-width="1.33333"/>
+<line x1="1679.34" y1="1288.34" x2="1679.34" y2="48.3418" stroke="#404040" stroke-width="1.33333"/>
 </g>
 </g>
 <defs>
-<filter id="filter0_f_11094_33087" x="-1276" y="-1253" width="2830" height="2830" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_f_11453_33548" x="-1276" y="-1503" width="2830" height="2830" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="500" result="effect1_foregroundBlur_11094_33087"/>
+<feGaussianBlur stdDeviation="500" result="effect1_foregroundBlur_11453_33548"/>
 </filter>
-<clipPath id="clip0_11094_33087">
-<rect width="1920" height="1080" fill="white"/>
-</clipPath>
-<clipPath id="clip1_11094_33087">
-<rect width="1920" height="1080" fill="white"/>
-</clipPath>
-<clipPath id="clip2_11094_33087">
+<linearGradient id="paint0_linear_11453_33548" x1="302.424" y1="97.9837" x2="854.346" y2="403.982" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+<clipPath id="clip0_11453_33548">
 <rect width="1920" height="1080" fill="white"/>
 </clipPath>
 </defs>
