@@ -1,7 +1,7 @@
 import { useMediaQuery } from "react-responsive";
 import background from "/resources/img/vector/gradient-bg-9.svg";
 import backgroundMobile from "/resources/img/vector/gradient-bg-9-mobile.svg";
-import image from "/resources/img/skripsi-mastery/certificate.svg";
+import image from "/resources/img/skripsi-mastery/certificate.png";
 
 export default function CertificateDisplay () {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });

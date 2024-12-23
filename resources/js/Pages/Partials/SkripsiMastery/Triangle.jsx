@@ -1,9 +1,6 @@
-import { useMediaQuery } from "react-responsive";
-import image from "/resources/img/skripsi-mastery/triangle.gif";
+import video from "/resources/img/skripsi-mastery/triangle.webm";
 
 export default function Triangle () {
-    const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
-
     return (
         <section id="triangle" className="pt-[12.86vw] pb-[16vw] md:pt-[3.85vw] md:pb-0">
             <div className="w-[88.35%] md:w-[84.375%] mx-auto space-y-[10.92vw] md:space-y-[7.7vw]">
@@ -20,7 +17,10 @@ export default function Triangle () {
                         </div>
                     </div>
                     <div className="flex justify-center">
-                        <img src={image} alt="Triangle Image" className="w-full md:w-auto md:h-[41.67vw]" />
+                        <video autoPlay loop muted className="w-full md:w-auto md:h-[41.67vw]">
+                            <source src={video} type="video/webm" />
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
                     <div className="flex justify-center">
                         <div className="w-[42.48vw] md:w-[19vw] text-center space-y-[1.94vw] md:space-y-[1.25vw]">
