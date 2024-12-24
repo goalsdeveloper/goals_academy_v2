@@ -12,6 +12,7 @@ import PriceList from "../Partials/SkripsiMastery/PriceList";
 import CertificateDisplay from "../Partials/SkripsiMastery/CertificateDisplay";
 import Callback from "../Partials/SkripsiMastery/Callback";
 import Footer from "../Partials/SkripsiMastery/Footer";
+import "/resources/css/app.css";
 
 export default function SkripsiMastery () {
     return (

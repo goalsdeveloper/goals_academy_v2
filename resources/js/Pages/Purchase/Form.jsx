@@ -325,7 +325,7 @@ function MainCard({
                             <FiChevronLeft className="text-[5vw]" /> Kembali
                         </Link>
                         <img
-                            className="w-full h-[60vw] object-cover"
+                            className="w-full h-[73vw] object-cover"
                             src={"/storage/" + dataProduct.product_image}
                             alt=""
                         />
@@ -334,17 +334,18 @@ function MainCard({
                         <h3 className="w-full text-secondary font-semibold text-[5.5vw] md:text-[1.8vw]">
                             {dataProduct.name}
                         </h3>
-                        <p>{dataProduct.description}</p>
+                        <p className="leading-normal">{dataProduct.description}</p>
                         {dataProduct?.facilities?.length ? (
-                            <div className="flex flex-col md:flex-row flex-wrap items-start gap-[3vw] md:gap-[1vw] multi-column">
+                            // <div className="flex flex-col md:flex-row flex-wrap items-start gap-[3vw] md:gap-[1vw] multi-column">
+                            <div className="grid items-start gap-[3vw] md:gap-[.5vw] multi-column md:max-h-[11vw] md:overflow-auto">
                                 {dataProduct?.facilities?.map((item, index) => {
                                     return (
                                         <div
                                             key={index}
-                                            className="flex items-center gap-[3vw] md:gap-[.5vw] md:border md:border-secondary md:px-[.5vw] md:py-[.25vw] md:rounded-full"
+                                            className="flex gap-[3vw] md:gap-[1vw] md:px-[.5vw] md:py-[.25vw] md:rounded-full"
                                         >
                                             <i
-                                                className={`${item.icon} text-primary text-center w-[4vw] md:w-[1vw]`}
+                                                className={`${item.icon} text-primary text-center w-[4vw] md:w-[1vw] translate-y-[.2vw]`}
                                             ></i>
                                             <p>{item.text}</p>
                                         </div>

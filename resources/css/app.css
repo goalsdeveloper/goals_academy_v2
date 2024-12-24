@@ -80,3 +80,26 @@ select:-webkit-autofill:focus {
         @apply text-inherit;
     }
 }
+
+@screen md {
+    /* width */
+    ::-webkit-scrollbar {
+        width: .5vw;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        @apply bg-slate-100 rounded-full
+        /* background: #f1f1f1; */
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        @apply bg-neutral-40 rounded-full
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        @apply md:bg-neutral-60
+    } 
+}

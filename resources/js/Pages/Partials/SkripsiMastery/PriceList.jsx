@@ -16,12 +16,19 @@ export default function PriceList () {
             slug: "skripsi-mastery-akses-1-bulan", 
             facilities: [
                 "10 modul Fast Track Nyusun Skripsi",
+                "Daily Call bersama Tutor",
                 "Bebas Konsultasi via Chat Bersama Tutor",
-                "Free Cek Plagiasi Turnitin",
-                "Free Desk Review",
+                "Free Cek Turnitin",
+                "Free Desk Review Skripsi",
                 "Daily Call Bersama Tutor",
-                "Monthly Call Bersama The Founders",
-                "Akses Informasi Magang & Berita"
+                "Monthly Call Bersama Founders buat pengembangan diri",
+                "Akses perpustakaan digital (e-book)",
+                "Informasi Magang & Berita",
+                "Tes kepribadian",
+                "Template Q&A Sidang Penelitian",
+                "Template Outline Judul Penelitian",
+                "Prompt AI untuk Penelitian",
+                "Koleksi Judul untuk Penelitian",
             ],
             tagline: {
                 text: "",
@@ -41,12 +48,19 @@ export default function PriceList () {
             slug: "skripsi-mastery-akses-3-bulan", 
             facilities: [
                 "10 modul Fast Track Nyusun Skripsi",
+                "Daily Call bersama Tutor",
                 "Bebas Konsultasi via Chat Bersama Tutor",
-                "Free Cek Plagiasi Turnitin",
-                "Free Desk Review",
+                "Free Cek Turnitin",
+                "Free Desk Review Skripsi",
                 "Daily Call Bersama Tutor",
-                "Monthly Call Bersama The Founders",
-                "Akses Informasi Magang & Berita"
+                "Monthly Call Bersama Founders buat pengembangan diri",
+                "Akses perpustakaan digital (e-book)",
+                "Informasi Magang & Berita",
+                "Tes kepribadian",
+                "Template Q&A Sidang Penelitian",
+                "Template Outline Judul Penelitian",
+                "Prompt AI untuk Penelitian",
+                "Koleksi Judul untuk Penelitian",
             ],
             tagline: {
                 text: "Pilihan kebanyakan mahasiswa",
@@ -66,12 +80,19 @@ export default function PriceList () {
             slug: "skripsi-mastery-akses-6-bulan", 
             facilities: [
                 "10 modul Fast Track Nyusun Skripsi",
+                "Daily Call bersama Tutor",
                 "Bebas Konsultasi via Chat Bersama Tutor",
-                "Free Cek Plagiasi Turnitin",
-                "Free Desk Review",
+                "Free Cek Turnitin",
+                "Free Desk Review Skripsi",
                 "Daily Call Bersama Tutor",
-                "Monthly Call Bersama The Founders",
-                "Akses Informasi Magang & Berita"
+                "Monthly Call Bersama Founders buat pengembangan diri",
+                "Akses perpustakaan digital (e-book)",
+                "Informasi Magang & Berita",
+                "Tes kepribadian",
+                "Template Q&A Sidang Penelitian",
+                "Template Outline Judul Penelitian",
+                "Prompt AI untuk Penelitian",
+                "Koleksi Judul untuk Penelitian",
             ],
             tagline: {
                 text: "Best Deal + Rekomendasi Founders",
@@ -107,8 +128,8 @@ function Card ({ title, subtitle, desc, price, img, slug, facilities, tagline, b
     return (
         <div className={`border-1 border-${borderColor} bg-${bgColor} h-fit md:h-[45vw] rounded-[2.9vw] md:rounded-[.83vw] overflow-hidden`}>
             <div className={`md:h-[8%] flex justify-center items-center bg-${tagline.bg} text-${tagline.color} text-center font-medium text-[3.4vw] md:text-[1.04vw] py-[2vw] md:py-0`}>{tagline.text}</div>
-            <div className="py-[4vw] md:py-[2vw]">
-                <img className="h-[50vw] md:h-[10vw] mx-auto" src={img} alt={`${title} Image`} />
+            <div className="py-[4vw] md:py-[1vw]">
+                <img className="h-[50vw] md:h-[15vw] mx-auto" src={img} alt={`${title} Image`} />
             </div>
             <div className="md:h-[50%] pb-[6vw] px-[8.79vw] md:py-0 md:px-[2.34vw] flex justify-center">
                 <div className="w-full flex flex-col gap-[6.28vw] md:gap-[2.08vw]">
@@ -126,12 +147,20 @@ function Card ({ title, subtitle, desc, price, img, slug, facilities, tagline, b
                     <div>
                         <GoalsButton isLink href={`/produk/${slug}`} className="w-full text-[3.4vw] md:text-[1.04vw]" variant={buttonVariant}>Daftar Sekarang</GoalsButton>
                     </div>
-                    <div>
-                        <ul className="list-disc list-inside text-neutral-80 text-[2.9vw] md:text-[.83vw]">
+                    <div className="h-[25vw] md:h-auto overflow-auto">
+                        <div className="text-neutral-80 text-[2.9vw] md:text-[.83vw]">
+                            {facilities.map((item, index) => (
+                                <div key={index} className="flex gap-[2vw] md:gap-[.7vw]">
+                                    •
+                                    <p>{item}</p>
+                                </div>
+                            ))}
+                        </div>
+                        {/* <ul className="list-disc text-neutral-80 text-[2.9vw] md:text-[.83vw]">
                             {facilities.map((item, index) => (
                                 <li key={index}>{item}</li>
                             ))}
-                        </ul>
+                        </ul> */}
                     </div>
                 </div>
             </div>
