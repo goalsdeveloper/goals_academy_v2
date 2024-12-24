@@ -34,6 +34,27 @@
     display: none;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    @apply md:bg-slate-100 md:rounded-full
+    /* background: #f1f1f1; */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    @apply md:bg-neutral-40 md:rounded-full
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    @apply md:bg-neutral-60
+} 
+
 input {
     @apply ring-0;
 }
