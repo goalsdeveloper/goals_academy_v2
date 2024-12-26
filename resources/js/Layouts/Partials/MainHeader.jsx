@@ -223,14 +223,22 @@ function NavbarExpand({
     const [profileDropdown, setProfileDropdown] = useState(false);
     return (
         <>
-            <div className="hidden md:grid grid-cols-3 md:gap-[3vw] font-medium text-center text-[4vw] md:text-[1vw] select-none">
+            <div className="hidden md:flex md:gap-[4vw] font-medium text-center text-[4vw] md:text-[1vw] select-none">
+                <Link
+                    href="/skripsimastery"
+                    className={`font-poppins hover:text-primary flex justify-center ${
+                        title == "Produk" ? "font" : ""
+                    }`}
+                >
+                    Skripsi Mastery
+                </Link>
                 <Link
                     href="/produk"
                     className={`font-poppins hover:text-primary flex justify-center ${
                         title == "Produk" ? "font" : ""
                     }`}
                 >
-                    Produk
+                    Program
                 </Link>
                 {/* <Link
                     href="/ecourse"

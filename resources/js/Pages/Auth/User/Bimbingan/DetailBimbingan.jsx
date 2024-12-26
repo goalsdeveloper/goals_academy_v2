@@ -29,7 +29,6 @@ export default function DetailPesanan({
         selesaiProgram: false,
         aturJadwalPopup: false,
     });
-
     const {
         data: dataRating,
         setData: setDataRating,
@@ -149,9 +148,9 @@ export default function DetailPesanan({
                                 </h1>
                             </Link>
                             {isWaiting ? (
-                                <StatusBadge {...statusObject[0]} />
+                                <StatusBadge {...statusObject[0]} contact_person={dataBimbingan[0].products.contact_person} />
                             ) : isOngoing ? (
-                                <StatusBadge {...statusObject[1]} />
+                                <StatusBadge {...statusObject[1]} contact_person={dataBimbingan[0].products.contact_person} />
                             ) : <></>}
                         </>
                     ) : (
@@ -402,7 +401,7 @@ const StarRating = ({ totalStars, rating, setRating }) => {
     );
 };
 
-function StatusBadge ({ text, desc }) {
+function StatusBadge ({ text, desc, contact_person }) {
     const [show, setShow] = useState(false);
     return (
         <div className="relative">
@@ -411,12 +410,12 @@ function StatusBadge ({ text, desc }) {
                 className="text-blue-500 bg-blue-100 cursor-pointer"
                 onClick={() => setShow(true)}
             />
-            {createPortal(<StatusBadgeDescription {...{show, setShow, desc}} />, document.body)}
+            {createPortal(<StatusBadgeDescription {...{show, setShow, desc, contact_person}} />, document.body)}
         </div>
     )
 }
 
-const StatusBadgeDescription = ({ show, setShow, desc }) => {
+const StatusBadgeDescription = ({ show, setShow, desc, contact_person }) => {
     return (
         <GoalsPopup
             show={show}
@@ -433,7 +432,7 @@ const StatusBadgeDescription = ({ show, setShow, desc }) => {
                     <GoalsButton
                         onClick={() =>
                             open(
-                                `https://api.whatsapp.com/send?phone=6285173276387`,
+                                `https://api.whatsapp.com/send?phone=${contact_person}`,
                                 "_blank"
                             )
                         }

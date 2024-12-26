@@ -51,9 +51,9 @@ const DetailBanyakPertemuan = ({ data, setIsAturJadwalShow }) => {
                         className="text-secondary bg-primary-10"
                     />
                     {isWaiting ? (
-                        <StatusBadge {...statusObject[0]} />
+                        <StatusBadge {...statusObject[0]} contact_person={data[0].products.contact_person} />
                     ) : isOngoing ? (
-                        <StatusBadge {...statusObject[1]} />
+                        <StatusBadge {...statusObject[1]} contact_person={data[0].products.contact_person} />
                     ) : <></>}
                 </ProductItemCardHeader>
                 <ProductItemCardContent>
@@ -621,8 +621,8 @@ function getInputBasedContactType(
     }
 }
 
-function StatusBadge ({ text, desc }) {
-    return (
+function StatusBadge ({ text, desc, contact_person }) {
+    return (    
         <div className="relative">
             <GoalsBadge
                 title={
@@ -645,7 +645,7 @@ function StatusBadge ({ text, desc }) {
                         <GoalsButton
                             onClick={() =>
                                 open(
-                                    `https://api.whatsapp.com/send?phone=6285173276387`,
+                                    `https://api.whatsapp.com/send?phone=${contact_person}`,
                                     "_blank"
                                 )
                             }
