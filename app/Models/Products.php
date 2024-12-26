@@ -31,6 +31,7 @@ class Products extends Model
         'form_config',
         'contact_type',
         'promo_price',
+        'contact_person',
     ];
 
     protected $casts = [

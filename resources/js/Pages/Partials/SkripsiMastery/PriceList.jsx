@@ -1,9 +1,9 @@
 import GoalsButton from "@/Components/elements/GoalsButton";
 import background from "/resources/img/vector/gradient-bg-8.svg";
 
-import img1 from "/resources/img/skripsi-mastery/akses-1-bulan.png";
-import img2 from "/resources/img/skripsi-mastery/akses-3-bulan.png";
-import img3 from "/resources/img/skripsi-mastery/akses-6-bulan.png";
+import img1 from "/resources/img/skripsi-mastery/skripsi-mastery-akses-1-bulan.svg";
+import img2 from "/resources/img/skripsi-mastery/skripsi-mastery-akses-3-bulan.svg";
+import img3 from "/resources/img/skripsi-mastery/skripsi-mastery-akses-6-bulan.svg";
 
 export default function PriceList () {
     const data = [

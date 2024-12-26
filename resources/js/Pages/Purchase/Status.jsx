@@ -38,7 +38,7 @@ export default function Status({
                 setTimeout(() => redirectToWhatsApp(), 1000);
             } else if (i == 0) {
                 open(
-                    `https://api.whatsapp.com/send?phone=6285173276387&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(
+                    `https://api.whatsapp.com/send?phone=${data.products.contact_person}&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(
                         " ",
                         "%20"
                     )}%20dengan%20order%20id%20${data.order_code}.`,
@@ -224,7 +224,7 @@ export default function Status({
                                         <GoalsButton
                                             onClick={() => setRedirectAt(-1)}
                                             isLink={false}
-                                            href={`https://api.whatsapp.com/send?phone=6285173276387&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(
+                                            href={`https://api.whatsapp.com/send?phone=${data.products.contact_person}&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data.products.name.replaceAll(
                                                 " ",
                                                 "%20"
                                             )}%20dengan%20order%20id%20${
