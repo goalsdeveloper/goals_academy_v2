@@ -26,6 +26,7 @@ import { HiOutlineBuildingOffice } from "react-icons/hi2";
 import { BsPerson } from "react-icons/bs";
 import GoalsButton from "@/Components/elements/GoalsButton";
 import { Notification, NotificationItem } from "./MainHeader";
+import { TbTargetArrow } from "react-icons/tb";
 
 const MobileHeader = ({ auth, notificationData, getOldNotification }) => {
     const [authDropdown, setAuthDropdown] = useState(false);
@@ -219,17 +220,23 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
     const links = [
         { href: "/", icon: <FiHome />, text: "Home" },
         {
-            text: "Produk",
+            text: "Skripsi Mastery",
+            href: "/skripsimastery",
+            icon: <TbTargetArrow className="text-[4.5vw] -ml-[.6vw]" />,
+        },
+        {
+            text: "Program",
+            href: "/produk",
             icon: <LiaDropbox className="text-[4.5vw] -ml-[.6vw]" />,
-            sublinks: [
-                {
-                    href: "/produk",
-                    icon: <LuGraduationCap className="text-[4vw] -ml-[.8vw]" />,
-                    text: "Bimbingan",
-                },
-                { href: "/produk", icon: <FiMonitor />, text: "Webinar" },
-                // { href: "/ecourse", icon: <FiAirplay />, text: "E-Course" },
-            ],
+            // sublinks: [
+            //     {
+            //         href: "/produk",
+            //         icon: <LuGraduationCap className="text-[4vw] -ml-[.8vw]" />,
+            //         text: "Bimbingan",
+            //     },
+            //     { href: "/produk", icon: <FiMonitor />, text: "Webinar" },
+            //     // { href: "/ecourse", icon: <FiAirplay />, text: "E-Course" },
+            // ],
         },
         // {
         //     href: "/artikel",
