@@ -93,6 +93,7 @@ export default function PriceList () {
                 "Template Outline Judul Penelitian",
                 "Prompt AI untuk Penelitian",
                 "Koleksi Judul untuk Penelitian",
+                "Sertifikat Belajar",
             ],
             tagline: {
                 text: "Best Deal + Rekomendasi Founders",
