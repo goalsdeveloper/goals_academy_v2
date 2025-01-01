@@ -28,7 +28,9 @@ export default function DashboardLayout({
 }) {
     const [data, setData] = useState([]);
     useEffect(() => {
-        axios.get("/dashboard_layout_data").then(response => setData(response.data))
+        axios
+            .get("/dashboard_layout_data")
+            .then((response) => setData(response.data));
     }, []);
 
     let navConfig;
@@ -201,8 +203,7 @@ export default function DashboardLayout({
                                 <GrTag className="text-[4vw] md:text-[1vw]" />
                             ),
                             isActive:
-                                title == "Webinar" &&
-                                subtitle == "Category",
+                                title == "Webinar" && subtitle == "Category",
                         },
                         {
                             name: "Product",
@@ -211,8 +212,7 @@ export default function DashboardLayout({
                                 <TfiDropbox className="text-[4vw] md:text-[1vw]" />
                             ),
                             isActive:
-                                title == "Webinar" &&
-                                subtitle == "Produk",
+                                title == "Webinar" && subtitle == "Produk",
                         },
                         {
                             name: "Order",
@@ -220,8 +220,44 @@ export default function DashboardLayout({
                             icon: (
                                 <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
                             ),
+                            isActive: title == "Webinar" && subtitle == "Order",
+                        },
+                    ],
+                    collapsed: true,
+                },
+                {
+                    name: "Skripsi Mastery",
+                    href: "",
+                    icon: "",
+                    isActive: false,
+                    branches: [
+                        {
+                            name: "Category",
+                            href: "/admin/skripsi-mastery/category",
+                            icon: (
+                                <GrTag className="text-[4vw] md:text-[1vw]" />
+                            ),
                             isActive:
-                                title == "Webinar" &&
+                                title == "Skripsi Mastery" && subtitle == "Category",
+                        },
+                        {
+                            name: "Product",
+                            href: "/admin/skripsi-mastery/product",
+                            icon: (
+                                <TfiDropbox className="text-[4vw] md:text-[1vw]" />
+                            ),
+                            isActive:
+                                title == "Skripsi Mastery" &&
+                                subtitle == "Product",
+                        },
+                        {
+                            name: "Order",
+                            href: "/admin/skripsi-mastery/order",
+                            icon: (
+                                <FiShoppingCart className="text-[4vw] md:text-[1vw]" />
+                            ),
+                            isActive:
+                                title == "Skripsi Mastery" &&
                                 subtitle == "Order",
                         },
                     ],
@@ -314,6 +350,7 @@ export default function DashboardLayout({
                     ],
                     collapsed: true,
                 },
+
                 // {
                 //     name: "Marketing",
                 //     href: "",
@@ -604,81 +641,81 @@ export default function DashboardLayout({
                     )}
                 </div>
                 <nav className="flex flex-col gap-[5vw] md:gap-[1.25vw] py-[1.25vw] ps-[5vw] pe-[6.3vw] md:ps-[1.67vw] md:pe-[2.1vw]">
-                    {navConfig.map(
-                        (
-                            item,
-                            index
-                        ) => {
-                            const { name, href, icon, isActive, branches, collapsed } = item;
-                            return (
-                                <div key={index}>
-                                    {branches ? (
-                                        <>
-                                            <GoalsButton
-                                                className="justify-between md:justify-between rounded-[.5vw] ps-[4vw] md:ps-[1vw] pe-[2vw] md:pe-[.5vw] md:py-[.5vw]"
-                                                activeClassName={
-                                                    isActive &&
-                                                    "bg-white text-dark-indigo"
-                                                }
-                                                onClick={() =>
-                                                    navToggleHandler(index)
-                                                }
-                                            >
-                                                {icon}{" "}
-                                                <span className="text-[2.8vw] md:text-[.7vw]">
-                                                    {name.toUpperCase()}
-                                                </span>
-                                                {collapsed && (
-                                                    <FaChevronDown
-                                                        className={`inline-block duration-300 ${
-                                                            navState[index] &&
-                                                            "-rotate-180"
-                                                        }`}
-                                                    />
-                                                )}
-                                            </GoalsButton>
-                                            {collapsed ? (
-                                                <TECollapse
-                                                    show={navState[index]}
+                    {navConfig.map((item, index) => {
+                        const {
+                            name,
+                            href,
+                            icon,
+                            isActive,
+                            branches,
+                            collapsed,
+                        } = item;
+                        return (
+                            <div key={index}>
+                                {branches ? (
+                                    <>
+                                        <GoalsButton
+                                            className="justify-between md:justify-between rounded-[.5vw] ps-[4vw] md:ps-[1vw] pe-[2vw] md:pe-[.5vw] md:py-[.5vw]"
+                                            activeClassName={
+                                                isActive &&
+                                                "bg-white text-dark-indigo"
+                                            }
+                                            onClick={() =>
+                                                navToggleHandler(index)
+                                            }
+                                        >
+                                            {icon}{" "}
+                                            <span className="text-[2.8vw] md:text-[.7vw]">
+                                                {name.toUpperCase()}
+                                            </span>
+                                            {collapsed && (
+                                                <FaChevronDown
+                                                    className={`inline-block duration-300 ${
+                                                        navState[index] &&
+                                                        "-rotate-180"
+                                                    }`}
+                                                />
+                                            )}
+                                        </GoalsButton>
+                                        {collapsed ? (
+                                            <TECollapse show={navState[index]}>
+                                                <TECollapseItem
+                                                    className="gap-[.75vw]"
+                                                    breakClassName="hidden"
                                                 >
-                                                    <TECollapseItem
-                                                        className="gap-[.75vw]"
-                                                        breakClassName="hidden"
-                                                    >
-                                                        {branches.map(
-                                                            (
-                                                                subItem,
-                                                                index
-                                                            ) => {
-                                                                return (
-                                                                    <NavItem key={index} {...subItem} />
-                                                                );
-                                                            }
-                                                        )}
-                                                    </TECollapseItem>
-                                                </TECollapse>
-                                            ) : (
-                                                <div className="grid gap-[.75vw] mt-[.85vw]">
                                                     {branches.map(
-                                                        (
-                                                            subItem,
-                                                            index
-                                                        ) => {
+                                                        (subItem, index) => {
                                                             return (
-                                                                <NavItem key={index} {...subItem} />
+                                                                <NavItem
+                                                                    key={index}
+                                                                    {...subItem}
+                                                                />
                                                             );
                                                         }
                                                     )}
-                                                </div>
-                                            )}
-                                        </>
-                                    ) : (
-                                        <NavItem {...item} />
-                                    )}
-                                </div>
-                            );
-                        }
-                    )}
+                                                </TECollapseItem>
+                                            </TECollapse>
+                                        ) : (
+                                            <div className="grid gap-[.75vw] mt-[.85vw]">
+                                                {branches.map(
+                                                    (subItem, index) => {
+                                                        return (
+                                                            <NavItem
+                                                                key={index}
+                                                                {...subItem}
+                                                            />
+                                                        );
+                                                    }
+                                                )}
+                                            </div>
+                                        )}
+                                    </>
+                                ) : (
+                                    <NavItem {...item} />
+                                )}
+                            </div>
+                        );
+                    })}
                 </nav>
             </aside>
             <div className="relative w-full h-screen overflow-hidden bg-[#F8F8FC]">
@@ -748,7 +785,15 @@ function NavItem({ name, href, icon, isActive, info }) {
             <div className="flex gap-[3vw] md:gap-[.75vw] !justify-start">
                 {icon} {name}
             </div>
-            <span className={`rounded-full w-[1.5vw] h-[1.5vw] ${info ? "bg-secondary text-white" : "bg-transparent text-transparent"} flex items-center justify-center`}>{info}</span>
+            <span
+                className={`rounded-full w-[1.5vw] h-[1.5vw] ${
+                    info
+                        ? "bg-secondary text-white"
+                        : "bg-transparent text-transparent"
+                } flex items-center justify-center`}
+            >
+                {info}
+            </span>
         </GoalsButton>
     );
 }

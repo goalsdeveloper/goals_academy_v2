@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\Ecourse\OrderController as AdminOrderEcourseContr
 use App\Http\Controllers\Admin\Ecourse\PackageController as AdminPackageEcourseController;
 use App\Http\Controllers\Admin\JasaRiset\JasaRisetController;
 use App\Http\Controllers\Admin\JasaRiset\OrderController as AdminOrderJasaRisetController;
+use App\Http\Controllers\Admin\SkripsiMastery\SkripsiMasteryController;
 use App\Http\Controllers\Admin\ManajemenUser\ModeratorController;
 use App\Http\Controllers\Admin\ManajemenUser\RevenueTypeController;
 use App\Http\Controllers\Admin\ManajemenUser\TutorController;
@@ -26,6 +27,8 @@ use App\Http\Controllers\Admin\ProdukDigital\CategoryController as AdminCategory
 use App\Http\Controllers\Admin\ProdukDigital\OrderController as AdminOrderProdukDigitalController;
 use App\Http\Controllers\Admin\ProdukDigital\ProdukDigitalController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SkripsiMastery\CategoryController as SkripsiMasteryCategoryController;
+use App\Http\Controllers\Admin\SkripsiMastery\OrderController as AdminOrderSkripsiMasteryController;
 use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
 use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
@@ -159,6 +162,13 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::post('product/updateNumberList', [JasaRisetController::class, 'updateOrderNumber'])->name('product.updateOrderNumber');
         Route::put('product/{product}/updateVisible', [JasaRisetController::class, 'updateVisible'])->name('product.updateVisible');
         Route::resource('order', AdminOrderJasaRisetController::class);
+    });
+    Route::prefix('skripsi-mastery')->name('skripsi_mastery.')->group(function () {
+        Route::resource('category', SkripsiMasteryCategoryController::class);
+        Route::resource('product', SkripsiMasteryController::class);
+        Route::post('product/updateNumberList', [SkripsiMasteryController::class, 'updateOrderNumber'])->name('product.updateOrderNumber');
+        Route::put('product/{product}/updateVisible', [SkripsiMasteryController::class, 'updateVisible'])->name('product.updateVisible');
+        Route::resource('order', AdminOrderSkripsiMasteryController::class);
     });
     Route::prefix('webinar')->name('webinar.')->group(function () {
         Route::resource('category', AdminCategoryWebinarController::class);
