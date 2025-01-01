@@ -122,7 +122,7 @@ jobs:
           port: ${{ secrets.PORT }}
           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
           script: |
-            echo "${LARAVEL_ENV}" > ${RELEASE_PATH}/.env
+            ln -s -f "${BASE_PATH}/.env" "${RELEASE_PATH}"
             ln -s -f "${STORAGE_PATH}" "${RELEASE_PATH}/storage"
             ln -s -f "${RELEASE_PATH}/public" "${BASE_PATH}"
             ln -s -f "${STORAGE_PATH}/app/public" "${RELEASE_PATH}/public/storage"

@@ -18,7 +18,7 @@ class RecentOrder extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(protected Order $order)
+    public function __construct(protected Order $order, protected $url)
     {
         //
     }
