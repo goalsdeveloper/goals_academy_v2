@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Mail;
 class EmailDiskonController extends Controller
 {
     public function handler(Request $request)
+    {
         $email = $request->validate([
             'email' => 'required|email:dns'
         ]);
-        
+
         $data = [
             'message' => 'This is Promo Email Test!'
         ];
