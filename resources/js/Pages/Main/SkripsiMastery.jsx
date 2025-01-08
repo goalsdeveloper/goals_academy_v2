@@ -14,7 +14,7 @@ import Callback from "../Partials/SkripsiMastery/Callback";
 import Footer from "../Partials/SkripsiMastery/Footer";
 import "/resources/css/app.css";
 
-export default function SkripsiMastery () {
+export default function SkripsiMastery ({ products }) {
     return (
         <>
             <Head title="Skripsi Mastery - Goals Academy" />
@@ -27,7 +27,7 @@ export default function SkripsiMastery () {
             <Facilities />
             <Testimony />
             <Clients />
-            <PriceList />
+            <PriceList products={products} />
             <CertificateDisplay />
             <div className="relative md:bg-neutral-70">
                 <Callback />

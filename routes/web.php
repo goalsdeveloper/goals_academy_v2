@@ -107,7 +107,10 @@ Route::get('/dibimbingsemester', function () {
     return Inertia::render('Main/DibimbingSatuSemester');
 });
 Route::get('/skripsimastery', function () {
-    return Inertia::render('Main/SkripsiMastery');
+    $products = Products::where('product_type_id', 5)->get();
+    return Inertia::render('Main/SkripsiMastery', [
+        'products' => $products
+    ]);
 });
 Route::resource('/produk', PurchaseController::class);
 
