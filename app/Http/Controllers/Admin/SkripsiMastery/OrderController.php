@@ -10,36 +10,10 @@ use Inertia\Inertia;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         try {
-                // $perPage = $request->input('perPage', 25);
-                // $search = $request->input('search');
-
-                // $query = Order::with(['paymentMethod:id,name', 'user:id,username,name', 'products:id,product_type_id,category_id,name,product_image', 'products.category:id,name', 'products.productType:id,type'])
-                //     ->whereHas('products', function ($query) {
-                //         $query->whereHas('productType', function ($subQuery) {
-                //             $subQuery->where('type', 'LIKE', '%jasa-riset%');
-                //         });
-                //     })->orderBy('updated_at', 'desc');
-
-                // if ($search) {
-                //     $query->whereHas('user', function ($userQuery) use ($search) {
-                //         $userQuery->where('username', 'LIKE', "%$search%");
-                //     });
-                // }
-
-                // $orders = $query->paginate($perPage);
-
-                // return response()->json([
-                // 'status' => true,
-                // 'statusCode' => 200,
-                // 'message' => 'get data success',
-                //  'orders' => $orders]);
-            return Inertia::render('Auth/Admin/JasaRiset/Order', [
+            return Inertia::render('Auth/Admin/SkripsiMastery/Order', [
                 'status' => true,
                 'statusCode' => 200,
                 'message' => 'get data history success',
@@ -50,7 +24,7 @@ class OrderController extends Controller
                     $query = Order::with(['paymentMethod:id,name', 'user:id,username,name', 'products:id,product_type_id,category_id,name,product_image', 'products.category:id,name', 'products.productType:id,type'])
                     ->whereHas('products', function ($query) {
                         $query->whereHas('productType', function ($subQuery) {
-                            $subQuery->where('type', 'LIKE', '%Jasa Riset%');
+                            $subQuery->where('type', 'LIKE', '%Skripsi Mastery%');
                         });
                     })->orderBy('updated_at', 'desc');
 
