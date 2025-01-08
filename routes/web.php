@@ -107,7 +107,10 @@ Route::get('/dibimbingsemester', function () {
     return Inertia::render('Main/DibimbingSatuSemester');
 });
 Route::get('/skripsimastery', function () {
-    return Inertia::render('Main/SkripsiMastery');
+    $products = Products::where('product_type_id', 5)->get();
+    return Inertia::render('Main/SkripsiMastery', [
+        'products' => $products
+    ]);
 });
 Route::resource('/produk', PurchaseController::class);
 
@@ -285,7 +288,6 @@ Route::get('pending/{order}', function (string $order) {
         $query->where('status', 'pending');
     })->with('orderHistory', 'paymentMethod', 'products')->first();
 
-    // dd(['data' => $order, '$expiry_time' => $expiry_time]);
     return view('email.user.purchase.pending', ['data' => $order]);
 });
 
@@ -309,7 +311,6 @@ Route::get('expired/{order}', function (string $order) {
 });
 
 Route::get('recent-order/{order}', function (Order $order) {
-    // dd($order);
     return view('email.moderator.bimbingan.recent-order', ['data' => $order->load('products')]);
 });
 

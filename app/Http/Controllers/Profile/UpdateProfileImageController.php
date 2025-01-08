@@ -15,7 +15,6 @@ class UpdateProfileImageController extends Controller
 {
     public function updateImage(Request $request)
     {
-        // dd($request->image);
         $user = User::where('id', Auth::user()->id)->with('profile')->first();
         $oldImage = $user->profile->profile_image;
 

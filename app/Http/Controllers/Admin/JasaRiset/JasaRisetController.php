@@ -97,7 +97,6 @@ class JasaRisetController extends Controller
      */
     public function store(Request $request)
     {
-        // dd('test');
         try {
             if (Auth::user()->user_role == "admin") {
                 $validateData = $request->validate([
@@ -266,7 +265,6 @@ class JasaRisetController extends Controller
                 if ($product->product_type_id != 4) {
                     throw new \Exception('Invalid object type');
                 }
-                dd($request);
 
                 $validateData = $request->validate([
                     'category_id' => 'numeric',

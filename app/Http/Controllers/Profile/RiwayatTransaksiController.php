@@ -17,7 +17,6 @@ class RiwayatTransaksiController extends Controller
             ->with('orderHistory', 'paymentMethod','products')
             ->orderBy('created_at', 'desc')
             ->get();
-        // dd($order);
         return Inertia::render('Auth/User/RiwayatTransaksi/RiwayatTransaksi',[
             'dataOrder' => $order,
         ]);
@@ -42,7 +41,6 @@ class RiwayatTransaksiController extends Controller
                 break;
         }
         $order = $order->with('orderHistory', 'paymentMethod', 'products')->get();
-        // dd($order);
         return Inertia::render('Auth/User/RiwayatTransaksi/RiwayatTransaksi', [
             'dataOrder' => $order,
         ]);

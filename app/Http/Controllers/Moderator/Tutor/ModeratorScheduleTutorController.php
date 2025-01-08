@@ -48,7 +48,6 @@ class ModeratorScheduleTutorController extends Controller
                     ->whereNotNull('time')
                     ->get();
 
-                    // dd($courses);
                 foreach ($courses as $course) {
 
                     $durationInHours = ceil($course->products->duration / 60);
@@ -58,7 +57,6 @@ class ModeratorScheduleTutorController extends Controller
 
                     foreach ($formattedCourses as &$schedule) {
                         $time = Carbon::parse($schedule['time'])->format('H');
-                        // dd($time);
                         if ($time == $startTime) {
                             $dateKey = $course->date;
                             if (isset($schedule[$dateKey])) {

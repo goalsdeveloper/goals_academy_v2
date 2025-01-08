@@ -331,7 +331,6 @@ class ModeratorOrderController extends Controller
     // $order diambil dari course id(perhatikan name model)
     public function updateBimbinganOnline(Request $request, Order $order)
     {
-        // dd($request->all(), $order);
         try {
             $validateData = $request->validate([
                 'tutor_id' => 'numeric',
