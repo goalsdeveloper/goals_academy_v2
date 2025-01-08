@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Mail;
 class EmailDiskonController extends Controller
 {
     public function handler(Request $request)
-    {
-        // dd($request);
         $email = $request->validate([
             'email' => 'required|email:dns'
         ]);

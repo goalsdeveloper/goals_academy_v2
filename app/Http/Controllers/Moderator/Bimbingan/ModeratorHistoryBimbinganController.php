@@ -26,7 +26,6 @@ class ModeratorHistoryBimbinganController extends Controller
             // $order = OrderHistory::where('status', 'Success')
             //     ->with('order.course')
             //     ->limit(10)->get();
-            // // dd($order[0]);
 
             $query = Order::where('status', OrderEnum::SUCCESS)
             ->whereHas('products.productType', function ($q) {

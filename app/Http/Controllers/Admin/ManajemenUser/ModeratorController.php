@@ -216,7 +216,6 @@ class ModeratorController extends Controller
     }
     public function updateActive(Request $request, User $moderator)
     {
-        // dd($request['is_active']);
         $moderator->profile()->update(['is_active' => $request['is_active']]);
         return redirect()->back();
     }

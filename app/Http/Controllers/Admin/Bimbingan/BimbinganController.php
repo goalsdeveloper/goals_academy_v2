@@ -137,7 +137,6 @@ class BimbinganController extends Controller
      */
     public function store(Request $request)
     {
-        // dd('test');
         try {
             if (Auth::user()->user_role == "admin") {
                 $validateData = $request->validate([

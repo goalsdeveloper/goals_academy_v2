@@ -19,7 +19,6 @@ class OrderController extends Controller
     public function index()
     {
         $order = Order::with('user.profile', 'products')->get();
-        dd($order);
         return OrderResource::collection($order);
     }
 

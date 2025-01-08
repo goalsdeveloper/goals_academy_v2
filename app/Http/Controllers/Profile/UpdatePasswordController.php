@@ -18,7 +18,6 @@ class UpdatePasswordController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
         $validateData = $request->validate([
             'old_password' => 'required|min:8|max:255',
             'new_password' => 'required|min:8|max:255',
@@ -28,11 +27,9 @@ class UpdatePasswordController extends Controller
         $check = Hash::check($validateData['old_password'], $user->password);
 
         if (!$check) {
-            dd($user->id);
             return back()->with('checkOldFailed', 'Password lama tidak sama!');
         }
         if ($validateData['new_password'] != $validateData['validation_password']) {
-            dd($user->name);
             return back()->with('invalidPassword', 'Password tidak sama, silahkan cek kembali!');
         } else {
             $data = User::find($user->id);

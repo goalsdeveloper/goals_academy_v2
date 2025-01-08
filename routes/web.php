@@ -288,7 +288,6 @@ Route::get('pending/{order}', function (string $order) {
         $query->where('status', 'pending');
     })->with('orderHistory', 'paymentMethod', 'products')->first();
 
-    // dd(['data' => $order, '$expiry_time' => $expiry_time]);
     return view('email.user.purchase.pending', ['data' => $order]);
 });
 
@@ -312,7 +311,6 @@ Route::get('expired/{order}', function (string $order) {
 });
 
 Route::get('recent-order/{order}', function (Order $order) {
-    // dd($order);
     return view('email.moderator.bimbingan.recent-order', ['data' => $order->load('products')]);
 });
 

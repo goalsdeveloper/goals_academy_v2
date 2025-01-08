@@ -32,7 +32,6 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // dd(auth()->user()->username);
         $validateData = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:8',
@@ -50,7 +49,6 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        // dd($request);
         $validateData = $request->validate([
             'username' => 'required|min:8|unique:users,username',
             'email' => 'required|email:dns|unique:users,email',

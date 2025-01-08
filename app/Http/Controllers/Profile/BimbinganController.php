@@ -42,7 +42,6 @@ class BimbinganController extends Controller
                 continue;
             }
             $course['progress'] = $course->ongoing;
-            // dd($course['progress']);
 
         }
         return Inertia::render('Auth/User/Bimbingan/Bimbingan', [
@@ -100,7 +99,6 @@ class BimbinganController extends Controller
             return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', $th->getMessage());
         }
 
-        // dd($validate);
         // redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', 'Berhasil Mengirim Review');
         redirect()->back()->with('message', 'Berhasil Mengirim Review');
     }
