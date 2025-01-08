@@ -86,7 +86,6 @@ class NotificationController extends Controller
             $user->unreadNotifications->markAsRead();
             return redirect()->back();
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             return redirect()->back();
         }
     }

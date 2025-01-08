@@ -131,7 +131,6 @@ class PurchaseController extends Controller
             }
             $form_result = array_merge((array) $form_result, ['document' => $document]);
         }
-        // dd($request->all());
         try {
             $orderData->form_result = $form_result;
             $orderData->save();
@@ -164,7 +163,6 @@ class PurchaseController extends Controller
         if ($paymentMethod->category == 'ewallet') {
             $midtranPayload['payment_type'] = $paymentMethod->payment_type;
         }
-        // dd($midtranPayload);
         try {
             $responseMidtrans = CoreApi::charge($midtranPayload);
         } catch (Exception $e) {

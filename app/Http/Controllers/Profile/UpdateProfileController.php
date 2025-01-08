@@ -14,7 +14,6 @@ class UpdateProfileController extends Controller
     public function index()
     {
         $user = User::where('id', Auth::user()->id)->with('profile')->first();
-        // dd($user);
 
         return Inertia::render('Auth/User/Pengaturan/Index', [
             'userData' => $user,
@@ -33,7 +32,6 @@ class UpdateProfileController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
         $user = User::where('id', Auth::user()->id)->with('profile')->first();
         // $validateData = $request->validate([
         //     'username' => 'required|unique:users,username,' . Auth::user()->id . 'id',
@@ -44,7 +42,6 @@ class UpdateProfileController extends Controller
         //     'major' => 'required|max:255',
         //     'referral' => 'sometimes'
         // ]);
-        // dd($validateData);
 
         if (
             $user->username === $request['username'] &&
@@ -71,7 +68,5 @@ class UpdateProfileController extends Controller
         ]);
 
         return redirect()->back();
-
-        // dd($updateProfile, $updateUser);
     }
 }

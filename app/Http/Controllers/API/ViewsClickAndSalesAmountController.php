@@ -93,8 +93,6 @@ class ViewsClickAndSalesAmountController extends Controller
 
                 $totalSalesByDate[$date] = $salesAmount;
 
-                // dd($salesAmount);
-
                 // Hitung total views untuk setiap data dengan pageTitle yang mengandung nama produk
                 if (stripos($pageTitle, "produk") !== false) {
                     $totalViews += $screenPageViews;

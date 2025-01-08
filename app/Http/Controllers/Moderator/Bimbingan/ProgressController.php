@@ -62,7 +62,6 @@ class ProgressController extends Controller
                 }
 
                 $orders = $query->paginate($perPage);
-                // dd($orders);
                 return Inertia::render("Auth/Moderator/Bimbingan/Progress", [
                     "status" => true,
                     "statusCode" => 200,
@@ -170,7 +169,6 @@ class ProgressController extends Controller
      */
     public function update(Request $request, Course $progress)
     {
-        // dd($request->all());
         try {
             if (Auth::user()->user_role == "moderator") {
                 if ($progress->ongoing == "selesai") {
@@ -240,7 +238,6 @@ class ProgressController extends Controller
                         $progress->update($validateData);
                     }
                     if ($progress->products->contact_type == "other") {
-                        // dd($request);
                         $validateData = $request->validate([
                             'tutor_id' => 'numeric',
                             // 'place_id' => 'nullable|numeric',
