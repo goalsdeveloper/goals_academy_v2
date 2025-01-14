@@ -12,6 +12,7 @@ use App\Models\Moodle;
 use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Models\User;
+use App\Notifications\AdminOrderNotification;
 use App\Notifications\GeneralCourseNotification;
 use App\Notifications\MidtransNotifications\ExpireNotification;
 use App\Notifications\MidtransNotifications\SuccessNotification;
@@ -64,6 +65,7 @@ class HandleMidtransCallbackController extends Controller
             ], 400);
         }
         $status = OrderEnum::PENDING->value;
+        $admins = User::where('user_role', UserRoleEnum::ADMIN->value)->get();
 
         switch ($transactionStatus) {
             case 'settlement':
@@ -128,10 +130,6 @@ class HandleMidtransCallbackController extends Controller
                         foreach ($moderators as $moderator) {
                             $moderator->notify(new ModeratorRecentOrderNotification(order: $order, url: route('moderator.bimbingan.order.edit', ['order' => $order->order_code])));
                         }
-                        $admins = User::where('user_role', UserRoleEnum::ADMIN->value)->get();
-                        foreach ($admins as $admin) {
-                            $admin->notify(new ModeratorRecentOrderNotification(order: $order, url: route('admin.bimbingan.order.index')));
-                        }
                         $notification_link = route('user.profile.detailPembelajaran', ['order_id' => $order->order_code]);
                         $order->user->notify(new GeneralCourseNotification("Bimbingan Baru Telah Ditambahkan!", "Bimbingan dengan kode {$order->order_code} telah berhasil ditambahkan oleh sistem", route('user.profile.detailPembelajaran', ['order_id' => $order->order_code]), ['database']));
                         break;
@@ -140,11 +138,25 @@ class HandleMidtransCallbackController extends Controller
                         $notification_link = route('purchase.status', ['order' => $order->order_code]);
                         $order->user->notify(new GeneralCourseNotification("Pembelian Jasa Riset Berhasil", "Silahkan konfirmasi ke admin untuk langkah selanjutnya!", $notification_link, ['database', 'mail']));
                         break;
+                    case 'Skripsi Mastery':
+                        $admin_link = route('admin.skripsi_mastery.order.index');
+                        $notification_link = route('purchase.status', ['order' => $order->order_code]);
+                        $order->user->notify(new GeneralCourseNotification("Pembelian Skripsi Mastery Berhasil", "Silahkan konfirmasi ke admin untuk langkah selanjutnya!", $notification_link, ['database', 'mail']));
+                        break;
+                    case 'Webinar':
+                        $admin_link = route('admin.webinar.order.index');
+                        $notification_link = route('purchase.status', ['order' => $order->order_code]);
+                        $order->user->notify(new GeneralCourseNotification("Pembelian Webinar Berhasil", "Silahkan konfirmasi ke admin untuk langkah selanjutnya!", $notification_link, ['database', 'mail']));
+                        break;
                     default:
                         $admin_link = route('admin.produk_digital.order.index');
                         $notification_link = route('purchase.status', ['order' => $order->order_code]);
                         $order->user->notify(new GeneralCourseNotification("Produk Berhasil Ditambahkan", "Silahkan konfirmasi ke admin untuk langkah selanjutnya!", $notification_link, ['database', 'mail']));
                         break;
+                }
+
+                foreach ($admins as $admin) {
+                    $admin->notify(new AdminOrderNotification(order: $order, url: $admin_link));
                 }
                 $order->user->notify(new SuccessNotification($order, $notification_link));
                 Log::info("Transaksi {$order->order_code} telah berhasil pada " . now());
