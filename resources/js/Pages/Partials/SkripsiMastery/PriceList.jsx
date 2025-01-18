@@ -17,9 +17,9 @@ export default function PriceList ({ products }) {
         },
         {
             subtitle: "", 
-            desc: "Lebih Hemat Hingga 35rb", 
+            desc: "Perbulan cuma Rp66.300", 
             tagline: {
-                text: "Pilihan kebanyakan mahasiswa",
+                text: "Cocok buat kamu yang skripsi dari 0",
                 color: "primary",
                 bg: "skin"
             },
@@ -29,7 +29,7 @@ export default function PriceList ({ products }) {
         },
         {
             subtitle: "Dapatkan Bonus Sertifikat Tambahan, khusus untuk akses 6 bulan untuk mempercantik CV", 
-            desc: "Lebih Hemat Hingga 120rb", 
+            desc: "Perbulan cuma Rp61.500", 
             tagline: {
                 text: "Best Deal + Rekomendasi Founders",
                 color: "white",
