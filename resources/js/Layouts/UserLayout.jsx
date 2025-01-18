@@ -21,7 +21,7 @@ export default function UserLayout({ auth, title, children }) {
         <>
             <Head title={title} />
             <MainHeader auth={auth} title="Dashboard" />
-            <main className="text-dark pb-[8vw] md:pb-[3vw] text-[2.5vw] md:text-[1.15vw] overflow-visible">
+            <main className="text-dark pt-[20vw] pb-[8vw] md:pt-0 md:pb-[3vw] text-[2.5vw] md:text-[1.15vw] overflow-visible">
                 {/* <Preliminary auth={auth} title={title} /> */}
                 <DashboardContent title={title} profileCompleteness={profileCompleteness}>{children}</DashboardContent>
             </main>

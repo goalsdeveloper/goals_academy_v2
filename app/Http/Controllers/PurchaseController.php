@@ -13,6 +13,7 @@ use App\Models\Products;
 use App\Models\User;
 use App\Notifications\InvoiceNotification;
 use App\Notifications\ReminderPurchaseNotification;
+use App\Services\MetaPixelService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -131,7 +132,6 @@ class PurchaseController extends Controller
             }
             $form_result = array_merge((array) $form_result, ['document' => $document]);
         }
-        // dd($request->all());
         try {
             $orderData->form_result = $form_result;
             $orderData->save();
@@ -164,7 +164,6 @@ class PurchaseController extends Controller
         if ($paymentMethod->category == 'ewallet') {
             $midtranPayload['payment_type'] = $paymentMethod->payment_type;
         }
-        // dd($midtranPayload);
         try {
             $responseMidtrans = CoreApi::charge($midtranPayload);
         } catch (Exception $e) {
@@ -186,7 +185,7 @@ class PurchaseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $order)
+    public function show(Request $req, string $order)
     {
         // cek kondisi tanggal
         $endDate = Carbon::now()->addDays(8);
@@ -199,7 +198,7 @@ class PurchaseController extends Controller
             ->get();
         // end cek kondisi tanggal
 
-        $paymentMethods = PaymentMethod::all();
+        $paymentMethods = PaymentMethod::take(4)->get();
 
         $product = Products::where('slug', $order)
             ->with('category')
@@ -210,6 +209,21 @@ class PurchaseController extends Controller
             $q->where('is_visible', true);
         }])->get();
         $topics = $product->topics()->where('is_visible', true)->get();
+        try {
+            //code...
+            $metaPixel = new MetaPixelService();
+            $metaPixel->setEventName("ViewContent")->setUserData(Auth::user()->email, Auth::user()->profile()->phone_number)->setEventTime(time())->setCustomData([
+                "contents" => [
+                    "id" => $product->id,
+                    "product_name" => $product->name,
+                ]
+            ])->setSourceURL($req->url())->setTestCode('TEST9180')->sendEvent();
+        } catch (\Throwable $th) {
+            response()->json([
+                'error' => $th->getMessage()
+            ]);
+        }
+
         return Inertia::render('Purchase/Form', [
             'date' => $counts,
             'addOns' => $addOns,

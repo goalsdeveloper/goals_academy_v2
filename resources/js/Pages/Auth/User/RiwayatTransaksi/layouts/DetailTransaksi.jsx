@@ -8,7 +8,6 @@ import moment from "moment";
 
 const DetailTransaksi = ({ data, show, setShow }) => {
     const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
-
     return (
         <>
             {isMobile && show ? (
@@ -29,7 +28,24 @@ const DetailTransaksi = ({ data, show, setShow }) => {
                         </div>
                         {data.status == "Pending" ?
                             <GoalsButton isLink href={`/purchase/${data.order_code}`} className="w-full" onClick={() => setShow(false)}>Bayar Sekarang</GoalsButton>
-                        : <></>}
+                        :   <GoalsButton
+                                className="w-full"
+                                onClick={() => {
+                                    setShow(false)
+                                    open(
+                                        `https://api.whatsapp.com/send?phone=${data.products.contact_person}&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data?.products?.name.replaceAll(
+                                            " ",
+                                            "%20"
+                                        )}%20dengan%20order%20id%20${
+                                            data?.order_code
+                                        }.`,
+                                        "_blank"
+                                    );
+                                }}
+                            >
+                                Konfirmasi Admin
+                            </GoalsButton> 
+                        }
                     </div>
                 </div>
             ) : (
@@ -52,7 +68,7 @@ const DetailTransaksi = ({ data, show, setShow }) => {
                                 onClick={() => {
                                     setShow(false)
                                     open(
-                                        `https://api.whatsapp.com/send?phone=6285173276387&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data?.products?.name.replaceAll(
+                                        `https://api.whatsapp.com/send?phone=${data.products.contact_person}&text=Halo%20min%2C%20saya%20sudah%20melakukan%20pembayaran%20produk%20${data?.products?.name.replaceAll(
                                             " ",
                                             "%20"
                                         )}%20dengan%20order%20id%20${

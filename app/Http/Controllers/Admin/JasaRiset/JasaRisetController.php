@@ -97,7 +97,6 @@ class JasaRisetController extends Controller
      */
     public function store(Request $request)
     {
-        // dd('test');
         try {
             if (Auth::user()->user_role == "admin") {
                 $validateData = $request->validate([
@@ -125,7 +124,7 @@ class JasaRisetController extends Controller
                     $validateData['form_config']
                 );
                 $product = new Products();
-                $product->product_type_id = 4; // Kenapa 1, karena ini product untuk jasaRiset aja
+                $product->product_type_id = 4; // Kenapa 4, karena ini product untuk jasaRiset aja
                 $product->category_id = $validateData['category_id'];
                 $product->name = $validateData['name'];
                 $product->slug = $validateData['slug'];
@@ -263,7 +262,7 @@ class JasaRisetController extends Controller
         try {
             if (Auth::user()->user_role == "admin") {
                 // Jika product tidak bertipe jasaRiset
-                if ($product->product_type_id != 1) {
+                if ($product->product_type_id != 4) {
                     throw new \Exception('Invalid object type');
                 }
 
@@ -355,7 +354,7 @@ class JasaRisetController extends Controller
     {
         try {
             if (Auth::user()->user_role == "admin") {
-                if ($product->product_type_id != 1) {
+                if ($product->product_type_id != 4) {
                     throw new \Exception('Invalid object type');
                 }
                 if ($product->product_image) {

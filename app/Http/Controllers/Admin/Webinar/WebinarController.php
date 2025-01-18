@@ -101,8 +101,6 @@ class WebinarController extends Controller
                     'promo_price' => 'numeric',
                 ]);
 
-                // dd($validateData);
-
                 $form_config = json_decode(
                     $validateData['form_config']
                 );

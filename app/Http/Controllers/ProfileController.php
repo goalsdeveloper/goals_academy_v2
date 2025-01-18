@@ -22,7 +22,6 @@ class ProfileController extends Controller
     public function index()
     {
         $user = User::where('id', Auth::user()->id)->with('profile')->first();
-        // dd($user);
         $orderBimbingan = Order::where('user_id', $user->id)
             ->where('status', OrderEnum::SUCCESS->value)
             ->whereHas('products.category', function ($query) {

@@ -11,11 +11,10 @@ class EmailDiskonController extends Controller
 {
     public function handler(Request $request)
     {
-        // dd($request);
         $email = $request->validate([
             'email' => 'required|email:dns'
         ]);
-        
+
         $data = [
             'message' => 'This is Promo Email Test!'
         ];

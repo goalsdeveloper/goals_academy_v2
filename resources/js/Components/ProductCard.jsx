@@ -30,16 +30,18 @@ export default function ProductCard({ item, className }) {
                         )}
                     </div>
                 </div>
-                <p className="my-[3vw] md:my-[1vw] md:h-[6.25vw] md:overflow-hidden">
-                    {item.excerpt}{item.description.length > 128 ? "..." : ""}
-                </p>
+                {item.excerpt.length ? (
+                    <p className="my-[3vw] md:my-[1vw] md:h-[6.25vw] md:overflow-hidden">
+                        {item.excerpt}{item.description.length > 128 ? "..." : ""}
+                    </p>
+                ) : <br/>}
                 {item?.facilities?.length ? (
                     <div className="flex flex-col gap-[2vw] md:gap-[.5vw] mb-[6vw] md:mb-[2vw]">
                         <p>Fasilitas :</p>
-                        <div className="flex flex-col gap-[2vw] md:gap-[.5vw] h-[18vw] md:h-[4.8vw] overflow-y-auto">
+                        <div className="flex flex-col gap-[2vw] md:gap-[.5vw] h-[18vw] md:h-[8vw] overflow-y-auto">
                             {item?.facilities?.map(({icon, text}, index) => (
-                                <div key={index} className="flex items-center gap-2">
-                                    <i className={`${icon} text-secondary`}></i>
+                                <div key={index} className="flex gap-[3vw] md:gap-[.7vw]">
+                                    <i className={`${icon} text-secondary md:translate-y-[.2vw]`}></i>
                                     <p>{text}</p>
                                 </div>
                             ))}

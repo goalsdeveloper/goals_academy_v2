@@ -131,7 +131,6 @@ class ProgressController extends Controller
     public function update(Request $request, Course $progress)
     {
         try {
-            // dd($request->all());
             $progress->update([
                 'note' => $request->input('note'),
             ]);

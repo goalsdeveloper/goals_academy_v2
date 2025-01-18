@@ -42,7 +42,6 @@ class BimbinganController extends Controller
                 continue;
             }
             $course['progress'] = $course->ongoing;
-            // dd($course['progress']);
 
         }
         return Inertia::render('Auth/User/Bimbingan/Bimbingan', [
@@ -58,7 +57,7 @@ class BimbinganController extends Controller
         })->whereHas('products.productType', function (Builder $query) {
             $query->where('type', 'like', '%bimbingan%');
         })
-            ->with('order', 'tutor:id,name', 'tutorNote', 'fileUploads', 'products:id,name,slug,product_image,contact_type,active_period', 'place:id,place,city_id', 'place.city:id,city', 'addOns', 'topic:id,topic', 'productReview')
+            ->with('order', 'tutor:id,name', 'tutorNote', 'fileUploads', 'products:id,name,slug,product_image,contact_type,active_period,contact_person', 'place:id,place,city_id', 'place.city:id,city', 'addOns', 'topic:id,topic', 'productReview')
             ->get();
         if ($course->isEmpty()) {
             return abort(404);
@@ -100,7 +99,6 @@ class BimbinganController extends Controller
             return redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', $th->getMessage());
         }
 
-        // dd($validate);
         // redirect()->route('user.profile.detailPembelajaran', $order->order_code)->with('message', 'Berhasil Mengirim Review');
         redirect()->back()->with('message', 'Berhasil Mengirim Review');
     }

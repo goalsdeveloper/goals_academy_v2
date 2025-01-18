@@ -210,7 +210,6 @@ class TutorController extends Controller
 
     public function updateActive(Request $request, User $tutor)
     {
-        // dd($request['is_active']);
         $tutor->profile()->update(['is_active' => $request['is_active']]);
         return redirect()->back();
     }
