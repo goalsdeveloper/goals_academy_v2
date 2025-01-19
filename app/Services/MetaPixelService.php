@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use ErrorException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -16,37 +17,34 @@ class MetaPixelService
     {
         $this->pixelId = env('META_PIXEL_ID');
         $this->accessToken = env('META_PIXEL_TOKEN');
-        $this->apiUrl = "https://graph.facebook.com/v21.0/{$this->pixelId}/events";
+        $this->apiUrl = "https://graph.facebook.com/v21.0/{$this->pixelId}/events?access_token=" . $this->accessToken;
         $this->data = [];
+        if (env('META_PIXEL_TEST_MODE')) {
+            $this->data['test_event_code'] = env('META_PIXEL_TEST_CODE');
+        }
     }
 
     public function sendEvent()
     {
-        // $response = Http::withToken($this->accessToken)
-        //     ->post($this->apiUrl, [
-        //         'data' => [$eventData],
-        //         'test_event_code' => $eventData['test_event_code'] ?? null, // Tambahkan jika ingin menggunakan kode pengujian
-        //     ]);
         try {
-            $response = Http::withToken($this->accessToken)
-                ->post($this->apiUrl, $this->data);
-            Log::info("tracking");
+            $response = Http::post($this->apiUrl, $this->data);
             return $response->json();
         } catch (\Throwable $th) {
-            // throw new ErrorException()
-            return;
+            Log::error($th->getMessage());
+            throw new ErrorException($th->getMessage());
+            // return;
         }
     }
 
     public function setEventName($name)
     {
-        $this->data['event_name'] = $name;
+        $this->data['data'][0]['event_name'] = $name;
         return $this;
     }
 
     public function setEventTime($time)
     {
-        $this->data['event_time'] = $time;
+        $this->data['data'][0]['event_time'] = $time;
         return $this;
     }
 
@@ -60,25 +58,25 @@ class MetaPixelService
                 hash('sha256', $phone)
             ]
         ];
-        $this->data['user_data'] = $user_data;
+        $this->data['data'][0]['user_data'] = $user_data;
         return $this;
     }
 
     public function setCustomData(array $custom_data)
     {
-        $this->data['custom_data'] = $custom_data;
-        return $this;
-    }
-
-    public function setTestCode(string $test_code)
-    {
-        $this->data['test_event_code'] = $test_code;
+        $this->data['data'][0]['custom_data'][0] = $custom_data;
         return $this;
     }
 
     public function setSourceURL(string $url)
     {
-        $this->data['event_source_url'] = $url;
+        $this->data['data'][0]['event_source_url'] = $url;
+        return $this;
+    }
+
+    public function setActionSource()
+    {
+        $this->data['data'][0]['action_source'] = "website";
         return $this;
     }
 
@@ -99,6 +97,30 @@ class MetaPixelService
             "event_source_url" => $source_url,
             "action_source" => "website"
         ];
+    }
+
+    public function trackingViewContent($email, $phone, array $custom_data, $source_url)
+    {
+        $this->setEventName("ViewContent")->setEventTime(time())
+            ->setUserData($email, $phone)->setCustomData($custom_data)
+            ->setSourceURL($source_url)->setActionSource()->sendEvent();
+        return;
+    }
+
+    public function trackingPurchase($email, $phone, array $custom_data, $source_url)
+    {
+        $this->setEventName("Purchase")->setEventTime(time())
+            ->setUserData($email, $phone)->setCustomData($custom_data)
+            ->setSourceURL($source_url)->setActionSource()->sendEvent();
+        return;
+    }
+
+    public function trackingInitiateCheckout($email, $phone, array $custom_data, $source_url)
+    {
+        $this->setEventName("InitiateCheckout")->setEventTime(time())
+            ->setUserData($email, $phone)->setCustomData($custom_data)
+            ->setSourceURL($source_url)->setActionSource()->sendEvent();
+        return;
     }
 
     public function getData()
