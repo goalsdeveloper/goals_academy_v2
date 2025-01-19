@@ -163,7 +163,7 @@ class HandleMidtransCallbackController extends Controller
                 Log::info("Transaksi {$order->order_code} telah berhasil pada " . now());
                 try {
                     $metaPixel = new MetaPixelService();
-                    $metaPixel->trackingViewContent($order->user->email, $order->user->profile->phone, [
+                    $metaPixel->trackingPurchase($order->user->email, $order->user->profile->phone, [
                         "contents" => [
                             "id" => $order->product->id,
                             "product_name" => $order->product->name,
