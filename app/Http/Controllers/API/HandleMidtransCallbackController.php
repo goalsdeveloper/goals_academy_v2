@@ -17,6 +17,7 @@ use App\Notifications\GeneralCourseNotification;
 use App\Notifications\MidtransNotifications\ExpireNotification;
 use App\Notifications\MidtransNotifications\SuccessNotification;
 use App\Notifications\ModeratorRecentOrderNotification;
+use App\Services\MetaPixelService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -160,6 +161,22 @@ class HandleMidtransCallbackController extends Controller
                 }
                 $order->user->notify(new SuccessNotification($order, $notification_link));
                 Log::info("Transaksi {$order->order_code} telah berhasil pada " . now());
+                try {
+                    $metaPixel = new MetaPixelService();
+                    $metaPixel->trackingViewContent($order->user->email, $order->user->profile->phone, [
+                        "contents" => [
+                            "id" => $order->product->id,
+                            "product_name" => $order->product->name,
+                            "content_name" => $order->product->name,
+                            "currency" => "IDR",
+                            "value" => $order->unit_price
+                        ]
+                    ], $request->url());
+                } catch (\Throwable $th) {
+                    response()->json([
+                        'error' => $th->getMessage()
+                    ]);
+                }
                 break;
             case 'expire':
                 $status = OrderEnum::FAILED->value;

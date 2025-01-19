@@ -94,7 +94,7 @@ class PurchaseController extends Controller
         $orderData->order_code = $order_code;
 
         $paymentMethod = PaymentMethod::where('name', $request['purchase_method']['name'])->first();
-        $getProduct = Products::where('id', $request['product_id'])->first();
+        $product = Products::where('id', $request['product_id'])->first();
 
         // charge midtrans
         $phoneNumber = $user->profile->phone_number ?? '';
@@ -179,6 +179,21 @@ class PurchaseController extends Controller
 
         $user->notify(new InvoiceNotification($orderData));
 
+        try {
+            $metaPixel = new MetaPixelService();
+            $metaPixel->trackingInitiateCheckout(Auth::user()->email, Auth::user()->profile->phone, [
+                "contents" => [
+                    "id" => $product->id,
+                    "product_name" => $product->name,
+                    "content_name" => $product->name
+                ]
+            ], $request->url());
+        } catch (\Throwable $th) {
+            response()->json([
+                'error' => $th->getMessage()
+            ]);
+        }
+
         return redirect()->route('purchase.status', $orderData->order_code);
     }
 
@@ -210,14 +225,14 @@ class PurchaseController extends Controller
         }])->get();
         $topics = $product->topics()->where('is_visible', true)->get();
         try {
-            //code...
             $metaPixel = new MetaPixelService();
-            $metaPixel->setEventName("ViewContent")->setUserData(Auth::user()->email, Auth::user()->profile()->phone_number)->setEventTime(time())->setCustomData([
+            $metaPixel->trackingViewContent(Auth::user()->email, Auth::user()->profile->phone, [
                 "contents" => [
                     "id" => $product->id,
                     "product_name" => $product->name,
+                    "content_name" => $product->name
                 ]
-            ])->setSourceURL($req->url())->setTestCode('TEST9180')->sendEvent();
+            ], $req->url());
         } catch (\Throwable $th) {
             response()->json([
                 'error' => $th->getMessage()
