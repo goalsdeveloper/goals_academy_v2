@@ -39,7 +39,7 @@ class UpdateProfileController extends Controller
         //     'phone_number' => 'required|numeric|max:15',
         //     'university' => 'required|max:255',
         //     'faculty' => 'required|max:255',
-        //     'major' => 'required|max:255',
+    //     'major' => 'required|max:255',
         //     'referral' => 'sometimes'
         // ]);
 

@@ -13,6 +13,7 @@ use App\Models\Products;
 use App\Models\User;
 use App\Notifications\InvoiceNotification;
 use App\Notifications\ReminderPurchaseNotification;
+use App\Services\MetaPixelService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -93,7 +94,7 @@ class PurchaseController extends Controller
         $orderData->order_code = $order_code;
 
         $paymentMethod = PaymentMethod::where('name', $request['purchase_method']['name'])->first();
-        $getProduct = Products::where('id', $request['product_id'])->first();
+        $product = Products::where('id', $request['product_id'])->first();
 
         // charge midtrans
         $phoneNumber = $user->profile->phone_number ?? '';
@@ -178,13 +179,28 @@ class PurchaseController extends Controller
 
         $user->notify(new InvoiceNotification($orderData));
 
+        try {
+            $metaPixel = new MetaPixelService();
+            $metaPixel->trackingInitiateCheckout(Auth::user()->email, Auth::user()->profile->phone, [
+                "contents" => [
+                    "id" => $product->id,
+                    "product_name" => $product->name,
+                    "content_name" => $product->name
+                ]
+            ], $request->url());
+        } catch (\Throwable $th) {
+            response()->json([
+                'error' => $th->getMessage()
+            ]);
+        }
+
         return redirect()->route('purchase.status', $orderData->order_code);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $order)
+    public function show(Request $req, string $order)
     {
         // cek kondisi tanggal
         $endDate = Carbon::now()->addDays(8);
@@ -197,7 +213,7 @@ class PurchaseController extends Controller
             ->get();
         // end cek kondisi tanggal
 
-        $paymentMethods = PaymentMethod::all();
+        $paymentMethods = PaymentMethod::take(4)->get();
 
         $product = Products::where('slug', $order)
             ->with('category')
@@ -208,6 +224,21 @@ class PurchaseController extends Controller
             $q->where('is_visible', true);
         }])->get();
         $topics = $product->topics()->where('is_visible', true)->get();
+        try {
+            $metaPixel = new MetaPixelService();
+            $metaPixel->trackingViewContent(Auth::user()->email, Auth::user()->profile->phone, [
+                "contents" => [
+                    "id" => $product->id,
+                    "product_name" => $product->name,
+                    "content_name" => $product->name
+                ]
+            ], $req->url());
+        } catch (\Throwable $th) {
+            response()->json([
+                'error' => $th->getMessage()
+            ]);
+        }
+
         return Inertia::render('Purchase/Form', [
             'date' => $counts,
             'addOns' => $addOns,
