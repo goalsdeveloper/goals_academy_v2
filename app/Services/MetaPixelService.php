@@ -28,6 +28,9 @@ class MetaPixelService
     {
         try {
             $response = Http::post($this->apiUrl, $this->data);
+            if($response->status() != 200 ){
+                Log::error($response->json());
+            }
             return $response->json();
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
