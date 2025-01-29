@@ -71,7 +71,7 @@ Route::get('/token', function () {
 });
 
 Route::get('/', function () {
-    $products = Products::where('is_visible', true)->with('category')->get();
+    $products = Products::where('is_visible', true)->with('category', 'productType')->get();
     return Inertia::render('Index', ['products' => $products]);
 });
 

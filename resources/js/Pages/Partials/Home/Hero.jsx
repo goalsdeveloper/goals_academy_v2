@@ -47,15 +47,15 @@ export default function Hero() {
                         </GoalsButton>
                         <div className="flex">
                             {data.map(({val, desc}, index) => (
-                                <>
-                                    <div key={index} className="text-center">
+                                <div key={index}>
+                                    <div className="text-center">
                                         <h2 className="leading-relaxed">{val}</h2>
                                         <p className="text-[2.8vw] md:text-[1vw] w-[85%] mx-auto pt-[.5vw]">
                                             {desc}
                                         </p>
                                     </div>
                                     <div className="last:hidden w-[1px] h-[75%] bg-neutral-40 flex-shrink-0 mt-[.7vw]"></div>
-                                </>
+                                </div>
                             ))}
                         </div>
                     </div>

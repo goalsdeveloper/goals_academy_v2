@@ -43,16 +43,18 @@ function FAQItem({ id, show, toggleShow, question, answer }) {
                 onClick={() => toggleShow(id)}
             >
                 {/* <div><FAQIcon /></div> */}
-                <div className="text-start">
-                    <p className="font-medium">{question}</p>
-                    <TECollapse show={condition} className="shadow-none">
+                <div className="text-start w-full">
+                    <div className="w-full flex justify-between">
+                        <p className="font-medium">{question}</p>
+                        <i className={`ml-auto text-secondary fa-solid fa-chevron-down transition-all ${
+                            condition ? "transform rotate-180" : ""
+                        }`}></i>
+                    </div>
+                    <TECollapse show={condition} className="shadow-none pe-[6vw] md:pe-[2vw] duration-300">
                         {/* <br /> */}
                         <div>{answer}</div>
                     </TECollapse>
                 </div>
-                <i className={`ml-auto text-secondary fa-solid fa-chevron-down transition-all ${
-                    condition ? "transform rotate-180" : ""
-                }`}></i>
             </button>
         </>
     );
