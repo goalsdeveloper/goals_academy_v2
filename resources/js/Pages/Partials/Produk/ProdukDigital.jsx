@@ -63,7 +63,7 @@ function ProdukDigitalMobile({
 }) {
     return (
         <div className="container mx-auto md:hidden">
-            <div className="flex justify-between mb-6 xs:mb-8">
+            <div className="flex justify-between items-center mb-6 xs:mb-8">
                 <div className="md:w-6/12">
                     <h2 className="text-[5vw]">
                         Produk <span className="text-primary">Digital</span>
