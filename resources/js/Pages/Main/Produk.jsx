@@ -9,21 +9,6 @@ import ProdukDigital from "../Partials/Produk/ProdukDigital";
 import Webinar from "../Partials/Produk/Webinar";
 import Consultation from "../Partials/Produk/Consultation";
 
-import program1 from "/resources/img/program/dibimbing-online-30.png";
-import program2 from "/resources/img/program/dibimbing-online-45.png";
-import program3 from "/resources/img/program/dibimbing-offline-60.png";
-import program4 from "/resources/img/program/dibimbing-offline-90.png";
-import program5 from "/resources/img/program/dibimbing-tuntas.png";
-import program6 from "/resources/img/program/dibimbing-olah-data.png";
-
-import produkdigital1 from "/resources/img/produk-digital/1.png";
-import produkdigital2 from "/resources/img/produk-digital/2.png";
-import produkdigital3 from "/resources/img/produk-digital/3.png";
-
-import webinar1 from "/resources/img/webinar/1.png";
-import webinar2 from "/resources/img/webinar/2.png";
-import webinar3 from "/resources/img/webinar/3.png";
-import webinar4 from "/resources/img/webinar/4.png";
 import { data } from "autoprefixer";
 import SkripsiMastery from "../Partials/Produk/SkripsiMastery";
 

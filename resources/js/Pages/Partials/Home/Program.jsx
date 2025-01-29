@@ -6,7 +6,7 @@ import { useMediaQuery } from "react-responsive";
 
 export default function Program({data}) {
     const categories = Array(...new Set(data.map(i => i.category.name)));
-    
+
     const [selectedCat, setSelectedCat] = useState(categories[0]);
 
     const recommendationProductIds = [1, 2, 3, 4]
@@ -44,16 +44,16 @@ export default function Program({data}) {
                 <div className="grid grid-cols-2 gap-[2vw]">
                     {selectedCat == "Rekomendasi" ? (
                         data.filter(i => recommendationProductIds.includes(i.id)).map((item, index) => (
-                            <Card 
-                                key={index} 
-                                {...item} 
+                            <Card
+                                key={index}
+                                {...item}
                             />
                         ))
                     ) : (
                         data.filter(i => i.category.name == selectedCat).map((item, index) => (
-                            <Card 
-                                key={index} 
-                                {...item} 
+                            <Card
+                                key={index}
+                                {...item}
                             />
                         ))
                     )}
@@ -82,7 +82,7 @@ const Card = ({ id, name, facilities, price, promo_price, slug }) => {
         label = "Promo"
         labelClassName = "bg-red-500 text-white"
     }
-    
+
     if (id == 2 || id == 4) {
         label = "Rekomendasi"
         labelClassName = "bg-blue-500 text-white"

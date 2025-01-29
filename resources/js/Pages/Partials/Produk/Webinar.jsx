@@ -49,7 +49,7 @@ export default function Webinar({ data, active, status }) {
 function WebinarMobile({ data }) {
     return (
         <div className="container mx-auto md:hidden">
-            <div className="flex justify-between mb-6 xs:mb-8">
+            <div className="flex justify-between items-center mb-6 xs:mb-8">
                 <div className="md:w-6/12">
                     <h2 className="text-[5vw]">
                         Webinar <span className="text-primary">Skripsi</span>
