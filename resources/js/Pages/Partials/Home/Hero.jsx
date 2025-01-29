@@ -13,7 +13,7 @@ export default function Hero() {
             desc: "Mahasiswa lulus tepat waktu"
         },
         {
-            val: "1000+",
+            val: "5000+",
             desc: "Mahasiswa memilih Goals Academy"
         },
         {
