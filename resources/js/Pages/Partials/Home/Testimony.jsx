@@ -14,13 +14,13 @@ export default function Testimony({ data: datas }) {
             </div>
             <div className="flex overflow-x-hidden pb-[2vw] w-full">
                 <div className="flex gap-x-[2.4vw] md:gap-x-[1.2vw] px-[.6vw] animate-scroll-slower z-10">
-                    {datas.map((data) => (
-                        <TestimonyCard key="id" data={data} />
+                    {datas.map((data, index) => (
+                        <TestimonyCard key={index} data={data} />
                     ))}
                 </div>
                 <div className="flex gap-x-[2.4vw] md:gap-x-[1.2vw] px-[.6vw] animate-scroll-slower z-10">
-                    {datas.map((data) => (
-                        <TestimonyCard key="id" data={data} />
+                    {datas.map((data, index) => (
+                        <TestimonyCard key={index} data={data} />
                     ))}
                 </div>
             </div>

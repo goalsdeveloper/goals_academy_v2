@@ -71,7 +71,7 @@ Route::get('/token', function () {
 });
 
 Route::get('/', function () {
-    $products = Products::where('is_visible', true)->with('category')->get();
+    $products = Products::where('is_visible', true)->with('category', 'productType')->get();
     return Inertia::render('Index', ['products' => $products]);
 });
 
@@ -177,6 +177,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
         Route::resource('category', AdminCategoryWebinarController::class);
         Route::put('category/{category}/updateVisible', [AdminCategoryWebinarController::class, 'updateVisible'])->name('category.updateVisible');
         Route::resource('product', WebinarController::class);
+        Route::post('product/updateNumberList', [WebinarController::class, 'updateOrderNumber'])->name('product.updateOrderNumber');
         Route::put('product/{product}/updateVisible', [WebinarController::class, 'updateVisible'])->name('product.updateVisible');
         Route::resource('order', AdminOrderWebinarController::class);
     });

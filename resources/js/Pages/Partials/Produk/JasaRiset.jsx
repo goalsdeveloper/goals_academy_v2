@@ -30,7 +30,7 @@ export default function JasaRiset ({ data, active, status, categories, category,
 function JasaRisetMobile ({ data, categories, category, setCategory, filterHandler }) {
     return (
         <div className="container mx-auto md:hidden">
-            <div className="flex justify-between mb-6 xs:mb-8">
+            <div className="flex justify-between items-center mb-6 xs:mb-8">
                 <div className="md:w-6/12">
                     <h2 className="text-[5vw]">Jasa <span className="text-primary">Riset</span></h2>
                 </div>
@@ -39,7 +39,7 @@ function JasaRisetMobile ({ data, categories, category, setCategory, filterHandl
                     <ButtonSwiper name="jasa-riset-next" direction="right" />
                 </div>
             </div>
-            <Swiper
+            {/* <Swiper
             modules={[Navigation, Pagination, A11y, FreeMode]}
             slidesPerView={"auto"}
             grabCursor={true}
@@ -50,7 +50,7 @@ function JasaRisetMobile ({ data, categories, category, setCategory, filterHandl
                         <div className={`rounded-full px-[2vw] py-[.5vw] border-[.25vw] ${category == item ? 'border-secondary text-secondary' : 'border-light-grey'}`} onClick={() => filterHandler(item, "jasa-riset")}>{item}</div>
                     </SwiperSlide>
                 )})}
-            </Swiper>
+            </Swiper> */}
             <Swiper
             modules={[Navigation, Pagination, A11y, FreeMode]}
             className='swiper-custom'

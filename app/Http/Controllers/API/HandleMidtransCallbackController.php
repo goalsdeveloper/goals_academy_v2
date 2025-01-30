@@ -168,9 +168,10 @@ class HandleMidtransCallbackController extends Controller
                             "id" => $order->product->id,
                             "product_name" => $order->product->name,
                             "content_name" => $order->product->name,
-                            "currency" => "IDR",
-                            "value" => $order->unit_price
-                        ]
+                        ],
+                        "order_id" => $order->order_code,
+                        "value" => number_format((float) $order->unit_price, 2, '.'),
+                        "currency" => "IDR",
                     ], $request->url());
                 } catch (\Throwable $th) {
                     response()->json([

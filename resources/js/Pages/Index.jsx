@@ -1,11 +1,4 @@
 import MainLayout from "@/Layouts/MainLayout";
-// import Hero from "./Partials/Home-old/Hero";
-// import Preliminary from "./Partials/Home-old/Preliminary";
-// import Program from "./Partials/Home-old/Program";
-// import Video from "./Partials/Home-old/Video";
-// import Testimony from "./Partials/Home-old/Testimony";
-// import FAQ from "./Partials/Home-old/FAQ";
-// import Consultation from "./Partials/Home-old/Consultation";
 
 import Hero from "./Partials/Home/Hero";
 import Preliminary from "./Partials/Home/Preliminary";
@@ -14,12 +7,6 @@ import Clients from "./Partials/Home/Clients";
 import Testimony from "./Partials/Home/Testimony";
 import FAQ from "./Partials/Home/FAQ";
 import Consultation from "./Partials/Home/Consultation";
-
-import CornerWaveVector from "@/Components/CornerWaveVector";
-
-import program1 from "/resources/img/program/dibimbing-online-30.png";
-import program2 from "/resources/img/program/dibimbing-tuntas.png";
-import program3 from "/resources/img/program/dibimbing-olah-data.png";
 
 import testimony1 from "/resources/img/testimony/wendi.jpg";
 import testimony2 from "/resources/img/testimony/roziqin.jpg";
@@ -37,64 +24,6 @@ import { usePage } from "@inertiajs/react";
 export default function Index({ auth, products: data_program}) {
     const welcomeMessage = usePage().props.message == "WELCOME_MESSAGE"
     const [showDialog, setShowDialog] = useState(welcomeMessage);
-
-    // const data_program = [
-    //     {
-    //         id: 1,
-    //         title: "Dibimbing Sekali",
-    //         slug: "dibimbing-sekali",
-    //         img: program1,
-    //         excerpt:
-    //             "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 60 menit, sesuai dengan permasalahan pada skripsimu.",
-    //         description:
-    //             "Capai kesuksesan skripsimu melalui bimbingan personal 1-on-1 selama 60 menit, sesuai dengan permasalahan pada skripsimu.",
-    //         features: {
-    //             times: 1,
-    //             duration: 60,
-    //             category: "Online",
-    //         },
-    //         price: 95000,
-    //         hasDiscount: false,
-    //         link: "https://lynk.id/goalsacademy/n6GjmgN",
-    //     },
-    //     {
-    //         id: 2,
-    //         title: "Dibimbing Tuntas",
-    //         slug: "dibimbing-tuntas",
-    //         img: program2,
-    //         excerpt:
-    //             "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
-    //         description:
-    //             "Temukan solusi skripsi optimal melalui bimbingan personal 1-on-1 dalam 7 kali pertemuan dan berfokus pada permasalahan skripsimu sampai selesai.",
-    //         features: {
-    //             times: 8,
-    //             duration: 60,
-    //             category: "Online",
-    //         },
-    //         price: 988000,
-    //         hasDiscount: false,
-    //         link: "https://lynk.id/goalsacademy/vMQZXjR",
-    //     },
-    //     {
-    //         id: 3,
-    //         title: "Dibimbing Olah Data",
-    //         slug: "dibimbing-olah-data",
-    //         img: program3,
-    //         excerpt:
-    //             "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
-    //         description:
-    //             "Kembangkan kemampuan mengolah data skripsi melalui bimbingan personal 1-on-1 yang intensif.",
-    //         features: {
-    //             times: 1,
-    //             duration: 60,
-    //             category: "Online",
-    //         },
-    //         price: 155000,
-    //         hasDiscount: false,
-    //         link: "https://lynk.id/goalsacademy/xmQ79ke",
-    //     },
-    // ];
-
     const data_testimony = [
         {
             name: "Wendi",
@@ -198,11 +127,6 @@ export default function Index({ auth, products: data_program}) {
             <Preliminary />
             <Program data={data_program} />
             <div className="relative overflow-hidden bg-secondary md:bg-transparent md:overflow-visible md:py-0">
-                {/* <CornerWaveVector
-                    className="md:hidden"
-                    cornerClassName="w-10/12"
-                /> */}
-                {/* <Video /> */}
                 <Testimony data={data_testimony} />
             </div>
             <FAQ data={data_faq} />

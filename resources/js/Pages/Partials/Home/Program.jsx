@@ -5,8 +5,8 @@ import { FiThumbsUp } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 
 export default function Program({data}) {
-    const categories = Array(...new Set(data.map(i => i.category.name)));
-    
+    const categories = Array(...new Set(data.map(i => i.product_type.type)));
+
     const [selectedCat, setSelectedCat] = useState(categories[0]);
 
     const recommendationProductIds = [1, 2, 3, 4]
@@ -44,16 +44,16 @@ export default function Program({data}) {
                 <div className="grid grid-cols-2 gap-[2vw]">
                     {selectedCat == "Rekomendasi" ? (
                         data.filter(i => recommendationProductIds.includes(i.id)).map((item, index) => (
-                            <Card 
-                                key={index} 
-                                {...item} 
+                            <Card
+                                key={index}
+                                {...item}
                             />
                         ))
                     ) : (
-                        data.filter(i => i.category.name == selectedCat).map((item, index) => (
-                            <Card 
-                                key={index} 
-                                {...item} 
+                        data.filter(i => i.product_type.type == selectedCat).map((item, index) => (
+                            <Card
+                                key={index}
+                                {...item}
                             />
                         ))
                     )}
@@ -62,14 +62,6 @@ export default function Program({data}) {
         </section>
     );
 }
-
-const program_categories = [
-    "Rekomendasi",
-    "Sekali Pertemuan",
-    "Paket Bimbingan",
-    "Paket Prioritas",
-    "Desk Review",
-];
 
 const Card = ({ id, name, facilities, price, promo_price, slug }) => {
     const currency = Intl.NumberFormat("id-ID");
@@ -82,7 +74,7 @@ const Card = ({ id, name, facilities, price, promo_price, slug }) => {
         label = "Promo"
         labelClassName = "bg-red-500 text-white"
     }
-    
+
     if (id == 2 || id == 4) {
         label = "Rekomendasi"
         labelClassName = "bg-blue-500 text-white"
@@ -102,17 +94,29 @@ const Card = ({ id, name, facilities, price, promo_price, slug }) => {
                     {name}
                 </h3>
                 <p className="text-[3.2vw] md:text-[1vw] font-medium space-x-[.5vw]">
-                    {Number(promo_price) > 0 ? <span className="text-neutral-50 line-through decoration-black md:decoration-2">&nbsp;{isMobile ? "" : " "}Rp {currency.format(Number(price))}{isMobile ? "" : " "}&nbsp;</span> : <></>}{isMobile ? <br /> : ""}
+                    {
+                        Number(promo_price) > 0 ?
+                            <span className="text-neutral-50 line-through decoration-black md:decoration-2 text-[2.7vw] md:text-[1vw]">
+                                &nbsp;
+                                {isMobile ? "" : " "}
+                                Rp {currency.format(Number(price))}
+                                {isMobile ? "" : " "}
+                                &nbsp;
+                            </span> : <></>
+                    }
+                    {isMobile ? <br /> : ""}
                     <span>Rp {currency.format(Number(price) - Number(promo_price))}</span>
                 </p>
             </div>
 
             <hr />
 
-            <ul className="space-y-[.4vw] text-[3.2vw] md:text-[1vw] h-[13.5vw] md:h-[4.5vw] overflow-y-scroll scrollbar-hidden">
+            <ul className="space-y-[1vw] md:space-y-[.4vw] text-[2.7vw] md:text-[1vw] h-[13.5vw] md:h-[4.5vw] overflow-y-scroll pe-[.5vw]">
                 {facilities.map(({ text, icon }, index) => (
-                    <li key={index} className="flex items-center gap-2">
-                        <i className={`${icon} text-secondary`}></i>
+                    <li key={index} className="flex items-center gap-[2vw] md:gap-[.75vw]">
+                        <div className="w-[3vw] md:w-[1vw] flex justify-center">
+                            <i className={`${icon} text-secondary`}></i>
+                        </div>
                         <p>{text}</p>
                     </li>
                 ))}
