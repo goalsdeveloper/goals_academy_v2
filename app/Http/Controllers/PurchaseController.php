@@ -41,29 +41,35 @@ class PurchaseController extends Controller
             $query->where('type', 'bimbingan');
         })
             ->where('is_visible', true)
+            ->orderBy('category_id', 'asc')
             ->orderBy('number_list', 'asc')
             ->with('category', 'productType')->get();
         $dataSkripsiMastery = Products::whereHas('productType', function ($query) {
             $query->where('type', 'Skripsi Mastery');
         })
             ->where('is_visible', true)
+            ->orderBy('category_id', 'asc')
             ->orderBy('number_list', 'asc')
             ->with('category', 'productType')->get();
         $dataJasaRiset = Products::whereHas('productType', function ($query) {
             $query->where('type', 'Jasa Riset');
         })
             ->where('is_visible', true)
+            ->orderBy('category_id')
+            ->orderBy('category_id', 'asc')
             ->orderBy('number_list', 'asc')
             ->with('category', 'productType')->get();
         $dataProdukDigital = Products::whereHas('productType', function ($query) {
             $query->where('slug', 'produk-digital');
         })
             ->where('is_visible', true)
+            ->orderBy('category_id', 'asc')
             ->orderBy('number_list', 'asc')
             ->with('productType', 'category')->get();
         $dataWebinar = Products::whereHas('productType', function ($query) {
             $query->where('slug', 'webinar');
         })->where('is_visible', true)
+        ->orderBy('category_id', 'asc')
             ->orderBy('number_list', 'asc')
             ->with('productType', 'category')->get();
         $categories = Category::with(['productType'])->get();

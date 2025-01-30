@@ -48,12 +48,15 @@ export default function Product({ auth, skripsiMastery, categories }) {
     async function getBimbinganDetail(id) {
         setIsLoading(true);
         setProduct(null);
-        axios.get(route('admin.skripsi_mastery.product.show', {product: id})).then((res) => {
-            setProduct(res.data.data);
-            setIsLoading(false);
-        }).catch((error) => {
-            setIsLoading(false);
-        });
+        axios
+            .get(route("admin.skripsi_mastery.product.show", { product: id }))
+            .then((res) => {
+                setProduct(res.data.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                setIsLoading(false);
+            });
     }
 
     const callback = (method) => {
@@ -106,9 +109,12 @@ export default function Product({ auth, skripsiMastery, categories }) {
                         isEnabled={cell.row.original.is_visible}
                         setIsEnabled={() => {
                             router.put(
-                                route("admin.skripsi_mastery.product.updateVisible", {
-                                    product: cell.row.original.id,
-                                }),
+                                route(
+                                    "admin.skripsi_mastery.product.updateVisible",
+                                    {
+                                        product: cell.row.original.id,
+                                    }
+                                ),
                                 {
                                     is_visible: !cell.row.original.is_visible,
                                 },
@@ -203,6 +209,15 @@ export default function Product({ auth, skripsiMastery, categories }) {
                         columns={columns}
                         data={skripsiMastery}
                         isSplitByCategory
+                        isDraggable
+                        onDragEndUrl={route(
+                            "admin.skripsi_mastery.product.updateOrderNumber"
+                        )}
+                        onSuccessDrag={() =>
+                            router.visit(route("admin.skripsi_mastery.product.index"), {
+                                only: ["skripsiMastery"],
+                            })
+                        }
                         keyword={keyword}
                         setKeyword={setKeyword}
                         onSearch={(i) => {

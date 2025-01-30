@@ -203,6 +203,18 @@ export default function Product({ auth, jasaRiset, categories }) {
                         columns={columns}
                         data={jasaRiset}
                         isSplitByCategory
+                        isDraggable
+                        onDragEndUrl={route(
+                            "admin.jasa_riset.product.updateOrderNumber"
+                        )}
+                        onSuccessDrag={() =>
+                            router.visit(
+                                route("admin.jasa_riset.product.index"),
+                                {
+                                    only: ["jasaRiset"],
+                                }
+                            )
+                        }
                         keyword={keyword}
                         setKeyword={setKeyword}
                         onSearch={(i) => {
