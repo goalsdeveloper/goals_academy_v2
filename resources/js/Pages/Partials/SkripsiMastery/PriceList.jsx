@@ -3,21 +3,21 @@ import background from "/resources/img/vector/gradient-bg-8.svg";
 
 export default function PriceList ({ products }) {
     const data = [
+        // {
+        //     subtitle: "",
+        //     desc: "",
+        //     tagline: {
+        //         text: "",
+        //         color: "",
+        //         bg: ""
+        //     },
+        //     buttonVariant: "primary-inverse",
+        //     borderColor: "neutral-30",
+        //     bgColor: "white"
+        // },
         {
-            subtitle: "", 
-            desc: "", 
-            tagline: {
-                text: "",
-                color: "",
-                bg: ""
-            },
-            buttonVariant: "primary-inverse",
-            borderColor: "neutral-30",
-            bgColor: "white"
-        },
-        {
-            subtitle: "", 
-            desc: "Perbulan cuma Rp66.300", 
+            subtitle: "",
+            desc: "Perbulan cuma Rp66.300",
             tagline: {
                 text: "Cocok buat kamu yang skripsi dari 0",
                 color: "primary",
@@ -28,8 +28,8 @@ export default function PriceList ({ products }) {
             bgColor: "white"
         },
         {
-            subtitle: "Dapatkan Bonus Sertifikat Tambahan, khusus untuk akses 6 bulan untuk mempercantik CV", 
-            desc: "Perbulan cuma Rp61.500", 
+            subtitle: "Dapatkan Bonus Sertifikat Tambahan, khusus untuk akses 6 bulan untuk mempercantik CV",
+            desc: "Perbulan cuma Rp61.500",
             tagline: {
                 text: "Best Deal + Rekomendasi Founders",
                 color: "white",
@@ -48,7 +48,7 @@ export default function PriceList ({ products }) {
             </div>
             <div className="w-[88.35vw] md:w-[73.96%] mx-auto space-y-[11.65vw] md:space-y-[8.23vw]">
                 <h2 className="text-[5.825vw] md:text-[2.5vw] text-center">Kalau di Spill Semua, Nanti Websitenya Bakal Panjang<br/>Berikutnya Adalah Giliranmu</h2>
-                <div className="w-[80.58vw] md:w-auto mx-auto grid grid-cols-1 md:grid-cols-3 gap-[3.88vw] md:gap-[1.04vw]">
+                <div className={`w-[80.58vw] md:w-auto mx-auto grid grid-cols-1 md:flex md:justify-center gap-[3.88vw] md:gap-[1.04vw]`}>
                     {products.map((item, index) => (
                         <Card key={index} {...data[index]} {...item} />
                     ))}
@@ -62,8 +62,8 @@ function Card ({ name, slug, product_image, price, promo_price, facilities, subt
     const currency = Intl.NumberFormat("id-ID")
 
     return (
-        <div className={`border-1 border-${borderColor} bg-${bgColor} h-fit md:h-[45vw] rounded-[2.9vw] md:rounded-[.83vw] overflow-hidden`}>
-            <div className={`md:h-[8%] flex justify-center items-center bg-${tagline.bg} text-${tagline.color} text-center font-medium text-[3.4vw] md:text-[1.04vw] py-[2vw] md:py-0`}>{tagline.text}</div>
+        <div className={`border-1 border-${borderColor} bg-${bgColor} h-fit md:h-[45vw] md:w-[24vw] rounded-[2.9vw] md:rounded-[.83vw] overflow-hidden`}>
+            <div className={`md:h-[8%] flex justify-center items-center bg-${tagline?.bg} text-${tagline?.color} text-center font-medium text-[3.4vw] md:text-[1.04vw] py-[2vw] md:py-0`}>{tagline?.text}</div>
             <div className="py-[4vw] md:py-[1vw]">
                 <img className="h-[50vw] md:h-[15vw] mx-auto" src={`/storage/${product_image}`} alt={`${name} Image`} />
             </div>
