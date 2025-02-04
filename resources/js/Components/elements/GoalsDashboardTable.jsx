@@ -20,7 +20,10 @@ const GoalsDashboardTable = ({
     keyword,
     setKeyword,
     onSearch,
+    onSuccessDrag,
+    onDragEndUrl = ""
 }) => {
+    // console.log(onDragEndUrl)
     const [tableData, setTableData] = useState(
         isSplitByCategory ? splitTableByCategory(data) : data
     );
@@ -84,6 +87,8 @@ const GoalsDashboardTable = ({
                         const dynamicTableOptions = useMaterialReactTable(
                             dataTableOptionsConfig({
                                 columns,
+                                onDragEndUrl,
+                                onSuccessDrag,
                                 getOptionalConfig,
                                 data: data.items,
                                 setData: (item) =>
@@ -132,6 +137,8 @@ const GoalsDashboardTable = ({
                                 data: tableData,
                                 setData: (x) => setTableData([...x]),
                                 getOptionalConfig,
+                                onDragEndUrl,
+                                onSuccessDrag,
                             })
                         )}
                     />
@@ -176,6 +183,8 @@ const dataTableOptionsConfig = ({
     data,
     setData,
     getOptionalConfig,
+    onDragEndUrl,
+    onSuccessDrag
 }) => {
     return {
         data,
@@ -198,26 +207,20 @@ const dataTableOptionsConfig = ({
             onDragEnd: () => {
                 const { draggingRow, hoveredRow } = table.getState();
                 const dataPrevious = data;
+                console.log(onDragEndUrl)
                 if (hoveredRow && draggingRow) {
                     const originItem = data[draggingRow.index];
                     const destinationItem = data[hoveredRow.index];
-                    
+
                     router.post(
-                        route("admin.bimbingan.product.updateOrderNumber"),
+                        onDragEndUrl,
                         {
                             origin_id: originItem.number_list,
                             destination_id: destinationItem.number_list,
                             category_id: originItem.category_id,
                         },
                         {
-                            onSuccess: () => {
-                                router.visit(
-                                    route("admin.bimbingan.product.index"),
-                                    {
-                                        only: ["bimbingan"],
-                                    }
-                                );
-                            },
+                            onSuccess: onSuccessDrag,
                         }
                     );
                 }

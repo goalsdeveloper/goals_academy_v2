@@ -202,6 +202,14 @@ export default function Product({ auth, webinar, categories }) {
                         data={webinar}
                         isSplitByCategory
                         isDraggable
+                        onDragEndUrl={route(
+                            "admin.webinar.product.updateOrderNumber"
+                        )}
+                        onSuccessDrag={() =>
+                            router.visit(route("admin.webinar.product.index"), {
+                                only: ["webinar"],
+                            })
+                        }
                         keyword={keyword}
                         setKeyword={setKeyword}
                         onSearch={(i) => {

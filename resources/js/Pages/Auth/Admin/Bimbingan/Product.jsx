@@ -202,6 +202,17 @@ export default function Product({ auth, bimbingan, categories }) {
                         data={bimbingan}
                         isSplitByCategory
                         isDraggable
+                        onDragEndUrl={route(
+                            "admin.bimbingan.product.updateOrderNumber"
+                        )}
+                        onSuccessDrag={() =>
+                            router.visit(
+                                route("admin.bimbingan.product.index"),
+                                {
+                                    only: ["bimbingan"],
+                                }
+                            )
+                        }
                         keyword={keyword}
                         setKeyword={setKeyword}
                         onSearch={(i) => {

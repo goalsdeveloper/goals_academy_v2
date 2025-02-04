@@ -202,6 +202,17 @@ export default function Product({ auth, produk_digital, categories }) {
                         data={produk_digital}
                         isSplitByCategory
                         isDraggable
+                        onDragEndUrl={route(
+                            "admin.produk_digital.product.updateOrderNumber"
+                        )}
+                        onSuccessDrag={() =>
+                            router.visit(
+                                route("admin.produk_digital.product.index"),
+                                {
+                                    only: ["produk_digital"],
+                                }
+                            )
+                        }
                         keyword={keyword}
                         setKeyword={setKeyword}
                         onSearch={(i) => {
