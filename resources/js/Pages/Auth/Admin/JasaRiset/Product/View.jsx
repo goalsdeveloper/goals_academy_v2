@@ -184,9 +184,9 @@ const View = ({ products, categories }) => {
                                         Belum diatur
                                     </p>
                                 ) : (
-                                    data.facilities.map((item) => (
+                                    data.facilities.map((item, index) => (
                                         <div
-                                            key={item.icon}
+                                            key={index}
                                             className="flex gap-[.4vw] items-center group cursor-pointer border border-secondary rounded-full py-[.25vw] px-[.5vw]"
                                         >
                                             <i

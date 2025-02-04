@@ -310,9 +310,9 @@ const Update = ({ auth, categories, topics, addons, products }) => {
                                         Belum diatur
                                     </p>
                                 ) : (
-                                    data.facilities.map((item) => (
+                                    data.facilities.map((item, index) => (
                                         <div
-                                            key={item.icon}
+                                            key={index}
                                             className="flex gap-[.6vw] items-center group hover:bg-neutral-20 cursor-pointer border border-secondary rounded-full py-[.25vw] px-[.5vw]"
                                         >
                                             <i
