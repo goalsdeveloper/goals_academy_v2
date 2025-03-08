@@ -21,7 +21,7 @@ export default function ProdukDigital({
             } my-8 xl:my-12 3xl:my-16 overflow-hidden`}
         >
             <div className="container mx-auto hidden md:block">
-                <h2 className="mb-4 sm:mb-6 xl:mb-10 3xl:mb-14">Produk Digital</h2>
+                <h2 className="mb-4 sm:mb-6 xl:mb-10 3xl:mb-14">Tools Skripsian</h2>
                 {data.length ? (
                     <div className="grid grid-cols-3 justify-center md:gap-8 xl:gap-16 pb-2">
                         {data.map((item, index) => {
@@ -66,7 +66,7 @@ function ProdukDigitalMobile({
             <div className="flex justify-between items-center mb-6 xs:mb-8">
                 <div className="md:w-6/12">
                     <h2 className="text-[5vw]">
-                        Produk <span className="text-primary">Digital</span>
+                        Tools <span className="text-primary">Skripsian</span>
                     </h2>
                 </div>
                 <div className="grid grid-cols-2 gap-2">

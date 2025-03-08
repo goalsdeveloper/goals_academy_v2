@@ -55,7 +55,7 @@ export default function PromoCode({ auth, promo_code, message }) {
         promo_code: "",
         description: "",
         is_price_title: "",
-        is_price: 0,
+        is_price: "0",
         value: 0,
         date_start: "",
         date_end: "",

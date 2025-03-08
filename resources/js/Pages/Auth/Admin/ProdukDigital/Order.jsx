@@ -115,6 +115,10 @@ export default function Order({ auth, orders }) {
                 header: "Tanggal Pesanan",
                 Cell: ({ cell }) => formatDate(cell.row.original.created_at),
             },
+            {
+                accessorKey: "form_result.promo",
+                header: "Kode Promo",
+            },
         ],
         []
     );

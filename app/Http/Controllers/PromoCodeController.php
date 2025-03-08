@@ -24,7 +24,7 @@ class PromoCodeController extends Controller
                     ->orWhere('date_start', 'LIKE', "%$search%")
                     ->orWhere('date_end', 'LIKE', "%$search%")
                     ->orWhere('created_at', 'LIKE', "%$search%");
-                })->paginate($perPage);
+                })->orderBy('created_at', 'desc')->paginate($perPage);
                 return $promos;
             }
         ]);
@@ -47,6 +47,7 @@ class PromoCodeController extends Controller
             $data  = $request->validate([
                 'promo_code' => 'required|string',
                 'description' => 'required|string',
+                'is_price' => 'required|in:0,1',
                 'value' => 'required|numeric',
                 'date_start' => 'required|date',
                 'date_end' => 'required|date',
@@ -78,7 +79,19 @@ class PromoCodeController extends Controller
      */
     public function update(Request $request, PromoCode $promo_code)
     {
-        //
+        try {
+            $data  = $request->validate([
+                'promo_code' => 'required|string',
+                'description' => 'required|string',
+                'is_price' => 'required|in:0,1',
+                'value' => 'required|numeric',
+                'date_start' => 'required|date',
+                'date_end' => 'required|date',
+            ]);
+            $promo_code->update($data);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Gagal Menyimpan Kode Promo');
+        }
     }
 
     /**
