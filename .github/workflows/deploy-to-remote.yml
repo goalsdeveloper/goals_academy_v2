@@ -5,6 +5,7 @@ on:
     branches: [master]
 
 jobs:
+  
   create-depeloyment-artifacts:
     name: Create deployment artifacts
     runs-on: ubuntu-latest
