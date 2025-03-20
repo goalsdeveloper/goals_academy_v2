@@ -159,54 +159,53 @@ export default function Form({
         })
             .then((response) => response.json())
             .then((response) => {
-                console.log(response)
                 processCallback(false);
-                // if ("data" in response) {
-                //     let promoDiscount = 0;
-                //     if (parseInt(response.data.is_price)) {
-                //         promoDiscount = parseFloat(response.data.value);
-                //     } else {
-                //         promoDiscount =
-                //             (parseFloat(data.init_price) *
-                //                 parseFloat(response.data.value)) /
-                //             100;
-                //     }
-                //     let adminFee = 0;
-                //     if (data.purchase_method != "") {
-                //         if (parseInt(data.purchase_method.is_price)) {
-                //             adminFee = parseFloat(
-                //                 data.purchase_method.admin_fee
-                //             );
-                //         } else {
-                //             adminFee = Math.ceil(
-                //                 ((parseFloat(data.init_price) -
-                //                     parseFloat(promoDiscount) +
-                //                     parseFloat(data.add_on_price)) *
-                //                     parseFloat(
-                //                         data.purchase_method.admin_fee
-                //                     )) /
-                //                     100
-                //             );
-                //         }
-                //     }
-                //     const totalPrice =
-                //         parseFloat(data.init_price) -
-                //         parseFloat(promoDiscount) +
-                //         parseFloat(data.add_on_price) +
-                //         adminFee;
-                //     setData({
-                //         ...data,
-                //         promo: temp.promo,
-                //         discount: promoDiscount,
-                //         admin: adminFee,
-                //         total_price: totalPrice,
-                //     });
-                //     alert(response.message);
-                //     successCallback();
-                // } else {
-                //     setTemp({ ...temp, promo: data.promo, discount: 0 });
-                //     alert(response.message);
-                // }
+                if ("data" in response) {
+                    let promoDiscount = 0;
+                    if (parseInt(response.data.is_price)) {
+                        promoDiscount = parseFloat(response.data.value);
+                    } else {
+                        promoDiscount =
+                            (parseFloat(data.init_price) *
+                                parseFloat(response.data.value)) /
+                            100;
+                    }
+                    let adminFee = 0;
+                    if (data.purchase_method != "") {
+                        if (parseInt(data.purchase_method.is_price)) {
+                            adminFee = parseFloat(
+                                data.purchase_method.admin_fee
+                            );
+                        } else {
+                            adminFee = Math.ceil(
+                                ((parseFloat(data.init_price) -
+                                    parseFloat(promoDiscount) +
+                                    parseFloat(data.add_on_price)) *
+                                    parseFloat(
+                                        data.purchase_method.admin_fee
+                                    )) /
+                                    100
+                            );
+                        }
+                    }
+                    const totalPrice =
+                        parseFloat(data.init_price) -
+                        parseFloat(promoDiscount) +
+                        parseFloat(data.add_on_price) +
+                        adminFee;
+                    setData({
+                        ...data,
+                        promo: temp.promo,
+                        discount: promoDiscount,
+                        admin: adminFee,
+                        total_price: totalPrice,
+                    });
+                    alert(response.message);
+                    successCallback();
+                } else {
+                    setTemp({ ...temp, promo: data.promo, discount: 0 });
+                    alert(response.message);
+                }
             });
     };
 
