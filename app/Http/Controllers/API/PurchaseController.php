@@ -102,7 +102,7 @@ class PurchaseController extends Controller
                 return response()->json(['message' => 'Promo tidak ditemukan!']);
             }
 
-            if ($user->kodePromo()->where('promo_code_id', $cekPromo->id)->exists()) {
+            if ($user->promoCodes()->where('promo_code_id', $cekPromo->id)->exists()) {
                 return response()->json(['message' => 'Kode promo telah terpakai']);
             } else {
                 if ($cekPromo->is_price != true) {
@@ -110,7 +110,7 @@ class PurchaseController extends Controller
                 } else {
                     $discount = $cekPromo->value;
                 }
-                $promoCode = $user->kodePromo()->attach($cekPromo->id);
+                $promoCode = $user->promoCodes()->attach($cekPromo->id);
             }
         }
 
@@ -204,7 +204,7 @@ class PurchaseController extends Controller
             'notes' => $request['notes'],
         ]);
 
-        // jika produk = bimbingan; maka masuk ke tabel course  
+        // jika produk = bimbingan; maka masuk ke tabel course
         if ($produkDibimbing) {
             if ($getProduct->features[0]['category'] == 'online') {
                 $location = 'Zoom meeting';

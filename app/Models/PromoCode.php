@@ -13,7 +13,8 @@ class PromoCode extends Model
 
     protected $fillable = [
         'promo_code', 'description', 'value',
-        'date_start', 'date_end', 'is_price'
+        'date_start', 'date_end', 'is_price',
+        'product_ids'
     ];
 
     public function user()
