@@ -38,7 +38,7 @@ class CouponCheckController extends Controller
                 return response()->json(['message' => 'Kuota promo code sudah habis.'], 400);
             }
             // Mengecek apakah promo code sudah digunakan oleh user
-            if ($user->promoCode()->where('promo_code_id', $promoCode->id)->exists()) {
+            if ($user->promoCodes()->where('promo_code_id', $promoCode->id)->exists()) {
                 return response()->json(['message' => 'Kode promo sudah digunakan, silahkan menggunakan kode promo lainnya!']);
             }
             return response()->json(['message' => 'Promo berhasil terpakai', 'data' => $promoCode]);
