@@ -95,7 +95,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Social::class);
     }
 
-    public function kodePromo(): BelongsToMany
+    public function promoCodes(): BelongsToMany
     {
         return $this->belongsToMany(PromoCode::class);
     }

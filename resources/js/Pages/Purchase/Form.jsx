@@ -128,17 +128,21 @@ export default function Form({
             window.scrollTo(0, 0);
         } else {
             setIsProcessed(true);
-            if (dataProduct.product_type_id == 4) {
-                post(route("produk.ecourse.store"), {
-                    onFinish: () => setIsProcessed(false),
-                    onError: () => setIsProcessed(false),
-                });
-            } else {
-                post("/produk", {
-                    onFinish: () => setIsProcessed(false),
-                    onError: () => setIsProcessed(false),
-                });
-            }
+            post("/produk", {
+                onFinish: () => setIsProcessed(false),
+                onError: () => setIsProcessed(false),
+            });
+            // if (dataProduct.product_type_id == 4) {
+            //     post(route("produk.ecourse.store"), {
+            //         onFinish: () => setIsProcessed(false),
+            //         onError: () => setIsProcessed(false),
+            //     });
+            // } else {
+            //     post("/produk", {
+            //         onFinish: () => setIsProcessed(false),
+            //         onError: () => setIsProcessed(false),
+            //     });
+            // }
         }
     };
 
@@ -151,7 +155,7 @@ export default function Form({
                 accept: "application.json",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ inputCode: inputCode, userId: userId }),
+            body: JSON.stringify({ inputCode: inputCode, userId: userId, productId: dataProduct.id }),
         })
             .then((response) => response.json())
             .then((response) => {
