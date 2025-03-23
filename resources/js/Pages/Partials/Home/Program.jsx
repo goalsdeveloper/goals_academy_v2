@@ -59,6 +59,11 @@ export default function Program({data}) {
                     )}
                 </div>
             </div>
+            <div className="w-full md:flex md:justify-end">
+                <GoalsButton isLink className="w-full md:w-auto" href="/produk">
+                    Lihat Semua Program
+                </GoalsButton>
+            </div>
         </section>
     );
 }
@@ -90,7 +95,7 @@ const Card = ({ id, name, facilities, price, promo_price, slug }) => {
             </div>
 
             <div className="space-y-[.4vw] mt-[2vw]">
-                <h3 className="text-[3.2vw] md:text-[1vw] font-bold line-clamp-1">
+                <h3 className="text-[3.2vw] md:text-[1vw] font-bold">
                     {name}
                 </h3>
                 <p className="text-[3.2vw] md:text-[1vw] font-medium space-x-[.5vw]">
