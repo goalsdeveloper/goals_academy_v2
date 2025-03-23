@@ -17,7 +17,7 @@ export default function Triangle () {
                         </div>
                     </div>
                     <div className="flex justify-center">
-                        <video autoPlay loop muted className="w-full md:w-auto md:h-[41.67vw]">
+                        <video autoPlay loop muted playsInline controls={false} className="w-full md:w-auto md:h-[41.67vw]">
                             <source src={video} type="video/webm" />
                             Your browser does not support the video tag.
                         </video>
