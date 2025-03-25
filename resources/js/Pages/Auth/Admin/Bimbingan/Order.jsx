@@ -20,7 +20,6 @@ export default function Order({ auth, orders }) {
     useEffect(() => {
         setPages(getPaginationPages({ links, current_page, last_page }));
     }, [current_page]);
-
     const [showDialog, setShowDialog] = useState(false);
     const [orderDetail, setOrderDetail] = useState({});
 
@@ -41,6 +40,35 @@ export default function Order({ auth, orders }) {
             {
                 accessorKey: "user.name",
                 header: "Nama Pembeli",
+            },
+            {
+                accessorKey: "user.email",
+                header: "Email",
+                Cell: ({ cell }) => {
+                    return (
+                        <a
+                            href={`mailto:${cell.row.original.user.email}`}
+                            className="text-blue-500"
+                        >
+                            {cell.row.original.user.email}
+                        </a>
+                    );
+                }
+            },
+            {
+                accessorKey: "user.profile.phone_number",
+                header: "Telepon",
+                Cell: ({ cell }) => {
+                    return (
+                        <a
+                            href={`https://wa.me/62${cell.row.original.user.profile.phone_number.slice(1)}`}
+                            target="_blank"
+                            className="text-blue-500"
+                        >
+                            {cell.row.original.user.profile.phone_number}
+                        </a>
+                    );
+                }
             },
             {
                 accessorKey: "products.name",

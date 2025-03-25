@@ -41,6 +41,35 @@ export default function Order({ auth, orders }) {
                 header: "Nama Pembeli",
             },
             {
+                accessorKey: "user.email",
+                header: "Email",
+                Cell: ({ cell }) => {
+                    return (
+                        <a
+                            href={`mailto:${cell.row.original.user.email}`}
+                            className="text-blue-500"
+                        >
+                            {cell.row.original.user.email}
+                        </a>
+                    );
+                }
+            },
+            {
+                accessorKey: "user.profile.phone_number",
+                header: "Telepon",
+                Cell: ({ cell }) => {
+                    return (
+                        <a
+                            href={`https://wa.me/62${cell.row.original.user.profile.phone_number.slice(1)}`}
+                            target="_blank"
+                            className="text-blue-500"
+                        >
+                            {cell.row.original.user.profile.phone_number}
+                        </a>
+                    );
+                }
+            },
+            {
                 accessorKey: "products.name",
                 header: "Produk",
             },
@@ -91,7 +120,7 @@ export default function Order({ auth, orders }) {
 
     return (
         <DashboardLayout
-            title="E-Course" 
+            title="E-Course"
             subtitle="Order"
             role="admin"
             auth={auth}
