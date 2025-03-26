@@ -89,6 +89,14 @@ export default function Order({ auth, orders }) {
             {
                 accessorKey: "form_result.discount",
                 header: "Diskon",
+                Cell: ({ cell }) => {
+                    if (cell.row.original.form_result.discount == null) {
+                        return "Rp.0";
+                    } else {
+                        return "Rp." +
+                        currency.format(cell.row.original.form_result.discount);
+                    }
+                }
             },
             {
                 // accessorKey: "form_result.discount",

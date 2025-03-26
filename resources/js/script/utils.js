@@ -81,11 +81,20 @@ export function getPaginationPages({ links, current_page, last_page }) {
 }
 
 export function phoneNumberFormat(x) {
-    if (x != null && x.charAt(0) === "0") {
-        return "62" + x.slice(1);
+    if (x != null) {
+        if (x.startsWith("0")) {
+            return "62" + x.slice(1);
+        } else if (x.startsWith("8")) {
+            return "62" + x;
+        } else if (x.startsWith("+62")) {
+            return x.slice(1);
+        } else {
+            return x;
+        }
+    } else {
+        return x;
     }
 
-    return x;
 }
 
 export const truncateWithEllipsis = (str) => {

@@ -21,7 +21,7 @@ class OrdersExport implements FromQuery, WithHeadings, WithMapping
     {
         return Order::query()
         ->selectRaw("
-            orders.id AS order_id,
+            orders.order_code AS order_id,
             users.name AS customer_name,
             users.email AS customer_email,
             user_profiles.phone_number AS customer_phone,
@@ -32,9 +32,10 @@ class OrdersExport implements FromQuery, WithHeadings, WithMapping
                 WHEN payment_methods.is_price = 0 THEN CONCAT(CAST(IFNULL(payment_methods.admin_fee, 0) AS SIGNED), '%')
                 WHEN payment_methods.is_price = 1 THEN CAST(IFNULL(payment_methods.admin_fee, 0) AS SIGNED)
             END AS admin_fee,
-            IFNULL(products.promo_price, 0) AS discount,
+            JSON_UNQUOTE(JSON_EXTRACT(orders.form_result, '$.init_price')) AS init_price,
+            JSON_UNQUOTE(JSON_EXTRACT(orders.form_result, '$.discount')) AS discount,
             (IFNULL(orders.quantity, 0) * IFNULL(orders.unit_price, 0)) AS total_price,
-            CAST(((IFNULL(orders.quantity, 0) * IFNULL(orders.unit_price, 0)) - IFNULL(payment_methods.admin_fee, 0)) AS SIGNED) AS revenue,
+            CAST(((IFNULL(orders.quantity, 0) * IFNULL(orders.unit_price, 0)) - IFNULL(JSON_UNQUOTE(JSON_EXTRACT(orders.form_result, '$.admin')), 0)) AS SIGNED) AS revenue,
             orders.created_at AS order_date,
             JSON_UNQUOTE(JSON_EXTRACT(orders.form_result, '$.promo')) AS promo_code
         ")
@@ -48,21 +49,11 @@ class OrdersExport implements FromQuery, WithHeadings, WithMapping
 
     public function map($order): array
     {
-        // Ambil kode promo dari JSON di kolom form_result
-        $formResult = json_decode($order->form_result, true);
-        $promoCode = $formResult['promo'] ?? 'N/A';
+        // Pastikan discount tidak kosong, jika null maka ubah jadi 0
+        $discount = $order->discount ?? 0;
 
-        // Konversi admin_fee agar selalu bernilai numerik
-        $adminFee = floatval($order->admin_fee);
-        $totalPrice = floatval($order->total_price);
-
-        // Format admin_fee sesuai dengan kondisi
-        $formattedAdminFee = $order->is_price == 0
-            ? $adminFee
-            : $adminFee;
-
-        // Hitung Revenue (Pendapatan) = Total Harga - Biaya Admin
-        $revenue = (int) ($totalPrice - $adminFee);
+        // Kode Promo
+        $promoCode = $order->promo_code != 'null' ? $order->promo_code : '';
 
         return [
             $order->order_id,
@@ -72,10 +63,11 @@ class OrdersExport implements FromQuery, WithHeadings, WithMapping
             $order->product_name,
             $order->payment_method,
             $order->order_status,
-            $formattedAdminFee, // Biaya Admin dengan format yang sesuai
-            floatval($order->discount), // Pastikan discount selalu numerik
-            $revenue, // Pendapatan sudah dikonversi ke integer
-            (int) $totalPrice,
+            (int) $order->init_price,
+            $discount,
+            $order->admin_fee,
+            (int) floatval($order->total_price),
+            (int) $order->revenue,
             $order->order_date,
             $promoCode
         ];
@@ -91,10 +83,11 @@ class OrdersExport implements FromQuery, WithHeadings, WithMapping
             'Produk',
             'Pembayaran',
             'Status',
-            'Estimasi Admin',
+            'Harga Produk',
             'Diskon',
-            'Estimasi Earnings',
+            'Estimasi Admin',
             'Harga Total',
+            'Estimasi Earnings',
             'Tanggal Pesanan',
             'Kode Promo'
         ];
