@@ -6,7 +6,7 @@ import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { useMemo } from "react";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 import { useState } from "react";
-import { getPaginationPages } from "@/script/utils";
+import { getPaginationPages, phoneNumberFormat } from "@/script/utils";
 import { useEffect } from "react";
 import Dialog from "./Order/Dialog";
 import axios from "axios";
@@ -78,7 +78,7 @@ export default function Order({ auth, orders }) {
                 Cell: ({ cell }) => {
                     return (
                         <a
-                            href={`https://wa.me/62${cell.row.original.user.profile.phone_number.slice(1)}`}
+                            href={`https://wa.me/${phoneNumberFormat(cell.row.original.user.profile.phone_number)}`}
                             target="_blank"
                             className="text-blue-500"
                         >
@@ -100,7 +100,23 @@ export default function Order({ auth, orders }) {
                 header: "Status",
             },
             {
-                // accessorKey: "form_result.admin",
+                header: "Harga Produk",
+                Cell: ({ cell }) =>
+                    "Rp." + currency.format(cell.row.original.form_result.init_price),
+            },
+            {
+                accessorKey: "form_result.discount",
+                header: "Diskon",
+                Cell: ({ cell }) => {
+                    if (cell.row.original.form_result.discount == null) {
+                        return "Rp.0";
+                    } else {
+                        return "Rp." +
+                        currency.format(cell.row.original.form_result.discount);
+                    }
+                }
+            },
+            {
                 header: "Estimasi Admin",
                 Cell: ({ cell }) =>
                     cell.row.original.form_result?.purchase_method?.is_price ==
@@ -114,11 +130,11 @@ export default function Order({ auth, orders }) {
                           ),
             },
             {
-                accessorKey: "form_result.discount",
-                header: "Diskon",
+                header: "Harga Total",
+                Cell: ({ cell }) =>
+                    "Rp." + currency.format(cell.row.original.unit_price),
             },
             {
-                // accessorKey: "form_result.discount",
                 header: "Estimasi Earnings",
                 Cell: ({ cell }) =>
                     "Rp." +
@@ -128,12 +144,6 @@ export default function Order({ auth, orders }) {
                     ),
             },
             {
-                // accessorKey: "form_result.discount",
-                header: "Harga Total",
-                Cell: ({ cell }) => "Rp." + currency.format(cell.row.original.unit_price),
-            },
-            {
-                // accessorKey: "form_result.discount",
                 header: "Detail Harga",
                 Cell: ({ cell }) => (
                     <button>
