@@ -9,6 +9,7 @@ import { useState } from "react";
 import { getPaginationPages } from "@/script/utils";
 import { useEffect } from "react";
 import Dialog from "./Order/Dialog";
+import axios from "axios";
 
 export default function Order({ auth, orders }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
@@ -28,6 +29,22 @@ export default function Order({ auth, orders }) {
             only: ["orders"],
         });
     };
+
+    const onDownload = () => {
+        axios.get("/api/export-orders", {
+            params: {
+                product_type_id: 1 // 1 = Bimbingan
+            }
+        }).then((res) => {
+            if (res.status == 200) {
+                const url = res.data.download_url;
+                const link = document.createElement("a");
+                link.href = url;
+                document.body.appendChild(link);
+                link.click();
+            }
+        });
+    }
 
     const currency = Intl.NumberFormat("id-ID");
 
@@ -186,6 +203,10 @@ export default function Order({ auth, orders }) {
                     setKeyword={setKeyword}
                     onSearch={(i) => {
                         onSearchCallback(i);
+                    }}
+                    isDownloadable
+                    onDownload={() => {
+                        onDownload();
                     }}
                 />
                 <BottomPaginationTable
