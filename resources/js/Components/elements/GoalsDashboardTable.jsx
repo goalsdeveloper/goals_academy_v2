@@ -6,6 +6,8 @@ import {
 import GoalsTextInput from "./GoalsTextInput";
 import { useState } from "react";
 import { router } from "@inertiajs/react";
+import GoalsButton from "../GoalsButton";
+import { FaDownload } from "react-icons/fa6";
 
 const GoalsDashboardTable = ({
     data,
@@ -16,12 +18,14 @@ const GoalsDashboardTable = ({
     isHeadVisible = false,
     isSplitByCategory = false,
     isSearchable = true,
+    isDownloadable = false,
     className = "",
     keyword,
     setKeyword,
     onSearch,
     onSuccessDrag,
-    onDragEndUrl = ""
+    onDragEndUrl = "",
+    onDownload = () => {},
 }) => {
     // console.log(onDragEndUrl)
     const [tableData, setTableData] = useState(
@@ -67,17 +71,28 @@ const GoalsDashboardTable = ({
         <div
             className={`bg-white border min-w-full rounded-[.8vw] p-[3.3vw] space-y-[5.5vw] md:space-y-[1.6vw] ${className}`}
         >
-            {isSearchable && (
-                <GoalsTextInput
-                    placeholder="🔍 Search"
-                    className=" md:max-w-[10.4vw] md:max-h-[2.4vw]"
-                    data={keyword}
-                    setData={(i) => {
-                        setKeyword(i);
-                        onSearch(i);
-                    }}
-                />
-            )}
+            <div className="flex justify-between">
+                {isSearchable && (
+                    <GoalsTextInput
+                        placeholder="🔍 Search"
+                        className="md:w-[20vw] md:max-w-[20vw] md:max-h-[2.4vw] md:text-[1vw]"
+                        data={keyword}
+                        setData={(i) => {
+                            setKeyword(i);
+                            onSearch(i);
+                        }}
+                    />
+                )}
+                {isDownloadable && (
+                    <GoalsButton
+                        className="md:!py-[.5vw] px-[2vw] rounded-[.4vw]"
+                        activeClassName="bg-blue-500 text-white hover:bg-blue-600"
+                        onClick={onDownload}
+                    >
+                        Download&nbsp;&nbsp;<FaDownload className="md:text-[1vw]" />
+                    </GoalsButton>
+                )}
+            </div>
             <div className="text-[.8vw]">
                 {isSplitByCategory && (
                     <MaterialReactTable table={dummyTOptions} />
