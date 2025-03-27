@@ -184,6 +184,7 @@ export default function Setting({ auth, user, skills }) {
                             </div>
                             <GoalsTextInput
                                 required
+                                type="number"
                                 label="Phone Number"
                                 placeholder="08XXXXXXXXXX"
                                 data={formData.phone_number ?? ""}

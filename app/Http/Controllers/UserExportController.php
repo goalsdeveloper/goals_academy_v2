@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\OrdersExport;
-use App\Models\ProductType;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Maatwebsite\Excel\Facades\Excel;
 
-class OrderExportController extends Controller
+class UserExportController extends Controller
 {
     public function export(Request $request)
     {
         try {
-            $productTypeId = $request->input('product_type_id', 1); // Default ke 1 jika tidak ada input
-            $productType = ProductType::find($productTypeId);
+            $userRole = $request->input('user_role', 'user'); // Default ke 'user' jika tidak ada input
 
             // Nama file yang akan diunduh
-            $fileName = 'orders_' . $productType->slug . '_' . now()->format('YmdHis') . '.xlsx';
+            $fileName = $userRole . '_' . now()->format('YmdHis') . '.xlsx';
 
             // Simpan file ke storage sementara
-            Excel::store(new OrdersExport($productTypeId), $fileName, 'local');
+            Excel::store(new UsersExport($userRole), $fileName, 'local');
 
             // Path lengkap file yang telah disimpan
             $filePath = storage_path("app/" . $fileName);
@@ -29,7 +26,7 @@ class OrderExportController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'File berhasil diekspor.',
-                'download_url' => url("/admin/download-orders?file_name=$fileName"),
+                'download_url' => url("/admin/download-users?file_name=$fileName"),
             ]);
         } catch (\Exception $e) {
             return response()->json([

@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 // use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\API\ViewsClickAndSalesAmountController;
-use App\Http\Controllers\OrderExportController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -81,7 +80,3 @@ Route::get('user_growth', [ViewsClickAndSalesAmountController::class, 'userGrowt
 Route::get('tutor_schedule', [TutorSheduleController::class, 'index']);
 
 Route::put('check_expired', [ExpiredCourseCheckerController::class, 'index'])->name('check_expired');
-
-// Route untuk export dan download tabel order dalam bentuk excel
-Route::get('/export-orders', [OrderExportController::class, 'export']);
-Route::get('/download-orders', [OrderExportController::class, 'download']);
