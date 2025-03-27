@@ -6,7 +6,6 @@ use App\Models\Order;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Illuminate\Support\Facades\DB;
 
 class OrdersExport implements FromQuery, WithHeadings, WithMapping
 {

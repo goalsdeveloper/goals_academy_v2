@@ -8,7 +8,7 @@ import GoalsButton from "@/Components/GoalsButton";
 import Dialog from "./Moderator/Dialog";
 import toast, { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
-import { getPaginationPages } from "@/script/utils";
+import { getPaginationPages, phoneNumberFormat } from "@/script/utils";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 
@@ -32,35 +32,22 @@ export default function Moderator({ auth, moderators }) {
             }
         );
     };
-    // const data = [
-    //     {
-    //         id: 1,
-    //         name: "Hafiz Rizky 1",
-    //         username: "hafizbaik",
-    //         email: "hafizbaik@gmail.com",
-    //         phone_number: "085123456789",
-    //         university: "Universitas Brawijaya",
-    //         major: "Sistem Informasi",
-    //     },
-    //     {
-    //         id: 2,
-    //         name: "Hafiz Rizky 2",
-    //         username: "hafizganteng",
-    //         email: "hafizganteng@gmail.com",
-    //         phone_number: "085123456789",
-    //         university: "Universitas Brawijaya",
-    //         major: "Sistem Informasi",
-    //     },
-    //     {
-    //         id: 3,
-    //         name: "Hafiz Rizky 3",
-    //         username: "hafizcute",
-    //         email: "hafizcute@gmail.com",
-    //         phone_number: "085123456789",
-    //         university: "Universitas Brawijaya",
-    //         major: "Sistem Informasi",
-    //     },
-    // ];
+
+    const onDownload = () => {
+        axios.get("/admin/export-users", {
+            params: {
+                user_role: "moderator",
+            }
+        }).then((res) => {
+            if (res.status == 200) {
+                const url = res.data.download_url;
+                const link = document.createElement("a");
+                link.href = url;
+                document.body.appendChild(link);
+                link.click();
+            }
+        });
+    }
 
     const [showDialog, setShowDialog] = useState({
         create: false,
@@ -112,7 +99,6 @@ export default function Moderator({ auth, moderators }) {
                 preserveScroll: true,
             }
         );
-        // callback
     };
 
     const columns = useMemo(
@@ -131,11 +117,32 @@ export default function Moderator({ auth, moderators }) {
                 accessorKey: "email",
                 header: "Email",
                 size: 100,
+                Cell: ({ cell}) => {
+                    return (
+                        <a
+                            href={`mailto:${cell.getValue()}`}
+                            className="text-blue-500"
+                        >
+                                {cell.getValue()}
+                        </a>
+                    );
+                }
             },
             {
                 accessorKey: "profile.phone_number",
                 header: "Telepon",
                 size: 100,
+                Cell: ({ cell }) => {
+                    return (
+                        <a
+                            href={`https://wa.me/${phoneNumberFormat(cell.getValue())}`}
+                            target="_blank"
+                            className="text-blue-500"
+                        >
+                            {cell.getValue()}
+                        </a>
+                    );
+                }
             },
             {
                 accessorKey: "profile.university",
@@ -269,6 +276,7 @@ export default function Moderator({ auth, moderators }) {
                 <GoalsDashboardTable
                     isHeadVisible
                     isSortable
+                    isDownloadable
                     columns={columns}
                     data={moderators.data}
                     keyword={keyword}
@@ -276,6 +284,7 @@ export default function Moderator({ auth, moderators }) {
                     onSearch={(i) => {
                         onSearchCallback(i);
                     }}
+                    onDownload={onDownload}
                 />
                 <BottomPaginationTable
                     {...{

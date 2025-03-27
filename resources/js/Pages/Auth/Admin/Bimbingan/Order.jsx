@@ -31,7 +31,7 @@ export default function Order({ auth, orders }) {
     };
 
     const onDownload = () => {
-        axios.get("/api/export-orders", {
+        axios.get("/admin/export-orders", {
             params: {
                 product_type_id: 1 // 1 = Bimbingan
             }
