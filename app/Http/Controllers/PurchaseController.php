@@ -109,13 +109,15 @@ class PurchaseController extends Controller
         $paymentMethod = PaymentMethod::where('name', $request['purchase_method']['name'])->first();
         $product = Products::where('id', $request['product_id'])->first();
 
-        // Menurunkan kuota setelah promo code digunakan
-        $promoCode = PromoCode::where('promo_code', $request->promo)->first();
-        $promoCode->quota -= 1;
-        $promoCode->save();
+        if ($request->promo) {
+            $promoCode = PromoCode::where('promo_code', $request->promo)->first();
+            // Menurunkan kuota setelah promo code digunakan
+            $promoCode->quota -= 1;
+            $promoCode->save();
 
-        // Menyimpan data promo code yang digunakan oleh user
-        $user->promoCodes()->attach($promoCode->id);
+            // Menyimpan data promo code yang digunakan oleh user
+            $user->promoCodes()->attach($promoCode->id);
+        }
 
         // charge midtrans
         $phoneNumber = $user->profile->phone_number ?? '';
