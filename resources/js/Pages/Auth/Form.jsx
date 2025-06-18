@@ -511,7 +511,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                             >
                                 <TECollapseItem className="gap-[8vw] md:gap-[4vw]">
                                     <Link
-                                        href="/profil_perusahaan"
+                                        href="/profil-perusahaan"
                                         className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 overflow-hidden ${
                                             title == "Produk" ? "font" : ""
                                         }`}
@@ -521,7 +521,7 @@ function NavbarMobile({ title, mobileNavbar, setMobileNavbar }) {
                                         <i className="fa-solid fa-arrow-up rotate-45 text-[6vw] md:text-[4vw]"></i>
                                     </Link>
                                     <Link
-                                        href="/profil_tutor"
+                                        href="/profil-tutor"
                                         className={`relative font-poppins flex justify-between items-center rounded-lg shadow-centered bg-white hover:bg-skin p-4 overflow-hidden ${
                                             title == "Produk" ? "font" : ""
                                         }`}

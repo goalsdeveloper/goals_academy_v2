@@ -81,15 +81,15 @@ Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
 });
 
-Route::get('/profil_perusahaan', function () {
+Route::get('/profil-perusahaan', function () {
     return Inertia::render('Main/ProfilPerusahaan');
 });
-Route::get('/profil_perusahaan2', function () {
+Route::get('/profil-perusahaan2', function () {
     return Inertia::render('Main/ProfilPerusahaanBaru');
 });
 
-Route::get('/profil_tutor_new', [MainController::class, 'profilTutor'])->name('profilTutor');
-Route::get('/profil_tutor', function () {
+Route::get('/profil-tutor-new', [MainController::class, 'profilTutor'])->name('profilTutor');
+Route::get('/profil-tutor', function () {
     return Inertia::render('Main/ProfilTutorOld');
 });
 

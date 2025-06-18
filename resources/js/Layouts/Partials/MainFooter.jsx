@@ -61,8 +61,8 @@ export default function MainFooter({ className }) {
                             Perusahaan
                         </h5>
                         <div className="grid gap-2">
-                            <Link href="/profil_perusahaan">Profil Perusahaan</Link>
-                            <Link href="/profil_tutor">Profil Tutor</Link>
+                            <Link href="/profil-perusahaan">Profil Perusahaan</Link>
+                            <Link href="/profil-tutor">Profil Tutor</Link>
                             <Link href="/karir">Karir</Link>
                         </div>
                     </div>
