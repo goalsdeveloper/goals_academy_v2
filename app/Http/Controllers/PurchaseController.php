@@ -30,7 +30,7 @@ class PurchaseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'verified'])->except(['index']);
+        // $this->middleware(['auth', 'verified'])->except(['index']);
     }
     /**
      * Display a listing of the resource.

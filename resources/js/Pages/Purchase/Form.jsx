@@ -34,7 +34,7 @@ export default function Form({
     paymentMethods,
     dataProduct,
 }) {
-    const userId = auth.user.id;
+    const userId = auth.user ? auth.user.id : null;
     const [isProcessed, setIsProcessed] = useState(false);
     const [showMobileSummaryCard, setShowMobileSummaryCard] = useState(false);
 
@@ -45,14 +45,21 @@ export default function Form({
         "major",
         "rumpun",
     ].reduce((out, i) => {
-        out[i] = auth.user.profile[i];
+        if (!auth.user) {
+            out[i] = "";
+        } else {
+            out[i] = auth.user.profile[i];
+        }
         return out;
     }, {});
 
+    console.log("requiredProfile", requiredProfile);
+
     const [userProfile, setUserProfile] = useState({
         ...requiredProfile,
-        id: auth.user.id,
+        id: auth.user?.id,
     });
+
 
     // Code to input form data
     const { data, setData, errors, setError, post } = useForm({
