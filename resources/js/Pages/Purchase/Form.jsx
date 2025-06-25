@@ -34,30 +34,36 @@ export default function Form({
     paymentMethods,
     dataProduct,
 }) {
-    const userId = auth.user ? auth.user.id : null;
+    const userId = auth.user ? auth.user.id : "";
     const [isProcessed, setIsProcessed] = useState(false);
     const [showMobileSummaryCard, setShowMobileSummaryCard] = useState(false);
 
-    const requiredProfile = [
-        "phone_number",
-        "university",
-        "faculty",
-        "major",
-        "rumpun",
-    ].reduce((out, i) => {
-        if (!auth.user) {
-            out[i] = "";
-        } else {
-            out[i] = auth.user.profile[i];
-        }
-        return out;
-    }, {});
-
-    console.log("requiredProfile", requiredProfile);
+    let requiredProfile = {};
+    if (!userId) {
+        requiredProfile = {
+            email: "",
+            name: "",
+            phone_number: "",
+            university: "",
+            faculty: "",
+            major: "",
+            rumpun: "",
+        };
+    } else {
+        requiredProfile = {
+            email: auth.user.email || "",
+            name: auth.user.name || "",
+            phone_number: auth.user.profile.phone_number || "",
+            university: auth.user.profile.university || "",
+            faculty: auth.user.profile.faculty || "",
+            major: auth.user.profile.major || "",
+            rumpun: auth.user.profile.rumpun || "",
+        };
+    }
 
     const [userProfile, setUserProfile] = useState({
         ...requiredProfile,
-        id: auth.user?.id,
+        id: userId,
     });
 
 
@@ -1275,7 +1281,26 @@ function SummaryCard({
                                 className={`justify-center md:justify-between gap-[4vw] md:gap-0 rounded-[2vw] md:rounded-[.4vw] h-[12.5vw] md:h-[3.1vw] mb-[1.5vw] px-[1vw]`}
                                 activeClassName="bg-green-50 text-green-500"
                                 textClassName="font-normal"
-                                onClick={() => setShowPromoForm(!showPromoForm)}
+                                onClick={
+                                    () => {
+                                        if (
+                                            Object.keys(userProfile)
+                                                .map((i) => userProfile[i])
+                                                .includes("") ||
+                                            Object.keys(userProfile)
+                                                .map((i) => userProfile[i])
+                                                .includes(null)
+                                        ) {
+                                            toast("Lengkapi profil terlebih dahulu!", {
+                                                position: "top-center",
+                                                icon: "⚠️",
+                                            });
+                                            window.scrollTo(0, 0);
+                                        } else {
+                                            setShowPromoForm(!showPromoForm)
+                                        }
+                                    }
+                                }
                             >
                                 <BiSolidDiscount className="text-[4.8vw] md:text-[1.2vw]" />
                                 <span>
