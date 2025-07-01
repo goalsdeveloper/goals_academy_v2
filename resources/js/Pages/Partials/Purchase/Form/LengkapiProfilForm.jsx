@@ -7,7 +7,7 @@ import { Autocomplete } from "@mui/material";
 import { universities, majorFamilies } from "@/data";
 import { createPortal } from "react-dom";
 
-const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast }) => {
+const LengkapiProfilForm = ({ isLogin, userProfile, setUserProfile, setPurchaseData, show, setShow, toast }) => {
     const { data, setData, errors, setError, post } = useForm({
         id: userProfile.id,
         email: userProfile.email ? userProfile.email : "",
@@ -30,16 +30,16 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
         const values = keys.map(i => data[i])
 
         keys.map(i => {
-            if (data[i] == '' || data[i] == null) {
+            if (data[i] == "" || data[i] == null) {
                 setError(i, `This field is required!`)
-            } else if (String(data[i]).startsWith(' ')) {
-                setError(i, `This field can't started with space!`)
+            } else if (String(data[i]).startsWith(" ")) {
+                setError(i, `This field can"t started with space!`)
             } else {
-                setError(i, '')
+                setError(i, "")
             }
         })
 
-        if (!(values.includes('') || values.includes(null) || values.map(i => String(i).startsWith(' ')).includes(true))) {
+        if (!(values.includes("") || values.includes(null) || values.map(i => String(i).startsWith(" ")).includes(true))) {
             setIsLoading(true)
             fetch("/api/lengkapi_profil", {
                 method: "post",
@@ -51,14 +51,16 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
             })
                 .then(response => response.json())
                 .then(response => {
-                    if (response.message == 'success') {
+                    if (response.message == "success") {
                         const updatedProfile = {
                             ...data,
                             id: response.id,
                         };
                         setData(updatedProfile);
                         setUserProfile(updatedProfile);
-                        toast.success('Profil berhasil dilengkapi!', { position: 'top-center' })
+                        setPurchaseData("id", response.id);
+                        toast.success("Profil berhasil dilengkapi!", { position: "top-center" })
+                        setShow(false);
                         setIsLoading(false)
                     }
                 })
@@ -94,7 +96,7 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                             onClick={e => e.stopPropagation()}
                             className="space-y-[3.2vw] md:space-y-[.8vw] max-h-[54vh] md:max-h-[60vh] overflow-auto scrollbar-hidden"
                         >
-                            {!data.id && (
+                            {!isLogin && (
                                 <>
                                     <GoalsTextInput
                                         type="text"
@@ -176,17 +178,6 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                                     </p>
                                 )}
                             </label>
-                            {/* <GoalsTextInput
-                                type="text"
-                                label="Universitas"
-                                placeholder="Masukkan universitas disini"
-                                value={data.university}
-                                error={errors.university}
-                                cancelButton={data.university != ""}
-                                data={data.university}
-                                setData={i => setData("university", i)}
-                                onChange={(e) => setData("university", e.target.value)}
-                            /> */}
                             <GoalsTextInput
                                 type="text"
                                 label="Fakultas"

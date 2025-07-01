@@ -69,6 +69,7 @@ export default function Form({
 
     // Code to input form data
     const { data, setData, errors, setError, post } = useForm({
+        id: userId,
         schedule: "",
         city: "",
         place: "",
@@ -141,6 +142,7 @@ export default function Form({
             window.scrollTo(0, 0);
         } else {
             setIsProcessed(true);
+            console.log(data);
             post("/produk", {
                 onFinish: () => setIsProcessed(false),
                 onError: () => setIsProcessed(false),
@@ -236,6 +238,7 @@ export default function Form({
             >
                 <div className="relative md:container mx-auto pt-[4.5vw] md:pt-[1vw] flex flex-col justify-between md:flex-row text-[3.7vw] md:text-[1vw] gap-[4vw] md:gap-0">
                     <MainCard
+                        userId={userId}
                         userProfile={userProfile}
                         setUserProfile={setUserProfile}
                         setShowMobileSummaryCard={setShowMobileSummaryCard}
@@ -274,6 +277,7 @@ export default function Form({
 }
 
 function MainCard({
+    userId,
     userProfile,
     setUserProfile,
     setShowMobileSummaryCard,
@@ -314,20 +318,20 @@ function MainCard({
     };
 
     const currency = Intl.NumberFormat("id-ID");
-
     return (
         <div className="md:w-[72%] flex flex-col gap-[1vw]">
-            {Object.keys(userProfile)
+            {!userId ||
+            Object.keys(userProfile)
                 .map((i) => userProfile[i])
                 .includes("") ||
             Object.keys(userProfile)
                 .map((i) => userProfile[i])
                 .includes(null) ? (
                 <LengkapiProfilAlert
+                    isLogin={!!userId}
                     userProfile={userProfile}
                     setUserProfile={setUserProfile}
-                    data={data}
-                    setData={setData}
+                    setPurchaseData={setData}
                 />
             ) : (
                 <></>
@@ -1533,21 +1537,21 @@ function SummaryCard({
 }
 
 const LengkapiProfilAlert = ({
+    isLogin,
     userProfile,
     setUserProfile,
-    data,
-    setData,
+    setPurchaseData,
 }) => {
     const [showLengkapiProfilForm, setShowLengkapiProfilForm] = useState(false);
     return (
         <div className="hidden md:block">
             <LengkapiProfilForm
+                isLogin={isLogin}
                 userProfile={userProfile}
                 setUserProfile={setUserProfile}
+                setPurchaseData={setPurchaseData}
                 show={showLengkapiProfilForm}
                 setShow={setShowLengkapiProfilForm}
-                data={data}
-                setData={setData}
                 toast={toast}
             />
 

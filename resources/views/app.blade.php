@@ -8,7 +8,8 @@
     <meta name="keywords" content="Goals Academy, bimbingan skripsi, bimbingan tesis, bimbingan disertasi, bimbingan tugas akhir, bimbingan penelitian, bimbingan akademik, belajar online, kursus online, pelatihan online, learning, education, edukasi">
     <meta name="author" content="Goals Academy Team">
     <meta name="language" content="id">
-    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Title -->
     <title inertia>{{ config('app.name', 'Goals Academy') }}</title>
 

@@ -9,6 +9,20 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+/** * Next, we will register the CSRF token as a common header with Axios so that
+ * all outgoing requests automatically have it attached. This is just a simple
+ * convenience so we don't have to attach the token manually to every single
+ * request we send in our application.
+ * * @see https://laravel.com/docs/csrf#csrf-x-csrf-token-header
+ */
+let token = document.head.querySelector('meta[name="csrf-token"]');
+
+if (token) {
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+    console.error('CSRF token not found');
+}
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
