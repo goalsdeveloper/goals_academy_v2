@@ -19,7 +19,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 // use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\API\ViewsClickAndSalesAmountController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,16 +67,67 @@ Route::get('/profile_image/{id}', function ($id) {
 
 Route::post('/lengkapi_profil', function (Request $request) {
     try {
-        UserProfile::where('user_id', $request->id)->update([
-            'phone_number' => $request->phone_number,
-            'university' => $request->university,
-            'faculty' => $request->faculty,
-            'major' => $request->major,
-            'rumpun' => $request->rumpun,
-        ]);
-        return response()->json(['message' => 'success']);
+        if ($request->id) {
+            // Jika id ada, update profil pengguna
+            UserProfile::where('user_id', $request->id)->update([
+                'phone_number' => $request->phone_number,
+                'university' => $request->university,
+                'faculty' => $request->faculty,
+                'major' => $request->major,
+                'rumpun' => $request->rumpun,
+            ]);
+            return response()->json(['message' => 'success', 'id' => $request->id], 200);
+        } else {
+            // Jika id tidak ada, cek apakah email sudah terdaftar
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                // Jika email belum terdaftar, buat pengguna baru
+                $user = User::create([
+                    'name' => $request->name,
+                    'username' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request['password']),
+                ]);
+                // Buat profil pengguna baru
+                UserProfile::create([
+                    'user_id' => $user->id,
+                    'phone_number' => $request->phone_number,
+                    'university' => $request->university,
+                    'faculty' => $request->faculty,
+                    'major' => $request->major,
+                    'rumpun' => $request->rumpun,
+                ]);
+                return response()->json(['message' => 'success', 'id' => $user->id], 200);
+            } else {
+                // Jika email sudah terdaftar, update profil pengguna yang ada
+                UserProfile::where('user_id', $user->id)->update([
+                    'phone_number' => $request->phone_number,
+                    'university' => $request->university,
+                    'faculty' => $request->faculty,
+                    'major' => $request->major,
+                    'rumpun' => $request->rumpun,
+                ]);
+                return response()->json(['message' => 'success', 'id' => $user->id], 200);
+            }
+        }
     } catch (\Exception $e) {
-        return response()->json(['message' => $e->getMessage()]);
+        $statusCode = 500; // Default: Internal Server Error
+
+        // Tangani jenis exception yang umum
+        if ($e instanceof ValidationException) {
+            $statusCode = 422;
+            $message = $e->validator->errors(); // Bisa juga pakai $e->getMessage()
+        } elseif ($e instanceof ModelNotFoundException) {
+            $statusCode = 404;
+            $message = 'Data not found';
+        } elseif ($e instanceof HttpExceptionInterface) {
+            $statusCode = $e->getStatusCode();
+            $message = $e->getMessage();
+        } else {
+            $message = $e->getMessage();
+        }
+
+        return response()->json(['message' => $message,], $statusCode);
     }
 });
 Route::get('views_sales', [ViewsClickAndSalesAmountController::class, 'index']);

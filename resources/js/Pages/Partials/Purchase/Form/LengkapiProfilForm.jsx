@@ -26,20 +26,20 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
 
     const submitHandler = (e) => {
         e.preventDefault();
-        const keys = Object.keys(data)
+        const keys = Object.keys(data).slice(1) // skip id
         const values = keys.map(i => data[i])
 
         keys.map(i => {
             if (data[i] == '' || data[i] == null) {
                 setError(i, `This field is required!`)
-            } else if (String(data[i])[0] == ' ') {
+            } else if (String(data[i]).startsWith(' ')) {
                 setError(i, `This field can't started with space!`)
             } else {
                 setError(i, '')
             }
         })
 
-        if (!(values.includes('') || values.includes(null) || values.map(i => String(i)[0] == ' ').includes(true))) {
+        if (!(values.includes('') || values.includes(null) || values.map(i => String(i).startsWith(' ')).includes(true))) {
             setIsLoading(true)
             fetch("/api/lengkapi_profil", {
                 method: "post",
@@ -52,8 +52,13 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                 .then(response => response.json())
                 .then(response => {
                     if (response.message == 'success') {
+                        const updatedProfile = {
+                            ...data,
+                            id: response.id,
+                        };
+                        setData(updatedProfile);
+                        setUserProfile(updatedProfile);
                         toast.success('Profil berhasil dilengkapi!', { position: 'top-center' })
-                        setUserProfile(data)
                         setIsLoading(false)
                     }
                 })
