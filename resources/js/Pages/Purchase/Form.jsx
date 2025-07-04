@@ -92,6 +92,7 @@ export default function Form({
 
     // Code to input temp form data
     const { data: temp, setData: setTemp } = useForm({
+        id: userId,
         schedule: "",
         city: "",
         place: "",
@@ -142,7 +143,6 @@ export default function Form({
             window.scrollTo(0, 0);
         } else {
             setIsProcessed(true);
-            console.log(data);
             post("/produk", {
                 onFinish: () => setIsProcessed(false),
                 onError: () => setIsProcessed(false),
@@ -170,7 +170,7 @@ export default function Form({
                 accept: "application.json",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ inputCode: inputCode, userId: userId, productId: dataProduct.id }),
+            body: JSON.stringify({ inputCode: inputCode, userId: data.id, productId: dataProduct.id }),
         })
             .then((response) => response.json())
             .then((response) => {
@@ -215,11 +215,12 @@ export default function Form({
                         admin: adminFee,
                         total_price: totalPrice,
                     });
-                    alert(response.message);
+                    console.log(response)
+                    // toast.success(response.message, { position: "top-center" });
                     successCallback();
                 } else {
                     setTemp({ ...temp, promo: data.promo, discount: 0 });
-                    alert(response.message);
+                    toast.error(response.message, { position: "top-center" });
                 }
             });
     };
