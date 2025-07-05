@@ -67,8 +67,10 @@ Route::get('/profile_image/{id}', function ($id) {
 
 Route::post('/lengkapi_profil', function (Request $request) {
     try {
-        if ($request->id) {
-            // Jika id ada, update profil pengguna
+        // Cek apakah email sudah terdaftar
+        $user = User::where('email', $request->email)->first();
+        if ($user !== null) {
+            // Jika email sudah terdaftar, update profil pengguna yang ada
             UserProfile::where('user_id', $request->id)->update([
                 'phone_number' => $request->phone_number,
                 'university' => $request->university,
@@ -76,39 +78,25 @@ Route::post('/lengkapi_profil', function (Request $request) {
                 'major' => $request->major,
                 'rumpun' => $request->rumpun,
             ]);
-            return response()->json(['message' => 'success', 'id' => $request->id], 200);
+            return response()->json(['message' => 'success', 'id' => $user->id], 200);
         } else {
-            // Jika id tidak ada, cek apakah email sudah terdaftar
-            $user = User::where('email', $request->email)->first();
-            if (!$user) {
-                // Jika email belum terdaftar, buat pengguna baru
-                $user = User::create([
-                    'name' => $request->name,
-                    'username' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request['password']),
-                ]);
-                // Buat profil pengguna baru
-                UserProfile::create([
-                    'user_id' => $user->id,
-                    'phone_number' => $request->phone_number,
-                    'university' => $request->university,
-                    'faculty' => $request->faculty,
-                    'major' => $request->major,
-                    'rumpun' => $request->rumpun,
-                ]);
-                return response()->json(['message' => 'success', 'id' => $user->id], 200);
-            } else {
-                // Jika email sudah terdaftar, update profil pengguna yang ada
-                UserProfile::where('user_id', $user->id)->update([
-                    'phone_number' => $request->phone_number,
-                    'university' => $request->university,
-                    'faculty' => $request->faculty,
-                    'major' => $request->major,
-                    'rumpun' => $request->rumpun,
-                ]);
-                return response()->json(['message' => 'success', 'id' => $user->id], 200);
-            }
+            // Jika email belum terdaftar, buat pengguna baru
+            $user = User::create([
+                'name' => $request->name,
+                'username' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request['password']),
+            ]);
+            // Buat profil pengguna baru
+            UserProfile::create([
+                'user_id' => $user->id,
+                'phone_number' => $request->phone_number,
+                'university' => $request->university,
+                'faculty' => $request->faculty,
+                'major' => $request->major,
+                'rumpun' => $request->rumpun,
+            ]);
+            return response()->json(['message' => 'success', 'id' => $user->id], 200);
         }
     } catch (\Exception $e) {
         $statusCode = 500; // Default: Internal Server Error

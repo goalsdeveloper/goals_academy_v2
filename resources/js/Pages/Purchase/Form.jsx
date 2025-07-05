@@ -110,9 +110,6 @@ export default function Form({
         add_on_price: 0,
     });
 
-    // Initialize product's category
-    const category = "offline";
-
     // Initialize form rules
     const rules = dataProduct.form_config;
 
@@ -215,8 +212,7 @@ export default function Form({
                         admin: adminFee,
                         total_price: totalPrice,
                     });
-                    console.log(response)
-                    // toast.success(response.message, { position: "top-center" });
+                    toast.success(response.message, { position: "top-center" });
                     successCallback();
                 } else {
                     setTemp({ ...temp, promo: data.promo, discount: 0 });
