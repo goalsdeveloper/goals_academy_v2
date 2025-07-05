@@ -4,6 +4,7 @@
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
+import { useEffect } from 'react';
 import axios from 'axios';
 window.axios = axios;
 
@@ -17,11 +18,32 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 let token = document.head.querySelector('meta[name="csrf-token"]');
 
-if (token) {
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-    console.error('CSRF token not found');
-}
+/** * This hook will refresh the CSRF token periodically to ensure it remains valid.
+ * It fetches a new CSRF token from the server every 10 minutes and updates
+ * the Axios default headers with the new token.
+ * * @see https://laravel.com/docs/csrf#csrf-token-refresh
+ * @returns {void}
+ */
+
+const useCsrfRefresh = () => {
+  useEffect(() => {
+    const refreshToken = async () => {
+      try {
+        const res = await axios.get('/csrf-token'); // Laravel route
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = res.data.csrf_token;
+      } catch (err) {
+        console.error("Gagal mendapatkan CSRF token", err);
+      }
+    };
+
+    refreshToken(); // Initial
+    const interval = setInterval(refreshToken, 1 * 60 * 1000); // Tiap 1 menit
+
+    return () => clearInterval(interval); // Bersihkan timer saat unmount
+  }, []);
+};
+
+export default useCsrfRefresh;
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
