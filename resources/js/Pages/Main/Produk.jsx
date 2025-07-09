@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
-import Filter from "../Partials/Produk/Filter";
 import SearchBar from "../Partials/Produk/SearchBar";
 import Bimbingan from "../Partials/Produk/Bimbingan";
 import JasaRiset from "../Partials/Produk/JasaRiset";
@@ -9,7 +8,6 @@ import ProdukDigital from "../Partials/Produk/ProdukDigital";
 import Webinar from "../Partials/Produk/Webinar";
 import Consultation from "../Partials/Produk/Consultation";
 
-import { data } from "autoprefixer";
 import SkripsiMastery from "../Partials/Produk/SkripsiMastery";
 
 export default function Produk({
@@ -149,39 +147,49 @@ export default function Produk({
                 data={searchKeyword}
                 setData={setSearchKeyword}
             />
-            <SkripsiMastery
-                data={data5}
-                active={true}
-                status={status}
-            />
-            <Bimbingan
-                data={data1}
-                active={show[0]}
-                status={status}
-                categories={categoriesBimbingan}
-                category={category1}
-                setCategory={setCategory1}
-                filterHandler={filterByCategory}
-            />
-            <JasaRiset
-                data={data4}
-                active={true}
-                status={status}
-                categories={categoriesJasaRiset}
-                category={category4}
-                setCategory={setCategory4}
-                filterHandler={filterByCategory}
+            {data5.length > 0 && (
+                <SkripsiMastery
+                    data={data5}
+                    active={true}
+                    status={status}
                 />
-            <ProdukDigital
-                data={data2}
-                active={show[1]}
-                status={status}
-                // categories={categoriesBimbingan}
-                // category={category2}
-                // setCategory={setCategory2}
-                // filterHandler={filterByCategory}
-            />
-            <Webinar data={data3} active={show[2]} status={status} />
+            )}
+            {data1.length > 0 && (
+                <Bimbingan
+                    data={data1}
+                    active={show[0]}
+                    status={status}
+                    categories={categoriesBimbingan}
+                    category={category1}
+                    setCategory={setCategory1}
+                    filterHandler={filterByCategory}
+                />
+            )}
+            {data4.length > 0 && (
+                <JasaRiset
+                    data={data4}
+                    active={true}
+                    status={status}
+                    categories={categoriesJasaRiset}
+                    category={category4}
+                    setCategory={setCategory4}
+                    filterHandler={filterByCategory}
+                />
+            )}
+            {data2.length > 0 && (
+                <ProdukDigital
+                    data={data2}
+                    active={show[1]}
+                    status={status}
+                />
+            )}
+            {data3.length > 0 && (
+                <Webinar
+                    data={data3}
+                    active={show[2]}
+                    status={status}
+                />
+            )}
             <Consultation />
         </MainLayout>
     );
