@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
+import Filter from "../Partials/Produk/Filter";
 import SearchBar from "../Partials/Produk/SearchBar";
 import Bimbingan from "../Partials/Produk/Bimbingan";
 import JasaRiset from "../Partials/Produk/JasaRiset";
