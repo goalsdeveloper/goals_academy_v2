@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { FiX } from "react-icons/fi";
 import GoalsButton from "@/Components/GoalsButton";
@@ -24,6 +24,22 @@ const LengkapiProfilForm = ({ isLogin, userProfile, setUserProfile, setPurchaseD
 
     const [isLoading, setIsLoading] = useState(false);
 
+    useEffect(() => {
+        const keys = Object.keys(data).slice(1) // skip id
+
+        keys.map(i => {
+            if (String(data[i]).startsWith(" ")) {
+                setError(i, "Tidak boleh diawali dengan spasi!");
+            } else if (i == "phone_number" && !(String(data[i]).startsWith("62") || String(data[i]).startsWith("0"))) {
+                setError(i, "Contoh: 0XXXXXXXXXXX, 62XXXXXXXXXXX");
+            } else if (errors[i] == "Tidak boleh kosong!" && (data[i] == "" || data[i] == null)) {
+                setError(i, "Tidak boleh kosong!")
+            } else {
+                setError(i, "");
+            }
+        });
+    }, [data]);
+
     const submitHandler = (e) => {
         e.preventDefault();
         const keys = Object.keys(data).slice(1) // skip id
@@ -31,13 +47,15 @@ const LengkapiProfilForm = ({ isLogin, userProfile, setUserProfile, setPurchaseD
 
         keys.map(i => {
             if (data[i] == "" || data[i] == null) {
-                setError(i, `This field is required!`)
+                setError(i, "Tidak boleh kosong!")
             } else if (String(data[i]).startsWith(" ")) {
-                setError(i, `This field can"t started with space!`)
+                setError(i, "Tidak boleh diawali dengan spasi!")
+            } else if (i == "phone_number" && !(String(data[i]).startsWith("62") || String(data[i]).startsWith("0"))) {
+                setError(i, "Contoh: 0XXXXXXXXXXX, 62XXXXXXXXXXX")
             } else {
                 setError(i, "")
             }
-        })
+        });
 
         if (!(values.includes("") || values.includes(null) || values.map(i => String(i).startsWith(" ")).includes(true))) {
             setIsLoading(true)
@@ -62,10 +80,14 @@ const LengkapiProfilForm = ({ isLogin, userProfile, setUserProfile, setPurchaseD
                         toast.success("Profil berhasil dilengkapi!", { position: "top-center" })
                         setShow(false);
                         setIsLoading(false)
+                    } else {
+                        toast.error(response.message, { position: "top-center" })
+                        setIsLoading(false)
                     }
                 })
         }
     }
+
     return (
         createPortal(
             <div>
@@ -99,6 +121,7 @@ const LengkapiProfilForm = ({ isLogin, userProfile, setUserProfile, setPurchaseD
                             {!isLogin && (
                                 <>
                                     <GoalsTextInput
+                                        required
                                         type="text"
                                         label="Nama Lengkap"
                                         placeholder="Masukkan nama lengkap disini"
@@ -110,6 +133,7 @@ const LengkapiProfilForm = ({ isLogin, userProfile, setUserProfile, setPurchaseD
                                         onChange={(e) => setData("name", e.target.value)}
                                     />
                                     <GoalsTextInput
+                                        required
                                         type="email"
                                         label="Email"
                                         placeholder="Masukkan email disini"
@@ -123,7 +147,8 @@ const LengkapiProfilForm = ({ isLogin, userProfile, setUserProfile, setPurchaseD
                                 </>
                             )}
                             <GoalsTextInput
-                                type="number"
+                                required
+                                type="tel"
                                 label="Nomor Telepon"
                                 placeholder="Masukkan nomor telepon disini"
                                 value={data.phone_number}
@@ -137,7 +162,7 @@ const LengkapiProfilForm = ({ isLogin, userProfile, setUserProfile, setPurchaseD
                                 htmlFor="university"
                                 className="w-full grid items-center gap-[.4vw]"
                             >
-                                Universitas
+                                <p>Universitas<span className="text-red-600 inline">*</span></p>
                                 <Autocomplete
                                     disableClearable
                                     id="university"
@@ -179,6 +204,7 @@ const LengkapiProfilForm = ({ isLogin, userProfile, setUserProfile, setPurchaseD
                                 )}
                             </label>
                             <GoalsTextInput
+                                required
                                 type="text"
                                 label="Fakultas"
                                 placeholder="Masukkan fakultas disini"
@@ -190,6 +216,7 @@ const LengkapiProfilForm = ({ isLogin, userProfile, setUserProfile, setPurchaseD
                                 onChange={(e) => setData("faculty", e.target.value)}
                             />
                             <GoalsTextInput
+                                required
                                 type="text"
                                 label="Jurusan"
                                 placeholder="Masukkan jurusan disini"
@@ -204,7 +231,7 @@ const LengkapiProfilForm = ({ isLogin, userProfile, setUserProfile, setPurchaseD
                                 htmlFor="major_family"
                                 className="w-full grid items-center gap-[.4vw]"
                             >
-                                Rumpun Jurusan
+                                <p>Rumpun Jurusan<span className="text-red-600">*</span></p>
                                 <Autocomplete
                                     disableClearable
                                     id="major_family"

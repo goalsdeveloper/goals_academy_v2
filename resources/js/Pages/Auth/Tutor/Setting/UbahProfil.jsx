@@ -91,9 +91,9 @@ export default function Profile({ auth, profile, skills }) {
                 />
                 <GoalsTextInput
                     required
-                    type="number"
+                    type="tel"
                     label="Phone Number"
-                    placeholder="08XXXXXXXXXX"
+                    placeholder="0XXXXXXXXXXX or 62XXXXXXXXXXX"
                     data={formData.phone_number ?? ""}
                     setData={(i) => setFormData("phone_number", i)}
                     labelClassName="font-medium"

@@ -71,7 +71,15 @@ Route::post('/lengkapi_profil', function (Request $request) {
         $user = User::where('email', $request->email)->first();
         if ($user !== null) {
             // Jika email sudah terdaftar, update profil pengguna yang ada
-            UserProfile::where('user_id', $request->id)->update([
+            User::where('email', $request->email)->update([
+                'name' => $request->name,
+            ]);
+            // Validasi apakah phone_number unik daripada user lain
+            // if (UserProfile::where('phone_number', $request->phone_number)->where('user_id', '!=', $user->id)->exists()) {
+            //     return response()->json(['message' => 'Nomor HP sudah digunakan'], 422);
+            // }
+            // Update profil pengguna yang ada
+            UserProfile::where('user_id', $user->id)->update([
                 'phone_number' => $request->phone_number,
                 'university' => $request->university,
                 'faculty' => $request->faculty,
@@ -104,7 +112,7 @@ Route::post('/lengkapi_profil', function (Request $request) {
         // Tangani jenis exception yang umum
         if ($e instanceof ValidationException) {
             $statusCode = 422;
-            $message = $e->validator->errors(); // Bisa juga pakai $e->getMessage()
+            $message = $e->validator->errors();
         } elseif ($e instanceof ModelNotFoundException) {
             $statusCode = 404;
             $message = 'Data not found';

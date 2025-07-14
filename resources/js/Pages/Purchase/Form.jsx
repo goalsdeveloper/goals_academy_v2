@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm, Link } from "@inertiajs/react";
 import moment from "moment";
 import MainLayout from "@/Layouts/MainLayout";
@@ -157,6 +157,44 @@ export default function Form({
             // }
         }
     };
+
+    const resetPromo = () => {
+        let adminFee = 0;
+        if (data.purchase_method != "") {
+            if (parseInt(data.purchase_method.is_price)) {
+                adminFee = parseFloat(
+                    data.purchase_method.admin_fee
+                );
+            } else {
+                adminFee = Math.ceil(
+                    ((parseFloat(data.init_price) -
+                        parseFloat(promoDiscount) +
+                        parseFloat(data.add_on_price)) *
+                        parseFloat(
+                            data.purchase_method.admin_fee
+                        )) /
+                        100
+                );
+            }
+        }
+        const totalPrice =
+            parseFloat(data.init_price) +
+            parseFloat(data.add_on_price) +
+            adminFee;
+        setData({
+            ...data,
+            promo: "", // Reset promo code
+            discount: 0, // Reset discount
+            admin: adminFee,
+            total_price: totalPrice,
+        });
+        toast("Email berubah, promo direset", { position: "top-center", icon: "⚠️" });
+    }
+
+    useRef(() => {
+        // Reset promo if id changes
+        resetPromo();
+    }, [data.id]);
 
     // Code to check and input promo
     const promoHandler = (inputCode, successCallback, processCallback) => {
