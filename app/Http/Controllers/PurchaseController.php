@@ -89,8 +89,13 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         $user = Auth::user();
+
+        // Jika user tidak ditemukan, cari berdasarkan ID
+        if (!$user) {
+            $user = User::where('id', $request->id)->first();
+        }
+
         $order_code = 'GA' . str(now()->format('YmdHis'));
         $orderData = new Order();
         $orderData->unit_price = $request['total_price'];
