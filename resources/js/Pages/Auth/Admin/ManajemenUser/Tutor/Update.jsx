@@ -156,6 +156,7 @@ export default function Update({ auth, data }) {
                         </div>
                         <GoalsTextInput
                             required
+                            type="number"
                             label="Phone Number"
                             placeholder="Phone Number"
                             data={formData.phone_number ?? ""}

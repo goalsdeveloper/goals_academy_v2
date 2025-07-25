@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Models\PaymentMethod;
 use App\Models\Products;
+use App\Models\PromoCode;
 use App\Models\User;
 use App\Notifications\InvoiceNotification;
 use App\Notifications\ReminderPurchaseNotification;
@@ -107,6 +108,14 @@ class PurchaseController extends Controller
 
         $paymentMethod = PaymentMethod::where('name', $request['purchase_method']['name'])->first();
         $product = Products::where('id', $request['product_id'])->first();
+
+        // Menurunkan kuota setelah promo code digunakan
+        $promoCode = PromoCode::where('promo_code', $request->promo)->first();
+        $promoCode->quota -= 1;
+        $promoCode->save();
+
+        // Menyimpan data promo code yang digunakan oleh user
+        $user->promoCodes()->attach($promoCode->id);
 
         // charge midtrans
         $phoneNumber = $user->profile->phone_number ?? '';

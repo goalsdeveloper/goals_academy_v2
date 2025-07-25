@@ -9,7 +9,7 @@ import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 import Dialog from "./Tutor/Dialog";
 import toast, { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
-import { getPaginationPages } from "@/script/utils";
+import { getPaginationPages, phoneNumberFormat } from "@/script/utils";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 
 export default function Tutor({ auth, tutors, revenue_types }) {
@@ -45,6 +45,22 @@ export default function Tutor({ auth, tutors, revenue_types }) {
             }
         );
     };
+
+    const onDownload = () => {
+        axios.get("/admin/export-users", {
+            params: {
+                user_role: "tutor",
+            }
+        }).then((res) => {
+            if (res.status == 200) {
+                const url = res.data.download_url;
+                const link = document.createElement("a");
+                link.href = url;
+                document.body.appendChild(link);
+                link.click();
+            }
+        });
+    }
 
     const [showDialog, setShowDialog] = useState({
         create: false,
@@ -98,7 +114,6 @@ export default function Tutor({ auth, tutors, revenue_types }) {
                 preserveScroll: true,
             }
         );
-        // callback
     };
 
     const columns = useMemo(
@@ -117,11 +132,32 @@ export default function Tutor({ auth, tutors, revenue_types }) {
                 accessorKey: "email",
                 header: "Email",
                 size: 100,
+                Cell: ({ cell}) => {
+                    return (
+                        <a
+                            href={`mailto:${cell.getValue()}`}
+                            className="text-blue-500"
+                        >
+                                {cell.getValue()}
+                        </a>
+                    );
+                }
             },
             {
                 accessorKey: "profile.phone_number",
                 header: "Telepon",
                 size: 100,
+                Cell: ({ cell }) => {
+                    return (
+                        <a
+                            href={`https://wa.me/${phoneNumberFormat(cell.getValue())}`}
+                            target="_blank"
+                            className="text-blue-500"
+                        >
+                            {cell.getValue()}
+                        </a>
+                    );
+                }
             },
             {
                 accessorKey: "profile.university",
@@ -223,6 +259,7 @@ export default function Tutor({ auth, tutors, revenue_types }) {
                 <GoalsDashboardTable
                     isHeadVisible
                     isSortable
+                    isDownloadable
                     columns={columns}
                     data={tutors.data}
                     keyword={keyword}
@@ -230,6 +267,7 @@ export default function Tutor({ auth, tutors, revenue_types }) {
                     onSearch={(i) => {
                         onSearchCallback(i);
                     }}
+                    onDownload={onDownload}
                 />
                 <BottomPaginationTable
                     {...{

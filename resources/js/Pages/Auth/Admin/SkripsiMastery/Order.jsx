@@ -6,9 +6,10 @@ import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
 import { useMemo } from "react";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 import { useState } from "react";
-import { getPaginationPages } from "@/script/utils";
+import { getPaginationPages, phoneNumberFormat } from "@/script/utils";
 import { useEffect } from "react";
 import Dialog from "./Order/Dialog";
+import axios from "axios";
 
 export default function Order({ auth, orders }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
@@ -30,6 +31,22 @@ export default function Order({ auth, orders }) {
         });
     };
 
+    const onDownload = () => {
+        axios.get("/admin/export-orders", {
+            params: {
+                product_type_id: 5 // 5 = Skripsi Mastery
+            }
+        }).then((res) => {
+            if (res.status == 200) {
+                const url = res.data.download_url;
+                const link = document.createElement("a");
+                link.href = url;
+                document.body.appendChild(link);
+                link.click();
+            }
+        });
+    }
+
     const currency = Intl.NumberFormat("id-ID");
 
     const columns = useMemo(
@@ -41,6 +58,35 @@ export default function Order({ auth, orders }) {
             {
                 accessorKey: "user.name",
                 header: "Nama Pembeli",
+            },
+            {
+                accessorKey: "user.email",
+                header: "Email",
+                Cell: ({ cell }) => {
+                    return (
+                        <a
+                            href={`mailto:${cell.row.original.user.email}`}
+                            className="text-blue-500"
+                        >
+                            {cell.row.original.user.email}
+                        </a>
+                    );
+                }
+            },
+            {
+                accessorKey: "user.profile.phone_number",
+                header: "Telepon",
+                Cell: ({ cell }) => {
+                    return (
+                        <a
+                            href={`https://wa.me/${phoneNumberFormat(cell.row.original.user.profile.phone_number)}`}
+                            target="_blank"
+                            className="text-blue-500"
+                        >
+                            {cell.row.original.user.profile.phone_number}
+                        </a>
+                    );
+                }
             },
             {
                 accessorKey: "products.name",
@@ -55,7 +101,23 @@ export default function Order({ auth, orders }) {
                 header: "Status",
             },
             {
-                // accessorKey: "form_result.admin",
+                header: "Harga Produk",
+                Cell: ({ cell }) =>
+                    "Rp." + currency.format(cell.row.original.form_result.init_price),
+            },
+            {
+                accessorKey: "form_result.discount",
+                header: "Diskon",
+                Cell: ({ cell }) => {
+                    if (cell.row.original.form_result.discount == null) {
+                        return "Rp.0";
+                    } else {
+                        return "Rp." +
+                        currency.format(cell.row.original.form_result.discount);
+                    }
+                }
+            },
+            {
                 header: "Estimasi Admin",
                 Cell: ({ cell }) =>
                     cell.row.original.form_result?.purchase_method?.is_price ==
@@ -69,11 +131,11 @@ export default function Order({ auth, orders }) {
                           ),
             },
             {
-                accessorKey: "form_result.discount",
-                header: "Diskon",
+                header: "Harga Total",
+                Cell: ({ cell }) =>
+                    "Rp." + currency.format(cell.row.original.unit_price),
             },
             {
-                // accessorKey: "form_result.discount",
                 header: "Estimasi Earnings",
                 Cell: ({ cell }) =>
                     "Rp." +
@@ -83,13 +145,6 @@ export default function Order({ auth, orders }) {
                     ),
             },
             {
-                // accessorKey: "form_result.discount",
-                header: "Harga Total",
-                Cell: ({ cell }) =>
-                    "Rp." + currency.format(cell.row.original.unit_price),
-            },
-            {
-                // accessorKey: "form_result.discount",
                 header: "Detail Harga",
                 Cell: ({ cell }) => (
                     <button>
@@ -114,6 +169,10 @@ export default function Order({ auth, orders }) {
                 accessorKey: "updated_at",
                 header: "Tanggal Pesanan",
                 Cell: ({ cell }) => formatDate(cell.row.original.created_at),
+            },
+            {
+                accessorKey: "form_result.promo",
+                header: "Kode Promo",
             },
         ],
         []
@@ -155,6 +214,10 @@ export default function Order({ auth, orders }) {
                     setKeyword={setKeyword}
                     onSearch={(i) => {
                         onSearchCallback(i);
+                    }}
+                    isDownloadable
+                    onDownload={() => {
+                        onDownload();
                     }}
                 />
                 <BottomPaginationTable

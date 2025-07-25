@@ -47,10 +47,12 @@ use App\Http\Controllers\Moderator\SettingController as ModeratorSettingControll
 use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
 use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
 use App\Http\Controllers\MoodleController;
+use App\Http\Controllers\OrderExportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
+use App\Http\Controllers\UserExportController;
 use App\Mail\User\Payment\Pending;
 use App\Mail\Moderator\Bimbingan\RecentOrder;
 use App\Mail\User\Auth\EmailVerification;
@@ -107,7 +109,10 @@ Route::get('/dibimbingsemester', function () {
     return Inertia::render('Main/DibimbingSatuSemester');
 });
 Route::get('/skripsimastery', function () {
-    $products = Products::where('product_type_id', 5)->get();
+    $products = Products::where('product_type_id', 5)
+                ->where('is_visible', true)
+                ->with('category', 'productType')->get();
+
     return Inertia::render('Main/SkripsiMastery', [
         'products' => $products
     ]);
@@ -215,6 +220,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'admin')->group(funct
     Route::resource('overview', AdminOverviewController::class);
     Route::resource('statistic', StatisticController::class);
     Route::resource('setting', SettingController::class);
+    // Route untuk export dan download tabel order dalam bentuk excel
+    Route::get('/export-orders', [OrderExportController::class, 'export'])->name('export.orders');
+    Route::get('/download-orders', [OrderExportController::class, 'download'])->name('download.orders');
+    // Route untuk export dan download tabel users dalam bentuk excel
+    Route::get('/export-users', [UserExportController::class, 'export'])->name('export.users');
+    Route::get('/download-users', [UserExportController::class, 'download'])->name('download.users');
 });
 
 Route::prefix('moderator')->name('moderator.')->middleware('auth', 'moderator')->group(function () {

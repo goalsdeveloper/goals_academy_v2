@@ -19,7 +19,7 @@ class OrderController extends Controller
                 // $perPage = $request->input('perPage', 25);
                 // $search = $request->input('search');
 
-                // $query = Order::with(['paymentMethod:id,name', 'user:id,username,name', 'products:id,product_type_id,category_id,name,product_image', 'products.category:id,name', 'products.productType:id,type'])
+                // $query = Order::with(['paymentMethod:id,name', 'user:id,username,name,email', 'user.profile:id,user_id,phone_number', 'products:id,product_type_id,category_id,name,product_image', 'products.category:id,name', 'products.productType:id,type'])
                 //     ->whereHas('products', function ($query) {
                 //         $query->whereHas('productType', function ($subQuery) {
                 //             $subQuery->where('type', 'LIKE', '%bimbingan%');
@@ -47,7 +47,7 @@ class OrderController extends Controller
                     $perPage = (int) $request->input('perPage', 25);
                     $search = $request->input('search');
 
-                    $query = Order::with(['paymentMethod:id,name', 'user:id,username,name', 'products:id,product_type_id,category_id,name,product_image', 'products.category:id,name', 'products.productType:id,type'])
+                    $query = Order::with(['paymentMethod:id,name', 'user:id,username,name,email', 'user.profile:id,user_id,phone_number', 'products:id,product_type_id,category_id,name,product_image', 'products.category:id,name', 'products.productType:id,type'])
                     ->whereHas('products', function ($query) {
                         $query->whereHas('productType', function ($subQuery) {
                             $subQuery->where('type', 'LIKE', '%bimbingan%');

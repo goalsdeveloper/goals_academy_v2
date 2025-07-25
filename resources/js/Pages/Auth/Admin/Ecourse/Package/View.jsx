@@ -25,12 +25,12 @@ const View = ({ products }) => {
         price: products.price,
         promo_price: products.promo_price ?? "",
         active_period: products.active_period,
-        facilities: 
+        facilities:
             typeof products.facilities == "string"
                 ? JSON.parse(products.facilities)
                 : products.facilities,
         is_visible: products.is_visible == 1 ? true : false,
-        form_config: 
+        form_config:
             typeof products.form_config == "object"
                 ? products.form_config
                 : products.form_config && JSON.parse(products.form_config),
@@ -238,9 +238,9 @@ const View = ({ products }) => {
                                     Belum diatur
                                 </p>
                             ) : (
-                                data.facilities.map((item) => (
+                                data.facilities.map((item, index) => (
                                     <div
-                                        key={item.icon}
+                                        key={index}
                                         className="flex gap-[.6vw] items-center group hover:bg-neutral-20 cursor-pointer border border-secondary rounded-full py-[.25vw] px-[.5vw]"
                                     >
                                         <i

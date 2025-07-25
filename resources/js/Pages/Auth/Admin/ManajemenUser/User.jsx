@@ -8,7 +8,7 @@ import GoalsButton from "@/Components/GoalsButton";
 import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 import Dialog from "./User/Dialog";
 import toast, { Toaster } from "react-hot-toast";
-import { getPaginationPages } from "@/script/utils";
+import { getPaginationPages, phoneNumberFormat } from "@/script/utils";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 import { useEffect } from "react";
 
@@ -32,6 +32,23 @@ export default function User({ auth, users }) {
             }
         );
     };
+
+    const onDownload = () => {
+        axios.get("/admin/export-users", {
+            params: {
+                user_role: "user",
+            }
+        }).then((res) => {
+            if (res.status == 200) {
+                const url = res.data.download_url;
+                const link = document.createElement("a");
+                link.href = url;
+                document.body.appendChild(link);
+                link.click();
+            }
+        });
+    }
+
     const [showDialog, setShowDialog] = useState({
         create: false,
         edit: false,
@@ -85,11 +102,32 @@ export default function User({ auth, users }) {
                 accessorKey: "email",
                 header: "Email",
                 size: 100,
+                Cell: ({ cell}) => {
+                    return (
+                        <a
+                            href={`mailto:${cell.getValue()}`}
+                            className="text-blue-500"
+                        >
+                                {cell.getValue()}
+                        </a>
+                    );
+                }
             },
             {
                 accessorKey: "profile.phone_number",
                 header: "Telepon",
                 size: 100,
+                Cell: ({ cell }) => {
+                    return (
+                        <a
+                            href={`https://wa.me/${phoneNumberFormat(cell.getValue())}`}
+                            target="_blank"
+                            className="text-blue-500"
+                        >
+                            {cell.getValue()}
+                        </a>
+                    );
+                }
             },
             {
                 accessorKey: "profile.university",
@@ -165,6 +203,7 @@ export default function User({ auth, users }) {
                 <GoalsDashboardTable
                     isHeadVisible
                     isSortable
+                    isDownloadable
                     columns={columns}
                     data={users.data}
                     keyword={keyword}
@@ -172,6 +211,7 @@ export default function User({ auth, users }) {
                     onSearch={(i) => {
                         onSearchCallback(i);
                     }}
+                    onDownload={onDownload}
                 />
                 <BottomPaginationTable
                     {...{
