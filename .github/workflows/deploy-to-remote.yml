@@ -7,7 +7,7 @@ on:
 jobs:
   create-depeloyment-artifacts:
     name: Create deployment artifacts
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -38,7 +38,7 @@ jobs:
 
   prepare-release-on-server:
     runs-on: ubuntu-latest
-    needs: create-depeloyment-artifacts
+    needs: create-deployment-artifacts
     steps:
       - uses: actions/download-artifact@v4
         with:
