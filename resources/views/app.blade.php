@@ -4,8 +4,27 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Goals Academy adalah platform edukasi untuk mahasiswa seputar kepenulisan karya tulis ilmiah meliputi skripsi, jurnal, dan tesis.">
+    <meta name="keywords" content="Goals Academy, bimbingan skripsi, bimbingan tesis, bimbingan disertasi, bimbingan tugas akhir, bimbingan penelitian, bimbingan akademik, belajar online, kursus online, pelatihan online, learning, education, edukasi">
+    <meta name="author" content="Goals Academy Team">
+    <meta name="language" content="id">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Title -->
     <title inertia>{{ config('app.name', 'Goals Academy') }}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ config('app.name', 'Goals Academy') }}" />
+    <meta property="og:description" content="Goals Academy adalah platform edukasi untuk mahasiswa seputar kepenulisan karya tulis ilmiah meliputi skripsi, jurnal, dan tesis." />
+    <meta property="og:image" content="{{ asset('img/icon-goals-academy.svg') }}" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ config('app.name', 'Goals Academy') }}">
+    <meta name="twitter:description" content="Goals Academy adalah platform edukasi untuk mahasiswa seputar kepenulisan karya tulis ilmiah meliputi skripsi, jurnal, dan tesis.">
+    <meta name="twitter:image" content="{{ asset('img/icon-goals-academy.svg') }}">
+
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ url()->current() }}" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('img/icon-goals-academy.svg') }}">
@@ -15,6 +34,21 @@
 
     <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/1c256bdeea.js" crossorigin="anonymous"></script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Goals Academy",
+            "url": "{{ url('/') }}",
+            "logo": "{{ asset('img/icon-goals-academy.svg') }}",
+            "sameAs": [
+                "https://www.instagram.com/goalsacademy_id",
+            ],
+            "description": "Platform edukasi seputar kepenulisan karya tulis ilmiah untuk mahasiswa.",
+            "founder": "Goals Academy Team"
+        }
+    </script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WSWZG2RDLM"></script>

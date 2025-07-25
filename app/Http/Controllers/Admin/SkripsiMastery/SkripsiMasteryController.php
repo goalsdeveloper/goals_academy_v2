@@ -112,6 +112,7 @@ class SkripsiMasteryController extends Controller
                     'facilities' => 'required|string',
                     'facilities.*.icon' => 'required|string',
                     'facilities.*.text' => 'required|string',
+                    'form_config' => '',
                     'promo_price' => 'numeric',
                 ]);
                 $product = new Products();
@@ -128,6 +129,7 @@ class SkripsiMasteryController extends Controller
                 $product->total_meet = 1;
                 $product->active_period = 9999;
                 $product->number_list = Products::newNumberList($product->category_id);
+                $product->form_config = json_decode($validateData['form_config']);
                 if (isset($validateData['duration'])) {
                     $product->duration = $validateData['duration'];
                 }

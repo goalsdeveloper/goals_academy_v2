@@ -33,9 +33,7 @@ use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
 use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
 use App\Http\Controllers\Admin\Webinar\WebinarController;
-use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\EmailDiskonController;
-// use App\Http\Controllers\Moderator\CourseController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MainController;
@@ -54,9 +52,6 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Purchase\PurchaseStatusController;
 use App\Http\Controllers\UserExportController;
 use App\Mail\User\Payment\Pending;
-use App\Mail\Moderator\Bimbingan\RecentOrder;
-use App\Mail\User\Auth\EmailVerification;
-use App\Mail\User\Auth\ResetPassword;
 use App\Mail\User\Bimbingan\Expired;
 use App\Mail\User\Payment\Success;
 use App\Models\Order;
@@ -64,9 +59,13 @@ use App\Models\Products;
 use App\Models\TutorNote;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+// Di routes/web.php
+Route::get('/csrf-token', function () {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
 
 Route::get('/token', function () {
     return csrf_token();
@@ -81,15 +80,15 @@ Route::get('/karir', function () {
     return Inertia::render('Main/Karir');
 });
 
-Route::get('/profil_perusahaan', function () {
+Route::get('/profil-perusahaan', function () {
     return Inertia::render('Main/ProfilPerusahaan');
 });
-Route::get('/profil_perusahaan2', function () {
+Route::get('/profil-perusahaan2', function () {
     return Inertia::render('Main/ProfilPerusahaanBaru');
 });
 
-Route::get('/profil_tutor_new', [MainController::class, 'profilTutor'])->name('profilTutor');
-Route::get('/profil_tutor', function () {
+Route::get('/profil-tutor-new', [MainController::class, 'profilTutor'])->name('profilTutor');
+Route::get('/profil-tutor', function () {
     return Inertia::render('Main/ProfilTutorOld');
 });
 
