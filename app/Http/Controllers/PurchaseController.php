@@ -210,7 +210,7 @@ class PurchaseController extends Controller
 
         try {
             $metaPixel = new MetaPixelService();
-            $metaPixel->trackingInitiateCheckout(Auth::user()->email, Auth::user()->profile->phone, [
+            $metaPixel->trackingInitiateCheckout($user()->email, $user()->profile->phone_number, [
                 "contents" => [
                     "id" => $product->id,
                     "product_name" => $product->name,

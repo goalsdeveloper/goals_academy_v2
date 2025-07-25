@@ -118,7 +118,7 @@ Route::get('/skripsimastery', function () {
 });
 Route::resource('/produk', PurchaseController::class);
 
-Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status')->middleware(['auth', 'verified']);
+Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status');
 
 Route::resource('/profile', ProfileController::class);
 
