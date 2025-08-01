@@ -63,7 +63,7 @@ h3 {
 }
 
 p {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5em;
     margin: 0;
     text-align: left;
@@ -110,7 +110,7 @@ img {
 
 .header a {
     color: #3d4852;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     text-decoration: none;
 }
@@ -160,7 +160,7 @@ img {
 }
 
 .subcopy p {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 /* Footer */
@@ -180,7 +180,7 @@ img {
 }
 
 .footer p {
-    font-size: 16px;
+    font-size: 14px;
     text-align: center;
 }
 
@@ -200,7 +200,7 @@ img {
 }
 
 .table * {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .table th {
@@ -210,7 +210,7 @@ img {
 }
 
 .table td {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 18px;
     margin: 0;
     padding: 10px 0;
@@ -234,7 +234,7 @@ img {
 }
 
 .button {
-    font-size: 16px;
+    font-size: 14px;
     -webkit-text-size-adjust: none;
     border-radius: 8px;
     color: #fff;

@@ -13,9 +13,9 @@ Hello! Thanks for shopping with us. We’ve received your order No. {{ $data->or
                 <td>
                     <img src="https://goalsacademy.id/storage/{{$data->products->product_image}}" alt="product-image" width="128" height="96" style="object-fit: cover; border-width: 1px; border-radius: 6px;">
                 </td>
-                <td style="padding-left: 2em;">
+                <td style="padding-left: 16px;">
                     <div style="height: 96px;">
-                        <p style="margin-bottom: 2em;">Bisa dibayar sebelum: <span style="font-weight: 600; color: red;">{{ $expiry_time }}</span></p>
+                        <p style="margin-bottom: 8px;">Bisa dibayar sebelum: <span style="font-weight: 600; color: red;">{{ $expiry_time }}</span></p>
                         <div>
                             <p style="font-weight: 600">{{ $data->products->name }}</p>
                             <p style="font-family: Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; font-weight: 700; color: #FF8854;">{{ $total_price }}</p>

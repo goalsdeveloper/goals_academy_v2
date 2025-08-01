@@ -7,7 +7,7 @@
         <td align="left" style="padding: 0 16px;">
             <a href="{{ $url }}" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center;">
                 <img src="https://goalsacademy/img/mail/icon-goals-academy.png" alt="logo" style="height: 24px; vertical-align: middle; margin-right: 8px;">
-                <span style="font-family: Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; font-size: 16px; font-weight: bold; color: #000000;">{{ $slot }}</span>
+                <span style="font-family: Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; font-size: 14px; font-weight: bold; color: #000000;">{{ $slot }}</span>
             </a>
         </td>
 

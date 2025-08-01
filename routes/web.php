@@ -328,24 +328,24 @@ Route::get('recent-order/{order}', function (Order $order) {
     return view('email.moderator.bimbingan.recent-order', ['data' => $order->load('products')]);
 });
 
-Route::get('testemail', function () {
-    return view('email.email-generate.user.auth.reset-password', ['url' => 'https://google.com']);
-});
+// Route::get('testemail', function () {
+//     return view('email.email-generate.user.auth.reset-password', ['url' => 'https://google.com']);
+// });
 
-Route::get('testemail/order-expired/{order}', function (Order $order) {
-    return view('email.email-generate.user.bimbingan.expired', ['data' => $order]);
-});
+// Route::get('testemail/order-expired/{order}', function (Order $order) {
+//     return view('email.email-generate.user.bimbingan.expired', ['data' => $order]);
+// });
 
-Route::get('testemail/recent-order/{order}', function (Order $order) {
-    return view('email.email-generate.moderator.bimbingan.recent-order', ['data' => $order]);
-});
+// Route::get('testemail/recent-order/{order}', function (Order $order) {
+//     return view('email.email-generate.moderator.bimbingan.recent-order', ['data' => $order]);
+// });
 
-Route::get('testemail/success/{order}', function (Order $order) {
-    return view('email.email-generate.user.purchase.success', ['data' => $order]);
-});
-Route::get('testemail/pending/{order}', function (Order $order) {
-    return view('email.email-generate.user.purchase.pending', ['data' => $order]);
-});
+// Route::get('testemail/success/{order}', function (Order $order) {
+//     return view('email.email-generate.user.purchase.success', ['data' => $order]);
+// });
+// Route::get('testemail/pending/{order}', function (Order $order) {
+//     return view('email.email-generate.user.purchase.pending', ['data' => $order]);
+// });
 
 Route::get('pending/new/{order}', function (Order $order) {
     return new Pending($order);
@@ -358,6 +358,11 @@ Route::get('success/new/{order}', function (Order $order) {
 Route::get('expired/new/{order}', function (Order $order) {
     return new Expired($order);
 });
+
+// Route::get('test-mail/{order}', function (Order $order) {
+//     Mail::to('roziqinakhmad14juli@gmail.com')->send(new Pending($order));
+//     return new Pending($order);
+// });
 
 // Route::get('email-verification/new/{user}', function (User $user) {
 //     return new EmailVerification($user);

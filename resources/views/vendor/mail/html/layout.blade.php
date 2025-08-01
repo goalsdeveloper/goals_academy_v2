@@ -38,7 +38,7 @@
   <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color: #f2f4f6; padding: 0; margin: 0;">
     <tr>
       <td align="center">
-        <table class="content" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width: 640px; margin: 0 auto; background-color: #ffffff;">
+        <table class="content" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
 
           {{-- Header --}}
           @if(isset($header))
@@ -54,7 +54,7 @@
             <td class="body" width="100%" cellpadding="0" cellspacing="0" style="padding: 0; border: none;">
               <table class="inner-body" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%; margin: 0 auto; border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; box-shadow: none;">
                 <tr>
-                  <td class="content-cell" style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #333333; line-height: 1.5; padding: 32px 48px;">
+                  <td class="content-cell" style="font-family: 'Work Sans', sans-serif; font-size: 14px; color: #333333; line-height: 1.5; padding: 32px 48px;">
                     {!! Illuminate\Mail\Markdown::parse($slot) !!}
 
                     @isset($subcopy)
