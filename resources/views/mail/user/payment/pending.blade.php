@@ -11,7 +11,7 @@ Hello! Thanks for shopping with us. We’ve received your order No. {{ $data->or
         <table style="margin-bottom: 24px;">
             <tr style="vertical-align: top;">
                 <td>
-                    <img src="{{Storage::url($data->products->product_image)}}" alt="product-image" width="128" height="96" style="object-fit: cover; border-width: 1px; border-radius: 6px;">
+                    <img src="https://goalsacademy.id/storage/{{$data->products->product_image}}" alt="product-image" width="128" height="96" style="object-fit: cover; border-width: 1px; border-radius: 6px;">
                 </td>
                 <td style="padding-left: 2em;">
                     <div style="height: 96px;">
@@ -33,7 +33,7 @@ Hello! Thanks for shopping with us. We’ve received your order No. {{ $data->or
                 <td style="padding: 8px 0;">Subtotal</td>
                 <td style="text-align: right">{{ $total_price }}</td>
             </tr>
-            <tr style="font-family: Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; font-weight: 600; font-size: 1.5em;">
+            <tr style="font-family: Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; font-weight: 600; font-size: 16px;">
                 <td style="padding-top: 8px">Total</td>
                 <td style="text-align: right">{{ $total_price }}</td>
             </tr>

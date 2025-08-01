@@ -38,7 +38,7 @@ a img {
 
 h1 {
     color: black;
-    font-size: 1.5em;
+    font-size: 16px;
     font-weight: 600;
     margin: 0;
     margin-bottom: 8px;
@@ -47,7 +47,7 @@ h1 {
 }
 
 h2 {
-    font-size: 1em;
+    font-size: 16px;
     font-weight: 600;
     margin-top: 0;
     text-align: left;
@@ -55,7 +55,7 @@ h2 {
 }
 
 h3 {
-    font-size: 0.875em;
+    font-size: 16px;
     font-weight: 600;
     margin-top: 0;
     text-align: left;
@@ -63,14 +63,14 @@ h3 {
 }
 
 p {
-    font-size: 1em;
+    font-size: 16px;
     line-height: 1.5em;
     margin: 0;
     text-align: left;
 }
 
 p.sub {
-    font-size: 0.75em;
+    font-size: 12px;
 }
 
 img {
@@ -110,7 +110,7 @@ img {
 
 .header a {
     color: #3d4852;
-    font-size: 1em;
+    font-size: 16px;
     font-weight: bold;
     text-decoration: none;
 }
@@ -160,7 +160,7 @@ img {
 }
 
 .subcopy p {
-    font-size: 1em;
+    font-size: 16px;
 }
 
 /* Footer */
@@ -180,7 +180,7 @@ img {
 }
 
 .footer p {
-    font-size: 1em;
+    font-size: 16px;
     text-align: center;
 }
 
@@ -200,7 +200,7 @@ img {
 }
 
 .table * {
-    font-size: 1em;
+    font-size: 16px;
 }
 
 .table th {
@@ -210,7 +210,7 @@ img {
 }
 
 .table td {
-    font-size: 1em;
+    font-size: 16px;
     line-height: 18px;
     margin: 0;
     padding: 10px 0;
@@ -234,7 +234,7 @@ img {
 }
 
 .button {
-    font-size: 1em;
+    font-size: 16px;
     -webkit-text-size-adjust: none;
     border-radius: 8px;
     color: #fff;
