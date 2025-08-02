@@ -3,6 +3,7 @@
 namespace App\Mail\User\Payment;
 
 use App\Models\Order;
+use DateTime;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,6 +11,7 @@ use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use IntlDateFormatter;
 
 class Pending extends Mailable
 {
@@ -20,7 +22,7 @@ class Pending extends Mailable
      */
     public function __construct(protected Order $order)
     {
-        // 
+        //
     }
 
     /**
@@ -38,8 +40,18 @@ class Pending extends Mailable
      */
     public function content(): Content
     {
-        $date = date_create($this->order->orderHistory->first()->payload['expiry_time']);
-        $expiry_time = date_format($date, 'd M Y H:i:s');
+        $date = new DateTime($this->order->orderHistory->first()->payload['expiry_time']);
+
+        $formatter = new IntlDateFormatter(
+            'id_ID',                            // Locale Indonesia
+            IntlDateFormatter::NONE,           // Tingkat format tanggal (NONE untuk custom)
+            IntlDateFormatter::NONE,           // Tingkat format waktu (NONE untuk custom)
+            'Asia/Jakarta',                    // Timezone
+            IntlDateFormatter::GREGORIAN,      // Kalender
+            'dd MMMM yyyy HH:mm:ss'            // Pola custom format
+        );
+
+        $expiry_time = $formatter->format($date);
         $total_price = 'Rp ' . number_format($this->order->form_result['total_price'], 0, ',', '.');
         return new Content(
             markdown: 'mail.user.payment.pending',

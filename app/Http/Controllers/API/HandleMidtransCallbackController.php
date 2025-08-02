@@ -181,7 +181,7 @@ class HandleMidtransCallbackController extends Controller
                 break;
             case 'expire':
                 $status = OrderEnum::FAILED->value;
-                $order->user->notify(new ExpireNotification($order));
+                // $order->user->notify(new ExpireNotification($order));
                 Log::info("Transaksi {$order->order_code} telah gagal pada " . now());
                 break;
             case 'cancel':

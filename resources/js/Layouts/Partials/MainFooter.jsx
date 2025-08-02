@@ -90,6 +90,7 @@ export default function MainFooter({ className }) {
                     <img src="/img/mail/x.png" alt="adsf" />
                     <img src="/img/mail/instagram.png" alt="" />
                     <img src="/img/mail/facebook.png" alt="" />
+                    <img src="/img/vector/payment.png" alt="" />
                 </div>
             </div>
             <div className="text-center py-6">
