@@ -290,13 +290,13 @@ function NavbarExpand({
                         <TECollapseItem className="py-[2vw] px-[3vw] md:py-[1vw] md:px-[1.5vw] gap-[2vw] md:gap-[1vw] text-start bg-white shadow-centered rounded-xl">
                             <Link
                                 className="font-poppins hover:text-primary"
-                                href="/profil_perusahaan"
+                                href="/profil-perusahaan"
                             >
                                 Profil Perusahaan
                             </Link>
                             <Link
                                 className="font-poppins hover:text-primary"
-                                href="/profil_tutor"
+                                href="/profil-tutor"
                             >
                                 Profil Tutor
                             </Link>

@@ -5,7 +5,12 @@ import { createRoot } from "react-dom/client";
 import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { Toaster } from "react-hot-toast";
+import useCsrfRefresh from "./bootstrap";
 
+function AppWrapper({ children }) {
+    useCsrfRefresh();
+    return <>{children}</>;
+}
 const appName = import.meta.env.VITE_APP_NAME || "Goals Academy";
 
 createInertiaApp({
@@ -21,7 +26,9 @@ createInertiaApp({
         root.render(
             <>
                 <Toaster />
-                <App {...props} />
+                <AppWrapper>
+                    <App {...props} />
+                </AppWrapper>
             </>
         );
     },

@@ -91,8 +91,8 @@ export default function Index({ auth, userData, profileData }) {
                                 onChange={(e) =>
                                     setData("phone_number", e.target.value)
                                 }
-                                placeholder="Masukkan Nomor Whatsapp Anda"
-                                type="number"
+                                placeholder="Contoh: 0XXXXXXXXXXX, 62XXXXXXXXXXX"
+                                type="tel"
                                 id="phone_number"
                                 label="Nomor Whatsapp"
                             />

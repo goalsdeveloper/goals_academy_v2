@@ -30,7 +30,7 @@ class PurchaseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'verified'])->except(['index']);
+        // $this->middleware(['auth', 'verified'])->except(['index']);
     }
     /**
      * Display a listing of the resource.
@@ -90,6 +90,12 @@ class PurchaseController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
+
+        // Jika user tidak ditemukan, cari berdasarkan ID
+        if (!$user) {
+            $user = User::where('id', $request->id)->first();
+        }
+
         $order_code = 'GA' . str(now()->format('YmdHis'));
         $orderData = new Order();
         $orderData->unit_price = $request['total_price'];
@@ -109,13 +115,15 @@ class PurchaseController extends Controller
         $paymentMethod = PaymentMethod::where('name', $request['purchase_method']['name'])->first();
         $product = Products::where('id', $request['product_id'])->first();
 
-        // Menurunkan kuota setelah promo code digunakan
-        $promoCode = PromoCode::where('promo_code', $request->promo)->first();
-        $promoCode->quota -= 1;
-        $promoCode->save();
+        if ($request->promo) {
+            $promoCode = PromoCode::where('promo_code', $request->promo)->first();
+            // Menurunkan kuota setelah promo code digunakan
+            $promoCode->quota -= 1;
+            $promoCode->save();
 
-        // Menyimpan data promo code yang digunakan oleh user
-        $user->promoCodes()->attach($promoCode->id);
+            // Menyimpan data promo code yang digunakan oleh user
+            $user->promoCodes()->attach($promoCode->id);
+        }
 
         // charge midtrans
         $phoneNumber = $user->profile->phone_number ?? '';

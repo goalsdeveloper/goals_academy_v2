@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { FiX } from "react-icons/fi";
 import GoalsButton from "@/Components/GoalsButton";
@@ -7,9 +7,11 @@ import { Autocomplete } from "@mui/material";
 import { universities, majorFamilies } from "@/data";
 import { createPortal } from "react-dom";
 
-const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast }) => {
+const LengkapiProfilForm = ({ isLogin, userProfile, setUserProfile, setPurchaseData, show, setShow, toast }) => {
     const { data, setData, errors, setError, post } = useForm({
         id: userProfile.id,
+        email: userProfile.email ? userProfile.email : "",
+        name: userProfile.name ? userProfile.name : "",
         phone_number: userProfile.phone_number ? userProfile.phone_number : "",
         university: userProfile.university ? userProfile.university : "",
         faculty: userProfile.faculty ? userProfile.faculty : "",
@@ -22,22 +24,40 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
 
     const [isLoading, setIsLoading] = useState(false);
 
+    useEffect(() => {
+        const keys = Object.keys(data).slice(1) // skip id
+
+        keys.map(i => {
+            if (String(data[i]).startsWith(" ")) {
+                setError(i, "Tidak boleh diawali dengan spasi!");
+            } else if (i == "phone_number" && !(String(data[i]).startsWith("62") || String(data[i]).startsWith("0"))) {
+                setError(i, "Contoh: 0XXXXXXXXXXX, 62XXXXXXXXXXX");
+            } else if (errors[i] == "Tidak boleh kosong!" && (data[i] == "" || data[i] == null)) {
+                setError(i, "Tidak boleh kosong!")
+            } else {
+                setError(i, "");
+            }
+        });
+    }, [data]);
+
     const submitHandler = (e) => {
         e.preventDefault();
-        const keys = Object.keys(data)
+        const keys = Object.keys(data).slice(1) // skip id
         const values = keys.map(i => data[i])
 
         keys.map(i => {
-            if (data[i] == '' || data[i] == null) {
-                setError(i, `This field is required!`)
-            } else if (String(data[i])[0] == ' ') {
-                setError(i, `This field can't started with space!`)
+            if (data[i] == "" || data[i] == null) {
+                setError(i, "Tidak boleh kosong!")
+            } else if (String(data[i]).startsWith(" ")) {
+                setError(i, "Tidak boleh diawali dengan spasi!")
+            } else if (i == "phone_number" && !(String(data[i]).startsWith("62") || String(data[i]).startsWith("0"))) {
+                setError(i, "Contoh: 0XXXXXXXXXXX, 62XXXXXXXXXXX")
             } else {
-                setError(i, '')
+                setError(i, "")
             }
-        })
+        });
 
-        if (!(values.includes('') || values.includes(null) || values.map(i => String(i)[0] == ' ').includes(true))) {
+        if (!(values.includes("") || values.includes(null) || values.map(i => String(i).startsWith(" ")).includes(true))) {
             setIsLoading(true)
             fetch("/api/lengkapi_profil", {
                 method: "post",
@@ -49,14 +69,25 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
             })
                 .then(response => response.json())
                 .then(response => {
-                    if (response.message == 'success') {
-                        toast.success('Profil berhasil dilengkapi!', { position: 'top-center' })
-                        setUserProfile(data)
+                    if (response.message == "success") {
+                        const updatedProfile = {
+                            ...data,
+                            id: response.id,
+                        };
+                        setData(updatedProfile);
+                        setUserProfile(updatedProfile);
+                        setPurchaseData("id", response.id);
+                        toast.success("Profil berhasil dilengkapi!", { position: "top-center" })
+                        setShow(false);
+                        setIsLoading(false)
+                    } else {
+                        toast.error(response.message, { position: "top-center" })
                         setIsLoading(false)
                     }
                 })
         }
     }
+
     return (
         createPortal(
             <div>
@@ -71,21 +102,53 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                         show
                             ? "md:top-0 bottom-0 md:scale-100"
                             : "md:top-full -bottom-full md:scale-0"
-                    } fixed left-0 flex flex-col gap-[2vw] w-full md:w-[30vw] h-[55vh] md:h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[.5vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh] overflow-auto`}
+                    } fixed left-0 flex flex-col gap-[2vw] w-full md:w-[30vw] h-fit transition-all duration-500 bg-white shadow-md rounded-t-[6vw] md:rounded-[.5vw] p-[8vw] md:p-[1.75vw] z-50 md:ms-[35vw] md:mt-[8vh]`}
                 >
                     <div className="flex justify-between">
                         <p className="font-poppins font-semibold text-[4.5vw] md:text-[1.2vw]">Data Diri</p>
                         <button onClick={() => isLoading ? () => {} : setShow(false)}>
-                            <FiX className="text-[6vw] md:text-[1.8vw]" />
+                            <FiX className="text-[6vw] md:text-[1.8vw] overflow-auto" />
                         </button>
                     </div>
                     <form
                         className="space-y-[8vw] md:space-y-[2vw]"
                         onSubmit={submitHandler}
                     >
-                        <div className="space-y-[3.2vw] md:space-y-[.8vw]">
+                        <div
+                            onClick={e => e.stopPropagation()}
+                            className="space-y-[3.2vw] md:space-y-[.8vw] max-h-[54vh] md:max-h-[60vh] overflow-auto scrollbar-hidden"
+                        >
+                            {!isLogin && (
+                                <>
+                                    <GoalsTextInput
+                                        required
+                                        type="text"
+                                        label="Nama Lengkap"
+                                        placeholder="Masukkan nama lengkap disini"
+                                        value={data.name}
+                                        error={errors.name}
+                                        cancelButton={data.name != ""}
+                                        data={data.name}
+                                        setData={i => setData("name", i)}
+                                        onChange={(e) => setData("name", e.target.value)}
+                                    />
+                                    <GoalsTextInput
+                                        required
+                                        type="email"
+                                        label="Email"
+                                        placeholder="Masukkan email disini"
+                                        value={data.email}
+                                        error={errors.email}
+                                        cancelButton={data.email != ""}
+                                        data={data.email}
+                                        setData={i => setData("email", i)}
+                                        onChange={(e) => setData("email", e.target.value)}
+                                    />
+                                </>
+                            )}
                             <GoalsTextInput
-                                type="number"
+                                required
+                                type="tel"
                                 label="Nomor Telepon"
                                 placeholder="Masukkan nomor telepon disini"
                                 value={data.phone_number}
@@ -99,7 +162,7 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                                 htmlFor="university"
                                 className="w-full grid items-center gap-[.4vw]"
                             >
-                                Universitas
+                                <p>Universitas<span className="text-red-600 inline">*</span></p>
                                 <Autocomplete
                                     disableClearable
                                     id="university"
@@ -140,18 +203,8 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                                     </p>
                                 )}
                             </label>
-                            {/* <GoalsTextInput
-                                type="text"
-                                label="Universitas"
-                                placeholder="Masukkan universitas disini"
-                                value={data.university}
-                                error={errors.university}
-                                cancelButton={data.university != ""}
-                                data={data.university}
-                                setData={i => setData("university", i)}
-                                onChange={(e) => setData("university", e.target.value)}
-                            /> */}
                             <GoalsTextInput
+                                required
                                 type="text"
                                 label="Fakultas"
                                 placeholder="Masukkan fakultas disini"
@@ -163,6 +216,7 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                                 onChange={(e) => setData("faculty", e.target.value)}
                             />
                             <GoalsTextInput
+                                required
                                 type="text"
                                 label="Jurusan"
                                 placeholder="Masukkan jurusan disini"
@@ -177,7 +231,7 @@ const LengkapiProfilForm = ({ userProfile, setUserProfile, show, setShow, toast 
                                 htmlFor="major_family"
                                 className="w-full grid items-center gap-[.4vw]"
                             >
-                                Rumpun Jurusan
+                                <p>Rumpun Jurusan<span className="text-red-600">*</span></p>
                                 <Autocomplete
                                     disableClearable
                                     id="major_family"

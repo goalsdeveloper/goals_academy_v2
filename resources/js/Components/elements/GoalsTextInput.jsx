@@ -21,7 +21,7 @@ const GoalsTextInput = ({
     ...rest
 }) => {
     const [showPassword, setShowPassword] = useState(false);
-    
+
     return (
         <div
             className={`flex flex-col ${
@@ -72,12 +72,12 @@ const GoalsTextInput = ({
                     )}
                 </div>
                 {error !== "" && (
-                    <p className={`text-red-500 text-[3.6vw] md:text-[.9vw] ${messageClassName}`}>
+                    <p className={`text-red-500 text-[3.6vw] md:text-[.9vw] mt-1 ${messageClassName}`}>
                         {error}
                     </p>
                 )}
                 {success !== "" && (
-                    <p className={`text-green-500 text-[3.6vw] md:text-[.9vw] ${messageClassName}`}>
+                    <p className={`text-green-500 text-[3.6vw] md:text-[.9vw] mt-1 ${messageClassName}`}>
                         {success}
                     </p>
                 )}

@@ -253,12 +253,12 @@ const MobileSidebar = ({ isOpen, setIsOpen, auth }) => {
             text: "Profil",
             sublinks: [
                 {
-                    href: "/profil_perusahaan",
+                    href: "/profil-perusahaan",
                     icon: <HiOutlineBuildingOffice className="text-[4vw]" />,
                     text: "Perusahaan",
                 },
                 {
-                    href: "/profil_tutor",
+                    href: "/profil-tutor",
                     icon: <BsPerson className="text-[4vw]" />,
                     text: "Tutor",
                 },

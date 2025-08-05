@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm, Link } from "@inertiajs/react";
 import moment from "moment";
 import MainLayout from "@/Layouts/MainLayout";
@@ -34,28 +34,42 @@ export default function Form({
     paymentMethods,
     dataProduct,
 }) {
-    const userId = auth.user.id;
+    const userId = auth.user ? auth.user.id : "";
     const [isProcessed, setIsProcessed] = useState(false);
     const [showMobileSummaryCard, setShowMobileSummaryCard] = useState(false);
 
-    const requiredProfile = [
-        "phone_number",
-        "university",
-        "faculty",
-        "major",
-        "rumpun",
-    ].reduce((out, i) => {
-        out[i] = auth.user.profile[i];
-        return out;
-    }, {});
+    let requiredProfile = {};
+    if (!userId) {
+        requiredProfile = {
+            email: "",
+            name: "",
+            phone_number: "",
+            university: "",
+            faculty: "",
+            major: "",
+            rumpun: "",
+        };
+    } else {
+        requiredProfile = {
+            email: auth.user.email || "",
+            name: auth.user.name || "",
+            phone_number: auth.user.profile.phone_number || "",
+            university: auth.user.profile.university || "",
+            faculty: auth.user.profile.faculty || "",
+            major: auth.user.profile.major || "",
+            rumpun: auth.user.profile.rumpun || "",
+        };
+    }
 
     const [userProfile, setUserProfile] = useState({
         ...requiredProfile,
-        id: auth.user.id,
+        id: userId,
     });
+
 
     // Code to input form data
     const { data, setData, errors, setError, post } = useForm({
+        id: userId,
         schedule: "",
         city: "",
         place: "",
@@ -78,6 +92,7 @@ export default function Form({
 
     // Code to input temp form data
     const { data: temp, setData: setTemp } = useForm({
+        id: userId,
         schedule: "",
         city: "",
         place: "",
@@ -94,9 +109,6 @@ export default function Form({
         add_on: [],
         add_on_price: 0,
     });
-
-    // Initialize product's category
-    const category = "offline";
 
     // Initialize form rules
     const rules = dataProduct.form_config;
@@ -146,6 +158,44 @@ export default function Form({
         }
     };
 
+    const resetPromo = () => {
+        let adminFee = 0;
+        if (data.purchase_method != "") {
+            if (parseInt(data.purchase_method.is_price)) {
+                adminFee = parseFloat(
+                    data.purchase_method.admin_fee
+                );
+            } else {
+                adminFee = Math.ceil(
+                    ((parseFloat(data.init_price) -
+                        parseFloat(promoDiscount) +
+                        parseFloat(data.add_on_price)) *
+                        parseFloat(
+                            data.purchase_method.admin_fee
+                        )) /
+                        100
+                );
+            }
+        }
+        const totalPrice =
+            parseFloat(data.init_price) +
+            parseFloat(data.add_on_price) +
+            adminFee;
+        setData({
+            ...data,
+            promo: "", // Reset promo code
+            discount: 0, // Reset discount
+            admin: adminFee,
+            total_price: totalPrice,
+        });
+        toast("Email berubah, promo direset", { position: "top-center", icon: "⚠️" });
+    }
+
+    useRef(() => {
+        // Reset promo if id changes
+        resetPromo();
+    }, [data.id]);
+
     // Code to check and input promo
     const promoHandler = (inputCode, successCallback, processCallback) => {
         processCallback(true);
@@ -155,7 +205,7 @@ export default function Form({
                 accept: "application.json",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ inputCode: inputCode, userId: userId, productId: dataProduct.id }),
+            body: JSON.stringify({ inputCode: inputCode, userId: data.id, productId: dataProduct.id }),
         })
             .then((response) => response.json())
             .then((response) => {
@@ -200,11 +250,11 @@ export default function Form({
                         admin: adminFee,
                         total_price: totalPrice,
                     });
-                    alert(response.message);
+                    toast.success(response.message, { position: "top-center" });
                     successCallback();
                 } else {
                     setTemp({ ...temp, promo: data.promo, discount: 0 });
-                    alert(response.message);
+                    toast.error(response.message, { position: "top-center" });
                 }
             });
     };
@@ -223,6 +273,7 @@ export default function Form({
             >
                 <div className="relative md:container mx-auto pt-[4.5vw] md:pt-[1vw] flex flex-col justify-between md:flex-row text-[3.7vw] md:text-[1vw] gap-[4vw] md:gap-0">
                     <MainCard
+                        userId={userId}
                         userProfile={userProfile}
                         setUserProfile={setUserProfile}
                         setShowMobileSummaryCard={setShowMobileSummaryCard}
@@ -261,6 +312,7 @@ export default function Form({
 }
 
 function MainCard({
+    userId,
     userProfile,
     setUserProfile,
     setShowMobileSummaryCard,
@@ -301,20 +353,20 @@ function MainCard({
     };
 
     const currency = Intl.NumberFormat("id-ID");
-
     return (
         <div className="md:w-[72%] flex flex-col gap-[1vw]">
-            {Object.keys(userProfile)
+            {!userId ||
+            Object.keys(userProfile)
                 .map((i) => userProfile[i])
                 .includes("") ||
             Object.keys(userProfile)
                 .map((i) => userProfile[i])
                 .includes(null) ? (
                 <LengkapiProfilAlert
+                    isLogin={!!userId}
                     userProfile={userProfile}
                     setUserProfile={setUserProfile}
-                    data={data}
-                    setData={setData}
+                    setPurchaseData={setData}
                 />
             ) : (
                 <></>
@@ -1268,7 +1320,26 @@ function SummaryCard({
                                 className={`justify-center md:justify-between gap-[4vw] md:gap-0 rounded-[2vw] md:rounded-[.4vw] h-[12.5vw] md:h-[3.1vw] mb-[1.5vw] px-[1vw]`}
                                 activeClassName="bg-green-50 text-green-500"
                                 textClassName="font-normal"
-                                onClick={() => setShowPromoForm(!showPromoForm)}
+                                onClick={
+                                    () => {
+                                        if (
+                                            Object.keys(userProfile)
+                                                .map((i) => userProfile[i])
+                                                .includes("") ||
+                                            Object.keys(userProfile)
+                                                .map((i) => userProfile[i])
+                                                .includes(null)
+                                        ) {
+                                            toast("Lengkapi profil terlebih dahulu!", {
+                                                position: "top-center",
+                                                icon: "⚠️",
+                                            });
+                                            window.scrollTo(0, 0);
+                                        } else {
+                                            setShowPromoForm(!showPromoForm)
+                                        }
+                                    }
+                                }
                             >
                                 <BiSolidDiscount className="text-[4.8vw] md:text-[1.2vw]" />
                                 <span>
@@ -1501,21 +1572,21 @@ function SummaryCard({
 }
 
 const LengkapiProfilAlert = ({
+    isLogin,
     userProfile,
     setUserProfile,
-    data,
-    setData,
+    setPurchaseData,
 }) => {
     const [showLengkapiProfilForm, setShowLengkapiProfilForm] = useState(false);
     return (
         <div className="hidden md:block">
             <LengkapiProfilForm
+                isLogin={isLogin}
                 userProfile={userProfile}
                 setUserProfile={setUserProfile}
+                setPurchaseData={setPurchaseData}
                 show={showLengkapiProfilForm}
                 setShow={setShowLengkapiProfilForm}
-                data={data}
-                setData={setData}
                 toast={toast}
             />
 

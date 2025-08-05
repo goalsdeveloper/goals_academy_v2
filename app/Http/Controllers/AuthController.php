@@ -60,9 +60,9 @@ class AuthController extends Controller
 
         $user = User::create($validateData);
 
-        $userProfile = UserProfile::create([
-            'user_id' => $user['id'],
-        ]);
+        // $userProfile = UserProfile::create([
+        //     'user_id' => $user['id'],
+        // ]);
 
         // event(new Registered($user));
         Mail::send();

@@ -1,20 +1,18 @@
 import { useMemo, useState } from "react";
-import { Link, router, useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import GoalsDashboardTable from "@/Components/elements/GoalsDashboardTable";
-import { FiEdit2, FiTrash2, FiPlus, FiEye } from "react-icons/fi";
-import { FaRegCircleCheck, FaRegCircleXmark } from "react-icons/fa6";
+import { FiEdit2, FiPlus, FiEye } from "react-icons/fi";
 import SubHeading from "../components/SubHeading";
 import GoalsButton from "@/Components/GoalsButton";
 import moment from "moment";
 import Dialog from "./PromoCode/Dialog";
 import toast, { Toaster } from "react-hot-toast";
-import GoalsCupertinoButton from "@/Components/elements/GoalsCupertinoButton";
 import BottomPaginationTable from "@/Components/fragments/BottomTablePagination";
 import { useEffect } from "react";
 import { getPaginationPages } from "@/script/utils";
 
-export default function PromoCode({ auth, promo_code, message }) {
+export default function PromoCode({ auth, promo_code }) {
     const { data, total, from, to, current_page, per_page, last_page, links } =
         promo_code;
 
