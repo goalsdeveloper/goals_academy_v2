@@ -84,7 +84,15 @@ export default function MainFooter({ className }) {
                     </div>
                 </div>
             </div>
-            <div className="bg-gradient-to-r from-grey via-white to-grey h-0.5"></div>
+            <div className="bg-gradient-to-r from-grey via-white to-grey h-0.5">
+                <div className="hidden">
+                    <img src="/img/mail/icon-goals-academy.png" alt="" />
+                    <img src="/img/mail/x.png" alt="adsf" />
+                    <img src="/img/mail/instagram.png" alt="" />
+                    <img src="/img/mail/facebook.png" alt="" />
+                    <img src="/img/vector/payment.png" alt="" />
+                </div>
+            </div>
             <div className="text-center py-6">
                 Copyright 2023 <i className="fa-regular fa-copyright"></i>{" "}
                 <span className="font-bold">PT Sarana Edukasi Nusantara</span>

@@ -1,66 +1,69 @@
 <?php
 
-use App\Enums\CourseStatusEnum;
-use App\Http\Controllers\Admin\Bimbingan\AddOnController;
-use App\Http\Controllers\Admin\Bimbingan\BimbinganController;
-use App\Http\Controllers\Admin\Bimbingan\CategoryController;
-use App\Http\Controllers\Admin\Bimbingan\CityController;
-use App\Http\Controllers\Admin\Bimbingan\OrderController as AdminOrderBimbinganController;
-use App\Http\Controllers\Admin\Bimbingan\PlaceController;
-use App\Http\Controllers\Admin\Bimbingan\TopicController;
-use App\Http\Controllers\Admin\Career\JobController;
-use App\Http\Controllers\Admin\Career\ParticipantController;
-use App\Http\Controllers\Admin\Ecourse\EcourseController;
-use App\Http\Controllers\Admin\Ecourse\OrderController as AdminOrderEcourseController;
-use App\Http\Controllers\Admin\Ecourse\PackageController as AdminPackageEcourseController;
-use App\Http\Controllers\Admin\JasaRiset\JasaRisetController;
-use App\Http\Controllers\Admin\JasaRiset\OrderController as AdminOrderJasaRisetController;
-use App\Http\Controllers\Admin\SkripsiMastery\SkripsiMasteryController;
-use App\Http\Controllers\Admin\ManajemenUser\ModeratorController;
-use App\Http\Controllers\Admin\ManajemenUser\RevenueTypeController;
-use App\Http\Controllers\Admin\ManajemenUser\TutorController;
-use App\Http\Controllers\Admin\ManajemenUser\UserController;
-use App\Http\Controllers\Admin\Marketing\AffiliateController;
-use App\Http\Controllers\Admin\Marketing\VoucherController;
-use App\Http\Controllers\Admin\OverviewController as AdminOverviewController;
-use App\Http\Controllers\Admin\ProdukDigital\CategoryController as AdminCategoryProdukDigitalController;
-use App\Http\Controllers\Admin\ProdukDigital\OrderController as AdminOrderProdukDigitalController;
-use App\Http\Controllers\Admin\ProdukDigital\ProdukDigitalController;
-use App\Http\Controllers\Admin\SettingController;
-use App\Http\Controllers\Admin\SkripsiMastery\CategoryController as SkripsiMasteryCategoryController;
-use App\Http\Controllers\Admin\SkripsiMastery\OrderController as AdminOrderSkripsiMasteryController;
-use App\Http\Controllers\Admin\StatisticController;
-use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
-use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
-use App\Http\Controllers\Admin\Webinar\WebinarController;
-use App\Http\Controllers\EmailDiskonController;
-use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\FileController;
-use App\Http\Controllers\MainController;
-use App\Http\Controllers\Moderator\Bimbingan\ModeratorHistoryBimbinganController;
-use App\Http\Controllers\Moderator\Bimbingan\ModeratorOrderController;
-use App\Http\Controllers\Moderator\Bimbingan\ProgressController;
-use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
-use App\Http\Controllers\Moderator\SettingController as ModeratorSettingController;
-use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
-use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
-use App\Http\Controllers\MoodleController;
-use App\Http\Controllers\OrderExportController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PromoCodeController;
-use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\Purchase\PurchaseStatusController;
-use App\Http\Controllers\UserExportController;
-use App\Mail\User\Payment\Pending;
-use App\Mail\User\Bimbingan\Expired;
-use App\Mail\User\Payment\Success;
+use App\Models\User;
+use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Products;
 use App\Models\TutorNote;
-use App\Models\User;
+use App\Enums\CourseStatusEnum;
+use App\Mail\User\Payment\Pending;
+use App\Mail\User\Payment\Success;
+use App\Mail\User\Bimbingan\Expired;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\User\Auth\ResetPassword;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\MainController;
+use App\Mail\User\Auth\EmailVerification;
+use App\Http\Controllers\MoodleController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\PromoCodeController;
+use App\Http\Controllers\UserExportController;
+use App\Http\Controllers\EmailDiskonController;
+use App\Http\Controllers\OrderExportController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\StatisticController;
+use App\Http\Controllers\Admin\Career\JobController;
+use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\Admin\Bimbingan\CityController;
+use App\Http\Controllers\Admin\Bimbingan\AddOnController;
+use App\Http\Controllers\Admin\Bimbingan\PlaceController;
+use App\Http\Controllers\Admin\Bimbingan\TopicController;
+use App\Http\Controllers\Admin\Ecourse\EcourseController;
+use App\Http\Controllers\Admin\Webinar\WebinarController;
+use App\Http\Controllers\Admin\Marketing\VoucherController;
+use App\Http\Controllers\Purchase\PurchaseStatusController;
+use App\Http\Controllers\Admin\Bimbingan\CategoryController;
+use App\Http\Controllers\Admin\Career\ParticipantController;
+use App\Http\Controllers\Admin\ManajemenUser\UserController;
+use App\Http\Controllers\Admin\Bimbingan\BimbinganController;
+use App\Http\Controllers\Admin\JasaRiset\JasaRisetController;
+use App\Http\Controllers\Admin\ManajemenUser\TutorController;
+use App\Http\Controllers\Admin\Marketing\AffiliateController;
+use App\Http\Controllers\Moderator\Bimbingan\ProgressController;
+use App\Http\Controllers\Admin\ManajemenUser\ModeratorController;
+use App\Http\Controllers\Moderator\Tutor\ModeratorTutorController;
+use App\Http\Controllers\Admin\ManajemenUser\RevenueTypeController;
+use App\Http\Controllers\Admin\ProdukDigital\ProdukDigitalController;
+use App\Http\Controllers\Moderator\Bimbingan\ModeratorOrderController;
+use App\Http\Controllers\Admin\SkripsiMastery\SkripsiMasteryController;
+use App\Http\Controllers\Moderator\Tutor\ModeratorScheduleTutorController;
+use App\Http\Controllers\Admin\OverviewController as AdminOverviewController;
+use App\Http\Controllers\Moderator\Bimbingan\ModeratorHistoryBimbinganController;
+use App\Http\Controllers\Moderator\SettingController as ModeratorSettingController;
+use App\Http\Controllers\Moderator\OverviewController as ModeratorOverviewController;
+use App\Http\Controllers\Admin\Ecourse\OrderController as AdminOrderEcourseController;
+use App\Http\Controllers\Admin\Webinar\OrderController as AdminOrderWebinarController;
+use App\Http\Controllers\Admin\Bimbingan\OrderController as AdminOrderBimbinganController;
+use App\Http\Controllers\Admin\Ecourse\PackageController as AdminPackageEcourseController;
+use App\Http\Controllers\Admin\JasaRiset\OrderController as AdminOrderJasaRisetController;
+use App\Http\Controllers\Admin\Webinar\CategoryController as AdminCategoryWebinarController;
+use App\Http\Controllers\Admin\ProdukDigital\OrderController as AdminOrderProdukDigitalController;
+use App\Http\Controllers\Admin\SkripsiMastery\OrderController as AdminOrderSkripsiMasteryController;
+use App\Http\Controllers\Admin\SkripsiMastery\CategoryController as SkripsiMasteryCategoryController;
+use App\Http\Controllers\Admin\ProdukDigital\CategoryController as AdminCategoryProdukDigitalController;
 
 // Di routes/web.php
 Route::get('/csrf-token', function () {
@@ -118,7 +121,7 @@ Route::get('/skripsimastery', function () {
 });
 Route::resource('/produk', PurchaseController::class);
 
-Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status')->middleware(['auth', 'verified']);
+Route::get('/purchase/{order}', [PurchaseStatusController::class, 'show'])->name('purchase.status');
 
 Route::resource('/profile', ProfileController::class);
 
@@ -325,24 +328,24 @@ Route::get('recent-order/{order}', function (Order $order) {
     return view('email.moderator.bimbingan.recent-order', ['data' => $order->load('products')]);
 });
 
-Route::get('testemail', function () {
-    return view('email.email-generate.user.auth.reset-password', ['url' => 'https://google.com']);
-});
+// Route::get('testemail', function () {
+//     return view('email.email-generate.user.auth.reset-password', ['url' => 'https://google.com']);
+// });
 
-Route::get('testemail/order-expired/{order}', function (Order $order) {
-    return view('email.email-generate.user.bimbingan.expired', ['data' => $order]);
-});
+// Route::get('testemail/order-expired/{order}', function (Order $order) {
+//     return view('email.email-generate.user.bimbingan.expired', ['data' => $order]);
+// });
 
-Route::get('testemail/recent-order/{order}', function (Order $order) {
-    return view('email.email-generate.moderator.bimbingan.recent-order', ['data' => $order]);
-});
+// Route::get('testemail/recent-order/{order}', function (Order $order) {
+//     return view('email.email-generate.moderator.bimbingan.recent-order', ['data' => $order]);
+// });
 
-Route::get('testemail/success/{order}', function (Order $order) {
-    return view('email.email-generate.user.purchase.success', ['data' => $order]);
-});
-Route::get('testemail/pending/{order}', function (Order $order) {
-    return view('email.email-generate.user.purchase.pending', ['data' => $order]);
-});
+// Route::get('testemail/success/{order}', function (Order $order) {
+//     return view('email.email-generate.user.purchase.success', ['data' => $order]);
+// });
+// Route::get('testemail/pending/{order}', function (Order $order) {
+//     return view('email.email-generate.user.purchase.pending', ['data' => $order]);
+// });
 
 Route::get('pending/new/{order}', function (Order $order) {
     return new Pending($order);
@@ -355,6 +358,11 @@ Route::get('success/new/{order}', function (Order $order) {
 Route::get('expired/new/{order}', function (Order $order) {
     return new Expired($order);
 });
+
+// Route::get('test-mail/{order}', function (Order $order) {
+//     Mail::to('roziqinakhmad14juli@gmail.com')->send(new Pending($order));
+//     return new Pending($order);
+// });
 
 // Route::get('email-verification/new/{user}', function (User $user) {
 //     return new EmailVerification($user);

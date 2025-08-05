@@ -8,7 +8,6 @@
 
 {{-- Body --}}
 {{ $slot }}
-
 {{-- Subcopy --}}
 @isset($subcopy)
 <x-slot:subcopy>
