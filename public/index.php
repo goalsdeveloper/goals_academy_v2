@@ -53,3 +53,7 @@ $response = $kernel->handle(
 )->send();
 
 $kernel->terminate($request, $response);
+
+/*
+| Just a little change
+*/
